@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Copyrighted files" pattern="(file:*.groovy||file:*.java||file:*.gradle||file:*.sh)&amp;&amp;!file:*/gen//*&amp;&amp;!file:gen//*&amp;&amp;!file:build//*" />
+</component>

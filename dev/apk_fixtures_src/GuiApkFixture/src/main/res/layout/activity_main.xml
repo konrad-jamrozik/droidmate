@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="MainActivity screen"
+      android:textSize="16dp"
+      android:layout_gravity="center"
+      android:textAlignment="center"
+      android:paddingTop="5dp"
+      android:paddingBottom="5dp"/>
+
+    <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent">
+
+        <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Crash"
+          android:id="@+id/button_crash"
+          android:textSize="14dp"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentLeft="true"/>
+
+        <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Do nothing"
+          android:id="@+id/button_do_nothing"
+          android:textSize="14dp"
+          android:layout_alignTop="@+id/button_crash"
+          android:layout_toRightOf="@+id/button_crash"/>
+
+        <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="go to act2 b1"
+          android:id="@+id/button_goto_activity2_b1"
+          android:textSize="14dp"
+          android:layout_below="@+id/button_crash"
+          android:layout_alignParentLeft="true"
+          android:onClick="goToActivity2"/>
+
+        <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="go to act2 b2"
+          android:id="@+id/button_goto_activity2_b2"
+          android:textSize="14dp"
+          android:layout_below="@+id/button_do_nothing"
+          android:layout_toRightOf="@+id/button_goto_activity2_b1"
+          android:onClick="goToActivity2"/>
+
+        <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Go to Google Play"
+          android:id="@+id/button_goto_google_play"
+          android:textSize="14dp"
+          android:layout_above="@+id/button_goto_activity2_b2"
+          android:layout_toRightOf="@+id/button_do_nothing"
+          android:onClick="goToGooglePlayStore"/>
+
+        <ImageButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/imageButton"
+          android:src="@drawable/ic_launcher"
+          android:cropToPadding="false"
+          android:scaleType="fitCenter"
+          android:layout_below="@+id/button_goto_activity2_b1"
+          android:layout_alignParentLeft="true"/>
+
+        <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/imageView"
+          android:layout_gravity="center_horizontal"
+          android:src="@drawable/ic_launcher"
+          android:layout_below="@+id/button_goto_activity2_b1"
+          android:layout_toRightOf="@+id/imageButton"
+          android:clickable="true"/>
+
+        <Spinner
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/spinner"
+          android:layout_gravity="center_horizontal"
+          android:textAlignment="center"
+          android:entries="@array/planets_array"
+          android:focusableInTouchMode="true"
+          android:focusable="false"
+          android:layout_alignTop="@+id/imageView"
+          android:layout_toRightOf="@+id/imageView"/>
+
+        <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="CheckBox"
+          android:id="@+id/checkBox1"
+          android:checked="false"
+          android:layout_centerVertical="true"
+          android:layout_toLeftOf="@+id/button_goto_activity2_b2"/>
+
+        <Switch
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Switch1"
+          android:id="@+id/switch1"
+          android:checked="false"
+          android:layout_above="@+id/checkBox2"
+          android:layout_alignParentRight="true"/>
+
+        <RadioGroup
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/checkBox2"
+          android:layout_alignParentLeft="true"
+          android:id="@+id/radioGroup">
+
+            <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="RadioButton"
+              android:id="@+id/radioButton1"
+              android:checked="false"/>
+
+            <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="RadioButton2"
+              android:id="@+id/radioButton2"
+              android:layout_gravity="center_horizontal"
+              android:checked="true"/>
+        </RadioGroup>
+
+        <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="CheckBox2"
+          android:id="@+id/checkBox2"
+          android:checked="true"
+          android:layout_below="@+id/checkBox1"
+          android:layout_alignLeft="@+id/checkBox1"/>
+
+        <Switch
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Switch2"
+          android:id="@+id/switch2"
+          android:checked="true"
+          android:layout_below="@+id/switch1"
+          android:layout_alignParentRight="true"/>
+
+        <ToggleButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="ToggleButton"
+          android:id="@+id/toggleButton1"
+          android:layout_alignTop="@+id/radioGroup"
+          android:layout_toRightOf="@+id/button_do_nothing"
+          android:checked="false"/>
+
+        <ToggleButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="ToggleButton2"
+          android:id="@+id/toggleButton2"
+          android:layout_below="@+id/toggleButton1"
+          android:layout_alignLeft="@+id/toggleButton1"
+          android:checked="true"/>
+
+        <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Sec. API"
+          android:id="@+id/button"
+          android:layout_above="@+id/spinner"
+          android:layout_toRightOf="@+id/button_goto_activity2_b2"
+          android:onClick="secApi"/>
+    </RelativeLayout>
+</LinearLayout>
+

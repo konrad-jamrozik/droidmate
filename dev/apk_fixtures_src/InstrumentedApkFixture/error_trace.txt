@@ -1,0 +1,309 @@
+02-03 12:47:09.231      482-766/? I/ActivityManager﹕ Start proc org.droidmate.fixtures.apks.instrumented for activity org.droidmate.fixtures.apks.instrumented/.InstrumentedActivity: pid=26427 uid=10460 gids={50460}
+02-03 12:47:09.311  26427-26427/? W/Instrumentation﹕
+02-03 12:47:09.321  26427-26427/? D/dalvikvm﹕ Trying to load lib /data/app-lib/org.droidmate.fixtures.apks.instrumented-1/libinstrumentation.so 0x421256a0
+02-03 12:47:09.321  26427-26427/? D/dalvikvm﹕ Added shared lib /data/app-lib/org.droidmate.fixtures.apks.instrumented-1/libinstrumentation.so 0x421256a0
+02-03 12:47:09.321  26427-26427/? D/dalvikvm﹕ No JNI_OnLoad found in /data/app-lib/org.droidmate.fixtures.apks.instrumented-1/libinstrumentation.so 0x421256a0, skipping init
+02-03 12:47:09.331  26427-26427/? W/dalvikvm﹕ JNI WARNING: jstring arg has wrong type (expected Ljava/lang/String;, got Ljava/lang/Class;) (GetStringUTFChars)
+02-03 12:47:09.331  26427-26427/? W/dalvikvm﹕ in Lde/uds/infsec/instrumentation/Instrumentation;.redirectStaticMethodNative:(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;II)I (GetStringUTFChars)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ "main" prio=5 tid=1 RUNNABLE
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ | group="main" sCount=0 dsCount=0 obj=0x419aeca8 self=0x4009e468
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ | sysTid=26427 nice=0 sched=0/0 cgrp=apps handle=1075024212
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ | state=R schedstat=( 68170000 9292000 67 ) utm=4 stm=2 core=1
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at de.uds.infsec.instrumentation.Instrumentation.redirectStaticMethodNative(Native Method)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at de.uds.infsec.instrumentation.Instrumentation.redirectMethod(Instrumentation.java:228)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at de.uds.infsec.instrumentation.Instrumentation.processClass(Instrumentation.java:290)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at org.droidmate.fixtures.apks.instrumented.InstrumentationClass.instrument(InstrumentationClass.java:25)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at org.droidmate.fixtures.apks.instrumented.InstrumentedActivity.onCreate(InstrumentedActivity.java:45)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at android.app.Activity.performCreate(Activity.java:5231)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1087)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2148)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2233)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at android.app.ActivityThread.access$800(ActivityThread.java:135)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1196)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at android.os.Handler.dispatchMessage(Handler.java:102)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at android.os.Looper.loop(Looper.java:136)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at android.app.ActivityThread.main(ActivityThread.java:5001)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at java.lang.reflect.Method.invokeNative(Native Method)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at java.lang.reflect.Method.invoke(Method.java:515)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:785)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:601)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ at dalvik.system.NativeStart.main(Native Method)
+02-03 12:47:09.331  26427-26427/? I/dalvikvm﹕ [ 02-03 12:47:09.331 26427:26427 E/dalvikvm ]
+    VM aborting
+02-03 12:47:09.331  26427-26427/? A/libc﹕ Fatal signal 6 (SIGABRT) at 0x0000673b (code=-6), thread 26427 (ks.instrumented)
+02-03 12:47:09.431      121-121/? I/DEBUG﹕ *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+02-03 12:47:09.431      121-121/? I/DEBUG﹕ Build fingerprint: 'google/nakasi/grouper:4.4.4/KTU84P/1227136:user/release-keys'
+02-03 12:47:09.431      121-121/? I/DEBUG﹕ Revision: '0'
+02-03 12:47:09.431      121-121/? I/DEBUG﹕ pid: 26427, tid: 26427, name: ks.instrumented  >>> org.droidmate.fixtures.apks.instrumented <<<
+02-03 12:47:09.431      121-121/? I/DEBUG﹕ signal 6 (SIGABRT), code -6 (SI_TKILL), fault addr --------
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ r0 00000000  r1 0000673b  r2 00000006  r3 00000000
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ r4 00000006  r5 00000016  r6 0000673b  r7 0000010c
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ r8 41a02848  r9 4197badf  sl 4199b1f0  fp 4197bb28
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ ip 4199f0e0  sp bea040d0  lr 4014f09d  pc 4015e048  cpsr 000f0010
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d0  74726f6261204d56  d1  0a29646f6874654d
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d2  2e736f2e6c616e72  d3  6e4965746f67795a
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d4  6465746e656d7572  d5  6d757274736e492e
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d6  7463416465746e65  d7  6e6f2e7974697669
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d8  0000000000000000  d9  0000000000000000
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d10 0000000000000000  d11 0000000000000000
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d12 0000000000000000  d13 0000000000000000
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d14 0000000000000000  d15 0000000000000000
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d16 0100010001000100  d17 0100010001000100
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d18 0000000000000000  d19 0000000000000000
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d20 0000000000000000  d21 000f000f000f000f
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d22 0000000000000000  d23 0000000000000000
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d24 0000000000000000  d25 0000004700000046
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d26 0707070703030303  d27 0100000003000101
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d28 080205040e040706  d29 0109c04301054042
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ d30 0112c045010e4044  d31 011bc04701174046
+02-03 12:47:09.561      121-121/? I/DEBUG﹕ scr 60000010
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ backtrace:
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #00  pc 00022048  /system/lib/libc.so (tgkill+12)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #01  pc 00013099  /system/lib/libc.so (pthread_kill+48)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #02  pc 000132ad  /system/lib/libc.so (raise+10)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #03  pc 00011fe3  /system/lib/libc.so
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #04  pc 000218fc  /system/lib/libc.so (abort+4)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #05  pc 00045cc7  /system/lib/libdvm.so (dvmAbort+78)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #06  pc 00038b5d  /system/lib/libdvm.so
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #07  pc 00039b0d  /system/lib/libdvm.so
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #08  pc 0003bf1d  /system/lib/libdvm.so
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #09  pc 00002caf  /data/app-lib/org.droidmate.fixtures.apks.instrumented-1/libinstrumentation.so (lookupMethod+22)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #10  pc 00002db1  /data/app-lib/org.droidmate.fixtures.apks.instrumented-1/libinstrumentation.so (Java_de_uds_infsec_instrumentation_Instrumentation_redirectStaticMethodNative+16)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #11  pc 0001dbcc  /system/lib/libdvm.so (dvmPlatformInvoke+112)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #12  pc 0004e123  /system/lib/libdvm.so (dvmCallJNIMethod(unsigned int const*, JValue*, Method const*, Thread*)+398)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #13  pc 0004fb0d  /system/lib/libdvm.so (dvmResolveNativeMethod(unsigned int const*, JValue*, Method const*, Thread*)+184)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #14  pc 00026fe0  /system/lib/libdvm.so
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #15  pc 0002dfa0  /system/lib/libdvm.so (dvmMterpStd(Thread*)+76)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #16  pc 0002b638  /system/lib/libdvm.so (dvmInterpret(Thread*, Method const*, JValue*)+184)
+02-03 12:47:09.571      121-121/? I/DEBUG﹕ #17  pc 00060861  /system/lib/libdvm.so (dvmInvokeMethod(Object*, Method const*, ArrayObject*, ArrayObject*, ClassObject*, bool)+392)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #18  pc 000687c3  /system/lib/libdvm.so
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #19  pc 00026fe0  /system/lib/libdvm.so
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #20  pc 0002dfa0  /system/lib/libdvm.so (dvmMterpStd(Thread*)+76)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #21  pc 0002b638  /system/lib/libdvm.so (dvmInterpret(Thread*, Method const*, JValue*)+184)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #22  pc 0006057d  /system/lib/libdvm.so (dvmCallMethodV(Thread*, Method const*, Object*, bool, JValue*, std::__va_list)+336)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #23  pc 00049d0b  /system/lib/libdvm.so
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #24  pc 0004d2b3  /system/lib/libandroid_runtime.so
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #25  pc 0004dfd7  /system/lib/libandroid_runtime.so (android::AndroidRuntime::start(char const*, char const*)+354)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #26  pc 0000105b  /system/bin/app_process
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #27  pc 0000e403  /system/lib/libc.so (__libc_init+50)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #28  pc 00000d7c  /system/bin/app_process
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ stack:
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea04090  39e0001d
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea04094  4197ba79  /system/lib/libdvm.so
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea04098  4199f0e0  /dev/ashmem/dalvik-zygote (deleted)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea0409c  41a02848  /dev/ashmem/dalvik-zygote (deleted)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040a0  4197badf  /system/lib/libdvm.so
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040a4  4199b1f0  /system/lib/libdvm.so
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040a8  4197bb28  /system/lib/libdvm.so
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040ac  40162501  /system/lib/libc.so (snprintf+80)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040b0  644ff5b2  /system/framework/framework.odex
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040b4  644581ad  /system/framework/framework.odex
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040b8  bea0412c  [stack]
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040bc  00000000
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040c0  00000000
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040c4  00000000
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040c8  00004000
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040cc  bea0413a  [stack]
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #00  bea040d0  00000006
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040d4  00000016
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040d8  0000673b
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040dc  4199f0e0  /dev/ashmem/dalvik-zygote (deleted)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040e0  4199f0e0  /dev/ashmem/dalvik-zygote (deleted)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040e4  4014f09d  /system/lib/libc.so (pthread_kill+52)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #01  bea040e8  00000006
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040ec  00000000
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040f0  4197ba79  /system/lib/libdvm.so
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040f4  4014f2b1  /system/lib/libc.so (raise+14)
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ #02  bea040f8  bea04104  [stack]
+02-03 12:47:09.581      121-121/? I/DEBUG﹕ bea040fc  4014dfe7  /system/lib/libc.so
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ memory near r1:
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006718 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006728 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006738 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006748 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006758 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006768 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006778 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006788 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006798 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067a8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067b8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067c8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067d8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067e8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067f8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006808 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ memory near r6:
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006718 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006728 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006738 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006748 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006758 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006768 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006778 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006788 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006798 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067a8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067b8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067c8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067d8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067e8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 000067f8 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 00006808 ffffffff ffffffff ffffffff ffffffff
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ memory near r8:
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a02828 00000003 00000000 01010102 01010103
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a02838 01010104 00000061 00000028 00000273
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a02848 4199e1e8 00000000 421422a0 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a02858 00000000 00000000 644656a2 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a02868 80030001 5000029e 41830000 00000007
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a02878 00000000 00000001 0000004c 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a02888 00000000 00000000 4199e890 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a02898 00000000 00000000 00000000 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a028a8 00000029 62b2fa60 00000021 62b30360
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a028b8 0000002b 62b30aa0 00000000 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a028c8 00000000 00000000 00000011 0000000c
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a028d8 62b2f908 fff00000 64422914 00000013
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a028e8 41a02848 6440ebc9 64492250 00000019
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a028f8 41a02ab8 00000000 41a02848 6440ebdd
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a02908 64492250 00000019 41a02b38 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 41a02918 41a02848 6441ce65 644497a7 00000019
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ memory near r9:
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197babc 6e203a47 74616765 20657669 7a69736a
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bacc 25282065 42002973 5a534943 706d6662
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197badc 75007645 6f6e6b6e 63206e77 6b636568
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197baec 726f6620 2074616d 63657073 65696669
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bafc 63252072 28702500 41564e49 2944494c
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb0c 74707600 76004900 004c4500 0070004a
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb1c 004a7045 0045004c 00560062 00707345
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb2c 3a494e4a 69616620 2064656c 72617567
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb3c 20646564 79706f63 65686320 69206b63
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb4c 6552206e 7361656c 72745365 43676e69
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb5c 69746972 006c6163 72706145 70614500
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb6c 49734500 45007049 63450070 70634500
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb7c 61450049 00704949 61007a45 49614500
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb8c 6145004c 7a450049 45004c63 73450061
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb9c 4e4a0075 66203a49 656c6961 75672064
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bbac 65647261 6f632064 63207970 6b636568
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ memory near sl:
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b1d0 00000000 00000000 00000000 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b1e0 00000000 00000000 00000000 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b1f0 4009e028 41666fd0 00800000 18000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b200 04000000 00000000 00000000 3fe80000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b210 00080000 00800000 00004000 00006000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b220 00000001 00000101 00000002 00000001
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b230 00000000 00000000 00000000 00000002
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b240 00000000 4028a171 4028a3a9 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b250 4028a159 00000000 00000000 4009e2f0
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b260 00000000 00000002 00000003 00000001
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b270 00000001 00010100 00000100 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b280 4009e228 00000003 00000000 4009e218
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b290 4009ee20 00000000 00000000 4009ebf0
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b2a0 50000e22 414ec030 00000000 414e7ac0
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b2b0 414e7ae0 4199e1e8 4199e2a8 4199e350
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199b2c0 4199e3f8 4199e4a0 4199e548 4199e5f0
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ memory near fp:
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb08 2944494c 74707600 76004900 004c4500
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb18 0070004a 004a7045 0045004c 00560062
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb28 00707345 3a494e4a 69616620 2064656c
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb38 72617567 20646564 79706f63 65686320
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb48 69206b63 6552206e 7361656c 72745365
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb58 43676e69 69746972 006c6163 72706145
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb68 70614500 49734500 45007049 63450070
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb78 70634500 61450049 00704949 61007a45
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb88 49614500 6145004c 7a450049 45004c63
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bb98 73450061 4e4a0075 66203a49 656c6961
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bba8 75672064 65647261 6f632064 63207970
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bbb8 6b636568 206e6920 656c6552 53657361
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bbc8 6e697274 46545567 72616843 00750073
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bbd8 45007345 00730075 3a494e4a 69616620
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bbe8 2064656c 72617567 20646564 79706f63
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4197bbf8 65686320 69206b63 6552206e 7361656c
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ memory near ip:
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f0c0 4199f008 63c794f6 63c2957f 0000001a
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f0d0 2636dd85 6109c59a 00000000 0000010b
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f0e0 4199e1e8 00000000 00000000 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f0f0 00000000 00000000 63c2d5b6 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f100 00030011 50000016 414f2000 00000007
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f110 00000000 00000001 00000018 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f120 00000000 00000000 4199e890 00000000
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f130 00000000 00000000 00000003 62a5db30
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f140 0000002a 62a5db98 00000036 62a5e4d0
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f150 0000003e 62a5f1d0 00000003 62a5f2d8
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f160 00000005 62a5f2f8 00000004 00000001
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f170 62a5db40 80000000 63c4f570 00000004
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f180 4199f0e0 63c1d2ba 63c545a5 0000001a
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f190 419ac2b8 4199e008 4199f0e0 63c1fac8
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f1a0 63c34c46 00000019 419ac2a8 4199e008
+02-03 12:47:09.591      121-121/? I/DEBUG﹕ 4199f1b0 4199f0e0 63c4c1fc 63c1f7a4 0000001a
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ memory near sp:
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea040b0 644ff5b2 644581ad bea0412c 00000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea040c0 00000000 00000000 00004000 bea0413a
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea040d0 00000006 00000016 0000673b 4199f0e0
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea040e0 4199f0e0 4014f09d 00000006 00000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea040f0 4197ba79 4014f2b1 bea04104 4014dfe7
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea04100 00000000 ffffffdf 401862c4 4018622c
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea04110 00000000 40150ba7 4199b1f0 4199b1f0
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea04120 39e0001d 4015d900 00000000 41931ccb
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea04130 00000000 6c756e28 0000296c 00000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea04140 00000000 00000000 00000000 00000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea04150 00000000 00000000 00000000 00000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea04160 00000000 00000000 00000000 00000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea04170 00000000 00000000 00000000 00000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea04180 00000000 00000000 00000000 00000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea04190 00000000 00000000 00000000 00000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ bea041a0 00000000 00000000 00000000 00000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ code around pc:
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e028 e8bd00f0 e3700a01 912fff1e e2600000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e038 ea006e3d e92d50f0 e3a07f43 ef000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e048 e8bd50f0 e3700a01 912fff1e e2600000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e058 ea006e35 e92d50f0 e3a070ee ef000000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e068 e8bd50f0 e3700a01 912fff1e e2600000
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e078 ea006e2d f200429a bf0080cf f000f891
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e088 4001e92d f040f891 d3532a10 0301ea80
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e098 0303f013 806ef000 d3262ae0 0300f1c0
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e0a8 030ff013 eba2d021 ea5f0203 bf447cc3
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e0b8 eb01f811 eb01f800 f811bf21 f811cb01
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e0c8 f800eb01 f800cb01 ea5feb01 da037c43
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e0d8 080df9a1 083df980 f921d303 f900070d
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e0e8 f891071d f891f000 3a40f040 f891d30f
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e0f8 f891f080 f921f0c0 f921020d f891420d
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e108 3a40f0c0 020df900 420df900 f102d2f3
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4015e118 3a200240 f921d305 3a20020d 020df900
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ code around lr:
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f07c 447b4b13 42b3e010 6a1ed10e 44784811
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f08c ec84f7fb ea0ef00d 46224631 efd0f00e
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f09c d00a3001 e00b2400 2b00681b 480ad1eb
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f0ac 44782403 ec72f7fb f001e002 6804fa23
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f0bc fa20f001 46206005 bf00bd70 0003b326
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f0cc 0003b31a 0003b312 0003b2ee bf7ef7ff
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f0dc 4a3e4b3d e92d447b b08b43f0 4606589c
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f0ec 6823460d 930946a1 fa04f001 8000f8d0
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f0fc d0482d00 f00f4628 280ffe91 d8444604
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f10c ffe4f7ff d1064286 4629200f e8d8f00d
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f11c d03c2800 482ee02e f7fb4478 482debb6
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f12c e0154478 d11342b0 482b6a06 f7fb4478
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f13c 4a2aec2e 46332120 a801447a f9b2f013
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f14c a8012101 fcccf01a 46061c42 e011d104
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f15c 28006800 e02cd1e6 46294630 f00d4622
+02-03 12:47:09.601      121-121/? I/DEBUG﹕ 4014f16c 1c43e914 d11e4607 f9c4f001 29046801
+02-03 12:47:09.691      482-505/? I/BootReceiver﹕ Copying /data/tombstones/tombstone_03 to DropBox (SYSTEM_TOMBSTONE)
+02-03 12:47:09.691    482-26446/? W/ActivityManager﹕ Force finishing activity org.droidmate.fixtures.apks.instrumented/.InstrumentedActivity
+02-03 12:47:09.781      123-123/? D/Zygote﹕ Process 26427 terminated by signal (6)
+02-03 12:47:09.811      482-485/? D/dalvikvm﹕ GC_CONCURRENT freed 2406K, 37% free 19993K/31364K, paused 7ms+11ms, total 111ms
+02-03 12:47:09.811      482-505/? D/dalvikvm﹕ WAIT_FOR_CONCURRENT_GC blocked 101ms
+02-03 12:47:09.811    482-26446/? D/dalvikvm﹕ WAIT_FOR_CONCURRENT_GC blocked 103ms
+02-03 12:47:09.821    482-26446/? W/ActivityManager﹕ Exception thrown during pause
+    android.os.DeadObjectException
+            at android.os.BinderProxy.transact(Native Method)
+            at android.app.ApplicationThreadProxy.schedulePauseActivity(ApplicationThreadNative.java:660)
+            at com.android.server.am.ActivityStack.startPausingLocked(ActivityStack.java:761)
+            at com.android.server.am.ActivityStack.finishActivityLocked(ActivityStack.java:2443)
+            at com.android.server.am.ActivityStack.finishTopRunningActivityLocked(ActivityStack.java:2320)
+            at com.android.server.am.ActivityStackSupervisor.finishTopRunningActivityLocked(ActivityStackSupervisor.java:2050)
+            at com.android.server.am.ActivityManagerService.handleAppCrashLocked(ActivityManagerService.java:9548)
+            at com.android.server.am.ActivityManagerService.makeAppCrashingLocked(ActivityManagerService.java:9441)
+            at com.android.server.am.ActivityManagerService.crashApplication(ActivityManagerService.java:10086)
+            at com.android.server.am.ActivityManagerService.handleApplicationCrashInner(ActivityManagerService.java:9637)
+            at com.android.server.am.NativeCrashListener$NativeCrashReporter.run(NativeCrashListener.java:86)
+02-03 12:47:09.831     482-2268/? I/ActivityManager﹕ Process org.droidmate.fixtures.apks.instrumented (pid 26427) has died.
+02-03 12:47:12.811      579-581/? D/dalvikvm﹕ GC_CONCURRENT freed 558K, 53% free 9651K/20300K, paused 4ms+3ms, total 33ms

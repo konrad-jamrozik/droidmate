@@ -1,0 +1,66 @@
+// Copyright (c) 2013-2015 Saarland University
+// All right reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+/* For instructions on how to build and run DroidMate, see ./README_dev.txt */
+
+project.ext.utils = new GroovyShell().parse(new File("${project.projectDir}/GroovyUtils/Utils.groovy"))
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.8'
+}
+
+/* java plugin uses "build" for outputs by default, but the underlying ant script uses "bin".
+   This is setup in root project, not in the target project, as this way we guarantee the property
+   is set before it is read by any of the projects.
+*/
+project(":projects:uiautomator-daemon").buildDir = "bin"
+
+buildscript {
+  String initJarPath = "$rootDir/../init/build/libs/init.jar"
+  File initJar = file(initJarPath)
+  assert initJar.file: "init.jar not found (if you are building DroidMate for the first time, this is to be expected).\n" +
+    "Full path:\n$initJarPath\n" +
+    "Please build the .jar by running 'gradlew clean build' from \n'$rootDir/../init'"
+
+  dependencies {
+    classpath files(initJar)
+  }
+}
+
+evaluationDependsOnChildren()
+
+
+
+subprojects {
+
+  repositories {
+    mavenCentral()
+    maven {url "https://jitpack.io"}
+//  mavenLocal()
+  }
+
+  it.afterEvaluate {
+    tasks.withType(Test) {
+
+      /* N00b Reference:
+        http://mrhaki.blogspot.de/2013/05/gradle-goodness-running-single-test.html
+        http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.testing.logging.TestLoggingContainer.html
+      */
+      testLogging {
+        events 'failed'
+      }
+
+      afterSuite {TestDescriptor td, TestResult tr ->
+
+        if (td.name.contains("Test Run") && tr.successfulTestCount == tr.testCount)
+          println "==> All ${tr.successfulTestCount} tests passed."
+      }
+
+    }
+  }
+}

@@ -1,0 +1,49 @@
+// Copyright (c) 2013-2015 Saarland University
+// All right reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+/*
+  This project contains classes reused by multiple projects, none of which are run on an Android device.
+  Because none of them are run on an Android Device, the classes in this project can and are compiled with Groovy and Java 8.
+*/
+
+apply plugin: 'groovy'
+apply plugin: 'project-report'
+compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+
+  compile 'com.github.konrad-jamrozik:utilities:master-SNAPSHOT'
+
+  // Constants shared between most of DroidMate's build scripts and sources
+  compile files("$rootDir/../init/build/libs/init.jar")
+
+  // Groovy lang
+  compile 'org.codehaus.groovy:groovy-all:2.4.5'
+
+  // General utils
+  compile 'org.apache.commons:commons-exec:1.2'
+  compile 'org.apache.commons:commons-lang3:3.3'
+  compile 'commons-io:commons-io:2.4'
+
+  // Command line parsing
+  compile 'net.sf.jopt-simple:jopt-simple:4.9'
+
+  // Logging
+  compile 'ch.qos.logback:logback-classic:1.0.13'
+  compile 'ch.qos.logback:logback-core:1.0.13'
+  compile 'org.slf4j:slf4j-api:1.7.6'
+
+  // Override guava 16 used by jimfs (added below)
+  compile 'com.google.guava:guava:18.0'
+
+  // Filesystem stubbing
+  compile 'com.google.jimfs:jimfs:1.0'
+
+  testCompile group: 'junit', name: 'junit', version: '4.12'
+}

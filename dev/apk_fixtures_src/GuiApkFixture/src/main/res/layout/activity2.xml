@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="go to mainAct b1"
+    android:id="@+id/button_goto_mainAct_b1"
+    android:textSize="14dp"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:onClick="goToMainActivity"/>
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="go to mainAct b2"
+    android:id="@+id/button_goto_mainAct_b2"
+    android:textSize="14dp"
+    android:layout_alignBottom="@+id/button_goto_mainAct_b1"
+    android:layout_toRightOf="@+id/button_goto_mainAct_b1"
+    android:onClick="goToMainActivity"/>
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Crash2"
+    android:id="@+id/button_crash2"
+    android:textSize="14dp"
+    android:layout_below="@+id/button_goto_mainAct_b1"
+    android:layout_alignParentLeft="true"
+    android:onClick="crash"/>
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Go to Google Play 2"
+    android:id="@+id/button_goto_google_play_2"
+    android:textSize="14dp"
+    android:onClick="goToGooglePlayStore"
+    android:layout_alignTop="@+id/button_crash2"
+    android:layout_toRightOf="@+id/button_crash2"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:text="Randomizable text"
+    android:id="@+id/textView_random"
+    android:layout_alignBottom="@+id/button_randomize"
+    android:layout_toRightOf="@+id/button_randomize"
+    android:layout_alignParentRight="false"
+    android:layout_alignParentLeft="false"
+    android:layout_alignParentTop="false"/>
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Randomize text"
+    android:id="@+id/button_randomize"
+    android:layout_below="@+id/button_crash2"
+    android:layout_alignParentLeft="true"
+    android:onClick="randomizeText"/>
+
+  <RadioGroup
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/button_randomize"
+    android:layout_alignParentLeft="true"
+    android:layout_toLeftOf="@+id/button_goto_mainAct_b2"
+    android:id="@+id/radioGroup">
+
+    <RadioButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Radio1"
+      android:id="@+id/radioButton_1"
+      android:checked="false"/>
+
+    <RadioButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Radio2"
+      android:id="@+id/radioButton_2"
+      android:checked="false"/>
+
+    <RadioButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Radio3"
+      android:id="@+id/radioButton_3"
+      android:checked="true"/>
+
+    <RadioButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Radio4"
+      android:id="@+id/radioButton_4"
+      android:checked="false"/>
+
+    <RadioButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Radio5"
+      android:id="@+id/radioButton_5"
+      android:checked="false"/>
+
+  </RadioGroup>
+
+  <CheckBox
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="CheckBox1"
+    android:id="@+id/checkBox_1"
+    android:checked="false"
+    android:layout_below="@+id/textView_random"
+    android:layout_alignRight="@+id/button_goto_mainAct_b2"/>
+
+  <CheckBox
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="CheckBox2"
+    android:id="@+id/checkBox_2"
+    android:checked="false"
+    android:layout_below="@+id/checkBox_1"
+    android:layout_alignRight="@+id/button_goto_mainAct_b2"/>
+
+  <CheckBox
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="CheckBox3"
+    android:id="@+id/checkBox_3"
+    android:checked="true"
+    android:layout_below="@+id/checkBox_2"
+    android:layout_alignRight="@+id/button_goto_mainAct_b2"/>
+
+  <CheckBox
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="CheckBox4"
+    android:id="@+id/checkBox_4"
+    android:checked="true"
+    android:layout_below="@+id/checkBox_3"
+    android:layout_alignLeft="@+id/checkBox_3"/>
+
+  <CheckBox
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="CheckBox4"
+    android:id="@+id/checkBox_5"
+    android:checked="false"
+    android:layout_below="@+id/checkBox_4"
+    android:layout_alignRight="@+id/button_goto_mainAct_b2"/>
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Do nothing"
+    android:id="@+id/button_do_nothing"
+    android:layout_alignBottom="@+id/button_goto_google_play_2"
+    android:layout_toRightOf="@+id/button_goto_google_play_2"/>
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="go to act3"
+    android:id="@+id/button_goto_act3"
+    android:textSize="14dp"
+    android:layout_below="@+id/radioGroup"
+    android:layout_alignParentLeft="true"
+    android:onClick="goToMainActivity3"/>
+
+</RelativeLayout>

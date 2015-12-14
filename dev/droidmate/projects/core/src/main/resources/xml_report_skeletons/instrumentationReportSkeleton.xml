@@ -1,0 +1,25 @@
+<DroidMateInstrumentationReport>
+
+  <!-- Underscores denote data place holders -->
+
+  <apkPackageName> _ </apkPackageName>
+
+  <jimpleStats>
+
+    <includedTotals>
+      <units> _ </units>
+      <methods> _ </methods>
+      <classes> _ </classes>
+    </includedTotals>
+
+    <excludedTotals>
+      <units> _ </units>
+      <methods> _ </methods>
+      <classes> _ </classes>
+    </excludedTotals>
+
+    <insertedLogCallsTotal> _ </insertedLogCallsTotal>
+
+  </jimpleStats>
+
+</DroidMateInstrumentationReport>

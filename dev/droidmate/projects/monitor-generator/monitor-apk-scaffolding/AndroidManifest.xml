@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.droidmate.monitor_generator.generated">
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="19" />
+</manifest>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Act3 button"
+    android:id="@+id/button_act3"
+    android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true"
+    android:longClickable="true"/>
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Crash"
+    android:id="@+id/button_crash"
+    android:layout_above="@+id/button_act3"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="19dp"
+    android:onClick="crash"/>
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Google play"
+    android:id="@+id/button_google_play"
+    android:layout_marginTop="20dp"
+    android:layout_below="@+id/button_act3"
+    android:layout_alignLeft="@+id/button_act3"
+    android:onClick="goToGooglePlayStore"/>
+</RelativeLayout>

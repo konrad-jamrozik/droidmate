@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="dm.sh install_tsa" type="BashConfigurationType" factoryName="Bash" folderName="Bash configs" singleton="true">
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="INTERPRETER_PATH" value="C:\Program Files (x86)\Git\bin\sh.exe" />
+    <option name="WORKING_DIRECTORY" value="C:\my\local\repos\chair\droidmate\dev\droidmate\scripts" />
+    <option name="PARENT_ENVS" value="true" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/dm.sh" />
+    <option name="PARAMETERS" value="install_tsa" />
+    <module name="droidmate" />
+    <envs />
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Run" />
+    <method />
+  </configuration>
+</component>

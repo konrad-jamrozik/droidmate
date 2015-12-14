@@ -1,0 +1,352 @@
+# Contents of this file contain current list of methods monitored by AppGuard monitor. For details, see:
+# C:\my\local\repos\chair\droidmate\resources\from_Philipp\appguard_apis_list_origin.txt
+#
+# The list has been manually modified by Konrad Jamrozik to instrument successfully on Android 4.4.4-r2.0.1 [1] running
+# on Nexus 7 2012
+# [1] https://github.com/android/platform_frameworks_base/tree/android-4.4.4_r2.0.1/core/java/android
+#
+# The modification was done by
+# 1. deploying the instrumented monitored app on the device,
+# 2. observing the logcat messages with "Instrumentation" tag,
+# 3. diagnosing any failures and comparing the list definitions with the source,
+# 4. fixing the list and writing down the finding.
+
+Landroid/app/ActivityThread;->installContentProviders(Landroid/content/Context;Ljava/util/List;)V
+Landroid/app/Activity;->onResume()V
+Landroid/app/Activity;->startActivityForResult(Landroid/content/Intent;I)V
+Landroid/app/Activity;->startActivityFromChild(Landroid/app/Activity;Landroid/content/Intent;I)V
+Landroid/app/Activity;->startActivityIfNeeded(Landroid/content/Intent;I)Z
+Landroid/app/ActivityManager;->getRecentTasks(II)Ljava/util/List;
+Landroid/app/ActivityManager;->getRunningTasks(I)Ljava/util/List;
+
+# Instrumentation fails with:
+# 10-09 14:30:21.916    2435-2435/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.app.ActivityManagerNative->getRecentTasks
+#
+# The failed method source is in [1]. Note it has three int params not two, as originally defined.
+# However, both versions fail to instrument. Maybe reason for that is the class is annotated with @hide [2]
+#
+# [1] https://github.com/android/platform_frameworks_base/blob/android-4.4.4_r2.0.1/core/java/android/app/ActivityManagerNative.java#L2554
+# [2] https://github.com/android/platform_frameworks_base/blob/android-4.4.4_r2.0.1/core/java/android/app/ActivityManagerNative.java#L52
+#
+# This is the original method, whose instrumentation fails:
+#Landroid/app/ActivityManagerNative;->getRecentTasks(II)Ljava/util/List;
+# This is the manually modified method, matching the source, whose instrumentation also fails:
+#Landroid/app/ActivityManagerNative;->getRecentTasks(III)Ljava/util/List;
+
+# Note: there are many other methods in this class [1] requiring BLUETOOTH or other similar permissions, yet they are not monitored.
+# [1] https://github.com/android/platform_frameworks_base/blob/android-4.4.4_r2.0.1/core/java/android/bluetooth/BluetoothHeadset.java
+#
+Landroid/bluetooth/BluetoothHeadset;->startVoiceRecognition(Landroid/bluetooth/BluetoothDevice;)Z
+Landroid/bluetooth/BluetoothHeadset;->stopVoiceRecognition(Landroid/bluetooth/BluetoothDevice;)Z
+
+# Instrumentation fails:
+# 10-09 17:46:18.976    7461-7461/? W/Instrumentation? Failed to redirect method android.bluetooth.HeadsetBase->acquireWakeLock
+# 10-09 17:46:18.976    7461-7461/? W/Instrumentation? Failed to redirect method android.bluetooth.HeadsetBase->releaseWakeLock
+#
+# This class seems to have been removed in Android 4.1 (API 16)
+# Still present:
+# https://github.com/android/platform_frameworks_base/blob/android-cts-4.1_r4/core/java/android/bluetooth/HeadsetBase.java#L279
+# Not any more (404)
+# https://github.com/android/platform_frameworks_base/tree/android-cts-4.2_r1/core/java/android/bluetooth/HeadsetBase.java
+#
+#Landroid/bluetooth/HeadsetBase;->acquireWakeLock()V
+#Landroid/bluetooth/HeadsetBase;->releaseWakeLock()V
+
+Landroid/content/ContentProviderClient;->bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I
+Landroid/content/ContentProviderClient;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
+Landroid/content/ContentProviderClient;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
+Landroid/content/ContentProviderClient;->openFile(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
+Landroid/content/ContentProviderClient;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+Landroid/content/ContentProviderClient;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
+Landroid/content/ContentResolver;->bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I
+Landroid/content/ContentResolver;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
+Landroid/content/ContentResolver;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
+Landroid/content/ContentResolver;->openFileDescriptor(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
+Landroid/content/ContentResolver;->openInputStream(Landroid/net/Uri;)Ljava/io/InputStream;
+Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+Landroid/content/ContentResolver;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
+
+# Just delegates to the call below. See:
+# https://github.com/android/platform_frameworks_base/blob/android-4.4.4_r2.0.1/core/java/android/hardware/Camera.java#L319
+#
+#Landroid/hardware/Camera;->open()Landroid/hardware/Camera;
+
+# Added "static" modifier
+#
+Landroid/hardware/Camera;->open(I)Landroid/hardware/Camera; static
+
+Landroid/location/LocationManager;->addGpsStatusListener(Landroid/location/GpsStatus$Listener;)Z
+Landroid/location/LocationManager;->addNmeaListener(Landroid/location/GpsStatus$NmeaListener;)Z
+Landroid/location/LocationManager;->addProximityAlert(DDFJLandroid/app/PendingIntent;)V
+Landroid/location/LocationManager;->addTestProvider(Ljava/lang/String;ZZZZZZZII)V
+Landroid/location/LocationManager;->clearTestProviderEnabled(Ljava/lang/String;)V
+Landroid/location/LocationManager;->clearTestProviderLocation(Ljava/lang/String;)V
+Landroid/location/LocationManager;->clearTestProviderStatus(Ljava/lang/String;)V
+Landroid/location/LocationManager;->getBestProvider(Landroid/location/Criteria;Z)Ljava/lang/String;
+Landroid/location/LocationManager;->getLastKnownLocation(Ljava/lang/String;)Landroid/location/Location;
+Landroid/location/LocationManager;->getProvider(Ljava/lang/String;)Landroid/location/LocationProvider;
+Landroid/location/LocationManager;->getProviders(Landroid/location/Criteria;Z)Ljava/util/List;
+Landroid/location/LocationManager;->getProviders(Z)Ljava/util/List;
+Landroid/location/LocationManager;->isProviderEnabled(Ljava/lang/String;)Z
+Landroid/location/LocationManager;->removeTestProvider(Ljava/lang/String;)V
+Landroid/location/LocationManager;->requestLocationUpdates(JFLandroid/location/Criteria;Landroid/app/PendingIntent;)V
+Landroid/location/LocationManager;->requestLocationUpdates(JFLandroid/location/Criteria;Landroid/location/LocationListener;Landroid/os/Looper;)V
+Landroid/location/LocationManager;->requestLocationUpdates(Ljava/lang/String;JFLandroid/app/PendingIntent;)V
+Landroid/location/LocationManager;->requestLocationUpdates(Ljava/lang/String;JFLandroid/location/LocationListener;)V
+Landroid/location/LocationManager;->requestLocationUpdates(Ljava/lang/String;JFLandroid/location/LocationListener;Landroid/os/Looper;)V
+Landroid/location/LocationManager;->requestSingleUpdate(Landroid/location/Criteria;Landroid/app/PendingIntent;)V
+Landroid/location/LocationManager;->requestSingleUpdate(Landroid/location/Criteria;Landroid/location/LocationListener;Landroid/os/Looper;)V
+Landroid/location/LocationManager;->requestSingleUpdate(Ljava/lang/String;Landroid/app/PendingIntent;)V
+Landroid/location/LocationManager;->requestSingleUpdate(Ljava/lang/String;Landroid/location/LocationListener;Landroid/os/Looper;)V
+Landroid/location/LocationManager;->sendExtraCommand(Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)Z
+Landroid/location/LocationManager;->setTestProviderEnabled(Ljava/lang/String;Z)V
+Landroid/location/LocationManager;->setTestProviderLocation(Ljava/lang/String;Landroid/location/Location;)V
+Landroid/location/LocationManager;->setTestProviderStatus(Ljava/lang/String;ILandroid/os/Bundle;J)V
+Landroid/media/AudioManager;->isBluetoothA2dpOn()Z
+Landroid/media/AudioManager;->isWiredHeadsetOn()Z
+Landroid/media/AudioManager;->setBluetoothScoOn(Z)V
+Landroid/media/AudioManager;->setMicrophoneMute(Z)V
+Landroid/media/AudioManager;->setMode(I)V
+Landroid/media/AudioManager;->setParameter(Ljava/lang/String;Ljava/lang/String;)V
+Landroid/media/AudioManager;->setParameters(Ljava/lang/String;)V
+Landroid/media/AudioManager;->setSpeakerphoneOn(Z)V
+Landroid/media/AudioManager;->startBluetoothSco()V
+Landroid/media/AudioManager;->stopBluetoothSco()V
+Landroid/media/AudioRecord;-><init>(IIIII)V
+Landroid/media/MediaPlayer;->setWakeMode(Landroid/content/Context;I)V
+Landroid/media/MediaRecorder;->setAudioSource(I)V
+Landroid/media/MediaRecorder;->setVideoSource(I)V
+Landroid/net/ConnectivityManager;->requestRouteToHost(II)Z
+Landroid/net/ConnectivityManager;->setMobileDataEnabled(Z)V
+Landroid/net/ConnectivityManager;->setNetworkPreference(I)V
+
+# Instrumentation fails:
+# 10-09 17:46:19.376    7461-7461/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.net.ConnectivityManager->setRadio
+#
+# Reason: not present in source at all, only the second variant of this method, which instruments successfully, is present [1]
+# [1] https://github.com/android/platform_frameworks_base/blob/android-4.4.4_r2.0.1/core/java/android/net/ConnectivityManager.java#L722
+#
+#Landroid/net/ConnectivityManager;->setRadio(ILjava/lang/String;)I
+
+# Note: this instruments successfully even though it has @hide annotation!
+Landroid/net/ConnectivityManager;->setRadio(IZ)Z
+
+
+# Instrumentation fails:
+# 10-09 17:46:19.396    7461-7461/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.net.ConnectivityManager->setRadios
+#
+# Reason: not present in source at all, only the second variant of this method, which instruments successfully, is present [1]
+# [1] https://github.com/android/platform_frameworks_base/blob/android-4.4.4_r2.0.1/core/java/android/net/ConnectivityManager.java#L702
+#
+#Landroid/net/ConnectivityManager;->setRadios(ILjava/lang/String;)I
+
+# Note: this instruments successfully even though it has @hide annotation!
+Landroid/net/ConnectivityManager;->setRadios(Z)Z
+
+Landroid/net/ConnectivityManager;->startUsingNetworkFeature(ILjava/lang/String;)I
+Landroid/net/ConnectivityManager;->stopUsingNetworkFeature(ILjava/lang/String;)I
+Landroid/net/ConnectivityManager;->tether(Ljava/lang/String;)I
+Landroid/net/ConnectivityManager;->untether(Ljava/lang/String;)I
+
+# Insrumentation fails due to its un-workaround-able implementation limitation:
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored D/Instrumentation? TypeId not found in dexFile 0x40036910: Ljava/lang/reflect/Method;
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x40036910: invoke
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored D/Instrumentation? TypeId not found in dexFile 0x40036910: Ljava/lang/reflect/InvocationTargetException;
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x40036910: getCause
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x40036910: getTargetException
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x40036910: getCause
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored D/Instrumentation? TypeId not found in dexFile 0x40036910: Ljava/lang/reflect/InvocationTargetException;
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to generate trampoline for startAudio V
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.net.sip.SipAudioCall->startAudio to org.droidmate.monitor_generator.generated.Monitor->redir_android_net_sip_SipAudioCall_startAudio0
+#
+#Landroid/net/sip/SipAudioCall;->startAudio()V
+
+# Instrumentation fails due to its un-workaround-able implementation limitation:
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored D/Instrumentation? TypeId not found in dexFile 0x40036910: Ljava/lang/Boolean;
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x40036910: valueOf
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to generate trampoline for setSpeakerMode VZ
+# 10-09 17:46:19.436    7461-7461/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.net.sip.SipAudioCall->setSpeakerMode to org.droidmate.monitor_generator.generated.Monitor->redir_android_net_sip_SipAudioCall_setSpeakerMode1
+#
+#Landroid/net/sip/SipAudioCall;->setSpeakerMode(Z)V
+
+Landroid/net/wifi/WifiManager$MulticastLock;->acquire()V
+Landroid/net/wifi/WifiManager$MulticastLock;->release()V
+Landroid/net/wifi/WifiManager$WifiLock;->acquire()V
+Landroid/net/wifi/WifiManager$WifiLock;->release()V
+Landroid/net/wifi/WifiManager;->addNetwork(Landroid/net/wifi/WifiConfiguration;)I
+Landroid/net/wifi/WifiManager;->disableNetwork(I)Z
+Landroid/net/wifi/WifiManager;->disconnect()Z
+Landroid/net/wifi/WifiManager;->enableNetwork(IZ)Z
+Landroid/net/wifi/WifiManager;->initializeMulticastFiltering()Z
+Landroid/net/wifi/WifiManager;->pingSupplicant()Z
+Landroid/net/wifi/WifiManager;->reassociate()Z
+Landroid/net/wifi/WifiManager;->reconnect()Z
+Landroid/net/wifi/WifiManager;->removeNetwork(I)Z
+Landroid/net/wifi/WifiManager;->saveConfiguration()Z
+Landroid/net/wifi/WifiManager;->setWifiApEnabled(Landroid/net/wifi/WifiConfiguration;Z)Z
+Landroid/net/wifi/WifiManager;->setWifiEnabled(Z)Z
+Landroid/net/wifi/WifiManager;->startScan()Z
+
+# Instrumentation fails:
+# 10-09 20:27:15.536  12024-12024/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.net.wifi.WifiManager->startScanActive
+#
+# Reason: there is no such method in the source:
+# https://android.googlesource.com/platform/frameworks/base/+/android-4.4.4_r2.0.1/wifi/java/android/net/wifi/WifiManager.java
+#
+#Landroid/net/wifi/WifiManager;->startScanActive()Z
+
+Landroid/os/PowerManager$WakeLock;->acquire()V
+Landroid/os/PowerManager$WakeLock;->acquire(J)V
+Landroid/os/PowerManager$WakeLock;->release()V
+Landroid/os/PowerManager$WakeLock;->release(I)V
+
+# Instrumentation fails:
+# 10-09 20:27:15.556  12024-12024/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.server.BluetoothA2dpService->resumeSink
+#
+# Reason: there is no such method in the source [1]. It was present in the previous versions [2].
+# [1] https://github.com/android/platform_frameworks_base/blob/android-4.4.4_r2.0.1/core/java/android/bluetooth/BluetoothA2dp.java
+# [2] https://github.com/android/platform_frameworks_base/blob/android-cts-4.1_r4/core/java/android/bluetooth/BluetoothA2dp.java#L396
+#
+#Landroid/server/BluetoothA2dpService;->resumeSink(Landroid/bluetooth/BluetoothDevice;)Z
+
+Landroid/speech/SpeechRecognizer;->cancel()V
+Landroid/speech/SpeechRecognizer;->handleCancelMessage()V
+Landroid/speech/SpeechRecognizer;->handleStartListening(Landroid/content/Intent;)V
+Landroid/speech/SpeechRecognizer;->handleStopMessage()V
+Landroid/speech/SpeechRecognizer;->startListening(Landroid/content/Intent;)V
+Landroid/speech/SpeechRecognizer;->stopListening()V
+
+# Instrumentation fails due to its un-workaround-able implementation limitation:
+# 10-09 18:21:55.646    8703-8703/? D/Instrumentation? TypeId not found in dexFile 0x41edffa8: Ljava/lang/Short;
+# 10-09 18:21:55.646    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: valueOf
+# 10-09 18:21:55.646    8703-8703/? W/Instrumentation? Failed to generate trampoline for sendDataMessage VLLSLLL
+# 10-09 18:21:55.646    8703-8703/? W/Instrumentation? Failed to redirect method android.telephony.SmsManager->sendDataMessage to org.droidmate.monitor_generator.generated.Monitor->redir_android_telephony_SmsManager_sendDataMessage6
+#
+#Landroid/telephony/SmsManager;->sendDataMessage(Ljava/lang/String;Ljava/lang/String;S[BLandroid/app/PendingIntent;Landroid/app/PendingIntent;)V
+
+# Instrumentation fails due to its un-workaround-able implementation limitation:
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? TypeId not found in dexFile 0x41edffa8: Ljava/lang/reflect/Method;
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: invoke
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? TypeId not found in dexFile 0x41edffa8: Ljava/lang/reflect/InvocationTargetException;
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getTargetException
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.656    8703-8703/? W/Instrumentation? Failed to generate trampoline for sendMultipartTextMessage VLLLLL
+# 10-09 18:21:55.656    8703-8703/? W/Instrumentation? Failed to redirect method android.telephony.SmsManager->sendMultipartTextMessage to org.droidmate.monitor_generator.generated.Monitor->redir_android_telephony_SmsManager_sendMultipartTextMessage5
+#
+#Landroid/telephony/SmsManager;->sendMultipartTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/util/ArrayList;Ljava/util/ArrayList;Ljava/util/ArrayList;)V
+
+# Instrumentation fails due to its un-workaround-able implementation limitation:
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? TypeId not found in dexFile 0x41edffa8: Ljava/lang/reflect/Method;
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: invoke
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? TypeId not found in dexFile 0x41edffa8: Ljava/lang/reflect/InvocationTargetException;
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getTargetException
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.656    8703-8703/? D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.656    8703-8703/? W/Instrumentation? Failed to generate trampoline for sendTextMessage VLLLLL
+# 10-09 18:21:55.656    8703-8703/? W/Instrumentation? Failed to redirect method android.telephony.SmsManager->sendTextMessage to org.droidmate.monitor_generator.generated.Monitor->redir_android_telephony_SmsManager_sendTextMessage5
+#
+#Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V
+
+Landroid/telephony/TelephonyManager;->getCellLocation()Landroid/telephony/CellLocation;
+Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;
+Landroid/telephony/TelephonyManager;->getDeviceSoftwareVersion()Ljava/lang/String;
+Landroid/telephony/TelephonyManager;->getLine1Number()Ljava/lang/String;
+Landroid/telephony/TelephonyManager;->getNeighboringCellInfo()Ljava/util/List;
+Landroid/telephony/TelephonyManager;->getSimSerialNumber()Ljava/lang/String;
+Landroid/telephony/TelephonyManager;->getSubscriberId()Ljava/lang/String;
+Landroid/telephony/TelephonyManager;->getVoiceMailAlphaTag()Ljava/lang/String;
+Landroid/telephony/TelephonyManager;->getVoiceMailNumber()Ljava/lang/String;
+Landroid/telephony/TelephonyManager;->listen(Landroid/telephony/PhoneStateListener;I)V
+
+# Instrumentation fails due to its un-workaround-able implementation limitation:
+# 10-09 18:21:55.716    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? TypeId not found in dexFile 0x41edffa8: Ljava/lang/Short;
+# 10-09 18:21:55.716    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: valueOf
+# 10-09 18:21:55.716    8703-8703/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to generate trampoline for sendDataMessage VLLSLLL
+# 10-09 18:21:55.716    8703-8703/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.telephony.gsm.SmsManager->sendDataMessage to org.droidmate.monitor_generator.generated.Monitor->redir_android_telephony_gsm_SmsManager_sendDataMessage6
+#
+#Landroid/telephony/gsm/SmsManager;->sendDataMessage(Ljava/lang/String;Ljava/lang/String;S[BLandroid/app/PendingIntent;Landroid/app/PendingIntent;)V
+
+# Instrumentation fails due to its un-workaround-able implementation limitation:
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? TypeId not found in dexFile 0x41edffa8: Ljava/lang/reflect/Method;
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: invoke
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? TypeId not found in dexFile 0x41edffa8: Ljava/lang/reflect/InvocationTargetException;
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getTargetException
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to generate trampoline for sendMultipartTextMessage VLLLLL
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.telephony.gsm.SmsManager->sendMultipartTextMessage to org.droidmate.monitor_generator.generated.Monitor->redir_android_telephony_gsm_SmsManager_sendMultipartTextMessage5
+#
+#Landroid/telephony/gsm/SmsManager;->sendMultipartTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/util/ArrayList;Ljava/util/ArrayList;Ljava/util/ArrayList;)V
+
+# Instrumentation fails due to its un-workaround-able implementation limitation:
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? TypeId not found in dexFile 0x41edffa8: Ljava/lang/reflect/Method;
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: invoke
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? TypeId not found in dexFile 0x41edffa8: Ljava/lang/reflect/InvocationTargetException;
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getTargetException
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored D/Instrumentation? MethodId not found in dexFile 0x41edffa8: getCause
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to generate trampoline for sendTextMessage VLLLLL
+# 10-09 18:21:55.726    8703-8703/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.telephony.gsm.SmsManager->sendTextMessage to org.droidmate.monitor_generator.generated.Monitor->redir_android_telephony_gsm_SmsManager_sendTextMessage5
+#
+#Landroid/telephony/gsm/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V
+
+Landroid/webkit/WebView;->loadDataWithBaseURL(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;)V
+Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;Ljava/util/Map;)V
+Ljava/net/DatagramSocket;->connect(Ljava/net/InetAddress;I)V
+Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V
+
+# Instrumentation fails:
+# 10-09 19:35:44.456  10187-10187/? W/Instrumentation? Failed to redirect method java.net.HttpURLConnection->connect
+#
+# Failure reason: the method doesn't actually exist in the class [1]; instead, it is inherited from [2].
+# However [2] also cannot be monitored due to:
+# 10-09 19:53:46.226  10965-10965/org.droidmate.fixtures.apks.monitored W/Instrumentation? Skipping abstract method: connect V
+# 10-09 19:53:46.226  10965-10965/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method java.net.URLConnection->connect to org.droidmate.monitor_generator.generated.Monitor->redir_java_net_URLConnection_connect0
+#
+# [1] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/HttpURLConnection.java
+# [2] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/URLConnection.java#167
+#     Ljava/net/URLConnection;->connect()V
+#
+#Ljava/net/HttpURLConnection;->connect()V
+
+Ljava/net/MulticastSocket;->joinGroup(Ljava/net/InetAddress;)V
+Ljava/net/MulticastSocket;->joinGroup(Ljava/net/SocketAddress;Ljava/net/NetworkInterface;)V
+Ljava/net/Socket;-><init>(Ljava/lang/String;I)V
+Ljava/net/Socket;-><init>(Ljava/lang/String;ILjava/net/InetAddress;I)V
+Ljava/net/Socket;-><init>(Ljava/lang/String;IZ)V
+Ljava/net/Socket;-><init>(Ljava/net/InetAddress;I)V
+Ljava/net/Socket;-><init>(Ljava/net/InetAddress;ILjava/net/InetAddress;I)V
+Ljava/net/Socket;-><init>(Ljava/net/InetAddress;IZ)V
+Ljava/net/Socket;->connect(Ljava/net/SocketAddress;)V
+Ljava/net/Socket;->connect(Ljava/net/SocketAddress;I)V
+Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
+
+# Instrumentation fails, but workaround iu applied.
+# // forgot to copy-paste here the instrumentation failure log
+#
+# DefaultHttpClient doesn't actually contain the execute() method [1]. It inherits it from AbstractHttpClient [2].
+#
+# Futhermore, all the execute() methods are really just delegates to AbstractHttpClient.execute(HttpHost, HttpRequest, HttpContext) [2]
+#
+# [1] https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/DefaultHttpClient.java
+# [2] https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/AbstractHttpClient.java#514
+#
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;)Lorg/apache/http/HttpResponse;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/client/ResponseHandler;)Ljava/lang/Object;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/client/ResponseHandler;Lorg/apache/http/protocol/HttpContext;)Ljava/lang/Object;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;)Lorg/apache/http/HttpResponse;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/client/ResponseHandler;)Ljava/lang/Object;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/client/ResponseHandler;Lorg/apache/http/protocol/HttpContext;)Ljava/lang/Object;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
+#
+# Workaround below:
+# Here is the method that actually needs to be monitored [2], as all the others delegate to it:
+Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;

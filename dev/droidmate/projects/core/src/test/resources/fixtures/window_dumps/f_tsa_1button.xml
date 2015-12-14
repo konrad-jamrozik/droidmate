@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<!-- Derived manually from f_tsa_mainAct_4Jan14.xml by deleting all the other widgets. -->
+<hierarchy rotation="0">
+  <node index="0" text="" resource-id="" class="android.widget.FrameLayout" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,0][800,1205]">
+    <node index="0" text="" resource-id="android:id/action_bar_overlay_layout" class="android.view.View" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,0][800,1205]">
+      <node index="0" text="" resource-id="android:id/action_bar_container" class="android.widget.FrameLayout" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,33][800,108]">
+        <node index="0" text="" resource-id="android:id/action_bar" class="android.view.View" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,33][800,108]">
+          <node index="0" text="" resource-id="" class="android.widget.LinearLayout" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="true" enabled="false" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[11,33][271,108]">
+            <node index="0" text="" resource-id="" class="android.widget.FrameLayout" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[11,33][86,108]">
+              <node index="0" text="" resource-id="android:id/home" class="android.widget.ImageView" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[16,38][80,102]"/>
+            </node>
+            <node index="1" text="" resource-id="" class="android.widget.LinearLayout" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[86,54][271,87]">
+              <node index="0" text="TestSubjectApp" resource-id="android:id/action_bar_title" class="android.widget.TextView" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[86,54][260,87]"/>
+            </node>
+          </node>
+        </node>
+      </node>
+      <node index="1" text="" resource-id="android:id/content" class="android.widget.FrameLayout" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,108][800,1205]">
+        <node index="0" text="" resource-id="" class="android.widget.LinearLayout" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,108][800,1205]">
+          <node index="0" text="MainActivity screen" resource-id="" class="android.widget.TextView" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[307,108][493,151]"/>
+          <node index="1" text="" resource-id="" class="android.widget.RelativeLayout" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,151][800,1205]">
+            <node index="0" text="Crash" resource-id="org.droidmate.TestSubjectApp:id/button_crash" class="android.widget.Button" package="org.droidmate.TestSubjectApp" content-desc="" checkable="false" checked="false" clickable="true" enabled="true" focusable="true" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,151][85,215]"/>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</hierarchy>

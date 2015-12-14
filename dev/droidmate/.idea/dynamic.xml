@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DynamicElementsStorage">
+    <option name="containingClasses">
+      <map>
+        <entry key="groovy.lang.MetaClass">
+          <value>
+            <DClassElement>
+              <option name="name" value="groovy.lang.MetaClass" />
+              <option name="myName" value="groovy.lang.MetaClass" />
+              <option name="myProperties">
+                <set>
+                  <DPropertyElement>
+                    <option name="name" value="getPreviousExplorationActions" />
+                    <option name="static" value="false" />
+                    <option name="type" value="groovy.lang.Closure&lt;java.util.List&lt;org.droidmate.exploration.ExplorationAction&gt;&gt;" />
+                    <option name="myType" value="groovy.lang.Closure&lt;java.util.List&lt;org.droidmate.exploration.ExplorationAction&gt;&gt;" />
+                    <option name="myStatic" value="false" />
+                    <option name="myName" value="getPreviousExplorationActions" />
+                  </DPropertyElement>
+                </set>
+              </option>
+            </DClassElement>
+          </value>
+        </entry>
+        <entry key="groovy.mock.interceptor.Demand">
+          <value>
+            <DClassElement>
+              <option name="name" value="groovy.mock.interceptor.Demand" />
+              <option name="myName" value="groovy.mock.interceptor.Demand" />
+              <option name="myMethods">
+                <set>
+                  <DMethodElement>
+                    <option name="name" value="execute" />
+                    <option name="static" value="false" />
+                    <option name="type" value="java.lang.Object" />
+                    <option name="myPairs">
+                      <list>
+                        <ParamInfo>
+                          <option name="name" value="closure" />
+                          <option name="type" value="groovy.lang.Closure" />
+                        </ParamInfo>
+                      </list>
+                    </option>
+                    <option name="myType" value="java.lang.Object" />
+                    <option name="myStatic" value="false" />
+                    <option name="myName" value="execute" />
+                  </DMethodElement>
+                  <DMethodElement>
+                    <option name="name" value="output" />
+                    <option name="static" value="false" />
+                    <option name="type" value="java.lang.Object" />
+                    <option name="myPairs">
+                      <list>
+                        <ParamInfo>
+                          <option name="name" value="closure" />
+                          <option name="type" value="groovy.lang.Closure" />
+                        </ParamInfo>
+                      </list>
+                    </option>
+                    <option name="myType" value="java.lang.Object" />
+                    <option name="myStatic" value="false" />
+                    <option name="myName" value="output" />
+                  </DMethodElement>
+                </set>
+              </option>
+            </DClassElement>
+          </value>
+        </entry>
+        <entry key="java.lang.Object">
+          <value>
+            <DClassElement>
+              <option name="name" value="java.lang.Object" />
+              <option name="myName" value="java.lang.Object" />
+              <option name="myProperties">
+                <set>
+                  <DPropertyElement>
+                    <option name="name" value="systemExitWithErrorCode" />
+                    <option name="static" value="false" />
+                    <option name="type" value="groovy.lang.Closure" />
+                    <option name="myType" value="groovy.lang.Closure" />
+                    <option name="myStatic" value="false" />
+                    <option name="myName" value="systemExitWithErrorCode" />
+                  </DPropertyElement>
+                </set>
+              </option>
+            </DClassElement>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
+

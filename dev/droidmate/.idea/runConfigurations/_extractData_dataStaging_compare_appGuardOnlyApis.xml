@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="-extractData dataStaging compare appGuardOnlyApis" type="Application" factoryName="Application" folderName="Data extraction" singleton="true">
+    <log_file path="$PROJECT_DIR$/dataStaging/logs/exceptions.txt" checked="true" skipped="false" show_all="false" alias="exceptions" />
+    <output_file path="debug_out.txt" />
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <option name="MAIN_CLASS_NAME" value="org.droidmate.frontend.DroidmateFrontend" />
+    <option name="VM_PARAMETERS" value="-ea -DlogsDir=&quot;dataStaging/logs&quot;" />
+    <option name="PROGRAM_PARAMETERS" value="-extractData -droidmateOutputDirPath=&quot;./dataStaging&quot; -compare=true -extractSummaries=true -extractSaturationCharts=true -splitCharts=true -extractAdditionalData=false -outputAppGuardCharts=true -removeHardCodedApis=true -appGuardOnlyApis=true" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+    <option name="ALTERNATIVE_JRE_PATH" value="" />
+    <option name="ENABLE_SWING_INSPECTOR" value="false" />
+    <option name="ENV_VARIABLES" />
+    <option name="PASS_PARENT_ENVS" value="true" />
+    <module name="core" />
+    <envs />
+    <method />
+  </configuration>
+</component>

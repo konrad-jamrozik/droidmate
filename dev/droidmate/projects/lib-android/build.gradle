@@ -1,0 +1,39 @@
+// Copyright (c) 2013-2015 Saarland University
+// All right reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+/*
+  This project contains classes that:
+  - require access to Android API: they depend on Android.jar;
+  - will be compiled with legacy android ant script, requiring compatibility with Java 5
+  (this file uses jdk 6, hoping it will be equivalent to 6).
+
+*/
+
+import org.droidmate.init.InitConstants
+import org.droidmate.init.LocalInitConstants
+
+apply plugin: 'java'
+
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
+compileJava.options.bootClasspath = "${LocalInitConstants.jdk6_path}/jre/lib/rt.jar"
+compileTestJava.options.bootClasspath = compileJava.options.bootClasspath
+
+dependencies {
+
+  testCompile 'junit:junit:4.12'
+
+  File androidJarFile = new File(InitConstants.android_platform_dir, "android.jar")
+  assert androidJarFile.file
+  compile files(androidJarFile)
+
+  compile project(":projects:lib-common")
+
+
+}
+

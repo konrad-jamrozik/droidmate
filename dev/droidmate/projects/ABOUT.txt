@@ -1,0 +1,1 @@
+For architectural overview of the projects, see their "build.gradle" scripts.

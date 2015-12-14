@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<hierarchy rotation="0">
+  <node index="0" text="" resource-id="" class="android.widget.FrameLayout" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[13,483][787,755]">
+    <node index="0" text="" resource-id="" class="android.widget.FrameLayout" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[13,483][787,755]">
+      <node index="0" text="" resource-id="android:id/content" class="android.widget.FrameLayout" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[13,483][787,755]">
+        <node index="0" text="" resource-id="" class="android.widget.LinearLayout" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[13,483][787,755]">
+          <node index="0" text="" resource-id="" class="android.widget.LinearLayout" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[15,485][785,753]">
+            <node index="0" text="" resource-id="" class="android.widget.LinearLayout" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[15,485][785,545]">
+              <node index="0" text="Depth cloud analysis" resource-id="com.cleanmaster.security:id/dialogTitle" class="android.widget.TextView" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[36,499][259,531]"/>
+            </node>
+            <node index="1" text="" resource-id="" class="android.widget.TextView" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[15,545][785,546]"/>
+            <node index="2" text="" resource-id="" class="android.widget.LinearLayout" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[15,546][785,679]">
+              <node index="0" text="Successfully reported this application." resource-id="com.cleanmaster.security:id/version_tip" class="android.widget.TextView" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[36,603][442,634]"/>
+            </node>
+            <node index="3" text="" resource-id="" class="android.widget.LinearLayout" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[15,679][785,753]">
+              <node droidmate="scanReport|4|wait_c|Wait until the 'OK' button appears to confirm 'AntiVirus' report success and click it." index="0" text="OK" resource-id="com.cleanmaster.security:id/dialog_btn_ok" class="android.widget.Button" package="com.cleanmaster.security" content-desc="" checkable="false" checked="false" clickable="true" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[22,686][778,746]"/>
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</hierarchy>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">MonitoredApkFixture</string>
+  <string name="action_settings">Settings</string>
+  <string name="title_activity_activity1">Monitored Activity1</string>
+  <string name="title_activity_activity2">Monitored Activity2</string>
+  <string name="title_activity_activity3">Monitored Activity3</string>
+  <string name="title_activity_activity4">Monitored Activity4</string>
+
+</resources>

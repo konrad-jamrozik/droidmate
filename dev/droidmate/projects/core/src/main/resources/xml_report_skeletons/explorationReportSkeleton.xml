@@ -1,0 +1,55 @@
+<DroidMateExplorationReport>
+
+  <!-- Underscores denote data place holders -->
+
+  <apkPackageName> _ </apkPackageName>
+
+  <explorationLogs>
+
+    <explorationLog index="0">
+
+      <!-- No exploration status, as the app just got started by intent sent through adb. -->
+      <explorationStatus/>
+      <!-- Same reason as above. -->
+      <guiAction/>
+      <guiState> _ </guiState>
+
+      <!-- Code covered when the apk was started by "launch main activity" intent. -->
+      <coverageLogs>
+        <coverageLog index="0"> _ </coverageLog>
+        <!-- More <coverageLog> tags here. -->
+      </coverageLogs>
+
+    </explorationLog>
+
+    <explorationLog index="1">
+
+      <explorationStatus terminate="false"> _ </explorationStatus>
+      <guiAction> _ </guiAction>
+      <guiState> _ </guiState>
+
+      <coverageLogs>
+        <coverageLog index="0"> _ </coverageLog>
+        <!-- More <coverageLog> tags here. -->
+      </coverageLogs>
+
+    </explorationLog>
+
+    <!-- More <explorationLog> tags here. -->
+
+    <explorationLog index="_">
+
+      <explorationStatus> _ </explorationStatus>
+      <guiAction>null</guiAction>
+      <guiState/>
+
+      <coverageLogs>
+        <coverageLog index="0"> _ </coverageLog>
+        <!-- More <coverageLog> tags here. -->
+      </coverageLogs>
+
+    </explorationLog>
+
+  </explorationLogs>
+
+</DroidMateExplorationReport>

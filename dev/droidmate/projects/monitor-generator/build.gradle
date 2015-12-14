@@ -1,0 +1,149 @@
+// Copyright (c) 2013-2015 Saarland University
+// All right reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+
+import org.droidmate.init.InitConstants
+
+apply plugin: 'groovy'
+
+compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+
+  compile project(":projects:lib-common")
+
+
+  compile 'org.codehaus.groovy:groovy-all:2.4.5'
+
+  testCompile group: 'junit', name: 'junit', version: '4.12'
+
+  Set<File> resourcesDirs = project.sourceSets.main.resources.srcDirs
+  assert resourcesDirs.size() == 1
+  runtime files(new File(resourcesDirs[0], "logback"))
+
+  compile project(":projects:lib-android")
+}
+
+// !!! DUPLICATION WARNING !!! with the name and location of org.droidmate.lib_android.MonitorJavaTemplate
+File monitorJavaTemplateSource = findProject(":projects:lib-android").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
+assert monitorJavaTemplateSource.file
+
+SourceDirectorySet resDirs = sourceSets.main.resources
+assert resDirs.srcDirs.size() == 1
+File resDir = resDirs.srcDirs[0]
+
+File monitorApkScaffoldingDir = InitConstants.monitor_generator_apk_scaffolding_dir
+assert monitorApkScaffoldingDir.isDirectory()
+
+File monitorJava = InitConstants.monitor_generator_generated_monitor.toFile()
+assert monitorJava.parentFile.isDirectory()
+
+apply plugin: 'application'
+mainClassName = "org.droidmate.monitor_generator.MonitorGeneratorFrontend"
+
+tasks.run {
+
+  standardOutput = new ByteArrayOutputStream() // Mute the task stdout
+
+  outputs.files monitorJava
+
+  // Temp debug code for replacing generated monitor with a manually-edited one.
+//  doLast {
+//    File tempDebugMonitorJava = new File("${monitorApkScaffoldingDir.path}/temp_debug/Monitor_tempdebug.java")
+//    monitorJava.delete()
+//    Files.copy(tempDebugMonitorJava.toPath(), monitorJava.toPath())
+//  }
+  // /Temp debug code.
+}
+
+processResources.dependsOn "buildMonitorJavaTemplateFromSource"
+
+task buildMonitorJavaTemplateFromSource(type: Copy) {
+
+  from monitorJavaTemplateSource
+  into resDir
+  rename { InitConstants.monitor_generator_res_name_monitor_template }
+}
+
+task buildMonitorApk(dependsOn: run) {
+
+  File monitorApkOutputByAnt = file("${monitorApkScaffoldingDir.path}/bin/monitor-apk-debug.apk")
+  def copyFrom = monitorApkOutputByAnt
+  def copyTo = buildDir
+
+  inputs.files monitorJava
+  inputs.files fileTree(dir: "${monitorApkScaffoldingDir.path}/libs", include: '**')
+  outputs.files monitorApkOutputByAnt
+  outputs.dir copyTo
+
+  doLast {
+
+    assert monitorJava.isFile()
+
+    int exitValue = utils.executeCommand(
+      "${monitorApkScaffoldingDir.name} ant debug",
+      "ant -f ${monitorApkScaffoldingDir.path}/build.xml debug"
+    )
+    if (exitValue != 0)
+      throw new GradleException("Failed to build ${monitorApkScaffoldingDir.name}.")
+
+    assert copyFrom.isFile()
+
+    def copyResult = copy {
+      from copyFrom
+      into copyTo
+      rename {"monitor.apk"}
+    }
+    if (!copyResult.didWork)
+      throw new GradleException("Failed to copy file(s).\n" +
+        "Path of file(s) to be copied: $copyFrom\n" +
+        "Path of destination dir: $copyTo")
+
+  }
+}
+
+task cleanMonitorApk() {
+  doLast {
+    int exitValue = utils.executeCommand(
+      "${monitorApkScaffoldingDir.name} ant clean",
+      "ant -f ${monitorApkScaffoldingDir.path}/build.xml clean"
+    )
+    if (exitValue != 0)
+      throw new GradleException("Failed to clean ${monitorApkScaffoldingDir.name}.")
+
+  }
+}
+task cleanRun(type: Delete) {
+  delete monitorJava
+}
+clean.dependsOn cleanRun, cleanMonitorApk
+build.dependsOn buildMonitorApk
+
+test {
+
+
+  // Workaround for GRADLE-1682. See http://stackoverflow.com/a/14947906/986533
+  // includes = ['**/MonitorGeneratorFrontendTest.class']
+  // Test not included because the test shouldn't be run as part of a test suite.
+  includes = ['']
+
+}
+//region Required by API list stats
+task pullAppGuardApisList(type: Copy) {
+
+
+  File appGuardApisList = file(InitConstants.appGuardApisList.toFile())
+  assert appGuardApisList.file
+
+  from appGuardApisList
+  into sourceSets.main.resources.srcDirs[0]
+}
+
+processResources.dependsOn "pullAppGuardApisList"
+//endregion

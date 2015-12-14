@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DummyAndroidApp/DummyAndroidApp.iml" filepath="$PROJECT_DIR$/DummyAndroidApp/DummyAndroidApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/apk-inliner/apk-inliner.iml" filepath="$PROJECT_DIR$/projects/apk-inliner/apk-inliner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/core/core.iml" filepath="$PROJECT_DIR$/projects/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/droidmate.iml" filepath="$PROJECT_DIR$/droidmate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/lib-android/lib-android.iml" filepath="$PROJECT_DIR$/projects/lib-android/lib-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/lib-common/lib-common.iml" filepath="$PROJECT_DIR$/projects/lib-common/lib-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/lib-common-android/lib-common-android.iml" filepath="$PROJECT_DIR$/projects/lib-common-android/lib-common-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/monitor-generator/monitor-generator.iml" filepath="$PROJECT_DIR$/projects/monitor-generator/monitor-generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/projects.iml" filepath="$PROJECT_DIR$/projects/projects.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/uiautomator-daemon/uiautomator-daemon.iml" filepath="$PROJECT_DIR$/projects/uiautomator-daemon/uiautomator-daemon.iml" />
+    </modules>
+  </component>
+</project>

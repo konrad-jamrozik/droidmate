@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<hierarchy rotation="0">
+  <node index="0" text="" resource-id="" class="android.widget.FrameLayout" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,0][800,1205]">
+    <node index="0" text="" resource-id="android:id/action_bar_overlay_layout" class="android.view.View" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,0][800,1205]">
+      <node index="0" text="" resource-id="android:id/action_bar_container" class="android.widget.FrameLayout" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,33][800,108]">
+        <node index="0" text="" resource-id="android:id/action_bar" class="android.view.View" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,33][800,108]">
+          <node index="0" text="" resource-id="" class="android.widget.LinearLayout" package="de.barcoo.android" content-desc="apple, close drawer" checkable="false" checked="false" clickable="true" enabled="true" focusable="true" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,33][98,108]">
+            <node index="0" text="" resource-id="" class="android.widget.FrameLayout" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,33][98,108]">
+              <node index="0" text="" resource-id="android:id/up" class="android.widget.ImageView" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,54][32,86]"/>
+              <node index="1" text="" resource-id="android:id/home" class="android.widget.ImageView" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[28,38][93,103]"/>
+            </node>
+          </node>
+          <node index="1" text="" resource-id="de.barcoo.android:id/actionBarTitle" class="android.widget.RelativeLayout" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[98,33][613,108]">
+            <node index="0" text="Die Suchergebnisse auf einen Blick - barcoo" resource-id="de.barcoo.android:id/title" class="android.widget.TextView" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="true" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[98,51][613,90]"/>
+          </node>
+        </node>
+      </node>
+      <node index="1" text="" resource-id="android:id/content" class="android.widget.FrameLayout" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,108][800,1205]">
+        <node index="0" text="" resource-id="" class="android.view.View" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="true" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,108][800,1205]">
+          <node index="0" text="" resource-id="de.barcoo.android:id/content_frame" class="android.widget.FrameLayout" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,108][800,1205]">
+            <node index="0" text="" resource-id="de.barcoo.android:id/LinWebView" class="android.widget.RelativeLayout" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,108][800,1205]">
+              <node index="0" text="" resource-id="de.barcoo.android:id/lin_layout" class="android.widget.LinearLayout" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,108][800,1205]">
+                <node droidmate="searchForProduct|5|c[400,240]|Click the first item in the search result list." index="0" text="" resource-id="" class="android.webkit.WebView" package="de.barcoo.android" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[0,108][800,1205]"/>
+              </node>
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</hierarchy>

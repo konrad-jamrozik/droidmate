@@ -1,0 +1,53 @@
+// Copyright (c) 2013-2015 Saarland University Software Engineering Chair.
+// All right reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.8
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.5'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.8'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+compileGroovy {
+
+    doFirst {
+        File localInitConstantsTemplate = sourceSets.main.groovy.find { it.name == "LocalInitConstantsTemplate.groovy" }
+        assert localInitConstantsTemplate.file
+        assert sourceSets.main.groovy.any { it.name == "LocalInitConstants.groovy" } : "LocalInitConstants.groovy not found. " +
+          "This is to be expected if you are building this project for the first time: the missing file will contain settings " +
+          "local to your machine. Please make a copy of\n$localInitConstantsTemplate.path\n" +
+          "with name LocalInitConstants.groovy in the same dir. Follow the instructions given in the copy you just made"
+    }
+}

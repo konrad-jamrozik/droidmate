@@ -1,0 +1,388 @@
+// Copyright (c) 2013-2015 Saarland University
+// All right reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+
+import org.droidmate.init.InitConstants
+
+import java.nio.file.Files
+import java.nio.file.Paths
+
+apply plugin: 'groovy'
+apply plugin: 'project-report' // http://www.gradle.org/docs/current/userguide/project_reports_plugin.html
+apply plugin: 'application'
+
+mainClassName = "org.droidmate.frontend.DroidmateFrontend"
+
+run {
+  workingDir rootDir
+
+  java.nio.file.Path argsFile = Paths.get("$rootDir/args.txt")
+  if (Files.exists(argsFile))
+  {
+    List<String> appArgs = argsFile.text.readLines().first().split(" ") as List<String>
+    args appArgs
+  }
+
+
+}
+
+compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+
+//region Dependencies
+
+String libsDirPath = "libs"
+File testLibsDir = file("${projectDir.path}/testLibs")
+
+// Returns the path to directory of OS-dependent library required to interact with a robot through serial port.
+ext.robotLibDir = {
+  if (utils.osIsWindows())
+  // not sure if the libraries in this dir will work on windows versions different than Windows 7 x64
+    return "$projectDir/$libsDirPath/robot/Windows_7"
+  else
+    return "$projectDir/$libsDirPath/robot/Mac_OS"
+}
+
+/*
+  Workaround for a bug causing tests run from Gradle to fail. Source of the workaround: [1]
+
+  Suspected cause of the bug:
+    Because project(":projects:lib-android") has android.jar as a transitive dependency, running tests
+    from Gradle caused JUnit to throw "Stub!" from Assert method.
+
+  [1] http://stackoverflow.com/a/7253941/986533
+ */
+configurations {forceJunitPriority}
+sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
+
+dependencies {
+
+  compile 'com.github.konrad-jamrozik:utilities:master-SNAPSHOT'
+
+  forceJunitPriority 'junit:junit:4.12'
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.hamcrest:hamcrest-core:1.3'
+
+  compile files("$rootDir/../init/build/libs/init.jar")
+
+  compile project(":projects:lib-common")
+  compile project(":projects:lib-common-android")
+  compile project(":projects:lib-android")
+
+  compile fileTree(dir: robotLibDir(), include: '*.jar')
+  def libsDirFileTree = fileTree(dir: "$projectDir/$libsDirPath", include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
+  /* Making this additional setter call instead of supplying a value in constructor is a workaround for an issue I discovered
+     on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */
+  libsDirFileTree.setBuiltBy(['pullUiaDaemonJar'])
+  compile libsDirFileTree
+
+  compile 'com.beust:jcommander:1.35'
+  compile 'com.google.guava:guava:18.0'
+  compile 'org.apache.commons:commons-lang3:3.3'
+  compile 'commons-io:commons-io:2.4'
+  compile 'org.apache.commons:commons-exec:1.2'
+  compile 'org.codehaus.groovy:groovy-all:2.4.5'
+  compile 'org.slf4j:slf4j-api:1.7.6'
+  compile 'ch.qos.logback:logback-classic:1.0.13'
+  compile 'ch.qos.logback:logback-core:1.0.13'
+  compile 'net.sf.opencsv:opencsv:2.3'
+
+  // For visualizing device GUI model graphs
+  compile 'org.graphstream:gs-core:1.3'
+
+  // Filesystem stubbing
+  compile 'com.google.jimfs:jimfs:1.0'
+
+  def testLibsDirFileTree = fileTree(dir: testLibsDir, include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
+  testLibsDirFileTree.setBuiltBy(['pullApkFixturesLibJar'])
+  testCompile testLibsDirFileTree
+
+  // This ensures the files will be properly copied out if ever "application" plugin and "installDist" task will be used.
+  // In particular, this will ensure $APP_DIR$/lib/logback/logback.groovy is present.
+  //runtime files(new File(sourceSets.main.resources.srcDirs.find(), "."))
+
+  runtime files(new File(sourceSets.main.resources.srcDirs.find(), "logback"))
+}
+
+/*
+ This project sometimes has to fire apk-inliner:run. For that, this project needs to know input and output dirs of apk-inliner,
+ which is the reason for evaluation dependence.
+ */
+evaluationDependsOn(":projects:apk-inliner")
+
+/* Note: The 'compile[Test]Java.dependsOn' clauses are redundant with 'builtBy' property in the 'dependencies' closure,
+   but they are left here for documentation purposes.
+ */
+compileGroovy.dependsOn "pullUiaDaemonJar"
+processResources.dependsOn "pullMonitorApk"
+
+/*
+  This dependency ensures that on "gradlew clean build" all the apk fixtures will be rebuilt as well as the library .jar they
+  depend on.
+ */
+clean.dependsOn "cleanTest"
+
+compileTestGroovy.dependsOn "pullApkFixturesLibJar"
+processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
+//endregion Dependencies
+
+//region Preparation of resources for the 'compileGroovy' task
+
+Project uiaDaemon = findProject(":projects:uiautomator-daemon");
+task pullUiaDaemonJar(dependsOn: ":projects:uiautomator-daemon:build") {
+
+  File coreResDir = getCoreResDir()
+
+  def copyFrom = file("${uiaDaemon.buildDir}/${uiaDaemon.name}.jar")
+  def copyTo = coreResDir
+
+  inputs.file copyFrom
+  outputs.dir copyTo
+
+  doLast {
+
+    assert copyFrom.isFile()
+
+    def copyResult = copy {
+      from copyFrom
+      into copyTo
+    }
+    if (!copyResult.didWork)
+      throw new GradleException("Failed to copy file(s).\n" +
+        "Path of file(s) to be copied: $copyFrom\n" +
+        "Path of destination dir: $copyTo")
+  }
+}
+
+Project monitorGenerator = findProject(":projects:monitor-generator")
+task pullMonitorApk(dependsOn: ":projects:monitor-generator:buildMonitorApk") {
+
+  File coreResDir = getCoreResDir()
+
+  def copyFrom = file("${monitorGenerator.buildDir}/monitor.apk")
+  def copyTo = coreResDir
+
+  inputs.file copyFrom
+  outputs.dir copyTo
+
+  doLast {
+
+    assert copyFrom.isFile()
+
+    def copyResult = copy {
+      from copyFrom
+      into copyTo
+    }
+    if (!copyResult.didWork)
+      throw new GradleException("Failed to copy file(s).\n" +
+        "Path of file(s) to be copied: $copyFrom\n" +
+        "Path of destination dir: $copyTo")
+  }
+
+}
+
+// endregion Preparation of resources for the 'compileGroovy' task
+
+//region Preparation of resources for the 'test' task: apk fixtures
+
+// !!! DUPLICATION WARNING !!!
+// These values have to be the same as the ones used in the gradle scripts of the referenced "apk fixtures" project.
+File apkFixturesProjectDir = file("${project.rootDir}/../apk_fixtures_src")
+assert apkFixturesProjectDir.directory
+File apkFixturesDroidmateStagingDir = new File("${apkFixturesProjectDir.path}/build")
+String apkFixturesBuildTask = "stageForDroidmate"
+File libApkFixturesJar = file("${apkFixturesProjectDir.path}/lib-apk_fixtures/build/libs/lib-apk_fixtures.jar")
+String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
+// end of DUPLICATION WARNING
+
+task pullApkFixturesLibJar(dependsOn: "buildApkFixtures") {
+
+  def copyFrom = libApkFixturesJar
+  def copyTo = testLibsDir
+
+  inputs.file copyFrom
+  outputs.dir copyTo
+
+  doLast {
+
+    assert copyFrom.file
+    assert copyTo.directory
+
+    def copyResult = copy {
+      from copyFrom
+      into copyTo
+    }
+    if (!copyResult.didWork)
+      throw new GradleException("Failed to copy file(s).\n" +
+        "Path of file(s) to be copied: $copyFrom\n" +
+        "Path of destination dir: $copyTo")
+  }
+}
+
+JavaExec inlinerExec = project(":projects:apk-inliner").tasks.run as JavaExec
+
+SourceDirectorySet testResDirs = sourceSets.test.resources
+assert testResDirs.srcDirs.size() == 1
+File testResDir = testResDirs.srcDirs[0]
+assert testResDir.path.endsWith("test" + File.separator + "resources")
+File apkFixturesDir = new File(testResDir, InitConstants.apk_fixtures)
+assert apkFixturesDir.directory
+
+task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
+  ["main", "classpath", "standardOutput"].each {delegate."$it" = inlinerExec."$it"}
+
+  File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
+  args = [
+    InitConstants.apk_inliner_param_input, inputApk.canonicalPath,
+    InitConstants.apk_inliner_param_output_dir, apkFixturesDir
+  ]
+
+  inputs.file inputApk
+  outputs.file new File(apkFixturesDir, InitConstants.monitored_inlined_apk_fixture_name)
+}
+
+// WISH looks like all the pull- tasks should be of type Copy: http://www.gradle.org/docs/current/userguide/working_with_files.html#sec:copying_files
+// WISH where possible, refer to tasks themselves as input/output files of various tasks. See http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html#org.gradle.api.Project:files%28java.lang.Object[]%29
+task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
+
+  from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: monitoredApkFixtureName)
+  into apkFixturesDir
+}
+
+task buildApkFixtures(type: GradleBuild) {
+
+  buildFile = apkFixturesProjectDir.path + "/build.gradle"
+  tasks = [apkFixturesBuildTask]
+}
+
+//endregion Preparation of apk fixtures for testing
+
+//region Preparation of resources: API list stats
+task pullAppGuardApisList(type: Copy) {
+
+  File appGuardApisList = file(InitConstants.appGuardApisList.toFile())
+  assert appGuardApisList.file
+
+  from appGuardApisList
+  into getCoreResDir()
+}
+
+processResources.dependsOn "pullAppGuardApisList"
+//endregion
+
+//region Preparation of resources: common code
+private File getCoreResDir()
+{
+  Set<File> coreResDirs = sourceSets.main.resources.srcDirs.findAll {it.path.contains(project.name)}
+  assert coreResDirs.size() == 1
+  return coreResDirs.find()
+}
+//endregion
+
+//region cleaning resources
+
+task cleanTest(type: GradleBuild) {
+
+  buildFile = apkFixturesProjectDir.path + "/build.gradle"
+  tasks = ["clean"]
+}
+
+//endregion
+
+//region Tasks for preparing inlined input apks. These tasks are to be run manually.
+
+task prepareInlinedApks(dependsOn: ":projects:apk-inliner:run") {
+
+  File inlinedApksDir = new File(InitConstants.absolute_apks_dir, "inlined")
+  if (!inlinedApksDir.isDirectory())
+    inlinedApksDir.mkdir()
+
+  def copyFrom = inlinerExec.inlinedApksDir
+  def copyTo = inlinedApksDir
+
+  inputs.dir copyFrom
+  outputs.dir copyTo
+
+  doLast {
+
+    assert copyFrom.isDirectory()
+
+    def copyResult = copy {
+      from copyFrom
+      include '*.apk'
+      into copyTo
+    }
+    if (!copyResult.didWork)
+      throw new GradleException("Failed to copy file(s).\n" +
+        "Path of file(s) to be copied: $copyFrom\n" +
+        "Path of destination dir: $copyTo")
+  }
+}
+
+//endregion
+
+//region Testing tasks
+
+test {
+
+  inputs.dir apkFixturesDir.absolutePath
+
+  /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
+
+  API reference:
+  workingDir  http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.testing.Test.html
+  rootDir     http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html
+  */
+  workingDir rootDir
+
+  /* Lurking bug: GRADLE-1682.
+
+  Currently the bug doesn't manifest itself, but if you run into "superClassName is empty", you bumped into it.
+
+  Reference:
+  http://stackoverflow.com/questions/14814837/gradle-test-fails-with-error
+  http://stackoverflow.com/questions/11129401/debug-gradle-plugins-with-intellij/11129708#11129708
+  http://issues.gradle.org/browse/GRADLE-1682
+  */
+  includes = ['**/FastRegressionTestSuite.class']
+
+  // Uncomment the code below and comment the "includes" clause above if you want for the task to run only 1 test,
+  // e.g. for debugging purposes.
+//  filter {
+//    includeTestsMatching '*Configures'
+//  }
+}
+
+task testDevice(type: Test) {
+
+  inputs.dir apkFixturesDir.absolutePath
+
+  workingDir rootDir
+
+  includes = ['**/RequiresDeviceTestSuite.class']
+
+}
+
+// For interactive, quick testing from cmd line.
+task testi(type: Test) {
+
+  outputs.upToDateWhen {false}
+
+  workingDir rootDir
+  testLogging {events 'failed', 'passed'}
+
+  /* Reference: http://www.gradle.org/docs/current/userguide/java_plugin.html#testfiltering
+
+    If not using filter (comment it out), you could run like:
+    gradle :projects:core:testi --tests *Configures
+  */
+  filter {
+    includeTestsMatching '*Configures'
+  }
+}
+//endregion Testing tasks

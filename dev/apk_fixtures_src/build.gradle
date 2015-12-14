@@ -1,0 +1,49 @@
+// Copyright (c) 2013-2015 Saarland University Software Engineering Chair.
+// All right reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.1'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.8'
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+allprojects {
+    ext {
+        // !!! DUPLICATION WARNING !!!
+        // This file has to be the same as the one used in the build.gradle files of the "DroidMate" project gradle scripts.
+        apkFixturesDroidmateStagingDir = rootProject.buildDir
+    }
+}
+
+task cleanStageForDroidmate {
+    doLast {
+        apkFixturesDroidmateStagingDir.listFiles().each {it.delete()}
+    }
+}
+
+task clean(dependsOn: "cleanStageForDroidmate") {
+}

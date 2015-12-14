@@ -1,0 +1,1 @@
+-apksDir=apks/inlined  -resetEvery=15 -timeLimit=120 -softReset=true -randomSeed=0

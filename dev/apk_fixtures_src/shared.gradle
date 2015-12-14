@@ -1,0 +1,27 @@
+// Copyright (c) 2013-2015 Saarland University Software Engineering Chair.
+// All right reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+task stageForDroidmate(dependsOn: assembleDebug) {
+
+  File debugOutputFile
+  afterEvaluate {
+    def zipAlign = android.applicationVariants.find {it.name == "debug"}.outputs.zipAlign
+    debugOutputFile = zipAlign.outputFile[0]
+    inputs.file debugOutputFile
+  }
+  outputs.dir apkFixturesDroidmateStagingDir
+
+  doLast {
+
+    assert debugOutputFile.isFile()
+    copy {
+      from debugOutputFile
+      into apkFixturesDroidmateStagingDir
+    }
+  }
+}

@@ -1,0 +1,1 @@
+adb install -r C:/my/local/repos/chair/droidmate/dev/ui_events_to_logcat/UIEventsToLogcat/build/outputs/apk/UIEventsToLogcat-debug.apk
