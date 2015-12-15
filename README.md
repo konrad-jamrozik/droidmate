@@ -121,7 +121,7 @@ DroidMate cannot run on normal apks, they first have to be `inlined`. To inline 
 * Run the task
 `./dev/droidmate/gradlew :projects:core:prepareInlinedApks`
 or `./dev/droidmate/gradlew :p:c:pIA` for short.
-The apks will be placed in `dev/droidmate/apks/inlined`
+The apks will be placed in `./dev/droidmate/apks/inlined`
 * Run DroidMate with cmd line arg of `-apksDir=apks/inlined` to use these apks.
 
 Inlined apks can be distinguished by an `-inlined.apk` suffix in their name.
@@ -142,7 +142,7 @@ DroidMate is developed with IntelliJ IDEA, using the directory-based project for
 
 After opening an IntelliJ project (see section below), run `Refresh all gradle projects` from `Gradle` plugin toolbar. After this you should be able to `Build -> Make Project` and run the tests (see section below).
 
-### Running tests from IntelliJ ###
+## Running tests from IntelliJ
 
 `FastRegressionTestSuite` is the main test suite. It doesn't require a device.
 
@@ -156,7 +156,7 @@ Search in that file for `test {` and `task testDevice`
 In `Run/Debug configurations` in `Defaults` section set `JUnit` `Working directory` to the absolute path to your repo root. Otherwise single tests run from IntelliJ won't work as expected.
 
 
-### Running DroidMate from IntelliJ ###
+## Running DroidMate from IntelliJ
 
 IntelliJ `droidmate` project has a set of run configurations whose name starts with `Explore apks`. They serve as a documentation by example.
 
@@ -172,7 +172,7 @@ To get access to Android SDK sources form IDE, download `Sources for Android SDK
 
 If you still do not have access to some sources and docs, manually add them in IntelliJ `Project sturcture -> Platform settings`
 
-## IntelliJ projects ##
+### IntelliJ projects
 
 Following directories are sources which can be opened  as IntelliJ projects (`File -> Open`):
 
