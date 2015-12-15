@@ -20,7 +20,7 @@ repository root dir, denoted in this file as `.` (dot).
 This file explains:
 
 - What is DroidMate and how it works.
-- How to build and test DroidMate.
+- How to build, test and run DroidMate.
 - How to setup an IDE for development.
 - How to navigate DroidMate sources and technical documentation.
 
