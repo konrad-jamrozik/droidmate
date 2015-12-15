@@ -1,7 +1,3 @@
-# Inputs dir
-target-apks/*
-input-apks/*
-# Outputs dir
-inlined-apks/*
-
+input-apks/*.apk
+output-apks/*.apk
 tmp-test**
