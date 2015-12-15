@@ -151,6 +151,11 @@ After opening an IntelliJ project (see section below), run `Refresh all gradle p
 For how these tests relate to Gradle tasks, see `./dev/droidmate/projects/core/build.gradle`.  
 Search in that file for `test {` and `task testDevice`
 
+##### Setting up IntelliJ for running single tests 
+
+In `Run/Debug configurations` in `Defaults` section set `JUnit` `Working directory` to the absolute path to your repo root. Otherwise single tests run from IntelliJ won't work as expected.
+
+
 ### Running DroidMate from IntelliJ ###
 
 IntelliJ `droidmate` project has a set of run configurations whose name starts with `Explore apks`. They serve as a documentation by example.
