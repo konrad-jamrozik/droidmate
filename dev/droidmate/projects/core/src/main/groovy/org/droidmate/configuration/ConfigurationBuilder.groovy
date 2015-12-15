@@ -132,6 +132,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
     {
       setLogbackRootLoggerLoggingLevel(config)
       bindDirsAndResources(config, fs)
+      createAndValidateDirs(config)
       validateExplorationSettings(config)
       bindToolsCommands(config, buildToolsVersion)
 
@@ -191,8 +192,6 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
   private static void bindDirsAndResources(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
-    validateDirectory(cfg.androidSdkDir)
-
     cfg.appGuardApisList = new ResourcePath(InitConstants.appGuardApisList.fileName.toString()).toFile()
 
     cfg.uiautomatorDaemonJar = new ResourcePath("uiautomator-daemon.jar").toFile()
@@ -205,7 +204,16 @@ class ConfigurationBuilder implements IConfigurationBuilder
       cfg.apksDirPath = new ResourcePath(InitConstants.apk_fixtures).path
     else
       cfg.apksDirPath = fs.getPath(cfg.apksDirName.toString())
+  }
 
+  private static void createAndValidateDirs(Configuration cfg)
+  {
+    if (!Files.exists(cfg.droidmateOutputDirPath))
+      Files.createDirectory(cfg.droidmateOutputDirPath)
+
+    // KJA move to FileUtils, delete old
+    validateDirectory(cfg.androidSdkDir)
+    FileUtils.validateDirectory(cfg.apksDirPath)
     FileUtils.validateDirectory(cfg.apksDirPath)
   }
 

@@ -27,7 +27,7 @@ class DroidmateOutputDir
     assert Files.isDirectory(path) || !Files.exists(path)
   }
 
-  public void clearContentsOrCreate()
+  public void clearContents()
   {
     if (Files.exists(path))
     {
@@ -37,9 +37,6 @@ class DroidmateOutputDir
         else
           Files.delete(it)
       }
-    } else
-    {
-      Files.createDirectory(path)
     }
   }
 
