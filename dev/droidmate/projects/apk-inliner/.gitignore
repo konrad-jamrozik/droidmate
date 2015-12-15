@@ -1,3 +1,1 @@
-input-apks/*.apk
-output-apks/*.apk
-tmp-test**
+tmp-test-toremove**
