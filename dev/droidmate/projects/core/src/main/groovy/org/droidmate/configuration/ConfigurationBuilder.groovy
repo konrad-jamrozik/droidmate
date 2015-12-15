@@ -32,7 +32,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 import static org.droidmate.common.logging.Markers.runData
-import static org.droidmate.configuration.Assert.validateDirectory
 
 /**
  * @see IConfigurationBuilder#build(java.lang.String [ ], java.nio.file.FileSystem)
@@ -211,10 +210,9 @@ class ConfigurationBuilder implements IConfigurationBuilder
     if (!Files.exists(cfg.droidmateOutputDirPath))
       Files.createDirectory(cfg.droidmateOutputDirPath)
 
-    // KJA move to FileUtils, delete old
-    validateDirectory(cfg.androidSdkDir)
+    FileUtils.validateDirectory(cfg.androidSdkDir)
     FileUtils.validateDirectory(cfg.apksDirPath)
-    FileUtils.validateDirectory(cfg.apksDirPath)
+    FileUtils.validateDirectory(cfg.droidmateOutputDirPath)
   }
 
   private static void setLogbackRootLoggerLoggingLevel(Configuration config) throws ConfigurationException

@@ -46,4 +46,12 @@ class FileUtils
       throw new DroidmateException("Directory $dir doesn't exist or is not a directory. \n" +
         "Expected path: ${dir.toAbsolutePath()}");
   }
+
+  static void validateDirectory(File dir)
+  {
+    if (!dir.isDirectory())
+      throw new DroidmateException("Directory $dir doesn't exist or is not a directory. \n" +
+        "Expected path: ${dir.absolutePath}");
+  }
+
 }
