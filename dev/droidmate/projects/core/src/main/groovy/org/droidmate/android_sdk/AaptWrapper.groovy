@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,10 +11,10 @@ package org.droidmate.android_sdk
 
 import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
+import org.droidmate.common.DroidmateException
 import org.droidmate.common.ISysCmdExecutor
 import org.droidmate.common.SysCmdExecutorException
 import org.droidmate.configuration.Configuration
-import org.droidmate.common.DroidmateException
 import org.droidmate.exceptions.NoLaunchableActivityNameException
 
 import java.nio.file.Files

@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -9,10 +9,10 @@
 
 package org.droidmate.device.datatypes
 
-import org.droidmate.common_android.guimodel.GuiAction
 import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.common_android.guimodel.GuiAction
 
-import java.awt.Point
+import java.awt.*
 
 abstract class AndroidDeviceAction implements IAndroidDeviceAction
 {

@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -10,7 +10,6 @@ package org.droidmate.filesystem
 
 import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
-import org.apache.commons.io.FilenameUtils
 import org.droidmate.android_sdk.ApkTestHelper
 import org.droidmate.android_sdk.IApk
 import org.droidmate.init.InitConstants

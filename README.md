@@ -1,6 +1,6 @@
 
   Copyright (c) 2012-2015 Saarland University  
-  All right reserved.
+  All rights reserved.
 
   Author: Konrad Jamrozik, github.com/konrad-jamrozik
 

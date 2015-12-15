@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -13,7 +13,6 @@ import groovy.transform.TypeChecked
 import org.droidmate.android_sdk.IApk
 import org.droidmate.common.logcat.MonitoredInlinedApkFixtureApiLogs
 import org.droidmate.configuration.Configuration
-import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.deprecated_still_used.IApkExplorationOutput
 import org.droidmate.deprecated_still_used.Storage
 import org.droidmate.exploration.device.IDeviceWithReadableLogs

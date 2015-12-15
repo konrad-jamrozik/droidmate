@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -15,9 +15,7 @@ package org.droidmate.lib_android;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
 import org.droidmate.common.logcat.Api;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,6 +27,9 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+// org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
+// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
 // import de.uds.infsec.instrumentation.Instrumentation;

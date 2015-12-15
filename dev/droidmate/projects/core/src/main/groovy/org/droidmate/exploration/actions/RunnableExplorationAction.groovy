@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -16,10 +16,8 @@ import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.device.IDeviceLogs
-import org.droidmate.exploration.device.IDeviceLogsHandler
 import org.droidmate.exploration.device.IDeviceWithReadableLogs
 import org.droidmate.exploration.device.MissingDeviceLogs
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
 

@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -12,7 +12,6 @@ import org.droidmate.android_sdk.ApkTestHelper
 import org.droidmate.android_sdk.IApk
 import org.droidmate.common.logcat.MonitoredInlinedApkFixtureApiLogs
 import org.droidmate.configuration.Configuration
-import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device_simulation.AndroidDeviceSimulator
 import org.droidmate.device_simulation.DeviceSimulation
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
@@ -25,7 +24,6 @@ import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
-
 import org.droidmate.test_suite_categories.ExplorationImplAug2015
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator

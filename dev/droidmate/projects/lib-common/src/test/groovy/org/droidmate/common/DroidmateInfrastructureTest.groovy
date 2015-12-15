@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 
-package org.droidmate.common;
+package org.droidmate.common
 
 import groovy.transform.TypeChecked
 import joptsimple.OptionParser
@@ -16,11 +16,11 @@ import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.junit.runners.MethodSorters;
+import org.junit.runners.MethodSorters
 
 import static groovy.transform.TypeCheckingMode.SKIP
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse
+import static org.junit.Assert.assertTrue;
 @TypeChecked(SKIP)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4)

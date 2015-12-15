@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -17,7 +17,10 @@ import org.droidmate.command.exploration.IExploration
 import org.droidmate.common.DroidmateException
 import org.droidmate.configuration.Configuration
 import org.droidmate.deprecated_still_used.*
-import org.droidmate.exceptions.*
+import org.droidmate.exceptions.ApkExplorationException
+import org.droidmate.exceptions.ApkExplorationExceptionsCollection
+import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IDeviceWithReadableLogs

@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -8,7 +8,6 @@
 // www.droidmate.org
 package org.droidmate.exploration.device
 
-import android.bluetooth.BluetoothClass
 import groovy.util.logging.Slf4j
 import org.droidmate.common.Utils
 import org.droidmate.device.IAndroidDevice

@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -13,11 +13,11 @@ import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.AndroidDeviceDescriptor
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.common.Assert
+import org.droidmate.common.DroidmateException
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.IDeployableAndroidDevice
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.common.DroidmateException
 import org.droidmate.exploration.device.IDeviceWithReadableLogs
 import org.droidmate.exploration.device.RobustDevice
 import org.droidmate.lib_android.MonitorJavaTemplate

@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,7 +11,6 @@
 package org.droidmate.common.logcat
 
 import groovy.transform.Canonical
-import groovy.transform.Immutable
 import groovy.util.logging.Slf4j
 import org.droidmate.apis.IApi
 

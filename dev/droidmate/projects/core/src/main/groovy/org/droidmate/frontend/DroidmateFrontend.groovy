@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -13,10 +13,10 @@ import groovy.time.TimeCategory
 import groovy.time.TimeDuration
 import groovy.util.logging.Slf4j
 import org.droidmate.command.DroidmateCommand
+import org.droidmate.common.DroidmateException
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
-import org.droidmate.common.DroidmateException
 import org.droidmate.logging.LogbackUtilsRequiringLogbackLog
 
 import java.nio.file.FileSystem

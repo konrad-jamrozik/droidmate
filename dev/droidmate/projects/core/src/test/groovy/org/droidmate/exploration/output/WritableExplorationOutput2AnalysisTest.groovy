@@ -1,5 +1,5 @@
 // Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -15,7 +15,6 @@ import org.droidmate.storage.IWritableDirectory
 import org.droidmate.storage.WritableDirectory
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
-
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
