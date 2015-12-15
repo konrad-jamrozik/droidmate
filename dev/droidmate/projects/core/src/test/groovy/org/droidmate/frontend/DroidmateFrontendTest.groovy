@@ -194,7 +194,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
   private void exploreOnRealDevice(String[] args)
   {
     DroidmateOutputDir outputDir = new DroidmateOutputDir(new ConfigurationBuilder().build(args).droidmateOutputDirPath)
-    outputDir.clearContents()
+    outputDir.clearContentsOrCreate()
 
     // Act
     DroidmateFrontend.main(args, FileSystems.getDefault(), new ExceptionHandler())

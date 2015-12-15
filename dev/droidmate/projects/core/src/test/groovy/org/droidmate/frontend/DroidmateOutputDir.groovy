@@ -27,15 +27,20 @@ class DroidmateOutputDir
     assert Files.isDirectory(path) || !Files.exists(path)
   }
 
-  public void clearContents()
+  public void clearContentsOrCreate()
   {
     if (Files.exists(path))
+    {
       Files.list(path).each {
         if (Files.isDirectory(it))
           it.deleteDir()
         else
           Files.delete(it)
       }
+    } else
+    {
+      Files.createDirectory(path)
+    }
   }
 
   public IApkExplorationOutput2 readOutput()
