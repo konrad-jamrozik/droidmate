@@ -200,8 +200,7 @@ Technical docs will be  located in `./dev/droidmate/doc`. As of 14 Dec 2015 only
 
 The entry class of DroidMate is `DroidmateFrontend` and so it is recommended to start code base exploration from this class. You can find it in 
 
-`./dev/droidmate/projects/core/src/main/groovy/`
-`org/droidmate/frontend/DroidmateFrontend.groovy` 
+`./dev/droidmate/projects/core/src/main/groovy/org/droidmate/frontend/DroidmateFrontend.groovy` 
 
 ### Tests as documentation ###
 
