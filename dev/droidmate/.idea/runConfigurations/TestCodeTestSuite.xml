@@ -9,8 +9,8 @@
     <module name="core" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
-    <option name="PACKAGE_NAME" value="org.droidmate.category_based_test_suites" />
-    <option name="MAIN_CLASS_NAME" value="org.droidmate.category_based_test_suites.TestCodeTestSuite" />
+    <option name="PACKAGE_NAME" value="org.droidmate.test_suites" />
+    <option name="MAIN_CLASS_NAME" value="org.droidmate.test_suites.TestCodeTestSuite" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
     <option name="VM_PARAMETERS" value="-ea -DlogsDir=&quot;temp_dir_for_tests/logs&quot;" />
