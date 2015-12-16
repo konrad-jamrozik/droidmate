@@ -129,10 +129,19 @@ Inlined apks can be distinguished by an `-inlined.apk` suffix in their name.
 
 ### Obtaining apks ###
 
-You can obtain apks e.g. by:  
+You can obtain `.apk` files of the apps in following ways:
 
-* downloading them from Google Play Store, e.g. by using http://apk-dl.com/
-* copying the artificial apk fixtures coming from DroidMate, that can be found in `./dev/droidmate/projects/core/src/test/resources/fixtures/apks` after DroidMate was successfully built. Their sources are available in the `./dev/apk-fixtures-src` project.
+* Use a dedicated app for that. See [androidpit.com/how-to-download-apk-file-from-google-play](https://www.androidpit.com/how-to-download-apk-file-from-google-play)
+* Copy the artificial apk fixtures coming from DroidMate, that can be found in `./dev/droidmate/projects/core/src/test/resources/fixtures/apks`  
+after DroidMate was successfully built. Their sources are available in the `./dev/apk-fixtures-src` project.
+ 
+* Install them from Google Play Store to an Android device and then pull the app from the device using `adb` from Android SDK. For example, the [currency converter](https://play.google.com/store/apps/details?id=com.frank_weber.forex2) has `id=com.frank_weber.forex2` in its URL, denoting its package name. After you install it on the device, you can pull it in a following way: <pre>
+$ adb shell pm path com.frank_weber.forex2
+package:/data/app/com.frank_weber.forex2-1.apk
+$ adb pull /data/app/com.frank_weber.forex2-1.apk
+3674 KB/s (2361399 bytes in 0.627s)
+// The file is now in the current dir
+</pre>  
 
 ## Troubleshooting Mac OS problems
 
