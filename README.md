@@ -49,7 +49,7 @@ In case you run into problems, please see the [Troubleshooting Mac OS problems](
 
 ## First build (just after cloning from repo)
 
-To build DroidMate for first time, follow these steps:
+To build DroidMate for the first time, follow these steps:
 
 ### 1. Setup the dependencies ###
 1. Install Java Development Kit (JDK) 8, 7 and 6.
