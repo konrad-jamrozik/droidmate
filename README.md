@@ -44,6 +44,8 @@ DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userg
 DroidMate build process was tested on Windows 10, Windows 7, Mac OS and Ubuntu.
 
 DroidMate was tested with Nexus 7 2012 running Android 4.4. It also worked with an emulator. It should work with other Android devices running Android 4.4.
+ 
+In case you run into problems, please see the [Troubleshooting Mac OS problems](#Troubleshooting-Mac-OS-problems) section.
 
 ## First build (just after cloning from repo)
 
@@ -65,7 +67,8 @@ Android 4.2.2 SDK Platform
 **IMPORTANT** When following the instructions, be double sure that you followed to the letter the step 1. in the class groovydoc!
 * (optional) set `GRADLE_USER_HOME` system environment variable to a directory in which Gradle  will locally cache the dependencies downloaded from maven repository. [Gradle doc link](https://docs.gradle.org/current/userguide/gradle_command_line.html).
 * Run initial build setup:  
-`./dev/init/gradlew build`
+`./dev/init/gradlew build`  
+Note: on Linux and Mac OS will need to first do `chmod +x gradlew`
 
 ### 3. Do the build ###
 
@@ -132,6 +135,18 @@ You can obtain apks e.g. by:
 
 * downloading them from Google Play Store, e.g. by using http://apk-dl.com/
 * copying the artificial apk fixtures coming from DroidMate, that can be found in `./dev/droidmate/projects/core/src/test/resources/fixtures/apks` after DroidMate was successfully built. Their sources are available in the `./dev/apk-fixtures-src` project.
+
+## Troubleshooting Mac OS problems
+
+##### Problem: Missing rt.jar from JDK 1.6
+
+In Mac OS The structure of Java JDK 1.6 is different to the later versions in that it doesn't have a directory "jre/lib" that contains "rt.jar" - instead "rt.jar" is called "classes.jar" and is found within the directory 1.6.0.jdk/Contents/Classes. This is due to the fact that the only way to use SE 6 on Mac OS is to use an Apple variant of the SDK i.e. https://support.apple.com/kb/DL1572?locale=en_US 
+
+There is no Mac OS download available on the Oracle site, due to SE 6 being a core component of OS X Mavericks. 
+
+###### Workaround
+
+Simply make a "jre/lib" directory within java home and symlink "rt.jar" within it to "classes.jar." 
 
 # Working with DroidMate code base
 
