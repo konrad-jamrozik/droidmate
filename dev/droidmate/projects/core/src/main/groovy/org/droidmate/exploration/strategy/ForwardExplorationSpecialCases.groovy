@@ -54,12 +54,26 @@ class ForwardExplorationSpecialCases implements IForwardExplorationSpecialCases
   @Override
   List process(IGuiState guiState, String packageName)
   {
-    def currentStep = updateLoginStep(guiState, packageName, lastStep)
+    /*
+    At this time special case processing is turned off. It was being used only for Snapchat.
+    Snapchat can no longer be explored due to remote update that prevents using any but the newer versions.
+    The never versions have integrity check of bytecode.
+    The check makes Snapchat unusable after startup if it was inlined.
+    Thus, it can no longer be explored by DroidMate, as it required inlining.
 
-    def outExplAction = proceedWithSnapchatLogin(guiState, currentStep)
+    Furthermore, only this code used "EnterTextExplorationAction". Its handling is not implemented in the code.
+    To be exact, it is not handled in org.droidmate.exploration.actions.RunnableExplorationAction.from() method.
+    This is because code has been refactored after Snapchat stopped working.
 
-    lastStep = currentStep
-    return [outExplAction != null, outExplAction]
+    Thus, the code is turned off to prevent triggering the bug https://hg.st.cs.uni-saarland.de/issues/995.
+     */
+//    def currentStep = updateLoginStep(guiState, packageName, lastStep)
+//
+//    def outExplAction = proceedWithSnapchatLogin(guiState, currentStep)
+//
+//    lastStep = currentStep
+//    return [outExplAction != null, outExplAction]
+    return [false, null]
   }
 
   Step updateLoginStep(IGuiState guiState, String packageName, Step lastLoginStep)

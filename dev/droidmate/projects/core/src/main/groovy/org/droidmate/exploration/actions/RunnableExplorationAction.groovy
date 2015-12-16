@@ -54,9 +54,7 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
       case TerminateExplorationAction:
         return new RunnableTerminateExplorationAction(action as TerminateExplorationAction, timestamp)
 
-
       default:
-        // KJA bug #995 here (snapchat special case: enter text)
         throw new UnexpectedIfElseFallthroughError("Unhandled ExplorationAction class. The class: ${action.class}")
     }
   }

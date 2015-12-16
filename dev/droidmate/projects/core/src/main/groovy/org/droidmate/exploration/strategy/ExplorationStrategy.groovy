@@ -168,7 +168,7 @@ class ExplorationStrategy implements IExplorationStrategy
     {
       boolean specialCaseApplied
       (specialCaseApplied, outExplAction) = specialCases.process(guiState, packageName)
-      assert specialCaseApplied.implies(outExplAction != null)
+      assert specialCaseApplied == (outExplAction != null)
 
       if (!specialCaseApplied)
       {
