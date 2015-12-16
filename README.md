@@ -135,7 +135,7 @@ You can obtain `.apk` files of the apps in following ways:
 * Copy the artificial apk fixtures coming from DroidMate, that can be found in `./dev/droidmate/projects/core/src/test/resources/fixtures/apks`  
 after DroidMate was successfully built. Their sources are available in the `./dev/apk-fixtures-src` project.
  
-* Install them from Google Play Store to an Android device and then pull the app from the device using `adb` from Android SDK. For example, the [currency converter](https://play.google.com/store/apps/details?id=com.frank_weber.forex2) has `id=com.frank_weber.forex2` in its URL, denoting its package name. After you install it on the device, you can pull it in a following way: <pre>
+* Install an app from Google Play Store to an Android device and then pull the app from the device using `adb` from Android SDK. For example, the [currency converter](https://play.google.com/store/apps/details?id=com.frank_weber.forex2) has `id=com.frank_weber.forex2` in its URL, denoting its package name. After you install it on the device, you can pull it in following way: <pre>
 $ adb shell pm path com.frank_weber.forex2
 package:/data/app/com.frank_weber.forex2-1.apk
 $ adb pull /data/app/com.frank_weber.forex2-1.apk
