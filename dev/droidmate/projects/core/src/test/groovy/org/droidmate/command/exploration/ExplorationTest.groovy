@@ -126,6 +126,8 @@ public class ExplorationTest extends DroidmateGroovyTestCase
   @Test
   void "Has no bug #994"()
   {
+    // KJA current work
+
     String simulatorSpec = "s1-w1->s1"
     runOnSimulator(simulatorSpec, [new ExceptionSpec("hasPackageInstalled", null, 1, false, false)])
   }

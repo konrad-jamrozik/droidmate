@@ -145,13 +145,13 @@ class ExploreCommand extends DroidmateCommand
     List<ApkExplorationException> exceptions = []
 
     out.each {
-      if (!it.noException)
+      if (!(it.noException))
       {
         exceptions.add(new ApkExplorationException(it.apk, it.exception))
       }
     }
 
-    if (!exceptions.empty)
+    if (!(exceptions.empty))
       return new ApkExplorationExceptionsCollection(exceptions)
     else
       return null

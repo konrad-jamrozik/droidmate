@@ -57,7 +57,7 @@ class Exploration implements IExploration
     assert app != null
     assert device != null
 
-    tryAssertDeviceHasPackageInstalled(device, app.packageName)
+    tryDeviceHasPackageInstalled(device, app.packageName)
     tryWarnDeviceDisplaysHomeScreen(device, app.fileName)
 
     IApkExplorationOutput2 output = explorationLoop(app, device)
@@ -108,12 +108,13 @@ class Exploration implements IExploration
     return output
   }
 
-  private void tryAssertDeviceHasPackageInstalled(IExplorableAndroidDevice device, String packageName) throws DeviceException
+  private void tryDeviceHasPackageInstalled(IExplorableAndroidDevice device, String packageName) throws DeviceException
   {
-    log.trace("tryAssertDeviceHasPackageInstalled(device, $packageName)")
+    log.trace("tryDeviceHasPackageInstalled(device, $packageName)")
 
     // KJA bug #994
-    assert device.hasPackageInstalled(packageName)
+    if (!device.hasPackageInstalled(packageName))
+      throw new DeviceException()
   }
 
   private void tryWarnDeviceDisplaysHomeScreen(IExplorableAndroidDevice device, String fileName) throws DeviceException
