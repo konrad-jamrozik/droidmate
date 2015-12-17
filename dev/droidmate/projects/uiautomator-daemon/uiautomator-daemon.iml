@@ -13,6 +13,7 @@
     <facet type="java-gradle" name="Java-Gradle">
       <configuration>
         <option name="BUILD_FOLDER_PATH" />
+        <option name="BUILDABLE" value="false" />
       </configuration>
     </facet>
   </component>
