@@ -135,10 +135,11 @@ dalvik.system.NativeStart.main(Native Method)\
   }
 
   /**
-   * See https://hg.st.cs.uni-saarland.de/issues/992
+   * Bug: Parsing message throws StackOverflowError
+   * https://hg.st.cs.uni-saarland.de/issues/992
    */
   @Test
-  void "Parses without throwing StackOverflowError / bug #992"()
+  void "Has no bug #992"()
   {
     String msg = """\
 TId: 1 objCls: android.webkit.WebView mthd: loadDataWithBaseURL retCls: void \
