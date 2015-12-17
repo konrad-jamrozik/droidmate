@@ -32,13 +32,14 @@ class UiautomatorWindowDumpTest extends DroidmateGroovyTestCase
 {
 
   /**
+   * bug: ANR with disabled OK button is invalid
    * https://hg.st.cs.uni-saarland.de/issues/987
    */
   @Test
-  void "ANR with disabled OK button is invalid / bug #987"()
+  void "Has no bug #987"()
   {
     UiautomatorWindowDump gs = newAppHasStoppedDialogOKDisabledWindowDump()
-    assert !gs.validationResult.valid
+    assert !(gs.validationResult.valid)
   }
 
   @Test
