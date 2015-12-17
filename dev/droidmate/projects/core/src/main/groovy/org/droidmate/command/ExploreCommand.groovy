@@ -79,7 +79,7 @@ class ExploreCommand extends DroidmateCommand
   {
     cleanOutputDir(cfg.droidmateOutputDirPath)
 
-    List<Apk> apks = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames)
+    List<Apk> apks = this.apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames)
     if (apks.size() == 0)
     {
       log.warn("No input apks found. Terminating.")
@@ -112,7 +112,7 @@ class ExploreCommand extends DroidmateCommand
 
       def deprecatedOut = new ExplorationOutput()
       deprecatedOut.addAll(out.collect {ApkExplorationOutput.from(it)})
-      explorationOutputAnalysisPersister.persist(deprecatedOut)
+      this.explorationOutputAnalysisPersister.persist(deprecatedOut)
     } catch (Throwable tryThrowable)
     {
       log.debug("! Caught ${tryThrowable.class.simpleName} in withDeployedApk.computation(apk). Rethrowing.")
@@ -160,13 +160,13 @@ class ExploreCommand extends DroidmateCommand
 
   private void tryDeployExploreSerialize(int deviceIndex, List<Apk> apks, ExplorationOutput2 out) throws DeviceException
   {
-    deviceDeployer.withSetupDevice(deviceIndex) {IDeviceWithReadableLogs device ->
+    this.deviceDeployer.withSetupDevice(deviceIndex) {IDeviceWithReadableLogs device ->
 
       apks.eachWithIndex {Apk apk, int i ->
 
         log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
-        apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
+        this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
 
           tryExploreOnDeviceAndSerialize(deployedApk, device, out)
         }
@@ -178,13 +178,13 @@ class ExploreCommand extends DroidmateCommand
     IApk deployedApk, IDeviceWithReadableLogs device, ExplorationOutput2 out) throws DeviceException
   {
     IApkExplorationOutput2 apkOut2 = tryExploreOnDevice(deployedApk, device)
-    apkOut2.serialize(storage2)
+    apkOut2.serialize(this.storage2)
     out << apkOut2
   }
 
   private IApkExplorationOutput2 tryExploreOnDevice(
     IApk deployedApk, IDeviceWithReadableLogs device) throws DeviceException
   {
-    return exploration.tryRun(deployedApk, device)
+    return this.exploration.tryRun(deployedApk, device)
   }
 }
