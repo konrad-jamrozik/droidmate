@@ -28,6 +28,7 @@ import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator
+import org.droidmate.test_suite_categories.UnderConstruction
 import org.droidmate.tools.DeviceToolsMock
 import org.junit.FixMethodOrder
 import org.junit.Test
@@ -75,7 +76,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    *
    * </p>
    */
-  @Category([RequiresSimulator])
+  @Category([RequiresSimulator, UnderConstruction])
   @Test
   public void "Handles exploration and fatal device exceptions"()
   {
