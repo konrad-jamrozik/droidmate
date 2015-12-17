@@ -179,7 +179,7 @@ class ExploreCommand extends DroidmateCommand
   private void tryExploreOnDeviceAndSerialize(
     IApk deployedApk, IDeviceWithReadableLogs device, ExplorationOutput2 out) throws DeviceException
   {
-    IApkExplorationOutput2 apkOut2 = this.exploration.tryRun(deployedApk, device)
+    IApkExplorationOutput2 apkOut2 = this.exploration.run(deployedApk, device).result
     apkOut2.serialize(this.storage2)
     out << apkOut2
   }

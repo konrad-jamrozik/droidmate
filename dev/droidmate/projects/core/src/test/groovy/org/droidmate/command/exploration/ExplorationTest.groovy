@@ -92,14 +92,14 @@ public class ExplorationTest extends DroidmateGroovyTestCase
       deviceTools.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
 
         // Act
-        out = exploration.tryRun(deployedApk, new RobustDevice(device,
+        out = exploration.run(deployedApk, new RobustDevice(device,
           cfg.monitorServerStartTimeout,
           cfg.monitorServerStartQueryInterval,
           cfg.clearPackageRetryAttempts,
           cfg.clearPackageRetryDelay,
           cfg.getValidGuiSnapshotRetryAttempts,
           cfg.getValidGuiSnapshotRetryDelay)
-        )
+        ).result
 
       }
     }
@@ -149,7 +149,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     Exploration exploration = Exploration.build(cfg, timeGenerator)
 
     // Act
-    def out2 = exploration.tryRun(apk, simulatedDevice)
+    def out2 = exploration.run(apk, simulatedDevice).result
 
     if (!out2.noException)
       out2.exception.printStackTrace()

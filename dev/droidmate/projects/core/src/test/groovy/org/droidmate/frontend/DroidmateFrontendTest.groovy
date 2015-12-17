@@ -99,7 +99,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
       new ExceptionSpec("perform", apk2recov.packageName, /* call index */ 2),
 
       // KJA currently this is the last caught exception, as DroidMate doesn't recover properly from such situation.
-      // Thrown during Exploration.tryRun()->tryDeviceHasPackageInstalled()
+      // Thrown during Exploration.run()->tryDeviceHasPackageInstalled()
       // Added to ApkExplorationExceptionsCollection
       new ExceptionSpec("hasPackageInstalled", apk3recovPreOut.packageName),
 
@@ -111,9 +111,9 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
       //
       // The call index is 2 because 1st call is made during org.droidmate.tools.ApkDeployer.tryReinstallApk
       new ExceptionSpec("uninstallApk", apk4fatal.packageName, /* call index */ 2),
-      // Thrown during Exploration.tryRun() -> tryDeviceHasPackageInstalled().
+      // Thrown during Exploration.run() -> tryDeviceHasPackageInstalled().
       // Suppressed by the exception above.
-      // Thrown during Exploration.tryRun() -> tryDeviceHasPackageInstalled(). Suppressed by the exception above.
+      // Thrown during Exploration.run() -> tryDeviceHasPackageInstalled(). Suppressed by the exception above.
       new ExceptionSpec("hasPackageInstalled", apk4fatal.packageName),
 
     ]

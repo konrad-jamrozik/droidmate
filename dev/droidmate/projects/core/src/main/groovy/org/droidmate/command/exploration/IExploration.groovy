@@ -12,9 +12,10 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.misc.Failable
 
 public interface IExploration
 {
 
-  IApkExplorationOutput2 tryRun(IApk app, IDeviceWithReadableLogs device) throws DeviceException
+  Failable<IApkExplorationOutput2, DeviceException> run(IApk app, IDeviceWithReadableLogs device)
 }

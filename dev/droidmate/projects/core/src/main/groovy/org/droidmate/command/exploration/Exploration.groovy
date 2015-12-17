@@ -25,6 +25,7 @@ import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IDeviceWithReadableLogs
 import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.exploration.strategy.IExplorationStrategy
+import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.TimeProvider
 
@@ -49,17 +50,22 @@ class Exploration implements IExploration
     return new Exploration(cfg, timeProvider)
   }
 
-  // KJA all "try" methods from within this method should disappear, making this method device-exception-proof
   @Override
-  IApkExplorationOutput2 tryRun(IApk app, IDeviceWithReadableLogs device) throws DeviceException
+  Failable<IApkExplorationOutput2, DeviceException> run(IApk app, IDeviceWithReadableLogs device)
   {
     log.info("run(${app?.packageName}, device)")
 
     assert app != null
     assert device != null
 
-    tryDeviceHasPackageInstalled(device, app.packageName)
-    tryWarnDeviceDisplaysHomeScreen(device, app.fileName)
+    try
+    {
+      tryDeviceHasPackageInstalled(device, app.packageName)
+      tryWarnDeviceDisplaysHomeScreen(device, app.fileName)
+    } catch (DeviceException e)
+    {
+      return new Failable<IApkExplorationOutput2, DeviceException>(null, e)
+    }
 
     IApkExplorationOutput2 output = explorationLoop(app, device)
 
@@ -69,7 +75,7 @@ class Exploration implements IExploration
       log.warn("! Encountered ${output.exception.class.simpleName} during the exploration of ${app.packageName} " +
         "after already obtaining some exploration output.")
 
-    return output
+    return new Failable<IApkExplorationOutput2, DeviceException>(output, output.noException ? null : output.exception)
   }
 
   public IApkExplorationOutput2 explorationLoop(IApk app, IDeviceWithReadableLogs device)
