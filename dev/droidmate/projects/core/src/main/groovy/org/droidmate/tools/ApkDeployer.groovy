@@ -11,6 +11,7 @@ package org.droidmate.tools
 
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.ApkExplorationException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.common.Assert
 import org.droidmate.configuration.Configuration
@@ -41,7 +42,7 @@ public class ApkDeployer implements IApkDeployer
    * </p>
    */
   @Override
-  public void withDeployedApk(IDeployableAndroidDevice device, IApk apk, Closure computation) throws DeviceException
+  public List<ApkExplorationException> withDeployedApk(IDeployableAndroidDevice device, IApk apk, Closure<DeviceException> computation)
   {
     log.debug("withDeployedApk(device, $apk.fileName, computation)")
 
@@ -52,12 +53,17 @@ public class ApkDeployer implements IApkDeployer
     // anticipated commands are not matched against logcat messages from previous deployments.
     device.clearLogcat()
 
+    // KJA add to apkExplorationExceptions
     tryReinstallApk(device, apk)
 
+    List<ApkExplorationException> apkExplorationExceptions = []
     Throwable savedTryThrowable = null
     try
     {
-      computation(apk)
+      DeviceException deviceException = computation(apk)
+      if (deviceException != null)
+        apkExplorationExceptions << new ApkExplorationException(apk, deviceException)
+
     } catch (Throwable tryThrowable)
     {
       log.debug("! Caught ${tryThrowable.class.simpleName} in withDeployedApk.computation(apk). Rethrowing.")
@@ -69,6 +75,7 @@ public class ApkDeployer implements IApkDeployer
       log.debug("Finalizing: withDeployedApk.finally {} for computation(apk)")
       try
       {
+        // KJA add to apkExplorationExceptions
         tryUndeployApk(device, apk)
 
       } catch (Throwable tearDownThrowable)
@@ -82,6 +89,7 @@ public class ApkDeployer implements IApkDeployer
     }
 
     log.trace("Undeployed apk {}", apk.fileName)
+    return apkExplorationExceptions
   }
 
   private void tryUndeployApk(IDeployableAndroidDevice device, IApk apk) throws DeviceException

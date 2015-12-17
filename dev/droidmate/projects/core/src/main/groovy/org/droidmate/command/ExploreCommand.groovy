@@ -24,6 +24,7 @@ import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.TimeProvider
 import org.droidmate.storage.IStorage2
@@ -168,20 +169,29 @@ class ExploreCommand extends DroidmateCommand
 
         log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
-        this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
-
-          tryExploreOnDeviceAndSerialize(deployedApk, device, out)
+        List<ApkExplorationException> apkExplorationExceptions = this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
+          return exploreOnDeviceAndSerialize(deployedApk, device, out)
         }
+
+        // KJA temp adapter
+        assert apkExplorationExceptions.size() <= 1
+        if (apkExplorationExceptions.size() == 1)
+          throw apkExplorationExceptions[0].exception
       }
     }
   }
 
-  private void tryExploreOnDeviceAndSerialize(
+  private DeviceException exploreOnDeviceAndSerialize(
     IApk deployedApk, IDeviceWithReadableLogs device, ExplorationOutput2 out) throws DeviceException
   {
-    IApkExplorationOutput2 apkOut2 = this.exploration.run(deployedApk, device).result
-    apkOut2.serialize(this.storage2)
-    out << apkOut2
+    // KJA current work: swallows device exception
+    Failable<IApkExplorationOutput2, DeviceException> failableApkOut2 = this.exploration.run(deployedApk, device)
+    if (failableApkOut2.result != null)
+    {
+      failableApkOut2.result.serialize(this.storage2)
+      out << failableApkOut2.result
+    }
+    return failableApkOut2.exception
   }
 
-  }
+}

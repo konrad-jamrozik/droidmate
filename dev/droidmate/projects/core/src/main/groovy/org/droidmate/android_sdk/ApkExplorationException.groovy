@@ -13,6 +13,9 @@ import org.droidmate.exceptions.DeviceException
 
 public class ApkExplorationException extends DroidmateException
 {
+
+  private static final long serialVersionUID = 1
+
   final IApk            apk
   final DeviceException exception
 
