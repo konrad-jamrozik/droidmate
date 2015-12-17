@@ -19,11 +19,14 @@ public class ApkExplorationException extends DroidmateException
   final IApk            apk
   final DeviceException exception
 
-  public ApkExplorationException(IApk apk, DeviceException exception)
+  public ApkExplorationException(IApk apk, DeviceException cause)
   {
+    super(cause)
     this.apk = apk
-    this.exception = exception
+    this.exception = cause
+
   }
+
 
   public String getInstanceName()
   {

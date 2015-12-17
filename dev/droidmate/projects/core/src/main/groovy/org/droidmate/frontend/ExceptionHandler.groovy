@@ -74,6 +74,8 @@ class ExceptionHandler implements IExceptionHandler
     log.error(exceptions, "--- Now the details of the exceptions wrapped in each of the ${ApkExplorationException.simpleName}s in the exceptions collection will be listed:")
     e.exceptions.eachWithIndex {it, int i ->
 
+      // KJA what about it.exception.suppressed ?
+
       assert it.suppressed.size() == 0
       log.error(exceptions, "Exception index: ${i + 1} out of ${e.exceptions.size()}. Offending app file path: $it.apkPath:\n", it.exception)
     }
