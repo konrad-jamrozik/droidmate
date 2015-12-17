@@ -113,15 +113,17 @@ class ExploreCommand extends DroidmateCommand
       def deprecatedOut = new ExplorationOutput()
       deprecatedOut.addAll(out.collect {ApkExplorationOutput.from(it)})
       this.explorationOutputAnalysisPersister.persist(deprecatedOut)
+
     } catch (Throwable tryThrowable)
     {
-      log.debug("! Caught ${tryThrowable.class.simpleName} in withDeployedApk.computation(apk). Rethrowing.")
+      log.debug("! Caught ${tryThrowable.class.simpleName} in " +
+        "tryExecute.tryDeployExploreSerialize(cfg.deviceIndex, apks, out). Rethrowing.")
       savedTryThrowable = tryThrowable
       throw savedTryThrowable
 
     } finally
     {
-      log.debug("Finalizing: ${ExploreCommand.class.simpleName}.tryExecute finally {}")
+      log.debug("Finalizing: ${ExploreCommand.class.simpleName}.tryExecute finally {} for tryDeployExploreSerialize(cfg.deviceIndex, apks, out)")
       ApkExplorationExceptionsCollection exceptionsCollection = collectApkExplorationExceptionsIfAny(out)
       if (exceptionsCollection != null)
       {
@@ -136,7 +138,7 @@ class ExploreCommand extends DroidmateCommand
           throw exceptionsCollection
         }
       }
-      log.debug("Finalizing DONE: ${ExploreCommand.class.simpleName}.tryExecute finally {}")
+      log.debug("Finalizing DONE: ${ExploreCommand.class.simpleName}.tryExecute finally {} for tryDeployExploreSerialize(cfg.deviceIndex, apks, out)")
     }
   }
 
@@ -177,14 +179,9 @@ class ExploreCommand extends DroidmateCommand
   private void tryExploreOnDeviceAndSerialize(
     IApk deployedApk, IDeviceWithReadableLogs device, ExplorationOutput2 out) throws DeviceException
   {
-    IApkExplorationOutput2 apkOut2 = tryExploreOnDevice(deployedApk, device)
+    IApkExplorationOutput2 apkOut2 = this.exploration.tryRun(deployedApk, device)
     apkOut2.serialize(this.storage2)
     out << apkOut2
   }
 
-  private IApkExplorationOutput2 tryExploreOnDevice(
-    IApk deployedApk, IDeviceWithReadableLogs device) throws DeviceException
-  {
-    return this.exploration.tryRun(deployedApk, device)
   }
-}
