@@ -49,6 +49,7 @@ class Exploration implements IExploration
     return new Exploration(cfg, timeProvider)
   }
 
+  // KJA all "try" methods from within this method should disappear, making this method device-exception-proof
   @Override
   IApkExplorationOutput2 tryRun(IApk app, IDeviceWithReadableLogs device) throws DeviceException
   {

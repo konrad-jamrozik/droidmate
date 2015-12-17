@@ -140,7 +140,7 @@ class ExploreCommand extends DroidmateCommand
     }
   }
 
-  ApkExplorationExceptionsCollection collectApkExplorationExceptionsIfAny(ExplorationOutput2 out) throws ApkExplorationExceptionsCollection
+  ApkExplorationExceptionsCollection collectApkExplorationExceptionsIfAny(ExplorationOutput2 out)
   {
     List<ApkExplorationException> exceptions = []
 
