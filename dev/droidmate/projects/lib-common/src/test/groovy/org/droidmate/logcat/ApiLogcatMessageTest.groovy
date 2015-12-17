@@ -134,7 +134,9 @@ dalvik.system.NativeStart.main(Native Method)\
     ApiLogcatMessage.from(msg)
   }
 
-
+  /**
+   * See https://hg.st.cs.uni-saarland.de/issues/992
+   */
   @Test
   void "Parses without throwing StackOverflowError / bug #992"()
   {
