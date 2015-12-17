@@ -135,7 +135,7 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   @Override
   boolean getNoException()
   {
-    def lastResultSuccessful = actRess.last().result.successful
+    boolean lastResultSuccessful = actRess.last().result.successful
     assert lastResultSuccessful || (actRess.last().result.exception != null)
     return lastResultSuccessful
   }
