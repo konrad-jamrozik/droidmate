@@ -21,16 +21,19 @@ class ExceptionSpec implements IExceptionSpec
   final int     callIndex
   final boolean throwsEx
   final Boolean exceptionalReturnBool
+  final boolean throwsAssertionError
 
-  ExceptionSpec(String methodName, String packageName = null, int callIndex = 1, boolean throwsEx = true, Boolean exceptionalReturnBool = null)
+  ExceptionSpec(String methodName, String packageName = null, int callIndex = 1, boolean throwsEx = true, Boolean exceptionalReturnBool = null, boolean throwsAssertionError = false)
   {
     this.methodName = methodName
     this.packageName = packageName
     this.callIndex = callIndex
     this.throwsEx = throwsEx
     this.exceptionalReturnBool = exceptionalReturnBool
+    this.throwsAssertionError = throwsAssertionError
 
     assert this.throwsEx == (this.exceptionalReturnBool == null)
+    assert this.throwsAssertionError.implies(this.throwsEx)
   }
 
   boolean matches(String methodName, String packageName, int callIndex)
@@ -43,13 +46,9 @@ class ExceptionSpec implements IExceptionSpec
   void throwEx() throws TestDeviceException
   {
     assert this.exceptionalReturnBool == null
-    throw new TestDeviceException(this)
-  }
-
-  @Override
-  Boolean getExceptionalReturnBool()
-  {
-    assert !throwsEx
-    return this.exceptionalReturnBool
+    if (this.throwsAssertionError)
+      throw new AssertionError()
+    else
+      throw new TestDeviceException(this)
   }
 }
