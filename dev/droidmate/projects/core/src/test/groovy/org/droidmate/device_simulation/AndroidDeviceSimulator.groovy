@@ -76,24 +76,36 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   boolean hasPackageInstalled(String packageName) throws DeviceException
   {
     log.debug("hasPackageInstalled($packageName)")
+    assert this.currentlyDeployedPackageName == packageName
 
-    throwExceptionIfMatchesSpec("hasPackageInstalled", packageName)
+    IExceptionSpec s = findMatchingExceptionSpecAndThrowIfApplies("hasPackageInstalled", packageName)
+    if (s != null)
+    {
+      assert !s.throwsEx
+      return s.exceptionalReturnBool
+    }
 
     return this.currentlyDeployedPackageName == packageName
   }
 
-  void throwExceptionIfMatchesSpec(String methodName, String currentlyDeployedPackageName) throws TestDeviceException
+  private IExceptionSpec findMatchingExceptionSpec(String methodName, String packageName)
   {
-    callCounters.increment(currentlyDeployedPackageName, methodName)
-
-    def spec = exceptionSpecs.find {
-      it.methodName == methodName && it.currentlyDeployedPackageName == currentlyDeployedPackageName
+    return this.exceptionSpecs.findSingleOrDefault(null) {
+      it.matches(methodName, packageName, callCounters.get(packageName, methodName))
     }
+  }
 
-    if (spec == null || spec.callIndex != callCounters.get(currentlyDeployedPackageName, methodName))
-      return
-
-    throw new TestDeviceException(spec)
+  private IExceptionSpec findMatchingExceptionSpecAndThrowIfApplies(String methodName, String packageName) throws TestDeviceException
+  {
+    callCounters.increment(packageName, methodName)
+    IExceptionSpec s = findMatchingExceptionSpec(methodName, packageName)
+    if (s != null)
+    {
+      if (s.throwsEx)
+        s.throwEx()
+    }
+    assert !(s?.throwsEx)
+    return s
   }
 
   @Override
@@ -101,7 +113,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   {
     log.debug("getGuiSnapshot()")
 
-    throwExceptionIfMatchesSpec("getGuiSnapshot", this.currentlyDeployedPackageName)
+    findMatchingExceptionSpecAndThrowIfApplies("getGuiSnapshot", this.currentlyDeployedPackageName)
 
     def outSnapshot = this.currentSimulation.currentGuiSnapshot
 
@@ -114,7 +126,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   {
     log.debug("perform($action)")
 
-    throwExceptionIfMatchesSpec("perform", this.currentlyDeployedPackageName)
+    findMatchingExceptionSpecAndThrowIfApplies("perform", this.currentlyDeployedPackageName)
 
     switch (action.class)
     {
@@ -193,7 +205,10 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   void uninstallApk(String apkPackageName, boolean warnAboutFailure) throws DroidmateException
   {
-    throwExceptionIfMatchesSpec("uninstallApk", apkPackageName)
+    findMatchingExceptionSpecAndThrowIfApplies("uninstallApk", apkPackageName)
+
+    // KJA
+    // this.currentSimulation = null
   }
 
   @Override
@@ -210,7 +225,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   void stopUiaDaemon() throws DroidmateException
   {
-    throwExceptionIfMatchesSpec("stopUiaDaemon", this.currentlyDeployedPackageName)
+    findMatchingExceptionSpecAndThrowIfApplies("stopUiaDaemon", this.currentlyDeployedPackageName)
   }
 
   @Override

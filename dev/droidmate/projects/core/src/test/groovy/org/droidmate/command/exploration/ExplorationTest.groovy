@@ -14,6 +14,8 @@ import org.droidmate.common.logcat.MonitoredInlinedApkFixtureApiLogs
 import org.droidmate.configuration.Configuration
 import org.droidmate.device_simulation.AndroidDeviceSimulator
 import org.droidmate.device_simulation.DeviceSimulation
+import org.droidmate.exceptions.ExceptionSpec
+import org.droidmate.exceptions.IExceptionSpec
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IDeviceWithReadableLogs
@@ -26,6 +28,7 @@ import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator
+import org.droidmate.test_suite_categories.UnderConstruction
 import org.droidmate.tools.DeviceTools
 import org.droidmate.tools.IDeviceTools
 import org.droidmate.tools.SingleApkFixture
@@ -65,7 +68,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
   {
     String simulatorSpec = "s1-w1->chrome"
     Configuration cfg = new ConfigurationForTests().setArgs([Configuration.pn_actionsLimit, "1"]).get()
-    runOnSimulator(simulatorSpec, cfg)
+    runOnSimulator(simulatorSpec, [], cfg)
   }
 
   @Category([RequiresDevice])
@@ -105,18 +108,37 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     apiLogs.assertCheck()
   }
 
-  private void runOnSimulator(String simulatorSpec)
+  /**
+   * <p>
+   * Bug: Assertion error in Exploration#tryAssertDeviceHasPackageInstalled
+   *
+   * </p><p>
+   * The call to
+   * <pre>
+   *   org.droidmate.device.IExplorableAndroidDevice#hasPackageInstalled(java.lang.String)
+   * </pre>
+   * returned false, causing an assert to fail.
+   *
+   * </p><p>
+   * https://hg.st.cs.uni-saarland.de/issues/994
+   *
+   * </p>
+   */
+  @Category([RequiresSimulator, UnderConstruction])
+  @Test
+  void "Has no bug #994"()
   {
-    def cfg = new ConfigurationForTests().get()
-    runOnSimulator(simulatorSpec, cfg)
+    String simulatorSpec = "s1-w1->s1"
+    // KJA current work: hardcoded package name
+    runOnSimulator(simulatorSpec, [new ExceptionSpec("hasPackageInstalled", "mock_app1.pkg_name", 1, false, false)])
   }
 
-  private void runOnSimulator(String simulatorSpec, Configuration cfg)
+  private void runOnSimulator(String simulatorSpec, List<IExceptionSpec> exceptionSpecs = [], Configuration cfg = new ConfigurationForTests().get())
   {
     ITimeGenerator timeGenerator = new TimeGenerator()
 
     def apk = ApkTestHelper.build("mock_app1")
-    def simulator = new AndroidDeviceSimulator(timeGenerator, [apk.packageName], simulatorSpec)
+    def simulator = new AndroidDeviceSimulator(timeGenerator, [apk.packageName], simulatorSpec, exceptionSpecs)
     def simulatedDevice = new RobustDevice(simulator,
       cfg.monitorServerStartTimeout,
       cfg.monitorServerStartQueryInterval,

@@ -10,10 +10,11 @@ package org.droidmate.exceptions
 
 interface IExceptionSpec extends Serializable
 {
+  boolean matches(String methodName, String packageName, int callIndex)
 
-  String getMethodName()
+  boolean getThrowsEx()
 
-  String getCurrentlyDeployedPackageName()
+  void throwEx() throws TestDeviceException
 
-  int getCallIndex()
+  Boolean getExceptionalReturnBool()
 }
