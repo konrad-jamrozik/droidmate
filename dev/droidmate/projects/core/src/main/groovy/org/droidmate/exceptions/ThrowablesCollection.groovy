@@ -19,7 +19,7 @@ public class ThrowablesCollection extends DroidmateException
 
   public ThrowablesCollection(List<Throwable> throwables)
   {
-    super("Aggregating exception holding a collection of ${Throwable.simpleName}s.")
+    super("An aggregating exception holding a collection of ${Throwable.simpleName}s.")
     this.throwables = throwables
   }
 }

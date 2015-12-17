@@ -12,7 +12,7 @@ import org.droidmate.android_sdk.ApkExplorationExceptionsCollection
 import org.droidmate.exceptions.ITestException
 import org.droidmate.exceptions.ThrowablesCollection
 
-class ExceptionHandlerSpy
+class ExceptionHandlerSpy implements IExceptionHandler
 {
 
   @Delegate
