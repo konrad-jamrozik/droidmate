@@ -32,7 +32,7 @@ class UiautomatorWindowDumpTest extends DroidmateGroovyTestCase
 {
 
   /**
-   * bug: ANR with disabled OK button is invalid
+   * Bug: ANR with disabled OK button is invalid
    * https://hg.st.cs.uni-saarland.de/issues/987
    */
   @Test
