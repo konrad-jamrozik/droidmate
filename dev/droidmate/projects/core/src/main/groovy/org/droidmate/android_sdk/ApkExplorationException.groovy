@@ -6,14 +6,14 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.exceptions
+package org.droidmate.android_sdk
 
-import org.droidmate.android_sdk.IApk
 import org.droidmate.common.DroidmateException
+import org.droidmate.exceptions.DeviceException
 
 public class ApkExplorationException extends DroidmateException
 {
-  final IApk apk
+  final IApk            apk
   final DeviceException exception
 
   public ApkExplorationException(IApk apk, DeviceException exception)

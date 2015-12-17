@@ -8,7 +8,7 @@
 // www.droidmate.org
 package org.droidmate.frontend
 
-import org.droidmate.exceptions.ApkExplorationExceptionsCollection
+import org.droidmate.android_sdk.ApkExplorationExceptionsCollection
 import org.droidmate.exceptions.ITestException
 import org.droidmate.exceptions.ThrowablesCollection
 

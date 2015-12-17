@@ -11,14 +11,14 @@ package org.droidmate.command
 import groovy.io.FileType
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.Apk
+import org.droidmate.android_sdk.ApkExplorationException
+import org.droidmate.android_sdk.ApkExplorationExceptionsCollection
 import org.droidmate.android_sdk.IApk
 import org.droidmate.command.exploration.Exploration
 import org.droidmate.command.exploration.IExploration
 import org.droidmate.common.DroidmateException
 import org.droidmate.configuration.Configuration
 import org.droidmate.deprecated_still_used.*
-import org.droidmate.exceptions.ApkExplorationException
-import org.droidmate.exceptions.ApkExplorationExceptionsCollection
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2

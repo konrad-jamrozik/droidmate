@@ -9,10 +9,10 @@
 package org.droidmate.frontend
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.ApkExplorationException
+import org.droidmate.android_sdk.ApkExplorationExceptionsCollection
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.ApkExplorationException
-import org.droidmate.exceptions.ApkExplorationExceptionsCollection
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ThrowablesCollection
 

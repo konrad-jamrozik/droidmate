@@ -6,7 +6,7 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.exceptions
+package org.droidmate.android_sdk
 
 import org.droidmate.common.DroidmateException
 

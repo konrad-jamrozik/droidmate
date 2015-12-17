@@ -9,13 +9,13 @@
 package org.droidmate.frontend
 
 import org.droidmate.android_sdk.AaptWrapperStub
+import org.droidmate.android_sdk.ApkExplorationExceptionsCollection
 import org.droidmate.command.ExploreCommand
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device_simulation.AndroidDeviceSimulator
 import org.droidmate.device_simulation.DeviceSimulation
 import org.droidmate.device_simulation.IDeviceSimulation
-import org.droidmate.exceptions.ApkExplorationExceptionsCollection
 import org.droidmate.exceptions.ExceptionSpec
 import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
