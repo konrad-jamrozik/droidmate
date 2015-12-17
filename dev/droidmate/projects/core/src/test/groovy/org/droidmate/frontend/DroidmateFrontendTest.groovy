@@ -79,26 +79,42 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
   @Test
   public void "Handles exploration and fatal device exceptions"()
   {
-    def mockedFs = new MockFileSystem(["mock_1_ok", "mock_2_recov_throws", "mock_3_fatal_throws"])
+    def mockedFs = new MockFileSystem(["mock_1_ok", "mock_2_recov_throws", "mock_3_recovPreOut_throws", "mock_4_fatal_throws"])
     def apks = mockedFs.apks
     def apk1ok = apks.findSingle {it.fileName == "mock_1_ok.apk"}
     def apk2recov = apks.findSingle {it.fileName == "mock_2_recov_throws.apk"}
-    def apk3fatal = apks.findSingle {it.fileName == "mock_3_fatal_throws.apk"}
+    def apk3recovPreOut = apks.findSingle {it.fileName == "mock_3_recovPreOut_throws.apk"}
+    def apk4fatal = apks.findSingle {it.fileName == "mock_4_fatal_throws.apk"}
 
     def cfg = new ConfigurationForTests().withFileSystem(mockedFs.fs).get()
 
     def exceptionSpecs = [
+
       // Thrown during Exploration.explorationLoop()->ResetAppExplorationAction.run()
+      // Added to ApkExplorationExceptionsCollection
+      //
       // The call index is 2 because 1st call is made to close 'app has stopped' dialog box before the exploration loop starts,
       // i.e. in org.droidmate.command.exploration.Exploration.tryWarnDeviceDisplaysHomeScreen
       new ExceptionSpec("perform", apk2recov.packageName, /* call index */ 2),
+
+      // KJA currently this is the last caught exception, as DroidMate doesn't recover properly from such situation.
+      // Thrown during Exploration.tryRun()->tryDeviceHasPackageInstalled()
+      // Added to ApkExplorationExceptionsCollection
+      new ExceptionSpec("hasPackageInstalled", apk3recovPreOut.packageName),
+
       // Thrown during AndroidDeviceDeployer.tryTearDown()
-      new ExceptionSpec("stopUiaDaemon", apk3fatal.packageName),
-      // Thrown during ApkDeployer.tryUndeployApk(). Suppressed by the exception above.
+      // Added to ApkExplorationExceptionsCollection
+      new ExceptionSpec("stopUiaDaemon", apk4fatal.packageName),
+      // Thrown during ApkDeployer.tryUndeployApk().
+      // Suppressed by the exception above.
+      //
       // The call index is 2 because 1st call is made during org.droidmate.tools.ApkDeployer.tryReinstallApk
-      new ExceptionSpec("uninstallApk", apk3fatal.packageName, /* call index */ 2),
-      // Thrown during Exploration.tryRun() -> tryAssertDeviceHasPackageInstalled(). Suppressed by the exception above.
-      new ExceptionSpec("hasPackageInstalled", apk3fatal.packageName),
+      new ExceptionSpec("uninstallApk", apk4fatal.packageName, /* call index */ 2),
+      // Thrown during Exploration.tryRun() -> tryDeviceHasPackageInstalled().
+      // Suppressed by the exception above.
+      // Thrown during Exploration.tryRun() -> tryDeviceHasPackageInstalled(). Suppressed by the exception above.
+      new ExceptionSpec("hasPackageInstalled", apk4fatal.packageName),
+
     ]
 
 
