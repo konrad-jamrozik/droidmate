@@ -206,9 +206,6 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   void uninstallApk(String apkPackageName, boolean warnAboutFailure) throws DroidmateException
   {
     findMatchingExceptionSpecAndThrowIfApplies("uninstallApk", apkPackageName)
-
-    // KJA
-    // this.currentSimulation = null
   }
 
   @Override

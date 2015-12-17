@@ -22,7 +22,7 @@ class ExceptionSpec implements IExceptionSpec
   final boolean throwsEx
   final Boolean exceptionalReturnBool
 
-  ExceptionSpec(String methodName, String packageName, int callIndex = 1, boolean throwsEx = true, Boolean exceptionalReturnBool = null)
+  ExceptionSpec(String methodName, String packageName = null, int callIndex = 1, boolean throwsEx = true, Boolean exceptionalReturnBool = null)
   {
     this.methodName = methodName
     this.packageName = packageName
@@ -35,7 +35,7 @@ class ExceptionSpec implements IExceptionSpec
 
   boolean matches(String methodName, String packageName, int callIndex)
   {
-    if (this.methodName == methodName && this.packageName == packageName && this.callIndex == callIndex)
+    if (this.methodName == methodName && (this.packageName in [null, packageName]) && this.callIndex == callIndex)
       return true
     return false
   }

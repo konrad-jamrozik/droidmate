@@ -114,10 +114,8 @@ public class ExplorationTest extends DroidmateGroovyTestCase
    *
    * </p><p>
    * The call to
-   * <pre>
-   *   org.droidmate.device.IExplorableAndroidDevice#hasPackageInstalled(java.lang.String)
-   * </pre>
-   * returned false, causing an assert to fail.
+   * <pre>org.droidmate.device.IExplorableAndroidDevice#hasPackageInstalled(java.lang.String)</pre>
+   * returns false, causing an assert to fail.
    *
    * </p><p>
    * https://hg.st.cs.uni-saarland.de/issues/994
@@ -129,8 +127,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
   void "Has no bug #994"()
   {
     String simulatorSpec = "s1-w1->s1"
-    // KJA current work: hardcoded package name
-    runOnSimulator(simulatorSpec, [new ExceptionSpec("hasPackageInstalled", "mock_app1.pkg_name", 1, false, false)])
+    runOnSimulator(simulatorSpec, [new ExceptionSpec("hasPackageInstalled", null, 1, false, false)])
   }
 
   private void runOnSimulator(String simulatorSpec, List<IExceptionSpec> exceptionSpecs = [], Configuration cfg = new ConfigurationForTests().get())
