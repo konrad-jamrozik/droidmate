@@ -24,7 +24,6 @@ import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
-import org.droidmate.test_suite_categories.ExplorationImplAug2015
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator
 import org.droidmate.tools.DeviceTools
@@ -44,7 +43,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
 
   // it fails because the device simulator now always uses UnreliableGuiSnapshot and the code doesn't handle it yet.
   // after it passes 'app has stopped' dialog box, work on providing invalid gui snapshots, within the retry attempts, of course.
-  @Category([RequiresSimulator,ExplorationImplAug2015])
+  @Category([RequiresSimulator])
   @Test
   void "Runs on simulator"()
   {
@@ -52,7 +51,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     runOnSimulator(simulatorSpec)
   }
 
-  @Category([RequiresSimulator,ExplorationImplAug2015])
+  @Category([RequiresSimulator])
   @Test
   void "Supports external app displayed after explored app reset"()
   {
@@ -60,7 +59,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     runOnSimulator(simulatorSpec)
   }
 
-  @Category([RequiresSimulator,ExplorationImplAug2015])
+  @Category([RequiresSimulator])
   @Test
   void "Supports external app displayed after exploration termination"()
   {
@@ -69,7 +68,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     runOnSimulator(simulatorSpec, cfg)
   }
 
-  @Category([RequiresDevice, ExplorationImplAug2015])
+  @Category([RequiresDevice])
   @Test
   void "Collects monitored API calls logs during device exploration"()
   {

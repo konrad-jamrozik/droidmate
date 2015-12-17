@@ -26,7 +26,6 @@ import org.droidmate.misc.TimeGenerator
 import org.droidmate.storage.Storage2
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
-import org.droidmate.test_suite_categories.ExplorationImplAug2015
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator
 import org.droidmate.tools.DeviceToolsMock
@@ -76,7 +75,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    *
    * </p>
    */
-  @Category([RequiresSimulator, ExplorationImplAug2015])
+  @Category([RequiresSimulator])
   @Test
   public void "Handles exploration and fatal device exceptions"()
   {
@@ -139,7 +138,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    * An {@code AaptWrapper} stub is used to provide the apk stub metadata.
    * </p>
    */
-  @Category([RequiresSimulator, ExplorationImplAug2015])
+  @Category([RequiresSimulator])
   @Test
   public void "Explores on a device simulator"()
   {
@@ -163,7 +162,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
   }
 
-  @Category([RequiresDevice, ExplorationImplAug2015])
+  @Category([RequiresDevice])
   @Test
   public void "Explores monitored apk on a real device"()
   {
