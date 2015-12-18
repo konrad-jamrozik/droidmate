@@ -172,13 +172,15 @@ class ExploreCommand extends DroidmateCommand
         log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
         if (allApksExplorationExceptions.any {it.isFatal()})
-          log.info("Skipping the apk: fatal ${ApkExplorationException.class.simpleName} encountered.")
+          log.info("Skipping the apk: fatal ${ApkExplorationException.simpleName} encountered previously.")
         else
           allApksExplorationExceptions +=
             this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
               tryExploreOnDeviceAndSerialize(deployedApk, device, out)
             }
       }
+
+      return allApksExplorationExceptions
     }
   }
 

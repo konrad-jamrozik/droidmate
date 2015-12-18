@@ -318,9 +318,7 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   public String toString()
   {
-    return "AndroidDevice{" +
-      "serialNumber='" + serialNumber + '\'' +
-      '}'
+    return "{device $serialNumber}"
   }
 
 }

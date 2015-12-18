@@ -11,6 +11,8 @@ package org.droidmate.tools
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.AndroidDeviceDescriptor
+import org.droidmate.android_sdk.ApkExplorationException
+import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.common.Assert
 import org.droidmate.common.DroidmateException
@@ -69,17 +71,17 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   protected void trySetUp(IDeployableAndroidDevice device) throws DeviceException
   {
 
-    adbWrapper.startAdbServer()
+    this.adbWrapper.startAdbServer()
 
-    device.forwardPort(cfg.uiautomatorDaemonTcpPort)
+    device.forwardPort(this.cfg.uiautomatorDaemonTcpPort)
     device.forwardPort(MonitorJavaTemplate.srv_port)
 
-    device.pushJar(cfg.uiautomatorDaemonJar)
-    device.pushJar(cfg.monitorApk)
+    device.pushJar(this.cfg.uiautomatorDaemonJar)
+    device.pushJar(this.cfg.monitorApk)
 
     device.startUiaDaemon()
 
-    deviceIsSetup = true
+    this.deviceIsSetup = true
   }
 
   /**
@@ -112,33 +114,36 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
    * @see #tryTearDown(IDeployableAndroidDevice)
    */
   @Override
-  public void withSetupDevice(int deviceIndex, Closure computation) throws DeviceException
+  public List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> computation)
   {
     log.info("withSetupDevice(deviceIndex: $deviceIndex, computation)")
-
     Assert.checkClosureFirstParameterSignature(computation, IDeviceWithReadableLogs)
 
-    String serialNumber = resolveSerialNumber(adbWrapper, usedSerialNumbers, deviceIndex)
+    List<ExplorationException> explorationExceptions = []
+    //noinspection GroovyAssignabilityCheck
+    def (IDeviceWithReadableLogs device, String serialNumber, DeviceException setupDeviceException) = setupDevice(deviceIndex)
+    if (setupDeviceException != null)
+    {
+      explorationExceptions << new ExplorationException(setupDeviceException)
+      return explorationExceptions
+    }
 
-    usedSerialNumbers << serialNumber
-
-    IDeviceWithReadableLogs device = withReadableLogs(deviceFactory.create(serialNumber))
-
-    trySetUp(device)
-
-    Throwable savedTryThrowable = null
+    assert explorationExceptions.empty
     try
     {
-      computation(device)
-    } catch (Throwable tryThrowable)
+      List<ApkExplorationException> apkExplorationExceptions = computation(device)
+      explorationExceptions += apkExplorationExceptions
+    }
+    catch (Throwable computationThrowable)
     {
-      log.debug("! Caught ${tryThrowable.class.simpleName} in withSetupDevice.computation(device). Rethrowing.")
-      savedTryThrowable = tryThrowable
-      throw savedTryThrowable
-
-    } finally
+      log.error("!!! Caught ${computationThrowable.class.simpleName} in withSetupDevice($deviceIndex)->computation($device). " +
+        "This means ${ApkExplorationException.simpleName}s have been lost, if any! " +
+        "Adding the exception as a cause to an ${ExplorationException.class.simpleName}. Then adding to collected exceptions list.")
+      explorationExceptions << new ExplorationException(computationThrowable)
+    }
+    finally
     {
-      log.debug("Finalizing: withSetupDevice.finally {} for computation(device)")
+      log.debug("Finalizing: withSetupDevice($deviceIndex)->finally{} for computation($device)")
       try
       {
         tryTearDown(device)
@@ -146,16 +151,37 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
       } catch (Throwable tearDownThrowable)
       {
-        log.debug("! Caught ${tearDownThrowable.class.simpleName} in tryTearDown(device). Adding suppressed exception, if any, and rethrowing.")
-        if (savedTryThrowable != null)
-          tearDownThrowable.addSuppressed(savedTryThrowable)
-        throw tearDownThrowable
+        log.debug("! Caught ${tearDownThrowable.class.simpleName} in withSetupDevice($deviceIndex)->tryTearDown($device). " +
+          "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to collected exceptions list.")
+        explorationExceptions << new ExplorationException(tearDownThrowable)
       }
-      log.debug("Finalizing DONE: withSetupDevice.finally {} for computation(device)")
+      log.debug("Finalizing DONE: withSetupDevice($deviceIndex)->finally{} for computation($device)")
+    }
+    return explorationExceptions
+  }
+
+  private List setupDevice(int deviceIndex)
+  {
+    try
+    {
+      String serialNumber = tryResolveSerialNumber(this.adbWrapper, this.usedSerialNumbers, deviceIndex)
+
+      this.usedSerialNumbers << serialNumber
+
+      IDeviceWithReadableLogs device = withReadableLogs(this.deviceFactory.create(serialNumber))
+
+      trySetUp(device)
+
+      return [device, serialNumber, null]
+
+    } catch (DeviceException e)
+    {
+      return [null, null, e]
     }
   }
 
-  private static String resolveSerialNumber(IAdbWrapper adbWrapper, List<String> usedSerialNumbers, int deviceIndex)
+  private
+  static String tryResolveSerialNumber(IAdbWrapper adbWrapper, List<String> usedSerialNumbers, int deviceIndex) throws DeviceException
   {
     List<AndroidDeviceDescriptor> devicesDescriptors = adbWrapper.getAndroidDevicesDescriptors()
     String serialNumber = getSerialNumber(devicesDescriptors, usedSerialNumbers, deviceIndex)
@@ -199,12 +225,12 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   IDeviceWithReadableLogs withReadableLogs(IAndroidDevice device)
   {
     return new RobustDevice(device,
-      cfg.monitorServerStartTimeout,
-      cfg.monitorServerStartQueryInterval,
-      cfg.clearPackageRetryAttempts,
-      cfg.clearPackageRetryDelay,
-      cfg.getValidGuiSnapshotRetryAttempts,
-      cfg.getValidGuiSnapshotRetryDelay)
+      this.cfg.monitorServerStartTimeout,
+      this.cfg.monitorServerStartQueryInterval,
+      this.cfg.clearPackageRetryAttempts,
+      this.cfg.clearPackageRetryDelay,
+      this.cfg.getValidGuiSnapshotRetryAttempts,
+      this.cfg.getValidGuiSnapshotRetryDelay)
 
   }
 

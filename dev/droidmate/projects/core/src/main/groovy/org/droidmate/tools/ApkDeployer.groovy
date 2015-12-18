@@ -66,11 +66,10 @@ public class ApkDeployer implements IApkDeployer
       log.debug("! Caught ${computationThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->computation(). " +
         "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to collected exceptions list.")
       apkExplorationExceptions << new ApkExplorationException(apk, computationThrowable)
-
     }
     finally
     {
-      log.debug("Finalizing: withDeployedApk.finally{} for computation($apk.fileName)")
+      log.debug("Finalizing: withDeployedApk($device, ${apk.fileName}).finally{} for computation($apk.fileName)")
       try
       {
         tryUndeployApk(device, apk)
@@ -81,7 +80,7 @@ public class ApkDeployer implements IApkDeployer
           "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to collected exceptions list.")
         apkExplorationExceptions << new ApkExplorationException(apk, undeployApkThrowable)
       }
-      log.debug("Finalizing DONE: withDeployedApk.finally{} for computation($apk.fileName)")
+      log.debug("Finalizing DONE: withDeployedApk($device, ${apk.fileName}).finally{} for computation($apk.fileName)")
     }
 
     log.trace("Undeployed apk $apk.fileName")

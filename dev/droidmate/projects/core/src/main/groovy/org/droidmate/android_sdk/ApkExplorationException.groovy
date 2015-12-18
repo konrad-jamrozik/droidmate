@@ -8,17 +8,15 @@
 // www.droidmate.org
 package org.droidmate.android_sdk
 
-import org.droidmate.common.DroidmateException
 import org.droidmate.exceptions.DeviceException
 
-public class ApkExplorationException extends DroidmateException
+public class ApkExplorationException extends ExplorationException
 {
 
   private static final long serialVersionUID = 1
 
   final IApk      apk
   final Throwable exception
-
 
   public ApkExplorationException(IApk apk, Throwable cause)
   {
