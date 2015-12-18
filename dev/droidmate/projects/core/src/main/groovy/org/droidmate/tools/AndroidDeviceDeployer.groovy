@@ -151,7 +151,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
       } catch (Throwable tearDownThrowable)
       {
-        log.debug("! Caught ${tearDownThrowable.class.simpleName} in withSetupDevice($deviceIndex)->tryTearDown($device). " +
+        log.warn("! Caught ${tearDownThrowable.class.simpleName} in withSetupDevice($deviceIndex)->tryTearDown($device). " +
           "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to collected exceptions list.")
         explorationExceptions << new ExplorationException(tearDownThrowable)
       }

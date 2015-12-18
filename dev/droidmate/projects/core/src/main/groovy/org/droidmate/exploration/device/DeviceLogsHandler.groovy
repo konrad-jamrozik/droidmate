@@ -211,7 +211,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
         return null
       } else
       {
-        log.debug("! Caught ${TcpServerUnreachableException.simpleName} from " +
+        log.warn("! Caught ${TcpServerUnreachableException.simpleName} from " +
           "messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer(). Rethrowing.")
 
         throw e
