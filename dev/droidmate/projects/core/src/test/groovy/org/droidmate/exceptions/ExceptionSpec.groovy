@@ -43,11 +43,12 @@ class ExceptionSpec implements IExceptionSpec
     return false
   }
 
-  void throwEx() throws TestDeviceException
+  void throwEx() throws ITestException
   {
     assert this.exceptionalReturnBool == null
+    //noinspection GroovyIfStatementWithIdenticalBranches
     if (this.throwsAssertionError)
-      throw new AssertionError()
+      throw new TestAssertionError(this)
     else
       throw new TestDeviceException(this)
   }

@@ -40,6 +40,6 @@ public class ApkExplorationException extends ExplorationException
 
   public boolean isFatal()
   {
-    !(this.cause.class instanceof DeviceException)
+    !(this.cause instanceof DeviceException)
   }
 }

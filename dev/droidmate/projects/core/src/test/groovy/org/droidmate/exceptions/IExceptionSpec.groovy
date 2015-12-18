@@ -14,6 +14,12 @@ interface IExceptionSpec extends Serializable
 
   boolean getThrowsEx()
 
+  String getPackageName()
+
+  String getMethodName()
+
+  int getCallIndex()
+
   void throwEx() throws TestDeviceException
 
   Boolean getExceptionalReturnBool()

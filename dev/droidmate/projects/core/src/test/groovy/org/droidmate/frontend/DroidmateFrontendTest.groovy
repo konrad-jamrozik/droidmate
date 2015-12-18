@@ -29,7 +29,6 @@ import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator
-import org.droidmate.test_suite_categories.UnderConstruction
 import org.droidmate.tools.DeviceToolsMock
 import org.junit.FixMethodOrder
 import org.junit.Test
@@ -77,48 +76,48 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    *
    * </p>
    */
-  @Category([RequiresSimulator, UnderConstruction])
+  @Category([RequiresSimulator])
   @Test
   public void "Handles exploration and fatal device exceptions"()
   {
-    def mockedFs = new MockFileSystem(["mock_1_ok", "mock_2_recov_throws", "mock_3_recovPreOut_throws", "mock_4_fatal_throws"])
+    def mockedFs = new MockFileSystem([
+      "mock_1_noThrow_outputOk",
+      "mock_2_throwBeforeLoop_outputNone",
+      "mock_3_throwInAndAfterLoop_outputPartial",
+      "mock_4_throwsOnApkUndep_outputOk",
+      "mock_5_throwsAssertInLoopAndOnDevUndep_outputNone"])
     def apks = mockedFs.apks
-    def apk1ok = apks.findSingle {it.fileName == "mock_1_ok.apk"}
-    def apk2recov = apks.findSingle {it.fileName == "mock_2_recov_throws.apk"}
-    def apk3recovPreOut = apks.findSingle {it.fileName == "mock_3_recovPreOut_throws.apk"}
-    def apk4fatal = apks.findSingle {it.fileName == "mock_4_fatal_throws.apk"}
+    def apk1 = apks.findSingle {it.fileName == "mock_1_noThrow_outputOk.apk"}
+    def apk2 = apks.findSingle {it.fileName == "mock_2_throwBeforeLoop_outputNone.apk"}
+    def apk3 = apks.findSingle {it.fileName == "mock_3_throwInAndAfterLoop_outputPartial.apk"}
+    def apk4 = apks.findSingle {it.fileName == "mock_4_throwsOnApkUndep_outputOk.apk"}
+    def apk5 = apks.findSingle {it.fileName == "mock_5_throwsAssertInLoopAndOnDevUndep_outputNone.apk"}
 
     def cfg = new ConfigurationForTests().withFileSystem(mockedFs.fs).get()
 
     def exceptionSpecs = [
 
-      // KJA to review doc
+      // Thrown during Exploration.run()->tryDeviceHasPackageInstalled()
+      new ExceptionSpec("hasPackageInstalled", apk2.packageName),
 
       // Thrown during Exploration.explorationLoop()->ResetAppExplorationAction.run()
-      // Added to ApkExplorationExceptionsCollection
-      //
       // The call index is 2 because 1st call is made to close 'app has stopped' dialog box before the exploration loop starts,
       // i.e. in org.droidmate.command.exploration.Exploration.tryWarnDeviceDisplaysHomeScreen
-      new ExceptionSpec("perform", apk2recov.packageName, /* call index */ 2),
+      new ExceptionSpec("perform", apk3.packageName, /* call index */ 2),
 
-      // KJA current work
-      // Thrown during Exploration.run()->tryDeviceHasPackageInstalled()
-      // Added to ApkExplorationExceptionsCollection
-//      new ExceptionSpec("hasPackageInstalled", apk3recovPreOut.packageName),
+      // Thrown during ApkDeployer.tryUndeployApk().
+      // The call index is 2 because 1st call is made during org.droidmate.tools.ApkDeployer.tryReinstallApk
+      new ExceptionSpec("uninstallApk", apk3.packageName, /* call index */ 2),
+
+      // Thrown during ApkDeployer.tryUndeployApk().
+      // The call index is 2 because 1st call is made during org.droidmate.tools.ApkDeployer.tryReinstallApk
+      new ExceptionSpec("uninstallApk", apk4.packageName, /* call index */ 2),
+
+      // Thrown during Exploration.explorationLoop()
+      new ExceptionSpec("perform", apk5.packageName, /* call index */ 3, /* throwsEx */ true, /* exceptionalReturnBool */ null, /* throwsAssertionError */ true),
 
       // Thrown during AndroidDeviceDeployer.tryTearDown()
-      // Added to ApkExplorationExceptionsCollection
-//      new ExceptionSpec("stopUiaDaemon", apk4fatal.packageName),
-      // Thrown during ApkDeployer.tryUndeployApk().
-      // Suppressed by the exception above.
-      //
-      // The call index is 2 because 1st call is made during org.droidmate.tools.ApkDeployer.tryReinstallApk
-//      new ExceptionSpec("uninstallApk", apk4fatal.packageName, /* call index */ 2),
-      // Thrown during Exploration.run() -> tryDeviceHasPackageInstalled().
-      // Suppressed by the exception above.
-      // Thrown during Exploration.run() -> tryDeviceHasPackageInstalled(). Suppressed by the exception above.
-//      new ExceptionSpec("hasPackageInstalled", apk4fatal.packageName),
-
+      new ExceptionSpec("stopUiaDaemon", apk5.packageName),
     ]
 
 
@@ -137,13 +136,11 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
     Path outputDir = new DroidmateOutputDir(cfg.droidmateOutputDirPath).path
 
-    assertSer2FilesIn(outputDir, [apk1ok.packageName, apk2recov.packageName])
+    assertSer2FilesIn(outputDir, [apk1.packageName, apk3.packageName, apk4.packageName])
 
     assert spy.handledThrowable instanceof ThrowablesCollection
     assert spy.throwables.size() == exceptionSpecs.size()
-    assert spy.throwables.collect {
-      Throwables.getRootCause(it) as ITestException
-    }*.exceptionSpec == exceptionSpecs
+    assert spy.throwables.collect {Throwables.getRootCause(it) as ITestException}*.exceptionSpec == exceptionSpecs
   }
 
   /**
