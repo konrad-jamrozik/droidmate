@@ -16,27 +16,14 @@ public class ApkExplorationException extends ExplorationException
   private static final long serialVersionUID = 1
 
   final IApk      apk
-  final Throwable exception
 
   public ApkExplorationException(IApk apk, Throwable cause)
   {
     super(cause)
     this.apk = apk
-    this.exception = cause
 
   }
 
-
-  public String getInstanceName()
-  {
-    this.apk.fileName
-  }
-
-
-  public String getApkPath()
-  {
-    this.apk.absolutePath
-  }
 
   public boolean isFatal()
   {

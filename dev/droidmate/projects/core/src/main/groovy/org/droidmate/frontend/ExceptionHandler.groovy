@@ -10,18 +10,18 @@ package org.droidmate.frontend
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.ApkExplorationException
-import org.droidmate.android_sdk.ApkExplorationExceptionsCollection
 import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ThrowablesCollection
+import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 
 import static org.droidmate.common.logging.Markers.exceptions
 
 @Slf4j
 class ExceptionHandler implements IExceptionHandler
 {
+
   @Override
   int handle(Throwable e)
   {
@@ -30,60 +30,47 @@ class ExceptionHandler implements IExceptionHandler
     return returnCode
   }
 
-  @SuppressWarnings("GroovyUnusedDeclaration") // Actually used, thanks to groovy's dispatch on method param type.
-  private static int internalHandle(ApkExplorationExceptionsCollection e)
-  {
-    logApkExplorationExceptionsCollection(e)
-    return 1
-  }
-
-  @SuppressWarnings("GroovyUnusedDeclaration") // Actually used, thanks to groovy's dispatch on method param type.
-  private static int internalHandle(ThrowablesCollection e)
-  {
-    logThrowablesCollection(e)
-    return 2
-  }
-
-
-  @SuppressWarnings("GroovyUnusedDeclaration") // Actually used, thanks to groovy's dispatch on method param type.
-  private static int internalHandle(DeviceException e)
-  {
-    logDeviceException(e)
-    return 3
-  }
-
   private static int internalHandle(Throwable e)
   {
-    logThrowable(e)
-    return 4
+    assert e.suppressed.length == 0
+
+    switch (e)
+    {
+      case ApkExplorationException:
+        logApkExplorationException(e as ApkExplorationException)
+        return 1
+
+      case ExplorationException:
+        logExplorationException(e as ExplorationException)
+        return 2
+
+      case ThrowablesCollection:
+        logThrowablesCollection(e as ThrowablesCollection)
+        return 3
+
+      case Throwable:
+        logThrowable(e)
+        return 4
+
+      default:
+        throw new UnexpectedIfElseFallthroughError()
+    }
   }
 
-  // KJA add support for (Apk)ExplorationException
-
-
-  private static void logApkExplorationExceptionsCollection(ApkExplorationExceptionsCollection e)
+  private static void logApkExplorationException(ApkExplorationException e)
   {
-    String message = ""
-    message += "Exploration exceptions have been thrown during DroidMate run. Count: ${e.exceptions.size()}. \n"
-    message += "--- The exceptions list, in format \"offending app file name | the exception\" \n"
-    message = e.exceptions.inject(message) {acc, val -> return acc + "${val.instanceName} | ${val.exception}\n"}
-    message += "--- End of the list\n"
+    String message = "An ${e.class.simpleName} was thrown during DroidMate run, pertaining to ${e.apk.fileName}:"
 
-    log.error("$message")
+    log.error("$message $e")
+    log.error(exceptions, "$message\n", e)
+  }
 
-    log.error(exceptions, message)
-    log.error(exceptions, "--- Now the exception collection details will be given:")
-    log.error(exceptions, "", e)
-    log.error(exceptions, "--- Now the details of the exceptions wrapped in each of the ${ApkExplorationException.simpleName}s in the exceptions collection will be listed:")
-    e.exceptions.eachWithIndex {it, int i ->
+  private static void logExplorationException(ExplorationException e)
+  {
+    String message = "An ${e.class.simpleName} was thrown during DroidMate run:"
 
-      assert it.suppressed.size() == 0
-      log.error(exceptions, "Exception index: ${i + 1} out of ${e.exceptions.size()}. Offending app file path: $it.apkPath:\n", it.exception)
-    }
-
-    log.error(exceptions, "--- The details of all the exploration exceptions have been listed.")
-
-    assert e.suppressed.size() == 0
+    log.error("$message $e")
+    log.error(exceptions, "$message\n", e)
   }
 
   private static void logThrowablesCollection(ThrowablesCollection e)
@@ -92,10 +79,10 @@ class ExceptionHandler implements IExceptionHandler
     assert e.cause == null
     assert e.suppressed.length == 0
 
-    assert e.throwables.every { it instanceof ExplorationException }
+    assert e.throwables.every {it instanceof ExplorationException}
 
     def message = "A nonempty ${e.class.simpleName} was thrown during DroidMate run. " +
-      "Each of the ${Throwable.simpleName}s will now be logged."
+      "Each of the ${e.throwables.size()} ${Throwable.simpleName}s will now be logged."
     log.error(message)
     log.error(exceptions, message)
 
@@ -109,20 +96,9 @@ class ExceptionHandler implements IExceptionHandler
     }
   }
 
-
-  private static void logDeviceException(DeviceException e)
-  {
-    String message = "A fatal ${DeviceException.simpleName} was thrown during DroidMate run:"
-
-    log.error("$message $e")
-    log.error(exceptions, "$message\n", e)
-
-    logSuppressedIfAny(e, 1)
-  }
-
   private static void logThrowable(Throwable e)
   {
-    String message = "A fatal ${Throwable.simpleName} was thrown during DroidMate run. If you cannot diagnose and fix the " +
+    String message = "An unidentified ${e.class.simpleName} was thrown during DroidMate run. If you cannot diagnose and fix the " +
       "problem yourself by inspecting the logs, this might a bug in the code. Sorry!\n" +
       "In such case, please contact the DroidMate developer, Konrad Jamrozik, at jamrozik@st.cs.uni-saarland.de.\n" +
       "Please include the output dir (by default set to ${Configuration.defaultDroidmateOutputDir}).\n" +
@@ -131,30 +107,7 @@ class ExceptionHandler implements IExceptionHandler
     log.error("$message$e")
     log.error(exceptions, message, e)
 
-    logSuppressedIfAny(e, 1)
   }
 
-  private static void logSuppressedIfAny(Throwable throwable, int suppressionDepth)
-  {
-    int suppressedCount = throwable.suppressed.size()
-    if (suppressedCount == 0)
-      return
-
-    assert suppressedCount > 0
-
-    def msg = "The '$throwable' has ${suppressedCount} suppressed exceptions at suppression depth of $suppressionDepth. " +
-      "Each of them will be now logged."
-    log.error(msg)
-    log.error(exceptions, msg)
-
-    throwable.suppressed.each {
-
-      def suppressedMsg = "Suppression depth: $suppressionDepth | "
-      log.error(suppressedMsg + "$it")
-      log.error(exceptions, suppressedMsg, it)
-
-      logSuppressedIfAny(it, suppressionDepth + 1)
-    }
-  }
 
 }
