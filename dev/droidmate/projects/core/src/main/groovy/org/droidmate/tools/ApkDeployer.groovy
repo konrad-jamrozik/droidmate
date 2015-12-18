@@ -97,11 +97,11 @@ public class ApkDeployer implements IApkDeployer
       device.clearLogcat()
       tryReinstallApk(device, apk)
 
-    } catch (DeviceException e)
+    } catch (Throwable deployThrowable)
     {
-      log.warn("! Caught ${e.class.simpleName} in deployApk($device, $apk.fileName). " +
+      log.warn("! Caught ${deployThrowable.class.simpleName} in deployApk($device, $apk.fileName). " +
         "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to collected exceptions list.")
-      return new ApkExplorationException(apk, e)
+      return new ApkExplorationException(apk, deployThrowable)
     }
     return null
   }
