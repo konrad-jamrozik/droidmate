@@ -119,7 +119,6 @@ class Exploration implements IExploration
   {
     log.trace("tryDeviceHasPackageInstalled(device, $packageName)")
 
-    // KJA bug #994
     if (!device.hasPackageInstalled(packageName))
       throw new DeviceException()
   }
