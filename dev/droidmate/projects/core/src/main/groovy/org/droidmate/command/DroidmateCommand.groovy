@@ -9,15 +9,15 @@
 package org.droidmate.command
 
 import groovy.util.logging.Slf4j
-import org.droidmate.common.DroidmateException
 import org.droidmate.configuration.Configuration
+import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.misc.TimeProvider
 
 @Slf4j
 abstract class DroidmateCommand
 {
 
-  abstract void execute(Configuration cfg) throws DroidmateException
+  abstract void execute(Configuration cfg) throws ThrowablesCollection
 
   public static DroidmateCommand build(
     boolean processUiaTestCasesLogs, boolean extractDataFromPreviousRun, Configuration cfg)

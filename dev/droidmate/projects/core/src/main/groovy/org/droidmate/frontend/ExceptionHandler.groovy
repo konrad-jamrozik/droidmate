@@ -11,6 +11,7 @@ package org.droidmate.frontend
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.ApkExplorationException
 import org.droidmate.android_sdk.ApkExplorationExceptionsCollection
+import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.DeviceException
@@ -87,13 +88,14 @@ class ExceptionHandler implements IExceptionHandler
 
   private static void logThrowablesCollection(ThrowablesCollection e)
   {
-    assert e.throwables.size() == 2
-    assert e.throwables[0] instanceof ApkExplorationExceptionsCollection
-    assert !(e.throwables[1] instanceof ApkExplorationExceptionsCollection)
+    assert !(e.throwables.empty)
+    assert e.cause == null
+    assert e.suppressed.length == 0
 
+    assert e.throwables.every { it instanceof ExplorationException }
 
-    def message = "${e.throwables[0].class.simpleName} as well as ${e.throwables[1].class.simpleName} " +
-      "were thrown during DroidMare run. Each of them will now be logged."
+    def message = "A nonempty ${e.class.simpleName} was thrown during DroidMate run. " +
+      "Each of the ${Throwable.simpleName}s will now be logged."
     log.error(message)
     log.error(exceptions, message)
 
@@ -105,8 +107,6 @@ class ExceptionHandler implements IExceptionHandler
       log.error(throwableDelimiter)
       log.error(exceptions, throwableDelimiter)
     }
-
-    assert e.suppressed.size() == 0
   }
 
 

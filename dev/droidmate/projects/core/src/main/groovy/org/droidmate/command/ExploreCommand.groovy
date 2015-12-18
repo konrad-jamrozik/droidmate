@@ -16,10 +16,10 @@ import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.command.exploration.Exploration
 import org.droidmate.command.exploration.IExploration
-import org.droidmate.common.DroidmateException
 import org.droidmate.configuration.Configuration
 import org.droidmate.deprecated_still_used.*
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IDeviceWithReadableLogs
@@ -75,7 +75,7 @@ class ExploreCommand extends DroidmateCommand
   }
 
   @Override
-  void execute(Configuration cfg) throws DroidmateException
+  void execute(Configuration cfg) throws ThrowablesCollection
   {
     cleanOutputDir(cfg.droidmateOutputDirPath)
 
@@ -87,6 +87,8 @@ class ExploreCommand extends DroidmateCommand
     }
 
     List<ExplorationException> explorationExceptions = execute(cfg, apks)
+    if (!explorationExceptions.empty)
+      throw new ThrowablesCollection(explorationExceptions)
   }
 
   private void cleanOutputDir(Path path)
