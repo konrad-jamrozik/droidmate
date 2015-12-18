@@ -14,6 +14,7 @@ import org.droidmate.common.logcat.MonitoredInlinedApkFixtureApiLogs
 import org.droidmate.configuration.Configuration
 import org.droidmate.device_simulation.AndroidDeviceSimulator
 import org.droidmate.device_simulation.DeviceSimulation
+import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ExceptionSpec
 import org.droidmate.exceptions.IExceptionSpec
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
@@ -22,13 +23,13 @@ import org.droidmate.exploration.device.IDeviceWithReadableLogs
 import org.droidmate.exploration.device.RobustDevice
 import org.droidmate.init.InitConstants
 import org.droidmate.logcat.IApiLogcatMessage
+import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator
-import org.droidmate.test_suite_categories.UnderConstruction
 import org.droidmate.tools.DeviceTools
 import org.droidmate.tools.IDeviceTools
 import org.droidmate.tools.SingleApkFixture
@@ -122,17 +123,17 @@ public class ExplorationTest extends DroidmateGroovyTestCase
    *
    * </p>
    */
-  @Category([RequiresSimulator, UnderConstruction])
+  @Category([RequiresSimulator])
   @Test
   void "Has no bug #994"()
   {
-    // KJA current work
-
     String simulatorSpec = "s1-w1->s1"
-    runOnSimulator(simulatorSpec, [new ExceptionSpec("hasPackageInstalled", null, 1, false, false)])
+    def failableOut = runOnSimulator(simulatorSpec, [new ExceptionSpec("hasPackageInstalled", null, 1, false, false)])
+    assert failableOut.result == null
+    assert failableOut.exception != null
   }
 
-  private void runOnSimulator(String simulatorSpec, List<IExceptionSpec> exceptionSpecs = [], Configuration cfg = new ConfigurationForTests().get())
+  private Failable<IApkExplorationOutput2, DeviceException> runOnSimulator(String simulatorSpec, List<IExceptionSpec> exceptionSpecs = [], Configuration cfg = new ConfigurationForTests().get())
   {
     ITimeGenerator timeGenerator = new TimeGenerator()
 
@@ -149,16 +150,20 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     Exploration exploration = Exploration.build(cfg, timeGenerator)
 
     // Act
-    def out2 = exploration.run(apk, simulatedDevice).result
+    Failable<IApkExplorationOutput2, DeviceException> failableOut = exploration.run(apk, simulatedDevice)
 
-    if (!out2.noException)
-      out2.exception.printStackTrace()
+    if (failableOut.result != null)
+    {
+      if (!failableOut.result.noException)
+        failableOut.exception.printStackTrace()
 
-    assert out2.noException
+      assert failableOut.result.noException
 
-    def out2Simulation = new DeviceSimulation(out2)
-    def expectedSimulation = simulator.currentSimulation
-    out2Simulation.assertEqual(expectedSimulation)
+      def out2Simulation = new DeviceSimulation(failableOut.result)
+      def expectedSimulation = simulator.currentSimulation
+      out2Simulation.assertEqual(expectedSimulation)
+    }
+    return failableOut
 
   }
 
