@@ -138,7 +138,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     {
       log.error("!!! Caught ${computationThrowable.class.simpleName} in withSetupDevice($deviceIndex)->computation($device). " +
         "This means ${ApkExplorationException.simpleName}s have been lost, if any! " +
-        "Adding the exception as a cause to an ${ExplorationException.class.simpleName}. Then adding to collected exceptions list.")
+        "Adding the exception as a cause to an ${ExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
       explorationExceptions << new ExplorationException(computationThrowable)
     }
     finally
@@ -152,7 +152,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       } catch (Throwable tearDownThrowable)
       {
         log.warn("! Caught ${tearDownThrowable.class.simpleName} in withSetupDevice($deviceIndex)->tryTearDown($device). " +
-          "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to collected exceptions list.")
+          "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
         explorationExceptions << new ExplorationException(tearDownThrowable)
       }
       log.debug("Finalizing DONE: withSetupDevice($deviceIndex)->finally{} for computation($device)")
@@ -177,7 +177,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     } catch (Throwable setupDeviceThrowable)
     {
       log.warn("! Caught ${setupDeviceThrowable.class.simpleName} in setupDevice($deviceIndex). " +
-        "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to collected exceptions list.")
+        "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
 
       return [null, null, setupDeviceThrowable]
     }
