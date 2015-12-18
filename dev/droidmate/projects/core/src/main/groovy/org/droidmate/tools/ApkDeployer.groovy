@@ -79,7 +79,7 @@ public class ApkDeployer implements IApkDeployer
       {
         log.warn("! Caught ${undeployApkThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->tryUndeployApk(). " +
           "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to collected exceptions list.")
-        apkExplorationExceptions << new ApkExplorationException(apk, undeployApkThrowable)
+        apkExplorationExceptions << new ApkExplorationException(apk, undeployApkThrowable, true)
       }
       log.debug("Finalizing DONE: withDeployedApk($device, ${apk.fileName}).finally{} for computation($apk.fileName)")
     }

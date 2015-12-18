@@ -83,15 +83,15 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     def mockedFs = new MockFileSystem([
       "mock_1_noThrow_outputOk",
       "mock_2_throwBeforeLoop_outputNone",
-      "mock_3_throwInAndAfterLoop_outputPartial",
-      "mock_4_throwsOnApkUndep_outputOk",
-      "mock_5_throwsAssertInLoopAndOnDevUndep_outputNone"])
+      "mock_3_throwInLoop_outputPartial",
+      "mock_4_throwsOUndeps_outputOk",
+      "mock_5_neverExplored_outputNone",
+    ])
     def apks = mockedFs.apks
     def apk1 = apks.findSingle {it.fileName == "mock_1_noThrow_outputOk.apk"}
     def apk2 = apks.findSingle {it.fileName == "mock_2_throwBeforeLoop_outputNone.apk"}
-    def apk3 = apks.findSingle {it.fileName == "mock_3_throwInAndAfterLoop_outputPartial.apk"}
-    def apk4 = apks.findSingle {it.fileName == "mock_4_throwsOnApkUndep_outputOk.apk"}
-    def apk5 = apks.findSingle {it.fileName == "mock_5_throwsAssertInLoopAndOnDevUndep_outputNone.apk"}
+    def apk3 = apks.findSingle {it.fileName == "mock_3_throwInLoop_outputPartial.apk"}
+    def apk4 = apks.findSingle {it.fileName == "mock_4_throwsOUndeps_outputOk.apk"}
 
     def cfg = new ConfigurationForTests().withFileSystem(mockedFs.fs).get()
 
@@ -107,19 +107,12 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
       // Thrown during ApkDeployer.tryUndeployApk().
       // The call index is 2 because 1st call is made during org.droidmate.tools.ApkDeployer.tryReinstallApk
-      new ExceptionSpec("uninstallApk", apk3.packageName, /* call index */ 2),
-
-      // Thrown during ApkDeployer.tryUndeployApk().
-      // The call index is 2 because 1st call is made during org.droidmate.tools.ApkDeployer.tryReinstallApk
+      // No more apks should be explored after this one, as this is an apk undeployment failure.
       new ExceptionSpec("uninstallApk", apk4.packageName, /* call index */ 2),
 
-      // Thrown during Exploration.explorationLoop()
-      new ExceptionSpec("perform", apk5.packageName, /* call index */ 3, /* throwsEx */ true, /* exceptionalReturnBool */ null, /* throwsAssertionError */ true),
-
       // Thrown during AndroidDeviceDeployer.tryTearDown()
-      new ExceptionSpec("stopUiaDaemon", apk5.packageName),
+      new ExceptionSpec("stopUiaDaemon", apk4.packageName),
     ]
-
 
     def timeGenerator = new TimeGenerator()
     def deviceToolsMock = new DeviceToolsMock(
@@ -136,12 +129,56 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
     Path outputDir = new DroidmateOutputDir(cfg.droidmateOutputDirPath).path
 
-    assertSer2FilesIn(outputDir, [apk1.packageName, apk3.packageName, apk4.packageName])
+    assertSer2FilesInDirAre(outputDir, [apk1.packageName, apk3.packageName, apk4.packageName])
 
     assert spy.handledThrowable instanceof ThrowablesCollection
     assert spy.throwables.size() == exceptionSpecs.size()
     assert spy.throwables.collect {Throwables.getRootCause(it) as ITestException}*.exceptionSpec == exceptionSpecs
   }
+
+  // KJA DRY up with org.droidmate.frontend.DroidmateFrontendTest.Handles exploration and fatal device exceptions
+  @Category([RequiresSimulator])
+  @Test
+  public void "Handles assertion error during exploration loop"()
+  {
+    def mockedFs = new MockFileSystem([
+      "mock_1_throwsAssertInLoop_outputNone",
+    ])
+    def apks = mockedFs.apks
+    def apk1 = apks.findSingle {it.fileName == "mock_1_throwsAssertInLoop_outputNone.apk"}
+
+    def cfg = new ConfigurationForTests().withFileSystem(mockedFs.fs).get()
+
+    def exceptionSpecs = [
+
+      // Thrown during Exploration.explorationLoop()
+      // Note that this is an AssertionError
+      new ExceptionSpec("perform", apk1.packageName, /* call index */ 3, /* throwsEx */ true, /* exceptionalReturnBool */ null, /* throwsAssertionError */ true),
+    ]
+
+    def timeGenerator = new TimeGenerator()
+    def deviceToolsMock = new DeviceToolsMock(
+      cfg,
+      new AaptWrapperStub(apks),
+      AndroidDeviceSimulator.build(timeGenerator, apks*.packageName, exceptionSpecs, /* unreliableSimulation */ true))
+
+    def spy = new ExceptionHandlerSpy()
+
+    // Act
+    int exitStatus = DroidmateFrontend.main(cfg.args, mockedFs.fs, spy, ExploreCommand.build(timeGenerator, cfg, deviceToolsMock))
+
+    assert exitStatus != 0
+
+    Path outputDir = new DroidmateOutputDir(cfg.droidmateOutputDirPath).path
+
+    assertSer2FilesInDirAre(outputDir, [])
+
+    assert spy.handledThrowable instanceof ThrowablesCollection
+    assert spy.throwables.size() == exceptionSpecs.size()
+    assert spy.throwables.collect {Throwables.getRootCause(it) as ITestException}*.exceptionSpec == exceptionSpecs
+  }
+
+
 
   /**
    * <p>
@@ -246,7 +283,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     return deviceSimulation
   }
 
-  private boolean assertSer2FilesIn(Path dir, List<String> packageNames)
+  private boolean assertSer2FilesInDirAre(Path dir, List<String> packageNames)
   {
     List<Path> serFiles = Files.list(dir).findAll {it.fileName.toString().endsWith(Storage2.ser2FileExt)}
 

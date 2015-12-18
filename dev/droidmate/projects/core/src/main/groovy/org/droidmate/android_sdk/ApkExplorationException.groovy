@@ -18,11 +18,13 @@ public class ApkExplorationException extends ExplorationException
   private static final long serialVersionUID = 1
 
   final IApk apk
+  final boolean stopFurtherApkExplorations
 
-  public ApkExplorationException(IApk apk, Throwable cause)
+  public ApkExplorationException(IApk apk, Throwable cause, boolean stopFurtherApkExplorations = false)
   {
     super(cause)
     this.apk = apk
+    this.stopFurtherApkExplorations = stopFurtherApkExplorations
 
     assert apk != null
     assert cause != null
@@ -35,6 +37,9 @@ public class ApkExplorationException extends ExplorationException
 
   public boolean shouldStopFurtherApkExplorations()
   {
+    if (this.stopFurtherApkExplorations)
+      return true
+
     if (!(this.cause instanceof DeviceException))
       return true
 
