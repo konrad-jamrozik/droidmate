@@ -12,7 +12,7 @@ import groovy.io.FileType
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.ApkExplorationException
-import org.droidmate.android_sdk.ApkExplorationExceptionsCollection
+import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.command.exploration.Exploration
 import org.droidmate.command.exploration.IExploration
@@ -20,7 +20,6 @@ import org.droidmate.common.DroidmateException
 import org.droidmate.configuration.Configuration
 import org.droidmate.deprecated_still_used.*
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IDeviceWithReadableLogs
@@ -87,7 +86,7 @@ class ExploreCommand extends DroidmateCommand
       return
     }
 
-    tryExecute(cfg, apks)
+    List<ExplorationException> explorationExceptions = execute(cfg, apks)
   }
 
   private void cleanOutputDir(Path path)
@@ -102,66 +101,39 @@ class ExploreCommand extends DroidmateCommand
     path.eachFile {Path p -> assert Files.isDirectory(p)}
   }
 
-  public void tryExecute(Configuration cfg, List<Apk> apks) throws DroidmateException
+  public List<ExplorationException> execute(Configuration cfg, List<Apk> apks)
   {
     ExplorationOutput2 out = new ExplorationOutput2()
 
-    Throwable savedTryThrowable = null
+    List<ExplorationException> explorationExceptions = []
     try
     {
-      tryDeployExploreSerialize(cfg.deviceIndex, apks, out)
+      explorationExceptions += deployExploreSerialize(cfg.deviceIndex, apks, out)
+    }
+    catch (Throwable deployExploreSerializeThrowable)
+    {
+      log.error("!!! Caught ${deployExploreSerializeThrowable.class.simpleName} " +
+        "in execute(configuration, apks)->deployExploreSerialize(${cfg.deviceIndex}, apks, out). " +
+        "This means ${ExplorationException.simpleName}s have been lost, if any! " +
+        "Skipping summary output analysis persisting. " +
+        "Rethrowing.")
+      throw deployExploreSerializeThrowable
+    }
 
+    try
+    {
       def deprecatedOut = new ExplorationOutput()
       deprecatedOut.addAll(out.collect {ApkExplorationOutput.from(it)})
       this.explorationOutputAnalysisPersister.persist(deprecatedOut)
-
-    } catch (Throwable tryThrowable)
+    } catch (Throwable persistingThrowable)
     {
-      log.debug("! Caught ${tryThrowable.class.simpleName} in " +
-        "tryExecute.tryDeployExploreSerialize(cfg.deviceIndex, apks, out). Rethrowing.")
-      savedTryThrowable = tryThrowable
-      throw savedTryThrowable
-
-    } finally
-    {
-      log.debug("Finalizing: ${ExploreCommand.class.simpleName}.tryExecute finally {} for tryDeployExploreSerialize(cfg.deviceIndex, apks, out)")
-      ApkExplorationExceptionsCollection exceptionsCollection = collectApkExplorationExceptionsIfAny(out)
-      if (exceptionsCollection != null)
-      {
-        if (savedTryThrowable != null)
-        {
-          log.debug("! Collected ${exceptionsCollection.class.simpleName} in collectApkExplorationExceptionsIfAny(out). " +
-            "Rethrowing them inside ${ThrowablesCollection.simpleName}, together with a savedTryThrowable.")
-          throw new ThrowablesCollection([exceptionsCollection, savedTryThrowable])
-        } else
-        {
-          log.debug("! Collected ${exceptionsCollection.class.simpleName} in collectApkExplorationExceptionsIfAny(out). Throwing.")
-          throw exceptionsCollection
-        }
-      }
-      log.debug("Finalizing DONE: ${ExploreCommand.class.simpleName}.tryExecute finally {} for tryDeployExploreSerialize(cfg.deviceIndex, apks, out)")
-    }
-  }
-
-  ApkExplorationExceptionsCollection collectApkExplorationExceptionsIfAny(ExplorationOutput2 out)
-  {
-    List<ApkExplorationException> exceptions = []
-
-    out.each {
-      if (!(it.noException))
-      {
-        exceptions.add(new ApkExplorationException(it.apk, it.exception))
-      }
+      explorationExceptions << new ExplorationException(persistingThrowable)
     }
 
-    if (!(exceptions.empty))
-      return new ApkExplorationExceptionsCollection(exceptions)
-    else
-      return null
-
+    return explorationExceptions
   }
 
-  private void tryDeployExploreSerialize(int deviceIndex, List<Apk> apks, ExplorationOutput2 out) throws DeviceException
+  private List<ExplorationException> deployExploreSerialize(int deviceIndex, List<Apk> apks, ExplorationOutput2 out)
   {
     this.deviceDeployer.withSetupDevice(deviceIndex) {IDeviceWithReadableLogs device ->
 
