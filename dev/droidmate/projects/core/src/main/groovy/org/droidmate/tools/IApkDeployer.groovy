@@ -12,7 +12,6 @@ package org.droidmate.tools
 import org.droidmate.android_sdk.ApkExplorationException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.device.IDeployableAndroidDevice
-import org.droidmate.exceptions.DeviceException
 
 /**
  * @see ApkDeployer
@@ -20,5 +19,5 @@ import org.droidmate.exceptions.DeviceException
 public interface IApkDeployer
 {
 
-  public List<ApkExplorationException> withDeployedApk(IDeployableAndroidDevice device, IApk apk, Closure<DeviceException> closure)
+  public List<ApkExplorationException> withDeployedApk(IDeployableAndroidDevice device, IApk apk, Closure closure)
 }

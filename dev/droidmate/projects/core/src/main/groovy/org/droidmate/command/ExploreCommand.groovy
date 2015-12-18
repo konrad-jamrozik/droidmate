@@ -165,33 +165,36 @@ class ExploreCommand extends DroidmateCommand
   {
     this.deviceDeployer.withSetupDevice(deviceIndex) {IDeviceWithReadableLogs device ->
 
+      List<ApkExplorationException> allApksExplorationExceptions = []
+
       apks.eachWithIndex {Apk apk, int i ->
 
         log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
-        List<ApkExplorationException> apkExplorationExceptions = this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
-          return exploreOnDeviceAndSerialize(deployedApk, device, out)
-        }
-
-        // KJA temp adapter
-        assert apkExplorationExceptions.size() <= 1
-        if (apkExplorationExceptions.size() == 1)
-          throw apkExplorationExceptions[0].exception
+        if (allApksExplorationExceptions.any {it.isFatal()})
+          log.info("Skipping the apk: fatal ${ApkExplorationException.class.simpleName} encountered.")
+        else
+          allApksExplorationExceptions +=
+            this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
+              tryExploreOnDeviceAndSerialize(deployedApk, device, out)
+            }
       }
     }
   }
 
-  private DeviceException exploreOnDeviceAndSerialize(
+  private void tryExploreOnDeviceAndSerialize(
     IApk deployedApk, IDeviceWithReadableLogs device, ExplorationOutput2 out) throws DeviceException
   {
-    // KJA current work: swallows device exception
     Failable<IApkExplorationOutput2, DeviceException> failableApkOut2 = this.exploration.run(deployedApk, device)
+
     if (failableApkOut2.result != null)
     {
       failableApkOut2.result.serialize(this.storage2)
       out << failableApkOut2.result
     }
-    return failableApkOut2.exception
+
+    if (failableApkOut2.exception != null)
+      throw failableApkOut2.exception
   }
 
 }

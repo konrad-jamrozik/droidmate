@@ -16,10 +16,11 @@ public class ApkExplorationException extends DroidmateException
 
   private static final long serialVersionUID = 1
 
-  final IApk            apk
-  final DeviceException exception
+  final IApk      apk
+  final Throwable exception
 
-  public ApkExplorationException(IApk apk, DeviceException cause)
+
+  public ApkExplorationException(IApk apk, Throwable cause)
   {
     super(cause)
     this.apk = apk
@@ -39,5 +40,8 @@ public class ApkExplorationException extends DroidmateException
     this.apk.absolutePath
   }
 
-
+  public boolean isFatal()
+  {
+    !(this.cause.class instanceof DeviceException)
+  }
 }

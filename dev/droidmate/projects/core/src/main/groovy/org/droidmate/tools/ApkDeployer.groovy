@@ -38,21 +38,10 @@ public class ApkDeployer implements IApkDeployer
    * Deploys the {@code apk} on a {@code device} A(V)D, executes the {@code closure} and undeploys the apk from
    * the {@code device}.
    *
-   * </p><p>
-   * Exception handling strategy:
-   * Any DeviceException thrown inside this method is given as cause to an ApkExplorationException.
-   * All such ApkExplorationExceptions are collected and returned as a list from the method. The method might throw a Throwable
-   * instead of returning an ApkExplorationExceptions list in two cases:
-   * case 1: computation throws a Throwable and finally block doesn't throw.
-   * case 2: computation throws a Throwable and finally block also throws a Throwable.
-   * - if a DeviceException occurs before the computation is called, the computation won't be called.
-   * - if a Throwable is thrown during computation, what happens with it depends on the result of operations in finally block:
-   * -- if finally-block exits cleanly, the Throwable is just rethrown
-   * -- if finally-block throws any Throwable, the previous throwable is suppressed by the Throwable from the finally block.
-   * Next,the Throwable from the finally-block is thrown.
+   * </p>
    */
   @Override
-  public List<ApkExplorationException> withDeployedApk(IDeployableAndroidDevice device, IApk apk, Closure<DeviceException> computation)
+  public List<ApkExplorationException> withDeployedApk(IDeployableAndroidDevice device, IApk apk, Closure computation)
   {
     log.debug("withDeployedApk(device, $apk.fileName, computation)")
 
@@ -60,63 +49,46 @@ public class ApkDeployer implements IApkDeployer
     Assert.checkClosureFirstParameterSignature(computation, IApk)
 
     List<ApkExplorationException> apkExplorationExceptions = []
-
-    deployApk(device, apk, apkExplorationExceptions)
-    if (!apkExplorationExceptions.empty)
+    ApkExplorationException deployApkException = deployApk(device, apk)
+    if (deployApkException != null)
     {
-      assert apkExplorationExceptions.size() == 1
+      apkExplorationExceptions << deployApkException
       return apkExplorationExceptions
     }
 
-    Throwable savedTryThrowable = null
+    assert apkExplorationExceptions.empty
     try
     {
-      def deviceException = computation(apk)
-      if (deviceException != null)
-        apkExplorationExceptions << new ApkExplorationException(apk, deviceException)
-
-    } catch (Throwable tryThrowable)
+      computation(apk)
+    }
+    catch (Throwable computationThrowable)
     {
-      log.debug("! Caught ${tryThrowable.class.simpleName} in withDeployedApk.computation(apk). Rethrowing.")
-      assert apkExplorationExceptions.empty
-      savedTryThrowable = tryThrowable
-      throw savedTryThrowable
+      log.debug("! Caught ${computationThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->computation(). " +
+        "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to collected exceptions list.")
+      apkExplorationExceptions << new ApkExplorationException(apk, computationThrowable)
 
-    } finally
+    }
+    finally
     {
-      log.debug("Finalizing: withDeployedApk.finally {} for computation(apk)")
+      log.debug("Finalizing: withDeployedApk.finally{} for computation($apk.fileName)")
       try
       {
         tryUndeployApk(device, apk)
-
-      } catch (DeviceException e)
-      {
-        // KJA
-        log.debug("! Caught ${e.class.simpleName} in withDeployedApk() in tryTearDown(apk). Adding to apk exploration exceptions list. Also, dding suppressed exception, if any.")
-        def explorationEx = new ApkExplorationException(apk, e)
-
-        if (savedTryThrowable != null)
-          explorationEx.addSuppressed(explorationEx)
-
-        apkExplorationExceptions << explorationEx
       }
-      catch (Throwable tearDownThrowable)
+      catch (Throwable undeployApkThrowable)
       {
-        log.debug("! Caught ${tearDownThrowable.class.simpleName} in tryTearDown(apk). Adding suppressed exception, if any, and rethrowing.")
-        // KJA not true, might be one apk expl exception
-        assert apkExplorationExceptions.empty
-        if (savedTryThrowable != null)
-          tearDownThrowable.addSuppressed(savedTryThrowable)
-        throw tearDownThrowable
+        log.debug("! Caught ${undeployApkThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->tryUndeployApk(). " +
+          "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to collected exceptions list.")
+        apkExplorationExceptions << new ApkExplorationException(apk, undeployApkThrowable)
       }
-      log.debug("Finalizing DONE: withDeployedApk.finally {} for computation(apk)")
+      log.debug("Finalizing DONE: withDeployedApk.finally{} for computation($apk.fileName)")
     }
 
-    log.trace("Undeployed apk {}", apk.fileName)
+    log.trace("Undeployed apk $apk.fileName")
     return apkExplorationExceptions
   }
 
-  private void deployApk(IDeployableAndroidDevice device, IApk apk, List<ApkExplorationException> apkExplorationExceptions)
+  private ApkExplorationException deployApk(IDeployableAndroidDevice device, IApk apk)
   {
     try
     {
@@ -127,9 +99,11 @@ public class ApkDeployer implements IApkDeployer
 
     } catch (DeviceException e)
     {
-      log.debug("! Caught ${e.class.simpleName} in withDeployedApk() pre-computation phase. Adding to apk exploration exceptions list and skipping exploration of ${apk.fileName}}.")
-      apkExplorationExceptions << new ApkExplorationException(apk, e)
+      log.debug("! Caught ${e.class.simpleName} in deployApk($device, $apk.fileName). " +
+        "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to collected exceptions list.")
+      return new ApkExplorationException(apk, e)
     }
+    return null
   }
 
   private void tryUndeployApk(IDeployableAndroidDevice device, IApk apk) throws DeviceException
