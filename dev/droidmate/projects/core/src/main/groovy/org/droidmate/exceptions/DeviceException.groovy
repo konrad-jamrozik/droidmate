@@ -15,24 +15,30 @@ public class DeviceException extends DroidmateException
 {
   private static final long serialVersionUID = 1
 
+  final boolean stopFurtherApkExplorations
+
   public DeviceException()
   {
     super()
+    stopFurtherApkExplorations = false
   }
 
   public DeviceException(Throwable cause)
   {
     super(cause)
+    stopFurtherApkExplorations = false
   }
 
-  public DeviceException(String message, Throwable cause)
+  public DeviceException(String message, Throwable cause, boolean stopFurtherApkExplorations = false)
   {
     super(message, cause)
+    this.stopFurtherApkExplorations = stopFurtherApkExplorations
   }
 
   public DeviceException(String message)
   {
     super(message)
+    stopFurtherApkExplorations = false
   }
 
 }

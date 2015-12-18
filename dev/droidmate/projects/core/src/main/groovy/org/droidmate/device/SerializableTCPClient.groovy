@@ -89,7 +89,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     }
     catch (IOException | ClassNotFoundException e)
     {
-      throw new DeviceException("SerializableTCPClient has thrown exception while querying server.", e)
+      throw new DeviceException("SerializableTCPClient has thrown exception while querying server.", e, true)
     }
 
     return output

@@ -145,7 +145,7 @@ class ExploreCommand extends DroidmateCommand
 
         log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
-        if (allApksExplorationExceptions.any {it.isFatal()})
+        if (allApksExplorationExceptions.any {it.shouldStopFurtherApkExplorations()})
           log.info("Skipping the apk: fatal ${ApkExplorationException.simpleName} encountered previously.")
         else
           allApksExplorationExceptions +=

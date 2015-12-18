@@ -8,25 +8,39 @@
 // www.droidmate.org
 package org.droidmate.android_sdk
 
+import groovy.util.logging.Slf4j
 import org.droidmate.exceptions.DeviceException
 
+@Slf4j
 public class ApkExplorationException extends ExplorationException
 {
 
   private static final long serialVersionUID = 1
 
-  final IApk      apk
+  final IApk apk
 
   public ApkExplorationException(IApk apk, Throwable cause)
   {
     super(cause)
     this.apk = apk
 
+    assert apk != null
+    assert cause != null
+
+    if (this.shouldStopFurtherApkExplorations())
+    {
+      log.warn("An ${this.class.simpleName} demanding stopping further apk explorations was just constructed!")
+    }
   }
 
-
-  public boolean isFatal()
+  public boolean shouldStopFurtherApkExplorations()
   {
-    !(this.cause instanceof DeviceException)
+    if (!(this.cause instanceof DeviceException))
+      return true
+
+    if ((this.cause as DeviceException).stopFurtherApkExplorations)
+      return true
+
+    return false
   }
 }
