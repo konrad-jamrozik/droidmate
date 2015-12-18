@@ -18,7 +18,7 @@ public class TestDeviceException extends DeviceException implements ITestExcepti
 
   public TestDeviceException(IExceptionSpec exceptionSpec)
   {
-    super("Test-enforced device exception. Pkg name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex")
+    super("Test-enforced device exception. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex")
     this.exceptionSpec = exceptionSpec
   }
 }

@@ -89,7 +89,7 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
         "Returning failed ${ExplorationActionRunResult.class.simpleName} with the exception assigned to a field.")
     }
 
-    // For post-conditions, see the constructor.
+    // For post-conditions, see inside the constructor call made line below.
     return new ExplorationActionRunResult(successful, this.logs, this.snapshot, this.exception)
   }
 

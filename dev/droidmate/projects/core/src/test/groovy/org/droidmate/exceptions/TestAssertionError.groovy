@@ -16,7 +16,7 @@ public class TestAssertionError extends AssertionError implements ITestException
 
   public TestAssertionError(IExceptionSpec exceptionSpec)
   {
-    super("Test-enforced assertion error. Pkg name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex" as Object)
+    super("Test-enforced assertion error. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex" as Object)
     this.exceptionSpec = exceptionSpec
   }
 

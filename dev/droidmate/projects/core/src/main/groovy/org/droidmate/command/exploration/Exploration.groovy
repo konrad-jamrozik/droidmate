@@ -92,7 +92,7 @@ class Exploration implements IExploration
 
     IExplorationActionRunResult result = action.run(app, device)
 
-    // Construct the output holder
+    // Construct the output holder.
     IApkExplorationOutput2 output = new ApkExplorationOutput2(app)
     // Write the initial action and its execution result to the output holder.
     output.add(action, result)
