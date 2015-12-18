@@ -141,17 +141,25 @@ class ExploreCommand extends DroidmateCommand
 
       List<ApkExplorationException> allApksExplorationExceptions = []
 
+      boolean encounteredApkExplorationsStoppingException = false
+
       apks.eachWithIndex {Apk apk, int i ->
 
-        log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
+        if (!encounteredApkExplorationsStoppingException)
+        {
+          log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
-        if (allApksExplorationExceptions.any {it.shouldStopFurtherApkExplorations()})
-          log.info("Skipping the apk: fatal ${ApkExplorationException.simpleName} encountered previously.")
-        else
           allApksExplorationExceptions +=
             this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
               tryExploreOnDeviceAndSerialize(deployedApk, device, out)
             }
+
+          if (allApksExplorationExceptions.any {it.shouldStopFurtherApkExplorations()})
+          {
+            log.warn("Encountered and exception that stops further apk explorations. Skipping exploring the remaining apks.")
+            encounteredApkExplorationsStoppingException = true
+          }
+        }
       }
 
       return allApksExplorationExceptions
