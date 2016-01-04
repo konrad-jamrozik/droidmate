@@ -29,7 +29,7 @@ import java.util.List;
 
 public class ActivityWithHelper extends Activity
 {
-  public void crashActvity(String tag)
+  public void crashActivity(String tag)
   {
     Log.i(tag, "Crashing the app");
     throw new RuntimeException("Crash! Throwing new RuntimeException. Log tag: "+ tag);

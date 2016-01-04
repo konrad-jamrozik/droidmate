@@ -48,7 +48,7 @@ public class Activity3 extends ActivityWithHelper
   public void callAPIAndCrashActivity(View view)
   {
     callAPI_ConnectivityManager_getActiveNetworkInfo(TAG);
-    crashActvity(TAG);
+    crashActivity(TAG);
   }
 
   public void launchGooglePlay(View view)

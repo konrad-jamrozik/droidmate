@@ -36,7 +36,7 @@ public class Activity2 extends ActivityWithHelper
 
   public void crashActivity(View view)
   {
-    crashActvity(TAG);
+    crashActivity(TAG);
   }
 
   public void callAPIAndLaunchGooglePlay(View view)
