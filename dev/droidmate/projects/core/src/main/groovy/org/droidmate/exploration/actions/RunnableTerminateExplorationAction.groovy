@@ -17,8 +17,6 @@ import org.droidmate.exploration.device.IDeviceWithReadableLogs
 
 import java.time.LocalDateTime
 
-import static org.droidmate.device.datatypes.AndroidDeviceAction.newResetPackageDeviceAction
-
 @Slf4j
 class RunnableTerminateExplorationAction extends RunnableExplorationAction
 {
@@ -42,7 +40,7 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
     this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
 
     log.debug("3. Reset package ${app.packageName}}")
-    device.perform(newResetPackageDeviceAction(app.packageName))
+    device.clearPackage(app.packageName)
 
     log.debug("4. Do asserts and throws using logs handler.")
     logsHandler.throwIfMonitorInitLogcatLogsArePresent()

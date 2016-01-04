@@ -57,9 +57,34 @@ class RobustDevice implements IDeviceWithReadableLogs
   }
 
   @Override
-  public IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
+  IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
   {
     return this.getExplorableGuiSnapshot()
+  }
+
+  @Override
+  Boolean clearPackage(String apkPackageName) throws DeviceException
+  {
+    Utils.retryOnException(device.&clearPackage.curry(apkPackageName), DeviceException,
+      this.clearPackageRetryAttempts,
+      this.clearPackageRetryDelay
+    )
+  }
+
+  @Override
+  IDeviceGuiSnapshot ensureHomeScreenIsDisplayed() throws DeviceException
+  {
+    def guiSnapshot = this.guiSnapshot
+    if (!guiSnapshot.guiState.isHomeScreen())
+    {
+      device.perform(newPressHomeDeviceAction())
+      guiSnapshot = this.guiSnapshot
+      if (!guiSnapshot.guiState.isHomeScreen())
+        throw new DeviceException("Failed to ensure home screen is displayed. " +
+          "Pressing 'home' button didn't help. Instead, ended with GUI state of: ${guiSnapshot.guiState}")
+
+    }
+    return guiSnapshot
   }
 
   public IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
@@ -90,7 +115,7 @@ class RobustDevice implements IDeviceWithReadableLogs
     return out
   }
 
-  public IDeviceGuiSnapshot getRetryValidGuiSnapshot() throws DeviceException
+  private IDeviceGuiSnapshot getRetryValidGuiSnapshot() throws DeviceException
   {
     IDeviceGuiSnapshot guiSnapshot = Utils.retryOnException(this.&getValidGuiSnapshot, DeviceException,
       getValidGuiSnapshotRetryAttempts,
@@ -101,32 +126,11 @@ class RobustDevice implements IDeviceWithReadableLogs
     return guiSnapshot
   }
 
-  @Override
-  Boolean clearPackage(String apkPackageName) throws DeviceException
-  {
-    Utils.retryOnException(device.&clearPackage.curry(apkPackageName), DeviceException,
-      this.clearPackageRetryAttempts,
-      this.clearPackageRetryDelay
-    )
-  }
 
-  @Override
-  IDeviceGuiSnapshot ensureHomeScreenIsDisplayed() throws DeviceException
-  {
-    def guiSnapshot = this.guiSnapshot
-    if (!guiSnapshot.guiState.isHomeScreen())
-    {
-      device.perform(newPressHomeDeviceAction())
-      guiSnapshot = this.guiSnapshot
-      if (!guiSnapshot.guiState.isHomeScreen())
-        throw new DeviceException("Failed to ensure home screen is displayed. " +
-          "Pressing 'home' button didn't help. Instead, ended with GUI state of: ${guiSnapshot.guiState}")
 
-    }
-    return guiSnapshot
-  }
 
-  IDeviceGuiSnapshot getValidGuiSnapshot() throws DeviceException
+
+  private IDeviceGuiSnapshot getValidGuiSnapshot() throws DeviceException
   {
     IDeviceGuiSnapshot snapshot = device.getGuiSnapshot()
     ValidationResult vres = snapshot.validationResult

@@ -132,8 +132,10 @@ public class AndroidDeviceSimulator implements IAndroidDevice
     {
       case LaunchMainActivityDeviceAction:
       case ClickGuiAction:
-      case AdbClearPackageAction:
         updateSimulatorState(action)
+        break
+      case AdbClearPackageAction:
+        assert false : "call .clearPackage() directly instead"
         break
       default:
         throw new UnexpectedIfElseFallthroughError()
@@ -211,6 +213,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   Boolean clearPackage(String apkPackageName)
   {
+    updateSimulatorState(new AdbClearPackageAction(apkPackageName))
     return true
   }
 

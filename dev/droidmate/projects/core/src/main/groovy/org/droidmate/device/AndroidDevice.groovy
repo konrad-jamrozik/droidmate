@@ -134,12 +134,9 @@ public class AndroidDevice implements IAndroidDevice
     return noDeviceResponse
   }
 
+  @Deprecated
   DeviceResponse internalPerform(AdbClearPackageAction action) throws DeviceException
   {
-    clearPackage(action.packageName)
-    // Clearing package has to happen twice, because sometimes after the first clearing suddenly the ActivityManager restarts
-    // one of the activities of the app, thus making it start a monitor, which is forbidden. For details, see:
-    // https://hg.st.cs.uni-saarland.de/issues/980
     clearPackage(action.packageName)
     return noDeviceResponse
   }
@@ -295,7 +292,12 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   Boolean clearPackage(String apkPackageName) throws DeviceException
   {
-    log.debug("clearPackage($apkPackageName)")
+    log.debug("clearPackage($apkPackageName): call 1/2")
+    adbWrapper.clearPackage(serialNumber, apkPackageName)
+    // Clearing package has to happen twice, because sometimes after the first clearing suddenly the ActivityManager restarts
+    // one of the activities of the app, thus making it start a monitor, which is forbidden. For details, see:
+    // https://hg.st.cs.uni-saarland.de/issues/980
+    log.debug("clearPackage($apkPackageName): call 2/2")
     adbWrapper.clearPackage(serialNumber, apkPackageName)
     return true
   }

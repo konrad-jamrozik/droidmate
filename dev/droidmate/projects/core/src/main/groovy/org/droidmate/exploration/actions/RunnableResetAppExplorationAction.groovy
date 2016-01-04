@@ -17,7 +17,8 @@ import org.droidmate.exploration.device.IDeviceWithReadableLogs
 
 import java.time.LocalDateTime
 
-import static org.droidmate.device.datatypes.AndroidDeviceAction.*
+import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchActivityDeviceAction
+import static org.droidmate.device.datatypes.AndroidDeviceAction.newTurnWifiOnDeviceAction
 
 @Slf4j
 class RunnableResetAppExplorationAction extends RunnableExplorationAction
@@ -38,7 +39,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     assert app != null
     assert device != null
 
-    device.perform(newResetPackageDeviceAction(app.packageName))
+    device.clearPackage(app.packageName)
 
     device.ensureHomeScreenIsDisplayed()
 
