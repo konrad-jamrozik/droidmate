@@ -137,6 +137,10 @@ public class AndroidDevice implements IAndroidDevice
   DeviceResponse internalPerform(AdbClearPackageAction action) throws DeviceException
   {
     clearPackage(action.packageName)
+    // Clearing package has to happen twice, because sometimes after the first clearing suddenly the ActivityManager restarts
+    // one of the activities of the app, thus making it start a monitor, which is forbidden. For details, see:
+    // https://hg.st.cs.uni-saarland.de/issues/980
+    clearPackage(action.packageName)
     return noDeviceResponse
   }
 
