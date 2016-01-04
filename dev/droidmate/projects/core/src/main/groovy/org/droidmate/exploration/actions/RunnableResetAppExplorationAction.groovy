@@ -45,7 +45,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     device.perform(newTurnWifiOnDeviceAction())
 
     // Get GUI snapshot to ensure device displays valid screen that is not "app has stopped" dialog box.
-    device.guiSnapshot
+    device.getGuiSnapshot()
 
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
 

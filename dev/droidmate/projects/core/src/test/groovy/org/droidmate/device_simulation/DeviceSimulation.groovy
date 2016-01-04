@@ -71,7 +71,7 @@ class DeviceSimulation implements IDeviceSimulation
     }
 
     if (action instanceof AdbClearPackageAction)
-      return  false
+      return false
 
     return appWasRunning
   }
