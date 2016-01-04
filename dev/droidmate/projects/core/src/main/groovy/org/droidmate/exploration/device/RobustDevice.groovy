@@ -137,4 +137,8 @@ class RobustDevice implements IDeviceWithReadableLogs
     return snapshot
   }
 
+  @Override
+  String toString() {
+    return "robust-"+this.device.toString()
+  }
 }

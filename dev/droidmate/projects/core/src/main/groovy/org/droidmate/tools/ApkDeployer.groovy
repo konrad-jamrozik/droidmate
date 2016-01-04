@@ -69,7 +69,6 @@ public class ApkDeployer implements IApkDeployer
     }
     finally
     {
-      // KJA wrong toString on $device, e.g.: Finalizing: withDeployedApk(org.droidmate.exploration.device.RobustDevice@1ecfcbc9, air.com.demute.TaoMix_v1.1.13-inlined.apk).finally{} for computation(air.com.demute.TaoMix_v1.1.13-inlined.apk)
       log.debug("Finalizing: withDeployedApk($device, ${apk.fileName}).finally{} for computation($apk.fileName)")
       try
       {

@@ -247,4 +247,11 @@ public class AndroidDeviceSimulator implements IAndroidDevice
       "s2-w22->s2 " +
       "s2-w2h->home", exceptionSpecs, unreliableSimulation)
   }
+
+  @Override
+  public String toString()
+  {
+    return this.class.simpleName
+  }
+
 }
