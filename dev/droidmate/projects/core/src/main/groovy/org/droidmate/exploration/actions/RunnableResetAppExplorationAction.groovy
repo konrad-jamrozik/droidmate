@@ -48,22 +48,9 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     // Get GUI snapshot to ensure device displays valid screen that is not "app has stopped" dialog box.
     device.getGuiSnapshot()
 
+    assertAppIsNotRunning(device, app)
+
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
-
-    // KJA 1 actually, after reset, everything should be dead: no background services or anything.
-
-    if ((base as ResetAppExplorationAction).isFirst)
-    {
-      assertAppIsNotRunning(logsHandler)
-    } else
-    {
-      // In this case app might or might not be running.
-      // It won't be running if before issuing this reset action its last activity crashed,
-      // but it might still run if it has other components (activities, services) running.
-      logsHandler.throwIfMonitorInitLogcatLogsArePresent()
-      logsHandler.readClearAndAssertOnlyBackgroundApiLogsIfAny()
-    }
-
     logsHandler.logUiaDaemonLogsFromLogcat()
     logsHandler.clearLogcat()
 
@@ -88,12 +75,10 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     logsHandler.clearLogcat()
   }
 
-
-
-  private void assertAppIsNotRunning(IDeviceLogsHandler logsHandler)
+  private void assertAppIsNotRunning(IDeviceWithReadableLogs device, IApk app)
   {
-    logsHandler.throwIfMonitorInitLogcatLogsArePresent()
-    logsHandler.assertNoApiLogsCanBeRead()
+    assert !device.appProcessIsRunning(app)
+    assert !device.appMonitorIsReachable()
   }
 }
 
