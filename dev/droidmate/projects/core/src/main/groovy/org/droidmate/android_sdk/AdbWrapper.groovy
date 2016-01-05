@@ -278,7 +278,27 @@ public class AdbWrapper implements IAdbWrapper
     {
       throw new AdbWrapperException(e)
     }
+  }
 
+  @Override
+  String ps(String deviceSerialNumber) throws AdbWrapperException
+  {
+    try
+    {
+      String commandDescription = String
+        .format("Executing adb (Android Debug Bridge) to list processes (ps).")
+
+      String[] stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell ps")
+
+      String stdout = stdStreams[0]
+      return stdout
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException(e)
+    }
   }
 
   @Override

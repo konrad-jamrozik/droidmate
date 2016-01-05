@@ -115,4 +115,10 @@ class AdbWrapperStub implements IAdbWrapper {
   {
     assert false: "Not yet implemented!"
   }
+
+  @Override
+  String ps(String deviceSerialNumber) throws AdbWrapperException
+  {
+    assert false: "Not yet implemented!"
+  }
 }

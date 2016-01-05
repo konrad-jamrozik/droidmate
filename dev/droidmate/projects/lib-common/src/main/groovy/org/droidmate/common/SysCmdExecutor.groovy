@@ -91,7 +91,7 @@ public class SysCmdExecutor implements ISysCmdExecutor
       executor.setWatchdog(watchdog)
     }
 
-    // Only exit value of 0 is allowed.
+    // Only exit value of 0 is allowed for the call to return successfully.
     executor.setExitValue(0)
 
     log.trace(commandDescription)

@@ -36,8 +36,8 @@ public interface IExplorableAndroidDevice
 
   LocalDateTime getCurrentTime() throws TcpServerUnreachableException, DeviceException
 
-  Boolean appProcessIsRunning(IApk apk)
+  Boolean appProcessIsRunning(IApk apk) throws DeviceException
 
-  Boolean appMonitorIsReachable(IApk apk)
+  Boolean appMonitorIsReachable(IApk apk) throws DeviceException
 }
 

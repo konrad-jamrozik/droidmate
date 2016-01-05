@@ -40,7 +40,6 @@ public interface IAdbWrapper {
 
   void clearLogcat(String deviceSerialNumber) throws AdbWrapperException
 
-
   void startUiaDaemon(String deviceSerialNumber) throws AdbWrapperException
 
   boolean clearPackage(String deviceSerialNumber, String apkPackageName)
@@ -48,4 +47,6 @@ public interface IAdbWrapper {
   List<String> readMessagesFromLogcat(String deviceSerialNumber, String messagesTag)
 
   String listPackages(String deviceSerialNumber) throws AdbWrapperException
+
+  String ps(String deviceSerialNumber) throws AdbWrapperException
 }

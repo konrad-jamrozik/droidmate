@@ -254,17 +254,20 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  Boolean appProcessIsRunning(IApk apk)
+  Boolean appProcessIsRunning(IApk apk) throws DeviceException
   {
     // KJA current work
-    assert false: "Not yet implemented!"
+    String ps = this.adbWrapper.ps(this.serialNumber)
+
+    return ps.contains(apk.packageName)
   }
 
+  // KJA replace calls to logsHandler.assertNoApiLogsCanBeRead() with this method
   @Override
-  Boolean appMonitorIsReachable(IApk apk)
+  Boolean appMonitorIsReachable(IApk apk) throws DeviceException
   {
     // KJA current work
-    assert false: "Not yet implemented!"
+    return true
   }
 
   @Override

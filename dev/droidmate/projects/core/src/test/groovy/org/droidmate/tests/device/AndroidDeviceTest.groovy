@@ -41,21 +41,35 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice, UnderConstruction])
   @Test
-  void "Correctly checks if app is running"()
+  void "Launches app, then checks, clicks, stops and checks it again"()
   {
     // KJA 2 instead, do checks as described in #1012
     withApkDeployedOnDevice() {IAndroidDevice device, IApk deployedApk ->
-      assert device.appProcessIsRunning(deployedApk)
-      assert device.appMonitorIsReachable(deployedApk)
-    }
-  }
 
-  @Category(RequiresDevice)
-  @Test
-  void "Performs 'launch main activity', 'click widget' and 'reset package' actions on the device"()
-  {
-    withApkDeployedOnDevice() {IAndroidDevice device, IApk apk ->
-      performLaunchClickClear(device, apk)
+      device.perform(newLaunchActivityDeviceAction(deployedApk.launchableActivityComponentName))
+      assert device.guiSnapshot.guiState.belongsToApp(deployedApk.packageName)
+
+      // Act 1
+      assert device.appProcessIsRunning(deployedApk)
+
+      // Act 2
+      assert device.appMonitorIsReachable(deployedApk)
+
+      // Act 3
+      device.perform(newClickGuiDeviceAction(100, 100))
+      assert device.guiSnapshot.guiState.belongsToApp(deployedApk.packageName)
+
+      // Act 4
+      device.clearPackage(deployedApk.packageName)
+      assert device.guiSnapshot.guiState.isHomeScreen()
+
+      // Act 5
+      assert !device.appProcessIsRunning(deployedApk)
+
+      // KJA
+      // Act 6
+      // assert !device.appMonitorIsReachable(deployedApk)
+
     }
   }
 
@@ -78,20 +92,5 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
       it.printStackTrace()
     }
     assert exceptions.empty
-  }
-
-  private void performLaunchClickClear(IAndroidDevice device, IApk deployedApk)
-  {
-    // Act 1
-    device.perform(newLaunchActivityDeviceAction(deployedApk.launchableActivityComponentName))
-    assert device.guiSnapshot.guiState.belongsToApp(deployedApk.packageName)
-
-    // Act 2
-    device.perform(newClickGuiDeviceAction(100, 100))
-    assert device.guiSnapshot.guiState.belongsToApp(deployedApk.packageName)
-
-    // Act 3
-    device.clearPackage(deployedApk.packageName)
-    assert device.guiSnapshot.guiState.isHomeScreen()
   }
 }
