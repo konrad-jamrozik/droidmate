@@ -256,7 +256,7 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   Boolean appProcessIsRunning(IApk apk) throws DeviceException
   {
-    // KJA current work
+    log.debug("appProcessIsRunning($apk)")
     String ps = this.adbWrapper.ps(this.serialNumber)
 
     return ps.contains(apk.packageName)
@@ -266,8 +266,8 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   Boolean appMonitorIsReachable(IApk apk) throws DeviceException
   {
-    // KJA current work
-    return true
+    log.debug("appMonitorIsReachable($apk)")
+    return this.apiLogsClient.isServerReachable(cfg.monitorTcpPort)
   }
 
   @Override

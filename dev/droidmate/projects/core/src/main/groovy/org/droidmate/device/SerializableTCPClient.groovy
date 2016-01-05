@@ -12,6 +12,7 @@ package org.droidmate.device
 import groovy.util.logging.Slf4j
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.lib_android.MonitorJavaTemplate
 
 @Slf4j
 public class SerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable> implements ISerializableTCPClient<InputToServerT, OutputFromServerT>
@@ -24,6 +25,22 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
   public SerializableTCPClient(int socketTimeout)
   {
     this.socketTimeout = socketTimeout
+  }
+
+  @Override
+  Boolean isServerReachable(int port) throws DeviceException
+  {
+    try
+    {
+      return this.queryServer(MonitorJavaTemplate.srvCmd_connCheck, port) != null
+    } catch (TcpServerUnreachableException ignored)
+    {
+      return false
+    } catch (Throwable throwable)
+    {
+      throw new DeviceException("Unexpected Throwable while checking if isServerReachable. " +
+        "The Throwable is given as a cause of this exception.", throwable, true)
+    }
   }
 
   /**
@@ -39,8 +56,21 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     try
     {
       log.trace("Socket socket = new Socket($serverAddress, $port)")
+
       // Managed to get here "java.net.ConnectException: Connection refused: connect" when I manually unplugged the USB cable
       // during a test. For logs, see: C:\my\local\repos\chair\droidmate\resources\debug_logs\forced_manual_usb_cable_unplug
+      //
+      // Observation 1: this happens when device is not reachable at all, e.g. USB got unplugged. However, this does NOT happen
+      // if the package with the server was force-stopped. Instead, TcpServerUnreachableException is thrown on constructing
+      // ObjectInputStream from socket.inputStream below.
+      //
+      // Observation 2: the "java.net.ConnectException: Connection refused: connect" happens if the port hasn't been forwarded.
+      // I.e.: this:
+      // new Socket("localhost", MonitorJavaTemplate.srv_port) // port is 59776
+      // will return
+      // java.net.ConnectException: Connection refused: connect
+      // unless first AndroidDevice.forwardPort(MonitorJavaTemplate.srv_port)
+      // is made. In such case, it will work just fine.
       Socket socket = new Socket(serverAddress, port)
       socket.soTimeout = this.socketTimeout
 

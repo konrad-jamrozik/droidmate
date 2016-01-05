@@ -43,7 +43,6 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
   @Test
   void "Launches app, then checks, clicks, stops and checks it again"()
   {
-    // KJA 2 instead, do checks as described in #1012
     withApkDeployedOnDevice() {IAndroidDevice device, IApk deployedApk ->
 
       device.perform(newLaunchActivityDeviceAction(deployedApk.launchableActivityComponentName))
@@ -66,9 +65,8 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
       // Act 5
       assert !device.appProcessIsRunning(deployedApk)
 
-      // KJA
       // Act 6
-      // assert !device.appMonitorIsReachable(deployedApk)
+      assert !device.appMonitorIsReachable(deployedApk)
 
     }
   }

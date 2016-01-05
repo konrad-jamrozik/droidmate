@@ -20,16 +20,7 @@ class ScratchpadTest
   @Test
   void test()
   {
-//    Thread.currentThread().setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-//
-//      public void uncaughtException(Thread t, Throwable e)
-//      {
-//        LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME).error("Uncaught Exception in thread '" + t.getName() + "'", e);
-//        System.exit(1);
-//      }
-//    });
-//    throw new Exception("ex1", new Exception("ex2"));
-
+    Socket s = new Socket("localhost", 59999)
   }
 
 }

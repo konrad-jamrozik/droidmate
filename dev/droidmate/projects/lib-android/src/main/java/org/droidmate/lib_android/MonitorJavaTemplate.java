@@ -15,9 +15,7 @@ package org.droidmate.lib_android;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
 import org.droidmate.common.logcat.Api;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,6 +27,9 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+// org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
+// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
 // import de.uds.infsec.instrumentation.Instrumentation;
@@ -99,9 +100,11 @@ public class MonitorJavaTemplate
 
   public static final int srv_port = 59776;
 
-  public static final String srvCmd_get_logs = "getLogs";
-  public static final String srvCmd_get_time = "getTime";
-  public static final String srvCmd_close    = "close";
+  public static final String srvCmd_connCheck = "connCheck";
+  public static final String srvCmd_get_logs  = "getLogs";
+  public static final String srvCmd_get_time  = "getTime";
+  public static final String srvCmd_close     = "close";
+
 
   //endregion
 
@@ -184,7 +187,11 @@ public class MonitorJavaTemplate
 
         removeSocketInitLogFromMonitorTCPServer(currentLogs);
 
-        if (Objects.equals(input, srvCmd_get_logs))
+        if (Objects.equals(input, srvCmd_connCheck))
+        {
+          // Do nothing here. The client just wanted to see if a round-trip with server could be established.
+          return new ArrayList<ArrayList<String>>();
+        } else if (Objects.equals(input, srvCmd_get_logs))
         {
           ArrayList<ArrayList<String>> logsToSend = new ArrayList<ArrayList<String>>(currentLogs);
           currentLogs.clear();

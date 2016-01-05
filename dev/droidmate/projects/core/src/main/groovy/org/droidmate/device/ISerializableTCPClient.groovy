@@ -13,5 +13,7 @@ import org.droidmate.exceptions.DeviceException
 
 public interface ISerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable>
 {
+  Boolean isServerReachable(int port) throws DeviceException
+
   OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceException
 }
