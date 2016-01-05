@@ -47,6 +47,28 @@ TId: 1 objCls: android.webkit.WebView mthd: methd retCls: void params:  stacktra
   }
 
   @Test
+  public void "Parses param values being empty strings"()
+  {
+    String msg1 = """\
+TId: 1 objCls: android.webkit.WebView mthd: loadDataWithBaseURL retCls: void \
+params: \
+java.lang.String  \
+stacktrace: dalvik.system.VMStack.getThreadStackTrace(Native Method)->dalvik.system.NativeStart.main(Native Method)\
+"""
+    // Act 1
+    ApiLogcatMessage.from(msg1)
+
+    String msg2 = """\
+TId: 1 objCls: android.webkit.WebView mthd: loadDataWithBaseURL retCls: void \
+params: \
+java.lang.String  java.lang.String  java.lang.String  \
+stacktrace: dalvik.system.VMStack.getThreadStackTrace(Native Method)->dalvik.system.NativeStart.main(Native Method)\
+"""
+    // Act 2
+    ApiLogcatMessage.from(msg2)
+  }
+
+  @Test
   public void "Throws exception on duplicate keyword"()
   {
     String msg = """\
