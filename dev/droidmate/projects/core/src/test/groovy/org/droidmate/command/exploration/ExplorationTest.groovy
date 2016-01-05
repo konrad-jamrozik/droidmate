@@ -99,8 +99,8 @@ public class ExplorationTest extends DroidmateGroovyTestCase
           cfg.clearPackageRetryAttempts,
           cfg.clearPackageRetryDelay,
           cfg.getValidGuiSnapshotRetryAttempts,
-          cfg.getValidGuiSnapshotRetryDelay)
-        ).result
+          cfg.getValidGuiSnapshotRetryDelay
+        )).result
 
       }
     }
