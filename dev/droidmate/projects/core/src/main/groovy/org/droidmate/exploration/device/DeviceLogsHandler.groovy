@@ -171,7 +171,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
   }
 
   /**
-   * This method protects against known bugs:<br/>
+   * This method fails early on known bugs:<br/>
    * KNOWN BUG See https://hg.st.cs.uni-saarland.de/issues/976
    */
   @Override
