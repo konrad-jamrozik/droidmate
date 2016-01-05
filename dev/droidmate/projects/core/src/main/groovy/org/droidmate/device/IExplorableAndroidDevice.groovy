@@ -38,6 +38,6 @@ public interface IExplorableAndroidDevice
 
   Boolean appProcessIsRunning(IApk apk) throws DeviceException
 
-  Boolean appMonitorIsReachable(IApk apk) throws DeviceException
+  Boolean appMonitorIsReachable() throws DeviceException
 }
 

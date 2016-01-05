@@ -264,9 +264,9 @@ public class AndroidDevice implements IAndroidDevice
 
   // KJA replace calls to logsHandler.assertNoApiLogsCanBeRead() with this method
   @Override
-  Boolean appMonitorIsReachable(IApk apk) throws DeviceException
+  Boolean appMonitorIsReachable() throws DeviceException
   {
-    log.debug("appMonitorIsReachable($apk)")
+    log.debug("appMonitorIsReachable()")
     return this.apiLogsClient.isServerReachable(cfg.monitorTcpPort)
   }
 

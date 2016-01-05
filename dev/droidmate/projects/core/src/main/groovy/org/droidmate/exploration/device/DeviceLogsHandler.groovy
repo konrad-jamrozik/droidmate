@@ -195,6 +195,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     return apiLogs != null
   }
 
+  // KJA soon, this boolean param will be removed (it will be effectively always false)
   private List<IApiLogcatMessage> _readAndClearApiLogs(boolean allowAppToBeUnreachable) throws DeviceException
   {
     try

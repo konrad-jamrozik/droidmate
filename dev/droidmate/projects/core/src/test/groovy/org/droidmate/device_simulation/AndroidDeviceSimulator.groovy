@@ -181,15 +181,13 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   Boolean appProcessIsRunning(IApk apk)
   {
-    // KJA current work
-    assert false: "Not yet implemented!"
+    this.currentSimulation.packageName == apk.packageName && this.currentSimulation.appIsRunning
   }
 
   @Override
-  Boolean appMonitorIsReachable(IApk apk)
+  Boolean appMonitorIsReachable()
   {
-    // KJA current work
-    assert false: "Not yet implemented!"
+    this.currentSimulation.appIsRunning
   }
 
   @Override

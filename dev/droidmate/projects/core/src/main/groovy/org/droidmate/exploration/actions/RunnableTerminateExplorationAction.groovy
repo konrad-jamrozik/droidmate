@@ -43,6 +43,7 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
     device.clearPackage(app.packageName)
 
     log.debug("4. Do asserts and throws using logs handler.")
+    // KJA to replace with org.droidmate.exploration.actions.RunnableResetAppExplorationAction.assertAppIsNotRunning
     logsHandler.throwIfMonitorInitLogcatLogsArePresent()
     logsHandler.assertNoApiLogsCanBeRead()
 
