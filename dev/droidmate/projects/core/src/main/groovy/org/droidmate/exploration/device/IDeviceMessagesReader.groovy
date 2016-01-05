@@ -22,8 +22,8 @@ interface IDeviceMessagesReader
 
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException
 
+  // Old implementation, left for reference as of 7 Aug 2015.
   @Deprecated
-  @SuppressWarnings("GroovyUnusedDeclaration") // Old implementation, left for reference as of 7 Aug 2015.
   List<IApiLogcatMessage> getCurrentApiLogsFromLogcat() throws DeviceException
 
   List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws TcpServerUnreachableException, DeviceException
