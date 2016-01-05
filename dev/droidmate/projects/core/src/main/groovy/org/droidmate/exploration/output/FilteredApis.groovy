@@ -60,15 +60,15 @@ class FilteredApis implements IFilteredApis
     apiLogs.groupBy {it.uniqueString}.values()
   }
 
+  // WISH fix hardcoded package name mappings
+  // One idea: use apktool to extract AndroidManifest.xml and look at the package name of <application>. For example, for firefox
+  // it is: <application (...) android:name="org.mozilla.gecko.GeckoApplication">
   public static String remapPackageName(String appPackageName)
   {
-    // WISH Firefox hardcoded package name mapping
     if (appPackageName == "org.mozilla.firefox")
       appPackageName = "org.mozilla.gecko"
-    // WISH hardcoded picsart
     if (appPackageName == "com.picsart.studio")
       appPackageName = "myobfuscated"
-    // WISH hardcoded cleanmaster
     if (appPackageName == "com.cleanmaster.security")
       appPackageName = "ks.cm.antivirus"
     return appPackageName
