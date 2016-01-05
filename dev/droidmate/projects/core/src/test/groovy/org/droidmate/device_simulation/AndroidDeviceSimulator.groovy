@@ -179,6 +179,20 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  Boolean appProcessIsRunning(IApk apk)
+  {
+    // KJA current work
+    assert false: "Not yet implemented!"
+  }
+
+  @Override
+  Boolean appMonitorIsReachable(IApk apk)
+  {
+    // KJA current work
+    assert false: "Not yet implemented!"
+  }
+
+  @Override
   void forwardPort(int port) throws DroidmateException
   {
   }

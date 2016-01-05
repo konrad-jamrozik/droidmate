@@ -50,6 +50,8 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
 
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
 
+    // KJA 1 actually, after reset, everything should be dead: no background services or anything.
+
     if ((base as ResetAppExplorationAction).isFirst)
     {
       assertAppIsNotRunning(logsHandler)
