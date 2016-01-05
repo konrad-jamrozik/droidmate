@@ -108,7 +108,8 @@ class Api implements IApi, Serializable
 
     int uriIndex = paramTypes.findIndexOf {it == "android.net.Uri"}
     String uri = paramValues[uriIndex]
-    assert uri.startsWith("content://")
+
+    assert uri.startsWith("content://") || uri.startsWith("android.resource://")
 
     String[] uriParts = uri.split(/\?/)
     assert uriParts.size() <= 2
