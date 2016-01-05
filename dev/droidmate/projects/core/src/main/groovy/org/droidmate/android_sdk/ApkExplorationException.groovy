@@ -40,11 +40,9 @@ public class ApkExplorationException extends ExplorationException
     if (this.stopFurtherApkExplorations)
       return true
 
-    if (!(this.cause instanceof DeviceException))
-      return true
-
-    if ((this.cause as DeviceException).stopFurtherApkExplorations)
-      return true
+    if (this.cause instanceof DeviceException)
+      if ((this.cause as DeviceException).stopFurtherApkExplorations)
+        return true
 
     return false
   }
