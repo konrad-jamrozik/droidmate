@@ -37,7 +37,7 @@ class VerifiableDeviceAction
   {
     return new VerifiableDeviceAction(
       description: "<reset $appPackageName, expect any screen except app's>",
-      action: newResetPackageDeviceAction(appPackageName),
+      action: newClearPackageDeviceAction(appPackageName),
       verifierOfResultingGuiSnapshot: {IDeviceGuiSnapshot snapshot -> !snapshot.guiState.belongsToApp(appPackageName)})
   }
 

@@ -16,8 +16,7 @@ import java.awt.*
 
 abstract class AndroidDeviceAction implements IAndroidDeviceAction
 {
-  // KJA newClearPackageDeviceAction
-  public static AdbClearPackageAction newResetPackageDeviceAction(String appPackageName)
+  public static AdbClearPackageAction newClearPackageDeviceAction(String appPackageName)
   {
     return new AdbClearPackageAction(appPackageName)
   }
