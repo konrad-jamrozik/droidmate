@@ -30,8 +30,6 @@ import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
-
 // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
 // import de.uds.infsec.instrumentation.Instrumentation;
 // import de.uds.infsec.instrumentation.annotation.Redirect;
@@ -99,7 +97,12 @@ public class MonitorJavaTemplate
    */
   public static final String msgPrefix_init_success = "Monitor initialized for package ";
 
-  public static final int srv_port = 59776;
+  // WISH known limitation: if running droidmate with multiple devices, each will have the same set of server ports.
+  // Suggested fix: for each device generate different monitor.java, each differing only by the server ports set.
+  // The code deploying the monitors to the device is in org.droidmate.tools.AndroidDeviceDeployer.trySetUp()
+  public static final int srv_port1 = 59701;
+  // KJA support this port
+  public static final int srv_port2 = 59702;
 
   public static final String srvCmd_connCheck = "connCheck";
   public static final String srvCmd_get_logs  = "getLogs";
@@ -150,7 +153,7 @@ public class MonitorJavaTemplate
     Thread serverThread;
     try
     {
-      serverThread = tcpServer.start(srv_port);
+      serverThread = tcpServer.start(srv_port1);
     } catch (Exception e)
     {
       Log.e(tag_srv, "Starting monitor TCP server failed.", e);

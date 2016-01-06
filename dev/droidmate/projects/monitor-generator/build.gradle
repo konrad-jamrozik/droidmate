@@ -30,7 +30,7 @@ dependencies {
   compile project(":projects:lib-android")
 }
 
-// !!! DUPLICATION WARNING !!! with the name and location of org.droidmate.lib_android.MonitorJavaTemplate
+// !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.lib_android.MonitorJavaTemplate
 File monitorJavaTemplateSource = findProject(":projects:lib-android").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
 assert monitorJavaTemplateSource.file
 
