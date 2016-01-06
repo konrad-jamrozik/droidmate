@@ -71,6 +71,10 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
       // java.net.ConnectException: Connection refused: connect
       // unless first AndroidDevice.forwardPort(MonitorJavaTemplate.srv_port)
       // is made. In such case, it will work just fine.
+      //
+      // Observation 3: this also happens if the device displays pop-up box: "The page at www.soccerdrills.de says: blah blah"
+      // It has "cancel" and "ok" buttons. Closing the dialog didn't help, I had to do port forward like:
+      // adb forward tcp:59776 tcp:59776
       Socket socket = new Socket(serverAddress, port)
       socket.soTimeout = this.socketTimeout
 
