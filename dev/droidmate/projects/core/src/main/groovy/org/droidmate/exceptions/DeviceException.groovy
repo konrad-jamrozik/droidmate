@@ -29,16 +29,22 @@ public class DeviceException extends DroidmateException
     stopFurtherApkExplorations = false
   }
 
-  public DeviceException(String message, Throwable cause, boolean stopFurtherApkExplorations = false)
-  {
-    super(message, cause)
-    this.stopFurtherApkExplorations = stopFurtherApkExplorations
-  }
-
   public DeviceException(String message)
   {
     super(message)
     stopFurtherApkExplorations = false
+  }
+
+  public DeviceException(String message, boolean stopFurtherApkExplorations)
+  {
+    super(message)
+    this.stopFurtherApkExplorations = stopFurtherApkExplorations
+  }
+
+  public DeviceException(String message, Throwable cause, boolean stopFurtherApkExplorations = false)
+  {
+    super(message, cause)
+    this.stopFurtherApkExplorations = stopFurtherApkExplorations
   }
 
 }

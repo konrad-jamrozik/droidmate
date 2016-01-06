@@ -8,6 +8,8 @@
 // www.droidmate.org
 package org.droidmate.device
 
+import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
 
 class MonitorsClient implements IMonitorsClient
@@ -27,13 +29,25 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public ArrayList<ArrayList<String>> getCurrentTime()
+  public ArrayList<ArrayList<String>> getCurrentTime() throws TcpServerUnreachableException, DeviceException
   {
-    return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, MonitorJavaTemplate.srv_port1)
+    def out = ports.findResult {
+      try
+      {
+        return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, it)
+      } catch (TcpServerUnreachableException e)
+      {
+        return null
+      }
+    }
+    if (out == null)
+      throw new DeviceException("None of the monitor TCP servers were available.", /* stopFurtherApkExplorations */ true)
+
+    return out
   }
 
   @Override
-  public ArrayList<ArrayList<String>> getLogs()
+  public ArrayList<ArrayList<String>> getLogs() throws TcpServerUnreachableException, DeviceException
   {
     // KJA the question here is: which servers are expected to be alive?
     return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, MonitorJavaTemplate.srv_port1)

@@ -8,14 +8,17 @@
 // www.droidmate.org
 package org.droidmate.device
 
+import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.TcpServerUnreachableException
+
 interface IMonitorsClient
 {
 
   boolean appIsReachable()
 
-  ArrayList<ArrayList<String>> getCurrentTime()
+  ArrayList<ArrayList<String>> getCurrentTime() throws TcpServerUnreachableException, DeviceException
 
-  ArrayList<ArrayList<String>> getLogs()
+  ArrayList<ArrayList<String>> getLogs() throws TcpServerUnreachableException, DeviceException
 
   List<Integer> getPorts()
 }
