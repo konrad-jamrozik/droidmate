@@ -27,7 +27,9 @@ class MonitorsClient implements IMonitorsClient
   @Override
   public boolean appIsReachable()
   {
-    return this.monitorTcpClient.isServerReachable(MonitorJavaTemplate.srv_port1)
+    ports.any {
+      this.monitorTcpClient.isServerReachable(it)
+    }
   }
 
   @Override
