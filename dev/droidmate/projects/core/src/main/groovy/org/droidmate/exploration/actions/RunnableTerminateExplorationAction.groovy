@@ -43,7 +43,7 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
     device.clearPackage(app.packageName)
 
     log.debug("4. Assert app is not running.")
-    assert !appIsRunning(device, app)
+    assertAppIsNotRunning(device, app)
 
     log.debug("5. Get GUI snapshot, ensuring home screen is displayed.")
     this.snapshot = device.ensureHomeScreenIsDisplayed()

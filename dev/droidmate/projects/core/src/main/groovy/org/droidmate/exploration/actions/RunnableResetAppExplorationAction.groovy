@@ -53,7 +53,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     device.getGuiSnapshot()
 
     log.debug("5. Assert app is not running.")
-    assert !appIsRunning(device, app)
+    assertAppIsNotRunning(device, app)
 
     log.debug("6. Log uia-daemon logs and clear logcat.")
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
