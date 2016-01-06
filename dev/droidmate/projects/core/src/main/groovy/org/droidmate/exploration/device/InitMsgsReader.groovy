@@ -95,6 +95,7 @@ class InitMsgsReader implements IInitMsgsReader
           "Logcat message: ${messages[0].messagePayload}")
   }
 
+  // KJA should allow now for up to two monitors
   public void checkCount(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
   {
     if (messages.size() != 2)

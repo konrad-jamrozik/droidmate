@@ -35,6 +35,7 @@ class MonitorsClient implements IMonitorsClient
   @Override
   public ArrayList<ArrayList<String>> getLogs()
   {
+    // KJA the question here is: which servers are expected to be alive?
     return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, MonitorJavaTemplate.srv_port1)
   }
 

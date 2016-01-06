@@ -101,7 +101,6 @@ public class MonitorJavaTemplate
   // Suggested fix: for each device generate different monitor.java, each differing only by the server ports set.
   // The code deploying the monitors to the device is in org.droidmate.tools.AndroidDeviceDeployer.trySetUp()
   public static final int srv_port1 = 59701;
-  // KJA support this port
   public static final int srv_port2 = 59702;
 
   public static final String srvCmd_connCheck = "connCheck";
@@ -121,10 +120,10 @@ public class MonitorJavaTemplate
   {
     try
     {
-      tryStartMonitorTCPServer();
+      startMonitorTCPServer();
       Log.i(tag_init, msg_ctor_success);
 
-    } catch (Exception e)
+    } catch (Throwable e)
     {
       Log.i(tag_init, msg_ctor_failure);
     }
@@ -144,27 +143,42 @@ public class MonitorJavaTemplate
 
   //region TCP server code
 
-  private static boolean tryStartMonitorTCPServer() throws Exception
+  @SuppressWarnings("ConstantConditions")
+  private static void startMonitorTCPServer() throws Throwable
   {
     Log.d(tag_srv, "Starting monitor TCP server...");
 
     MonitorTCPServer tcpServer = new MonitorTCPServer();
 
     Thread serverThread;
+    Integer portUsed;
     try
     {
       serverThread = tcpServer.start(srv_port1);
-    } catch (Exception e)
+
+      if (serverThread == null)
+      {
+        serverThread = tcpServer.start(srv_port2);
+
+        if (serverThread == null)
+          throw new Exception("Tried to start TCP server using all available ports. None worked.");
+        else
+          portUsed = srv_port2;
+
+      } else
+        portUsed = srv_port1;
+
+    } catch (Throwable t)
     {
-      Log.e(tag_srv, "Starting monitor TCP server failed.", e);
-      throw e;
+      Log.e(tag_srv, "Starting monitor TCP server failed.", t);
+      throw t;
     }
 
     if (serverThread == null) throw new AssertionError();
+    if (portUsed == null) throw new AssertionError();
     if (tcpServer.isClosed()) throw new AssertionError();
 
-    Log.d(tag_srv, "Starting monitor TCP server succeeded.");
-    return true;
+    Log.d(tag_srv, "Starting monitor TCP server succeeded. Port used: " + portUsed);
   }
 
   static class MonitorTCPServer extends SerializableTCPServerBase<String, ArrayList<ArrayList<String>>>
@@ -183,12 +197,6 @@ public class MonitorJavaTemplate
       {
         Log.d(serverClassName, "OnServerRequest(" + input + ")");
 
-//        Log.d(serverClassName, "removeSocketInitLogFromMonitorTCPServer(currentLogs);");
-//        for (ArrayList<String> currentLog : currentLogs)
-//        {
-//          Log.d(serverClassName, Arrays.toString(currentLog.toArray()));
-//        }
-
         removeSocketInitLogFromMonitorTCPServer(currentLogs);
 
         if (Objects.equals(input, srvCmd_connCheck))
@@ -204,11 +212,8 @@ public class MonitorJavaTemplate
 
         } else if (Objects.equals(input, srvCmd_get_time))
         {
-//          Log.d(serverClassName, "final String time = getNowDate();");
           final String time = getNowDate();
-//          Log.d(serverClassName, "final String time = getNowDate();: DONE");
 
-//          Log.d(serverClassName, "final ArrayList<String> payload = new ArrayList<String>(Arrays.asList(time, null, null));");
           final ArrayList<String> payload = new ArrayList<String>(Arrays.asList(time, null, null));
 
           Log.d(serverClassName, "Sending time: " + time);
@@ -299,11 +304,9 @@ public class MonitorJavaTemplate
   // !!! DUPLICATION WARNING !!! with org.droidmate.uiautomatordaemon.SerializableTCPServerBase
   static abstract class SerializableTCPServerBase<ServerInputT extends Serializable, ServerOutputT extends Serializable>
   {
-
     private int port;
     private ServerSocket    serverSocket          = null;
     private SocketException serverSocketException = null;
-
 
     private final static String thisClassName = SerializableTCPServerBase.class.getSimpleName();
 
@@ -318,10 +321,12 @@ public class MonitorJavaTemplate
 
     public Thread start(int port) throws Exception
     {
+      this.serverSocket = null;
+      this.serverSocketException = null;
+      this.port = port;
 
       try
       {
-        this.port = port;
         MonitorServerRunnable monitorServerRunnable = new MonitorServerRunnable();
         Thread serverThread = new Thread(monitorServerRunnable);
 
@@ -331,15 +336,26 @@ public class MonitorJavaTemplate
           if (!(serverSocket == null && serverSocketException == null)) throw new AssertionError();
           serverThread.start();
           monitorServerRunnable.wait();
+          //noinspection SimplifiableBooleanExpression
           if (!(serverSocket != null ^ serverSocketException != null)) throw new AssertionError();
         }
 
         if (serverSocketException != null)
         {
-          throw new Exception(String.format("Failed to start monitor TCP server thread of %s. " +
-              "Cause of this exception is the one returned by the failed thread.",
-            monitorServerRunnable.runnableClassName),
-            serverSocketException);
+          if (Objects.equals(serverSocketException.getCause().getMessage(), "bind failed: EADDRINUSE (Address already in use)"))
+          {
+            Log.d(tag_srv, "Failed to start TCP server because 'bind failed: EADDRINUSE (Address already in use)'. " +
+              "Returning null Thread.");
+
+            return null;
+
+          } else
+          {
+            throw new Exception(String.format("Failed to start monitor TCP server thread of %s. " +
+                "Cause of this exception is the one returned by the failed thread.",
+              monitorServerRunnable.runnableClassName),
+              serverSocketException);
+          }
         }
 
         return serverThread;
