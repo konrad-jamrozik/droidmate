@@ -199,7 +199,8 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
     } catch (UiObjectNotFoundException e)
     {
-      Log.w(uiaDaemon_logcatTag, "No 'settings' to click found, while in the process of ensuring that wifi is on!");
+      Log.w(uiaDaemon_logcatTag, "No 'settings' to click found, while in the process of ensuring that wifi is on! " +
+        "Please ensure the 'settings' app icon is visible (drag-n-drop it to desktop from the list of apps).");
     }
 
     try
