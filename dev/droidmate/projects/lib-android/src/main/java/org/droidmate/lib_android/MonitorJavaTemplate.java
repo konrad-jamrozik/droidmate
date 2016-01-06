@@ -161,6 +161,7 @@ public class MonitorJavaTemplate
         serverThread = tcpServer.start(srv_port2);
 
         if (serverThread == null)
+          // KJA happened, caused by: I/ActivityManager? Start proc cn.wps.moffice_eng:presentation for activity cn.wps.moffice_eng/cn.wps.moffice.startactivity.presentation.StartPresentationActivity: pid=5441 uid=10244 gids={50244, 3003, 1028, 1015}
           throw new Exception("Tried to start TCP server using all available ports. None worked.");
         else
           portUsed = srv_port2;
