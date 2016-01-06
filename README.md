@@ -81,6 +81,7 @@ If this step finished with `BUILD SUCCESSFUL` you successfully built DroidMate a
 Now you should setup an Android device and run tests requiring it:
 
 1. Setup an Android device, as described in the [official doc](http://developer.android.com/training/basics/firstapp/running-app.html#RealDevice).
+* Ensure the "settings" app is on the main home screen on the device. You can drag & drop it from the apps list. If you omit this step, DroidMate will not be able to ensure WiFi is enabled before each app restart during exploration. It will work however, just issuing a warning to logcat.
 * Run DroidMate tests requiring device as described in the section below.
 
 ## Daily building and testing ##
