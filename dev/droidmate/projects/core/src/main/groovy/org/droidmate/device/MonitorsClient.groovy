@@ -8,10 +8,12 @@
 // www.droidmate.org
 package org.droidmate.device
 
+import groovy.util.logging.Slf4j
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
 
+@Slf4j
 class MonitorsClient implements IMonitorsClient
 {
 
@@ -37,12 +39,15 @@ class MonitorsClient implements IMonitorsClient
         return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, it)
       } catch (TcpServerUnreachableException e)
       {
+        log.trace("Failed to reach monitor TCP server at port $it. The exception: $e")
         return null
       }
     }
+
     if (out == null)
       throw new DeviceException("None of the monitor TCP servers were available.", /* stopFurtherApkExplorations */ true)
 
+    assert out != null
     return out
   }
 
