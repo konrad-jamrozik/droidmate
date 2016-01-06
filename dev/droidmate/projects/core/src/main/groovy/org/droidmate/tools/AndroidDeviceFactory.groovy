@@ -21,22 +21,22 @@ class AndroidDeviceFactory implements IAndroidDeviceFactory
 {
 
   private final Configuration                                         cfg
-  private final ISerializableTCPClient<DeviceCommand, DeviceResponse> deviceTcpClient
+  private final ISerializableTCPClient<DeviceCommand, DeviceResponse> uiautomatorClient
   private final IAdbWrapper                                           adbWrapper
 
   AndroidDeviceFactory(
     Configuration cfg,
-    ISerializableTCPClient<DeviceCommand, DeviceResponse> deviceTcpClient,
+    ISerializableTCPClient<DeviceCommand, DeviceResponse> uiautomatorClient,
     IAdbWrapper adbWrapper)
   {
     this.cfg = cfg
-    this.deviceTcpClient = deviceTcpClient
+    this.uiautomatorClient = uiautomatorClient
     this.adbWrapper = adbWrapper
   }
 
   @Override
   IAndroidDevice create(String serialNumber)
   {
-    return new AndroidDevice(serialNumber, cfg, deviceTcpClient, adbWrapper)
+    return new AndroidDevice(serialNumber, cfg, uiautomatorClient, adbWrapper)
   }
 }

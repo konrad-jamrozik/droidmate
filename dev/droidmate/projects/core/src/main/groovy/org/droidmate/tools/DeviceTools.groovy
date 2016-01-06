@@ -37,10 +37,10 @@ class DeviceTools implements IDeviceTools
 
     def adbWrapper = substitutes[IAdbWrapper] as IAdbWrapper ?: new AdbWrapper(cfg, sysCmdExecutor)
 
-    def deviceTcpClient = new SerializableTCPClient<DeviceCommand, DeviceResponse>(cfg.socketTimeout)
+    def uiautomatorClient = new SerializableTCPClient<DeviceCommand, DeviceResponse>(cfg.socketTimeout)
 
     def deviceFactory = substitutes[IAndroidDeviceFactory] as IAndroidDeviceFactory ?:
-      new AndroidDeviceFactory(cfg, deviceTcpClient, adbWrapper)
+      new AndroidDeviceFactory(cfg, uiautomatorClient, adbWrapper)
 
     deviceDeployer = new AndroidDeviceDeployer(cfg, adbWrapper, deviceFactory)
 

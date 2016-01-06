@@ -53,20 +53,20 @@ public class AndroidDevice implements IAndroidDevice
 
   private final String serialNumber
 
-  private final Configuration                                         cfg
-  private final ISerializableTCPClient<DeviceCommand, DeviceResponse> client
-  private final IAdbWrapper                                           adbWrapper
+  private final Configuration                                                cfg
+  private final ISerializableTCPClient<DeviceCommand, DeviceResponse>        uiautomatorClient
+  private final IAdbWrapper                                                  adbWrapper
   private final ISerializableTCPClient<String, ArrayList<ArrayList<String>>> apiLogsClient
 
   AndroidDevice(
     String serialNumber,
     Configuration cfg,
-    ISerializableTCPClient<DeviceCommand, DeviceResponse> client,
+    ISerializableTCPClient<DeviceCommand, DeviceResponse> uiautomatorClient,
     IAdbWrapper adbWrapper)
   {
     this.serialNumber = serialNumber
     this.cfg = cfg
-    this.client = client
+    this.uiautomatorClient = uiautomatorClient
     this.adbWrapper = adbWrapper
     this.apiLogsClient = new SerializableTCPClient<>(cfg.socketTimeout)
   }
@@ -158,7 +158,7 @@ public class AndroidDevice implements IAndroidDevice
    * device response, unless there were errors along the way. If there were errors, it throws an exception.
    * </p><p>
    * The issued command can be potentially handled either by aut-addon or uiautomator-daemon. This method resolves
-   * who should be the recipient and sends the command using {@link #client}.
+   * who should be the recipient and sends the command using {@link #uiautomatorClient}.
    *
    * </p><p>
    * <i>This doc was last reviewed on 14 Sep '13.</i>
@@ -173,7 +173,7 @@ public class AndroidDevice implements IAndroidDevice
     if (!uiaDaemonHandlesCommand)
       throw new DeviceException(String.format("Unhandled command of %s", deviceCommand.command))
 
-    deviceResponse = client.queryServer(deviceCommand, cfg.uiautomatorDaemonTcpPort)
+    deviceResponse = uiautomatorClient.queryServer(deviceCommand, cfg.uiautomatorDaemonTcpPort)
 
     assert deviceResponse != null
 
