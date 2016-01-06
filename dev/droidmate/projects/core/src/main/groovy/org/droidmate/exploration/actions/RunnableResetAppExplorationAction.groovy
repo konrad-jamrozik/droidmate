@@ -34,51 +34,51 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
   @Override
   protected void performDeviceActions(IApk app, IDeviceWithReadableLogs device) throws DeviceException
   {
-    log.debug("1. Reset package ${app?.packageName}")
+    log.debug("1. Clear package ${app?.packageName}")
 
     assert app != null
     assert device != null
 
     device.clearPackage(app.packageName)
 
+    log.debug("2. ensure home screen is displayed")
+
     device.ensureHomeScreenIsDisplayed()
+
+    log.debug("3. turn wifi on")
 
     device.perform(newTurnWifiOnDeviceAction())
 
-    // Get GUI snapshot to ensure device displays valid screen that is not "app has stopped" dialog box.
+    log.debug("4. get GUI snapshot to ensure device displays valid screen that is not \"app has stopped\" dialog box.")
     device.getGuiSnapshot()
 
-    assertAppIsNotRunning(device, app)
+    log.debug("5. Assert app is not running.")
+    assert !appIsRunning(device, app)
 
+    log.debug("6. Log uia-daemon logs and clear logcat.")
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     logsHandler.logUiaDaemonLogsFromLogcat()
     logsHandler.clearLogcat()
 
-    log.debug("2. Launch main activity")
+    log.debug("7. Launch main activity")
     device.perform(newLaunchActivityDeviceAction(app.launchableActivityComponentName))
 
-    log.debug("3. Log uia-daemon logs from logcat")
+    log.debug("8. Log uia-daemon logs from logcat")
     logsHandler.logUiaDaemonLogsFromLogcat()
 
-    log.debug("4. Read monitor init logs and clear logcat")
+    log.debug("9. Read monitor init logs and clear logcat")
     logsHandler.readMonitorInitLogsAndClearLogcat()
 
-    log.debug("5. Read and clear api logs, then seal reading")
+    log.debug("10. Read and clear api logs, then seal reading")
     logsHandler.readAndClearApiLogs()
 
     this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
 
-    log.debug("6. Get GUI snapshot, then log uia-daemon logs, then clear logcat")
+    log.debug("11. Get GUI snapshot, then log uia-daemon logs, then clear logcat")
     this.snapshot = device.guiSnapshot
 
     logsHandler.logUiaDaemonLogsFromLogcat()
     logsHandler.clearLogcat()
-  }
-
-  private void assertAppIsNotRunning(IDeviceWithReadableLogs device, IApk app)
-  {
-    assert !device.appProcessIsRunning(app)
-    assert !device.appMonitorIsReachable()
   }
 }
 

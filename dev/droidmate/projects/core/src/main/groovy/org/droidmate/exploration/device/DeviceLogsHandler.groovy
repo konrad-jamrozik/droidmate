@@ -37,7 +37,6 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     this.device = device
   }
 
-
   @Override
   boolean monitorInitLogcatMessagesArePresent(List<ITimeFormattedLogcatMessage> outMessages) throws DeviceException
   {
@@ -77,7 +76,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     if (readingSealed)
       throw new ForbiddenOperationError()
 
-    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs(/* allowAppToBeUnreachable */ false)
+    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs(/* allowAppToBeUnreachable */)
 
     assert successfullyRead(apiLogs)
     addApiLogs(apiLogs)
@@ -96,26 +95,6 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     this.logs.apiLogs.addAll(apiLogs)
   }
 
-  @Override
-  void readAndClearApiLogsIfAny() throws DeviceException
-  {
-    if (readingSealed)
-      throw new ForbiddenOperationError()
-
-    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs(/* allowAppToBeUnreachable */ true)
-
-    if (successfullyRead(apiLogs))
-      addApiLogs(apiLogs)
-  }
-
-  @Override
-  void assertNoApiLogsCanBeRead() throws DeviceException
-  {
-    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs(/* allowAppToBeUnreachable */ true)
-    assert !successfullyRead(apiLogs)
-  }
-
-
   private static final String uiThreadId = "1"
 
   @Override
@@ -124,25 +103,11 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     if (readingSealed)
       throw new ForbiddenOperationError()
 
-    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs(/* allowAppToBeUnreachable */ false)
+    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs(/* allowAppToBeUnreachable */)
     assert successfullyRead(apiLogs)
     assert this.logs.apiLogs.every {it.threadId != uiThreadId}
 
     addApiLogs(apiLogs)
-  }
-
-  @Override
-  void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
-  {
-    if (readingSealed)
-      throw new ForbiddenOperationError()
-
-    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs(/* allowAppToBeUnreachable */ true)
-
-    assert (successfullyRead(apiLogs)).implies(apiLogs.every {it.threadId != uiThreadId})
-
-    if (successfullyRead(apiLogs))
-      addApiLogs(apiLogs)
   }
 
   private Logger uiadLogger = LoggerFactory.getLogger(LogbackConstants.logger_name_uiad)
@@ -195,27 +160,16 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     return apiLogs != null
   }
 
-  // KJA soon, this boolean param will be removed (it will be effectively always false)
-  private List<IApiLogcatMessage> _readAndClearApiLogs(boolean allowAppToBeUnreachable) throws DeviceException
+  private List<IApiLogcatMessage> _readAndClearApiLogs() throws DeviceException
   {
     try
     {
       return device.getAndClearCurrentApiLogsFromMonitorTcpServer()
     } catch (TcpServerUnreachableException e)
     {
-      if (allowAppToBeUnreachable)
-      {
-        log.debug("Caught ${TcpServerUnreachableException.simpleName} from " +
-          "messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer(). " +
-          "Because app is allowed to be unreachable: 1. ignoring the exception instead of rethrowing, 2. returning null api logs.")
-        return null
-      } else
-      {
-        log.warn("! Caught ${TcpServerUnreachableException.simpleName} from " +
-          "messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer(). Rethrowing.")
-
-        throw e
-      }
+      log.warn("! Caught ${TcpServerUnreachableException.simpleName} from " +
+        "messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer(). Rethrowing.")
+      throw e
     }
   }
 

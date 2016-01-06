@@ -37,16 +37,17 @@ class RunnableWidgetExplorationAction extends RunnableExplorationAction
   {
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     log.debug("1. Do asserts and throws using logs handler.")
-    // KJA to replace with org.droidmate.exploration.actions.RunnableResetAppExplorationAction.assertAppIsNotRunning
     logsHandler.throwIfMonitorInitLogcatLogsArePresent()
     logsHandler.readClearAndAssertOnlyBackgroundApiLogs()
 
     log.debug("2. Perform widget click: ${action}")
     device.perform(newClickGuiDeviceAction(action.widget, action.longClick))
 
-    // KJA check here if device is available, if yes, read api logs
     log.debug("3. Read and clear API logs if any, then seal logs reading")
-    logsHandler.readAndClearApiLogsIfAny()
+
+    if (appIsRunning(device, app))
+      logsHandler.readAndClearApiLogs()
+
     this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
 
     log.debug("4. Get GUI snapshot")

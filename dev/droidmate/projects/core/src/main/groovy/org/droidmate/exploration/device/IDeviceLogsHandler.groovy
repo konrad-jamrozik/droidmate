@@ -16,11 +16,7 @@ interface IDeviceLogsHandler
 
   boolean monitorInitLogcatMessagesArePresent(List<ITimeFormattedLogcatMessage> outMessages) throws DeviceException
 
-  void assertNoApiLogsCanBeRead() throws DeviceException
-
   void readClearAndAssertOnlyBackgroundApiLogs() throws DeviceException
-
-  void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
 
   void logUiaDaemonLogsFromLogcat() throws DeviceException
 
@@ -29,8 +25,6 @@ interface IDeviceLogsHandler
   void readMonitorInitLogsAndClearLogcat() throws DeviceException
 
   void readAndClearApiLogs() throws DeviceException
-
-  void readAndClearApiLogsIfAny() throws DeviceException
 
   IDeviceLogs sealReadingAndReturnDeviceLogs()
 

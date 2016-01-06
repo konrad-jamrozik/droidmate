@@ -95,6 +95,11 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
 
   abstract protected void performDeviceActions(IApk app, IDeviceWithReadableLogs device) throws DeviceException
 
+  protected Boolean appIsRunning(IDeviceWithReadableLogs device, IApk app)
+  {
+    device.appProcessIsRunning(app) && device.appMonitorIsReachable()
+  }
+
   @Override
   public String toString()
   {

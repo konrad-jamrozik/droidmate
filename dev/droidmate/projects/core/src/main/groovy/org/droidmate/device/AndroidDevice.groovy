@@ -262,7 +262,6 @@ public class AndroidDevice implements IAndroidDevice
     return ps.contains(apk.packageName)
   }
 
-  // KJA replace calls to logsHandler.assertNoApiLogsCanBeRead() with this method
   @Override
   Boolean appMonitorIsReachable() throws DeviceException
   {

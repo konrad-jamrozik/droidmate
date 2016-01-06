@@ -42,10 +42,8 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
     log.debug("3. Reset package ${app.packageName}}")
     device.clearPackage(app.packageName)
 
-    log.debug("4. Do asserts and throws using logs handler.")
-    // KJA to replace with org.droidmate.exploration.actions.RunnableResetAppExplorationAction.assertAppIsNotRunning
-    logsHandler.throwIfMonitorInitLogcatLogsArePresent()
-    logsHandler.assertNoApiLogsCanBeRead()
+    log.debug("4. Assert app is not running.")
+    assert !appIsRunning(device, app)
 
     log.debug("5. Get GUI snapshot, ensuring home screen is displayed.")
     this.snapshot = device.ensureHomeScreenIsDisplayed()
