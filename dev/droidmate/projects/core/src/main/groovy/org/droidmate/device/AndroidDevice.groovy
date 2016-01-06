@@ -68,7 +68,7 @@ public class AndroidDevice implements IAndroidDevice
     this.cfg = cfg
     this.uiautomatorClient = uiautomatorClient
     this.adbWrapper = adbWrapper
-    this.monitorsClient = new MonitorsClient(cfg.socketTimeout, cfg.monitorTcpPort)
+    this.monitorsClient = new MonitorsClient(cfg.socketTimeout)
   }
 
   @Override

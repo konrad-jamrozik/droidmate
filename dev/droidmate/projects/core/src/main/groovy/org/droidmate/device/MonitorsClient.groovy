@@ -15,31 +15,27 @@ class MonitorsClient implements IMonitorsClient
 
   private final ISerializableTCPClient<String, ArrayList<ArrayList<String>>> monitorTcpClient
 
-  private final int monitorTcpPort
-
-  MonitorsClient(int socketTimeout, int monitorTcpPort)
+  MonitorsClient(int socketTimeout)
   {
     this.monitorTcpClient = new SerializableTCPClient<>(socketTimeout)
-    this.monitorTcpPort = monitorTcpPort
   }
 
   @Override
   public boolean appIsReachable()
   {
-    return this.monitorTcpClient.isServerReachable(this.monitorTcpPort)
+    return this.monitorTcpClient.isServerReachable(MonitorJavaTemplate.srv_port)
   }
 
   @Override
   public ArrayList<ArrayList<String>> getCurrentTime()
   {
-    // KJA next: MonitorJavaTemplate.srv_port and remove cfg param
-    return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, this.monitorTcpPort)
+    return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, MonitorJavaTemplate.srv_port)
   }
 
   @Override
   public ArrayList<ArrayList<String>> getLogs()
   {
-    return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, this.monitorTcpPort)
+    return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, MonitorJavaTemplate.srv_port)
   }
 
 

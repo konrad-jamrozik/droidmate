@@ -98,7 +98,6 @@ public class Configuration implements IConfiguration
   public static final String pn_logWidgets                                   = "-logWidgets"
   public static final String pn_monitorServerStartQueryInterval              = "-monitorServerStartQueryInterval"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
-  public static final String pn_monitorTcpPort                               = "-monitorTcpPort"
   public static final String pn_randomSeed                                   = "-randomSeed"
   public static final String pn_resetEveryNthExplorationForward              = "-resetEvery"
   public static final String pn_splitCharts                                  = "-splitCharts"
@@ -207,9 +206,6 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_monitorServerStartTimeout])
   public int monitorServerStartTimeout = 20000
-
-  @Parameter(names = [Configuration.pn_monitorTcpPort])
-  public int monitorTcpPort = MonitorJavaTemplate.srv_port
 
   @Parameter(names = ["-outputAppGuardCharts"], arity = 1)
   public boolean outputAppGuardCharts = false
