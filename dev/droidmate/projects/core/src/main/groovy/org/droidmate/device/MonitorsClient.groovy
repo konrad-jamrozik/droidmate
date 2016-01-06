@@ -23,19 +23,19 @@ class MonitorsClient implements IMonitorsClient
   @Override
   public boolean appIsReachable()
   {
-    return this.monitorTcpClient.isServerReachable(MonitorJavaTemplate.srv_port)
+    return this.monitorTcpClient.isServerReachable(MonitorJavaTemplate.srv_port1)
   }
 
   @Override
   public ArrayList<ArrayList<String>> getCurrentTime()
   {
-    return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, MonitorJavaTemplate.srv_port)
+    return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, MonitorJavaTemplate.srv_port1)
   }
 
   @Override
   public ArrayList<ArrayList<String>> getLogs()
   {
-    return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, MonitorJavaTemplate.srv_port)
+    return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, MonitorJavaTemplate.srv_port1)
   }
 
 

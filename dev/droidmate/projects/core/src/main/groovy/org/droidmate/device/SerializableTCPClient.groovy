@@ -66,10 +66,10 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
       //
       // Observation 2: the "java.net.ConnectException: Connection refused: connect" happens if the port hasn't been forwarded.
       // I.e.: this:
-      // new Socket("localhost", MonitorJavaTemplate.srv_port) // port is 59776
+      // new Socket("localhost", MonitorJavaTemplate.srv_port1) // port is 59776
       // will return
       // java.net.ConnectException: Connection refused: connect
-      // unless first AndroidDevice.forwardPort(MonitorJavaTemplate.srv_port)
+      // unless first AndroidDevice.forwardPort(MonitorJavaTemplate.srv_port1)
       // is made. In such case, it will work just fine.
       //
       // Observation 3: this also happens if the device displays pop-up box: "The page at www.soccerdrills.de says: blah blah"
