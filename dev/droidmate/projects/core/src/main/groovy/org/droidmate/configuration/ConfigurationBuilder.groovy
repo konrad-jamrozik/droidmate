@@ -135,6 +135,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
       validateExplorationSettings(config)
       bindToolsCommands(config, buildToolsVersion)
 
+      // This increment is done so each connected device will have its uiautomator-daemon reachable on a separate port.
       config.uiautomatorDaemonTcpPort += config.deviceIndex
 
     } catch (ConfigurationException e)
