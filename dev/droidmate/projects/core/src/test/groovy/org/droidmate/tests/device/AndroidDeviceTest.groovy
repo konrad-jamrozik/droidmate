@@ -52,7 +52,7 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
       assert device.appProcessIsRunning(deployedApk)
 
       // Act 2
-      assert device.appMonitorIsReachable(deployedApk)
+      assert device.appMonitorIsReachable()
 
       // Act 3
       device.perform(newClickGuiDeviceAction(100, 100))
@@ -66,7 +66,7 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
       assert !device.appProcessIsRunning(deployedApk)
 
       // Act 6
-      assert !device.appMonitorIsReachable(deployedApk)
+      assert !device.appMonitorIsReachable()
 
     }
   }
