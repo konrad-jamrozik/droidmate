@@ -39,7 +39,7 @@ import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchActivi
 class AndroidDeviceTest extends DroidmateGroovyTestCase
 {
 
-  @Category([RequiresDevice, UnderConstruction])
+  @Category([RequiresDevice])
   @Test
   void "Launches app, then checks, clicks, stops and checks it again"()
   {
