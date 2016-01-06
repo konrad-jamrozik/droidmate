@@ -179,7 +179,7 @@ public class MonitorJavaTemplate
     if (portUsed == null) throw new AssertionError();
     if (tcpServer.isClosed()) throw new AssertionError();
 
-    Log.d(tag_srv, "Starting monitor TCP server succeeded. Port used: " + portUsed + " PID: " + android.os.Process.myPid());
+    Log.d(tag_srv, "Starting monitor TCP server succeeded. Port used: " + portUsed + " PID: " + getPid());
   }
 
   static class MonitorTCPServer extends SerializableTCPServerBase<String, ArrayList<ArrayList<String>>>

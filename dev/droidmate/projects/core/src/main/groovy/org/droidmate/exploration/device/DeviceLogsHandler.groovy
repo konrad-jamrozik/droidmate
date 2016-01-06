@@ -103,7 +103,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     if (readingSealed)
       throw new ForbiddenOperationError()
 
-    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs(/* allowAppToBeUnreachable */)
+    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs()
     assert successfullyRead(apiLogs)
     assert this.logs.apiLogs.every {it.threadId != uiThreadId}
 

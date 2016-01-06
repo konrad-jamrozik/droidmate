@@ -53,6 +53,9 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     device.getGuiSnapshot()
 
     log.debug("5. Assert app is not running.")
+    // KJA this sometimes fails. Idea for fix: enumerate all ports, asking "what is your PID?" if server replies, kill the PID.
+    // Continue the process until no server replies or number of attempts is exhausted.
+    // Note: the same way I can obtain the package name of the process!
     assertAppIsNotRunning(device, app)
 
     log.debug("6. Log uia-daemon logs and clear logcat.")
@@ -67,11 +70,11 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     logsHandler.logUiaDaemonLogsFromLogcat()
 
     log.debug("9. Read monitor init logs and clear logcat")
+    // KJA no point in reading init msgs, just check if at least one monitor TCP server is running. Then clear logcat.
     logsHandler.readMonitorInitLogsAndClearLogcat()
 
     log.debug("10. Read and clear api logs, then seal reading")
     logsHandler.readAndClearApiLogs()
-
     this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
 
     log.debug("11. Get GUI snapshot, then log uia-daemon logs, then clear logcat")

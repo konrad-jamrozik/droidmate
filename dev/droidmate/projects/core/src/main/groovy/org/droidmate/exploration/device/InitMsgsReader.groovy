@@ -66,6 +66,7 @@ class InitMsgsReader implements IInitMsgsReader
       MonitorJavaTemplate.tag_init, 2, monitorServerStartTimeout, monitorServerStartQueryInterval)
     log.debug("readMonitorMessages(): obtained messages")
 
+    // KJA no longer do these checks (they might return in the future to check pids). Instead, directly check through tcp if any monitor servers are running.
     checkCount(messages)
     verifyPayloads(messages)
     checkMonitorCtorStatus(messages)

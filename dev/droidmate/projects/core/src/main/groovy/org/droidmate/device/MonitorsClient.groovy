@@ -35,13 +35,13 @@ class MonitorsClient implements IMonitorsClient
   @Override
   public ArrayList<ArrayList<String>> getCurrentTime() throws TcpServerUnreachableException, DeviceException
   {
-    def out = ports.findResult {
+    ArrayList<ArrayList<String>> out = ports.findResult {
       try
       {
         return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, it)
-      } catch (TcpServerUnreachableException e)
+      } catch (TcpServerUnreachableException ignored)
       {
-        log.trace("Failed to reach monitor TCP server at port $it. The exception: $e")
+        log.trace("Did not reach monitor TCP server at port $it.")
         return null
       }
     }
@@ -56,9 +56,28 @@ class MonitorsClient implements IMonitorsClient
   @Override
   public ArrayList<ArrayList<String>> getLogs() throws TcpServerUnreachableException, DeviceException
   {
-    // KJA the question here is: which servers are expected to be alive?
-    return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, MonitorJavaTemplate.srv_port1)
+    Collection<ArrayList<ArrayList<String>>> out = ports.findResults {
+      try
+      {
+        return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, it)
+      } catch (TcpServerUnreachableException ignored)
+      {
+        log.trace("Did not reach monitor TCP server at port $it.")
+        return null
+      }
+    }
+    assert out != null
+
+    if (out.empty)
+    {
+      log.trace("None of the monitor TCP servers were available while obtaining API logs.")
+      return []
+    }
+
+    assert !out.empty
+    return (out as Iterable<Iterable>).shallowFlatten()
   }
+
 
   @Override
   List<Integer> getPorts()
