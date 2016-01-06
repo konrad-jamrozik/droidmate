@@ -17,6 +17,11 @@ class DroidmateError extends Error
     super(message)
   }
 
+  public DroidmateError(Throwable cause)
+  {
+    super(cause)
+  }
+
   DroidmateError()
   {
     super()

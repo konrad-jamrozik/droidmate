@@ -11,6 +11,7 @@ package org.droidmate.exploration.data_aggregators
 import org.droidmate.android_sdk.IApk
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DroidmateError
 import org.droidmate.exploration.actions.IExplorationActionRunResult
 import org.droidmate.exploration.actions.IRunnableExplorationAction
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
@@ -32,7 +33,7 @@ interface IApkExplorationOutput2 extends Serializable
 
   List<RunnableExplorationActionWithResult> getActRess()
 
-  void verify()
+  void verify() throws DroidmateError
 
   boolean getNoException()
 

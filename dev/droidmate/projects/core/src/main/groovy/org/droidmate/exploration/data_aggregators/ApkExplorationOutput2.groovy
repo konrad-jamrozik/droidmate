@@ -12,6 +12,7 @@ import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DroidmateError
 import org.droidmate.exploration.actions.*
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.storage.IStorage2
@@ -61,15 +62,21 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   }
 
   @Override
-  void verify()
+  void verify() throws DroidmateError
   {
-    assert actRess.size() >= 1
-    assertFirstActionIsReset()
-    assertFirstActionResultContainsMonitorInitMsgsOrIsFailure()
-    assertLastActionIsTerminateOrResultIsFailure()
-    assertLastGuiSnapshotIsHomeOrResultIsFailure()
-    assertOnlyLastActionMightHaveDeviceException()
-    assertLogsAreSortedByTime()
+    try
+    {
+      assert actRess.size() >= 1
+      assertFirstActionIsReset()
+      assertFirstActionResultContainsMonitorInitMsgsOrIsFailure()
+      assertLastActionIsTerminateOrResultIsFailure()
+      assertLastGuiSnapshotIsHomeOrResultIsFailure()
+      assertOnlyLastActionMightHaveDeviceException()
+      assertLogsAreSortedByTime()
+    } catch (AssertionError e)
+    {
+      throw new DroidmateError(e)
+    }
   }
 
   public void assertLogsAreSortedByTime()

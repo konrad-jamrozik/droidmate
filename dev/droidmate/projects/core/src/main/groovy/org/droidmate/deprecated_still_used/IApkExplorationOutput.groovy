@@ -10,6 +10,7 @@
 package org.droidmate.deprecated_still_used
 
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
+import org.droidmate.exceptions.DroidmateError
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
@@ -50,5 +51,5 @@ interface IApkExplorationOutput extends Serializable
     List<String> getComments()
   }
 
-  void verifyCompletedDataIntegrity()
+  void verifyCompletedDataIntegrity() throws DroidmateError
 }
