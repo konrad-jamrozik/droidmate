@@ -12,6 +12,11 @@ package org.droidmate.exceptions
 class DroidmateError extends Error
 {
 
+  public DroidmateError(String message, Throwable cause)
+  {
+    super(message, cause)
+  }
+
   DroidmateError(String message)
   {
     super(message)
