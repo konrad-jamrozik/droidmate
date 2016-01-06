@@ -19,7 +19,6 @@ import org.droidmate.init.InitConstants
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
-import org.droidmate.test_suite_categories.UnderConstruction
 import org.droidmate.tools.ApksProvider
 import org.droidmate.tools.DeviceTools
 import org.droidmate.tools.IDeviceTools
@@ -52,7 +51,7 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
       assert device.appProcessIsRunning(deployedApk)
 
       // Act 2
-      assert device.appMonitorIsReachable()
+      assert device.anyMonitorIsReachable()
 
       // Act 3
       device.perform(newClickGuiDeviceAction(100, 100))
@@ -66,7 +65,7 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
       assert !device.appProcessIsRunning(deployedApk)
 
       // Act 6
-      assert !device.appMonitorIsReachable()
+      assert !device.anyMonitorIsReachable()
 
     }
   }

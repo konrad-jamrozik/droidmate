@@ -14,7 +14,7 @@ import org.droidmate.exceptions.TcpServerUnreachableException
 interface IMonitorsClient
 {
 
-  boolean appIsReachable()
+  boolean anyMonitorIsReachable()
 
   ArrayList<ArrayList<String>> getCurrentTime() throws TcpServerUnreachableException, DeviceException
 

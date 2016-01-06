@@ -185,7 +185,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  Boolean appMonitorIsReachable()
+  Boolean anyMonitorIsReachable()
   {
     this.currentSimulation.appIsRunning
   }

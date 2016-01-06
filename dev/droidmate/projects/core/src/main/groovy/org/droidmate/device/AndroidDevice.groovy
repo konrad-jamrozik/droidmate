@@ -269,10 +269,10 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  Boolean appMonitorIsReachable() throws DeviceException
+  Boolean anyMonitorIsReachable() throws DeviceException
   {
-    log.debug("appMonitorIsReachable()")
-    return this.monitorsClient.appIsReachable()
+    log.debug("anyMonitorIsReachable()")
+    return this.monitorsClient.anyMonitorIsReachable()
   }
 
   @Override
