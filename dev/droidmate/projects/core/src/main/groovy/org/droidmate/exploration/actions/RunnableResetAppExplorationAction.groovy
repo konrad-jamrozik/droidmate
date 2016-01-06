@@ -55,7 +55,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     log.debug("5. Assert app is not running.")
     // KJA this sometimes fails. Idea for fix: enumerate all ports, asking "what is your PID?" if server replies, kill the PID.
     // Continue the process until no server replies or number of attempts is exhausted.
-    // Note: the same way I can obtain the package name of the process!
+    // KJA the same way I can obtain the package name of the process! This is necessary because I see that for e.g. cn.wps.moffice_eng the API logs come from process that has different package name in stack trace, and thus are filtered out from summary.txt (double check this assumption!)
     assertAppIsNotRunning(device, app)
 
     log.debug("6. Log uia-daemon logs and clear logcat.")
