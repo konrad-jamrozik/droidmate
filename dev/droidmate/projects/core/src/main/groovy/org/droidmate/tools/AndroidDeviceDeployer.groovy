@@ -105,9 +105,8 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
   /**
    * <p>
-   * <i> --- This doc was last reviewed on 21 Dec 2013.</i>
-   * </p><p>
    * Setups the A(V)D, executes the {@code closure} and tears down the device.
+   * Adds any exceptions to the returned collection of exceptions.
    * </p>
    *
    * @see #trySetUp(IDeployableAndroidDevice)
@@ -138,7 +137,10 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     {
       log.error("!!! Caught ${computationThrowable.class.simpleName} in withSetupDevice($deviceIndex)->computation($device). " +
         "This means ${ApkExplorationException.simpleName}s have been lost, if any! " +
-        "Adding the exception as a cause to an ${ExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
+        "Adding the exception as a cause to an ${ExplorationException.class.simpleName}. " +
+        "Then adding to the collected exceptions list.\n" +
+        "The ${computationThrowable.class.simpleName}: $computationThrowable")
+
       explorationExceptions << new ExplorationException(computationThrowable)
     }
     finally
@@ -152,7 +154,10 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       } catch (Throwable tearDownThrowable)
       {
         log.warn("! Caught ${tearDownThrowable.class.simpleName} in withSetupDevice($deviceIndex)->tryTearDown($device). " +
-          "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
+          "Adding as a cause to an ${ExplorationException.class.simpleName}. " +
+          "Then adding to the collected exceptions list.\n" +
+          "The ${tearDownThrowable.class.simpleName}: $tearDownThrowable")
+
         explorationExceptions << new ExplorationException(tearDownThrowable)
       }
       log.debug("Finalizing DONE: withSetupDevice($deviceIndex)->finally{} for computation($device)")

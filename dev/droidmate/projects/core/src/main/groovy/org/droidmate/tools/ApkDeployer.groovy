@@ -36,7 +36,7 @@ public class ApkDeployer implements IApkDeployer
   /**
    * <p>
    * Deploys the {@code apk} on a {@code device} A(V)D, executes the {@code closure} and undeploys the apk from
-   * the {@code device}.
+   * the {@code device}. Adds any exceptions to the returned collection of exceptions.
    *
    * </p>
    */
@@ -64,7 +64,9 @@ public class ApkDeployer implements IApkDeployer
     catch (Throwable computationThrowable)
     {
       log.warn("! Caught ${computationThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->computation(). " +
-        "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
+        "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to the collected exceptions list.\n" +
+        "The ${computationThrowable.class.simpleName}: $computationThrowable")
+
       apkExplorationExceptions << new ApkExplorationException(apk, computationThrowable)
     }
     finally
@@ -77,7 +79,9 @@ public class ApkDeployer implements IApkDeployer
       catch (Throwable undeployApkThrowable)
       {
         log.warn("! Caught ${undeployApkThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->tryUndeployApk(). " +
-          "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
+          "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to the collected exceptions list.\n" +
+          "The ${undeployApkThrowable.class.simpleName}: $undeployApkThrowable")
+
         apkExplorationExceptions << new ApkExplorationException(apk, undeployApkThrowable, true)
       }
       log.debug("Finalizing DONE: withDeployedApk($device, ${apk.fileName}).finally{} for computation($apk.fileName)")
