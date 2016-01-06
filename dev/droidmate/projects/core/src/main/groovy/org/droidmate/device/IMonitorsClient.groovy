@@ -16,4 +16,6 @@ interface IMonitorsClient
   ArrayList<ArrayList<String>> getCurrentTime()
 
   ArrayList<ArrayList<String>> getLogs()
+
+  List<Integer> getPorts()
 }

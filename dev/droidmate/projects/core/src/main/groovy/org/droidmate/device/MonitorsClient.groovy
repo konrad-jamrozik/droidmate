@@ -38,5 +38,9 @@ class MonitorsClient implements IMonitorsClient
     return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, MonitorJavaTemplate.srv_port1)
   }
 
-
+  @Override
+  List<Integer> getPorts()
+  {
+    return [MonitorJavaTemplate.srv_port1, MonitorJavaTemplate.srv_port2]
+  }
 }

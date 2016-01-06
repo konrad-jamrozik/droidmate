@@ -74,7 +74,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     this.adbWrapper.startAdbServer()
 
     device.forwardPort(this.cfg.uiautomatorDaemonTcpPort)
-    device.forwardPort(MonitorJavaTemplate.srv_port1)
+    device.monitorsClientPorts.each { device.forwardPort(it) }
 
     device.pushJar(this.cfg.uiautomatorDaemonJar)
     device.pushJar(this.cfg.monitorApk)

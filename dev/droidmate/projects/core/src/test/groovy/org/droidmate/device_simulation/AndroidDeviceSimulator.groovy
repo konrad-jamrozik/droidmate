@@ -241,6 +241,12 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  List<Integer> getMonitorsClientPorts()
+  {
+    return []
+  }
+
+  @Override
   List<List<String>> readAndClearMonitorTcpMessages()
   {
 

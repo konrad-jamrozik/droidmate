@@ -204,6 +204,12 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
+  List<Integer> getMonitorsClientPorts()
+  {
+    return this.monitorsClient.ports
+  }
+
+  @Override
   List<ITimeFormattedLogcatMessage> readLogcatMessages(String messageTag) throws DeviceException
   {
     log.debug("readLogcatMessages(tag: $messageTag)")
