@@ -53,10 +53,10 @@ public class AndroidDevice implements IAndroidDevice
 
   private final String serialNumber
 
-  private final Configuration                                                cfg
-  private final ISerializableTCPClient<DeviceCommand, DeviceResponse>        uiautomatorClient
-  private final IAdbWrapper                                                  adbWrapper
-  private final ISerializableTCPClient<String, ArrayList<ArrayList<String>>> apiLogsClient
+  private final Configuration                                         cfg
+  private final ISerializableTCPClient<DeviceCommand, DeviceResponse> uiautomatorClient
+  private final IAdbWrapper                                           adbWrapper
+  private final IMonitorsClient                                       monitorsClient
 
   AndroidDevice(
     String serialNumber,
@@ -68,7 +68,7 @@ public class AndroidDevice implements IAndroidDevice
     this.cfg = cfg
     this.uiautomatorClient = uiautomatorClient
     this.adbWrapper = adbWrapper
-    this.apiLogsClient = new SerializableTCPClient<>(cfg.socketTimeout)
+    this.monitorsClient = new MonitorsClient(cfg.socketTimeout, cfg.monitorTcpPort)
   }
 
   @Override
@@ -225,7 +225,7 @@ public class AndroidDevice implements IAndroidDevice
   {
     log.debug("readAndClearMonitorTcpMessages()")
 
-    ArrayList<ArrayList<String>> msgs = apiLogsClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, cfg.monitorTcpPort)
+    ArrayList<ArrayList<String>> msgs = this.monitorsClient.getLogs()
 
     msgs.each {ArrayList<String> msg ->
       assert msg.size() == 3
@@ -240,7 +240,7 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   LocalDateTime getCurrentTime() throws TcpServerUnreachableException, DeviceException
   {
-    List<List<String>> msgs = apiLogsClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, cfg.monitorTcpPort)
+    List<List<String>> msgs = this.monitorsClient.getCurrentTime()
 
     assert msgs.size() == 1
     assert msgs[0].size() == 3
@@ -266,7 +266,7 @@ public class AndroidDevice implements IAndroidDevice
   Boolean appMonitorIsReachable() throws DeviceException
   {
     log.debug("appMonitorIsReachable()")
-    return this.apiLogsClient.isServerReachable(cfg.monitorTcpPort)
+    return this.monitorsClient.appIsReachable()
   }
 
   @Override
