@@ -19,9 +19,6 @@ interface IInitMsgsReader
 
   LocalDateTime readMonitorMessages(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
 
-
-
-
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
 }
 

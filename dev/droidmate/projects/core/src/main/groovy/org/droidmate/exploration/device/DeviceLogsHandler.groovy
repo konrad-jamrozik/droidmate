@@ -13,13 +13,11 @@ import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ForbiddenOperationError
 import org.droidmate.exceptions.TcpServerUnreachableException
-import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import static org.droidmate.common_android.Constants.instrumentation_redirectionTag
 import static org.droidmate.common_android.Constants.uiaDaemon_logcatTag
 
 @Slf4j
@@ -35,31 +33,6 @@ class DeviceLogsHandler implements IDeviceLogsHandler
   DeviceLogsHandler(IDeviceWithReadableLogs device)
   {
     this.device = device
-  }
-
-  @Override
-  boolean monitorInitLogcatMessagesArePresent(List<ITimeFormattedLogcatMessage> outMessages) throws DeviceException
-  {
-    assert outMessages.empty
-
-    outMessages.addAll(device.readLogcatMessages(MonitorJavaTemplate.tag_init))
-    outMessages.addAll(device.readLogcatMessages(instrumentation_redirectionTag))
-
-    if (!outMessages.empty)
-      return true
-
-    return false
-  }
-
-  @Override
-  void readMonitorInitTimeAndClearLogcat() throws DeviceException
-  {
-    if (readingSealed)
-      throw new ForbiddenOperationError()
-
-    this.logs.monitorInitTime = device.readMonitorInitTime()
-
-    this.clearLogcat()
   }
 
 
@@ -129,26 +102,6 @@ class DeviceLogsHandler implements IDeviceLogsHandler
 
     this.readingSealed = true
     return this.logs
-  }
-
-  /**
-   * This method fails early on known bugs:<br/>
-   * KNOWN BUG See https://hg.st.cs.uni-saarland.de/issues/976
-   */
-  @Deprecated
-  @Override
-  void throwIfMonitorInitLogcatLogsArePresent() throws DeviceException
-  {
-    List<ITimeFormattedLogcatMessage> messages = []
-
-    if (this.monitorInitLogcatMessagesArePresent(messages))
-    {
-      assert !messages.empty
-      throw new DeviceException("Monitor init logcat messages are present, " +
-        "while none have been expected. The messages:\n${messages.truncateAndPrint(3)}")
-    }
-
-    assert messages.empty
   }
 
   private List<IApiLogcatMessage> _readAndClearApiLogs() throws DeviceException

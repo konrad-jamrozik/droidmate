@@ -43,12 +43,6 @@ class DeviceMessagesReader implements IDeviceMessagesReader
     this.deviceTimeDiff = new DeviceTimeDiff(device)
   }
 
-  @Override
-  LocalDateTime readMonitorInitTime() throws DeviceException
-  {
-    return deviceTimeDiff.currentTime
-  }
-
 
   @Deprecated
   @Override
@@ -62,18 +56,6 @@ class DeviceMessagesReader implements IDeviceMessagesReader
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException
   {
     return initMsgsReader.readInstrumentationMessages(deviceTimeDiff)
-  }
-
-  /**
-   * Deprecated and unused. It is superseded by {@link #getAndClearCurrentApiLogsFromMonitorTcpServer()}.
-   * Left here for reference and in case if a rollback from the monitor-TCP-based infrastructure of message receipt
-   * from the device will be necessary.
-   */
-  @Deprecated
-  @Override
-  List<IApiLogcatMessage> getCurrentApiLogsFromLogcat() throws DeviceException
-  {
-    return apiLogsReader.getCurrentApiLogsFromLogcat(deviceTimeDiff)
   }
 
   @Override

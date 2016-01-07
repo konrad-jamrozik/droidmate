@@ -17,16 +17,9 @@ import java.time.LocalDateTime
 
 interface IDeviceMessagesReader
 {
-
-  LocalDateTime readMonitorInitTime() throws DeviceException
-
   LocalDateTime readMonitorMessages() throws DeviceException
 
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException
-
-  // Old implementation, left for reference as of 7 Aug 2015.
-  @Deprecated
-  List<IApiLogcatMessage> getCurrentApiLogsFromLogcat() throws DeviceException
 
   List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws TcpServerUnreachableException, DeviceException
 
