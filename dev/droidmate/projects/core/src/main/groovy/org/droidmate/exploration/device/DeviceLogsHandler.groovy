@@ -135,6 +135,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
    * This method fails early on known bugs:<br/>
    * KNOWN BUG See https://hg.st.cs.uni-saarland.de/issues/976
    */
+  @Deprecated
   @Override
   void throwIfMonitorInitLogcatLogsArePresent() throws DeviceException
   {

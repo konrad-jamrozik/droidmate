@@ -32,8 +32,7 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
   protected void performDeviceActions(IApk app, IDeviceWithReadableLogs device) throws DeviceException
   {
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
-    log.debug("1. Do asserts and throws using logs handler.")
-    logsHandler.throwIfMonitorInitLogcatLogsArePresent()
+    log.debug("1. Assert only background API logs are present, if any.")
     logsHandler.readClearAndAssertOnlyBackgroundApiLogs()
 
     log.debug("2. Seal logs reading.")
