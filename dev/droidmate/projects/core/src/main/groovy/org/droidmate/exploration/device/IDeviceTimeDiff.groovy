@@ -20,4 +20,6 @@ interface IDeviceTimeDiff
   LocalDateTime sync(LocalDateTime deviceTime) throws TcpServerUnreachableException, DeviceException
 
   List<ITimeFormattedLogcatMessage> syncMessages(List<ITimeFormattedLogcatMessage> messages)
+
+  LocalDateTime getCurrentTime()
 }

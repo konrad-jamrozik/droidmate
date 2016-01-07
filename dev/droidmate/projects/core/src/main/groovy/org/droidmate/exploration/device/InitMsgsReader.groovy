@@ -54,6 +54,7 @@ class InitMsgsReader implements IInitMsgsReader
    */
   private Logger monitorLogger = LoggerFactory.getLogger(LogbackConstants.logger_name_monitor)
 
+  @Deprecated
   @Override
   LocalDateTime readMonitorMessages(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
   {
@@ -66,7 +67,6 @@ class InitMsgsReader implements IInitMsgsReader
       MonitorJavaTemplate.tag_init, 2, monitorServerStartTimeout, monitorServerStartQueryInterval)
     log.debug("readMonitorMessages(): obtained messages")
 
-    // KJA to-remove no longer do these checks (they might return in the future to check pids). Instead, directly check through tcp if any monitor servers are running.
     checkCount(messages)
     verifyPayloads(messages)
     checkMonitorCtorStatus(messages)
@@ -141,7 +141,6 @@ class InitMsgsReader implements IInitMsgsReader
           "logs like 'I/ActivityManager: Start proc' will be present 3 or more times. " +
           "Also, see the logs with tags from ${MonitorJavaTemplate.simpleName}"
 
-      // KJA to-remove got here 8 messages, because the processes have died along the way cn.wps.moffice_eng_v6.1.1-inlined.apk. This resulted in two ANRs.
       throw new DeviceException("Expected to read from logcat 2 or 4 messages tagged '${MonitorJavaTemplate.tag_init}'. " +
         "First (and possibly third) message denoting monitor .ctor() finished. " +
         "Second (and possibly fourth) message denoting monitor .init() finished. " +

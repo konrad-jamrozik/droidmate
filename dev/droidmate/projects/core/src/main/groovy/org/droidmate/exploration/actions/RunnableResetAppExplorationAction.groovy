@@ -70,7 +70,6 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     logsHandler.logUiaDaemonLogsFromLogcat()
 
     log.debug("9. Read monitor init logs and clear logcat")
-    // KJA 1 no point in reading init msgs, just check if at least one monitor TCP server is running. Then clear logcat.
     assertAppIsRunning(device, app)
     logsHandler.readMonitorInitTimeAndClearLogcat()
 

@@ -30,6 +30,7 @@ import java.time.LocalDateTime
 class DeviceMessagesReader implements IDeviceMessagesReader
 {
 
+  @Deprecated
   private final IInitMsgsReader initMsgsReader
   private final IApiLogsReader  apiLogsReader
   private final IDeviceTimeDiff deviceTimeDiff
@@ -45,17 +46,18 @@ class DeviceMessagesReader implements IDeviceMessagesReader
   @Override
   LocalDateTime readMonitorInitTime() throws DeviceException
   {
-    // KJA
-    return initMsgsReader.readMonitorMessages(deviceTimeDiff)
+    return deviceTimeDiff.currentTime
   }
 
 
+  @Deprecated
   @Override
   LocalDateTime readMonitorMessages() throws DeviceException
   {
     return initMsgsReader.readMonitorMessages(deviceTimeDiff)
   }
 
+  @Deprecated
   @Override
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException
   {
