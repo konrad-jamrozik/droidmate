@@ -11,11 +11,11 @@ package org.droidmate.command.exploration
 import org.droidmate.android_sdk.IApk
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.misc.Failable
 
 public interface IExploration
 {
 
-  Failable<IApkExplorationOutput2, DeviceException> run(IApk app, IDeviceWithReadableLogs device)
+  Failable<IApkExplorationOutput2, DeviceException> run(IApk app, IRobustDevice device)
 }

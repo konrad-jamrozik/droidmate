@@ -24,13 +24,13 @@ import static org.droidmate.common_android.Constants.uiaDaemon_logcatTag
 class DeviceLogsHandler implements IDeviceLogsHandler
 {
 
-  IDeviceWithReadableLogs device
+  IRobustDevice device
 
   boolean readingSealed = false
 
   IDeviceLogs logs = new DeviceLogs()
 
-  DeviceLogsHandler(IDeviceWithReadableLogs device)
+  DeviceLogsHandler(IRobustDevice device)
   {
     this.device = device
   }

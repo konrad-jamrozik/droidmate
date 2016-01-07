@@ -19,7 +19,7 @@ import org.droidmate.exceptions.ExceptionSpec
 import org.droidmate.exceptions.IExceptionSpec
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
 import org.droidmate.init.InitConstants
 import org.droidmate.logcat.IApiLogcatMessage
@@ -89,7 +89,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     Exploration exploration = Exploration.build(cfg)
 
     IApkExplorationOutput2 out = null
-    deviceTools.deviceDeployer.withSetupDevice(0) {IDeviceWithReadableLogs device ->
+    deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
       deviceTools.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
 
         // Act

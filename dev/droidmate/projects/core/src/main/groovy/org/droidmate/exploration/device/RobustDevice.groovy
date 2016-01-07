@@ -20,7 +20,7 @@ import org.droidmate.exceptions.DeviceException
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newPressHomeDeviceAction
 
 @Slf4j
-class RobustDevice implements IDeviceWithReadableLogs
+class RobustDevice implements IRobustDevice
 {
 
   @Delegate

@@ -22,7 +22,7 @@ import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.TimeProvider
@@ -137,7 +137,7 @@ class ExploreCommand extends DroidmateCommand
 
   private List<ExplorationException> deployExploreSerialize(int deviceIndex, List<Apk> apks, ExplorationOutput2 out)
   {
-    this.deviceDeployer.withSetupDevice(deviceIndex) {IDeviceWithReadableLogs device ->
+    this.deviceDeployer.withSetupDevice(deviceIndex) {IRobustDevice device ->
 
       List<ApkExplorationException> allApksExplorationExceptions = []
 
@@ -167,7 +167,7 @@ class ExploreCommand extends DroidmateCommand
   }
 
   private void tryExploreOnDeviceAndSerialize(
-    IApk deployedApk, IDeviceWithReadableLogs device, ExplorationOutput2 out) throws DeviceException
+    IApk deployedApk, IRobustDevice device, ExplorationOutput2 out) throws DeviceException
   {
     Failable<IApkExplorationOutput2, DeviceException> failableApkOut2 = this.exploration.run(deployedApk, device)
 

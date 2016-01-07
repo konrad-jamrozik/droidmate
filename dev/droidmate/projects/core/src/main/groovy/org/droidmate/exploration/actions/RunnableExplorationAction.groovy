@@ -16,7 +16,7 @@ import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.device.IDeviceLogs
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.MissingDeviceLogs
 
 import java.time.LocalDateTime
@@ -63,7 +63,7 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
   protected IDeviceLogs        logs
   protected DeviceException    exception
 
-  public IExplorationActionRunResult run(IApk app, IDeviceWithReadableLogs device)
+  public IExplorationActionRunResult run(IApk app, IRobustDevice device)
   {
     assert app != null
     assert device != null
@@ -93,22 +93,22 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
     return new ExplorationActionRunResult(successful, this.logs, this.snapshot, this.exception)
   }
 
-  abstract protected void performDeviceActions(IApk app, IDeviceWithReadableLogs device) throws DeviceException
+  abstract protected void performDeviceActions(IApk app, IRobustDevice device) throws DeviceException
 
-  protected void assertAppIsNotRunning(IDeviceWithReadableLogs device, IApk app)
+  protected void assertAppIsNotRunning(IRobustDevice device, IApk app)
   {
-    assert !device.appProcessIsRunning(app)
     assert !device.anyMonitorIsReachable()
+    assert !device.appProcessIsRunning(app)
   }
 
-  protected void assertAppIsRunning(IDeviceWithReadableLogs device, IApk app)
+  protected void assertAppIsRunning(IRobustDevice device, IApk app)
   {
-    assert device.appProcessIsRunning(app)
     assert device.anyMonitorIsReachable()
+    assert device.appProcessIsRunning(app)
   }
 
 
-  protected Boolean appIsRunning(IDeviceWithReadableLogs device, IApk app)
+  protected Boolean appIsRunning(IRobustDevice device, IApk app)
   {
     device.appProcessIsRunning(app) && device.anyMonitorIsReachable()
   }

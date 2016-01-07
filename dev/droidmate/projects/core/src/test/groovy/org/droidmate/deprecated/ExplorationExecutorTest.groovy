@@ -15,7 +15,7 @@ import org.droidmate.common.logcat.MonitoredInlinedApkFixtureApiLogs
 import org.droidmate.configuration.Configuration
 import org.droidmate.deprecated_still_used.IApkExplorationOutput
 import org.droidmate.deprecated_still_used.Storage
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.init.InitConstants
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
@@ -56,7 +56,7 @@ class ExplorationExecutorTest extends DroidmateGroovyTestCase
     ExplorationExecutor explorationExecutor = ExplorationExecutor.build(cfg, new Storage(cfg.droidmateOutputDirPath))
 
     IApkExplorationOutput out = null
-    deviceTools.deviceDeployer.withSetupDevice(0) {IDeviceWithReadableLogs device ->
+    deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
       deviceTools.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
 
         // Act

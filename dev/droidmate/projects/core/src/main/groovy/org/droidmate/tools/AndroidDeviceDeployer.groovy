@@ -20,9 +20,8 @@ import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.IDeployableAndroidDevice
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
-import org.droidmate.lib_android.MonitorJavaTemplate
 
 @Slf4j
 
@@ -116,11 +115,11 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   public List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> computation)
   {
     log.info("withSetupDevice(deviceIndex: $deviceIndex, computation)")
-    Assert.checkClosureFirstParameterSignature(computation, IDeviceWithReadableLogs)
+    Assert.checkClosureFirstParameterSignature(computation, IRobustDevice)
 
     List<ExplorationException> explorationExceptions = []
     //noinspection GroovyAssignabilityCheck
-    def (IDeviceWithReadableLogs device, String serialNumber, DeviceException setupDeviceException) = setupDevice(deviceIndex)
+    def (IRobustDevice device, String serialNumber, DeviceException setupDeviceException) = setupDevice(deviceIndex)
     if (setupDeviceException != null)
     {
       explorationExceptions << new ExplorationException(setupDeviceException)
@@ -173,7 +172,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
       this.usedSerialNumbers << serialNumber
 
-      IDeviceWithReadableLogs device = withReadableLogs(this.deviceFactory.create(serialNumber))
+      IRobustDevice device = withReadableLogs(this.deviceFactory.create(serialNumber))
 
       trySetUp(device)
 
@@ -230,7 +229,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     return serialNumber
   }
 
-  IDeviceWithReadableLogs withReadableLogs(IAndroidDevice device)
+  IRobustDevice withReadableLogs(IAndroidDevice device)
   {
     return new RobustDevice(device,
       this.cfg.monitorServerStartTimeout,

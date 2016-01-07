@@ -13,7 +13,7 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.device.DeviceLogsHandler
 import org.droidmate.exploration.device.IDeviceLogsHandler
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 
 import java.time.LocalDateTime
 
@@ -29,7 +29,7 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
   }
 
   @Override
-  protected void performDeviceActions(IApk app, IDeviceWithReadableLogs device) throws DeviceException
+  protected void performDeviceActions(IApk app, IRobustDevice device) throws DeviceException
   {
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     log.debug("1. Assert only background API logs are present, if any.")

@@ -22,7 +22,7 @@ import org.droidmate.exploration.actions.RunnableExplorationAction
 import org.droidmate.exploration.actions.RunnableTerminateExplorationAction
 import org.droidmate.exploration.data_aggregators.ApkExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.exploration.strategy.IExplorationStrategy
 import org.droidmate.misc.Failable
@@ -51,7 +51,7 @@ class Exploration implements IExploration
   }
 
   @Override
-  Failable<IApkExplorationOutput2, DeviceException> run(IApk app, IDeviceWithReadableLogs device)
+  Failable<IApkExplorationOutput2, DeviceException> run(IApk app, IRobustDevice device)
   {
     log.info("run(${app?.packageName}, device)")
 
@@ -78,7 +78,7 @@ class Exploration implements IExploration
     return new Failable<IApkExplorationOutput2, DeviceException>(output, output.noException ? null : output.exception)
   }
 
-  public IApkExplorationOutput2 explorationLoop(IApk app, IDeviceWithReadableLogs device)
+  public IApkExplorationOutput2 explorationLoop(IApk app, IRobustDevice device)
   {
     // Construct initial action and run it on the device to obtain initial result.
     IRunnableExplorationAction action = RunnableExplorationAction.from(

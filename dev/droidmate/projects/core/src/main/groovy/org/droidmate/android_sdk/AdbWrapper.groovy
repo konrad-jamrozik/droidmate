@@ -108,7 +108,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   /*
-    KNOWN BUG happens when trying to install app that is installed by default, like google earth or google keep.
+    KJA2 KNOWN BUG happens when trying to install app that is installed by default, like google earth or google keep.
 
     Piece of relevant log from SysCmdExecutor is below. Make the installApk report appropriate failure when this happens.
 

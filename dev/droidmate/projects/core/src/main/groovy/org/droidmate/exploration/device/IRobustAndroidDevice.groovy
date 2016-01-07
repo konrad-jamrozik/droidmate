@@ -12,7 +12,7 @@ import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
 
-public interface IDeviceWithReadableLogs extends IAndroidDevice, IDeviceMessagesReader
+public interface IRobustDevice extends IAndroidDevice, IDeviceMessagesReader
 {
   IDeviceGuiSnapshot ensureHomeScreenIsDisplayed() throws DeviceException
 }
