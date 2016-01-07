@@ -98,12 +98,8 @@ public class MonitorJavaTemplate
   public static final String msgPrefix_init_success = "Monitor initialized for package ";
 
   // WISH known limitation: if running droidmate with multiple devices, each will have the same set of server ports.
-  // Suggested fix: for each device generate different monitor.java, each differing only by the server ports set.
-  // The code deploying the monitors to the device is in org.droidmate.tools.AndroidDeviceDeployer.trySetUp()
-  public static final int srv_port1 = 59701;
-  public static final int srv_port2 = 59702;
-  public static final int srv_port3 = 59703;
-  public static final int srv_port4 = 59704;
+  // Suggested fix: make monitor.java read the port number from a .txt file; deploy different .txt file to each device.
+  public static final List<Integer> serverPorts = Arrays.asList(59701,59702,59703,59704);
 
   public static final String srvCmd_connCheck = "connCheck";
   public static final String srvCmd_get_logs  = "getLogs";
@@ -152,24 +148,24 @@ public class MonitorJavaTemplate
 
     MonitorTCPServer tcpServer = new MonitorTCPServer();
 
-    Thread serverThread;
-    Integer portUsed;
+    Thread serverThread = null;
+    Integer portUsed = null;
+
+    final Iterator<Integer> portsIterator = serverPorts.iterator();
     try
     {
-      serverThread = tcpServer.start(srv_port1);
-
+      while (portsIterator.hasNext() && serverThread == null)
+      {
+        int port = portsIterator.next();
+        serverThread = tcpServer.start(port);
+        if (serverThread != null)
+          portUsed = port;
+      }
       if (serverThread == null)
       {
-        serverThread = tcpServer.start(srv_port2);
-
-        if (serverThread == null)
-          // KJA2 happened, caused by: I/ActivityManager? Start proc cn.wps.moffice_eng:presentation for activity cn.wps.moffice_eng/cn.wps.moffice.startactivity.presentation.StartPresentationActivity: pid=5441 uid=10244 gids={50244, 3003, 1028, 1015}
-          throw new Exception("Tried to start TCP server using all available ports. None worked.");
-        else
-          portUsed = srv_port2;
-
-      } else
-        portUsed = srv_port1;
+        if (portsIterator.hasNext()) throw new AssertionError();
+        throw new Exception("Tried to start TCP server using all available ports. None worked.");
+      }
 
     } catch (Throwable t)
     {

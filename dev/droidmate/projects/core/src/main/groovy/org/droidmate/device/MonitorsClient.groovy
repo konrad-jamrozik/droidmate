@@ -78,10 +78,9 @@ class MonitorsClient implements IMonitorsClient
     return (out as Iterable<Iterable>).shallowFlatten()
   }
 
-
   @Override
   List<Integer> getPorts()
   {
-    return [MonitorJavaTemplate.srv_port1, MonitorJavaTemplate.srv_port2, MonitorJavaTemplate.srv_port3, MonitorJavaTemplate.srv_port4]
+    return MonitorJavaTemplate.serverPorts
   }
 }
