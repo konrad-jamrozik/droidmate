@@ -89,7 +89,7 @@ class ApiLogsReader implements IApiLogsReader
       throw new DeviceException("Failed to parse API call logs from one of the messages obtained from logcat.", e)
     }
 
-    assert apiLogs == apiLogs.collect().sort {it.time}
+    assert apiLogs.sortedByTimePerPID()
 
     assert apiLogs != null
     return apiLogs

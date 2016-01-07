@@ -64,5 +64,14 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: C__my_local_repos_github_droidmate_dev_droidmate_projects_lib_common_src_main_resources:">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../lib-common/src/main/resources" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

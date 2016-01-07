@@ -94,7 +94,8 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     List<LocalDateTime> apiLogsSortedTimes = apiLogs*.time.collect().sort()
 
     assert !containsMonitorInitTime || explorationStartTime <= explorationEndTime
-    assert apiLogs*.time == apiLogsSortedTimes
+
+    assert apiLogs.sortedByTimePerPID()
 
     if (!apiLogsSortedTimes.empty)
     {
