@@ -37,8 +37,7 @@ class ApkApisChart implements IApkApisChart
   @Override
   IApiChartsTableDataPoint getUniqueApisCalledCountUntilMillis(IMilliseconds millisPassed)
   {
-    if (!(this.apkOut.containsExplorationStartTime))
-      return new ApiChartsTableDataPoint(nanInt)
+    assert this.apkOut.containsExplorationStartTime
 
     if (this.apkOut.explorationTimeInMs <= (millisPassed.value - millisPassed.tickSizeInMs))
       return new ApiChartsTableDataPoint(nanInt)

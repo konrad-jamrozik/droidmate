@@ -15,13 +15,8 @@ import java.time.LocalDateTime
 
 interface IDeviceLogs
 {
+  // KJA to remove
   boolean getContainsMonitorInitTime()
-
-  LocalDateTime getMonitorInitTime()
-
-  LocalDateTime getMonitorInitTimeOrNull()
-
-  List<ITimeFormattedLogcatMessage> getInstrumentationMsgs()
 
   List<ITimeFormattedLogcatMessage> getInstrumentationMsgsOrNull()
 
@@ -31,8 +26,10 @@ interface IDeviceLogs
 
   boolean getReadAnyApiLogsSuccessfully()
 
+  // KJA to remove
   void setMonitorInitTime(LocalDateTime time)
 
+  // KJA to remove
   void setInstrumentationMsgs(List<ITimeFormattedLogcatMessage> messages)
 
   void setApiLogs(List<IApiLogcatMessage> apiLogs)

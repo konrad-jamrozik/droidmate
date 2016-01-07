@@ -10,7 +10,6 @@ package org.droidmate.exploration.device
 
 import com.google.common.base.MoreObjects
 import groovy.util.logging.Slf4j
-import org.droidmate.exceptions.ForbiddenOperationError
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
@@ -36,40 +35,6 @@ class DeviceLogs implements IDeviceLogs, Serializable
     return monitorInitTime != null
   }
 
-  @Override
-  LocalDateTime getMonitorInitTime()
-  {
-    if (!containsMonitorInitTime)
-    {
-      assert monitorInitTime == null
-      throw new ForbiddenOperationError()
-    }
-
-    assert monitorInitTime != null
-    return monitorInitTime
-  }
-
-  @Override
-  List<ITimeFormattedLogcatMessage> getInstrumentationMsgs()
-  {
-    if (!containsMonitorInitTime)
-    {
-      assert instrumentationMsgs == null
-      throw new ForbiddenOperationError()
-    }
-
-    assert instrumentationMsgs != null
-    return instrumentationMsgs
-  }
-
-
-  @Override
-  LocalDateTime getMonitorInitTimeOrNull()
-  {
-    assert (!containsMonitorInitTime).implies(monitorInitTime == null)
-
-    return monitorInitTime
-  }
 
   @Override
   List<ITimeFormattedLogcatMessage> getInstrumentationMsgsOrNull()

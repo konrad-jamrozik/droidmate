@@ -76,7 +76,8 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   {
     try
     {
-      assert actRess.size() >= 1
+      assert this.actRess.size() >= 1
+      assert this.containsExplorationStartTime
       assertFirstActionIsReset()
       assertLastActionIsTerminateOrResultIsFailure()
       assertLastGuiSnapshotIsHomeOrResultIsFailure()
@@ -93,34 +94,17 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     List<IApiLogcatMessage> apiLogs = this.actRess*.result*.deviceLogs*.apiLogsOrEmpty.flatten() as List<IApiLogcatMessage>
     List<LocalDateTime> apiLogsSortedTimes = apiLogs*.time.collect().sort()
 
-    assert !containsMonitorInitTime || explorationStartTime <= explorationEndTime
+    assert explorationStartTime <= explorationEndTime
 
     assert apiLogs.sortedByTimePerPID()
 
     if (!apiLogsSortedTimes.empty)
     {
-      assert !containsMonitorInitTime || explorationStartTime <= apiLogsSortedTimes.first()
+      assert explorationStartTime <= apiLogsSortedTimes.first()
       assert apiLogsSortedTimes.last() <= explorationEndTime
     }
 
   }
-
-  boolean getContainsMonitorInitTime()
-  {
-    if (actRess.empty)
-      return false
-
-    IExplorationActionRunResult firstActionResult = actRess.first().result
-    return firstActionResult.successful && firstActionResult.deviceLogs.containsMonitorInitTime
-  }
-
-
-  LocalDateTime getMonitorInitTime()
-  {
-    assert containsMonitorInitTime
-    return actRess.first().result.deviceLogs.monitorInitTime
-  }
-
 
   void assertOnlyLastActionMightHaveDeviceException()
   {
@@ -132,14 +116,13 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   @Override
   Integer getExplorationTimeInMs()
   {
-    assert containsMonitorInitTime
     return MILLIS.between(explorationStartTime, explorationEndTime)
   }
 
   @Override
   boolean getContainsExplorationStartTime()
   {
-    return containsMonitorInitTime
+    return this.explorationStartTime != null
   }
 
   @Override

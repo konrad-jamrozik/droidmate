@@ -24,23 +24,6 @@ class MissingDeviceLogs implements IDeviceLogs, Serializable
     throw new ForbiddenOperationError()
   }
 
-  @Override
-  LocalDateTime getMonitorInitTime()
-  {
-    throw new ForbiddenOperationError()
-  }
-
-  @Override
-  LocalDateTime getMonitorInitTimeOrNull()
-  {
-    return null
-  }
-
-  @Override
-  List<ITimeFormattedLogcatMessage> getInstrumentationMsgs()
-  {
-    throw new ForbiddenOperationError()
-  }
 
   @Override
   List<ITimeFormattedLogcatMessage> getInstrumentationMsgsOrNull()
