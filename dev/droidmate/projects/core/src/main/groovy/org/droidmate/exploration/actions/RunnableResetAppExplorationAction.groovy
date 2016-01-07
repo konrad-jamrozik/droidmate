@@ -53,12 +53,12 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     device.getGuiSnapshot()
 
     log.debug("5. Assert app is not running.")
-    // KJA this sometimes fails. Idea for fix: enumerate all ports, asking "what is your PID?" if server replies, kill the PID.
+    // KJA2 this sometimes fails. Idea for fix: enumerate all ports, asking "what is your PID?" if server replies, kill the PID.
     // Continue the process until no server replies or number of attempts is exhausted.
-    // KJA the same way I can obtain the package name of the process! This is necessary because I see that for e.g. cn.wps.moffice_eng the API logs come from process that has different package name in stack trace, and thus are filtered out from summary.txt (double check this assumption!)
+    // KJA2 the same way I can obtain the package name of the process! Useful for identifying processes
     assertAppIsNotRunning(device, app)
 
-    log.debug("6. Log uia-daemon logs and clear logcat.")
+    log.debug("6. Log uia-daemon logs and clear logcat")
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     logsHandler.logUiaDaemonLogsFromLogcat()
     logsHandler.clearLogcat()
@@ -70,8 +70,9 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     logsHandler.logUiaDaemonLogsFromLogcat()
 
     log.debug("9. Read monitor init logs and clear logcat")
-    // KJA no point in reading init msgs, just check if at least one monitor TCP server is running. Then clear logcat.
-    logsHandler.readMonitorInitLogsAndClearLogcat()
+    // KJA 1 no point in reading init msgs, just check if at least one monitor TCP server is running. Then clear logcat.
+    assertAppIsRunning(device, app)
+    logsHandler.readMonitorInitTimeAndClearLogcat()
 
     log.debug("10. Read and clear api logs, then seal reading")
     logsHandler.readAndClearApiLogs()

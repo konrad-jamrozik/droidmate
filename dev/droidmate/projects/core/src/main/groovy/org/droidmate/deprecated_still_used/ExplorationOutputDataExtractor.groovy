@@ -621,10 +621,11 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
       logsPerMethod.each {IApiLogcatMessage log ->
         List<String> st = log.stackTrace.split(Api.stack_trace_frame_delimiter)
 
+        // KJA2 this seems to kill many of valid logs (?) if a log is read from monitor, it pretty much had to came from the app
         // Filter out API calls that do not come from the monitored app.
         if (st.any {it.startsWith(appPackageName)})
         {
-          assert !FilteredApis.isStackTraceOfMonitorTcpServerSocketInit(st): "The Socket.<init> monitor logs were expected to be removed by monitor before being sent to host machine."
+          assert !FilteredApis.isStackTraceOfMonitorTcpServerSocketInit(st): "The Socket.<init> monitor logs were expected to be removed by monitor before being sent to the host machine."
           if (!FilteredApis.isStackTraceOfRedundantApiCall(st))
             currentFilteredList << log
         }

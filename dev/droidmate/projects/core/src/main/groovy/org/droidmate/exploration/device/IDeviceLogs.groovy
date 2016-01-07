@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 
 interface IDeviceLogs
 {
-  boolean getContainsMonitorInitMsgs()
+  boolean getContainsMonitorInitTime()
 
   LocalDateTime getMonitorInitTime()
 

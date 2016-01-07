@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter
  *
  * </p><p>
  * For example, if the device clock is 3 seconds into the future as compared to the host machine clock,
- * 3 seconds will be subtracted from the input {@code deviceTime}.
+ * 3 seconds will be subtracted from the sync() input, {@code deviceTime}.
  *
  * </p>
  */
@@ -44,6 +44,18 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
   DeviceTimeDiff(IExplorableAndroidDevice device)
   {
     this.device = device
+  }
+
+  @Override
+  public LocalDateTime sync(LocalDateTime deviceTime) throws TcpServerUnreachableException, DeviceException
+  {
+    assert deviceTime != null
+
+    if (diff == null)
+      diff = computeDiff(device)
+    assert diff != null
+
+    return deviceTime.minus(diff)
   }
 
   private Duration computeDiff(IExplorableAndroidDevice device) throws TcpServerUnreachableException, DeviceException
@@ -63,18 +75,6 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
 
     assert diff != null
     return diff
-  }
-
-  @Override
-  public LocalDateTime sync(LocalDateTime deviceTime) throws TcpServerUnreachableException, DeviceException
-  {
-    assert deviceTime != null
-
-    if (diff == null)
-      diff = computeDiff(device)
-    assert diff != null
-
-    return deviceTime.minus(diff)
   }
 
   @Override

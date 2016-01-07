@@ -19,7 +19,7 @@ class MissingDeviceLogs implements IDeviceLogs, Serializable
   private static final long serialVersionUID = 1
 
   @Override
-  boolean getContainsMonitorInitMsgs()
+  boolean getContainsMonitorInitTime()
   {
     throw new ForbiddenOperationError()
   }

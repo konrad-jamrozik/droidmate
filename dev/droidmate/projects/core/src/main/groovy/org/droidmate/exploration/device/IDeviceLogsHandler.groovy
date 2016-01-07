@@ -22,7 +22,7 @@ interface IDeviceLogsHandler
 
   void clearLogcat() throws DeviceException
 
-  void readMonitorInitLogsAndClearLogcat() throws DeviceException
+  void readMonitorInitTimeAndClearLogcat() throws DeviceException
 
   void readAndClearApiLogs() throws DeviceException
 

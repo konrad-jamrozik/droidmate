@@ -23,20 +23,21 @@ class DeviceLogs implements IDeviceLogs, Serializable
 
   LocalDateTime monitorInitTime = null
 
+  // KJA to remove soon
   List<ITimeFormattedLogcatMessage> instrumentationMsgs = null
 
   List<IApiLogcatMessage> apiLogs = null
 
   @Override
-  boolean getContainsMonitorInitMsgs()
+  boolean getContainsMonitorInitTime()
   {
-    return monitorInitTime != null && instrumentationMsgs != null
+    return monitorInitTime != null
   }
 
   @Override
   LocalDateTime getMonitorInitTime()
   {
-    if (!containsMonitorInitMsgs)
+    if (!containsMonitorInitTime)
     {
       assert monitorInitTime == null
       throw new ForbiddenOperationError()
@@ -49,7 +50,7 @@ class DeviceLogs implements IDeviceLogs, Serializable
   @Override
   List<ITimeFormattedLogcatMessage> getInstrumentationMsgs()
   {
-    if (!containsMonitorInitMsgs)
+    if (!containsMonitorInitTime)
     {
       assert instrumentationMsgs == null
       throw new ForbiddenOperationError()
@@ -63,7 +64,7 @@ class DeviceLogs implements IDeviceLogs, Serializable
   @Override
   LocalDateTime getMonitorInitTimeOrNull()
   {
-    assert (!containsMonitorInitMsgs).implies(monitorInitTime == null)
+    assert (!containsMonitorInitTime).implies(monitorInitTime == null)
 
     return monitorInitTime
   }
@@ -71,7 +72,7 @@ class DeviceLogs implements IDeviceLogs, Serializable
   @Override
   List<ITimeFormattedLogcatMessage> getInstrumentationMsgsOrNull()
   {
-    assert (!containsMonitorInitMsgs).implies(instrumentationMsgs == null)
+    assert (!containsMonitorInitTime).implies(instrumentationMsgs == null)
     return instrumentationMsgs
   }
 
@@ -105,7 +106,7 @@ class DeviceLogs implements IDeviceLogs, Serializable
   {
     return MoreObjects.toStringHelper(this)
       .add("apiLogs#", this.readAnyApiLogsSuccessfully ? apiLogs.size() : "N/A")
-      .add("containsMonitorInitMsgs", containsMonitorInitMsgs)
+      .add("containsMonitorInitMsgs", containsMonitorInitTime)
       .toString()
   }
 

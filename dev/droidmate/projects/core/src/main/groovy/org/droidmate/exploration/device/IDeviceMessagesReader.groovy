@@ -18,6 +18,8 @@ import java.time.LocalDateTime
 interface IDeviceMessagesReader
 {
 
+  LocalDateTime readMonitorInitTime() throws DeviceException
+
   LocalDateTime readMonitorMessages() throws DeviceException
 
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException

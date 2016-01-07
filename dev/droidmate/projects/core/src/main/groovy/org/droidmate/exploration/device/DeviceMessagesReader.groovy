@@ -43,6 +43,14 @@ class DeviceMessagesReader implements IDeviceMessagesReader
   }
 
   @Override
+  LocalDateTime readMonitorInitTime() throws DeviceException
+  {
+    // KJA
+    return initMsgsReader.readMonitorMessages(deviceTimeDiff)
+  }
+
+
+  @Override
   LocalDateTime readMonitorMessages() throws DeviceException
   {
     return initMsgsReader.readMonitorMessages(deviceTimeDiff)

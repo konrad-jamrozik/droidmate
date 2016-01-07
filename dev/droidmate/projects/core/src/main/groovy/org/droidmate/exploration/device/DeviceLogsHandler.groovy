@@ -52,13 +52,12 @@ class DeviceLogsHandler implements IDeviceLogsHandler
   }
 
   @Override
-  void readMonitorInitLogsAndClearLogcat() throws DeviceException
+  void readMonitorInitTimeAndClearLogcat() throws DeviceException
   {
     if (readingSealed)
       throw new ForbiddenOperationError()
 
-    this.logs.monitorInitTime = device.readMonitorMessages()
-    this.logs.instrumentationMsgs = device.readInstrumentationMessages()
+    this.logs.monitorInitTime = device.readMonitorInitTime()
 
     this.clearLogcat()
   }

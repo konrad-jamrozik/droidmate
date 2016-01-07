@@ -101,6 +101,13 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
     assert !device.anyMonitorIsReachable()
   }
 
+  protected void assertAppIsRunning(IDeviceWithReadableLogs device, IApk app)
+  {
+    assert device.appProcessIsRunning(app)
+    assert device.anyMonitorIsReachable()
+  }
+
+
   protected Boolean appIsRunning(IDeviceWithReadableLogs device, IApk app)
   {
     device.appProcessIsRunning(app) && device.anyMonitorIsReachable()

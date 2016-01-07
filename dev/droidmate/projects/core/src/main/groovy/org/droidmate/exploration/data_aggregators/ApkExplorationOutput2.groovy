@@ -101,7 +101,7 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
       return false
 
     IExplorationActionRunResult firstActionResult = actRess.first().result
-    return firstActionResult.successful && firstActionResult.deviceLogs.containsMonitorInitMsgs
+    return firstActionResult.successful && firstActionResult.deviceLogs.containsMonitorInitTime
   }
 
 
@@ -174,7 +174,7 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   void assertFirstActionResultContainsMonitorInitMsgsOrIsFailure()
   {
     IExplorationActionRunResult firstActionResult = actRess.first().result
-    assert !firstActionResult.successful || firstActionResult.deviceLogs.containsMonitorInitMsgs
+    assert !firstActionResult.successful || firstActionResult.deviceLogs.containsMonitorInitTime
   }
 
   void assertLastActionIsTerminateOrResultIsFailure()
