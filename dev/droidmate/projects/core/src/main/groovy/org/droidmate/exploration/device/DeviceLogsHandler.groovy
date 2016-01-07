@@ -75,9 +75,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     if (readingSealed)
       throw new ForbiddenOperationError()
 
-    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs(/* allowAppToBeUnreachable */)
-
-    assert successfullyRead(apiLogs)
+    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs()
     addApiLogs(apiLogs)
   }
 
@@ -103,7 +101,6 @@ class DeviceLogsHandler implements IDeviceLogsHandler
       throw new ForbiddenOperationError()
 
     List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs()
-    assert successfullyRead(apiLogs)
     assert this.logs.apiLogs.every {it.threadId != uiThreadId}
 
     addApiLogs(apiLogs)
@@ -153,17 +150,14 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     assert messages.empty
   }
 
-
-  private boolean successfullyRead(List<IApiLogcatMessage> apiLogs)
-  {
-    return apiLogs != null
-  }
-
   private List<IApiLogcatMessage> _readAndClearApiLogs() throws DeviceException
   {
     try
     {
-      return device.getAndClearCurrentApiLogsFromMonitorTcpServer()
+      def logs = device.getAndClearCurrentApiLogsFromMonitorTcpServer()
+      assert logs != null
+      return logs
+
     } catch (TcpServerUnreachableException e)
     {
       log.warn("! Caught ${TcpServerUnreachableException.simpleName} from " +
