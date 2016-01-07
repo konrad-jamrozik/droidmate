@@ -129,7 +129,7 @@ public class Configuration implements IConfiguration
     "Should the exploration strategy always click the first widget instead of its default more complex behavior")
   public boolean alwaysClickFirstWidget = false
 
-  @Parameter(names = [Configuration.pn_apksLimit],
+  @Parameter(names = [Configuration.pn_apksLimit, "-limit"],
     description = "Limits the number of apks on which DroidMate will run. 0 means no limit.")
   public int apksLimit = 0
 

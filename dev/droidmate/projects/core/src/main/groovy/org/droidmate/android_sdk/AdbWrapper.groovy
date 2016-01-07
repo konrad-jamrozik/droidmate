@@ -118,6 +118,9 @@ public class AdbWrapper implements IAdbWrapper
 
     Failure [INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES]
 
+    HOW TO FIX: before installing the app, check if it is not within already installed apps using adb. If it is, issue warning and
+    skip the app.
+
    */
   @Override
   public void installApk(String deviceSerialNumber, IApk apkToInstall)
