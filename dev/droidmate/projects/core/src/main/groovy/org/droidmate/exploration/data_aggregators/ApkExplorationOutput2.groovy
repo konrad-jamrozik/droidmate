@@ -31,6 +31,7 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
 
   List<RunnableExplorationActionWithResult> actRess = new ArrayList<>()
 
+  LocalDateTime explorationStartTime = null
   LocalDateTime explorationEndTime = null
 
   ApkExplorationOutput2(IApk apk)
@@ -54,6 +55,15 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   }
 
   @Override
+  void setExplorationStartTime(LocalDateTime time)
+  {
+    assert time != null
+    assert explorationStartTime == null
+    this.explorationStartTime = time
+  }
+
+
+  @Override
   void setExplorationEndTime(LocalDateTime time)
   {
     assert time != null
@@ -68,7 +78,8 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     {
       assert actRess.size() >= 1
       assertFirstActionIsReset()
-      assertFirstActionResultContainsMonitorInitMsgsOrIsFailure()
+      // KJA to remove
+      // assertFirstActionResultContainsMonitorInitMsgsOrIsFailure()
       assertLastActionIsTerminateOrResultIsFailure()
       assertLastGuiSnapshotIsHomeOrResultIsFailure()
       assertOnlyLastActionMightHaveDeviceException()
@@ -117,13 +128,6 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     assert this.actRess.dropRight(1).every {RunnableExplorationActionWithResult pair ->
       return pair.result.successful
     }
-  }
-
-  @Override
-  LocalDateTime getExplorationStartTime()
-  {
-    assert containsMonitorInitTime
-    return monitorInitTime
   }
 
   @Override

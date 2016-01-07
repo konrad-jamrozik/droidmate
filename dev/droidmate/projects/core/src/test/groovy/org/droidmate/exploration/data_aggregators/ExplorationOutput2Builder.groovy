@@ -29,7 +29,10 @@ import static org.droidmate.common.logcat.ApiLogcatMessageTestHelper.newApiLogca
 class ExplorationOutput2Builder
 {
 
+  // KJA to remove
+  @Deprecated
   private LocalDateTime         currentlyBuiltApkOut2monitorInitTime
+
   private ApkExplorationOutput2 currentlyBuiltApkOut2
   private ExplorationOutput2    builtOutput = []
 
@@ -48,6 +51,7 @@ class ExplorationOutput2Builder
   {
     assert attributes.name instanceof String
     assert attributes.monitorInitTime instanceof LocalDateTime
+    assert attributes.explorationStartTime instanceof LocalDateTime
     assert attributes.explorationEndTimeMss instanceof Integer
 
     String packageName = attributes.name
@@ -59,7 +63,8 @@ class ExplorationOutput2Builder
         "$packageName" + "1"
       )
     )
-    this.currentlyBuiltApkOut2.explorationEndTime = monitorInitPlusMss(attributes.explorationEndTimeMss as Integer)
+    this.currentlyBuiltApkOut2.explorationStartTime = attributes.explorationStartTime
+    this.currentlyBuiltApkOut2.explorationEndTime = datePlusMss(this.currentlyBuiltApkOut2.explorationStartTime, attributes.explorationEndTimeMss as Integer)
 
     apkBuildDefinition()
 
@@ -160,6 +165,12 @@ class ExplorationOutput2Builder
     else
       return monitorInitPlusMss(currentlyBuiltApkOut2monitorInitTime, mss)
   }
+
+  private LocalDateTime datePlusMss(LocalDateTime date, Integer mss)
+  {
+    return date.plusNanos((mss * 1000000) as long)
+  }
+
 
   private LocalDateTime monitorInitPlusMss(LocalDateTime monitorInit, Integer mss)
   {

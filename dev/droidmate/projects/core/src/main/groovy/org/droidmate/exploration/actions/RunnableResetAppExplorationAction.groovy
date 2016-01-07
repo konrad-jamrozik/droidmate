@@ -69,9 +69,11 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     log.debug("8. Log uia-daemon logs from logcat")
     logsHandler.logUiaDaemonLogsFromLogcat()
 
-    log.debug("9. Read monitor init logs and clear logcat")
+    log.debug("9. Assert app is running and clear logcat")
     assertAppIsRunning(device, app)
-    logsHandler.readMonitorInitTimeAndClearLogcat()
+    // KJA 1 curr work
+    logsHandler.clearLogcat()
+    // logsHandler.readMonitorInitTimeAndClearLogcat()
 
     log.debug("10. Read and clear api logs, then seal reading")
     logsHandler.readAndClearApiLogs()

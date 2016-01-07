@@ -21,6 +21,8 @@ class DeviceLogs implements IDeviceLogs, Serializable
 {
   private static final long serialVersionUID = 1
 
+  // KJA to remove soon
+  @Deprecated
   LocalDateTime monitorInitTime = null
 
   // KJA to remove soon

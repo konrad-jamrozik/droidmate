@@ -90,10 +90,13 @@ class Exploration implements IExploration
     assert app != null
     assert device != null
 
-    IExplorationActionRunResult result = action.run(app, device)
-
     // Construct the output holder.
     IApkExplorationOutput2 output = new ApkExplorationOutput2(app)
+
+    output.explorationStartTime = timeProvider.now
+
+    IExplorationActionRunResult result = action.run(app, device)
+
     // Write the initial action and its execution result to the output holder.
     output.add(action, result)
 

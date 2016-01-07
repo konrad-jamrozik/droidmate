@@ -29,6 +29,8 @@ interface IApkExplorationOutput2 extends Serializable
 
   LocalDateTime getExplorationEndTime()
 
+  void setExplorationStartTime(LocalDateTime time)
+
   void setExplorationEndTime(LocalDateTime time)
 
   List<RunnableExplorationActionWithResult> getActRess()

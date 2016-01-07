@@ -58,6 +58,7 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
     return deviceTime.minus(diff)
   }
 
+  // KJA to remove, no longer necessary
   @Override
   LocalDateTime getCurrentTime()
   {

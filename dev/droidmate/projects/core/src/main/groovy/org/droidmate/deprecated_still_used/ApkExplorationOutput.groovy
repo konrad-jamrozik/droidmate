@@ -205,7 +205,7 @@ class ApkExplorationOutput implements IApkExplorationOutput
   {
     // @formatter:off
     String                             packageName        = apkout2.packageName
-    LocalDateTime                      monitorInitTime    = apkout2.actRess.first().result.deviceLogs.monitorInitTimeOrNull
+    LocalDateTime                      monitorInitTime    = apkout2.explorationStartTime // KJA to remove monitorInitTime altogether
     List<ITimeFormattedLogcatMessage>  instrMsgs          = apkout2.actRess.first().result.deviceLogs.instrumentationMsgsOrNull
     List<TimestampedExplorationAction> actions            = apkout2.actRess.collect { TimestampedExplorationAction.from(it.action.base, it.action.timestamp) }
     List<IDeviceGuiSnapshot>           guiSnapshots       = apkout2.actRess.collect { it.result.guiSnapshot }
