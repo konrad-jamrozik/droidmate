@@ -82,6 +82,6 @@ class MonitorsClient implements IMonitorsClient
   @Override
   List<Integer> getPorts()
   {
-    return [MonitorJavaTemplate.srv_port1, MonitorJavaTemplate.srv_port2]
+    return [MonitorJavaTemplate.srv_port1, MonitorJavaTemplate.srv_port2, MonitorJavaTemplate.srv_port3, MonitorJavaTemplate.srv_port4]
   }
 }

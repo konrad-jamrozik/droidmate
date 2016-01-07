@@ -100,9 +100,10 @@ public class MonitorJavaTemplate
   // WISH known limitation: if running droidmate with multiple devices, each will have the same set of server ports.
   // Suggested fix: for each device generate different monitor.java, each differing only by the server ports set.
   // The code deploying the monitors to the device is in org.droidmate.tools.AndroidDeviceDeployer.trySetUp()
-  // KJA add two more ports, because the processes have died along the way cn.wps.moffice_eng_v6.1.1-inlined.apk. This resulted in two ANRs.
   public static final int srv_port1 = 59701;
   public static final int srv_port2 = 59702;
+  public static final int srv_port3 = 59703;
+  public static final int srv_port4 = 59704;
 
   public static final String srvCmd_connCheck = "connCheck";
   public static final String srvCmd_get_logs  = "getLogs";
