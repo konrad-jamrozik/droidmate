@@ -127,10 +127,6 @@ class RobustDevice implements IDeviceWithReadableLogs
     return guiSnapshot
   }
 
-
-
-
-
   private IDeviceGuiSnapshot getValidGuiSnapshot() throws DeviceException
   {
     IDeviceGuiSnapshot snapshot = device.getGuiSnapshot()
