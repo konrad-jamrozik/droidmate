@@ -29,10 +29,6 @@ import static org.droidmate.common.logcat.ApiLogcatMessageTestHelper.newApiLogca
 class ExplorationOutput2Builder
 {
 
-  // KJA to remove
-  @Deprecated
-  private LocalDateTime currentlyBuiltApkOut2monitorInitTime
-
   private ApkExplorationOutput2 currentlyBuiltApkOut2
   private ExplorationOutput2    builtOutput = []
 
@@ -55,7 +51,6 @@ class ExplorationOutput2Builder
     assert attributes.explorationEndTimeMss instanceof Integer
 
     String packageName = attributes.name
-    this.currentlyBuiltApkOut2monitorInitTime = attributes.monitorInitTime
     this.currentlyBuiltApkOut2 = new ApkExplorationOutput2(
       ApkTestHelper.build(
         packageName,
@@ -124,14 +119,6 @@ class ExplorationOutput2Builder
         // In particular, the ->Socket.<init> is enforced by asserts in org.droidmate.exploration.output.FilteredApis.isStackTraceOfMonitorTcpServerSocketInit
         stackTrace: "$Api.monitorRedirectionPrefix->Socket.<init>->$currentlyBuiltApkOut2.packageName"
       )
-    }
-
-    deviceLogs.instrumentationMsgs = []
-
-    if (this.currentlyBuiltApkOut2monitorInitTime != null)
-    {
-      deviceLogs.monitorInitTime = this.currentlyBuiltApkOut2monitorInitTime
-      this.currentlyBuiltApkOut2monitorInitTime = null
     }
 
     return deviceLogs

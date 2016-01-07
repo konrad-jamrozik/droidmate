@@ -9,28 +9,14 @@
 package org.droidmate.exploration.device
 
 import org.droidmate.logcat.IApiLogcatMessage
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
-
-import java.time.LocalDateTime
 
 interface IDeviceLogs
 {
-  // KJA to remove
-  boolean getContainsMonitorInitTime()
-
-  List<ITimeFormattedLogcatMessage> getInstrumentationMsgsOrNull()
-
   List<IApiLogcatMessage> getApiLogs()
 
   List<IApiLogcatMessage> getApiLogsOrEmpty()
 
   boolean getReadAnyApiLogsSuccessfully()
-
-  // KJA to remove
-  void setMonitorInitTime(LocalDateTime time)
-
-  // KJA to remove
-  void setInstrumentationMsgs(List<ITimeFormattedLogcatMessage> messages)
 
   void setApiLogs(List<IApiLogcatMessage> apiLogs)
 }

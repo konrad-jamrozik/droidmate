@@ -53,9 +53,6 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     device.getGuiSnapshot()
 
     log.debug("5. Assert app is not running.")
-    // KJA2 this sometimes fails. Idea for fix: enumerate all ports, asking "what is your PID?" if server replies, kill the PID.
-    // Continue the process until no server replies or number of attempts is exhausted.
-    // KJA2 the same way I can obtain the package name of the process! Useful for identifying processes
     assertAppIsNotRunning(device, app)
 
     log.debug("6. Log uia-daemon logs and clear logcat")

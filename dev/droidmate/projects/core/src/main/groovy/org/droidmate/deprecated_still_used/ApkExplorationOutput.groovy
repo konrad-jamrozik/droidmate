@@ -204,9 +204,10 @@ class ApkExplorationOutput implements IApkExplorationOutput
   {
     // @formatter:off
     String                             packageName        = apkout2.packageName
-    // monitorInitTime is assigned explorationStartTime because the new format no longer has monitorInitTime.
+    // assigned explorationStartTime because replaced by it in v2
     LocalDateTime                      monitorInitTime    = apkout2.explorationStartTime
-    List<ITimeFormattedLogcatMessage>  instrMsgs          = apkout2.actRess.first().result.deviceLogs.instrumentationMsgsOrNull
+    // assigned null because no longer present in v2
+    List<ITimeFormattedLogcatMessage>  instrMsgs          = null
     List<TimestampedExplorationAction> actions            = apkout2.actRess.collect { TimestampedExplorationAction.from(it.action.base, it.action.timestamp) }
     List<IDeviceGuiSnapshot>           guiSnapshots       = apkout2.actRess.collect { it.result.guiSnapshot }
     List<List<IApiLogcatMessage>>      apiLogs            = apkout2.actRess.collect { it.result.deviceLogs.apiLogsOrEmpty }

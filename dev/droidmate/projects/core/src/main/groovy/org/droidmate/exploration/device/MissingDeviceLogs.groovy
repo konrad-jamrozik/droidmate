@@ -10,26 +10,10 @@ package org.droidmate.exploration.device
 
 import org.droidmate.exceptions.ForbiddenOperationError
 import org.droidmate.logcat.IApiLogcatMessage
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
-
-import java.time.LocalDateTime
 
 class MissingDeviceLogs implements IDeviceLogs, Serializable
 {
   private static final long serialVersionUID = 1
-
-  @Override
-  boolean getContainsMonitorInitTime()
-  {
-    throw new ForbiddenOperationError()
-  }
-
-
-  @Override
-  List<ITimeFormattedLogcatMessage> getInstrumentationMsgsOrNull()
-  {
-    return null
-  }
 
 
   @Override
@@ -46,18 +30,6 @@ class MissingDeviceLogs implements IDeviceLogs, Serializable
 
   @Override
   boolean getReadAnyApiLogsSuccessfully()
-  {
-    throw new ForbiddenOperationError()
-  }
-
-  @Override
-  void setMonitorInitTime(LocalDateTime time)
-  {
-    throw new ForbiddenOperationError()
-  }
-
-  @Override
-  void setInstrumentationMsgs(List<ITimeFormattedLogcatMessage> messages)
   {
     throw new ForbiddenOperationError()
   }
