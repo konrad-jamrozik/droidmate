@@ -223,10 +223,9 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  Boolean clearPackage(String apkPackageName)
+  void clearPackage(String apkPackageName)
   {
     updateSimulatorState(new AdbClearPackageAction(apkPackageName))
-    return true
   }
 
   @Override

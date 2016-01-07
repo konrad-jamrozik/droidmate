@@ -63,7 +63,7 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
-  Boolean clearPackage(String apkPackageName) throws DeviceException
+  void clearPackage(String apkPackageName) throws DeviceException
   {
     Utils.retryOnException(device.&clearPackage.curry(apkPackageName), DeviceException,
       this.clearPackageRetryAttempts,

@@ -312,7 +312,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  Boolean clearPackage(String apkPackageName) throws DeviceException
+  void clearPackage(String apkPackageName) throws DeviceException
   {
     log.debug("clearPackage($apkPackageName): call 1/2")
     adbWrapper.clearPackage(serialNumber, apkPackageName)
@@ -321,7 +321,6 @@ public class AndroidDevice implements IAndroidDevice
     // https://hg.st.cs.uni-saarland.de/issues/980
     log.debug("clearPackage($apkPackageName): call 2/2")
     adbWrapper.clearPackage(serialNumber, apkPackageName)
-    return true
   }
 
   @Override

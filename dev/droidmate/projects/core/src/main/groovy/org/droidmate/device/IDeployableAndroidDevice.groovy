@@ -27,7 +27,7 @@ public interface IDeployableAndroidDevice
 
   void uninstallApk(String apkPackageName, boolean warnAboutFailure) throws DeviceException
 
-  Boolean clearPackage(String apkPackageName) throws DeviceException
+  void clearPackage(String apkPackageName) throws DeviceException
 
   void clearLogcat() throws DeviceException
 
