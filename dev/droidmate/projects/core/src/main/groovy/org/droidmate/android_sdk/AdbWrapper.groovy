@@ -107,6 +107,18 @@ public class AdbWrapper implements IAdbWrapper
     return deviceDescriptors
   }
 
+  /*
+    KNOWN BUG happens when trying to install app that is installed by default, like google earth or google keep.
+
+    Piece of relevant log from SysCmdExecutor is below. Make the installApk report appropriate failure when this happens.
+
+    2016-01-07 14:54:22.642 TRACE "c:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 015d2109ce0c1a0f install -r "C:\my\local\repos\github\droidmate\dev\droidmate\apks\inlined\com.google.earth_v7.1.3.1255-inlined.apk"
+    2016-01-07 14:54:34.601 TRACE Captured stdout:
+    2016-01-07 14:54:34.602 TRACE 	pkg: /data/local/tmp/com.google.earth_v7.1.3.1255-inlined.apk
+
+    Failure [INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES]
+
+   */
   @Override
   public void installApk(String deviceSerialNumber, IApk apkToInstall)
     throws AdbWrapperException
