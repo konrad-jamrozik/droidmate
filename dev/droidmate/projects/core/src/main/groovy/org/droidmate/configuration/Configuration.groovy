@@ -95,6 +95,8 @@ public class Configuration implements IConfiguration
   public static final String pn_exploreInteractively                         = "-exploreInteractively"
   public static final String pn_getValidGuiSnapshotRetryAttempts             = "-getValidGuiSnapshotRetryAttempts"
   public static final String pn_getValidGuiSnapshotRetryDelay                = "-getValidGuiSnapshotRetryDelay"
+  public static final String pn_checkAppIsRunningRetryAttempts               = "-checkAppIsRunningRetryAttempts"
+  public static final String pn_checkAppIsRunningRetryDelay                  = "-checkAppIsRunningRetryDelay"
   public static final String pn_logWidgets                                   = "-logWidgets"
   public static final String pn_monitorServerStartQueryInterval              = "-monitorServerStartQueryInterval"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
@@ -144,8 +146,14 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_appGuardOnlyApis], arity = 1)
   public boolean appGuardOnlyApis = true
 
+  @Parameter(names = [Configuration.pn_checkAppIsRunningRetryAttempts])
+  public int checkAppIsRunningRetryAttempts = 4
+
+  @Parameter(names = [Configuration.pn_checkAppIsRunningRetryDelay])
+  public int checkAppIsRunningRetryDelay = 5000
+
   @Parameter(names = [Configuration.pn_clearPackageRetryAttempts], arity = 1)
-  public int clearPackageRetryAttempts = 5
+  public int clearPackageRetryAttempts = 3
 
   @Parameter(names = [Configuration.pn_clearPackageRetryDelay], arity = 1)
   public int clearPackageRetryDelay = 1000

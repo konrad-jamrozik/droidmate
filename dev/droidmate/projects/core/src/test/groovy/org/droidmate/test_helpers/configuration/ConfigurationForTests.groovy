@@ -28,6 +28,7 @@ class ConfigurationForTests
     Configuration.pn_delayAfterLaunchingActivity, "0",
     Configuration.pn_monitorServerStartTimeout, "0",
     Configuration.pn_monitorServerStartQueryInterval, "0",
+    Configuration.pn_checkAppIsRunningRetryDelay, "0",
     Configuration.pn_clearPackageRetryDelay, "0",
     Configuration.pn_getValidGuiSnapshotRetryDelay, "0",
   ]

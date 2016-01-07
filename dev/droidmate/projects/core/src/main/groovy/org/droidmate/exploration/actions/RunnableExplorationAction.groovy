@@ -95,16 +95,14 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
 
   abstract protected void performDeviceActions(IApk app, IRobustDevice device) throws DeviceException
 
-  protected void assertAppIsNotRunning(IRobustDevice device, IApk app)
+  protected void assertAppIsNotRunning(IRobustDevice device, IApk apk)
   {
-    assert !device.anyMonitorIsReachable()
-    assert !device.appProcessIsRunning(app)
+    assert !device.appIsRunningCheckOnce(apk)
   }
 
-  protected void assertAppIsRunning(IRobustDevice device, IApk app)
+  protected void assertAppIsRunning(IRobustDevice device, IApk apk)
   {
-    assert device.anyMonitorIsReachable()
-    assert device.appProcessIsRunning(app)
+    assert device.appIsRunning(apk)
   }
 
 

@@ -42,9 +42,10 @@ public class Utils
     return stringArray
   }
 
-
+  // WISH make an extension method (on Closure?) and move to github/utilities. The same with this.retryOnFalse()
   public static <T> T retryOnException(Closure<T> target, Class retryableExceptionClass, int attempts, int delay) throws Throwable
   {
+    assert attempts > 0
     int attemptsLeft = attempts
     Throwable exception = null
     boolean succeeded = false
@@ -72,7 +73,6 @@ public class Utils
     if (succeeded)
     {
       assert exception == null
-      assert out != null
       return out
     } else
     {
@@ -81,6 +81,26 @@ public class Utils
     }
   }
 
+  public static Boolean retryOnFalse(Closure<Boolean> target, int attempts, int delay) throws Throwable
+  {
+    assert attempts > 0
+    int attemptsLeft = attempts
+
+    Boolean succeeded = target.call()
+    attemptsLeft--
+    while (!succeeded && attemptsLeft > 0)
+    {
+      sleep(delay)
+      succeeded = target.call()
+      attemptsLeft--
+    }
+
+    assert (attemptsLeft > 0).implies(succeeded)
+    return attemptsLeft
+  }
+
+  @Deprecated
+  // Used by old exploration code
   public static boolean attempt(int attempts, Logger log, String description, Closure recover = null, Closure compute)
   {
     int attemptsLeft = attempts

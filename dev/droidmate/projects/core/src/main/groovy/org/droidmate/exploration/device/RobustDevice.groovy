@@ -9,6 +9,7 @@
 package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.IApk
 import org.droidmate.common.Utils
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.AndroidDeviceAction
@@ -35,13 +36,18 @@ class RobustDevice implements IRobustDevice
   private final int getValidGuiSnapshotRetryAttempts
   private final int getValidGuiSnapshotRetryDelay
 
+  private final int checkAppIsRunningRetryAttempts
+  private final int checkAppIsRunningRetryDelay
+
   RobustDevice(IAndroidDevice device,
                int monitorServerStartTimeout,
                int monitorServerStartQueryInterval,
                int clearPackageRetryAttempts,
                int clearPackageRetryDelay,
                int getValidGuiSnapshotRetryAttempts,
-               int getValidGuiSnapshotRetryDelay)
+               int getValidGuiSnapshotRetryDelay,
+               int checkAppIsRunningRetryAttempts,
+               int checkAppIsRunningRetryDelay)
   {
     this.device = device
     this.messagesReader = new DeviceMessagesReader(device, monitorServerStartTimeout, monitorServerStartQueryInterval)
@@ -52,8 +58,14 @@ class RobustDevice implements IRobustDevice
     this.getValidGuiSnapshotRetryAttempts = getValidGuiSnapshotRetryAttempts
     this.getValidGuiSnapshotRetryDelay = getValidGuiSnapshotRetryDelay
 
+    this.checkAppIsRunningRetryAttempts = checkAppIsRunningRetryAttempts
+    this.checkAppIsRunningRetryDelay = checkAppIsRunningRetryDelay
+
     assert clearPackageRetryAttempts >= 1
     assert clearPackageRetryDelay >= 0
+
+    assert checkAppIsRunningRetryAttempts >= 1
+    assert checkAppIsRunningRetryDelay >= 0
   }
 
   @Override
@@ -70,6 +82,7 @@ class RobustDevice implements IRobustDevice
       this.clearPackageRetryDelay
     )
   }
+
 
   @Override
   IDeviceGuiSnapshot ensureHomeScreenIsDisplayed() throws DeviceException
@@ -136,6 +149,26 @@ class RobustDevice implements IRobustDevice
       throw new DeviceException("Failed to obtain valid GUI snapshot. Validation (failed) result: ${vres.description}")
 
     return snapshot
+  }
+
+  @Override
+  Boolean appIsRunningCheckOnce(IApk apk) throws DeviceException
+  {
+    return _appIsRunning(apk)
+  }
+
+  @Override
+  Boolean appIsRunning(IApk apk) throws DeviceException
+  {
+    return Utils.retryOnFalse(this.&_appIsRunning.curry(apk),
+      checkAppIsRunningRetryAttempts,
+      checkAppIsRunningRetryDelay,
+    )
+  }
+
+  private Boolean _appIsRunning(IApk apk)
+  {
+    return device.anyMonitorIsReachable() && device.appProcessIsRunning(apk)
   }
 
   @Override
