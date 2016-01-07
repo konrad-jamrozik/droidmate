@@ -58,13 +58,6 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
     return deviceTime.minus(diff)
   }
 
-  // KJA to remove, no longer necessary
-  @Override
-  LocalDateTime getCurrentTime()
-  {
-    return sync(device.currentTime)
-  }
-
   private Duration computeDiff(IExplorableAndroidDevice device) throws TcpServerUnreachableException, DeviceException
   {
     LocalDateTime deviceTime = device.currentTime

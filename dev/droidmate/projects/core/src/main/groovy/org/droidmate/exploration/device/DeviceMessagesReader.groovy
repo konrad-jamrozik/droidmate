@@ -29,12 +29,10 @@ import java.time.LocalDateTime
  */
 class DeviceMessagesReader implements IDeviceMessagesReader
 {
-
   @Deprecated
   private final IInitMsgsReader initMsgsReader
   private final IApiLogsReader  apiLogsReader
   private final IDeviceTimeDiff deviceTimeDiff
-
 
   DeviceMessagesReader(IExplorableAndroidDevice device, int monitorServerStartTimeout, int monitorServerStartQueryInterval)
   {
@@ -43,7 +41,7 @@ class DeviceMessagesReader implements IDeviceMessagesReader
     this.deviceTimeDiff = new DeviceTimeDiff(device)
   }
 
-
+  // Used by old exploration code
   @Deprecated
   @Override
   LocalDateTime readMonitorMessages() throws DeviceException
@@ -51,6 +49,7 @@ class DeviceMessagesReader implements IDeviceMessagesReader
     return initMsgsReader.readMonitorMessages(deviceTimeDiff)
   }
 
+  // Used by old exploration code
   @Deprecated
   @Override
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException

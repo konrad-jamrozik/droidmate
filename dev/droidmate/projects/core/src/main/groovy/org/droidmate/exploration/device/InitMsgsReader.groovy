@@ -54,6 +54,7 @@ class InitMsgsReader implements IInitMsgsReader
    */
   private Logger monitorLogger = LoggerFactory.getLogger(LogbackConstants.logger_name_monitor)
 
+  // Used by old exploration code
   @Deprecated
   @Override
   LocalDateTime readMonitorMessages(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
@@ -61,7 +62,6 @@ class InitMsgsReader implements IInitMsgsReader
     log.debug("readMonitorMessages(deviceTimeDiff)")
     assert deviceTimeDiff != null
 
-    // WISH possible problem here: 4 monitors messages will be logged, while this call will return after only 2 have been seen.
     // This is because this call waits for minimum number of messages.
     List<ITimeFormattedLogcatMessage> messages = device.waitForLogcatMessages(
       MonitorJavaTemplate.tag_init, 2, monitorServerStartTimeout, monitorServerStartQueryInterval)
