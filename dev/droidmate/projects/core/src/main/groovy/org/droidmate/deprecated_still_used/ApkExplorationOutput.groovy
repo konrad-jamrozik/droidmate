@@ -151,8 +151,7 @@ class ApkExplorationOutput implements IApkExplorationOutput
                 "the last logged API call time is     ${apiLogsTimes.last()}\n" +
                 "and the allowed clock imprecision is ${clockImprecision.toMillis()} ms.")
 
-            // Assert API logs have increasing timestamps.
-            assert (flatApiLogs == flatApiLogs.collect().sort {it.time})
+            assert flatApiLogs.sortedByTimePerPID()
 
             boolean warningLogged = false
 
