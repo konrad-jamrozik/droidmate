@@ -12,6 +12,7 @@ package org.droidmate.exploration.strategy
 import com.google.common.base.Ticker
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.droidmate.common.logging.Markers
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device.datatypes.IGuiState
@@ -48,6 +49,11 @@ class ExplorationStrategy implements IExplorationStrategy
 
   // WISH super ugly, taken from widgetStrategy. Instead, it should be incorporated in org.droidmate.exploration.strategy.ExplorationStrategy.explorationCanMoveForwardOn, which also takes WidgetStrategy as input, and then is asked.
   private boolean allWidgetsBlackListed = false
+
+  //SE TEAM Hook 1
+  ///Holds all guiStates seen so far ehile exploring
+  private List<IGuiState> guiStatesSeen = new LinkedList<>();
+  //--------------
 
   @Deprecated
   ExplorationStrategy(IWidgetStrategy widgetStrategy,
@@ -138,6 +144,17 @@ class ExplorationStrategy implements IExplorationStrategy
   {
     log.debug("decide($result)")
     assert result?.successful
+
+    //SE Team Hook 1
+    def lastGuiScreen = guiStatesSeen.find({
+      it == result.guiSnapshot.guiState
+    })
+    if (lastGuiScreen == null) {
+      lastGuiScreen = result.guiSnapshot.guiState
+      guiStatesSeen.add(lastGuiScreen)
+      log.trace(Markers.gui,"New elements seen: " + lastGuiScreen.widgets.size())
+    }
+    //--------------
 
     return this.decide(result.guiSnapshot.guiState)
   }

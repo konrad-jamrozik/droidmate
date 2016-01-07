@@ -15,6 +15,7 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.command.exploration.Exploration
 import org.droidmate.command.exploration.IExploration
 import org.droidmate.common.DroidmateException
+import org.droidmate.common.logging.Markers
 import org.droidmate.configuration.Configuration
 import org.droidmate.deprecated_still_used.*
 import org.droidmate.exceptions.*
@@ -162,6 +163,10 @@ class ExploreCommand extends DroidmateCommand
       apks.eachWithIndex {Apk apk, int i ->
 
         log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
+
+        //SE Team Hook apk name
+        log.trace(Markers.gui,"Processing: " + apk.fileName)
+        //---------------------
 
         apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
 
