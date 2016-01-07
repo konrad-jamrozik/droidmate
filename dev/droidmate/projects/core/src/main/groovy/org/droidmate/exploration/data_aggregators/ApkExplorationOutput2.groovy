@@ -78,8 +78,6 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     {
       assert actRess.size() >= 1
       assertFirstActionIsReset()
-      // KJA to remove
-      // assertFirstActionResultContainsMonitorInitMsgsOrIsFailure()
       assertLastActionIsTerminateOrResultIsFailure()
       assertLastGuiSnapshotIsHomeOrResultIsFailure()
       assertOnlyLastActionMightHaveDeviceException()
@@ -173,12 +171,6 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   void assertFirstActionIsReset()
   {
     assert actRess.first().action instanceof RunnableResetAppExplorationAction
-  }
-
-  void assertFirstActionResultContainsMonitorInitMsgsOrIsFailure()
-  {
-    IExplorationActionRunResult firstActionResult = actRess.first().result
-    assert !firstActionResult.successful || firstActionResult.deviceLogs.containsMonitorInitTime
   }
 
   void assertLastActionIsTerminateOrResultIsFailure()

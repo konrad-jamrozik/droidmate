@@ -71,9 +71,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
 
     log.debug("9. Assert app is running and clear logcat")
     assertAppIsRunning(device, app)
-    // KJA 1 curr work
     logsHandler.clearLogcat()
-    // logsHandler.readMonitorInitTimeAndClearLogcat()
 
     log.debug("10. Read and clear api logs, then seal reading")
     logsHandler.readAndClearApiLogs()
