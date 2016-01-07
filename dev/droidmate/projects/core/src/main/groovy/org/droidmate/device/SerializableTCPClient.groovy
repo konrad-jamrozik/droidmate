@@ -57,6 +57,8 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     {
       log.trace("Socket socket = new Socket($serverAddress, $port)")
 
+      // KJA2 KNOWN BUG sometimes device loses connection for a microsecond, breaking port forwards. If this happens, just
+      // reestablish ports.
       // Managed to get here "java.net.ConnectException: Connection refused: connect" when I manually unplugged the USB cable
       // during a test. For logs, see: C:\my\local\repos\chair\droidmate\resources\debug_logs\forced_manual_usb_cable_unplug
       //
