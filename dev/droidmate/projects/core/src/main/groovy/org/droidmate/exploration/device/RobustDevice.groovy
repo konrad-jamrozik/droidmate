@@ -121,7 +121,7 @@ class RobustDevice implements IRobustDevice
 
     if (out.guiState.isAppHasStoppedDialogBox())
     {
-      // KJA2 bug happened here: there were two ANRs: one from "documents" which crashes from time to time, and one from the app under exploration
+      // KJA2 KNOWN BUG there were two ANRs: one from "documents" which crashes from time to time, and one from the app under exploration
       assert (out.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
       throw new DeviceException("Failed to properly close ANR even though OK widget is enabled.")
     }

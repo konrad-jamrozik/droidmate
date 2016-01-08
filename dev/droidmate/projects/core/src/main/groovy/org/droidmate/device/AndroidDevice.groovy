@@ -314,6 +314,7 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   void clearPackage(String apkPackageName) throws DeviceException
   {
+    // KJA2 KNOWN BUG clear package here once, but in RobustDevice, clear -> check app is not running -> try multiple times
     log.debug("clearPackage($apkPackageName): call 1/2")
     adbWrapper.clearPackage(serialNumber, apkPackageName)
     // Clearing package has to happen twice, because sometimes after the first clearing suddenly the ActivityManager restarts

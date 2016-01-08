@@ -621,7 +621,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
       logsPerMethod.each {IApiLogcatMessage log ->
         List<String> st = log.stackTrace.split(Api.stack_trace_frame_delimiter)
 
-        // KJA2 this seems to kill many of valid logs (?) if a log is read from monitor, it pretty much had to came from the app
+        // KJA2 KNOWN BUG this seems to kill many of valid logs (?) if a log is read from monitor, it pretty much had to came from the app
         // Filter out API calls that do not come from the monitored app.
         if (st.any {it.startsWith(appPackageName)})
         {

@@ -399,8 +399,6 @@ public class MonitorJavaTemplate
           {
             Log.d(runnableClassName, String.format("Creating server socket bound to port %s...", port));
 
-            // KNOWN BUG failed cleanup blocks port. See https://hg.st.cs.uni-saarland.de/issues/975
-            // KNOWN BUG Double monitor start. See https://hg.st.cs.uni-saarland.de/issues/973
             try
             {
               serverSocket = new ServerSocket(port);
