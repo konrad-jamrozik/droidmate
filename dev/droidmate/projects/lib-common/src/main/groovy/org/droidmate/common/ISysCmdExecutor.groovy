@@ -11,8 +11,10 @@ package org.droidmate.common;
 
 public interface ISysCmdExecutor {
 
-  String[] execute(String commandDescription, String... cmdLineParams) throws SysCmdExecutorException;
+  String[] execute(String commandDescription, String... cmdLineParams) throws SysCmdExecutorException
 
-  String[] executeWithoutTimeout(String commandDescription, String... cmdLineParams) throws SysCmdExecutorException;
+  String[] executeWithoutTimeout(String commandDescription, String... cmdLineParams) throws SysCmdExecutorException
+
+  String[] executeWithTimeout(String commandDescription, int timeout, String... cmdLineParams) throws SysCmdExecutorException
 
 }

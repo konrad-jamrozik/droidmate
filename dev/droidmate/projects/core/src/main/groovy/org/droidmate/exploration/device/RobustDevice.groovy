@@ -137,11 +137,48 @@ class RobustDevice implements IRobustDevice
     return guiSnapshot
   }
 
-  public IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
+  @Override
+  Boolean appIsRunningCheckOnce(String appPackageName) throws DeviceException
+  {
+    return _appIsRunning(appPackageName)
+  }
+
+  @Override
+  Boolean appIsRunning(IApk apk) throws DeviceException
+  {
+    return Utils.retryOnFalse(this.&_appIsRunning.curry(apk.packageName),
+      checkAppIsRunningRetryAttempts,
+      checkAppIsRunningRetryDelay,
+    )
+  }
+
+  @Override
+  Boolean launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  {
+    try
+    {
+      Boolean result = this.device.launchMainActivity(launchableActivityComponentName)
+      if (this.getExplorableGuiSnapshotWithoutClosingANR().guiState.appHasStoppedDialogBox)
+        result = false
+      return result
+
+    } catch (DeviceException e)
+    {
+      log.debug("device.launchMainActivity() threw $e. Returning false without rethrowing.")
+      return false
+    }
+  }
+
+  private IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
   {
     IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshot()
     guiSnapshot = closeANRIfNecessary(guiSnapshot)
     return guiSnapshot
+  }
+
+  private IDeviceGuiSnapshot getExplorableGuiSnapshotWithoutClosingANR() throws DeviceException
+  {
+    return this.getRetryValidGuiSnapshot()
   }
 
   private IDeviceGuiSnapshot closeANRIfNecessary(IDeviceGuiSnapshot guiSnapshot) throws DeviceException
@@ -200,21 +237,6 @@ class RobustDevice implements IRobustDevice
       throw new DeviceException("Failed to obtain valid GUI snapshot. Validation (failed) result: ${vres.description}")
 
     return snapshot
-  }
-
-  @Override
-  Boolean appIsRunningCheckOnce(String appPackageName) throws DeviceException
-  {
-    return _appIsRunning(appPackageName)
-  }
-
-  @Override
-  Boolean appIsRunning(IApk apk) throws DeviceException
-  {
-    return Utils.retryOnFalse(this.&_appIsRunning.curry(apk.packageName),
-      checkAppIsRunningRetryAttempts,
-      checkAppIsRunningRetryDelay,
-    )
   }
 
   private Boolean _appIsRunning(String appPackageName)

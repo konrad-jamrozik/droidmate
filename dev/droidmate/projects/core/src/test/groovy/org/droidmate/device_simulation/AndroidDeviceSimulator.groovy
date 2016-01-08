@@ -131,6 +131,8 @@ public class AndroidDeviceSimulator implements IAndroidDevice
     switch (action.class)
     {
       case LaunchMainActivityDeviceAction:
+        assert false : "call .launchMainActivity() directly instead"
+        break
       case ClickGuiAction:
         updateSimulatorState(action)
         break
@@ -188,6 +190,13 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   Boolean anyMonitorIsReachable()
   {
     this.currentSimulation.appIsRunning
+  }
+
+  @Override
+  Boolean launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  {
+    updateSimulatorState(new LaunchMainActivityDeviceAction(launchableActivityComponentName))
+    return true
   }
 
   @Override

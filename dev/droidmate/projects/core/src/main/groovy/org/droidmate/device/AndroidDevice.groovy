@@ -305,11 +305,13 @@ public class AndroidDevice implements IAndroidDevice
     adbWrapper.uninstallApk(serialNumber, apkPackageName, warnAboutFailure)
   }
 
-  void launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  @Override
+  Boolean launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
     log.debug("launchMainActivity($launchableActivityComponentName)")
     adbWrapper.launchMainActivity(serialNumber, launchableActivityComponentName)
     sleep(cfg.launchActivityDelay)
+    return true
   }
 
   @Override

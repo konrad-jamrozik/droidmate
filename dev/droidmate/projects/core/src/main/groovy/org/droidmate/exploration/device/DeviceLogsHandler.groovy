@@ -68,7 +68,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
   private static final String uiThreadId = "1"
 
   @Override
-  void readClearAndAssertOnlyBackgroundApiLogs() throws DeviceException
+  void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
   {
     if (readingSealed)
       throw new ForbiddenOperationError()

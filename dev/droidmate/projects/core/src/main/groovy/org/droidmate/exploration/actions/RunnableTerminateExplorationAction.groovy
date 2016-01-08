@@ -33,7 +33,7 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
   {
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     log.debug("1. Assert only background API logs are present, if any.")
-    logsHandler.readClearAndAssertOnlyBackgroundApiLogs()
+    logsHandler.readClearAndAssertOnlyBackgroundApiLogsIfAny()
 
     log.debug("2. Seal logs reading.")
     this.logs = logsHandler.sealReadingAndReturnDeviceLogs()

@@ -38,5 +38,7 @@ public interface IExplorableAndroidDevice
   Boolean appProcessIsRunning(String appPackageName) throws DeviceException
 
   Boolean anyMonitorIsReachable() throws DeviceException
+
+  Boolean launchMainActivity(String launchableActivityComponentName) throws DeviceException
 }
 

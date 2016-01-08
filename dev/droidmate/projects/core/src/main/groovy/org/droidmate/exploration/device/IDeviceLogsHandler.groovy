@@ -12,7 +12,7 @@ import org.droidmate.exceptions.DeviceException
 
 interface IDeviceLogsHandler
 {
-  void readClearAndAssertOnlyBackgroundApiLogs() throws DeviceException
+  void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
 
   void logUiaDaemonLogsFromLogcat() throws DeviceException
 

@@ -56,7 +56,8 @@ public class SysCmdExecutor implements ISysCmdExecutor
   }
 
 
-  public static String[] executeWithTimeout(String commandDescription, int timeout, String... cmdLineParams)
+  @Override
+  public String[] executeWithTimeout(String commandDescription, int timeout, String... cmdLineParams)
     throws SysCmdExecutorException
   {
     assert cmdLineParams.length >= 1: "At least one command line parameters has to be given, denoting the executable.";

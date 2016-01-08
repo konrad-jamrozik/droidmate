@@ -61,27 +61,28 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     logsHandler.clearLogcat()
 
     log.debug("7. Launch main activity")
-    // KJA2 KNOWN BUG times out, ending exploration with ANR on the screen. It this timeout happens:
-    // Just continue, but this time, app might not be running, so stop asserting that. If the app indeed was not running,
-    // then just Home screen will be returned to exploration strategy (ANRs will be closed by getting gui snapshot.
-    device.perform(newLaunchActivityDeviceAction(app.launchableActivityComponentName))
+    Boolean launchResult = device.launchMainActivity(app.launchableActivityComponentName)
 
-    log.debug("8. Log uia-daemon logs from logcat")
-    logsHandler.logUiaDaemonLogsFromLogcat()
-
-    log.debug("9. Assert app is running and clear logcat")
-    assertAppIsRunning(device, app)
-    logsHandler.clearLogcat()
-
-    log.debug("10. Read and clear api logs, then seal reading")
-    logsHandler.readAndClearApiLogs()
-    this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
-
-    log.debug("11. Get GUI snapshot, then log uia-daemon logs, then clear logcat")
+    log.debug("8. Get GUI snapshot")
+    // GUI snapshot has to be obtained before a check is made if app is running. Why? Because obtaining GUI snapshot closes all
+    // ANR dialogs, and if the app crashed with ANR, it will be deemed as running until the ANR is closed.
     this.snapshot = device.guiSnapshot
 
+    if (launchResult)
+    {
+      log.debug("9. [Launch successful] Assert app is running and read API logs.")
+      assertAppIsRunning(device, app)
+      logsHandler.readAndClearApiLogs()
+
+    } else {
+      log.debug("9. [Launch failed] Assert app is not running. Skip reading API logs.")
+      assertAppIsNotRunning(device, app)
+    }
+
+    log.debug("10. Log uia-daemon logs, clear logcat and seal reading")
     logsHandler.logUiaDaemonLogsFromLogcat()
     logsHandler.clearLogcat()
+    this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
   }
 }
 
