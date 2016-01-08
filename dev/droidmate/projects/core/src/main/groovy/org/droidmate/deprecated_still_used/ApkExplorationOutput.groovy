@@ -110,7 +110,7 @@ class ApkExplorationOutput implements IApkExplorationOutput
 
         assert actions.first().explorationAction instanceof ResetAppExplorationAction
         if (!isUiaTestCase)
-          assert guiSnapshots.first().guiState.belongsToApp(appPackageName)
+          assert guiSnapshots.first().guiState.belongsToApp(appPackageName) || actions.first().explorationAction instanceof TerminateExplorationAction
 
         assert completed.implies(actions.last().explorationAction instanceof TerminateExplorationAction)
         if (!isUiaTestCase)
