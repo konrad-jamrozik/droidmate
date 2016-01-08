@@ -101,7 +101,9 @@ public class ExplorationTest extends DroidmateGroovyTestCase
           cfg.getValidGuiSnapshotRetryAttempts,
           cfg.getValidGuiSnapshotRetryDelay,
           cfg.checkAppIsRunningRetryAttempts,
-          cfg.checkAppIsRunningRetryDelay
+          cfg.checkAppIsRunningRetryDelay,
+          cfg.stopAppRetryAttempts,
+          cfg.stopAppSuccessCheckDelay
         )).result
 
       }
@@ -149,7 +151,9 @@ public class ExplorationTest extends DroidmateGroovyTestCase
       cfg.getValidGuiSnapshotRetryAttempts,
       cfg.getValidGuiSnapshotRetryDelay,
       cfg.checkAppIsRunningRetryAttempts,
-      cfg.checkAppIsRunningRetryDelay
+      cfg.checkAppIsRunningRetryDelay,
+      cfg.stopAppRetryAttempts,
+      cfg.stopAppSuccessCheckDelay
     )
 
     Exploration exploration = Exploration.build(cfg, timeGenerator)

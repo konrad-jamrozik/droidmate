@@ -239,7 +239,9 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       this.cfg.getValidGuiSnapshotRetryAttempts,
       this.cfg.getValidGuiSnapshotRetryDelay,
       this.cfg.checkAppIsRunningRetryAttempts,
-      this.cfg.checkAppIsRunningRetryDelay
+      this.cfg.checkAppIsRunningRetryDelay,
+      this.cfg.stopAppRetryAttempts,
+      this.cfg.stopAppSuccessCheckDelay
     )
 
   }

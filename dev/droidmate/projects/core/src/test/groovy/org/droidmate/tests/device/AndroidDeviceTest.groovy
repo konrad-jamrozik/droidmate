@@ -48,7 +48,7 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
       assert device.guiSnapshot.guiState.belongsToApp(deployedApk.packageName)
 
       // Act 1
-      assert device.appProcessIsRunning(deployedApk)
+      assert device.appProcessIsRunning(deployedApk.packageName)
 
       // Act 2
       assert device.anyMonitorIsReachable()
@@ -62,7 +62,7 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
       assert device.guiSnapshot.guiState.isHomeScreen()
 
       // Act 5
-      assert !device.appProcessIsRunning(deployedApk)
+      assert !device.appProcessIsRunning(deployedApk.packageName)
 
       // Act 6
       assert !device.anyMonitorIsReachable()

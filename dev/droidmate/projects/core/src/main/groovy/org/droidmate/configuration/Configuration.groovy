@@ -15,7 +15,6 @@ import org.droidmate.exceptions.ConfigurationException
 import org.droidmate.frontend.DroidmateFrontend
 import org.droidmate.init.InitConstants
 import org.droidmate.init.LocalInitConstants
-import org.droidmate.lib_android.MonitorJavaTemplate
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -113,6 +112,8 @@ public class Configuration implements IConfiguration
   public static final String pn_uiautomatorDaemonWaitForWindowUpdateTimeout  = "-waitForWindowUpdateTimeout"
   public static final String pn_uninstallApk                                 = "-uninstallApk"
   public static final String pn_useApkFixturesDir                            = "-useApkFixturesDir"
+  public static final String pn_stopAppRetryAttempts                         = "-stopAppRetryAttempts"
+  public static final String pn_stopAppSuccessCheckDelay                            = "-stopAppSuccessCheckDelay"
   public static final String pn_widgetIndexes                                = "-widgetIndexes"
   // @formatter:on
   //endregion
@@ -283,6 +284,13 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_widgetIndexes], listConverter = ListOfIntegersConverter.class,
     description = "Makes the exploration strategy to choose widgets to click that have the indexes as provided by this parameter, in sequence. The format is: [<first widget index>,<second widget index>,...<nth widget index>], starting indexing at 0. Example: [0,7,3]")
   public List<Integer> widgetIndexes = new ArrayList<>()
+
+  @Parameter(names = [Configuration.pn_stopAppRetryAttempts])
+  public int stopAppRetryAttempts = 4
+
+  @Parameter(names = [Configuration.pn_stopAppSuccessCheckDelay])
+  public int stopAppSuccessCheckDelay = 1000
+
 
   @Parameter(names = ["-widgetUniqueStringWithFieldPrecedence"], arity = 1)
   public boolean widgetUniqueStringWithFieldPrecedence = true

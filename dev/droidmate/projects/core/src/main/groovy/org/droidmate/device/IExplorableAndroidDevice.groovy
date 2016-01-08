@@ -9,7 +9,6 @@
 
 package org.droidmate.device
 
-import org.droidmate.android_sdk.IApk
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
@@ -36,7 +35,7 @@ public interface IExplorableAndroidDevice
 
   LocalDateTime getCurrentTime() throws TcpServerUnreachableException, DeviceException
 
-  Boolean appProcessIsRunning(IApk apk) throws DeviceException
+  Boolean appProcessIsRunning(String appPackageName) throws DeviceException
 
   Boolean anyMonitorIsReachable() throws DeviceException
 }

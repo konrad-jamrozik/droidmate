@@ -31,6 +31,7 @@ class ConfigurationForTests
     Configuration.pn_checkAppIsRunningRetryDelay, "0",
     Configuration.pn_clearPackageRetryDelay, "0",
     Configuration.pn_getValidGuiSnapshotRetryDelay, "0",
+    Configuration.pn_stopAppSuccessCheckDelay, "0"
   ]
 
   ConfigurationForTests()

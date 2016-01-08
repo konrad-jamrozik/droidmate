@@ -39,6 +39,9 @@ class RobustDevice implements IRobustDevice
   private final int checkAppIsRunningRetryAttempts
   private final int checkAppIsRunningRetryDelay
 
+  private final int stopAppRetryAttempts
+  private final int stopAppSuccessCheckDelay
+
   RobustDevice(IAndroidDevice device,
                int monitorServerStartTimeout,
                int monitorServerStartQueryInterval,
@@ -47,7 +50,9 @@ class RobustDevice implements IRobustDevice
                int getValidGuiSnapshotRetryAttempts,
                int getValidGuiSnapshotRetryDelay,
                int checkAppIsRunningRetryAttempts,
-               int checkAppIsRunningRetryDelay)
+               int checkAppIsRunningRetryDelay,
+               int stopAppRetryAttempts,
+               int stopAppSuccessCheckDelay)
   {
     this.device = device
     this.messagesReader = new DeviceMessagesReader(device, monitorServerStartTimeout, monitorServerStartQueryInterval)
@@ -61,11 +66,18 @@ class RobustDevice implements IRobustDevice
     this.checkAppIsRunningRetryAttempts = checkAppIsRunningRetryAttempts
     this.checkAppIsRunningRetryDelay = checkAppIsRunningRetryDelay
 
-    assert clearPackageRetryAttempts >= 1
-    assert clearPackageRetryDelay >= 0
+    this.stopAppRetryAttempts = stopAppRetryAttempts
+    this.stopAppSuccessCheckDelay = stopAppSuccessCheckDelay
 
+    assert clearPackageRetryAttempts >= 1
     assert checkAppIsRunningRetryAttempts >= 1
+    assert stopAppRetryAttempts >= 1
+
+    assert clearPackageRetryDelay >= 0
     assert checkAppIsRunningRetryDelay >= 0
+    assert stopAppSuccessCheckDelay >= 0
+
+
   }
 
   @Override
@@ -77,10 +89,25 @@ class RobustDevice implements IRobustDevice
   @Override
   void clearPackage(String apkPackageName) throws DeviceException
   {
-    Utils.retryOnException(device.&clearPackage.curry(apkPackageName), DeviceException,
-      this.clearPackageRetryAttempts,
-      this.clearPackageRetryDelay
-    )
+    // Clearing package has to happen more than once, because sometimes after cleaning suddenly the ActivityManager restarts
+    // one of the activities of the app.
+    Utils.retryOnFalse({
+
+      Utils.retryOnException(device.&clearPackage.curry(apkPackageName), DeviceException,
+        this.clearPackageRetryAttempts,
+        this.clearPackageRetryDelay
+      )
+
+      // Sleep here to give the device some time to stop all the processes belonging to the cleared package before checking
+      // if indeed all of them have been stopped.
+      sleep(this.stopAppSuccessCheckDelay)
+
+      return !this.appIsRunningCheckOnce(apkPackageName)
+
+    },
+      this.stopAppRetryAttempts,
+      /* Retry delay. Zero, because after seeing the app didn't stop, we immediately clear package again. */
+      0)
   }
 
 
@@ -152,27 +179,28 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
-  Boolean appIsRunningCheckOnce(IApk apk) throws DeviceException
+  Boolean appIsRunningCheckOnce(String appPackageName) throws DeviceException
   {
-    return _appIsRunning(apk)
+    return _appIsRunning(appPackageName)
   }
 
   @Override
   Boolean appIsRunning(IApk apk) throws DeviceException
   {
-    return Utils.retryOnFalse(this.&_appIsRunning.curry(apk),
+    return Utils.retryOnFalse(this.&_appIsRunning.curry(apk.packageName),
       checkAppIsRunningRetryAttempts,
       checkAppIsRunningRetryDelay,
     )
   }
 
-  private Boolean _appIsRunning(IApk apk)
+  private Boolean _appIsRunning(String appPackageName)
   {
-    return device.anyMonitorIsReachable() && device.appProcessIsRunning(apk)
+    return device.anyMonitorIsReachable() && device.appProcessIsRunning(appPackageName)
   }
 
   @Override
-  String toString() {
-    return "robust-"+this.device.toString()
+  String toString()
+  {
+    return "robust-" + this.device.toString()
   }
 }

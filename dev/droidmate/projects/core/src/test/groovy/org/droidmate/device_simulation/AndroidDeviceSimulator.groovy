@@ -179,9 +179,9 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  Boolean appProcessIsRunning(IApk apk)
+  Boolean appProcessIsRunning(String appPackageName)
   {
-    this.currentSimulation.packageName == apk.packageName && this.currentSimulation.appIsRunning
+    this.currentSimulation.packageName == appPackageName && this.currentSimulation.appIsRunning
   }
 
   @Override
