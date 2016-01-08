@@ -161,7 +161,7 @@ class ExploreCommand extends DroidmateCommand
     deviceDeployer.withSetupDevice(deviceIndex) {IDeviceWithReadableLogs device ->
 
       log.trace(Markers.gui,"<!-- GUI States -->")
-      log.trace(Markers.gui,"<explorationResults>")
+      log.trace(Markers.gui,"<exploration>")
 
       apks.eachWithIndex {Apk apk, int i ->
 
@@ -172,14 +172,15 @@ class ExploreCommand extends DroidmateCommand
 
         apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
 
-          log.trace(Markers.gui,"<states>")
+          log.trace(Markers.gui,"<events>")
           tryExploreOnDeviceAndSerialize(deployedApk, device, out)
-          og.trace(Markers.gui,"</states>")
+          og.trace(Markers.gui,"</events>")
         }
 
         log.trace(Markers.gui,"</apk>")
 
       }
+      log.trace(Markers.gui,"</exploration>")
     }
   }
 
