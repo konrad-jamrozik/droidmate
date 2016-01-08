@@ -84,18 +84,18 @@ public class Configuration implements IConfiguration
   public static final String pn_apksDir                                      = "-apksDir"
   public static final String pn_apksLimit                                    = "-apksLimit"
   public static final String pn_appGuardOnlyApis                             = "-appGuardOnlyApis"
+  public static final String pn_checkAppIsRunningRetryAttempts               = "-checkAppIsRunningRetryAttempts"
+  public static final String pn_checkAppIsRunningRetryDelay                  = "-checkAppIsRunningRetryDelay"
   public static final String pn_clearPackageRetryAttempts                    = "-clearPackageRetryAttempts"
   public static final String pn_clearPackageRetryDelay                       = "-clearPackageRetryDelay"
   public static final String pn_compareRuns                                  = "-compare"
-  public static final String pn_delayAfterLaunchingActivity                  = "-launchActivityDelay"
   public static final String pn_deployRawApks                                = "-deployRawApks"
   public static final String pn_device                                       = "-device"
   public static final String pn_droidmateOutputDir                           = "-droidmateOutputDirPath"
   public static final String pn_exploreInteractively                         = "-exploreInteractively"
   public static final String pn_getValidGuiSnapshotRetryAttempts             = "-getValidGuiSnapshotRetryAttempts"
   public static final String pn_getValidGuiSnapshotRetryDelay                = "-getValidGuiSnapshotRetryDelay"
-  public static final String pn_checkAppIsRunningRetryAttempts               = "-checkAppIsRunningRetryAttempts"
-  public static final String pn_checkAppIsRunningRetryDelay                  = "-checkAppIsRunningRetryDelay"
+  public static final String pn_launchActivityDelay                          = "-launchActivityDelay"
   public static final String pn_logWidgets                                   = "-logWidgets"
   public static final String pn_monitorServerStartQueryInterval              = "-monitorServerStartQueryInterval"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
@@ -162,9 +162,6 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_compareRuns], arity = 1)
   public boolean compareRuns = false
 
-  @Parameter(names = [Configuration.pn_delayAfterLaunchingActivity])
-  public int delayAfterLaunchingActivity = 5000
-
   @Parameter(names = [Configuration.pn_droidmateOutputDir], description =
     "Path to the directory that will contain DroidMate exploration output.")
   public String droidmateOutputDir = defaultDroidmateOutputDir
@@ -202,6 +199,9 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_getValidGuiSnapshotRetryDelay])
   public int getValidGuiSnapshotRetryDelay = 2000
+
+  @Parameter(names = [Configuration.pn_launchActivityDelay])
+  public int launchActivityDelay = 5000
 
   @Parameter(names = [Configuration.pn_logWidgets])
   public boolean logWidgets = false

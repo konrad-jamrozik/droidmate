@@ -309,7 +309,7 @@ public class AndroidDevice implements IAndroidDevice
   {
     log.debug("launchMainActivity($launchableActivityComponentName)")
     adbWrapper.launchMainActivity(serialNumber, launchableActivityComponentName)
-    sleep(cfg.delayAfterLaunchingActivity)
+    sleep(cfg.launchActivityDelay)
   }
 
   @Override

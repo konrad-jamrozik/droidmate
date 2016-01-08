@@ -25,7 +25,7 @@ class ConfigurationForTests
   private static final List<String> zeroedTestConfig = [
     Configuration.pn_randomSeed, "0",
     Configuration.pn_uiautomatorDaemonWaitForWindowUpdateTimeout, "50",
-    Configuration.pn_delayAfterLaunchingActivity, "0",
+    Configuration.pn_launchActivityDelay, "0",
     Configuration.pn_monitorServerStartTimeout, "0",
     Configuration.pn_monitorServerStartQueryInterval, "0",
     Configuration.pn_checkAppIsRunningRetryDelay, "0",
