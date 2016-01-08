@@ -172,7 +172,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
       this.usedSerialNumbers << serialNumber
 
-      IRobustDevice device = withReadableLogs(this.deviceFactory.create(serialNumber))
+      IRobustDevice device = robustWithReadableLogs(this.deviceFactory.create(serialNumber))
 
       trySetUp(device)
 
@@ -229,7 +229,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     return serialNumber
   }
 
-  IRobustDevice withReadableLogs(IAndroidDevice device)
+  IRobustDevice robustWithReadableLogs(IAndroidDevice device)
   {
     return new RobustDevice(device,
       this.cfg.monitorServerStartTimeout,
