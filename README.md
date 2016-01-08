@@ -56,7 +56,7 @@ To build DroidMate for the first time, follow these steps:
 * Install Android SDK.
 * In SDK Manager (with admin rights) of Android SDK, download the following:  
 Android SDK Build-tools 19.1  
-Android 4.2.2 SDK Platform
+Android 4.4.2 SDK Platform
 * To make `adb` (Android Debug Bridge) runnable, add `(...)/android-sdk/platform-tools` to the PATH system environment variable.
 * To make `aapt` (Android Asset Packaging Tool) runnable, add `(...)/android-sdk/build-tools/19.1.0` to the PATH system environment variable.
 * Install Apache Ant (newest version should work) and add its `bin` directory to the PATH system environment variable.
