@@ -92,8 +92,13 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
       try
       {
 //        log.trace("inputStream = new ObjectInputStream(socket.inputStream)")
+        // Got here once java.net.SocketTimeoutException: Read timed out on
+        // monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, it)
         inputStream = new ObjectInputStream(socket.inputStream)
       } catch (EOFException e)
+      {
+        throw new TcpServerUnreachableException(e)
+      } catch (SocketTimeoutException e)
       {
         throw new TcpServerUnreachableException(e)
       }
