@@ -34,9 +34,9 @@ class DeviceMessagesReader implements IDeviceMessagesReader
   private final IApiLogsReader  apiLogsReader
   private final IDeviceTimeDiff deviceTimeDiff
 
-  DeviceMessagesReader(IExplorableAndroidDevice device, int monitorServerStartTimeout, int monitorServerStartQueryInterval)
+  DeviceMessagesReader(IExplorableAndroidDevice device, int monitorServerStartTimeout, int monitorServerStartQueryDelay)
   {
-    this.initMsgsReader = new InitMsgsReader(device, monitorServerStartTimeout, monitorServerStartQueryInterval)
+    this.initMsgsReader = new InitMsgsReader(device, monitorServerStartTimeout, monitorServerStartQueryDelay)
     this.apiLogsReader = new ApiLogsReader(device)
     this.deviceTimeDiff = new DeviceTimeDiff(device)
   }

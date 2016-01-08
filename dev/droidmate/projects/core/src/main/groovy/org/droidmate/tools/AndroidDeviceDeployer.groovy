@@ -233,7 +233,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   {
     return new RobustDevice(device,
       this.cfg.monitorServerStartTimeout,
-      this.cfg.monitorServerStartQueryInterval,
+      this.cfg.monitorServerStartQueryDelay,
       this.cfg.clearPackageRetryAttempts,
       this.cfg.clearPackageRetryDelay,
       this.cfg.getValidGuiSnapshotRetryAttempts,

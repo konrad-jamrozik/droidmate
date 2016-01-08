@@ -27,7 +27,7 @@ public interface IExplorableAndroidDevice
 
   List<ITimeFormattedLogcatMessage> readLogcatMessages(String messageTag) throws DeviceException
 
-  List<ITimeFormattedLogcatMessage> waitForLogcatMessages(String messageTag, int minMessagesCount, int waitTimeout, int queryInterval) throws DeviceException
+  List<ITimeFormattedLogcatMessage> waitForLogcatMessages(String messageTag, int minMessagesCount, int waitTimeout, int queryDelay) throws DeviceException
 
   void clearLogcat() throws DeviceException
 

@@ -19,7 +19,7 @@ public interface IAdbWrapper {
 
   List<AndroidDeviceDescriptor> getAndroidDevicesDescriptors() throws AdbWrapperException
 
-  List<String> waitForMessagesOnLogcat(String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryInterval)
+  List<String> waitForMessagesOnLogcat(String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryDelay)
     throws AdbWrapperException
 
   void waitForUiaDaemonToClose() throws AdbWrapperException

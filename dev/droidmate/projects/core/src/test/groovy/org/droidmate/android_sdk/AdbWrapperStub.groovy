@@ -32,7 +32,7 @@ class AdbWrapperStub implements IAdbWrapper {
   }
 
   @Override
-  List<String> waitForMessagesOnLogcat(String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryInterval) throws AdbWrapperException
+  List<String> waitForMessagesOnLogcat(String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryDelay) throws AdbWrapperException
   {
     assert false: "Not yet implemented!"
   }

@@ -98,7 +98,7 @@ class ExplorationComponentsFactory implements IExplorationComponentsFactory
   @Override
   IDeviceMessagesReader createDeviceMessagesReader(IExplorableAndroidDevice device)
   {
-    return new DeviceMessagesReader(device, cfg.monitorServerStartTimeout, cfg.monitorServerStartQueryInterval)
+    return new DeviceMessagesReader(device, cfg.monitorServerStartTimeout, cfg.monitorServerStartQueryDelay)
   }
 
   public static ExplorationComponentsFactory build(Configuration cfg, TimeProvider timeProvider, Storage storage)

@@ -97,7 +97,7 @@ public class Configuration implements IConfiguration
   public static final String pn_getValidGuiSnapshotRetryDelay                = "-getValidGuiSnapshotRetryDelay"
   public static final String pn_launchActivityDelay                          = "-launchActivityDelay"
   public static final String pn_logWidgets                                   = "-logWidgets"
-  public static final String pn_monitorServerStartQueryInterval              = "-monitorServerStartQueryInterval"
+  public static final String pn_monitorServerStartQueryDelay                 = "-monitorServerStartQueryDelay"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
   public static final String pn_randomSeed                                   = "-randomSeed"
   public static final String pn_resetEveryNthExplorationForward              = "-resetEvery"
@@ -106,14 +106,14 @@ public class Configuration implements IConfiguration
   public static final String pn_softReset                                    = "-softReset"
   public static final String pn_timeLimit                                    = "-timeLimit"
   public static final String pn_uiautomatorDaemonServerStartTimeout          = "-uiautomatorDaemonServerStartTimeout"
-  public static final String pn_uiautomatorDaemonServerStartQueryInterval    = "-uiautomatorDaemonServerStartQueryInterval"
+  public static final String pn_uiautomatorDaemonServerStartQueryDelay       = "-uiautomatorDaemonServerStartQueryDelay"
   public static final String pn_uiautomatorDaemonTcpPort                     = "-tcpPort"
   public static final String pn_uiautomatorDaemonWaitForGuiToStabilize       = "-waitForGuiToStabilize"
   public static final String pn_uiautomatorDaemonWaitForWindowUpdateTimeout  = "-waitForWindowUpdateTimeout"
   public static final String pn_uninstallApk                                 = "-uninstallApk"
   public static final String pn_useApkFixturesDir                            = "-useApkFixturesDir"
   public static final String pn_stopAppRetryAttempts                         = "-stopAppRetryAttempts"
-  public static final String pn_stopAppSuccessCheckDelay                            = "-stopAppSuccessCheckDelay"
+  public static final String pn_stopAppSuccessCheckDelay                     = "-stopAppSuccessCheckDelay"
   public static final String pn_widgetIndexes                                = "-widgetIndexes"
   // @formatter:on
   //endregion
@@ -210,8 +210,8 @@ public class Configuration implements IConfiguration
     "Logging level of the entirety of application. Possible values, comma separated: trace, debug, info.")
   String logLevel = "trace"
 
-  @Parameter(names = [Configuration.pn_monitorServerStartQueryInterval])
-  public int monitorServerStartQueryInterval = 2000
+  @Parameter(names = [Configuration.pn_monitorServerStartQueryDelay])
+  public int monitorServerStartQueryDelay = 2000
 
   @Parameter(names = [Configuration.pn_monitorServerStartTimeout])
   public int monitorServerStartTimeout = 20000
@@ -255,9 +255,9 @@ public class Configuration implements IConfiguration
     "How long DroidMate should wait, in milliseconds, for message on logcat confirming that UiAutomatorDaemonServer has started on android (virtual) device.")
   public int uiautomatorDaemonServerStartTimeout = 20000
 
-  @Parameter(names = [Configuration.pn_uiautomatorDaemonServerStartQueryInterval], description =
+  @Parameter(names = [Configuration.pn_uiautomatorDaemonServerStartQueryDelay], description =
     "How often DroidMate should query, in milliseconds, for message on logcat confirming that UiDaemonServer has started on android (virtual) device.")
-  public int uiautomatorDaemonServerStartQueryInterval = 2000
+  public int uiautomatorDaemonServerStartQueryDelay = 2000
 
   @Parameter(names = [Configuration.pn_uiautomatorDaemonWaitForGuiToStabilize], arity = 1, description =
     "Should the uiautomator-daemon wait for GUI state to stabilize after each click performed on the android device. Setting this to false will drastically speedup the clicking process, but will probably result in new clicks being sent while the results of previous one are still being processed.")

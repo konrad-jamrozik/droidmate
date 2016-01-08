@@ -27,7 +27,7 @@ class ConfigurationForTests
     Configuration.pn_uiautomatorDaemonWaitForWindowUpdateTimeout, "50",
     Configuration.pn_launchActivityDelay, "0",
     Configuration.pn_monitorServerStartTimeout, "0",
-    Configuration.pn_monitorServerStartQueryInterval, "0",
+    Configuration.pn_monitorServerStartQueryDelay, "0",
     Configuration.pn_checkAppIsRunningRetryDelay, "0",
     Configuration.pn_clearPackageRetryDelay, "0",
     Configuration.pn_getValidGuiSnapshotRetryDelay, "0",

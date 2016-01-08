@@ -337,7 +337,7 @@ public class AdbWrapper implements IAdbWrapper
 
   @Override
   public List<String> waitForMessagesOnLogcat(
-    String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryInterval)
+    String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryDelay)
     throws AdbWrapperException
   {
 
@@ -348,9 +348,9 @@ public class AdbWrapper implements IAdbWrapper
       int timeLeftToQuery = waitTimeout
       while (timeLeftToQuery >= 0 && readMessages.size() < minMessagesCount)
       {
-//        log.verbose("waitForMessagesOnLogcat.sleep(queryInterval=$queryInterval)")
-        Thread.sleep(queryInterval)
-        timeLeftToQuery -= queryInterval
+//        log.verbose("waitForMessagesOnLogcat.sleep(queryDelay=$queryDelay)")
+        Thread.sleep(queryDelay)
+        timeLeftToQuery -= queryDelay
 //        log.verbose("waitForMessagesOnLogcat.readMessagesFromLogcat(messageTag=$messageTag) " +
 //          "timeLeftToQuery=$timeLeftToQuery readMessages.size()=${readMessages.size()} minMessagesCount=$minMessagesCount")
         readMessages = this.readMessagesFromLogcat(deviceSerialNumber, messageTag)
@@ -369,7 +369,7 @@ public class AdbWrapper implements IAdbWrapper
         "messageTag: $messageTag, " +
         "minMessageCount: $minMessagesCount, " +
         "waitTimeout: $waitTimeout, " +
-        "queryInterval: $queryInterval")
+        "queryDelay: $queryDelay")
 
     }
 
@@ -448,7 +448,7 @@ public class AdbWrapper implements IAdbWrapper
       Constants.UIADAEMON_SERVER_START_TAG,
       1,
       cfg.uiautomatorDaemonServerStartTimeout,
-      cfg.uiautomatorDaemonServerStartQueryInterval)
+      cfg.uiautomatorDaemonServerStartQueryDelay)
 
     assert !msgs?.empty
     assert (msgs.size() == 1):

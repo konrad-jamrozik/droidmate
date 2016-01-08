@@ -167,7 +167,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  List<ITimeFormattedLogcatMessage> waitForLogcatMessages(String messageTag, int minMessagesCount, int waitTimeout, int queryInterval) throws DeviceException
+  List<ITimeFormattedLogcatMessage> waitForLogcatMessages(String messageTag, int minMessagesCount, int waitTimeout, int queryDelay) throws DeviceException
   {
     return readLogcatMessages(messageTag)
   }

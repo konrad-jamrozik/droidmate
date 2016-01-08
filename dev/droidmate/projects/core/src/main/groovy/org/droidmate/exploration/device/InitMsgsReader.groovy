@@ -33,13 +33,13 @@ class InitMsgsReader implements IInitMsgsReader
   private final IExplorableAndroidDevice device
 
   private final int monitorServerStartTimeout
-  private final int monitorServerStartQueryInterval
+  private final int monitorServerStartQueryDelay
 
-  InitMsgsReader(IExplorableAndroidDevice device, int monitorServerStartTimeout, int monitorServerStartQueryInterval)
+  InitMsgsReader(IExplorableAndroidDevice device, int monitorServerStartTimeout, int monitorServerStartQueryDelay)
   {
     this.device = device
     this.monitorServerStartTimeout = monitorServerStartTimeout
-    this.monitorServerStartQueryInterval = monitorServerStartQueryInterval
+    this.monitorServerStartQueryDelay = monitorServerStartQueryDelay
 
     assert device != null
   }
@@ -64,7 +64,7 @@ class InitMsgsReader implements IInitMsgsReader
 
     // This is because this call waits for minimum number of messages.
     List<ITimeFormattedLogcatMessage> messages = device.waitForLogcatMessages(
-      MonitorJavaTemplate.tag_init, 2, monitorServerStartTimeout, monitorServerStartQueryInterval)
+      MonitorJavaTemplate.tag_init, 2, monitorServerStartTimeout, monitorServerStartQueryDelay)
     log.debug("readMonitorMessages(): obtained messages")
 
     checkCount(messages)

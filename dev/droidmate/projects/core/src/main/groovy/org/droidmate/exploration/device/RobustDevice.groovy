@@ -44,7 +44,7 @@ class RobustDevice implements IRobustDevice
 
   RobustDevice(IAndroidDevice device,
                int monitorServerStartTimeout,
-               int monitorServerStartQueryInterval,
+               int monitorServerStartQueryDelay,
                int clearPackageRetryAttempts,
                int clearPackageRetryDelay,
                int getValidGuiSnapshotRetryAttempts,
@@ -55,7 +55,7 @@ class RobustDevice implements IRobustDevice
                int stopAppSuccessCheckDelay)
   {
     this.device = device
-    this.messagesReader = new DeviceMessagesReader(device, monitorServerStartTimeout, monitorServerStartQueryInterval)
+    this.messagesReader = new DeviceMessagesReader(device, monitorServerStartTimeout, monitorServerStartQueryDelay)
 
     this.clearPackageRetryAttempts = clearPackageRetryAttempts
     this.clearPackageRetryDelay = clearPackageRetryDelay

@@ -95,7 +95,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
         // Act
         out = exploration.run(deployedApk, new RobustDevice(device,
           cfg.monitorServerStartTimeout,
-          cfg.monitorServerStartQueryInterval,
+          cfg.monitorServerStartQueryDelay,
           cfg.clearPackageRetryAttempts,
           cfg.clearPackageRetryDelay,
           cfg.getValidGuiSnapshotRetryAttempts,
@@ -145,7 +145,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     def simulator = new AndroidDeviceSimulator(timeGenerator, [apk.packageName], simulatorSpec, exceptionSpecs)
     def simulatedDevice = new RobustDevice(simulator,
       cfg.monitorServerStartTimeout,
-      cfg.monitorServerStartQueryInterval,
+      cfg.monitorServerStartQueryDelay,
       cfg.clearPackageRetryAttempts,
       cfg.clearPackageRetryDelay,
       cfg.getValidGuiSnapshotRetryAttempts,
