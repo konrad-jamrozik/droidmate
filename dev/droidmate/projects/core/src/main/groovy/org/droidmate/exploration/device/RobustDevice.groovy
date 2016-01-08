@@ -42,6 +42,9 @@ class RobustDevice implements IRobustDevice
   private final int stopAppRetryAttempts
   private final int stopAppSuccessCheckDelay
 
+  private final int closeANRAttempts
+  private final int closeANRDelay
+
   RobustDevice(IAndroidDevice device,
                int monitorServerStartTimeout,
                int monitorServerStartQueryDelay,
@@ -52,7 +55,9 @@ class RobustDevice implements IRobustDevice
                int checkAppIsRunningRetryAttempts,
                int checkAppIsRunningRetryDelay,
                int stopAppRetryAttempts,
-               int stopAppSuccessCheckDelay)
+               int stopAppSuccessCheckDelay,
+               int closeANRAttempts,
+               int closeANRDelay)
   {
     this.device = device
     this.messagesReader = new DeviceMessagesReader(device, monitorServerStartTimeout, monitorServerStartQueryDelay)
@@ -69,13 +74,18 @@ class RobustDevice implements IRobustDevice
     this.stopAppRetryAttempts = stopAppRetryAttempts
     this.stopAppSuccessCheckDelay = stopAppSuccessCheckDelay
 
+    this.closeANRAttempts = closeANRAttempts
+    this.closeANRDelay = closeANRDelay
+
     assert clearPackageRetryAttempts >= 1
     assert checkAppIsRunningRetryAttempts >= 1
     assert stopAppRetryAttempts >= 1
+    assert closeANRAttempts >= 1
 
     assert clearPackageRetryDelay >= 0
     assert checkAppIsRunningRetryDelay >= 0
     assert stopAppSuccessCheckDelay >= 0
+    assert closeANRDelay >= 0
 
 
   }
@@ -136,29 +146,43 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot closeANRIfNecessary(IDeviceGuiSnapshot guiSnapshot) throws DeviceException
   {
-    def out = guiSnapshot
-    if (guiSnapshot.guiState.isAppHasStoppedDialogBox())
-    {
-      assert (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
+    assert guiSnapshot.validationResult.valid
+    if (!guiSnapshot.guiState.isAppHasStoppedDialogBox())
+      return guiSnapshot
+
+    assert guiSnapshot.guiState.isAppHasStoppedDialogBox()
+    assert (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
+
+    IDeviceGuiSnapshot out = null
+
+    Utils.retryOnFalse({
+
       device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
         (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget)
       )
       out = this.getRetryValidGuiSnapshot()
-    }
 
-    if (out.guiState.isAppHasStoppedDialogBox())
-    {
-      // KJA2 KNOWN BUG there were two ANRs: one from "documents" which crashes from time to time, and one from the app under exploration
-      assert (out.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
-      throw new DeviceException("Failed to properly close ANR even though OK widget is enabled.")
-    }
+      if (out.guiState.isAppHasStoppedDialogBox())
+      {
+        assert (out.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
+        log.trace("Failed to properly close ANR even though OK widget is enabled.")
+        return false
+      } else
+        return true
 
+    },
+      this.closeANRAttempts,
+      this.closeANRDelay)
+
+    assert out.validationResult.valid
     return out
   }
 
   private IDeviceGuiSnapshot getRetryValidGuiSnapshot() throws DeviceException
   {
-    IDeviceGuiSnapshot guiSnapshot = Utils.retryOnException(this.&getValidGuiSnapshot, DeviceException,
+    IDeviceGuiSnapshot guiSnapshot = Utils.retryOnException(
+      this.&getValidGuiSnapshot,
+      DeviceException,
       getValidGuiSnapshotRetryAttempts,
       getValidGuiSnapshotRetryDelay
     )

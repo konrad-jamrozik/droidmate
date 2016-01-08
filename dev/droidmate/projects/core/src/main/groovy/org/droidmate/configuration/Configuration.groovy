@@ -88,6 +88,8 @@ public class Configuration implements IConfiguration
   public static final String pn_checkAppIsRunningRetryDelay                  = "-checkAppIsRunningRetryDelay"
   public static final String pn_clearPackageRetryAttempts                    = "-clearPackageRetryAttempts"
   public static final String pn_clearPackageRetryDelay                       = "-clearPackageRetryDelay"
+  public static final String pn_closeANRAttempts                             = "-closeANRAttempts"
+  public static final String pn_closeANRDelay                                = "-closeANRDelay"
   public static final String pn_compareRuns                                  = "-compare"
   public static final String pn_deployRawApks                                = "-deployRawApks"
   public static final String pn_device                                       = "-device"
@@ -158,6 +160,12 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_clearPackageRetryDelay], arity = 1)
   public int clearPackageRetryDelay = 1000
+
+  @Parameter(names = [Configuration.pn_closeANRAttempts])
+  public int closeANRAttempts = 4
+
+  @Parameter(names = [Configuration.pn_closeANRDelay])
+  public int closeANRDelay = 1000
 
   @Parameter(names = [Configuration.pn_compareRuns], arity = 1)
   public boolean compareRuns = false
@@ -290,7 +298,6 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_stopAppSuccessCheckDelay])
   public int stopAppSuccessCheckDelay = 1000
-
 
   @Parameter(names = ["-widgetUniqueStringWithFieldPrecedence"], arity = 1)
   public boolean widgetUniqueStringWithFieldPrecedence = true

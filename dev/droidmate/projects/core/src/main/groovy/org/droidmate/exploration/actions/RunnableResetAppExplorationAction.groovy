@@ -61,6 +61,9 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     logsHandler.clearLogcat()
 
     log.debug("7. Launch main activity")
+    // KJA2 KNOWN BUG times out, ending exploration with ANR on the screen. It this timeout happens:
+    // Just continue, but this time, app might not be running, so stop asserting that. If the app indeed was not running,
+    // then just Home screen will be returned to exploration strategy (ANRs will be closed by getting gui snapshot.
     device.perform(newLaunchActivityDeviceAction(app.launchableActivityComponentName))
 
     log.debug("8. Log uia-daemon logs from logcat")
