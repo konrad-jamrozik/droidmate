@@ -36,6 +36,11 @@ public class Markers
   public static final Marker osCmd = MarkerFactory.getMarker("MARKER_OS_CMD")
 
   /**
+   * Marker for DroidMateGUI exploration state results
+   */
+  public static final Marker gui = MarkerFactory.getMarker("MARKER_GUI")
+
+  /**
    * Denotes logs that output data about DroidMate run: input files, configuration, run time + run timestamps, etc.
    */
   public static final Marker runData = MarkerFactory.getMarker("MARKER_RUN_DATA")

@@ -104,7 +104,7 @@ class Exploration implements IExploration
 
     //SE Team 2. Hook
     def successful = result.successful;
-    log.trace(Markers.gui,"Success: " + successful.toString())
+    log.trace(Markers.gui,"<success>" + successful.toString() + "</success>")
     //---------------
 
     assert !result.successful || action instanceof RunnableTerminateExplorationAction

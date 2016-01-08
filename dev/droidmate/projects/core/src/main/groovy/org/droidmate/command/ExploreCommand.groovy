@@ -160,18 +160,25 @@ class ExploreCommand extends DroidmateCommand
   {
     deviceDeployer.withSetupDevice(deviceIndex) {IDeviceWithReadableLogs device ->
 
+      log.trace(Markers.gui,"<!-- GUI States -->")
+      log.trace(Markers.gui,"<explorationResults>")
+
       apks.eachWithIndex {Apk apk, int i ->
 
         log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
-        //SE Team Hook apk name
-        log.trace(Markers.gui,"Processing: " + apk.fileName)
-        //---------------------
+        log.trace(Markers.gui,"<apk>")
+        log.trace(Markers.gui,"<name>"+apk.fileName+"</name>")
 
         apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
 
+          log.trace(Markers.gui,"<states>")
           tryExploreOnDeviceAndSerialize(deployedApk, device, out)
+          og.trace(Markers.gui,"</states>")
         }
+
+        log.trace(Markers.gui,"</apk>")
+
       }
     }
   }
