@@ -29,8 +29,9 @@ class TcpClients implements ITcpClients
     this.deviceSerialNumber = deviceSerialNumber
     this.adbWrapper = adbWrapper
     this.uiautomatorDaemonTcpPort = uiautomatorDaemonTcpPort
-    this.uiautomatorClient = new SerializableTCPClient<DeviceCommand, DeviceResponse>(socketTimeout)
-    this.monitorsClient = new MonitorsClient(socketTimeout, deviceSerialNumber, adbWrapper)
+    IDeviceReboot deviceReboot = new DeviceReboot()
+    this.uiautomatorClient = new SerializableTCPClient<DeviceCommand, DeviceResponse>(socketTimeout, deviceReboot)
+    this.monitorsClient = new MonitorsClient(socketTimeout, deviceSerialNumber, adbWrapper, deviceReboot)
   }
 
   @Override

@@ -18,13 +18,15 @@ import org.droidmate.lib_android.MonitorJavaTemplate
 public class SerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable> implements ISerializableTCPClient<InputToServerT, OutputFromServerT>
 {
 
-  protected final String serverAddress = "localhost";
-  private int socketTimeout
+  private final String serverAddress = "localhost";
+  private final int           socketTimeout
+  private final IDeviceReboot deviceReboot
 
 
-  public SerializableTCPClient(int socketTimeout)
+  public SerializableTCPClient(int socketTimeout, IDeviceReboot deviceReboot)
   {
     this.socketTimeout = socketTimeout
+    this.deviceReboot = deviceReboot
   }
 
   @Override
@@ -43,12 +45,39 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     }
   }
 
+  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
+  {
+    OutputFromServerT output
+    try
+    {
+      output = this._queryServer(input, port) as OutputFromServerT
+
+    } catch (ConnectException exception)
+    {
+      log.debug("Querying server resulted in $exception. Rebooting device and trying again.")
+
+      this.deviceReboot.tryRun()
+
+      try
+      {
+        output = this._queryServer(input, port)  as OutputFromServerT
+
+      } catch (ConnectException exception2)
+      {
+        throw new DeviceException("Querying server resulted in $exception2 even after device reboot.", /* stopFurtherApkExplorations */ true)
+      }
+    }
+
+    assert output != null
+    return output
+  }
+
   /**
    * Sends through TCP socket the serialized {@code input} to server under {@link #serverAddress}:{@code port}.<br/>
    * Next, waits until server returns his answer and returns it.
    */
   @SuppressWarnings("unchecked")
-  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
+  private OutputFromServerT _queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException, ConnectException
   {
 
     OutputFromServerT output
