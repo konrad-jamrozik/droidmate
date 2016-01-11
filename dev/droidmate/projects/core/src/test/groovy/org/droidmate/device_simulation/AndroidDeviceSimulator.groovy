@@ -15,7 +15,10 @@ import org.droidmate.common.Boolean3
 import org.droidmate.common.DroidmateException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
-import org.droidmate.exceptions.*
+import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.IExceptionSpec
+import org.droidmate.exceptions.TestDeviceException
+import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
@@ -250,9 +253,9 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  List<Integer> getMonitorsClientPorts()
+  void forwardPorts()
   {
-    return []
+    return
   }
 
   @Override

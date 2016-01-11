@@ -170,8 +170,6 @@ class RobustDevice implements IRobustDevice
       Boolean3 result = this.device.launchMainActivity(launchableActivityComponentName)
       def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
 
-      assert (result == Boolean3.True).implies(!guiSnapshot.guiState.isHomeScreen())
-
       if ((result == Boolean3.True) && guiSnapshot.guiState.appHasStoppedDialogBox)
       {
         log.debug("device.launchMainActivity() succeeded, but ANR is displayed. Returning 'unknown' " +

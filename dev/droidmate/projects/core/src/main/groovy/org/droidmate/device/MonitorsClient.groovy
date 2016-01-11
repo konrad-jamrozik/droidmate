@@ -9,6 +9,7 @@
 package org.droidmate.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
@@ -19,9 +20,15 @@ class MonitorsClient implements IMonitorsClient
 
   private final ISerializableTCPClient<String, ArrayList<ArrayList<String>>> monitorTcpClient
 
-  MonitorsClient(int socketTimeout)
+  private final String deviceSerialNumber
+
+  private final IAdbWrapper adbWrapper
+
+  MonitorsClient(int socketTimeout, String deviceSerialNumber, IAdbWrapper adbWrapper)
   {
     this.monitorTcpClient = new SerializableTCPClient<>(socketTimeout)
+    this.deviceSerialNumber = deviceSerialNumber
+    this.adbWrapper = adbWrapper
   }
 
   @Override
@@ -79,8 +86,14 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  List<Integer> getPorts()
+  List<IDevicePort> getPorts()
   {
-    return MonitorJavaTemplate.serverPorts
+    return MonitorJavaTemplate.serverPorts.collect {new DevicePort(this.adbWrapper, this.deviceSerialNumber, it)}
+  }
+
+  @Override
+  void forwardPorts()
+  {
+    this.ports.each { it.forward() }
   }
 }

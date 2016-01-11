@@ -35,5 +35,5 @@ public interface IDeployableAndroidDevice
 
   void stopUiaDaemon() throws DeviceException
 
-  List<Integer> getMonitorsClientPorts()
+  void forwardPorts()
 }
