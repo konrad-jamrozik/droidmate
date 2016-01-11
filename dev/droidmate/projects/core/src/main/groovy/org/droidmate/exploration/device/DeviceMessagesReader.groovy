@@ -41,6 +41,13 @@ class DeviceMessagesReader implements IDeviceMessagesReader
     this.deviceTimeDiff = new DeviceTimeDiff(device)
   }
 
+  @Override
+  void resetTimeSync()
+  {
+    this.deviceTimeDiff.reset()
+
+  }
+
   // Used by old exploration code
   @Deprecated
   @Override

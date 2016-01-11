@@ -87,4 +87,10 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
     }
 
   }
+
+  @Override
+  void reset()
+  {
+    diff = null
+  }
 }

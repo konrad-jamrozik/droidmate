@@ -57,6 +57,7 @@ class Exploration implements IExploration
 
     assert app != null
     assert device != null
+    device.resetTimeSync()
 
     try
     {
@@ -94,6 +95,7 @@ class Exploration implements IExploration
     IApkExplorationOutput2 output = new ApkExplorationOutput2(app)
 
     output.explorationStartTime = timeProvider.now
+    log.debug("Exploration start time: " + output.explorationStartTime)
 
     IExplorationActionRunResult result = action.run(app, device)
 

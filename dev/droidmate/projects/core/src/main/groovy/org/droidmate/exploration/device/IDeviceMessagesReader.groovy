@@ -23,4 +23,5 @@ interface IDeviceMessagesReader
 
   List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws TcpServerUnreachableException, DeviceException
 
+  void resetTimeSync()
 }
