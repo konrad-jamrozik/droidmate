@@ -28,7 +28,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
   }
 
   @Override
-  Boolean isServerReachable(IDevicePort port) throws DeviceException
+  Boolean isServerReachable(int port) throws DeviceException
   {
     try
     {
@@ -48,7 +48,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
    * Next, waits until server returns his answer and returns it.
    */
   @SuppressWarnings("unchecked")
-  public OutputFromServerT queryServer(InputToServerT input, IDevicePort port) throws TcpServerUnreachableException, DeviceException
+  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
   {
 
     OutputFromServerT output
@@ -56,7 +56,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     {
       log.trace("Socket socket = new Socket($serverAddress, $port)")
 
-      Socket socket = port.getSocket(serverAddress)
+      Socket socket = this._getSocket(serverAddress, port)
 
       socket.soTimeout = this.socketTimeout
 
@@ -74,6 +74,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
 //        log.trace("inputStream = new ObjectInputStream(socket.inputStream)")
         // Got here once java.net.SocketTimeoutException: Read timed out on
         // monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, it)
+        // KJA port reforwarding results in java.io.EOFException: null here on ObjectInputStream.<init> on uiautomator client
         inputStream = new ObjectInputStream(socket.inputStream)
       } catch (EOFException e)
       {
@@ -114,5 +115,43 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     }
 
     return output
+  }
+
+  // KJA current work
+  // KJA does not help. Instead, do adb reboot with 60 seconds wait.
+  // If device is not connected on 'adb reboot':
+  // error: device '(null)' not found
+  private Socket _getSocket(String serverAddress, int port) throws ConnectException
+  {
+    Socket socket
+    try
+    {
+      // KJA curr work
+      // KJA2 KNOWN BUG sometimes device loses connection for a microsecond, breaking port forwards. If this happens, just
+      // reestablish ports.
+      // Managed to get here "java.net.ConnectException: Connection refused: connect" when I manually unplugged the USB cable
+      // during a test. For logs, see: C:\my\local\repos\chair\droidmate\resources\debug_logs\forced_manual_usb_cable_unplug
+      //
+      // Observation 1: this happens when device is not reachable at all, e.g. USB got unplugged. However, this does NOT happen
+      // if the package with the server was force-stopped. Instead, TcpServerUnreachableException is thrown on constructing
+      // ObjectInputStream from socket.inputStream below.
+      //
+      // Observation 2: the "java.net.ConnectException: Connection refused: connect" happens if the port hasn't been forwarded.
+      // I.e.: this:
+      // new Socket("localhost", MonitorJavaTemplate.srv_port1) // port is 59776
+      // will return
+      // java.net.ConnectException: Connection refused: connect
+      // unless first AndroidDevice.forwardPort(MonitorJavaTemplate.srv_port1)
+      // is made. In such case, it will work just fine.
+      //
+      // Observation 3: this also happens if the device displays pop-up box: "The page at www.soccerdrills.de says: blah blah"
+      // It has "cancel" and "ok" buttons. Closing the dialog didn't help, I had to do port forward like:
+      // adb forward tcp:59776 tcp:59776
+      socket = new Socket(serverAddress, port)
+    } catch (ConnectException e)
+    {
+      throw e
+    }
+    return socket
   }
 }

@@ -56,7 +56,6 @@ public class AndroidDevice implements IAndroidDevice
 
   private final Configuration                                         cfg
   private final ISerializableTCPClient<DeviceCommand, DeviceResponse> uiautomatorClient
-  private final IDevicePort uiautomatorDevicePort
   private final IAdbWrapper                                           adbWrapper
   private final IMonitorsClient                                       monitorsClient
 
@@ -69,8 +68,6 @@ public class AndroidDevice implements IAndroidDevice
     this.serialNumber = serialNumber
     this.cfg = cfg
     this.uiautomatorClient = uiautomatorClient
-    // KJA wrap under uiautomatorClient
-    this.uiautomatorDevicePort = new DevicePort(this.adbWrapper, this.serialNumber, cfg.uiautomatorDaemonTcpPort)
     this.adbWrapper = adbWrapper
     this.monitorsClient = new MonitorsClient(cfg.socketTimeout, this.serialNumber, this.adbWrapper)
   }
@@ -179,7 +176,7 @@ public class AndroidDevice implements IAndroidDevice
     if (!uiaDaemonHandlesCommand)
       throw new DeviceException(String.format("Unhandled command of %s", deviceCommand.command))
 
-    deviceResponse = this.uiautomatorClient.queryServer(deviceCommand, this.uiautomatorDevicePort)
+    deviceResponse = this.uiautomatorClient.queryServer(deviceCommand, cfg.uiautomatorDaemonTcpPort)
 
     assert deviceResponse != null
 

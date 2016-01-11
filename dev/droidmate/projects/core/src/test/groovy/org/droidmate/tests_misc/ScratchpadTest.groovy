@@ -21,6 +21,7 @@ class ScratchpadTest
   void test()
   {
     Socket s = new Socket("localhost", 59999)
+    new ObjectInputStream(s.inputStream)
   }
 
 }

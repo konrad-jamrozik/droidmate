@@ -37,6 +37,29 @@ import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchActivi
 @RunWith(JUnit4)
 class AndroidDeviceTest extends DroidmateGroovyTestCase
 {
+  // KJA debug
+  @Category([RequiresDevice])
+  @Test
+  void "Debug test"()
+  {
+    withApkDeployedOnDevice() {IAndroidDevice device, IApk deployedApk ->
+
+      device.clearLogcat()
+      def gs = device.guiSnapshot
+
+      System.out.println("Please replug now...");
+      sleep(3000)
+      System.out.println("2...");
+      sleep(1000)
+      System.out.println("1...");
+      sleep(1000)
+      System.out.println("Execution continues");
+
+      gs = device.guiSnapshot
+
+    }
+  }
+
 
   @Category([RequiresDevice])
   @Test
@@ -75,6 +98,7 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
     Configuration cfg = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$InitConstants.monitored_inlined_apk_fixture_name]" as String]
     ).get()
+
     IDeviceTools deviceTools = new DeviceTools(cfg)
 
     ApksProvider apksProvider = new ApksProvider(deviceTools.aapt)
@@ -88,6 +112,7 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
     exceptions.every {
       it.printStackTrace()
     }
+
     assert exceptions.empty
   }
 }

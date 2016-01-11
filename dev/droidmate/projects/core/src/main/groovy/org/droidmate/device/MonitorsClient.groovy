@@ -86,14 +86,14 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  List<IDevicePort> getPorts()
+  List<Integer> getPorts()
   {
-    return MonitorJavaTemplate.serverPorts.collect {new DevicePort(this.adbWrapper, this.deviceSerialNumber, it)}
+    return MonitorJavaTemplate.serverPorts.collect {it}
   }
 
   @Override
   void forwardPorts()
   {
-    this.ports.each { it.forward() }
+    this.ports.each { this.adbWrapper.forwardPort(this.deviceSerialNumber, it) }
   }
 }

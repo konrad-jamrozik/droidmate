@@ -20,7 +20,7 @@ interface IMonitorsClient
 
   ArrayList<ArrayList<String>> getLogs() throws TcpServerUnreachableException, DeviceException
 
-  List<IDevicePort> getPorts()
+  List<Integer> getPorts()
 
   void forwardPorts()
 }
