@@ -34,7 +34,6 @@ class TerminationCriterion implements ITerminationCriterion
    * Starts at 2, because the first exploration action is issued before a request to log is issued.*/
   private int logRequestIndex = 2
 
-
   public TerminationCriterion(Configuration config, int timeLimit, Ticker ticker)
   {
     this.timeLimit = timeLimit
@@ -56,28 +55,38 @@ class TerminationCriterion implements ITerminationCriterion
     }
   }
 
+
+  private long currentDecideElapsedSeconds
+
   @Override
   String getLogMessage()
   {
     if (timeLimited)
     {
-      long m = stopwatch.elapsed(TimeUnit.MINUTES)
-      long s = stopwatch.elapsed(TimeUnit.SECONDS) - m * 60
-      long lm = (int) (timeLimit / 60)
-      long ls = timeLimit % 60
+      long m = (long) (this.currentDecideElapsedSeconds / 60)
+      long s = this.currentDecideElapsedSeconds - m * 60
+      long lm = (int) (this.timeLimit / 60)
+      long ls = this.timeLimit % 60
 
-      return String.format("%3dm %2ds / %3dm %2ds i: %4d", m, s, lm, ls, logRequestIndex++)
+      return String.format("%3dm %2ds / %3dm %2ds i: %4d", m, s, lm, ls, this.logRequestIndex++)
     } else
-      return (startingActionsLeft - actionsLeft).toString() + "/" + "${startingActionsLeft}"
+      return (this.startingActionsLeft - this.actionsLeft).toString() + "/" + "${this.startingActionsLeft}"
   }
 
   @Override
-  void assertPreDecide()
+  void initDecideCall(boolean firstCall)
   {
     if (timeLimited)
-      assert true: "Nothing to verify"
-    else
+    {
+      if (firstCall)
+        stopwatch.start()
+
+      this.currentDecideElapsedSeconds = this.stopwatch.elapsed(TimeUnit.SECONDS)
+    }
+
+    if (!timeLimited)
       assert actionsLeft >= 0
+
   }
 
   @Override
@@ -85,17 +94,6 @@ class TerminationCriterion implements ITerminationCriterion
   {
     if (timeLimited)
     {
-      // KJA assert fail here. This is because previous calls to "met" return different time, with previous second. Consider:
-      //
-      // 1. Check if exploration has to be terminated:
-      // met() -> return stopwatch.elapsed(TimeUnit.SECONDS)  >= timeLimit
-      // where time is 89.9999 and timeLimit is 90. Returns false.
-      //
-      // 2. then this call:
-      // met() -> return stopwatch.elapsed(TimeUnit.SECONDS)  >= timeLimit
-      // where time is 90.1 and timeLimit is 90. Returns true. Assertion Error!
-      //
-      // Proposed fix: obtain stopwatch time elapsed only once, at the beginning of .decide() call.
       assert !met() || (met() && outExplAction instanceof TerminateExplorationAction)
     } else
       assert actionsLeft >= 0 || (actionsLeft == -1 && outExplAction instanceof TerminateExplorationAction)
@@ -106,7 +104,7 @@ class TerminationCriterion implements ITerminationCriterion
   {
     if (timeLimited)
     {
-      return stopwatch.elapsed(TimeUnit.SECONDS) >= timeLimit
+      return this.currentDecideElapsedSeconds >= timeLimit
     } else
       return actionsLeft == 0
   }
@@ -134,10 +132,4 @@ class TerminationCriterion implements ITerminationCriterion
     }
   }
 
-  @Override
-  void init()
-  {
-    if (timeLimited)
-      stopwatch.start()
-  }
 }

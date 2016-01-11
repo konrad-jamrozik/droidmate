@@ -98,9 +98,7 @@ class ExplorationStrategy implements IExplorationStrategy
   ExplorationAction decide(IGuiState guiState)
   {
     assert guiState != null
-    terminationCriterion.assertPreDecide()
-    if (!firstCallToDecideFinished)
-      terminationCriterion.init()
+    terminationCriterion.initDecideCall(!firstCallToDecideFinished)
 
     ExplorationAction outExplAction
 

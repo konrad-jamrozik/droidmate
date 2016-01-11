@@ -16,9 +16,7 @@ interface ITerminationCriterion
 
   String getLogMessage()
 
-  void assertPreDecide()
-
-  void init()
+  void initDecideCall(boolean firstCallToDecideFinished)
 
   void updateState()
 
