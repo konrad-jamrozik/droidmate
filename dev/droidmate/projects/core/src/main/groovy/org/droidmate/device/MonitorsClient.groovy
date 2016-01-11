@@ -40,7 +40,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public ArrayList<ArrayList<String>> getCurrentTime() throws TcpServerUnreachableException, DeviceException
+  public ArrayList<ArrayList<String>> getCurrentTime() throws DeviceException
   {
     ArrayList<ArrayList<String>> out = ports.findResult {
       try
@@ -61,7 +61,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public ArrayList<ArrayList<String>> getLogs() throws TcpServerUnreachableException, DeviceException
+  public ArrayList<ArrayList<String>> getLogs() throws DeviceException
   {
     Collection<ArrayList<ArrayList<String>>> out = ports.findResults {
       try
