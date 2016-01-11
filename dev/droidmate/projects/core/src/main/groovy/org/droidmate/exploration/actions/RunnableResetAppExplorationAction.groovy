@@ -10,7 +10,6 @@ package org.droidmate.exploration.actions
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
-import org.droidmate.common.Boolean3
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.device.DeviceLogsHandler
 import org.droidmate.exploration.device.IDeviceLogsHandler
@@ -18,7 +17,6 @@ import org.droidmate.exploration.device.IRobustDevice
 
 import java.time.LocalDateTime
 
-import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchActivityDeviceAction
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newTurnWifiOnDeviceAction
 
 @Slf4j
@@ -61,29 +59,19 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     logsHandler.logUiaDaemonLogsFromLogcat()
     logsHandler.clearLogcat()
 
+
     log.debug("7. Launch main activity")
-    Boolean3 launchResult = device.launchMainActivity(app.launchableActivityComponentName)
+    // Launch result is ignored because practice shows that the success of launching main activity cannot be used to determine
+    // if app is running or not.
+    device.launchMainActivity(app.launchableActivityComponentName)
 
     log.debug("8. Get GUI snapshot")
     // GUI snapshot has to be obtained before a check is made if app is running. Why? Because obtaining GUI snapshot closes all
     // ANR dialogs, and if the app crashed with ANR, it will be deemed as running until the ANR is closed.
     this.snapshot = device.guiSnapshot
 
-    if (launchResult == Boolean3.True)
-    {
-      log.debug("9. [Launch successful] Assert app is running and read API logs.")
-      assertAppIsRunning(device, app)
-      logsHandler.readAndClearApiLogs()
-
-    } else if (launchResult == Boolean3.False){
-      log.debug("9. [Launch failed] Assert app is not running. Skip reading API logs.")
-      assertAppIsNotRunning(device, app)
-
-    } else if (launchResult == Boolean3.Unknown)
-    {
-      log.debug("9. [Launch result unknown] Try to read API logs.")
-      logsHandler.readAndClearApiLogs()
-    }
+    log.debug("9. Try to read API logs.")
+    logsHandler.readAndClearApiLogs()
 
     log.debug("10. Log uia-daemon logs, clear logcat and seal reading")
     logsHandler.logUiaDaemonLogsFromLogcat()
