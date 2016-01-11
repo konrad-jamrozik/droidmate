@@ -46,7 +46,9 @@ class ExplorationStrategy implements IExplorationStrategy
 
   private int forwardExplorationResetCounter
 
-  // WISH super ugly, taken from widgetStrategy. Instead, it should be incorporated in org.droidmate.exploration.strategy.ExplorationStrategy.explorationCanMoveForwardOn, which also takes WidgetStrategy as input, and then is asked.
+  // WISH super ugly, taken from widgetStrategy. Instead, it should be incorporated in
+  // org.droidmate.exploration.strategy.ExplorationStrategy.explorationCanMoveForwardOn,
+  // which also takes WidgetStrategy as input, and then is asked.
   private boolean allWidgetsBlackListed = false
 
   @Deprecated
@@ -142,10 +144,7 @@ class ExplorationStrategy implements IExplorationStrategy
 
   private logExplorationProgress(ExplorationAction outExplAction)
   {
-    if (outExplAction instanceof TerminateExplorationAction)
-      log.info(outExplAction.toString())
-    else
-      log.info(terminationCriterion.getLogMessage() + " " + outExplAction.toString())
+    log.info(terminationCriterion.getLogMessage() + " " + outExplAction.toString())
   }
 
 
