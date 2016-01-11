@@ -146,7 +146,6 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     return output
   }
 
-  // KJA current work
   // KJA does not help. Instead, do adb reboot with 60 seconds wait.
   // If device is not connected on 'adb reboot':
   // error: device '(null)' not found
@@ -155,7 +154,6 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     Socket socket
     try
     {
-      // KJA curr work
       // KJA2 KNOWN BUG sometimes device loses connection for a microsecond, breaking port forwards. If this happens, just
       // reestablish ports.
       // Managed to get here "java.net.ConnectException: Connection refused: connect" when I manually unplugged the USB cable

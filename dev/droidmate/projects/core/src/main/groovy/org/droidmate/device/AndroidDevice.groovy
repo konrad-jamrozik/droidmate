@@ -195,6 +195,12 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
+  void reboot() throws DeviceException
+  {
+    this.adbWrapper.reboot(this.serialNumber)
+  }
+
+  @Override
   List<ITimeFormattedLogcatMessage> readLogcatMessages(String messageTag) throws DeviceException
   {
     log.debug("readLogcatMessages(tag: $messageTag)")

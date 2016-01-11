@@ -37,26 +37,26 @@ import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchActivi
 @RunWith(JUnit4)
 class AndroidDeviceTest extends DroidmateGroovyTestCase
 {
-  // KJA debug
+  // KJA current work
   @Category([RequiresDevice])
   @Test
-  void "Debug test"()
+  void "reboots"()
   {
     withApkDeployedOnDevice() {IAndroidDevice device, IApk deployedApk ->
 
       device.clearLogcat()
-      def gs = device.guiSnapshot
+      device.guiSnapshot
+      device.reboot()
 
-      System.out.println("Please replug now...");
-      sleep(3000)
-      System.out.println("2...");
-      sleep(1000)
-      System.out.println("1...");
-      sleep(1000)
-      System.out.println("Execution continues");
+//      System.out.println("Please replug now...");
+//      sleep(3000)
+//      System.out.println("2...");
+//      sleep(1000)
+//      System.out.println("1...");
+//      sleep(1000)
+//      System.out.println("Execution continues");
 
-      gs = device.guiSnapshot
-
+      device.guiSnapshot
     }
   }
 

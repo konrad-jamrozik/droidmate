@@ -204,16 +204,6 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  void forwardPort(int port) throws DroidmateException
-  {
-  }
-
-  @Override
-  void reverseForwardPort(int port) throws DroidmateException
-  {
-  }
-
-  @Override
   void pushJar(File jar) throws DroidmateException
   {
   }
@@ -254,6 +244,12 @@ public class AndroidDeviceSimulator implements IAndroidDevice
 
   @Override
   void forwardPorts()
+  {
+    return
+  }
+
+  @Override
+  void reboot() throws DeviceException
   {
     return
   }

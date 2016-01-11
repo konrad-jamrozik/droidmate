@@ -31,4 +31,6 @@ public interface IDeployableAndroidDevice
   void stopUiaDaemon() throws DeviceException
 
   void forwardPorts()
+
+  void reboot() throws DeviceException
 }

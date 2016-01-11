@@ -8,15 +8,29 @@
 // www.droidmate.org
 package org.droidmate.device
 
+import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.exceptions.DeviceException
 
 class DeviceReboot implements IDeviceReboot
 {
 
+  // KJA probably introduces cycle. Do Analyze Dependency Matrix...
+  private final IAdbWrapper adbWrapper
+  private final String      deviceSerialNumber
+  private final ITcpClients tcpClients
+
+  DeviceReboot(IAdbWrapper adbWrapper, String deviceSerialNumber, ITcpClients tcpClients)
+  {
+    this.adbWrapper = adbWrapper
+    this.deviceSerialNumber = deviceSerialNumber
+    this.tcpClients = tcpClients
+  }
+
   @Override
   void tryRun() throws DeviceException
   {
-    // KJA current work
-    // assert false: "Not yet implemented!"
+    this.adbWrapper.reboot(this.deviceSerialNumber)
+    this.tcpClients.forwardPorts()
+    this.adbWrapper.startUiaDaemon(this.deviceSerialNumber)
   }
 }

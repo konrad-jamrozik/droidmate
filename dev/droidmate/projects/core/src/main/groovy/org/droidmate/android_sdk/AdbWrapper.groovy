@@ -122,6 +122,7 @@ public class AdbWrapper implements IAdbWrapper
     skip the app.
 
    */
+
   @Override
   public void installApk(String deviceSerialNumber, IApk apkToInstall)
     throws AdbWrapperException
@@ -238,6 +239,25 @@ public class AdbWrapper implements IAdbWrapper
       throw new AdbWrapperException("Executing 'adb forward' failed. Oh my.", e)
     }
 
+  }
+
+  @Override
+  public void reboot(String deviceSerialNumber) throws AdbWrapperException
+  {
+    log.debug("reboot($deviceSerialNumber)")
+    assert deviceSerialNumber != null
+
+    try
+    {
+      String commandDescription = String
+        .format("Executing adb (Android Debug Bridge) to reboot android device with s/n %s.", deviceSerialNumber)
+
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "reboot")
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb reboot' failed. Oh my.", e)
+    }
   }
 
   @Override
