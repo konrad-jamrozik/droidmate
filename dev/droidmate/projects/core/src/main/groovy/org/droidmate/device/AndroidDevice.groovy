@@ -52,24 +52,20 @@ import static org.droidmate.common_android.NoDeviceResponse.getNoDeviceResponse
 public class AndroidDevice implements IAndroidDevice
 {
 
-  private final String serialNumber
-
-  private final Configuration                                         cfg
-  private final ISerializableTCPClient<DeviceCommand, DeviceResponse> uiautomatorClient
-  private final IAdbWrapper                                           adbWrapper
-  private final IMonitorsClient                                       monitorsClient
+  private final String        serialNumber
+  private final Configuration cfg
+  private final IAdbWrapper   adbWrapper
+  private final ITcpClients   tcpClients
 
   AndroidDevice(
     String serialNumber,
     Configuration cfg,
-    ISerializableTCPClient<DeviceCommand, DeviceResponse> uiautomatorClient,
     IAdbWrapper adbWrapper)
   {
     this.serialNumber = serialNumber
     this.cfg = cfg
-    this.uiautomatorClient = uiautomatorClient
     this.adbWrapper = adbWrapper
-    this.monitorsClient = new MonitorsClient(cfg.socketTimeout, this.serialNumber, this.adbWrapper)
+    this.tcpClients = new TcpClients(this.adbWrapper, this.serialNumber, cfg.socketTimeout, cfg.uiautomatorDaemonTcpPort)
   }
 
   // KJA this should be called only from withing uiautomatorClient and MonitorsClient
@@ -176,7 +172,7 @@ public class AndroidDevice implements IAndroidDevice
     if (!uiaDaemonHandlesCommand)
       throw new DeviceException(String.format("Unhandled command of %s", deviceCommand.command))
 
-    deviceResponse = this.uiautomatorClient.queryServer(deviceCommand, cfg.uiautomatorDaemonTcpPort)
+    deviceResponse = this.tcpClients.sendCommandToUiautomatorDaemon(deviceCommand)
 
     assert deviceResponse != null
 
@@ -210,7 +206,7 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   void forwardPorts()
   {
-    this.monitorsClient.forwardPorts()
+    this.tcpClients.forwardPorts()
   }
 
   @Override
@@ -235,7 +231,7 @@ public class AndroidDevice implements IAndroidDevice
   {
     log.debug("readAndClearMonitorTcpMessages()")
 
-    ArrayList<ArrayList<String>> msgs = this.monitorsClient.getLogs()
+    ArrayList<ArrayList<String>> msgs = this.tcpClients.getLogs()
 
     msgs.each {ArrayList<String> msg ->
       assert msg.size() == 3
@@ -250,7 +246,7 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   LocalDateTime getCurrentTime() throws TcpServerUnreachableException, DeviceException
   {
-    List<List<String>> msgs = this.monitorsClient.getCurrentTime()
+    List<List<String>> msgs = this.tcpClients.getCurrentTime()
 
     assert msgs.size() == 1
     assert msgs[0].size() == 3
@@ -276,7 +272,7 @@ public class AndroidDevice implements IAndroidDevice
   Boolean anyMonitorIsReachable() throws DeviceException
   {
     log.debug("anyMonitorIsReachable()")
-    return this.monitorsClient.anyMonitorIsReachable()
+    return this.tcpClients.anyMonitorIsReachable()
   }
 
   @Override
