@@ -150,6 +150,9 @@ public class SysCmdExecutor implements ISysCmdExecutor
     long mills = executionTimeStopwatch.elapsed(TimeUnit.MILLISECONDS)
     long seconds = executionTimeStopwatch.elapsed(TimeUnit.SECONDS)
 
+    // WISH here instead I could determine if the process was killed by watchdog with
+    // org.apache.commons.exec.ExecuteWatchdog.killedProcess
+    // For more, see comment of org.apache.commons.exec.ExecuteWatchdog
     if (mills >= (timeout - TIMEOUT_REACHED_ZONE) && mills <= (timeout + TIMEOUT_REACHED_ZONE))
     {
       String returnedString = seconds + " seconds. The execution time was +- ${TIMEOUT_REACHED_ZONE} " +
@@ -160,9 +163,7 @@ public class SysCmdExecutor implements ISysCmdExecutor
           " Try increasing the timeout (by changing appropriate cmd line parameter) or, if this doesn't help, " +
           "be aware the process might not be terminating at all."
 
-
-      // KJA this should not display if it was for launch main activity which resulted in ANR
-      log.warn("The command with description \"$commandDescription\" executed for $returnedString")
+      log.debug("The command with description \"$commandDescription\" executed for $returnedString")
 
       return returnedString
     }
