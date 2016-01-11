@@ -98,6 +98,7 @@ public class Configuration implements IConfiguration
   public static final String pn_getValidGuiSnapshotRetryAttempts             = "-getValidGuiSnapshotRetryAttempts"
   public static final String pn_getValidGuiSnapshotRetryDelay                = "-getValidGuiSnapshotRetryDelay"
   public static final String pn_launchActivityDelay                          = "-launchActivityDelay"
+  public static final String pn_launchActivityTimeout                        = "-launchActivityTimeout"
   public static final String pn_logWidgets                                   = "-logWidgets"
   public static final String pn_monitorServerStartQueryDelay                 = "-monitorServerStartQueryDelay"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
@@ -210,6 +211,9 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_launchActivityDelay])
   public int launchActivityDelay = 5000
+
+  @Parameter(names = [Configuration.pn_launchActivityTimeout])
+  public int launchActivityTimeout = 1000 * 60 * 2
 
   @Parameter(names = [Configuration.pn_logWidgets])
   public boolean logWidgets = false

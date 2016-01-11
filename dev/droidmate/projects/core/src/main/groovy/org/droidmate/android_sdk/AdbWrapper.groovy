@@ -574,7 +574,7 @@ public class AdbWrapper implements IAdbWrapper
 
       // Reference:
       // http://developer.android.com/tools/help/adb.html#am
-      String[] stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+      String[] stdStreams = sysCmdExecutor.executeWithTimeout(commandDescription, cfg.launchActivityTimeout, cfg.adbCommand,
         "-s", deviceSerialNumber,
         "shell am start", // start an activity using Activity Manager (am)
         "-W", // wait for launch to complete
