@@ -85,6 +85,17 @@ class TerminationCriterion implements ITerminationCriterion
   {
     if (timeLimited)
     {
+      // KJA assert fail here. This is because previous calls to "met" return different time, with previous second. Consider:
+      //
+      // 1. Check if exploration has to be terminated:
+      // met() -> return stopwatch.elapsed(TimeUnit.SECONDS)  >= timeLimit
+      // where time is 89.9999 and timeLimit is 90. Returns false.
+      //
+      // 2. then this call:
+      // met() -> return stopwatch.elapsed(TimeUnit.SECONDS)  >= timeLimit
+      // where time is 90.1 and timeLimit is 90. Returns true. Assertion Error!
+      //
+      // Proposed fix: obtain stopwatch time elapsed only once, at the beginning of .decide() call.
       assert !met() || (met() && outExplAction instanceof TerminateExplorationAction)
     } else
       assert actionsLeft >= 0 || (actionsLeft == -1 && outExplAction instanceof TerminateExplorationAction)

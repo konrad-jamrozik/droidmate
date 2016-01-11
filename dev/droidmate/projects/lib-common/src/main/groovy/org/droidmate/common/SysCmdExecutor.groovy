@@ -161,6 +161,7 @@ public class SysCmdExecutor implements ISysCmdExecutor
           "be aware the process might not be terminating at all."
 
 
+      // KJA this should not display if it was for launch main activity which resulted in ANR
       log.warn("The command with description \"$commandDescription\" executed for $returnedString")
 
       return returnedString
