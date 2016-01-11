@@ -56,7 +56,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     {
       log.trace("Socket socket = new Socket($serverAddress, $port)")
 
-      Socket socket = this._getSocket(serverAddress, port)
+      Socket socket = this.tryGetSocket(serverAddress, port)
 
       socket.soTimeout = this.socketTimeout
 
@@ -121,7 +121,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
   // KJA does not help. Instead, do adb reboot with 60 seconds wait.
   // If device is not connected on 'adb reboot':
   // error: device '(null)' not found
-  private Socket _getSocket(String serverAddress, int port) throws ConnectException
+  private Socket tryGetSocket(String serverAddress, int port) throws ConnectException
   {
     Socket socket
     try

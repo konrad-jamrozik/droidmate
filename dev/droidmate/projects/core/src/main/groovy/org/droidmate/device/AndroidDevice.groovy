@@ -68,21 +68,6 @@ public class AndroidDevice implements IAndroidDevice
     this.tcpClients = new TcpClients(this.adbWrapper, this.serialNumber, cfg.socketTimeout, cfg.uiautomatorDaemonTcpPort)
   }
 
-  // KJA this should be called only from withing uiautomatorClient and MonitorsClient
-  @Override
-  void forwardPort(int port) throws DeviceException
-  {
-    log.debug("forwardPort($port)")
-    adbWrapper.forwardPort(serialNumber, port)
-  }
-
-  @Override
-  void reverseForwardPort(int port) throws DeviceException
-  {
-    log.debug("reverseForwardPort($port)")
-    adbWrapper.reverseForwardPort(serialNumber, port)
-  }
-
   @Override
   void pushJar(File jar) throws DeviceException
   {

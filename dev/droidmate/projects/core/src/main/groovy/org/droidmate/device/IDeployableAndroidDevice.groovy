@@ -14,11 +14,6 @@ import org.droidmate.exceptions.DeviceException
 
 public interface IDeployableAndroidDevice
 {
-
-  void forwardPort(int port) throws DeviceException
-
-  void reverseForwardPort(int port) throws DeviceException
-
   void pushJar(File jar) throws DeviceException
 
   void removeJar(File jar) throws DeviceException

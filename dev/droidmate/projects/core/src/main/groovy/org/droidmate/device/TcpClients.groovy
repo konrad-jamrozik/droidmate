@@ -21,9 +21,13 @@ class TcpClients implements ITcpClients
 
   private final ISerializableTCPClient<DeviceCommand, DeviceResponse> uiautomatorClient
   private final int                                                   uiautomatorDaemonTcpPort
+  private final IAdbWrapper                                           adbWrapper
+  private final String                                                deviceSerialNumber
 
   TcpClients(IAdbWrapper adbWrapper, String deviceSerialNumber,int socketTimeout, int uiautomatorDaemonTcpPort)
   {
+    this.deviceSerialNumber = deviceSerialNumber
+    this.adbWrapper = adbWrapper
     this.uiautomatorDaemonTcpPort = uiautomatorDaemonTcpPort
     this.uiautomatorClient = new SerializableTCPClient<DeviceCommand, DeviceResponse>(socketTimeout)
     this.monitorsClient = new MonitorsClient(socketTimeout, deviceSerialNumber, adbWrapper)
@@ -33,5 +37,12 @@ class TcpClients implements ITcpClients
   DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand)throws TcpServerUnreachableException, DeviceException
   {
     this.uiautomatorClient.queryServer(deviceCommand, this.uiautomatorDaemonTcpPort)
+  }
+
+  @Override
+  void forwardPorts()
+  {
+    this.adbWrapper.forwardPort(this.deviceSerialNumber, this.uiautomatorDaemonTcpPort)
+    this.monitorsClient.forwardPorts()
   }
 }
