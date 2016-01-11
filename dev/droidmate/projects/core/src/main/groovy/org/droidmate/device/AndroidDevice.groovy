@@ -14,6 +14,7 @@ import groovy.transform.TypeCheckingMode
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.android_sdk.IApk
+import org.droidmate.common.Boolean3
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.common_android.DeviceCommand
 import org.droidmate.common_android.DeviceResponse
@@ -306,12 +307,12 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  Boolean launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
     log.debug("launchMainActivity($launchableActivityComponentName)")
     adbWrapper.launchMainActivity(serialNumber, launchableActivityComponentName)
     sleep(cfg.launchActivityDelay)
-    return true
+    return Boolean3.True
   }
 
   @Override

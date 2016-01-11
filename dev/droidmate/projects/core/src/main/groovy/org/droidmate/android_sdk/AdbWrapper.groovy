@@ -574,8 +574,7 @@ public class AdbWrapper implements IAdbWrapper
 
       // Reference:
       // http://developer.android.com/tools/help/adb.html#am
-      // KJA temp hardcoded timeout. To replace with cfg. param.
-      String[] stdStreams = sysCmdExecutor.executeWithTimeout(commandDescription, 1000*15*1, cfg.adbCommand,
+      String[] stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
         "shell am start", // start an activity using Activity Manager (am)
         "-W", // wait for launch to complete

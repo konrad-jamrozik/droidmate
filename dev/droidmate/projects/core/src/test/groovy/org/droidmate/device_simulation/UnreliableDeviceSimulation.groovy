@@ -46,6 +46,15 @@ class UnreliableDeviceSimulation implements IDeviceSimulation
     }
   }
 
+  @Override
+  public boolean getAppIsRunning()
+  {
+    IDeviceGuiSnapshot gs = this.unreliableGuiSnapshotProvider.getCurrentWithoutChange()
+    if (gs.validationResult.valid && gs.guiState.isAppHasStoppedDialogBox())
+      return false
+    else
+      return this.simulation.appIsRunning
+  }
 
   @Override
   IDeviceGuiSnapshot getCurrentGuiSnapshot()

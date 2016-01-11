@@ -12,7 +12,6 @@ import org.droidmate.deprecated_still_used.IApkExplorationOutput
 import org.droidmate.device.datatypes.AdbClearPackageAction
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.device.datatypes.IGuiState
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
@@ -24,8 +23,9 @@ class DeviceSimulation implements IDeviceSimulation
   final         List<IGuiScreen> guiScreens
   private final IGuiScreen       initialScreen
 
-  boolean appIsRunning
   private IScreenTransitionResult currentTransitionResult = null
+
+  private IAndroidDeviceAction lastAction = null
 
 
   DeviceSimulation(ITimeGenerator timeGenerator, String packageName, String specString)
@@ -50,7 +50,6 @@ class DeviceSimulation implements IDeviceSimulation
     this.packageName = packageName
     this.guiScreens = guiScreensBuilder.build()
     this.initialScreen = guiScreens.findSingle {it.id == GuiScreen.idHome}
-    this.appIsRunning = false
   }
 
 
@@ -58,24 +57,22 @@ class DeviceSimulation implements IDeviceSimulation
   void updateState(IAndroidDeviceAction action)
   {
     this.currentTransitionResult = this.currentScreen.perform(action)
-
-    this.appIsRunning = determineIfAppIsRunning(this.appIsRunning, action, this.currentGuiSnapshot.guiState, this.packageName)
+    this.lastAction = action
   }
 
-  private static boolean determineIfAppIsRunning(boolean appWasRunning, IAndroidDeviceAction action, IGuiState guiState, String packageName)
+  boolean getAppIsRunning()
   {
-    if (guiState.belongsToApp(packageName))
+    if ((this.lastAction == null) || (this.lastAction instanceof AdbClearPackageAction))
+      return false
+
+    if (this.currentGuiSnapshot.guiState.belongsToApp(this.packageName))
     {
-      assert !(action instanceof AdbClearPackageAction)
+      assert !(this.lastAction instanceof AdbClearPackageAction)
       return true
     }
 
-    if (action instanceof AdbClearPackageAction)
-      return false
-
-    return appWasRunning
+    return false
   }
-
 
   @Override
   IDeviceGuiSnapshot getCurrentGuiSnapshot()

@@ -96,7 +96,7 @@ public class Utils
     }
 
     assert (attemptsLeft > 0).implies(succeeded)
-    return attemptsLeft
+    return succeeded
   }
 
   @Deprecated

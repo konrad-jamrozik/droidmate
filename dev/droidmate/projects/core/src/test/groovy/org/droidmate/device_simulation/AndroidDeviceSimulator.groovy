@@ -11,6 +11,7 @@ package org.droidmate.device_simulation
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
+import org.droidmate.common.Boolean3
 import org.droidmate.common.DroidmateException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
@@ -193,10 +194,10 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  Boolean launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
     updateSimulatorState(new LaunchMainActivityDeviceAction(launchableActivityComponentName))
-    return true
+    return Boolean3.True
   }
 
   @Override
@@ -257,11 +258,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   List<List<String>> readAndClearMonitorTcpMessages()
   {
-
-    if (this.currentSimulation.appIsRunning)
-      return []
-    else
-      throw new TcpServerUnreachableException("Simulated exception: attempt to read monitor messages from home screen")
+    return []
   }
 
 

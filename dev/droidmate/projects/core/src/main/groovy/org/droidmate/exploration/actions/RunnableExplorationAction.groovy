@@ -97,7 +97,7 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
 
   protected void assertAppIsNotRunning(IRobustDevice device, IApk apk)
   {
-    assert !device.appIsRunningCheckOnce(apk.packageName)
+    assert device.appIsNotRunning(apk)
   }
 
   protected void assertAppIsRunning(IRobustDevice device, IApk apk)

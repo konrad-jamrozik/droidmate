@@ -10,6 +10,7 @@ package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
+import org.droidmate.common.Boolean3
 import org.droidmate.common.Utils
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.AndroidDeviceAction
@@ -153,19 +154,37 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
-  Boolean launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  Boolean appIsNotRunning(IApk apk) throws DeviceException
+  {
+    return Utils.retryOnFalse({!this._appIsRunning(apk.packageName)},
+      checkAppIsRunningRetryAttempts,
+      checkAppIsRunningRetryDelay,
+    )
+  }
+
+  @Override
+  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
     try
     {
-      Boolean result = this.device.launchMainActivity(launchableActivityComponentName)
-      if (this.getExplorableGuiSnapshotWithoutClosingANR().guiState.appHasStoppedDialogBox)
-        result = false
+      Boolean3 result = this.device.launchMainActivity(launchableActivityComponentName)
+      def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
+
+      assert (result == Boolean3.True).implies(!guiSnapshot.guiState.isHomeScreen())
+
+      if ((result == Boolean3.True) && guiSnapshot.guiState.appHasStoppedDialogBox)
+      {
+        log.debug("device.launchMainActivity() succeeded, but ANR is displayed. Returning 'unknown' " +
+          "(launch might be successful or not).")
+        result = Boolean3.Unknown
+      }
+
       return result
 
     } catch (DeviceException e)
     {
-      log.debug("device.launchMainActivity() threw $e. Returning false without rethrowing.")
-      return false
+      log.debug("device.launchMainActivity() threw $e. Returning false (launch failure) without rethrowing.")
+      return Boolean3.False
     }
   }
 

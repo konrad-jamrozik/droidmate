@@ -9,6 +9,7 @@
 
 package org.droidmate.device
 
+import org.droidmate.common.Boolean3
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
@@ -39,6 +40,6 @@ public interface IExplorableAndroidDevice
 
   Boolean anyMonitorIsReachable() throws DeviceException
 
-  Boolean launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
 }
 

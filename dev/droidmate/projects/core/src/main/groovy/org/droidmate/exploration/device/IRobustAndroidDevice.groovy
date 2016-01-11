@@ -20,4 +20,6 @@ public interface IRobustDevice extends IAndroidDevice, IDeviceMessagesReader
   Boolean appIsRunningCheckOnce(String appPackageName)
 
   Boolean appIsRunning(IApk apk)
+
+  Boolean appIsNotRunning(IApk apk)
 }

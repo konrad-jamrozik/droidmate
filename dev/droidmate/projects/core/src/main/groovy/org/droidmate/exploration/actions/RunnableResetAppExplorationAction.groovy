@@ -10,6 +10,7 @@ package org.droidmate.exploration.actions
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
+import org.droidmate.common.Boolean3
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.device.DeviceLogsHandler
 import org.droidmate.exploration.device.IDeviceLogsHandler
@@ -61,22 +62,27 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     logsHandler.clearLogcat()
 
     log.debug("7. Launch main activity")
-    Boolean launchResult = device.launchMainActivity(app.launchableActivityComponentName)
+    Boolean3 launchResult = device.launchMainActivity(app.launchableActivityComponentName)
 
     log.debug("8. Get GUI snapshot")
     // GUI snapshot has to be obtained before a check is made if app is running. Why? Because obtaining GUI snapshot closes all
     // ANR dialogs, and if the app crashed with ANR, it will be deemed as running until the ANR is closed.
     this.snapshot = device.guiSnapshot
 
-    if (launchResult)
+    if (launchResult == Boolean3.True)
     {
       log.debug("9. [Launch successful] Assert app is running and read API logs.")
       assertAppIsRunning(device, app)
       logsHandler.readAndClearApiLogs()
 
-    } else {
+    } else if (launchResult == Boolean3.False){
       log.debug("9. [Launch failed] Assert app is not running. Skip reading API logs.")
       assertAppIsNotRunning(device, app)
+
+    } else if (launchResult == Boolean3.Unknown)
+    {
+      log.debug("9. [Launch result unknown] Try to read API logs.")
+      logsHandler.readAndClearApiLogs()
     }
 
     log.debug("10. Log uia-daemon logs, clear logcat and seal reading")
