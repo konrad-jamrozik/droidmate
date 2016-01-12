@@ -35,7 +35,7 @@ import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchActivi
 @TypeChecked
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4)
-class AndroidDeviceTest extends DroidmateGroovyTestCase
+class DeviceTest extends DroidmateGroovyTestCase
 {
   // KJA current work
   @Category([RequiresDevice])
