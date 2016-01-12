@@ -34,9 +34,14 @@ class MonitorsClient implements IMonitorsClient
   @Override
   public boolean anyMonitorIsReachable()
   {
-    ports.any {
+    boolean out = ports.any {
       this.monitorTcpClient.isServerReachable(it)
     }
+    if (out)
+      log.trace("At least one monitor is reachable.")
+    else
+      log.trace("No monitor is reachable.")
+    return out
   }
 
   @Override
@@ -94,6 +99,6 @@ class MonitorsClient implements IMonitorsClient
   @Override
   void forwardPorts()
   {
-    this.ports.each { this.adbWrapper.forwardPort(this.deviceSerialNumber, it) }
+    this.ports.each {this.adbWrapper.forwardPort(this.deviceSerialNumber, it)}
   }
 }

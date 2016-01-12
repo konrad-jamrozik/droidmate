@@ -256,7 +256,12 @@ public class AndroidDevice implements IAndroidDevice
     log.debug("appProcessIsRunning($appPackageName)")
     String ps = this.adbWrapper.ps(this.serialNumber)
 
-    return ps.contains(appPackageName)
+    boolean out = ps.contains(appPackageName)
+    if (out)
+      log.trace("App process of $appPackageName is running")
+    else
+      log.trace("App process of $appPackageName is not running")
+    return out
   }
 
   @Override
