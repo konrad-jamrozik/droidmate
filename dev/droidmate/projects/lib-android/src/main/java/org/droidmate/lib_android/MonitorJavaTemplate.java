@@ -14,6 +14,7 @@ package org.droidmate.lib_android;
 // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
 // org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
 import org.droidmate.common.logcat.Api;
@@ -127,8 +128,15 @@ public class MonitorJavaTemplate
     }
   }
 
+  private static MonitorTCPServer server;
+
   public void init(android.content.Context context)
   {
+    if (server == null)
+      Log.i(tag_init, "Didn't set context: MonitorTCPServer is null");
+    else
+      server.context = context;
+
     // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
     // Instrumentation.processClass(Monitor.class);
     // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
@@ -184,6 +192,8 @@ public class MonitorJavaTemplate
   {
     private final static String serverClassName = MonitorTCPServer.class.getSimpleName();
 
+    public Context context;
+
     protected MonitorTCPServer()
     {
       super();
@@ -200,8 +210,9 @@ public class MonitorJavaTemplate
 
         if (Objects.equals(input, srvCmd_connCheck))
         {
-          // Do nothing here. The client just wanted to see if a round-trip with server could be established.
-          return new ArrayList<ArrayList<String>>();
+          final ArrayList<String> payload = new ArrayList<String>(Arrays.asList(getPid(), getPackageName(), ""));
+          return new ArrayList<ArrayList<String>>(Collections.singletonList(payload));
+
         } else if (Objects.equals(input, srvCmd_get_logs))
         {
           ArrayList<ArrayList<String>> logsToSend = new ArrayList<ArrayList<String>>(currentLogs);
@@ -229,6 +240,14 @@ public class MonitorJavaTemplate
           return new ArrayList<ArrayList<String>>();
         }
       }
+    }
+
+    private String getPackageName()
+    {
+      if (this.context != null)
+        return this.context.getPackageName();
+      else
+        return "package name unavailable: context is null";
     }
 
     /**
