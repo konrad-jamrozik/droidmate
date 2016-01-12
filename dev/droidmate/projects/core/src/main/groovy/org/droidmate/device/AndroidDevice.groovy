@@ -22,6 +22,7 @@ import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.NoAndroidDevicesAvailableException
 import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
@@ -197,13 +198,21 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   void reboot() throws DeviceException
   {
+    log.debug("reboot(${this.serialNumber})")
     this.adbWrapper.reboot(this.serialNumber)
   }
 
   @Override
   boolean isAvailable() throws DeviceException
   {
-    return this.adbWrapper.androidDevicesDescriptors.any { it.deviceSerialNumber == this.serialNumber }
+    log.debug("isAvailable(${this.serialNumber})")
+    try
+    {
+      this.adbWrapper.androidDevicesDescriptors.any { it.deviceSerialNumber == this.serialNumber }
+    } catch (NoAndroidDevicesAvailableException ignored)
+    {
+      return false
+    }
   }
 
   @Override
