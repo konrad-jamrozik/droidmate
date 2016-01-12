@@ -256,6 +256,18 @@ class RobustDevice implements IRobustDevice
     return snapshot
   }
 
+  @Override
+  void reboot()
+  {
+    this.device.reboot()
+    sleep(60*1000);
+    Utils.retryOnFalse( {
+      def out = this.device.available
+      if (!out)
+        log.trace("Device not yet available after rebooting, waiting ten seconds and retrying")
+      return out
+    }, 3, 10000) // KJA
+  }
   private Boolean _appIsRunning(String appPackageName)
   {
     return device.anyMonitorIsReachable() && device.appProcessIsRunning(appPackageName)

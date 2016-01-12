@@ -48,6 +48,7 @@ class AndroidDeviceTest extends DroidmateGroovyTestCase
       device.guiSnapshot
       device.reboot()
 
+
 //      System.out.println("Please replug now...");
 //      sleep(3000)
 //      System.out.println("2...");

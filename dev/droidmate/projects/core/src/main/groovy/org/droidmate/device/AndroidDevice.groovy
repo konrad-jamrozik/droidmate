@@ -201,6 +201,12 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
+  boolean isAvailable() throws DeviceException
+  {
+    return this.adbWrapper.androidDevicesDescriptors.any { it.deviceSerialNumber == this.serialNumber }
+  }
+
+  @Override
   List<ITimeFormattedLogcatMessage> readLogcatMessages(String messageTag) throws DeviceException
   {
     log.debug("readLogcatMessages(tag: $messageTag)")

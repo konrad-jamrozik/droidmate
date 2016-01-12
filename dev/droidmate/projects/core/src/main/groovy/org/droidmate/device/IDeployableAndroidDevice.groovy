@@ -33,4 +33,6 @@ public interface IDeployableAndroidDevice
   void forwardPorts()
 
   void reboot() throws DeviceException
+
+  boolean isAvailable() throws DeviceException
 }
