@@ -18,7 +18,7 @@ import org.droidmate.lib_android.MonitorJavaTemplate
 public class SerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable> implements ISerializableTCPClient<InputToServerT, OutputFromServerT>
 {
 
-  private final String serverAddress = "localhost";
+  private final String        serverAddress = "localhost"
   private final int           socketTimeout
   private final IDeviceReboot deviceReboot
 
@@ -60,7 +60,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
 
       try
       {
-        output = this._queryServer(input, port)  as OutputFromServerT
+        output = this._queryServer(input, port) as OutputFromServerT
 
       } catch (ConnectException exception2)
       {
