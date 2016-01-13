@@ -51,4 +51,6 @@ public interface IAdbWrapper {
   String ps(String deviceSerialNumber) throws AdbWrapperException
 
   void reboot(String deviceSerialNumber) throws AdbWrapperException
+
+  boolean uiaDaemonThreadIsAlive()
 }

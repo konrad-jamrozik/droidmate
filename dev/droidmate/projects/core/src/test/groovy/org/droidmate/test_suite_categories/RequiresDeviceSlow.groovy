@@ -6,9 +6,8 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
+package org.droidmate.test_suite_categories
 
-package org.droidmate.device
-
-public interface IAndroidDevice extends IDeployableAndroidDevice, IExplorableAndroidDevice
-{
+public interface RequiresDeviceSlow extends ExcludedFromFastRegressionTests
+{ /* JUnit test Category marker interface */
 }

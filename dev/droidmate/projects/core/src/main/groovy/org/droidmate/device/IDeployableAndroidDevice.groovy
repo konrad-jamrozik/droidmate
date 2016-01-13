@@ -35,4 +35,5 @@ public interface IDeployableAndroidDevice
   void reboot() throws DeviceException
 
   boolean isAvailable() throws DeviceException
-}
+
+  boolean uiaDaemonClientThreadIsAlive()}

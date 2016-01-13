@@ -19,6 +19,7 @@ import org.droidmate.init.InitConstants
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
+import org.droidmate.test_suite_categories.RequiresDeviceSlow
 import org.droidmate.tools.ApksProvider
 import org.droidmate.tools.DeviceTools
 import org.droidmate.tools.IDeviceTools
@@ -38,7 +39,7 @@ import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchActivi
 class DeviceTest extends DroidmateGroovyTestCase
 {
   // KJA current work
-  @Category([RequiresDevice])
+  @Category([RequiresDeviceSlow])
   @Test
   void "reboots"()
   {
@@ -46,21 +47,17 @@ class DeviceTest extends DroidmateGroovyTestCase
 
       device.clearLogcat()
       device.guiSnapshot
+      println "reboot"
       device.reboot()
+      println "forward ports"
+      device.forwardPorts()
+      println "start uiad"
+      device.startUiaDaemon()
 
-
-//      System.out.println("Please replug now...");
-//      sleep(3000)
-//      System.out.println("2...");
-//      sleep(1000)
-//      System.out.println("1...");
-//      sleep(1000)
-//      System.out.println("Execution continues");
-
+      println "get snapshot"
       device.guiSnapshot
     }
   }
-
 
   @Category([RequiresDevice])
   @Test

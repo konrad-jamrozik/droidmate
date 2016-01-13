@@ -188,7 +188,6 @@ public class AndroidDevice implements IAndroidDevice
 
   }
 
-
   @Override
   void forwardPorts()
   {
@@ -213,6 +212,12 @@ public class AndroidDevice implements IAndroidDevice
     {
       return false
     }
+  }
+
+  @Override
+  boolean uiaDaemonClientThreadIsAlive()
+  {
+    return this.adbWrapper.uiaDaemonThreadIsAlive()
   }
 
   @Override
@@ -290,7 +295,8 @@ public class AndroidDevice implements IAndroidDevice
   void startUiaDaemon() throws DeviceException
   {
     log.debug("startUiaDaemon()")
-    adbWrapper.startUiaDaemon(serialNumber)
+    this.adbWrapper.startUiaDaemon(this.serialNumber)
+    assert this.uiaDaemonClientThreadIsAlive()
     log.trace("DONE startUiaDaemon()")
   }
 

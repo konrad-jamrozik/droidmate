@@ -56,6 +56,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     {
       log.debug("Querying server resulted in $exception. Rebooting device and trying again.")
 
+      // KJA here instead the robustDevice.reboot functionality should be implemented.
       this.deviceReboot.tryRun()
 
       try

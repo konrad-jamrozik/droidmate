@@ -29,6 +29,7 @@ class DeviceReboot implements IDeviceReboot
   @Override
   void tryRun() throws DeviceException
   {
+
     this.adbWrapper.reboot(this.deviceSerialNumber)
     this.tcpClients.forwardPorts()
     this.adbWrapper.startUiaDaemon(this.deviceSerialNumber)

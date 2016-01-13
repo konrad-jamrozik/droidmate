@@ -261,6 +261,12 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  boolean uiaDaemonClientThreadIsAlive()
+  {
+    return true
+  }
+
+  @Override
   List<List<String>> readAndClearMonitorTcpMessages()
   {
     return []

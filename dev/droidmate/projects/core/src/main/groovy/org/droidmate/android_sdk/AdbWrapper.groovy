@@ -261,6 +261,13 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
+  boolean uiaDaemonThreadIsAlive()
+  {
+    assert this.uiaDaemonThread != null
+    return this.uiaDaemonThread.alive
+  }
+
+  @Override
   public List<String> readMessagesFromLogcat(String deviceSerialNumber, String messageTag) throws AdbWrapperException
   {
     try
@@ -462,8 +469,7 @@ public class AdbWrapper implements IAdbWrapper
     // See http://stackoverflow.com/questions/2213340/what-is-daemon-thread-in-java
     // http://stackoverflow.com/questions/19421027/how-to-create-a-daemon-thread-and-what-for?rq=1
 
-    uiaDaemonThread = new Thread(new UiAutomatorThreadRunnable(deviceSerialNumber))
-    uiaDaemonThread.start()
+    this.uiaDaemonThread = startUiaDaemonThread(deviceSerialNumber)
 
     List<String> msgs = this.waitForMessagesOnLogcat(
       deviceSerialNumber,
@@ -477,6 +483,13 @@ public class AdbWrapper implements IAdbWrapper
       "Expected exactly one message on logcat (with tag $Constants.UIADAEMON_SERVER_START_MSG) " +
         "confirming that uia-daemon server has started. Instead, got ${msgs.size()} messages. Msgs:\n${msgs.join("\n")}"
     assert msgs[0].contains(Constants.UIADAEMON_SERVER_START_MSG)
+  }
+
+  private Thread startUiaDaemonThread(String deviceSerialNumber)
+  {
+    Thread uiaDaemonThread = new Thread(new UiAutomatorThreadRunnable(deviceSerialNumber))
+    uiaDaemonThread.start()
+    return uiaDaemonThread
   }
 
   private class UiAutomatorThreadRunnable implements Runnable

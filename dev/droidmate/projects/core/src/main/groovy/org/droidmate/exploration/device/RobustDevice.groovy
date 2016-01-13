@@ -259,18 +259,21 @@ class RobustDevice implements IRobustDevice
   @Override
   void reboot()
   {
+    assert this.device.uiaDaemonClientThreadIsAlive()
+
     this.device.reboot()
-    // KJA what about stopping uia daemon?
+
     sleep(60*1000);
     Utils.retryOnFalse( {
       def out = this.device.available
       if (!out)
         log.trace("Device not yet available after rebooting, waiting ten seconds and retrying")
       return out
-    }, 3, 10000) // KJA config params
+    }, 12, 10000) // KJA config params
 
-    // KJA add here port forwards and startUiaDaemon
+    assert !this.device.uiaDaemonClientThreadIsAlive()
   }
+
   private Boolean _appIsRunning(String appPackageName)
   {
     return device.anyMonitorIsReachable() && device.appProcessIsRunning(appPackageName)

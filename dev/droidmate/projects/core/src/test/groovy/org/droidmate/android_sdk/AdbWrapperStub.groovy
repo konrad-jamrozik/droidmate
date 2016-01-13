@@ -127,4 +127,10 @@ class AdbWrapperStub implements IAdbWrapper {
   {
     assert false: "Not yet implemented!"
   }
+
+  @Override
+  boolean uiaDaemonThreadIsAlive()
+  {
+    return true
+  }
 }
