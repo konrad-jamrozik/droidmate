@@ -19,9 +19,9 @@ class TcpClients implements ITcpClients
   @Delegate
   private final IUiautomatorDaemonClient uiautomatorClient
 
-  private final int                                                   uiautomatorDaemonTcpPort
-  private final IAdbWrapper                                           adbWrapper
-  private final String                                                deviceSerialNumber
+  private final int         uiautomatorDaemonTcpPort
+  private final IAdbWrapper adbWrapper
+  private final String      deviceSerialNumber
 
   TcpClients(IAdbWrapper adbWrapper, String deviceSerialNumber, int socketTimeout, int uiautomatorDaemonTcpPort)
   {
