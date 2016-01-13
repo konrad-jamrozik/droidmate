@@ -86,6 +86,9 @@ public class Configuration implements IConfiguration
   public static final String pn_appGuardOnlyApis                             = "-appGuardOnlyApis"
   public static final String pn_checkAppIsRunningRetryAttempts               = "-checkAppIsRunningRetryAttempts"
   public static final String pn_checkAppIsRunningRetryDelay                  = "-checkAppIsRunningRetryDelay"
+  public static final String pn_checkDeviceAvailableAfterRebootAttempts      = "-checkDeviceAvailableAfterRebootAttempts"
+  public static final String pn_checkDeviceAvailableAfterRebootFirstDelay    = "-checkDeviceAvailableAfterRebootFirstDelay"
+  public static final String pn_checkDeviceAvailableAfterRebootLaterDelays   = "-checkDeviceAvailableAfterRebootLaterDelays"
   public static final String pn_clearPackageRetryAttempts                    = "-clearPackageRetryAttempts"
   public static final String pn_clearPackageRetryDelay                       = "-clearPackageRetryDelay"
   public static final String pn_closeANRAttempts                             = "-closeANRAttempts"
@@ -155,6 +158,15 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_checkAppIsRunningRetryDelay])
   public int checkAppIsRunningRetryDelay = 5000
+
+  @Parameter(names = [Configuration.pn_checkDeviceAvailableAfterRebootAttempts])
+  public int checkDeviceAvailableAfterRebootAttempts = 12
+
+  @Parameter(names = [Configuration.pn_checkDeviceAvailableAfterRebootFirstDelay])
+  public int checkDeviceAvailableAfterRebootFirstDelay = 60 * 1000
+
+  @Parameter(names = [Configuration.pn_checkDeviceAvailableAfterRebootLaterDelays])
+  public int checkDeviceAvailableAfterRebootLaterDelays = 10 * 1000
 
   @Parameter(names = [Configuration.pn_clearPackageRetryAttempts], arity = 1)
   public int clearPackageRetryAttempts = 3

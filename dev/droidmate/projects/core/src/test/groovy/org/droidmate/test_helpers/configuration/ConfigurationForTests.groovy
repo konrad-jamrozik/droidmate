@@ -29,10 +29,12 @@ class ConfigurationForTests
     Configuration.pn_monitorServerStartTimeout, "0",
     Configuration.pn_monitorServerStartQueryDelay, "0",
     Configuration.pn_checkAppIsRunningRetryDelay, "0",
+    Configuration.pn_checkDeviceAvailableAfterRebootFirstDelay, "0",
+    Configuration.pn_checkDeviceAvailableAfterRebootLaterDelays, "0",
     Configuration.pn_clearPackageRetryDelay, "0",
     Configuration.pn_getValidGuiSnapshotRetryDelay, "0",
     Configuration.pn_stopAppSuccessCheckDelay, "0",
-    Configuration.pn_closeANRDelay, "0"
+    Configuration.pn_closeANRDelay, "0",
   ]
 
   ConfigurationForTests()

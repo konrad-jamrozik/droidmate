@@ -239,7 +239,10 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       this.cfg.stopAppRetryAttempts,
       this.cfg.stopAppSuccessCheckDelay,
       this.cfg.closeANRAttempts,
-      this.cfg.closeANRDelay
+      this.cfg.closeANRDelay,
+      this.cfg.checkDeviceAvailableAfterRebootAttempts,
+      this.cfg.checkDeviceAvailableAfterRebootFirstDelay,
+      this.cfg.checkDeviceAvailableAfterRebootLaterDelays
     )
 
   }

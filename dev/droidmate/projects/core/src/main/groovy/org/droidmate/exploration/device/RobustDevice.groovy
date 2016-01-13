@@ -46,6 +46,10 @@ class RobustDevice implements IRobustDevice
   private final int closeANRAttempts
   private final int closeANRDelay
 
+  private final int checkDeviceAvailableAfterRebootAttempts
+  private final int checkDeviceAvailableAfterRebootFirstDelay
+  private final int checkDeviceAvailableAfterRebootLaterDelays
+
   RobustDevice(IAndroidDevice device,
                int monitorServerStartTimeout,
                int monitorServerStartQueryDelay,
@@ -58,7 +62,10 @@ class RobustDevice implements IRobustDevice
                int stopAppRetryAttempts,
                int stopAppSuccessCheckDelay,
                int closeANRAttempts,
-               int closeANRDelay)
+               int closeANRDelay,
+               int checkDeviceAvailableAfterRebootAttempts,
+               int checkDeviceAvailableAfterRebootFirstDelay,
+               int checkDeviceAvailableAfterRebootLaterDelays)
   {
     this.device = device
     this.messagesReader = new DeviceMessagesReader(device, monitorServerStartTimeout, monitorServerStartQueryDelay)
@@ -78,15 +85,22 @@ class RobustDevice implements IRobustDevice
     this.closeANRAttempts = closeANRAttempts
     this.closeANRDelay = closeANRDelay
 
+    this.checkDeviceAvailableAfterRebootAttempts = checkDeviceAvailableAfterRebootAttempts
+    this.checkDeviceAvailableAfterRebootFirstDelay = checkDeviceAvailableAfterRebootFirstDelay
+    this.checkDeviceAvailableAfterRebootLaterDelays = checkDeviceAvailableAfterRebootLaterDelays
+
     assert clearPackageRetryAttempts >= 1
     assert checkAppIsRunningRetryAttempts >= 1
     assert stopAppRetryAttempts >= 1
     assert closeANRAttempts >= 1
+    assert checkDeviceAvailableAfterRebootAttempts >= 1
 
     assert clearPackageRetryDelay >= 0
     assert checkAppIsRunningRetryDelay >= 0
     assert stopAppSuccessCheckDelay >= 0
     assert closeANRDelay >= 0
+    assert checkDeviceAvailableAfterRebootFirstDelay >= 0
+    assert checkDeviceAvailableAfterRebootLaterDelays >= 0
 
 
   }
@@ -270,14 +284,13 @@ class RobustDevice implements IRobustDevice
 
     this.device.reboot()
 
-    sleep(60*1000);
-    Utils.retryOnFalse( {
+    sleep(this.checkDeviceAvailableAfterRebootFirstDelay)
+    Utils.retryOnFalse({
       def out = this.device.available
       if (!out)
-        // KJA update log time with cfg param
-        log.trace("Device not yet available after rebooting, waiting ten seconds and retrying")
+        log.trace("Device not yet available after rebooting, waiting $checkDeviceAvailableAfterRebootLaterDelays milliseconds and retrying")
       return out
-    }, 12, 10000) // KJA config params
+    }, checkDeviceAvailableAfterRebootAttempts, checkDeviceAvailableAfterRebootLaterDelays)
 
     assert !this.device.uiaDaemonClientThreadIsAlive()
   }
@@ -293,7 +306,6 @@ class RobustDevice implements IRobustDevice
     return "robust-" + this.device.toString()
   }
 
-  // KJA
 //  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
 //  {
 //    OutputFromServerT output

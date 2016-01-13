@@ -105,7 +105,10 @@ public class ExplorationTest extends DroidmateGroovyTestCase
           cfg.stopAppRetryAttempts,
           cfg.stopAppSuccessCheckDelay,
           cfg.closeANRAttempts,
-          cfg.closeANRDelay
+          cfg.closeANRDelay,
+          cfg.checkDeviceAvailableAfterRebootAttempts,
+          cfg.checkDeviceAvailableAfterRebootFirstDelay,
+          cfg.checkDeviceAvailableAfterRebootLaterDelays
         )).result
 
       }
@@ -157,7 +160,10 @@ public class ExplorationTest extends DroidmateGroovyTestCase
       cfg.stopAppRetryAttempts,
       cfg.stopAppSuccessCheckDelay,
       cfg.closeANRAttempts,
-      cfg.closeANRDelay
+      cfg.closeANRDelay,
+      cfg.checkDeviceAvailableAfterRebootAttempts,
+      cfg.checkDeviceAvailableAfterRebootFirstDelay,
+      cfg.checkDeviceAvailableAfterRebootLaterDelays
     )
 
     Exploration exploration = Exploration.build(cfg, timeGenerator)

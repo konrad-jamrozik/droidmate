@@ -78,7 +78,6 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
 //        log.trace("inputStream = new ObjectInputStream(socket.inputStream)")
         // Got here once java.net.SocketTimeoutException: Read timed out on
         // monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, it)
-        // KJA port reforwarding results in java.io.EOFException: null here on ObjectInputStream.<init> on uiautomator client
         inputStream = new ObjectInputStream(socket.inputStream)
       } catch (EOFException e)
       {
