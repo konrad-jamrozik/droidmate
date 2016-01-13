@@ -166,6 +166,12 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  void closeConnection() throws DeviceException
+  {
+    findMatchingExceptionSpecAndThrowIfApplies("closeConnection", this.currentlyDeployedPackageName)
+  }
+
+  @Override
   List<ITimeFormattedLogcatMessage> readLogcatMessages(String messageTag)
   {
     List<ITimeFormattedLogcatMessage> returnedMessages = logcatMessagesToBeReadNext.findResults {it.tag == messageTag ? it : null}
@@ -231,22 +237,6 @@ public class AndroidDeviceSimulator implements IAndroidDevice
     updateSimulatorState(new AdbClearPackageAction(apkPackageName))
   }
 
-  @Override
-  void startUiaDaemon() throws DroidmateException
-  {
-  }
-
-  @Override
-  void stopUiaDaemon() throws DroidmateException
-  {
-    findMatchingExceptionSpecAndThrowIfApplies("stopUiaDaemon", this.currentlyDeployedPackageName)
-  }
-
-  @Override
-  void forwardPorts()
-  {
-    return
-  }
 
   @Override
   void reboot() throws DeviceException
@@ -264,6 +254,11 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   boolean uiaDaemonClientThreadIsAlive()
   {
     return true
+  }
+
+  @Override
+  void setupConnection() throws DeviceException
+  {
   }
 
   @Override

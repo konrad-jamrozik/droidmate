@@ -49,10 +49,8 @@ class DeviceTest extends DroidmateGroovyTestCase
       device.guiSnapshot
       println "reboot"
       device.reboot()
-      println "forward ports"
-      device.forwardPorts()
-      println "start uiad"
-      device.startUiaDaemon()
+      println "setup connection"
+      device.setupConnection()
 
       println "get snapshot"
       device.guiSnapshot

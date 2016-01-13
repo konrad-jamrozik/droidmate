@@ -26,14 +26,13 @@ public interface IDeployableAndroidDevice
 
   void clearLogcat() throws DeviceException
 
-  void startUiaDaemon() throws DeviceException
-
-  void stopUiaDaemon() throws DeviceException
-
-  void forwardPorts()
+  void closeConnection() throws DeviceException
 
   void reboot() throws DeviceException
 
   boolean isAvailable() throws DeviceException
 
-  boolean uiaDaemonClientThreadIsAlive()}
+  boolean uiaDaemonClientThreadIsAlive()
+
+  void setupConnection() throws DeviceException
+}

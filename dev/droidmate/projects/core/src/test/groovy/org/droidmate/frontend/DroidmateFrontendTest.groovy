@@ -109,7 +109,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
       new ExceptionSpec("uninstallApk", apk4.packageName, /* call index */ 2),
 
       // Thrown during AndroidDeviceDeployer.tryTearDown()
-      new ExceptionSpec("stopUiaDaemon", apk4.packageName),
+      new ExceptionSpec("closeConnection", apk4.packageName),
     ]
 
     def expectedApkPackageNamesOfSer2FilesInOutputDir = [apk1.packageName, apk3.packageName, apk4.packageName]

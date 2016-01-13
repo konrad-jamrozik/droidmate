@@ -71,13 +71,10 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   {
 
     this.adbWrapper.startAdbServer()
-
-    device.forwardPorts()
-
     device.pushJar(this.cfg.uiautomatorDaemonJar)
     device.pushJar(this.cfg.monitorApk)
 
-    device.startUiaDaemon()
+    device.setupConnection()
 
     this.deviceIsSetup = true
   }
@@ -96,7 +93,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
     deviceIsSetup = false
 
-    device.stopUiaDaemon()
+    device.closeConnection()
     device.removeJar(cfg.uiautomatorDaemonJar)
     device.removeJar(cfg.monitorApk)
   }

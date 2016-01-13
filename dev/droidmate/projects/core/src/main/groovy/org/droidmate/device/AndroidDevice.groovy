@@ -179,7 +179,12 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  public void stopUiaDaemon() throws DeviceException
+  public void closeConnection() throws DeviceException
+  {
+    this.stopUiaDaemon()
+  }
+
+  private void stopUiaDaemon() throws DeviceException
   {
     log.trace("stopUiaDaemon()")
     this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
@@ -188,11 +193,6 @@ public class AndroidDevice implements IAndroidDevice
 
   }
 
-  @Override
-  void forwardPorts()
-  {
-    this.tcpClients.forwardPorts()
-  }
 
   @Override
   void reboot() throws DeviceException
@@ -218,6 +218,13 @@ public class AndroidDevice implements IAndroidDevice
   boolean uiaDaemonClientThreadIsAlive()
   {
     return this.adbWrapper.uiaDaemonThreadIsAlive()
+  }
+
+  @Override
+  void setupConnection() throws DeviceException
+  {
+    this.tcpClients.forwardPorts()
+    this.startUiaDaemon()
   }
 
   @Override
@@ -291,8 +298,7 @@ public class AndroidDevice implements IAndroidDevice
     return this.tcpClients.anyMonitorIsReachable()
   }
 
-  @Override
-  void startUiaDaemon() throws DeviceException
+  private void startUiaDaemon() throws DeviceException
   {
     log.debug("startUiaDaemon()")
     this.adbWrapper.startUiaDaemon(this.serialNumber)
