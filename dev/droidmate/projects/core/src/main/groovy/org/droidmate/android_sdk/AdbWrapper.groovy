@@ -34,6 +34,7 @@ public class AdbWrapper implements IAdbWrapper
 {
 
   private final Configuration   cfg
+  // KJA move to UiautomatorDaemonClient
   private       Thread          uiaDaemonThread
   private       ISysCmdExecutor sysCmdExecutor
 

@@ -8,13 +8,9 @@
 // www.droidmate.org
 package org.droidmate.device
 
-import org.droidmate.common_android.DeviceCommand
-import org.droidmate.common_android.DeviceResponse
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.TcpServerUnreachableException
 
-interface ITcpClients extends IMonitorsClient
+interface ITcpClients extends IMonitorsClient, IUiautomatorDaemonClient
 {
-
-  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws TcpServerUnreachableException, DeviceException
+  void forwardPorts() throws DeviceException
 }
