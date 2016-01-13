@@ -14,7 +14,7 @@ import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.configuration.Configuration
-import org.droidmate.device.IAndroidDevice
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.init.InitConstants
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
@@ -38,22 +38,15 @@ import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchActivi
 @RunWith(JUnit4)
 class DeviceTest extends DroidmateGroovyTestCase
 {
-  // KJA current work
   @Category([RequiresDeviceSlow])
   @Test
-  void "reboots"()
+  void "reboots and restores connection"()
   {
-    withApkDeployedOnDevice() {IAndroidDevice device, IApk deployedApk ->
+    withApkDeployedOnDevice() {IRobustDevice device, IApk deployedApk ->
 
-      device.clearLogcat()
-      device.guiSnapshot
-      println "reboot"
-      device.reboot()
-      println "setup connection"
-      device.setupConnection()
-
-      println "get snapshot"
-      device.guiSnapshot
+      device.getGuiSnapshot()
+      device.rebootAndRestoreConnection()
+      device.getGuiSnapshot()
     }
   }
 
@@ -61,7 +54,7 @@ class DeviceTest extends DroidmateGroovyTestCase
   @Test
   void "Launches app, then checks, clicks, stops and checks it again"()
   {
-    withApkDeployedOnDevice() {IAndroidDevice device, IApk deployedApk ->
+    withApkDeployedOnDevice() {IRobustDevice device, IApk deployedApk ->
 
       device.perform(newLaunchActivityDeviceAction(deployedApk.launchableActivityComponentName))
       assert device.guiSnapshot.guiState.belongsToApp(deployedApk.packageName)
@@ -101,7 +94,7 @@ class DeviceTest extends DroidmateGroovyTestCase
     Apk apk = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames).first()
 
     List<ExplorationException> exceptions =
-      deviceTools.deviceDeployer.withSetupDevice(0) {IAndroidDevice device ->
+      deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
         deviceTools.apkDeployer.withDeployedApk(device, apk, computation.curry(device))
       }
 

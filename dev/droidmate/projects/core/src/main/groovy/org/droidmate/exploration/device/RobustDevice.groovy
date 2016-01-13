@@ -257,6 +257,13 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
+  void rebootAndRestoreConnection() throws DeviceException
+  {
+    this.reboot()
+    this.setupConnection()
+  }
+
+  @Override
   void reboot()
   {
     assert this.device.uiaDaemonClientThreadIsAlive()

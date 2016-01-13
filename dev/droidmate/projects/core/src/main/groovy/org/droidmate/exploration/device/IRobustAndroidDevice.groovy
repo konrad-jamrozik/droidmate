@@ -22,4 +22,6 @@ public interface IRobustDevice extends IAndroidDevice, IDeviceMessagesReader
   Boolean appIsRunning(IApk apk)
 
   Boolean appIsNotRunning(IApk apk)
+
+  void rebootAndRestoreConnection() throws DeviceException
 }
