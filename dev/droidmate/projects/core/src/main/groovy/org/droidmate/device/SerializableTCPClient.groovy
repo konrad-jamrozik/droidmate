@@ -20,17 +20,15 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
 
   private final String        serverAddress = "localhost"
   private final int           socketTimeout
-  private final IDeviceReboot deviceReboot
 
 
-  public SerializableTCPClient(int socketTimeout, IDeviceReboot deviceReboot)
+  public SerializableTCPClient(int socketTimeout)
   {
     this.socketTimeout = socketTimeout
-    this.deviceReboot = deviceReboot
   }
 
   @Override
-  Boolean isServerReachable(int port) throws DeviceException
+  Boolean isServerReachable(int port) throws DeviceException, ConnectException
   {
     try
     {
@@ -38,6 +36,10 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     } catch (TcpServerUnreachableException ignored)
     {
       return false
+    } catch (ConnectException exception)
+    {
+      throw exception
+
     } catch (Throwable throwable)
     {
       throw new DeviceException("Unexpected Throwable while checking if isServerReachable. " +
@@ -45,40 +47,12 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     }
   }
 
-  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
-  {
-    OutputFromServerT output
-    try
-    {
-      output = this._queryServer(input, port) as OutputFromServerT
-
-    } catch (ConnectException exception)
-    {
-      log.debug("Querying server resulted in $exception. Rebooting device and trying again.")
-
-      // KJA here instead the robustDevice.reboot functionality should be implemented.
-      this.deviceReboot.tryRun()
-
-      try
-      {
-        output = this._queryServer(input, port) as OutputFromServerT
-
-      } catch (ConnectException exception2)
-      {
-        throw new DeviceException("Querying server resulted in $exception2 even after device reboot.", /* stopFurtherApkExplorations */ true)
-      }
-    }
-
-    assert output != null
-    return output
-  }
-
   /**
    * Sends through TCP socket the serialized {@code input} to server under {@link #serverAddress}:{@code port}.<br/>
    * Next, waits until server returns his answer and returns it.
    */
   @SuppressWarnings("unchecked")
-  private OutputFromServerT _queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException, ConnectException
+  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException, ConnectException
   {
 
     OutputFromServerT output

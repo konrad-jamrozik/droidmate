@@ -24,9 +24,9 @@ class MonitorsClient implements IMonitorsClient
 
   private final IAdbWrapper adbWrapper
 
-  MonitorsClient(int socketTimeout, String deviceSerialNumber, IAdbWrapper adbWrapper, IDeviceReboot deviceReboot)
+  MonitorsClient(int socketTimeout, String deviceSerialNumber, IAdbWrapper adbWrapper)
   {
-    this.monitorTcpClient = new SerializableTCPClient<>(socketTimeout, deviceReboot)
+    this.monitorTcpClient = new SerializableTCPClient<>(socketTimeout)
     this.deviceSerialNumber = deviceSerialNumber
     this.adbWrapper = adbWrapper
   }

@@ -267,6 +267,7 @@ class RobustDevice implements IRobustDevice
     Utils.retryOnFalse( {
       def out = this.device.available
       if (!out)
+        // KJA update log time with cfg param
         log.trace("Device not yet available after rebooting, waiting ten seconds and retrying")
       return out
     }, 12, 10000) // KJA config params
@@ -284,4 +285,33 @@ class RobustDevice implements IRobustDevice
   {
     return "robust-" + this.device.toString()
   }
+
+  // KJA
+//  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
+//  {
+//    OutputFromServerT output
+//    try
+//    {
+//      output = this._queryServer(input, port) as OutputFromServerT
+//
+//    } catch (ConnectException exception)
+//    {
+//      log.debug("Querying server resulted in $exception. Rebooting device and trying again.")
+//
+//      // KJA here instead the robustDevice.reboot functionality should be implemented.
+//      this.deviceReboot.tryRun()
+//
+//      try
+//      {
+//        output = this._queryServer(input, port) as OutputFromServerT
+//
+//      } catch (ConnectException exception2)
+//      {
+//        throw new DeviceException("Querying server resulted in $exception2 even after device reboot.", /* stopFurtherApkExplorations */ true)
+//      }
+//    }
+//
+//    assert output != null
+//    return output
+//  }
 }

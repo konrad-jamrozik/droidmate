@@ -29,10 +29,8 @@ class TcpClients implements ITcpClients
     this.deviceSerialNumber = deviceSerialNumber
     this.adbWrapper = adbWrapper
     this.uiautomatorDaemonTcpPort = uiautomatorDaemonTcpPort
-    // KJA dependency cycle. devicereboot -> tcpclients -> devicereboot
-    IDeviceReboot deviceReboot = new DeviceReboot(this.adbWrapper, this.deviceSerialNumber, this)
-    this.uiautomatorClient = new SerializableTCPClient<DeviceCommand, DeviceResponse>(socketTimeout, deviceReboot)
-    this.monitorsClient = new MonitorsClient(socketTimeout, deviceSerialNumber, adbWrapper, deviceReboot)
+    this.uiautomatorClient = new SerializableTCPClient<DeviceCommand, DeviceResponse>(socketTimeout)
+    this.monitorsClient = new MonitorsClient(socketTimeout, deviceSerialNumber, adbWrapper)
   }
 
   @Override

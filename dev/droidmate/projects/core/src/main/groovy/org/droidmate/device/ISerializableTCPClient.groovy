@@ -10,10 +10,12 @@
 package org.droidmate.device
 
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.TcpServerUnreachableException
 
 public interface ISerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable>
 {
-  Boolean isServerReachable(int port) throws DeviceException
+  // KJA replace ConnectException with something better. Actually ConnectException should be TcpServerUnreachableException while TcpServerUnreachableException should be named something else.
+  Boolean isServerReachable(int port) throws DeviceException, ConnectException
 
-  OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceException
+  OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException, ConnectException
 }
