@@ -118,6 +118,7 @@ public class AndroidDevice implements IAndroidDevice
     internalPerform(action)
   }
 
+  // KJA2 multimethod to switch
   DeviceResponse internalPerform(LaunchMainActivityDeviceAction action) throws DeviceException
   {
     launchMainActivity(action.launchableActivityComponentName)

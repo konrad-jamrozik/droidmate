@@ -88,7 +88,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
 
   private static Thread startUiaDaemonThread(IAdbWrapper adbWrapper, String deviceSerialNumber, int port)
   {
-    // KJA consider collapsing to groovys Thread.start {}.
+    // KJA2 consider collapsing to groovys Thread.start {}.
     // http://docs.groovy-lang.org/latest/html/groovy-jdk/java/lang/Thread.html
     // WISH consider making it a daemon thread
     // See http://stackoverflow.com/questions/2213340/what-is-daemon-thread-in-java

@@ -106,6 +106,7 @@ class RobustDevice implements IRobustDevice
 
   }
 
+  // KJA the contract should be: if device needs reboot, it will reboot and return home screen
   @Override
   IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
   {
