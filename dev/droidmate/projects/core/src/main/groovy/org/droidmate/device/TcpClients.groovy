@@ -34,13 +34,14 @@ class TcpClients implements ITcpClients
       socketTimeout,
       uiautomatorDaemonServerStartTimeout,
       uiautomatorDaemonServerStartQueryDelay)
+
     this.monitorsClient = new MonitorsClient(socketTimeout, deviceSerialNumber, adbWrapper)
   }
 
   @Override
   void forwardPorts() throws DeviceException
   {
-    this.uiautomatorClient.forwardPorts()
+    this.uiautomatorClient.forwardPort()
     this.monitorsClient.forwardPorts()
   }
 }

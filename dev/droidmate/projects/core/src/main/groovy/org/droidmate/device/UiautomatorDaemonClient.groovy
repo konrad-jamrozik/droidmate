@@ -46,7 +46,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
   }
 
   @Override
-  void forwardPorts() throws DeviceException
+  void forwardPort() throws DeviceException
   {
     this.adbWrapper.forwardPort(this.deviceSerialNumber, this.port)
   }
