@@ -13,6 +13,7 @@ import org.droidmate.common_android.Constants
 import org.droidmate.common_android.DeviceCommand
 import org.droidmate.common_android.DeviceResponse
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
 
 class UiautomatorDaemonClient implements IUiautomatorDaemonClient
@@ -40,7 +41,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
   }
 
   @Override
-  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws TcpServerUnreachableException, DeviceException, ConnectException
+  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
   {
     this.client.queryServer(deviceCommand, this.port)
   }

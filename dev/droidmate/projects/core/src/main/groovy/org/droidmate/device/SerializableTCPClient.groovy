@@ -11,6 +11,7 @@ package org.droidmate.device
 
 import groovy.util.logging.Slf4j
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
 
@@ -18,8 +19,8 @@ import org.droidmate.lib_android.MonitorJavaTemplate
 public class SerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable> implements ISerializableTCPClient<InputToServerT, OutputFromServerT>
 {
 
-  private final String        serverAddress = "localhost"
-  private final int           socketTimeout
+  private final String serverAddress = "localhost"
+  private final int    socketTimeout
 
 
   public SerializableTCPClient(int socketTimeout)
@@ -28,23 +29,29 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
   }
 
   @Override
-  Boolean isServerReachable(int port) throws DeviceException, ConnectException
+  Boolean isServerReachable(int port) throws DeviceNeedsRebootException, DeviceException
   {
     try
     {
       // KJA read here the data sent from the device
       return this.queryServer(MonitorJavaTemplate.srvCmd_connCheck, port) != null
+
+    } catch (DeviceNeedsRebootException e)
+    {
+      throw e
+
     } catch (TcpServerUnreachableException ignored)
     {
       return false
-    } catch (ConnectException exception)
+
+    } catch (DeviceException e)
     {
-      throw exception
+      throw e
 
     } catch (Throwable throwable)
     {
-      throw new DeviceException("Unexpected Throwable while checking if isServerReachable. " +
-        "The Throwable is given as a cause of this exception.", throwable, true)
+      throw new DeviceException("Unexpected Throwable while checking if isServerReachable(). " +
+        "The Throwable is given as a cause of this exception. Requesting to stop further apk explorations.", throwable, true)
     }
   }
 
@@ -53,7 +60,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
    * Next, waits until server returns his answer and returns it.
    */
   @SuppressWarnings("unchecked")
-  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException, ConnectException
+  public OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
   {
 
     OutputFromServerT output
@@ -115,13 +122,14 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     }
     catch (IOException | ClassNotFoundException e)
     {
-      throw new DeviceException("SerializableTCPClient has thrown exception while querying server.", e, true)
+      throw new DeviceException("SerializableTCPClient has thrown exception while querying server. " +
+        "Requesting to stop further apk explorations.", e, true)
     }
 
     return output
   }
 
-  private Socket tryGetSocket(String serverAddress, int port) throws ConnectException
+  private Socket tryGetSocket(String serverAddress, int port) throws DeviceNeedsRebootException
   {
     Socket socket
     try
@@ -129,7 +137,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
       socket = new Socket(serverAddress, port)
     } catch (ConnectException e)
     {
-      throw e
+      throw new DeviceNeedsRebootException(e)
     }
     return socket
   }

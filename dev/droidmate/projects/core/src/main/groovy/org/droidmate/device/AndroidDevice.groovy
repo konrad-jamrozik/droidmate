@@ -179,8 +179,9 @@ public class AndroidDevice implements IAndroidDevice
   {
     if (deviceResponse.throwable != null)
       throw new DeviceException(String.format(
-        "Device returned DeviceResponse with non-null throwable, indicating something exploded on the A(V)D. The exception is " +
-          "given as a cause of this one. If it doesn't have enough information, try inspecting the logcat output of the A(V)D.",
+        "Device returned DeviceResponse with non-null throwable, indicating something went horribly wrong on the A(V)D. " +
+          "The exception is given as a cause of this one. If it doesn't have enough information, " +
+          "try inspecting the logcat output of the A(V)D.",
       ), deviceResponse.throwable)
   }
 
