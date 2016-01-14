@@ -22,8 +22,6 @@ public interface IAdbWrapper {
   List<String> waitForMessagesOnLogcat(String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryDelay)
     throws AdbWrapperException
 
-  void waitForUiaDaemonToClose() throws AdbWrapperException
-
   void forwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
 
   void reverseForwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
@@ -40,8 +38,6 @@ public interface IAdbWrapper {
 
   void clearLogcat(String deviceSerialNumber) throws AdbWrapperException
 
-  void startUiaDaemon(String deviceSerialNumber) throws AdbWrapperException
-
   boolean clearPackage(String deviceSerialNumber, String apkPackageName)
 
   List<String> readMessagesFromLogcat(String deviceSerialNumber, String messagesTag)
@@ -52,5 +48,5 @@ public interface IAdbWrapper {
 
   void reboot(String deviceSerialNumber) throws AdbWrapperException
 
-  boolean uiaDaemonThreadIsAlive()
+  void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
 }

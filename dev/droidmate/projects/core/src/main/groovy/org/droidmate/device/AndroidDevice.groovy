@@ -66,7 +66,13 @@ public class AndroidDevice implements IAndroidDevice
     this.serialNumber = serialNumber
     this.cfg = cfg
     this.adbWrapper = adbWrapper
-    this.tcpClients = new TcpClients(this.adbWrapper, this.serialNumber, cfg.socketTimeout, cfg.uiautomatorDaemonTcpPort)
+    this.tcpClients = new TcpClients(
+      this.adbWrapper,
+      this.serialNumber,
+      cfg.socketTimeout,
+      cfg.uiautomatorDaemonTcpPort,
+      cfg.uiautomatorDaemonServerStartTimeout,
+      cfg.uiautomatorDaemonServerStartQueryDelay)
   }
 
   @Override
@@ -188,7 +194,7 @@ public class AndroidDevice implements IAndroidDevice
   {
     log.trace("stopUiaDaemon()")
     this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
-    adbWrapper.waitForUiaDaemonToClose()
+    this.tcpClients.waitForUiaDaemonToClose()
     log.trace("DONE stopUiaDaemon()")
 
   }
@@ -207,7 +213,7 @@ public class AndroidDevice implements IAndroidDevice
     log.debug("isAvailable(${this.serialNumber})")
     try
     {
-      this.adbWrapper.androidDevicesDescriptors.any { it.deviceSerialNumber == this.serialNumber }
+      this.adbWrapper.androidDevicesDescriptors.any {it.deviceSerialNumber == this.serialNumber}
     } catch (NoAndroidDevicesAvailableException ignored)
     {
       return false
@@ -217,7 +223,7 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   boolean uiaDaemonClientThreadIsAlive()
   {
-    return this.adbWrapper.uiaDaemonThreadIsAlive()
+    return this.tcpClients.uiaDaemonThreadIsAlive
   }
 
   @Override
@@ -301,8 +307,7 @@ public class AndroidDevice implements IAndroidDevice
   private void startUiaDaemon() throws DeviceException
   {
     log.debug("startUiaDaemon()")
-    this.adbWrapper.startUiaDaemon(this.serialNumber)
-    assert this.uiaDaemonClientThreadIsAlive()
+    this.tcpClients.startUiaDaemon()
     log.trace("DONE startUiaDaemon()")
   }
 

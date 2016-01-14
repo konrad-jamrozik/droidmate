@@ -34,8 +34,6 @@ public class AdbWrapper implements IAdbWrapper
 {
 
   private final Configuration   cfg
-  // KJA move to UiautomatorDaemonClient
-  private       Thread          uiaDaemonThread
   private       ISysCmdExecutor sysCmdExecutor
 
 
@@ -261,12 +259,6 @@ public class AdbWrapper implements IAdbWrapper
     }
   }
 
-  @Override
-  boolean uiaDaemonThreadIsAlive()
-  {
-    assert this.uiaDaemonThread != null
-    return this.uiaDaemonThread.alive
-  }
 
   @Override
   public List<String> readMessagesFromLogcat(String deviceSerialNumber, String messageTag) throws AdbWrapperException
@@ -461,78 +453,6 @@ public class AdbWrapper implements IAdbWrapper
     }
   }
 
-  @Override
-  public void startUiaDaemon(String deviceSerialNumber) throws AdbWrapperException
-  {
-    // WISH consider collapsing to groovys Thread.start {}.
-    // http://docs.groovy-lang.org/latest/html/groovy-jdk/java/lang/Thread.html
-    // WISH consider making it a daemon thread
-    // See http://stackoverflow.com/questions/2213340/what-is-daemon-thread-in-java
-    // http://stackoverflow.com/questions/19421027/how-to-create-a-daemon-thread-and-what-for?rq=1
-
-    this.uiaDaemonThread = startUiaDaemonThread(deviceSerialNumber)
-
-    List<String> msgs = this.waitForMessagesOnLogcat(
-      deviceSerialNumber,
-      Constants.UIADAEMON_SERVER_START_TAG,
-      1,
-      cfg.uiautomatorDaemonServerStartTimeout,
-      cfg.uiautomatorDaemonServerStartQueryDelay)
-
-    assert !msgs?.empty
-    assert (msgs.size() == 1):
-      "Expected exactly one message on logcat (with tag $Constants.UIADAEMON_SERVER_START_MSG) " +
-        "confirming that uia-daemon server has started. Instead, got ${msgs.size()} messages. Msgs:\n${msgs.join("\n")}"
-    assert msgs[0].contains(Constants.UIADAEMON_SERVER_START_MSG)
-  }
-
-  private Thread startUiaDaemonThread(String deviceSerialNumber)
-  {
-    Thread uiaDaemonThread = new Thread(new UiAutomatorThreadRunnable(deviceSerialNumber))
-    uiaDaemonThread.start()
-    return uiaDaemonThread
-  }
-
-  private class UiAutomatorThreadRunnable implements Runnable
-  {
-
-    private final String deviceSerialNumber
-
-    UiAutomatorThreadRunnable(String deviceSerialNumber)
-    {
-      this.deviceSerialNumber = deviceSerialNumber
-    }
-
-    @Override
-    public void run()
-    {
-      try
-      {
-
-        String commandDescription = String
-          .format(
-          "Executing adb to start UiAutomatorDaemon.init() method on Android Device with " +
-            "s/n %s.",
-          deviceSerialNumber)
-
-        String uiaDaemonCmdLine = String.format("-c %s -e %s %s -e %s %s -e %s %s",
-          Constants.uiaDaemon_initMethodName,
-          Constants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
-          Constants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
-          Constants.uiaDaemonParam_tcpPort, cfg.uiautomatorDaemonTcpPort)
-
-        sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
-          "-s", deviceSerialNumber,
-          "shell uiautomator runtest",
-          cfg.uiautomatorDaemonJar.name,
-          uiaDaemonCmdLine)
-
-      } catch (SysCmdExecutorException e)
-      {
-        log.error("Executing 'adb shell uiautomator runtest ...' failed. Oh my.", e)
-      }
-    }
-  }
 
   @Override
   public void pushJar(String deviceSerialNumber, File jarFile) throws AdbWrapperException
@@ -584,19 +504,6 @@ public class AdbWrapper implements IAdbWrapper
     } catch (SysCmdExecutorException e)
     {
       throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
-    }
-  }
-
-  @Override
-  public void waitForUiaDaemonToClose() throws AdbWrapperException
-  {
-    assert (uiaDaemonThread != null)
-    try
-    {
-      uiaDaemonThread.join()
-    } catch (InterruptedException e)
-    {
-      throw new AdbWrapperException(e)
     }
   }
 
@@ -671,4 +578,34 @@ public class AdbWrapper implements IAdbWrapper
       throw new AdbWrapperException("Executing 'adb shell pm clear <PACKAGE_NAME>' failed. Oh my.", e)
     }
   }
+
+  @Override
+  public void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
+  {
+    try
+    {
+      String commandDescription = String
+        .format(
+        "Executing adb to start UiAutomatorDaemon.init() method on Android Device with " +
+          "s/n %s.",
+        deviceSerialNumber)
+
+      String uiaDaemonCmdLine = String.format("-c %s -e %s %s -e %s %s -e %s %s",
+        Constants.uiaDaemon_initMethodName,
+        Constants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
+        Constants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
+        Constants.uiaDaemonParam_tcpPort, port)
+
+      this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell uiautomator runtest",
+        cfg.uiautomatorDaemonJar.name,
+        uiaDaemonCmdLine)
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb shell uiautomator runtest ...' failed. Oh my.", e)
+    }
+  }
+
 }

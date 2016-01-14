@@ -17,5 +17,12 @@ interface IUiautomatorDaemonClient
 {
   DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws TcpServerUnreachableException, DeviceException, ConnectException
 
+  // KJA rename
   void forwardPorts() throws DeviceException
+
+  void startUiaDaemon() throws DeviceException
+
+  void waitForUiaDaemonToClose() throws DeviceException
+
+  boolean getUiaDaemonThreadIsAlive()
 }

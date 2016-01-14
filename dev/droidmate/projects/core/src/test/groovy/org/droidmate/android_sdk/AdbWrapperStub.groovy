@@ -11,7 +11,8 @@ package org.droidmate.android_sdk
 
 import org.droidmate.exceptions.AdbWrapperException
 
-class AdbWrapperStub implements IAdbWrapper {
+class AdbWrapperStub implements IAdbWrapper
+{
 
   @Override
   void startAdbServer() throws AdbWrapperException
@@ -37,12 +38,6 @@ class AdbWrapperStub implements IAdbWrapper {
     assert false: "Not yet implemented!"
   }
 
-
-  @Override
-  void waitForUiaDaemonToClose() throws AdbWrapperException
-  {
-    assert false: "Not yet implemented!"
-  }
 
   @Override
   void forwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
@@ -92,11 +87,6 @@ class AdbWrapperStub implements IAdbWrapper {
     assert false: "Not yet implemented!"
   }
 
-  @Override
-  void startUiaDaemon(String deviceSerialNumber) throws AdbWrapperException
-  {
-    assert false: "Not yet implemented!"
-  }
 
   @Override
   boolean clearPackage(String deviceSerialNumber, String apkPackageName)
@@ -128,9 +118,9 @@ class AdbWrapperStub implements IAdbWrapper {
     assert false: "Not yet implemented!"
   }
 
+
   @Override
-  boolean uiaDaemonThreadIsAlive()
+  void startUiautomatorDaemon(String deviceSerialNumber, int port)
   {
-    return true
   }
 }
