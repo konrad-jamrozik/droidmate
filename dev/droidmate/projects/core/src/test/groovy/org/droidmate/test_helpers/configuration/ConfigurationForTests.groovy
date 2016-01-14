@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -25,11 +25,16 @@ class ConfigurationForTests
   private static final List<String> zeroedTestConfig = [
     Configuration.pn_randomSeed, "0",
     Configuration.pn_uiautomatorDaemonWaitForWindowUpdateTimeout, "50",
-    Configuration.pn_delayAfterLaunchingActivity, "0",
+    Configuration.pn_launchActivityDelay, "0",
     Configuration.pn_monitorServerStartTimeout, "0",
-    Configuration.pn_monitorServerStartQueryInterval, "0",
+    Configuration.pn_monitorServerStartQueryDelay, "0",
+    Configuration.pn_checkAppIsRunningRetryDelay, "0",
+    Configuration.pn_checkDeviceAvailableAfterRebootFirstDelay, "0",
+    Configuration.pn_checkDeviceAvailableAfterRebootLaterDelays, "0",
     Configuration.pn_clearPackageRetryDelay, "0",
     Configuration.pn_getValidGuiSnapshotRetryDelay, "0",
+    Configuration.pn_stopAppSuccessCheckDelay, "0",
+    Configuration.pn_closeANRDelay, "0",
   ]
 
   ConfigurationForTests()

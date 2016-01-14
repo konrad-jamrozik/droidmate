@@ -14,5 +14,5 @@ package org.droidmate.fixtures.apks.lib;
  */
 public class ApkFixturesConstants
 {
-  // As of July 15, 2016 DroidMate test code no longer requires any constants, but keeping this class alive just in case.
+  // As of July 15, 2015 DroidMate test code no longer requires any constants, but keeping this class alive just in case.
 }

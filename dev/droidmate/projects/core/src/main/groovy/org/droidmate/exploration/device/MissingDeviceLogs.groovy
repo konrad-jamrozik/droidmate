@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -10,43 +10,10 @@ package org.droidmate.exploration.device
 
 import org.droidmate.exceptions.ForbiddenOperationError
 import org.droidmate.logcat.IApiLogcatMessage
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
-
-import java.time.LocalDateTime
 
 class MissingDeviceLogs implements IDeviceLogs, Serializable
 {
   private static final long serialVersionUID = 1
-
-  @Override
-  boolean getContainsMonitorInitMsgs()
-  {
-    throw new ForbiddenOperationError()
-  }
-
-  @Override
-  LocalDateTime getMonitorInitTime()
-  {
-    throw new ForbiddenOperationError()
-  }
-
-  @Override
-  LocalDateTime getMonitorInitTimeOrNull()
-  {
-    return null
-  }
-
-  @Override
-  List<ITimeFormattedLogcatMessage> getInstrumentationMsgs()
-  {
-    throw new ForbiddenOperationError()
-  }
-
-  @Override
-  List<ITimeFormattedLogcatMessage> getInstrumentationMsgsOrNull()
-  {
-    return null
-  }
 
 
   @Override
@@ -63,18 +30,6 @@ class MissingDeviceLogs implements IDeviceLogs, Serializable
 
   @Override
   boolean getReadAnyApiLogsSuccessfully()
-  {
-    throw new ForbiddenOperationError()
-  }
-
-  @Override
-  void setMonitorInitTime(LocalDateTime time)
-  {
-    throw new ForbiddenOperationError()
-  }
-
-  @Override
-  void setInstrumentationMsgs(List<ITimeFormattedLogcatMessage> messages)
   {
     throw new ForbiddenOperationError()
   }

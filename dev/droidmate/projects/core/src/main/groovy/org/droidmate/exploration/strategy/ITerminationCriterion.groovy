@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -16,9 +16,7 @@ interface ITerminationCriterion
 
   String getLogMessage()
 
-  void assertPreDecide()
-
-  void init()
+  void initDecideCall(boolean firstCallToDecideFinished)
 
   void updateState()
 

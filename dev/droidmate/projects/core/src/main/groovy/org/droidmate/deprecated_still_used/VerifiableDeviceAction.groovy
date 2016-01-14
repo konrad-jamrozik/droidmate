@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -37,7 +37,7 @@ class VerifiableDeviceAction
   {
     return new VerifiableDeviceAction(
       description: "<reset $appPackageName, expect any screen except app's>",
-      action: newResetPackageDeviceAction(appPackageName),
+      action: newClearPackageDeviceAction(appPackageName),
       verifierOfResultingGuiSnapshot: {IDeviceGuiSnapshot snapshot -> !snapshot.guiState.belongsToApp(appPackageName)})
   }
 

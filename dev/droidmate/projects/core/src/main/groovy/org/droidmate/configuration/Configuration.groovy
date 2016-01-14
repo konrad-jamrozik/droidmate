@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -15,7 +15,6 @@ import org.droidmate.exceptions.ConfigurationException
 import org.droidmate.frontend.DroidmateFrontend
 import org.droidmate.init.InitConstants
 import org.droidmate.init.LocalInitConstants
-import org.droidmate.lib_android.MonitorJavaTemplate
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -85,20 +84,27 @@ public class Configuration implements IConfiguration
   public static final String pn_apksDir                                      = "-apksDir"
   public static final String pn_apksLimit                                    = "-apksLimit"
   public static final String pn_appGuardOnlyApis                             = "-appGuardOnlyApis"
+  public static final String pn_checkAppIsRunningRetryAttempts               = "-checkAppIsRunningRetryAttempts"
+  public static final String pn_checkAppIsRunningRetryDelay                  = "-checkAppIsRunningRetryDelay"
+  public static final String pn_checkDeviceAvailableAfterRebootAttempts      = "-checkDeviceAvailableAfterRebootAttempts"
+  public static final String pn_checkDeviceAvailableAfterRebootFirstDelay    = "-checkDeviceAvailableAfterRebootFirstDelay"
+  public static final String pn_checkDeviceAvailableAfterRebootLaterDelays   = "-checkDeviceAvailableAfterRebootLaterDelays"
   public static final String pn_clearPackageRetryAttempts                    = "-clearPackageRetryAttempts"
   public static final String pn_clearPackageRetryDelay                       = "-clearPackageRetryDelay"
+  public static final String pn_closeANRAttempts                             = "-closeANRAttempts"
+  public static final String pn_closeANRDelay                                = "-closeANRDelay"
   public static final String pn_compareRuns                                  = "-compare"
-  public static final String pn_delayAfterLaunchingActivity                  = "-launchActivityDelay"
   public static final String pn_deployRawApks                                = "-deployRawApks"
   public static final String pn_device                                       = "-device"
   public static final String pn_droidmateOutputDir                           = "-droidmateOutputDirPath"
   public static final String pn_exploreInteractively                         = "-exploreInteractively"
   public static final String pn_getValidGuiSnapshotRetryAttempts             = "-getValidGuiSnapshotRetryAttempts"
   public static final String pn_getValidGuiSnapshotRetryDelay                = "-getValidGuiSnapshotRetryDelay"
+  public static final String pn_launchActivityDelay                          = "-launchActivityDelay"
+  public static final String pn_launchActivityTimeout                        = "-launchActivityTimeout"
   public static final String pn_logWidgets                                   = "-logWidgets"
-  public static final String pn_monitorServerStartQueryInterval              = "-monitorServerStartQueryInterval"
+  public static final String pn_monitorServerStartQueryDelay                 = "-monitorServerStartQueryDelay"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
-  public static final String pn_monitorTcpPort                               = "-monitorTcpPort"
   public static final String pn_randomSeed                                   = "-randomSeed"
   public static final String pn_resetEveryNthExplorationForward              = "-resetEvery"
   public static final String pn_splitCharts                                  = "-splitCharts"
@@ -106,12 +112,14 @@ public class Configuration implements IConfiguration
   public static final String pn_softReset                                    = "-softReset"
   public static final String pn_timeLimit                                    = "-timeLimit"
   public static final String pn_uiautomatorDaemonServerStartTimeout          = "-uiautomatorDaemonServerStartTimeout"
-  public static final String pn_uiautomatorDaemonServerStartQueryInterval    = "-uiautomatorDaemonServerStartQueryInterval"
+  public static final String pn_uiautomatorDaemonServerStartQueryDelay       = "-uiautomatorDaemonServerStartQueryDelay"
   public static final String pn_uiautomatorDaemonTcpPort                     = "-tcpPort"
   public static final String pn_uiautomatorDaemonWaitForGuiToStabilize       = "-waitForGuiToStabilize"
   public static final String pn_uiautomatorDaemonWaitForWindowUpdateTimeout  = "-waitForWindowUpdateTimeout"
   public static final String pn_uninstallApk                                 = "-uninstallApk"
   public static final String pn_useApkFixturesDir                            = "-useApkFixturesDir"
+  public static final String pn_stopAppRetryAttempts                         = "-stopAppRetryAttempts"
+  public static final String pn_stopAppSuccessCheckDelay                     = "-stopAppSuccessCheckDelay"
   public static final String pn_widgetIndexes                                = "-widgetIndexes"
   // @formatter:on
   //endregion
@@ -130,7 +138,7 @@ public class Configuration implements IConfiguration
     "Should the exploration strategy always click the first widget instead of its default more complex behavior")
   public boolean alwaysClickFirstWidget = false
 
-  @Parameter(names = [Configuration.pn_apksLimit],
+  @Parameter(names = [Configuration.pn_apksLimit, "-limit"],
     description = "Limits the number of apks on which DroidMate will run. 0 means no limit.")
   public int apksLimit = 0
 
@@ -145,17 +153,35 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_appGuardOnlyApis], arity = 1)
   public boolean appGuardOnlyApis = true
 
+  @Parameter(names = [Configuration.pn_checkAppIsRunningRetryAttempts])
+  public int checkAppIsRunningRetryAttempts = 4
+
+  @Parameter(names = [Configuration.pn_checkAppIsRunningRetryDelay])
+  public int checkAppIsRunningRetryDelay = 5000
+
+  @Parameter(names = [Configuration.pn_checkDeviceAvailableAfterRebootAttempts])
+  public int checkDeviceAvailableAfterRebootAttempts = 12
+
+  @Parameter(names = [Configuration.pn_checkDeviceAvailableAfterRebootFirstDelay])
+  public int checkDeviceAvailableAfterRebootFirstDelay = 60 * 1000
+
+  @Parameter(names = [Configuration.pn_checkDeviceAvailableAfterRebootLaterDelays])
+  public int checkDeviceAvailableAfterRebootLaterDelays = 10 * 1000
+
   @Parameter(names = [Configuration.pn_clearPackageRetryAttempts], arity = 1)
-  public int clearPackageRetryAttempts = 5
+  public int clearPackageRetryAttempts = 3
 
   @Parameter(names = [Configuration.pn_clearPackageRetryDelay], arity = 1)
   public int clearPackageRetryDelay = 1000
 
+  @Parameter(names = [Configuration.pn_closeANRAttempts])
+  public int closeANRAttempts = 4
+
+  @Parameter(names = [Configuration.pn_closeANRDelay])
+  public int closeANRDelay = 1000
+
   @Parameter(names = [Configuration.pn_compareRuns], arity = 1)
   public boolean compareRuns = false
-
-  @Parameter(names = [Configuration.pn_delayAfterLaunchingActivity])
-  public int delayAfterLaunchingActivity = 5000
 
   @Parameter(names = [Configuration.pn_droidmateOutputDir], description =
     "Path to the directory that will contain DroidMate exploration output.")
@@ -195,6 +221,12 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_getValidGuiSnapshotRetryDelay])
   public int getValidGuiSnapshotRetryDelay = 2000
 
+  @Parameter(names = [Configuration.pn_launchActivityDelay])
+  public int launchActivityDelay = 5000
+
+  @Parameter(names = [Configuration.pn_launchActivityTimeout])
+  public int launchActivityTimeout = 1000 * 60 * 2
+
   @Parameter(names = [Configuration.pn_logWidgets])
   public boolean logWidgets = false
 
@@ -202,14 +234,11 @@ public class Configuration implements IConfiguration
     "Logging level of the entirety of application. Possible values, comma separated: trace, debug, info.")
   String logLevel = "trace"
 
-  @Parameter(names = [Configuration.pn_monitorServerStartQueryInterval])
-  public int monitorServerStartQueryInterval = 2000
+  @Parameter(names = [Configuration.pn_monitorServerStartQueryDelay])
+  public int monitorServerStartQueryDelay = 2000
 
   @Parameter(names = [Configuration.pn_monitorServerStartTimeout])
   public int monitorServerStartTimeout = 20000
-
-  @Parameter(names = [Configuration.pn_monitorTcpPort])
-  public int monitorTcpPort = MonitorJavaTemplate.srv_port
 
   @Parameter(names = ["-outputAppGuardCharts"], arity = 1)
   public boolean outputAppGuardCharts = false
@@ -250,9 +279,9 @@ public class Configuration implements IConfiguration
     "How long DroidMate should wait, in milliseconds, for message on logcat confirming that UiAutomatorDaemonServer has started on android (virtual) device.")
   public int uiautomatorDaemonServerStartTimeout = 20000
 
-  @Parameter(names = [Configuration.pn_uiautomatorDaemonServerStartQueryInterval], description =
+  @Parameter(names = [Configuration.pn_uiautomatorDaemonServerStartQueryDelay], description =
     "How often DroidMate should query, in milliseconds, for message on logcat confirming that UiDaemonServer has started on android (virtual) device.")
-  public int uiautomatorDaemonServerStartQueryInterval = 2000
+  public int uiautomatorDaemonServerStartQueryDelay = 2000
 
   @Parameter(names = [Configuration.pn_uiautomatorDaemonWaitForGuiToStabilize], arity = 1, description =
     "Should the uiautomator-daemon wait for GUI state to stabilize after each click performed on the android device. Setting this to false will drastically speedup the clicking process, but will probably result in new clicks being sent while the results of previous one are still being processed.")
@@ -279,6 +308,12 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_widgetIndexes], listConverter = ListOfIntegersConverter.class,
     description = "Makes the exploration strategy to choose widgets to click that have the indexes as provided by this parameter, in sequence. The format is: [<first widget index>,<second widget index>,...<nth widget index>], starting indexing at 0. Example: [0,7,3]")
   public List<Integer> widgetIndexes = new ArrayList<>()
+
+  @Parameter(names = [Configuration.pn_stopAppRetryAttempts])
+  public int stopAppRetryAttempts = 4
+
+  @Parameter(names = [Configuration.pn_stopAppSuccessCheckDelay])
+  public int stopAppSuccessCheckDelay = 1000
 
   @Parameter(names = ["-widgetUniqueStringWithFieldPrecedence"], arity = 1)
   public boolean widgetUniqueStringWithFieldPrecedence = true

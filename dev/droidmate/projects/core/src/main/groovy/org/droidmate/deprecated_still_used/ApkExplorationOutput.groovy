@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -12,9 +12,9 @@ package org.droidmate.deprecated_still_used
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
 import org.droidmate.common.logcat.Api
-import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DroidmateError
 import org.droidmate.exploration.actions.ResetAppExplorationAction
 import org.droidmate.exploration.actions.TerminateExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
@@ -23,8 +23,6 @@ import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.Duration
 import java.time.LocalDateTime
-
-import static org.droidmate.common.logging.Markers.exceptions
 
 @Slf4j
 @Canonical
@@ -80,27 +78,39 @@ class ApkExplorationOutput implements IApkExplorationOutput
     return new ApkExplorationOutput(params)
   }
 
-  // WISH distinguish between "monitorInit is null because raw apk was deployed" and "monitorInit is null because exception was thrown before the log was read"
+  // WISH distinguish between "monitorInit is null because raw apk was deployed" and "monitorInit is null because exception
+  // was thrown before the log was read"
   @Override
-  void verifyCompletedDataIntegrity()
+  void verifyCompletedDataIntegrity() throws DroidmateError
   {
     try
     {
       assert explorationEndTime != null
       assert !(apiLogs?.any {it == null})
       assert !(actions?.any {it == null})
-      assert apiLogs?.size() == actions?.size() // WISH assertion error here. Maybe when the app crashes, api logs might be missing? Maybe this was caused by the fact that in org.droidmate.device.SerializableTCPClient.queryServer the ObjectOutputStream(socket.getOutputStream()) wasn't wrapped in proper try catch when the error occurred, and so the catch was not triggered in org.droidmate.exploration.device.ApiLogsReader.getAndClearMessagesFromMonitorTcpServer
+      // WISH assertion error here. Maybe when the app crashes, api logs might be missing?
+      // Maybe this was caused by the fact that in org.droidmate.device.SerializableTCPClient.queryServer
+      // the ObjectOutputStream(socket.getOutputStream()) wasn't wrapped in proper try catch when the error occurred,
+      // and so the catch was not triggered in
+      // org.droidmate.exploration.device.ApiLogsReader.getAndClearMessagesFromMonitorTcpServer
+      assert apiLogs?.size() == actions?.size()
+
 
       if (caughtException == null)
       {
-        assert actions?.size() >= 2 // WISH fails if exhausted all attempts to obtain Valid gui snapshot in org.droidmate.deprecated.ValidUiautomatorWindowDumpProvider.getValidGuiSnapshot. Looks like this is because the code returns MissingGuiSnapshot instead of throwing something, and so no exception is being caught.
+        // WISH fails if exhausted all attempts to obtain Valid gui snapshot in
+        // org.droidmate.deprecated.ValidUiautomatorWindowDumpProvider.getValidGuiSnapshot.
+        // Looks like this is because the code returns MissingGuiSnapshot instead of throwing something,
+        // and so no exception is being caught.
+        assert actions?.size() >= 2
+
 
         if (!isUiaTestCase)
           assert guiSnapshots?.size() >= 2
 
         assert actions.first().explorationAction instanceof ResetAppExplorationAction
         if (!isUiaTestCase)
-          assert guiSnapshots.first().guiState.belongsToApp(appPackageName)
+          assert guiSnapshots.first().guiState.belongsToApp(appPackageName) || actions[1].explorationAction instanceof TerminateExplorationAction
 
         assert completed.implies(actions.last().explorationAction instanceof TerminateExplorationAction)
         if (!isUiaTestCase)
@@ -141,8 +151,7 @@ class ApkExplorationOutput implements IApkExplorationOutput
                 "the last logged API call time is     ${apiLogsTimes.last()}\n" +
                 "and the allowed clock imprecision is ${clockImprecision.toMillis()} ms.")
 
-            // Assert API logs have increasing timestamps.
-            assert (flatApiLogs == flatApiLogs.collect().sort {it.time})
+            assert flatApiLogs.sortedByTimePerPID()
 
             boolean warningLogged = false
 
@@ -184,12 +193,10 @@ class ApkExplorationOutput implements IApkExplorationOutput
       }
     } catch (AssertionError e)
     {
-      // WISH this leads to multiple logs to exceptions.txt, as the new ApkExplOut is converted to this one.
-
-      log.error("Verification of exploration output from $appPackageName failed with: <exception message cut out due to IntelliJ hanging on too long stdout>. " +
+      throw new DroidmateError("Verification of exploration output from $appPackageName failed with: " +
+        "<exception message cut out due to IntelliJ hanging on too long stdout>. " +
         "As a consequence, the output is malformed and attempts of further processing will either throw an exception or result " +
-        "in bogus results. $LogbackConstants.err_log_msg")
-      log.error(exceptions, "Verification of exploration output from $appPackageName failed with: \n", e)
+        "in bogus results.", e)
     }
   }
 
@@ -197,8 +204,10 @@ class ApkExplorationOutput implements IApkExplorationOutput
   {
     // @formatter:off
     String                             packageName        = apkout2.packageName
-    LocalDateTime                      monitorInitTime    = apkout2.actRess.first().result.deviceLogs.monitorInitTimeOrNull
-    List<ITimeFormattedLogcatMessage>  instrMsgs          = apkout2.actRess.first().result.deviceLogs.instrumentationMsgsOrNull
+    // assigned explorationStartTime because replaced by it in v2
+    LocalDateTime                      monitorInitTime    = apkout2.explorationStartTime
+    // assigned null because no longer present in v2
+    List<ITimeFormattedLogcatMessage>  instrMsgs          = null
     List<TimestampedExplorationAction> actions            = apkout2.actRess.collect { TimestampedExplorationAction.from(it.action.base, it.action.timestamp) }
     List<IDeviceGuiSnapshot>           guiSnapshots       = apkout2.actRess.collect { it.result.guiSnapshot }
     List<List<IApiLogcatMessage>>      apiLogs            = apkout2.actRess.collect { it.result.deviceLogs.apiLogsOrEmpty }

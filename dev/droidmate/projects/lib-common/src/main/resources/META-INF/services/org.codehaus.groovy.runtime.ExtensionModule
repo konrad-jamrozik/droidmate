@@ -1,0 +1,3 @@
+moduleName = lib-common-module
+moduleVersion = 0.1.0
+extensionClasses = org.droidmate.common.logcat.ApiLogcatMessageListExtensions

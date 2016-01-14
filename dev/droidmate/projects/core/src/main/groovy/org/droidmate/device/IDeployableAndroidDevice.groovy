@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -14,11 +14,6 @@ import org.droidmate.exceptions.DeviceException
 
 public interface IDeployableAndroidDevice
 {
-
-  void forwardPort(int port) throws DeviceException
-
-  void reverseForwardPort(int port) throws DeviceException
-
   void pushJar(File jar) throws DeviceException
 
   void removeJar(File jar) throws DeviceException
@@ -27,11 +22,17 @@ public interface IDeployableAndroidDevice
 
   void uninstallApk(String apkPackageName, boolean warnAboutFailure) throws DeviceException
 
-  Boolean clearPackage(String apkPackageName) throws DeviceException
+  void clearPackage(String apkPackageName) throws DeviceException
 
   void clearLogcat() throws DeviceException
 
-  void startUiaDaemon() throws DeviceException
+  void closeConnection() throws DeviceException
 
-  void stopUiaDaemon() throws DeviceException
+  void reboot() throws DeviceException
+
+  boolean isAvailable() throws DeviceException
+
+  boolean uiaDaemonClientThreadIsAlive()
+
+  void setupConnection() throws DeviceException
 }

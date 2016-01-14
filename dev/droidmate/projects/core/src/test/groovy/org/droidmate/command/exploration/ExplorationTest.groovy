@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -12,21 +12,22 @@ import org.droidmate.android_sdk.ApkTestHelper
 import org.droidmate.android_sdk.IApk
 import org.droidmate.common.logcat.MonitoredInlinedApkFixtureApiLogs
 import org.droidmate.configuration.Configuration
-import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device_simulation.AndroidDeviceSimulator
 import org.droidmate.device_simulation.DeviceSimulation
+import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.ExceptionSpec
+import org.droidmate.exceptions.IExceptionSpec
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
 import org.droidmate.init.InitConstants
 import org.droidmate.logcat.IApiLogcatMessage
+import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
-
-import org.droidmate.test_suite_categories.ExplorationImplAug2015
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator
 import org.droidmate.tools.DeviceTools
@@ -46,7 +47,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
 
   // it fails because the device simulator now always uses UnreliableGuiSnapshot and the code doesn't handle it yet.
   // after it passes 'app has stopped' dialog box, work on providing invalid gui snapshots, within the retry attempts, of course.
-  @Category([RequiresSimulator,ExplorationImplAug2015])
+  @Category([RequiresSimulator])
   @Test
   void "Runs on simulator"()
   {
@@ -54,7 +55,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     runOnSimulator(simulatorSpec)
   }
 
-  @Category([RequiresSimulator,ExplorationImplAug2015])
+  @Category([RequiresSimulator])
   @Test
   void "Supports external app displayed after explored app reset"()
   {
@@ -62,16 +63,16 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     runOnSimulator(simulatorSpec)
   }
 
-  @Category([RequiresSimulator,ExplorationImplAug2015])
+  @Category([RequiresSimulator])
   @Test
   void "Supports external app displayed after exploration termination"()
   {
     String simulatorSpec = "s1-w1->chrome"
     Configuration cfg = new ConfigurationForTests().setArgs([Configuration.pn_actionsLimit, "1"]).get()
-    runOnSimulator(simulatorSpec, cfg)
+    runOnSimulator(simulatorSpec, [], cfg)
   }
 
-  @Category([RequiresDevice, ExplorationImplAug2015])
+  @Category([RequiresDevice])
   @Test
   void "Collects monitored API calls logs during device exploration"()
   {
@@ -88,18 +89,27 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     Exploration exploration = Exploration.build(cfg)
 
     IApkExplorationOutput2 out = null
-    deviceTools.deviceDeployer.withSetupDevice(0) {IDeviceWithReadableLogs device ->
+    deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
       deviceTools.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
 
         // Act
-        out = exploration.tryRun(deployedApk, new RobustDevice(device,
+        out = exploration.run(deployedApk, new RobustDevice(device,
           cfg.monitorServerStartTimeout,
-          cfg.monitorServerStartQueryInterval,
+          cfg.monitorServerStartQueryDelay,
           cfg.clearPackageRetryAttempts,
           cfg.clearPackageRetryDelay,
           cfg.getValidGuiSnapshotRetryAttempts,
-          cfg.getValidGuiSnapshotRetryDelay)
-        )
+          cfg.getValidGuiSnapshotRetryDelay,
+          cfg.checkAppIsRunningRetryAttempts,
+          cfg.checkAppIsRunningRetryDelay,
+          cfg.stopAppRetryAttempts,
+          cfg.stopAppSuccessCheckDelay,
+          cfg.closeANRAttempts,
+          cfg.closeANRDelay,
+          cfg.checkDeviceAvailableAfterRebootAttempts,
+          cfg.checkDeviceAvailableAfterRebootFirstDelay,
+          cfg.checkDeviceAvailableAfterRebootLaterDelays
+        )).result
 
       }
     }
@@ -108,39 +118,71 @@ public class ExplorationTest extends DroidmateGroovyTestCase
     apiLogs.assertCheck()
   }
 
-  private void runOnSimulator(String simulatorSpec)
+  /**
+   * <p>
+   * Bug: Assertion error in Exploration#tryAssertDeviceHasPackageInstalled
+   *
+   * </p><p>
+   * The call to
+   * <pre>org.droidmate.device.IExplorableAndroidDevice#hasPackageInstalled(java.lang.String)</pre>
+   * returns false, causing an assert to fail.
+   *
+   * </p><p>
+   * https://hg.st.cs.uni-saarland.de/issues/994
+   *
+   * </p>
+   */
+  @Category([RequiresSimulator])
+  @Test
+  void "Has no bug #994"()
   {
-    def cfg = new ConfigurationForTests().get()
-    runOnSimulator(simulatorSpec, cfg)
+    String simulatorSpec = "s1-w1->s1"
+    def failableOut = runOnSimulator(simulatorSpec, [new ExceptionSpec("hasPackageInstalled", null, 1, false, false)])
+    assert failableOut.result == null
+    assert failableOut.exception != null
   }
 
-  private void runOnSimulator(String simulatorSpec, Configuration cfg)
+  private Failable<IApkExplorationOutput2, DeviceException> runOnSimulator(String simulatorSpec, List<IExceptionSpec> exceptionSpecs = [], Configuration cfg = new ConfigurationForTests().get())
   {
     ITimeGenerator timeGenerator = new TimeGenerator()
 
     def apk = ApkTestHelper.build("mock_app1")
-    def simulator = new AndroidDeviceSimulator(timeGenerator, [apk.packageName], simulatorSpec)
+    def simulator = new AndroidDeviceSimulator(timeGenerator, [apk.packageName], simulatorSpec, exceptionSpecs)
     def simulatedDevice = new RobustDevice(simulator,
       cfg.monitorServerStartTimeout,
-      cfg.monitorServerStartQueryInterval,
+      cfg.monitorServerStartQueryDelay,
       cfg.clearPackageRetryAttempts,
       cfg.clearPackageRetryDelay,
       cfg.getValidGuiSnapshotRetryAttempts,
-      cfg.getValidGuiSnapshotRetryDelay)
+      cfg.getValidGuiSnapshotRetryDelay,
+      cfg.checkAppIsRunningRetryAttempts,
+      cfg.checkAppIsRunningRetryDelay,
+      cfg.stopAppRetryAttempts,
+      cfg.stopAppSuccessCheckDelay,
+      cfg.closeANRAttempts,
+      cfg.closeANRDelay,
+      cfg.checkDeviceAvailableAfterRebootAttempts,
+      cfg.checkDeviceAvailableAfterRebootFirstDelay,
+      cfg.checkDeviceAvailableAfterRebootLaterDelays
+    )
 
     Exploration exploration = Exploration.build(cfg, timeGenerator)
 
     // Act
-    def out2 = exploration.tryRun(apk, simulatedDevice)
+    Failable<IApkExplorationOutput2, DeviceException> failableOut = exploration.run(apk, simulatedDevice)
 
-    if (!out2.noException)
-      out2.exception.printStackTrace()
+    if (failableOut.result != null)
+    {
+      if (!failableOut.result.noException)
+        failableOut.exception.printStackTrace()
 
-    assert out2.noException
+      assert failableOut.result.noException
 
-    def out2Simulation = new DeviceSimulation(out2)
-    def expectedSimulation = simulator.currentSimulation
-    out2Simulation.assertEqual(expectedSimulation)
+      def out2Simulation = new DeviceSimulation(failableOut.result)
+      def expectedSimulation = simulator.currentSimulation
+      out2Simulation.assertEqual(expectedSimulation)
+    }
+    return failableOut
 
   }
 

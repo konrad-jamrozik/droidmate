@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -89,7 +89,7 @@ class ApiLogsReader implements IApiLogsReader
       throw new DeviceException("Failed to parse API call logs from one of the messages obtained from logcat.", e)
     }
 
-    assert apiLogs == apiLogs.collect().sort {it.time}
+    assert apiLogs.sortedByTimePerPID()
 
     assert apiLogs != null
     return apiLogs

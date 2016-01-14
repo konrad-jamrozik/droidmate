@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -32,7 +32,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 import static org.droidmate.common.logging.Markers.runData
-import static org.droidmate.configuration.Assert.validateDirectory
 
 /**
  * @see IConfigurationBuilder#build(java.lang.String [ ], java.nio.file.FileSystem)
@@ -132,9 +131,11 @@ class ConfigurationBuilder implements IConfigurationBuilder
     {
       setLogbackRootLoggerLoggingLevel(config)
       bindDirsAndResources(config, fs)
+      createAndValidateDirs(config)
       validateExplorationSettings(config)
       bindToolsCommands(config, buildToolsVersion)
 
+      // This increment is done so each connected device will have its uiautomator-daemon reachable on a separate port.
       config.uiautomatorDaemonTcpPort += config.deviceIndex
 
     } catch (ConfigurationException e)
@@ -191,8 +192,6 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
   private static void bindDirsAndResources(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
-    validateDirectory(cfg.androidSdkDir)
-
     cfg.appGuardApisList = new ResourcePath(InitConstants.appGuardApisList.fileName.toString()).toFile()
 
     cfg.uiautomatorDaemonJar = new ResourcePath("uiautomator-daemon.jar").toFile()
@@ -205,8 +204,16 @@ class ConfigurationBuilder implements IConfigurationBuilder
       cfg.apksDirPath = new ResourcePath(InitConstants.apk_fixtures).path
     else
       cfg.apksDirPath = fs.getPath(cfg.apksDirName.toString())
+  }
 
+  private static void createAndValidateDirs(Configuration cfg)
+  {
+    if (!Files.exists(cfg.droidmateOutputDirPath))
+      Files.createDirectory(cfg.droidmateOutputDirPath)
+
+    FileUtils.validateDirectory(cfg.androidSdkDir)
     FileUtils.validateDirectory(cfg.apksDirPath)
+    FileUtils.validateDirectory(cfg.droidmateOutputDirPath)
   }
 
   private static void setLogbackRootLoggerLoggingLevel(Configuration config) throws ConfigurationException

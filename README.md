@@ -1,6 +1,6 @@
 
   Copyright (c) 2012-2015 Saarland University  
-  All right reserved.
+  All rights reserved.
 
   Author: Konrad Jamrozik, github.com/konrad-jamrozik
 
@@ -20,7 +20,7 @@ repository root dir, denoted in this file as `.` (dot).
 This file explains:
 
 - What is DroidMate and how it works.
-- How to build and test DroidMate.
+- How to build, test and run DroidMate.
 - How to setup an IDE for development.
 - How to navigate DroidMate sources and technical documentation.
 
@@ -44,17 +44,19 @@ DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userg
 DroidMate build process was tested on Windows 10, Windows 7, Mac OS and Ubuntu.
 
 DroidMate was tested with Nexus 7 2012 running Android 4.4. It also worked with an emulator. It should work with other Android devices running Android 4.4.
+ 
+In case you run into problems, please see the [Troubleshooting Mac OS problems](#troubleshooting-mac-os-problems) section.
 
 ## First build (just after cloning from repo)
 
-To build DroidMate for first time, follow these steps:
+To build DroidMate for the first time, follow these steps:
 
 ### 1. Setup the dependencies ###
 1. Install Java Development Kit (JDK) 8, 7 and 6.
 * Install Android SDK.
 * In SDK Manager (with admin rights) of Android SDK, download the following:  
 Android SDK Build-tools 19.1  
-Android 4.2.2 SDK Platform
+Android 4.4.2 SDK Platform
 * To make `adb` (Android Debug Bridge) runnable, add `(...)/android-sdk/platform-tools` to the PATH system environment variable.
 * To make `aapt` (Android Asset Packaging Tool) runnable, add `(...)/android-sdk/build-tools/19.1.0` to the PATH system environment variable.
 * Install Apache Ant (newest version should work) and add its `bin` directory to the PATH system environment variable.
@@ -65,7 +67,8 @@ Android 4.2.2 SDK Platform
 **IMPORTANT** When following the instructions, be double sure that you followed to the letter the step 1. in the class groovydoc!
 * (optional) set `GRADLE_USER_HOME` system environment variable to a directory in which Gradle  will locally cache the dependencies downloaded from maven repository. [Gradle doc link](https://docs.gradle.org/current/userguide/gradle_command_line.html).
 * Run initial build setup:  
-`./dev/init/gradlew build`
+`./dev/init/gradlew build`  
+Note: on Linux and Mac OS will need to first do `chmod +x gradlew`
 
 ### 3. Do the build ###
 
@@ -78,9 +81,8 @@ If this step finished with `BUILD SUCCESSFUL` you successfully built DroidMate a
 Now you should setup an Android device and run tests requiring it:
 
 1. Setup an Android device, as described in the [official doc](http://developer.android.com/training/basics/firstapp/running-app.html#RealDevice).
+* Ensure the "settings" app is on the main home screen on the device. You can drag & drop it from the apps list. If you omit this step, DroidMate will not be able to ensure WiFi is enabled before each app restart during exploration. It will work however, just issuing a warning to logcat.
 * Run DroidMate tests requiring device as described in the section below.
-
-
 
 ## Daily building and testing ##
 
@@ -121,17 +123,42 @@ DroidMate cannot run on normal apks, they first have to be `inlined`. To inline 
 * Run the task
 `./dev/droidmate/gradlew :projects:core:prepareInlinedApks`
 or `./dev/droidmate/gradlew :p:c:pIA` for short.
-The apks will be placed in `dev/droidmate/apks/inlined`
+The apks will be placed in `./dev/droidmate/apks/inlined`
 * Run DroidMate with cmd line arg of `-apksDir=apks/inlined` to use these apks.
 
 Inlined apks can be distinguished by an `-inlined.apk` suffix in their name.
 
 ### Obtaining apks ###
 
-You can obtain apks e.g. by:  
+You can obtain `.apk` files of the apps in following ways:
 
-* downloading them from Google Play Store, e.g. by using http://apk-dl.com/
-* copying the artificial apk fixtures coming from DroidMate, that can be found in `./dev/droidmate/projects/core/src/test/resources/fixtures/apks` after DroidMate was successfully built. Their sources are available in the `./dev/apk-fixtures-src` project.
+* Use a dedicated app for that. See [androidpit.com/how-to-download-apk-file-from-google-play](https://www.androidpit.com/how-to-download-apk-file-from-google-play)
+* Copy the artificial apk fixtures coming from DroidMate, that can be found in `./dev/droidmate/projects/core/src/test/resources/fixtures/apks`  
+after DroidMate was successfully built. Their sources are available in the `./dev/apk-fixtures-src` project.
+* Download `Samples for SDK` using Android SDK Manager and build them.
+* Install an app from Google Play Store to an Android device and then pull the app from the device using `adb` from Android SDK. For example, the [currency converter](https://play.google.com/store/apps/details?id=com.frank_weber.forex2) has `id=com.frank_weber.forex2` in its URL, denoting its package name. After you install it on the device, you can pull it in the following way: <pre>
+$ adb shell pm path com.frank_weber.forex2
+package:/data/app/com.frank_weber.forex2-1.apk
+$ adb pull /data/app/com.frank_weber.forex2-1.apk
+3674 KB/s (2361399 bytes in 0.627s)
+// The file is now in the current dir
+</pre>  
+
+## Troubleshooting Mac OS problems
+
+##### Problem: Missing rt.jar from JDK 1.6 (credit: Mark Schuegraf)
+
+###### Description
+
+In Mac OS The structure of Java JDK 1.6 is different to the later versions in that it doesn't have a directory `jre/lib` that contains `rt.jar` - instead `rt.jar` is called `classes.jar` and is found within the directory `1.6.0.jdk/Contents/Classes`. 
+
+This is due to the fact that the only way to use SE 6 on Mac OS is to use an Apple variant of the SDK i.e. https://support.apple.com/kb/DL1572?locale=en_US 
+
+There is no Mac OS download available on the Oracle site, due to SE 6 being a core component of OS X Mavericks. 
+
+###### Workaround 
+
+Simply make a `jre/lib` directory within java home and symlink `rt.jar` within it to `classes.jar.` 
 
 # Working with DroidMate code base
 
@@ -142,7 +169,7 @@ DroidMate is developed with IntelliJ IDEA, using the directory-based project for
 
 After opening an IntelliJ project (see section below), run `Refresh all gradle projects` from `Gradle` plugin toolbar. After this you should be able to `Build -> Make Project` and run the tests (see section below).
 
-### Running tests from IntelliJ ###
+## Running tests from IntelliJ
 
 `FastRegressionTestSuite` is the main test suite. It doesn't require a device.
 
@@ -151,7 +178,12 @@ After opening an IntelliJ project (see section below), run `Refresh all gradle p
 For how these tests relate to Gradle tasks, see `./dev/droidmate/projects/core/build.gradle`.  
 Search in that file for `test {` and `task testDevice`
 
-### Running DroidMate from IntelliJ ###
+##### Setting up IntelliJ for running single tests 
+
+In `Run/Debug configurations` in `Defaults` section set `JUnit` `Working directory` to the absolute path to your repo root. Otherwise single tests run from IntelliJ won't work as expected.
+
+
+## Running DroidMate from IntelliJ
 
 IntelliJ `droidmate` project has a set of run configurations whose name starts with `Explore apks`. They serve as a documentation by example.
 
@@ -167,7 +199,7 @@ To get access to Android SDK sources form IDE, download `Sources for Android SDK
 
 If you still do not have access to some sources and docs, manually add them in IntelliJ `Project sturcture -> Platform settings`
 
-## IntelliJ projects ##
+### IntelliJ projects
 
 Following directories are sources which can be opened  as IntelliJ projects (`File -> Open`):
 
@@ -195,8 +227,7 @@ Technical docs will be  located in `./dev/droidmate/doc`. As of 14 Dec 2015 only
 
 The entry class of DroidMate is `DroidmateFrontend` and so it is recommended to start code base exploration from this class. You can find it in 
 
-`./dev/droidmate/projects/core/src/main/groovy/`
-`org/droidmate/frontend/DroidmateFrontend.groovy` 
+`./dev/droidmate/projects/core/src/main/groovy/org/droidmate/frontend/DroidmateFrontend.groovy` 
 
 ### Tests as documentation ###
 

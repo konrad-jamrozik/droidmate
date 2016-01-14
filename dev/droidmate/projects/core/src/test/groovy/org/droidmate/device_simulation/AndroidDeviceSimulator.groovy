@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,10 +11,14 @@ package org.droidmate.device_simulation
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
+import org.droidmate.common.Boolean3
 import org.droidmate.common.DroidmateException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
-import org.droidmate.exceptions.*
+import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.IExceptionSpec
+import org.droidmate.exceptions.TestDeviceException
+import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
@@ -76,24 +80,36 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   boolean hasPackageInstalled(String packageName) throws DeviceException
   {
     log.debug("hasPackageInstalled($packageName)")
+    assert this.currentlyDeployedPackageName == packageName
 
-    throwExceptionIfMatchesSpec("hasPackageInstalled", packageName)
+    IExceptionSpec s = findMatchingExceptionSpecAndThrowIfApplies("hasPackageInstalled", packageName)
+    if (s != null)
+    {
+      assert !s.throwsEx
+      return s.exceptionalReturnBool
+    }
 
     return this.currentlyDeployedPackageName == packageName
   }
 
-  void throwExceptionIfMatchesSpec(String methodName, String currentlyDeployedPackageName) throws TestDeviceException
+  private IExceptionSpec findMatchingExceptionSpec(String methodName, String packageName)
   {
-    callCounters.increment(currentlyDeployedPackageName, methodName)
-
-    def spec = exceptionSpecs.find {
-      it.methodName == methodName && it.currentlyDeployedPackageName == currentlyDeployedPackageName
+    return this.exceptionSpecs.findSingleOrDefault(null) {
+      it.matches(methodName, packageName, callCounters.get(packageName, methodName))
     }
+  }
 
-    if (spec == null || spec.callIndex != callCounters.get(currentlyDeployedPackageName, methodName))
-      return
-
-    throw new TestDeviceException(spec)
+  private IExceptionSpec findMatchingExceptionSpecAndThrowIfApplies(String methodName, String packageName) throws TestDeviceException
+  {
+    callCounters.increment(packageName, methodName)
+    IExceptionSpec s = findMatchingExceptionSpec(methodName, packageName)
+    if (s != null)
+    {
+      if (s.throwsEx)
+        s.throwEx()
+    }
+    assert !(s?.throwsEx)
+    return s
   }
 
   @Override
@@ -101,7 +117,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   {
     log.debug("getGuiSnapshot()")
 
-    throwExceptionIfMatchesSpec("getGuiSnapshot", this.currentlyDeployedPackageName)
+    findMatchingExceptionSpecAndThrowIfApplies("getGuiSnapshot", this.currentlyDeployedPackageName)
 
     def outSnapshot = this.currentSimulation.currentGuiSnapshot
 
@@ -114,14 +130,18 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   {
     log.debug("perform($action)")
 
-    throwExceptionIfMatchesSpec("perform", this.currentlyDeployedPackageName)
+    findMatchingExceptionSpecAndThrowIfApplies("perform", this.currentlyDeployedPackageName)
 
     switch (action.class)
     {
       case LaunchMainActivityDeviceAction:
+        assert false : "call .launchMainActivity() directly instead"
+        break
       case ClickGuiAction:
-      case AdbClearPackageAction:
         updateSimulatorState(action)
+        break
+      case AdbClearPackageAction:
+        assert false : "call .clearPackage() directly instead"
         break
       default:
         throw new UnexpectedIfElseFallthroughError()
@@ -146,6 +166,12 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  void closeConnection() throws DeviceException
+  {
+    findMatchingExceptionSpecAndThrowIfApplies("closeConnection", this.currentlyDeployedPackageName)
+  }
+
+  @Override
   List<ITimeFormattedLogcatMessage> readLogcatMessages(String messageTag)
   {
     List<ITimeFormattedLogcatMessage> returnedMessages = logcatMessagesToBeReadNext.findResults {it.tag == messageTag ? it : null}
@@ -153,7 +179,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  List<ITimeFormattedLogcatMessage> waitForLogcatMessages(String messageTag, int minMessagesCount, int waitTimeout, int queryInterval) throws DeviceException
+  List<ITimeFormattedLogcatMessage> waitForLogcatMessages(String messageTag, int minMessagesCount, int waitTimeout, int queryDelay) throws DeviceException
   {
     return readLogcatMessages(messageTag)
   }
@@ -165,13 +191,22 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  void forwardPort(int port) throws DroidmateException
+  Boolean appProcessIsRunning(String appPackageName)
   {
+    this.currentSimulation.packageName == appPackageName && this.currentSimulation.appIsRunning
   }
 
   @Override
-  void reverseForwardPort(int port) throws DroidmateException
+  Boolean anyMonitorIsReachable()
   {
+    this.currentSimulation.appIsRunning
+  }
+
+  @Override
+  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  {
+    updateSimulatorState(new LaunchMainActivityDeviceAction(launchableActivityComponentName))
+    return Boolean3.True
   }
 
   @Override
@@ -193,34 +228,43 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   void uninstallApk(String apkPackageName, boolean warnAboutFailure) throws DroidmateException
   {
-    throwExceptionIfMatchesSpec("uninstallApk", apkPackageName)
+    findMatchingExceptionSpecAndThrowIfApplies("uninstallApk", apkPackageName)
   }
 
   @Override
-  Boolean clearPackage(String apkPackageName)
+  void clearPackage(String apkPackageName)
+  {
+    updateSimulatorState(new AdbClearPackageAction(apkPackageName))
+  }
+
+
+  @Override
+  void reboot() throws DeviceException
+  {
+    return
+  }
+
+  @Override
+  boolean isAvailable()
   {
     return true
   }
 
   @Override
-  void startUiaDaemon() throws DroidmateException
+  boolean uiaDaemonClientThreadIsAlive()
   {
+    return true
   }
 
   @Override
-  void stopUiaDaemon() throws DroidmateException
+  void setupConnection() throws DeviceException
   {
-    throwExceptionIfMatchesSpec("stopUiaDaemon", this.currentlyDeployedPackageName)
   }
 
   @Override
   List<List<String>> readAndClearMonitorTcpMessages()
   {
-
-    if (this.currentSimulation.appIsRunning)
-      return []
-    else
-      throw new TcpServerUnreachableException("Simulated exception: attempt to read monitor messages from home screen")
+    return []
   }
 
 
@@ -235,4 +279,11 @@ public class AndroidDeviceSimulator implements IAndroidDevice
       "s2-w22->s2 " +
       "s2-w2h->home", exceptionSpecs, unreliableSimulation)
   }
+
+  @Override
+  public String toString()
+  {
+    return this.class.simpleName
+  }
+
 }

@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -20,16 +20,8 @@ class ScratchpadTest
   @Test
   void test()
   {
-//    Thread.currentThread().setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-//
-//      public void uncaughtException(Thread t, Throwable e)
-//      {
-//        LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME).error("Uncaught Exception in thread '" + t.getName() + "'", e);
-//        System.exit(1);
-//      }
-//    });
-//    throw new Exception("ex1", new Exception("ex2"));
-
+    Socket s = new Socket("localhost", 59999)
+    new ObjectInputStream(s.inputStream)
   }
 
 }

@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,17 +11,20 @@ package org.droidmate.command
 import groovy.io.FileType
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.Apk
+import org.droidmate.android_sdk.ApkExplorationException
+import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.command.exploration.Exploration
 import org.droidmate.command.exploration.IExploration
-import org.droidmate.common.DroidmateException
 import org.droidmate.common.logging.Markers
 import org.droidmate.configuration.Configuration
 import org.droidmate.deprecated_still_used.*
-import org.droidmate.exceptions.*
+import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
+import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.TimeProvider
 import org.droidmate.storage.IStorage2
@@ -73,18 +76,20 @@ class ExploreCommand extends DroidmateCommand
   }
 
   @Override
-  void execute(Configuration cfg) throws DroidmateException
+  void execute(Configuration cfg) throws ThrowablesCollection
   {
     cleanOutputDir(cfg.droidmateOutputDirPath)
 
-    List<Apk> apks = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames)
+    List<Apk> apks = this.apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames)
     if (apks.size() == 0)
     {
       log.warn("No input apks found. Terminating.")
       return
     }
 
-    tryExecute(cfg, apks)
+    List<ExplorationException> explorationExceptions = execute(cfg, apks)
+    if (!explorationExceptions.empty)
+      throw new ThrowablesCollection(explorationExceptions)
   }
 
   private void cleanOutputDir(Path path)
@@ -99,102 +104,89 @@ class ExploreCommand extends DroidmateCommand
     path.eachFile {Path p -> assert Files.isDirectory(p)}
   }
 
-  public void tryExecute(Configuration cfg, List<Apk> apks) throws DroidmateException
+  public List<ExplorationException> execute(Configuration cfg, List<Apk> apks)
   {
     ExplorationOutput2 out = new ExplorationOutput2()
 
-    Throwable savedTryThrowable = null
+    List<ExplorationException> explorationExceptions = []
     try
     {
-      tryDeployExploreSerialize(cfg.deviceIndex, apks, out)
+      explorationExceptions += deployExploreSerialize(cfg.deviceIndex, apks, out)
+    }
+    catch (Throwable deployExploreSerializeThrowable)
+    {
+      log.error("!!! Caught ${deployExploreSerializeThrowable.class.simpleName} " +
+        "in execute(configuration, apks)->deployExploreSerialize(${cfg.deviceIndex}, apks, out). " +
+        "This means ${ExplorationException.simpleName}s have been lost, if any! " +
+        "Skipping summary output analysis persisting. " +
+        "Rethrowing.")
+      throw deployExploreSerializeThrowable
+    }
 
+    try
+    {
       def deprecatedOut = new ExplorationOutput()
       deprecatedOut.addAll(out.collect {ApkExplorationOutput.from(it)})
-      explorationOutputAnalysisPersister.persist(deprecatedOut)
-    } catch (Throwable tryThrowable)
+      this.explorationOutputAnalysisPersister.persist(deprecatedOut)
+    } catch (Throwable persistingThrowable)
     {
-      log.debug("! Caught ${tryThrowable.class.simpleName} in withDeployedApk.computation(apk). Rethrowing.")
-      savedTryThrowable = tryThrowable
-      throw savedTryThrowable
-
-    } finally
-    {
-      log.debug("Finalizing: ${ExploreCommand.class.simpleName}.tryExecute finally {}")
-      ApkExplorationExceptionsCollection exceptionsCollection = collectApkExplorationExceptionsIfAny(out)
-      if (exceptionsCollection != null)
-      {
-        if (savedTryThrowable != null)
-        {
-          log.debug("! Collected ${exceptionsCollection.class.simpleName} in collectApkExplorationExceptionsIfAny(out). " +
-            "Rethrowing them inside ${ThrowablesCollection.simpleName}, together with a savedTryThrowable.")
-          throw new ThrowablesCollection([exceptionsCollection, savedTryThrowable])
-        } else
-        {
-          log.debug("! Collected ${exceptionsCollection.class.simpleName} in collectApkExplorationExceptionsIfAny(out). Throwing.")
-          throw exceptionsCollection
-        }
-      }
-      log.debug("Finalizing DONE: ${ExploreCommand.class.simpleName}.tryExecute finally {}")
-    }
-  }
-
-  ApkExplorationExceptionsCollection collectApkExplorationExceptionsIfAny(ExplorationOutput2 out) throws ApkExplorationExceptionsCollection
-  {
-    List<ApkExplorationException> exceptions = []
-
-    out.each {
-      if (!it.noException)
-      {
-        exceptions.add(new ApkExplorationException(it.apk, it.exception))
-      }
+      explorationExceptions << new ExplorationException(persistingThrowable)
     }
 
-    if (!exceptions.empty)
-      return new ApkExplorationExceptionsCollection(exceptions)
-    else
-      return null
-
+    return explorationExceptions
   }
 
-  private void tryDeployExploreSerialize(int deviceIndex, List<Apk> apks, ExplorationOutput2 out) throws DeviceException
+  private List<ExplorationException> deployExploreSerialize(int deviceIndex, List<Apk> apks, ExplorationOutput2 out)
   {
-    deviceDeployer.withSetupDevice(deviceIndex) {IDeviceWithReadableLogs device ->
+    this.deviceDeployer.withSetupDevice(deviceIndex) {IRobustDevice device ->
 
+      List<ApkExplorationException> allApksExplorationExceptions = []
+
+      boolean encounteredApkExplorationsStoppingException = false
       log.trace(Markers.gui,"<!-- GUI States -->")
       log.trace(Markers.gui,"<exploration>")
 
       apks.eachWithIndex {Apk apk, int i ->
 
-        log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
+        if (!encounteredApkExplorationsStoppingException)
+        {
+          log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
         log.trace(Markers.gui,"<apk>")
         log.trace(Markers.gui,"<name>"+apk.fileName+"</name>")
+          allApksExplorationExceptions +=
+            this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
+		log.trace(Markers.gui,"<events>")              
+              tryExploreOnDeviceAndSerialize(deployedApk, device, out)
+  		log.trace(Markers.gui,"</events>")
+            }
+	log.trace(Markers.gui,"</apk>")
 
-        apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
-
-          log.trace(Markers.gui,"<events>")
-          tryExploreOnDeviceAndSerialize(deployedApk, device, out)
-          og.trace(Markers.gui,"</events>")
+          if (allApksExplorationExceptions.any {it.shouldStopFurtherApkExplorations()})
+          {
+            log.warn("Encountered and exception that stops further apk explorations. Skipping exploring the remaining apks.")
+            encounteredApkExplorationsStoppingException = true
+          }
         }
-
-        log.trace(Markers.gui,"</apk>")
-
       }
       log.trace(Markers.gui,"</exploration>")
+      return allApksExplorationExceptions
     }
   }
 
   private void tryExploreOnDeviceAndSerialize(
-    IApk deployedApk, IDeviceWithReadableLogs device, ExplorationOutput2 out) throws DeviceException
+    IApk deployedApk, IRobustDevice device, ExplorationOutput2 out) throws DeviceException
   {
-    IApkExplorationOutput2 apkOut2 = tryExploreOnDevice(deployedApk, device)
-    apkOut2.serialize(storage2)
-    out << apkOut2
+    Failable<IApkExplorationOutput2, DeviceException> failableApkOut2 = this.exploration.run(deployedApk, device)
+
+    if (failableApkOut2.result != null)
+    {
+      failableApkOut2.result.serialize(this.storage2)
+      out << failableApkOut2.result
+    }
+
+    if (failableApkOut2.exception != null)
+      throw failableApkOut2.exception
   }
 
-  private IApkExplorationOutput2 tryExploreOnDevice(
-    IApk deployedApk, IDeviceWithReadableLogs device) throws DeviceException
-  {
-    return exploration.tryRun(deployedApk, device)
-  }
 }

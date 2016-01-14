@@ -4,6 +4,7 @@ build/
 local.gradle
 droidmate.ini
 droidmate.test.ini
+**/\.idea/libraries/Gradle__*
 
 ### Java ####
 *.class

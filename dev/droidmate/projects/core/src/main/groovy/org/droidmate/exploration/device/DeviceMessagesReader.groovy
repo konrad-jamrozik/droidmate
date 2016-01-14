@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -29,41 +29,39 @@ import java.time.LocalDateTime
  */
 class DeviceMessagesReader implements IDeviceMessagesReader
 {
-
+  @Deprecated
   private final IInitMsgsReader initMsgsReader
   private final IApiLogsReader  apiLogsReader
   private final IDeviceTimeDiff deviceTimeDiff
 
-
-  DeviceMessagesReader(IExplorableAndroidDevice device, int monitorServerStartTimeout, int monitorServerStartQueryInterval)
+  DeviceMessagesReader(IExplorableAndroidDevice device, int monitorServerStartTimeout, int monitorServerStartQueryDelay)
   {
-    this.initMsgsReader = new InitMsgsReader(device, monitorServerStartTimeout, monitorServerStartQueryInterval)
+    this.initMsgsReader = new InitMsgsReader(device, monitorServerStartTimeout, monitorServerStartQueryDelay)
     this.apiLogsReader = new ApiLogsReader(device)
     this.deviceTimeDiff = new DeviceTimeDiff(device)
   }
 
+  @Override
+  void resetTimeSync()
+  {
+    this.deviceTimeDiff.reset()
+
+  }
+
+  // Used by old exploration code
+  @Deprecated
   @Override
   LocalDateTime readMonitorMessages() throws DeviceException
   {
     return initMsgsReader.readMonitorMessages(deviceTimeDiff)
   }
 
+  // Used by old exploration code
+  @Deprecated
   @Override
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException
   {
     return initMsgsReader.readInstrumentationMessages(deviceTimeDiff)
-  }
-
-  /**
-   * Deprecated and unused. It is superseded by {@link #getAndClearCurrentApiLogsFromMonitorTcpServer()}.
-   * Left here for reference and in case if a rollback from the monitor-TCP-based infrastructure of message receipt
-   * from the device will be necessary.
-   */
-  @Deprecated
-  @Override
-  List<IApiLogcatMessage> getCurrentApiLogsFromLogcat() throws DeviceException
-  {
-    return apiLogsReader.getCurrentApiLogsFromLogcat(deviceTimeDiff)
   }
 
   @Override

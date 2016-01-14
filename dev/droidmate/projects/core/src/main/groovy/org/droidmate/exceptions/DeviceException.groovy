@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -15,24 +15,36 @@ public class DeviceException extends DroidmateException
 {
   private static final long serialVersionUID = 1
 
+  final boolean stopFurtherApkExplorations
+
   public DeviceException()
   {
     super()
+    stopFurtherApkExplorations = false
   }
 
   public DeviceException(Throwable cause)
   {
     super(cause)
-  }
-
-  public DeviceException(String message, Throwable cause)
-  {
-    super(message, cause)
+    stopFurtherApkExplorations = false
   }
 
   public DeviceException(String message)
   {
     super(message)
+    stopFurtherApkExplorations = false
+  }
+
+  public DeviceException(String message, boolean stopFurtherApkExplorations)
+  {
+    super(message)
+    this.stopFurtherApkExplorations = stopFurtherApkExplorations
+  }
+
+  public DeviceException(String message, Throwable cause, boolean stopFurtherApkExplorations = false)
+  {
+    super(message, cause)
+    this.stopFurtherApkExplorations = stopFurtherApkExplorations
   }
 
 }

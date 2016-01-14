@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -32,7 +32,7 @@ class AdbWrapperStub implements IAdbWrapper {
   }
 
   @Override
-  List<String> waitForMessagesOnLogcat(String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryInterval) throws AdbWrapperException
+  List<String> waitForMessagesOnLogcat(String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryDelay) throws AdbWrapperException
   {
     assert false: "Not yet implemented!"
   }
@@ -114,5 +114,23 @@ class AdbWrapperStub implements IAdbWrapper {
   String listPackages(String deviceSerialNumber) throws AdbWrapperException
   {
     assert false: "Not yet implemented!"
+  }
+
+  @Override
+  String ps(String deviceSerialNumber) throws AdbWrapperException
+  {
+    assert false: "Not yet implemented!"
+  }
+
+  @Override
+  void reboot(String deviceSerialNumber) throws AdbWrapperException
+  {
+    assert false: "Not yet implemented!"
+  }
+
+  @Override
+  boolean uiaDaemonThreadIsAlive()
+  {
+    return true
   }
 }

@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -8,8 +8,9 @@
 // www.droidmate.org
 package org.droidmate.exploration.device
 
-import android.bluetooth.BluetoothClass
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.IApk
+import org.droidmate.common.Boolean3
 import org.droidmate.common.Utils
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.AndroidDeviceAction
@@ -21,7 +22,7 @@ import org.droidmate.exceptions.DeviceException
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newPressHomeDeviceAction
 
 @Slf4j
-class RobustDevice implements IDeviceWithReadableLogs
+class RobustDevice implements IRobustDevice
 {
 
   @Delegate
@@ -36,16 +37,38 @@ class RobustDevice implements IDeviceWithReadableLogs
   private final int getValidGuiSnapshotRetryAttempts
   private final int getValidGuiSnapshotRetryDelay
 
+  private final int checkAppIsRunningRetryAttempts
+  private final int checkAppIsRunningRetryDelay
+
+  private final int stopAppRetryAttempts
+  private final int stopAppSuccessCheckDelay
+
+  private final int closeANRAttempts
+  private final int closeANRDelay
+
+  private final int checkDeviceAvailableAfterRebootAttempts
+  private final int checkDeviceAvailableAfterRebootFirstDelay
+  private final int checkDeviceAvailableAfterRebootLaterDelays
+
   RobustDevice(IAndroidDevice device,
                int monitorServerStartTimeout,
-               int monitorServerStartQueryInterval,
+               int monitorServerStartQueryDelay,
                int clearPackageRetryAttempts,
                int clearPackageRetryDelay,
                int getValidGuiSnapshotRetryAttempts,
-               int getValidGuiSnapshotRetryDelay)
+               int getValidGuiSnapshotRetryDelay,
+               int checkAppIsRunningRetryAttempts,
+               int checkAppIsRunningRetryDelay,
+               int stopAppRetryAttempts,
+               int stopAppSuccessCheckDelay,
+               int closeANRAttempts,
+               int closeANRDelay,
+               int checkDeviceAvailableAfterRebootAttempts,
+               int checkDeviceAvailableAfterRebootFirstDelay,
+               int checkDeviceAvailableAfterRebootLaterDelays)
   {
     this.device = device
-    this.messagesReader = new DeviceMessagesReader(device, monitorServerStartTimeout, monitorServerStartQueryInterval)
+    this.messagesReader = new DeviceMessagesReader(device, monitorServerStartTimeout, monitorServerStartQueryDelay)
 
     this.clearPackageRetryAttempts = clearPackageRetryAttempts
     this.clearPackageRetryDelay = clearPackageRetryDelay
@@ -53,63 +76,65 @@ class RobustDevice implements IDeviceWithReadableLogs
     this.getValidGuiSnapshotRetryAttempts = getValidGuiSnapshotRetryAttempts
     this.getValidGuiSnapshotRetryDelay = getValidGuiSnapshotRetryDelay
 
+    this.checkAppIsRunningRetryAttempts = checkAppIsRunningRetryAttempts
+    this.checkAppIsRunningRetryDelay = checkAppIsRunningRetryDelay
+
+    this.stopAppRetryAttempts = stopAppRetryAttempts
+    this.stopAppSuccessCheckDelay = stopAppSuccessCheckDelay
+
+    this.closeANRAttempts = closeANRAttempts
+    this.closeANRDelay = closeANRDelay
+
+    this.checkDeviceAvailableAfterRebootAttempts = checkDeviceAvailableAfterRebootAttempts
+    this.checkDeviceAvailableAfterRebootFirstDelay = checkDeviceAvailableAfterRebootFirstDelay
+    this.checkDeviceAvailableAfterRebootLaterDelays = checkDeviceAvailableAfterRebootLaterDelays
+
     assert clearPackageRetryAttempts >= 1
+    assert checkAppIsRunningRetryAttempts >= 1
+    assert stopAppRetryAttempts >= 1
+    assert closeANRAttempts >= 1
+    assert checkDeviceAvailableAfterRebootAttempts >= 1
+
     assert clearPackageRetryDelay >= 0
+    assert checkAppIsRunningRetryDelay >= 0
+    assert stopAppSuccessCheckDelay >= 0
+    assert closeANRDelay >= 0
+    assert checkDeviceAvailableAfterRebootFirstDelay >= 0
+    assert checkDeviceAvailableAfterRebootLaterDelays >= 0
+
+
   }
 
   @Override
-  public IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
+  IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
   {
     return this.getExplorableGuiSnapshot()
   }
 
-  public IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
-  {
-    IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshot()
-    guiSnapshot = closeANRIfNecessary(guiSnapshot)
-    return guiSnapshot
-  }
-
-  private IDeviceGuiSnapshot closeANRIfNecessary(IDeviceGuiSnapshot guiSnapshot) throws DeviceException
-  {
-    def out = guiSnapshot
-    if (guiSnapshot.guiState.isAppHasStoppedDialogBox())
-    {
-      assert (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
-      device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
-        (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget)
-      )
-      out = this.getRetryValidGuiSnapshot()
-    }
-
-    if (out.guiState.isAppHasStoppedDialogBox())
-    {
-      assert (out.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
-      throw new DeviceException("Failed to properly close ANR even though OK widget is enabled.")
-    }
-
-    return out
-  }
-
-  public IDeviceGuiSnapshot getRetryValidGuiSnapshot() throws DeviceException
-  {
-    IDeviceGuiSnapshot guiSnapshot = Utils.retryOnException(this.&getValidGuiSnapshot, DeviceException,
-      getValidGuiSnapshotRetryAttempts,
-      getValidGuiSnapshotRetryDelay
-    )
-
-    assert guiSnapshot.validationResult.valid
-    return guiSnapshot
-  }
-
   @Override
-  Boolean clearPackage(String apkPackageName) throws DeviceException
+  void clearPackage(String apkPackageName) throws DeviceException
   {
-    Utils.retryOnException(device.&clearPackage.curry(apkPackageName), DeviceException,
-      this.clearPackageRetryAttempts,
-      this.clearPackageRetryDelay
-    )
+    // Clearing package has to happen more than once, because sometimes after cleaning suddenly the ActivityManager restarts
+    // one of the activities of the app.
+    Utils.retryOnFalse({
+
+      Utils.retryOnException(device.&clearPackage.curry(apkPackageName), DeviceException,
+        this.clearPackageRetryAttempts,
+        this.clearPackageRetryDelay
+      )
+
+      // Sleep here to give the device some time to stop all the processes belonging to the cleared package before checking
+      // if indeed all of them have been stopped.
+      sleep(this.stopAppSuccessCheckDelay)
+
+      return !this.appIsRunningCheckOnce(apkPackageName)
+
+    },
+      this.stopAppRetryAttempts,
+      /* Retry delay. Zero, because after seeing the app didn't stop, we immediately clear package again. */
+      0)
   }
+
 
   @Override
   IDeviceGuiSnapshot ensureHomeScreenIsDisplayed() throws DeviceException
@@ -127,7 +152,114 @@ class RobustDevice implements IDeviceWithReadableLogs
     return guiSnapshot
   }
 
-  IDeviceGuiSnapshot getValidGuiSnapshot() throws DeviceException
+  @Override
+  Boolean appIsRunningCheckOnce(String appPackageName) throws DeviceException
+  {
+    return _appIsRunning(appPackageName)
+  }
+
+  @Override
+  Boolean appIsRunning(IApk apk) throws DeviceException
+  {
+    return Utils.retryOnFalse(this.&_appIsRunning.curry(apk.packageName),
+      checkAppIsRunningRetryAttempts,
+      checkAppIsRunningRetryDelay,
+    )
+  }
+
+  @Override
+  Boolean appIsNotRunning(IApk apk) throws DeviceException
+  {
+    return Utils.retryOnFalse({!this._appIsRunning(apk.packageName)},
+      checkAppIsRunningRetryAttempts,
+      checkAppIsRunningRetryDelay,
+    )
+  }
+
+  @Override
+  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  {
+    try
+    {
+      Boolean3 result = this.device.launchMainActivity(launchableActivityComponentName)
+      def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
+
+      if ((result == Boolean3.True) && guiSnapshot.guiState.appHasStoppedDialogBox)
+      {
+        log.debug("device.launchMainActivity() succeeded, but ANR is displayed. Returning 'unknown' " +
+          "(launch might be successful or not).")
+        result = Boolean3.Unknown
+      }
+
+      return result
+
+    } catch (DeviceException e)
+    {
+      log.debug("device.launchMainActivity() threw $e. Returning false (launch failure) without rethrowing.")
+      return Boolean3.False
+    }
+  }
+
+  private IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
+  {
+    IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshot()
+    guiSnapshot = closeANRIfNecessary(guiSnapshot)
+    return guiSnapshot
+  }
+
+  private IDeviceGuiSnapshot getExplorableGuiSnapshotWithoutClosingANR() throws DeviceException
+  {
+    return this.getRetryValidGuiSnapshot()
+  }
+
+  private IDeviceGuiSnapshot closeANRIfNecessary(IDeviceGuiSnapshot guiSnapshot) throws DeviceException
+  {
+    assert guiSnapshot.validationResult.valid
+    if (!guiSnapshot.guiState.isAppHasStoppedDialogBox())
+      return guiSnapshot
+
+    assert guiSnapshot.guiState.isAppHasStoppedDialogBox()
+    assert (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
+
+    IDeviceGuiSnapshot out = null
+
+    Utils.retryOnFalse({
+
+      device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
+        (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget)
+      )
+      out = this.getRetryValidGuiSnapshot()
+
+      if (out.guiState.isAppHasStoppedDialogBox())
+      {
+        assert (out.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
+        log.trace("Failed to properly close ANR even though OK widget is enabled.")
+        return false
+      } else
+        return true
+
+    },
+      this.closeANRAttempts,
+      this.closeANRDelay)
+
+    assert out.validationResult.valid
+    return out
+  }
+
+  private IDeviceGuiSnapshot getRetryValidGuiSnapshot() throws DeviceException
+  {
+    IDeviceGuiSnapshot guiSnapshot = Utils.retryOnException(
+      this.&getValidGuiSnapshot,
+      DeviceException,
+      getValidGuiSnapshotRetryAttempts,
+      getValidGuiSnapshotRetryDelay
+    )
+
+    assert guiSnapshot.validationResult.valid
+    return guiSnapshot
+  }
+
+  private IDeviceGuiSnapshot getValidGuiSnapshot() throws DeviceException
   {
     IDeviceGuiSnapshot snapshot = device.getGuiSnapshot()
     ValidationResult vres = snapshot.validationResult
@@ -138,4 +270,67 @@ class RobustDevice implements IDeviceWithReadableLogs
     return snapshot
   }
 
+  @Override
+  void rebootAndRestoreConnection() throws DeviceException
+  {
+    this.reboot()
+    this.setupConnection()
+  }
+
+  @Override
+  void reboot()
+  {
+    assert this.device.uiaDaemonClientThreadIsAlive()
+
+    this.device.reboot()
+
+    sleep(this.checkDeviceAvailableAfterRebootFirstDelay)
+    Utils.retryOnFalse({
+      def out = this.device.available
+      if (!out)
+        log.trace("Device not yet available after rebooting, waiting $checkDeviceAvailableAfterRebootLaterDelays milliseconds and retrying")
+      return out
+    }, checkDeviceAvailableAfterRebootAttempts, checkDeviceAvailableAfterRebootLaterDelays)
+
+    assert !this.device.uiaDaemonClientThreadIsAlive()
+  }
+
+  private Boolean _appIsRunning(String appPackageName)
+  {
+    return device.anyMonitorIsReachable() && device.appProcessIsRunning(appPackageName)
+  }
+
+  @Override
+  String toString()
+  {
+    return "robust-" + this.device.toString()
+  }
+
+//  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
+//  {
+//    OutputFromServerT output
+//    try
+//    {
+//      output = this._queryServer(input, port) as OutputFromServerT
+//
+//    } catch (ConnectException exception)
+//    {
+//      log.debug("Querying server resulted in $exception. Rebooting device and trying again.")
+//
+//      // KJA here instead the robustDevice.reboot functionality should be implemented.
+//      this.deviceReboot.tryRun()
+//
+//      try
+//      {
+//        output = this._queryServer(input, port) as OutputFromServerT
+//
+//      } catch (ConnectException exception2)
+//      {
+//        throw new DeviceException("Querying server resulted in $exception2 even after device reboot.", /* stopFurtherApkExplorations */ true)
+//      }
+//    }
+//
+//    assert output != null
+//    return output
+//  }
 }

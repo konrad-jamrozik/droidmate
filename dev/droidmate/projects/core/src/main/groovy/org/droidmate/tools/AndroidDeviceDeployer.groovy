@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,16 +11,17 @@ package org.droidmate.tools
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.AndroidDeviceDescriptor
+import org.droidmate.android_sdk.ApkExplorationException
+import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.common.Assert
+import org.droidmate.common.DroidmateException
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.IDeployableAndroidDevice
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.common.DroidmateException
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
-import org.droidmate.lib_android.MonitorJavaTemplate
 
 @Slf4j
 
@@ -69,17 +70,13 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   protected void trySetUp(IDeployableAndroidDevice device) throws DeviceException
   {
 
-    adbWrapper.startAdbServer()
+    this.adbWrapper.startAdbServer()
+    device.pushJar(this.cfg.uiautomatorDaemonJar)
+    device.pushJar(this.cfg.monitorApk)
 
-    device.forwardPort(cfg.uiautomatorDaemonTcpPort)
-    device.forwardPort(MonitorJavaTemplate.srv_port)
+    device.setupConnection()
 
-    device.pushJar(cfg.uiautomatorDaemonJar)
-    device.pushJar(cfg.monitorApk)
-
-    device.startUiaDaemon()
-
-    deviceIsSetup = true
+    this.deviceIsSetup = true
   }
 
   /**
@@ -96,49 +93,54 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
     deviceIsSetup = false
 
-    device.stopUiaDaemon()
+    device.closeConnection()
     device.removeJar(cfg.uiautomatorDaemonJar)
     device.removeJar(cfg.monitorApk)
   }
 
   /**
    * <p>
-   * <i> --- This doc was last reviewed on 21 Dec 2013.</i>
-   * </p><p>
    * Setups the A(V)D, executes the {@code closure} and tears down the device.
+   * Adds any exceptions to the returned collection of exceptions.
    * </p>
    *
    * @see #trySetUp(IDeployableAndroidDevice)
    * @see #tryTearDown(IDeployableAndroidDevice)
    */
   @Override
-  public void withSetupDevice(int deviceIndex, Closure computation) throws DeviceException
+  public List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> computation)
   {
     log.info("withSetupDevice(deviceIndex: $deviceIndex, computation)")
+    Assert.checkClosureFirstParameterSignature(computation, IRobustDevice)
 
-    Assert.checkClosureFirstParameterSignature(computation, IDeviceWithReadableLogs)
+    List<ExplorationException> explorationExceptions = []
+    //noinspection GroovyAssignabilityCheck
+    def (IRobustDevice device, String serialNumber, DeviceException setupDeviceException) = setupDevice(deviceIndex)
+    if (setupDeviceException != null)
+    {
+      explorationExceptions << new ExplorationException(setupDeviceException)
+      return explorationExceptions
+    }
 
-    String serialNumber = resolveSerialNumber(adbWrapper, usedSerialNumbers, deviceIndex)
-
-    usedSerialNumbers << serialNumber
-
-    IDeviceWithReadableLogs device = withReadableLogs(deviceFactory.create(serialNumber))
-
-    trySetUp(device)
-
-    Throwable savedTryThrowable = null
+    assert explorationExceptions.empty
     try
     {
-      computation(device)
-    } catch (Throwable tryThrowable)
+      List<ApkExplorationException> apkExplorationExceptions = computation(device)
+      explorationExceptions += apkExplorationExceptions
+    }
+    catch (Throwable computationThrowable)
     {
-      log.debug("! Caught ${tryThrowable.class.simpleName} in withSetupDevice.computation(device). Rethrowing.")
-      savedTryThrowable = tryThrowable
-      throw savedTryThrowable
+      log.error("!!! Caught ${computationThrowable.class.simpleName} in withSetupDevice($deviceIndex)->computation($device). " +
+        "This means ${ApkExplorationException.simpleName}s have been lost, if any! " +
+        "Adding the exception as a cause to an ${ExplorationException.class.simpleName}. " +
+        "Then adding to the collected exceptions list.\n" +
+        "The ${computationThrowable.class.simpleName}: $computationThrowable")
 
-    } finally
+      explorationExceptions << new ExplorationException(computationThrowable)
+    }
+    finally
     {
-      log.debug("Finalizing: withSetupDevice.finally {} for computation(device)")
+      log.debug("Finalizing: withSetupDevice($deviceIndex)->finally{} for computation($device)")
       try
       {
         tryTearDown(device)
@@ -146,16 +148,43 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
       } catch (Throwable tearDownThrowable)
       {
-        log.debug("! Caught ${tearDownThrowable.class.simpleName} in tryTearDown(device). Adding suppressed exception, if any, and rethrowing.")
-        if (savedTryThrowable != null)
-          tearDownThrowable.addSuppressed(savedTryThrowable)
-        throw tearDownThrowable
+        log.warn("! Caught ${tearDownThrowable.class.simpleName} in withSetupDevice($deviceIndex)->tryTearDown($device). " +
+          "Adding as a cause to an ${ExplorationException.class.simpleName}. " +
+          "Then adding to the collected exceptions list.\n" +
+          "The ${tearDownThrowable.class.simpleName}: $tearDownThrowable")
+
+        explorationExceptions << new ExplorationException(tearDownThrowable)
       }
-      log.debug("Finalizing DONE: withSetupDevice.finally {} for computation(device)")
+      log.debug("Finalizing DONE: withSetupDevice($deviceIndex)->finally{} for computation($device)")
+    }
+    return explorationExceptions
+  }
+
+  private List setupDevice(int deviceIndex)
+  {
+    try
+    {
+      String serialNumber = tryResolveSerialNumber(this.adbWrapper, this.usedSerialNumbers, deviceIndex)
+
+      this.usedSerialNumbers << serialNumber
+
+      IRobustDevice device = robustWithReadableLogs(this.deviceFactory.create(serialNumber))
+
+      trySetUp(device)
+
+      return [device, serialNumber, null]
+
+    } catch (Throwable setupDeviceThrowable)
+    {
+      log.warn("! Caught ${setupDeviceThrowable.class.simpleName} in setupDevice($deviceIndex). " +
+        "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
+
+      return [null, null, setupDeviceThrowable]
     }
   }
 
-  private static String resolveSerialNumber(IAdbWrapper adbWrapper, List<String> usedSerialNumbers, int deviceIndex)
+  private
+  static String tryResolveSerialNumber(IAdbWrapper adbWrapper, List<String> usedSerialNumbers, int deviceIndex) throws DeviceException
   {
     List<AndroidDeviceDescriptor> devicesDescriptors = adbWrapper.getAndroidDevicesDescriptors()
     String serialNumber = getSerialNumber(devicesDescriptors, usedSerialNumbers, deviceIndex)
@@ -196,15 +225,25 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     return serialNumber
   }
 
-  IDeviceWithReadableLogs withReadableLogs(IAndroidDevice device)
+  IRobustDevice robustWithReadableLogs(IAndroidDevice device)
   {
     return new RobustDevice(device,
-      cfg.monitorServerStartTimeout,
-      cfg.monitorServerStartQueryInterval,
-      cfg.clearPackageRetryAttempts,
-      cfg.clearPackageRetryDelay,
-      cfg.getValidGuiSnapshotRetryAttempts,
-      cfg.getValidGuiSnapshotRetryDelay)
+      this.cfg.monitorServerStartTimeout,
+      this.cfg.monitorServerStartQueryDelay,
+      this.cfg.clearPackageRetryAttempts,
+      this.cfg.clearPackageRetryDelay,
+      this.cfg.getValidGuiSnapshotRetryAttempts,
+      this.cfg.getValidGuiSnapshotRetryDelay,
+      this.cfg.checkAppIsRunningRetryAttempts,
+      this.cfg.checkAppIsRunningRetryDelay,
+      this.cfg.stopAppRetryAttempts,
+      this.cfg.stopAppSuccessCheckDelay,
+      this.cfg.closeANRAttempts,
+      this.cfg.closeANRDelay,
+      this.cfg.checkDeviceAvailableAfterRebootAttempts,
+      this.cfg.checkDeviceAvailableAfterRebootFirstDelay,
+      this.cfg.checkDeviceAvailableAfterRebootLaterDelays
+    )
 
   }
 

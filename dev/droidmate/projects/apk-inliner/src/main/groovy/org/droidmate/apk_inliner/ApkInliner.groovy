@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -66,7 +66,9 @@ class ApkInliner implements IApkInliner
         return
       }
 
-      list(inputPath).each {Path apkPath -> inlineApkIntoDir(apkPath, outputDir)}
+      (list(inputPath).collect() as Collection<Path>)
+        .findAll { Path p -> p.fileName.toString() != ".gitignore" }
+        .each {Path apkPath -> inlineApkIntoDir(apkPath, outputDir)}
 
       assert list(inputPath)
         .findAll { Path p -> p.extension == "apk" }

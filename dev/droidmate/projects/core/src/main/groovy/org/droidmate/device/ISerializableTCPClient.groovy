@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -10,8 +10,12 @@
 package org.droidmate.device
 
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.TcpServerUnreachableException
 
 public interface ISerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable>
 {
-  OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceException
+  // KJA replace ConnectException with something better. Actually ConnectException should be TcpServerUnreachableException while TcpServerUnreachableException should be named something else.
+  Boolean isServerReachable(int port) throws DeviceException, ConnectException
+
+  OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException, ConnectException
 }

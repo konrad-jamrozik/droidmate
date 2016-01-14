@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -19,7 +19,7 @@ public interface IAdbWrapper {
 
   List<AndroidDeviceDescriptor> getAndroidDevicesDescriptors() throws AdbWrapperException
 
-  List<String> waitForMessagesOnLogcat(String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryInterval)
+  List<String> waitForMessagesOnLogcat(String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryDelay)
     throws AdbWrapperException
 
   void waitForUiaDaemonToClose() throws AdbWrapperException
@@ -40,7 +40,6 @@ public interface IAdbWrapper {
 
   void clearLogcat(String deviceSerialNumber) throws AdbWrapperException
 
-
   void startUiaDaemon(String deviceSerialNumber) throws AdbWrapperException
 
   boolean clearPackage(String deviceSerialNumber, String apkPackageName)
@@ -48,4 +47,10 @@ public interface IAdbWrapper {
   List<String> readMessagesFromLogcat(String deviceSerialNumber, String messagesTag)
 
   String listPackages(String deviceSerialNumber) throws AdbWrapperException
+
+  String ps(String deviceSerialNumber) throws AdbWrapperException
+
+  void reboot(String deviceSerialNumber) throws AdbWrapperException
+
+  boolean uiaDaemonThreadIsAlive()
 }

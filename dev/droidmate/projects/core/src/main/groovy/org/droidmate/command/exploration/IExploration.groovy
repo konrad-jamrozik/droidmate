@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,10 +11,11 @@ package org.droidmate.command.exploration
 import org.droidmate.android_sdk.IApk
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
+import org.droidmate.misc.Failable
 
 public interface IExploration
 {
 
-  IApkExplorationOutput2 tryRun(IApk app, IDeviceWithReadableLogs device) throws DeviceException
+  Failable<IApkExplorationOutput2, DeviceException> run(IApk app, IRobustDevice device)
 }

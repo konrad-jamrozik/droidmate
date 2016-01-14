@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -13,7 +13,7 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.device.DeviceLogsHandler
 import org.droidmate.exploration.device.IDeviceLogsHandler
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 
 import java.time.LocalDateTime
 
@@ -33,18 +33,20 @@ class RunnableWidgetExplorationAction extends RunnableExplorationAction
     this.action = action
   }
 
-  protected void performDeviceActions(IApk app, IDeviceWithReadableLogs device) throws DeviceException
+  protected void performDeviceActions(IApk app, IRobustDevice device) throws DeviceException
   {
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
-    log.debug("1. Do asserts and throws using logs handler.")
-    logsHandler.throwIfMonitorInitLogcatLogsArePresent()
-    logsHandler.readClearAndAssertOnlyBackgroundApiLogs()
+    log.debug("1. Assert only background API logs are present, if any.")
+    logsHandler.readClearAndAssertOnlyBackgroundApiLogsIfAny()
 
     log.debug("2. Perform widget click: ${action}")
     device.perform(newClickGuiDeviceAction(action.widget, action.longClick))
 
     log.debug("3. Read and clear API logs if any, then seal logs reading")
-    logsHandler.readAndClearApiLogsIfAny()
+
+    if (appIsRunning(device, app))
+      logsHandler.readAndClearApiLogs()
+
     this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
 
     log.debug("4. Get GUI snapshot")

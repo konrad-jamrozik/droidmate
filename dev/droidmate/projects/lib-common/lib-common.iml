@@ -4,6 +4,7 @@
     <facet type="java-gradle" name="Java-Gradle">
       <configuration>
         <option name="BUILD_FOLDER_PATH" />
+        <option name="BUILDABLE" value="false" />
       </configuration>
     </facet>
   </component>
@@ -45,5 +46,14 @@
     <orderEntry type="library" name="Gradle: net.sf.jopt-simple:jopt-simple:4.9" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library name="Gradle: C__my_local_repos_github_droidmate_dev_droidmate_projects_lib_common_src_main_resources:">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

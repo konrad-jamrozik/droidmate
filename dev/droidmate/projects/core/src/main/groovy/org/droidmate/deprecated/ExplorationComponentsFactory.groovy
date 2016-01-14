@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -98,7 +98,7 @@ class ExplorationComponentsFactory implements IExplorationComponentsFactory
   @Override
   IDeviceMessagesReader createDeviceMessagesReader(IExplorableAndroidDevice device)
   {
-    return new DeviceMessagesReader(device, cfg.monitorServerStartTimeout, cfg.monitorServerStartQueryInterval)
+    return new DeviceMessagesReader(device, cfg.monitorServerStartTimeout, cfg.monitorServerStartQueryDelay)
   }
 
   public static ExplorationComponentsFactory build(Configuration cfg, TimeProvider timeProvider, Storage storage)

@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -29,7 +29,6 @@ import static org.droidmate.common.logcat.ApiLogcatMessageTestHelper.newApiLogca
 class ExplorationOutput2Builder
 {
 
-  private LocalDateTime         currentlyBuiltApkOut2monitorInitTime
   private ApkExplorationOutput2 currentlyBuiltApkOut2
   private ExplorationOutput2    builtOutput = []
 
@@ -48,10 +47,10 @@ class ExplorationOutput2Builder
   {
     assert attributes.name instanceof String
     assert attributes.monitorInitTime instanceof LocalDateTime
+    assert attributes.explorationStartTime instanceof LocalDateTime
     assert attributes.explorationEndTimeMss instanceof Integer
 
     String packageName = attributes.name
-    this.currentlyBuiltApkOut2monitorInitTime = attributes.monitorInitTime
     this.currentlyBuiltApkOut2 = new ApkExplorationOutput2(
       ApkTestHelper.build(
         packageName,
@@ -59,7 +58,8 @@ class ExplorationOutput2Builder
         "$packageName" + "1"
       )
     )
-    this.currentlyBuiltApkOut2.explorationEndTime = monitorInitPlusMss(attributes.explorationEndTimeMss as Integer)
+    this.currentlyBuiltApkOut2.explorationStartTime = attributes.explorationStartTime
+    this.currentlyBuiltApkOut2.explorationEndTime = explorationStartPlusMss(attributes.explorationEndTimeMss as Integer)
 
     apkBuildDefinition()
 
@@ -78,8 +78,8 @@ class ExplorationOutput2Builder
   public RunnableExplorationAction buildRunnableAction(Map attributes)
   {
     assert attributes.mss instanceof Integer
-    Integer mssSinceMonitorInit = attributes.mss ?: 0
-    LocalDateTime timestamp = monitorInitPlusMss(mssSinceMonitorInit)
+    Integer mssSinceExplorationStart = attributes.mss ?: 0
+    LocalDateTime timestamp = explorationStartPlusMss(mssSinceExplorationStart)
 
     def runnableAction = parseRunnableAction(attributes.action as String, timestamp)
     return runnableAction
@@ -110,23 +110,15 @@ class ExplorationOutput2Builder
 
       assert it.size() == 2
       def methodName = it[0] as String
-      def mssSinceMonitorInit = it[1] as Integer
+      def mssSinceExplorationStart = it[1] as Integer
 
       return newApiLogcatMessage(
-        time: monitorInitPlusMss(mssSinceMonitorInit),
+        time: explorationStartPlusMss(mssSinceExplorationStart),
         methodName: methodName,
         // Minimal stack trace to pass all the validation checks.
         // In particular, the ->Socket.<init> is enforced by asserts in org.droidmate.exploration.output.FilteredApis.isStackTraceOfMonitorTcpServerSocketInit
         stackTrace: "$Api.monitorRedirectionPrefix->Socket.<init>->$currentlyBuiltApkOut2.packageName"
       )
-    }
-
-    deviceLogs.instrumentationMsgs = []
-
-    if (this.currentlyBuiltApkOut2monitorInitTime != null)
-    {
-      deviceLogs.monitorInitTime = this.currentlyBuiltApkOut2monitorInitTime
-      this.currentlyBuiltApkOut2monitorInitTime = null
     }
 
     return deviceLogs
@@ -153,16 +145,13 @@ class ExplorationOutput2Builder
     return RunnableExplorationAction.from(action, timestamp)
   }
 
-  private LocalDateTime monitorInitPlusMss(Integer mss)
+  private LocalDateTime explorationStartPlusMss(Integer mss)
   {
-    if (currentlyBuiltApkOut2.containsMonitorInitTime)
-      return monitorInitPlusMss(currentlyBuiltApkOut2.monitorInitTime, mss)
-    else
-      return monitorInitPlusMss(currentlyBuiltApkOut2monitorInitTime, mss)
+    return datePlusMss(this.currentlyBuiltApkOut2.explorationStartTime, mss)
   }
 
-  private LocalDateTime monitorInitPlusMss(LocalDateTime monitorInit, Integer mss)
+  private LocalDateTime datePlusMss(LocalDateTime date, Integer mss)
   {
-    return monitorInit.plusNanos((mss * 1000000) as long)
+    return date.plusNanos((mss * 1000000) as long)
   }
 }

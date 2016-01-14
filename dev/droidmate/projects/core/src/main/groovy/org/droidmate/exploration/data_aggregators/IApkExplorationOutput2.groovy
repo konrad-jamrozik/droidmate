@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,6 +11,7 @@ package org.droidmate.exploration.data_aggregators
 import org.droidmate.android_sdk.IApk
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DroidmateError
 import org.droidmate.exploration.actions.IExplorationActionRunResult
 import org.droidmate.exploration.actions.IRunnableExplorationAction
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
@@ -28,11 +29,13 @@ interface IApkExplorationOutput2 extends Serializable
 
   LocalDateTime getExplorationEndTime()
 
+  void setExplorationStartTime(LocalDateTime time)
+
   void setExplorationEndTime(LocalDateTime time)
 
   List<RunnableExplorationActionWithResult> getActRess()
 
-  void verify()
+  void verify() throws DroidmateError
 
   boolean getNoException()
 

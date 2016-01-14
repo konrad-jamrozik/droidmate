@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.frontend
 
+import com.google.common.base.Throwables
 import org.droidmate.android_sdk.AaptWrapperStub
 import org.droidmate.command.ExploreCommand
 import org.droidmate.configuration.Configuration
@@ -15,8 +16,8 @@ import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device_simulation.AndroidDeviceSimulator
 import org.droidmate.device_simulation.DeviceSimulation
 import org.droidmate.device_simulation.IDeviceSimulation
-import org.droidmate.exceptions.ApkExplorationExceptionsCollection
 import org.droidmate.exceptions.ExceptionSpec
+import org.droidmate.exceptions.ITestException
 import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.filesystem.MockFileSystem
@@ -26,7 +27,6 @@ import org.droidmate.misc.TimeGenerator
 import org.droidmate.storage.Storage2
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
-import org.droidmate.test_suite_categories.ExplorationImplAug2015
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator
 import org.droidmate.tools.DeviceToolsMock
@@ -76,38 +76,79 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    *
    * </p>
    */
-  @Category([RequiresSimulator, ExplorationImplAug2015])
+  @Category([RequiresSimulator])
   @Test
   public void "Handles exploration and fatal device exceptions"()
   {
-    def mockedFs = new MockFileSystem(["mock_1_ok", "mock_2_recov_throws", "mock_3_fatal_throws"])
+    def mockedFs = new MockFileSystem([
+      "mock_1_noThrow_outputOk",
+      "mock_2_throwBeforeLoop_outputNone",
+      "mock_3_throwInLoop_outputPartial",
+      "mock_4_throwsOUndeps_outputOk",
+      "mock_5_neverExplored_outputNone",
+    ])
     def apks = mockedFs.apks
-    def apk1ok = apks.findSingle {it.fileName == "mock_1_ok.apk"}
-    def apk2recov = apks.findSingle {it.fileName == "mock_2_recov_throws.apk"}
-    def apk3fatal = apks.findSingle {it.fileName == "mock_3_fatal_throws.apk"}
-
-    def cfg = new ConfigurationForTests().withFileSystem(mockedFs.fs).get()
+    def apk1 = apks.findSingle {it.fileName == "mock_1_noThrow_outputOk.apk"}
+    def apk2 = apks.findSingle {it.fileName == "mock_2_throwBeforeLoop_outputNone.apk"}
+    def apk3 = apks.findSingle {it.fileName == "mock_3_throwInLoop_outputPartial.apk"}
+    def apk4 = apks.findSingle {it.fileName == "mock_4_throwsOUndeps_outputOk.apk"}
 
     def exceptionSpecs = [
+
+      // Thrown during Exploration.run()->tryDeviceHasPackageInstalled()
+      new ExceptionSpec("hasPackageInstalled", apk2.packageName),
+
       // Thrown during Exploration.explorationLoop()->ResetAppExplorationAction.run()
       // The call index is 2 because 1st call is made to close 'app has stopped' dialog box before the exploration loop starts,
       // i.e. in org.droidmate.command.exploration.Exploration.tryWarnDeviceDisplaysHomeScreen
-      new ExceptionSpec("perform", apk2recov.packageName, /* call index */ 2),
-      // Thrown during AndroidDeviceDeployer.tryTearDown()
-      new ExceptionSpec("stopUiaDaemon", apk3fatal.packageName),
-      // Thrown during ApkDeployer.tryUndeployApk(). Suppressed by the exception above.
+      new ExceptionSpec("perform", apk3.packageName, /* call index */ 2),
+
+      // Thrown during ApkDeployer.tryUndeployApk().
       // The call index is 2 because 1st call is made during org.droidmate.tools.ApkDeployer.tryReinstallApk
-      new ExceptionSpec("uninstallApk", apk3fatal.packageName, /* call index */ 2),
-      // Thrown during Exploration.tryRun() -> tryAssertDeviceHasPackageInstalled(). Suppressed by the exception above.
-      new ExceptionSpec("hasPackageInstalled", apk3fatal.packageName),
+      // No more apks should be explored after this one, as this is an apk undeployment failure.
+      new ExceptionSpec("uninstallApk", apk4.packageName, /* call index */ 2),
+
+      // Thrown during AndroidDeviceDeployer.tryTearDown()
+      new ExceptionSpec("closeConnection", apk4.packageName),
     ]
 
+    def expectedApkPackageNamesOfSer2FilesInOutputDir = [apk1.packageName, apk3.packageName, apk4.packageName]
 
+    exploreOnSimulatorAndAssert(mockedFs, exceptionSpecs, expectedApkPackageNamesOfSer2FilesInOutputDir)
+  }
+
+  @Category([RequiresSimulator])
+  @Test
+  public void "Handles assertion error during exploration loop"()
+  {
+    def mockedFs = new MockFileSystem([
+      "mock_1_throwsAssertInLoop_outputNone",
+    ])
+    def apk1 = mockedFs.apks.findSingle {it.fileName == "mock_1_throwsAssertInLoop_outputNone.apk"}
+
+    def exceptionSpecs = [
+
+      // Thrown during Exploration.explorationLoop()
+      // Note that this is an AssertionError
+      new ExceptionSpec("perform", apk1.packageName, /* call index */ 3, /* throwsEx */ true, /* exceptionalReturnBool */ null, /* throwsAssertionError */ true),
+    ]
+
+    List<String> expectedApkPackageNamesOfSer2FilesInOutputDir = []
+
+    exploreOnSimulatorAndAssert(mockedFs, exceptionSpecs, expectedApkPackageNamesOfSer2FilesInOutputDir)
+  }
+
+  private void exploreOnSimulatorAndAssert(
+    MockFileSystem mockedFs,
+    ArrayList<ExceptionSpec> exceptionSpecs,
+    ArrayList<String> expectedApkPackageNamesOfSer2FilesInOutputDir)
+  {
+    def cfg = new ConfigurationForTests().withFileSystem(mockedFs.fs).get()
     def timeGenerator = new TimeGenerator()
     def deviceToolsMock = new DeviceToolsMock(
       cfg,
-      new AaptWrapperStub(apks),
-      AndroidDeviceSimulator.build(timeGenerator, apks*.packageName, exceptionSpecs, /* unreliableSimulation */ true))
+      new AaptWrapperStub(mockedFs.apks),
+      AndroidDeviceSimulator.build(timeGenerator, mockedFs.apks*.packageName, exceptionSpecs, /* unreliableSimulation */ true))
 
     def spy = new ExceptionHandlerSpy()
 
@@ -116,17 +157,13 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
     assert exitStatus != 0
 
+    assert spy.handledThrowable instanceof ThrowablesCollection
+    assert spy.throwables.size() == exceptionSpecs.size()
+    assert spy.throwables.collect {Throwables.getRootCause(it) as ITestException}*.exceptionSpec == exceptionSpecs
+
     Path outputDir = new DroidmateOutputDir(cfg.droidmateOutputDirPath).path
 
-    assertSer2FilesIn(outputDir, [apk1ok.packageName, apk2recov.packageName])
-
-    assert spy.handledThrowable instanceof ThrowablesCollection
-    ThrowablesCollection tc = spy.handledThrowable as ThrowablesCollection
-    assert tc.throwables.size() == 2
-    assert tc.throwables[0] instanceof ApkExplorationExceptionsCollection
-
-    assert spy.testDeviceExceptions*.exceptionSpec == exceptionSpecs
-
+    assertSer2FilesInDirAre(outputDir, expectedApkPackageNamesOfSer2FilesInOutputDir)
   }
 
   /**
@@ -139,7 +176,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    * An {@code AaptWrapper} stub is used to provide the apk stub metadata.
    * </p>
    */
-  @Category([RequiresSimulator, ExplorationImplAug2015])
+  @Category([RequiresSimulator])
   @Test
   public void "Explores on a device simulator"()
   {
@@ -163,7 +200,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
   }
 
-  @Category([RequiresDevice, ExplorationImplAug2015])
+  @Category([RequiresDevice])
   @Test
   public void "Explores monitored apk on a real device"()
   {
@@ -232,7 +269,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     return deviceSimulation
   }
 
-  private boolean assertSer2FilesIn(Path dir, List<String> packageNames)
+  private boolean assertSer2FilesInDirAre(Path dir, List<String> packageNames)
   {
     List<Path> serFiles = Files.list(dir).findAll {it.fileName.toString().endsWith(Storage2.ser2FileExt)}
 

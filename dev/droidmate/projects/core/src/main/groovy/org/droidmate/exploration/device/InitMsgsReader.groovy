@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -33,13 +33,13 @@ class InitMsgsReader implements IInitMsgsReader
   private final IExplorableAndroidDevice device
 
   private final int monitorServerStartTimeout
-  private final int monitorServerStartQueryInterval
+  private final int monitorServerStartQueryDelay
 
-  InitMsgsReader(IExplorableAndroidDevice device, int monitorServerStartTimeout, int monitorServerStartQueryInterval)
+  InitMsgsReader(IExplorableAndroidDevice device, int monitorServerStartTimeout, int monitorServerStartQueryDelay)
   {
     this.device = device
     this.monitorServerStartTimeout = monitorServerStartTimeout
-    this.monitorServerStartQueryInterval = monitorServerStartQueryInterval
+    this.monitorServerStartQueryDelay = monitorServerStartQueryDelay
 
     assert device != null
   }
@@ -54,19 +54,24 @@ class InitMsgsReader implements IInitMsgsReader
    */
   private Logger monitorLogger = LoggerFactory.getLogger(LogbackConstants.logger_name_monitor)
 
+  // Used by old exploration code
+  @Deprecated
   @Override
   LocalDateTime readMonitorMessages(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
   {
     log.debug("readMonitorMessages(deviceTimeDiff)")
     assert deviceTimeDiff != null
 
+    // This is because this call waits for minimum number of messages.
     List<ITimeFormattedLogcatMessage> messages = device.waitForLogcatMessages(
-      MonitorJavaTemplate.tag_init, 2, monitorServerStartTimeout, monitorServerStartQueryInterval)
+      MonitorJavaTemplate.tag_init, 2, monitorServerStartTimeout, monitorServerStartQueryDelay)
     log.debug("readMonitorMessages(): obtained messages")
 
     checkCount(messages)
     verifyPayloads(messages)
     checkMonitorCtorStatus(messages)
+
+    assert messages.size() in [2,4]
 
     log.debug("readMonitorMessages(): syncing time")
     def monitorInitTime = deviceTimeDiff.sync(messages[1].time)
@@ -81,23 +86,47 @@ class InitMsgsReader implements IInitMsgsReader
 
   public void verifyPayloads(List<ITimeFormattedLogcatMessage> messages)
   {
+    assert messages.size() in [2,4]
+
     assert [MonitorJavaTemplate.msg_ctor_success, MonitorJavaTemplate.msg_ctor_failure].any {
       messages[0].messagePayload.contains(it)
     }
+
     assert messages[1].messagePayload.contains(MonitorJavaTemplate.msgPrefix_init_success)
+
+    if (messages.size() == 4)
+    {
+      assert [MonitorJavaTemplate.msg_ctor_success, MonitorJavaTemplate.msg_ctor_failure].any {
+        messages[2].messagePayload.contains(it)
+      }
+
+      assert messages[3].messagePayload.contains(MonitorJavaTemplate.msgPrefix_init_success)
+    }
   }
 
   public void checkMonitorCtorStatus(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
   {
+    assert messages.size() in [2,4]
+
     if (!messages[0].messagePayload.contains(MonitorJavaTemplate.msg_ctor_success))
       throw new DeviceException(
         "Monitor failed to construct without exception. " +
           "Logcat message: ${messages[0].messagePayload}")
+
+    if (messages.size() == 4)
+    {
+      if (!messages[2].messagePayload.contains(MonitorJavaTemplate.msg_ctor_success))
+        throw new DeviceException(
+          "Second monitor failed to construct without exception. " +
+            "Logcat message: ${messages[2].messagePayload}")
+
+
+    }
   }
 
   public void checkCount(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
   {
-    if (messages.size() != 2)
+    if (!(messages.size() in [2,4]))
     {
       String msgHint = ""
 
@@ -105,20 +134,20 @@ class InitMsgsReader implements IInitMsgsReader
         msgHint = " Maybe inlining of the apk failed or it is not inlined at all? In the former case," +
           "logcat should contains log of the underlying exception."
 
-      if (messages.size() > 2)
-        msgHint = " Maybe monitor was started more than once, due to the app spawning more than one process? " +
+      if (messages.size() > 4)
+        msgHint = " Maybe monitor was started more than twice, due to the app spawning more than two processes? " +
           "Such situation is unsupported. To diagnose the issue, please inspect logcat. " +
-          "If there is more than one process started, " +
-          "a log like 'I/ActivityManager: Start proc' will be present 2 or more times. " +
+          "If there are more than two processes started, " +
+          "logs like 'I/ActivityManager: Start proc' will be present 3 or more times. " +
           "Also, see the logs with tags from ${MonitorJavaTemplate.simpleName}"
 
-      throw new DeviceException("Expected to read from logcat 2 messages tagged '${MonitorJavaTemplate.tag_init}'. " +
-        "First message denoting monitor .ctor() finished. " +
-        "Second message denoting monitor .init() finished. " +
+      throw new DeviceException("Expected to read from logcat 2 or 4 messages tagged '${MonitorJavaTemplate.tag_init}'. " +
+        "First (and possibly third) message denoting monitor .ctor() finished. " +
+        "Second (and possibly fourth) message denoting monitor .init() finished. " +
         "However, the number of messages is instead: ${messages.size()}. " + msgHint)
     }
 
-    assert messages.size() == 2
+    assert messages.size() in [2, 4]
   }
 
   @Override

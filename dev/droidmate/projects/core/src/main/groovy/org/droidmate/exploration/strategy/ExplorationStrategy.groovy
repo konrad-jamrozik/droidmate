@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -47,7 +47,9 @@ class ExplorationStrategy implements IExplorationStrategy
 
   private int forwardExplorationResetCounter
 
-  // WISH super ugly, taken from widgetStrategy. Instead, it should be incorporated in org.droidmate.exploration.strategy.ExplorationStrategy.explorationCanMoveForwardOn, which also takes WidgetStrategy as input, and then is asked.
+  // WISH super ugly, taken from widgetStrategy. Instead, it should be incorporated in
+  // org.droidmate.exploration.strategy.ExplorationStrategy.explorationCanMoveForwardOn,
+  // which also takes WidgetStrategy as input, and then is asked.
   private boolean allWidgetsBlackListed = false
 
   //SE TEAM Hook 1
@@ -104,9 +106,8 @@ class ExplorationStrategy implements IExplorationStrategy
   ExplorationAction decide(IGuiState guiState)
   {
     assert guiState != null
-    terminationCriterion.assertPreDecide()
-    if (!firstCallToDecideFinished)
-      terminationCriterion.init()
+    terminationCriterion.initDecideCall(!firstCallToDecideFinished)
+
 
     ExplorationAction outExplAction
 
@@ -185,7 +186,7 @@ class ExplorationStrategy implements IExplorationStrategy
     {
       boolean specialCaseApplied
       (specialCaseApplied, outExplAction) = specialCases.process(guiState, packageName)
-      assert specialCaseApplied.implies(outExplAction != null)
+      assert specialCaseApplied == (outExplAction != null)
 
       if (!specialCaseApplied)
       {

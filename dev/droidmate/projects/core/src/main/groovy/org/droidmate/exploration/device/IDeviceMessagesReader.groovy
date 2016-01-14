@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -17,15 +17,11 @@ import java.time.LocalDateTime
 
 interface IDeviceMessagesReader
 {
-
   LocalDateTime readMonitorMessages() throws DeviceException
 
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException
 
-  @Deprecated
-  @SuppressWarnings("GroovyUnusedDeclaration") // Old implementation, left for reference as of 7 Aug 2015.
-  List<IApiLogcatMessage> getCurrentApiLogsFromLogcat() throws DeviceException
-
   List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws TcpServerUnreachableException, DeviceException
 
+  void resetTimeSync()
 }

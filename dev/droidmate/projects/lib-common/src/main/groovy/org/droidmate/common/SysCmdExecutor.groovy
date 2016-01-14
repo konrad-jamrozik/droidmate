@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -56,7 +56,8 @@ public class SysCmdExecutor implements ISysCmdExecutor
   }
 
 
-  public static String[] executeWithTimeout(String commandDescription, int timeout, String... cmdLineParams)
+  @Override
+  public String[] executeWithTimeout(String commandDescription, int timeout, String... cmdLineParams)
     throws SysCmdExecutorException
   {
     assert cmdLineParams.length >= 1: "At least one command line parameters has to be given, denoting the executable.";
@@ -91,7 +92,7 @@ public class SysCmdExecutor implements ISysCmdExecutor
       executor.setWatchdog(watchdog)
     }
 
-    // Only exit value of 0 is allowed.
+    // Only exit value of 0 is allowed for the call to return successfully.
     executor.setExitValue(0)
 
     log.trace(commandDescription)
@@ -149,6 +150,9 @@ public class SysCmdExecutor implements ISysCmdExecutor
     long mills = executionTimeStopwatch.elapsed(TimeUnit.MILLISECONDS)
     long seconds = executionTimeStopwatch.elapsed(TimeUnit.SECONDS)
 
+    // WISH here instead I could determine if the process was killed by watchdog with
+    // org.apache.commons.exec.ExecuteWatchdog.killedProcess
+    // For more, see comment of org.apache.commons.exec.ExecuteWatchdog
     if (mills >= (timeout - TIMEOUT_REACHED_ZONE) && mills <= (timeout + TIMEOUT_REACHED_ZONE))
     {
       String returnedString = seconds + " seconds. The execution time was +- ${TIMEOUT_REACHED_ZONE} " +
@@ -159,8 +163,7 @@ public class SysCmdExecutor implements ISysCmdExecutor
           " Try increasing the timeout (by changing appropriate cmd line parameter) or, if this doesn't help, " +
           "be aware the process might not be terminating at all."
 
-
-      log.warn("The command with description \"$commandDescription\" executed for $returnedString")
+      log.debug("The command with description \"$commandDescription\" executed for $returnedString")
 
       return returnedString
     }

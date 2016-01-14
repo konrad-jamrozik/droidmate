@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -18,8 +18,7 @@ public class TestDeviceException extends DeviceException implements ITestExcepti
 
   public TestDeviceException(IExceptionSpec exceptionSpec)
   {
-    super("Test-enforced device exception.")// Pkg name: $exceptionSpec.currentlyDeployedPackageName Method name: $exceptionSpec.methodName")
+    super("Test-enforced device exception. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex")
     this.exceptionSpec = exceptionSpec
   }
-
 }

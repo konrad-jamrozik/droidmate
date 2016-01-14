@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -9,6 +9,7 @@
 
 package org.droidmate.device
 
+import org.droidmate.common.Boolean3
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
@@ -27,7 +28,7 @@ public interface IExplorableAndroidDevice
 
   List<ITimeFormattedLogcatMessage> readLogcatMessages(String messageTag) throws DeviceException
 
-  List<ITimeFormattedLogcatMessage> waitForLogcatMessages(String messageTag, int minMessagesCount, int waitTimeout, int queryInterval) throws DeviceException
+  List<ITimeFormattedLogcatMessage> waitForLogcatMessages(String messageTag, int minMessagesCount, int waitTimeout, int queryDelay) throws DeviceException
 
   void clearLogcat() throws DeviceException
 
@@ -35,5 +36,10 @@ public interface IExplorableAndroidDevice
 
   LocalDateTime getCurrentTime() throws TcpServerUnreachableException, DeviceException
 
+  Boolean appProcessIsRunning(String appPackageName) throws DeviceException
+
+  Boolean anyMonitorIsReachable() throws DeviceException
+
+  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
 }
 

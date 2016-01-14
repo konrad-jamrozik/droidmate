@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -9,9 +9,9 @@
 
 package org.droidmate.tools
 
+import org.droidmate.android_sdk.ApkExplorationException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.device.IDeployableAndroidDevice
-import org.droidmate.exceptions.DeviceException
 
 /**
  * @see ApkDeployer
@@ -19,6 +19,5 @@ import org.droidmate.exceptions.DeviceException
 public interface IApkDeployer
 {
 
-  public void withDeployedApk(IDeployableAndroidDevice device, IApk apk, Closure closure)
-    throws DeviceException
+  public List<ApkExplorationException> withDeployedApk(IDeployableAndroidDevice device, IApk apk, Closure closure)
 }

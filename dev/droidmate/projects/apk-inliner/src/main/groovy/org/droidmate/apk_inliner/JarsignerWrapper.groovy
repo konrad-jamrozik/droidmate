@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -14,7 +14,6 @@ import org.droidmate.common.DroidmateException
 import org.droidmate.common.ISysCmdExecutor
 import org.droidmate.common.SysCmdExecutorException
 
-import java.nio.file.Files
 import java.nio.file.Path
 
 import static java.nio.file.Files.isRegularFile

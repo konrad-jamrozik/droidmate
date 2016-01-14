@@ -16,6 +16,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
@@ -23,15 +24,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="lib-common" />
     <orderEntry type="module" module-name="lib-android" />
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library name="Gradle: C__my_local_repos_sechair_droidmate_dev_droidmate_projects_monitor_generator_src_main_resources_logback:">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/src/main/resources/logback" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="module-library">
       <library name="Gradle: init">
         <CLASSES>
@@ -63,5 +55,23 @@
     <orderEntry type="library" name="Gradle: net.sf.jopt-simple:jopt-simple:4.9" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library name="Gradle: C__my_local_repos_github_droidmate_dev_droidmate_projects_monitor_generator_src_main_resources_logback:">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/src/main/resources/logback" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: C__my_local_repos_github_droidmate_dev_droidmate_projects_lib_common_src_main_resources:">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../lib-common/src/main/resources" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

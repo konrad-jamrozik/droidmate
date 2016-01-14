@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -16,10 +16,8 @@ import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.device.IDeviceLogs
-import org.droidmate.exploration.device.IDeviceLogsHandler
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.MissingDeviceLogs
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
 
@@ -56,9 +54,7 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
       case TerminateExplorationAction:
         return new RunnableTerminateExplorationAction(action as TerminateExplorationAction, timestamp)
 
-
       default:
-        // KJA bug #995 here (snapchat special case: enter text)
         throw new UnexpectedIfElseFallthroughError("Unhandled ExplorationAction class. The class: ${action.class}")
     }
   }
@@ -67,7 +63,7 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
   protected IDeviceLogs        logs
   protected DeviceException    exception
 
-  public IExplorationActionRunResult run(IApk app, IDeviceWithReadableLogs device)
+  public IExplorationActionRunResult run(IApk app, IRobustDevice device)
   {
     assert app != null
     assert device != null
@@ -89,15 +85,31 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
     {
       successful = false
       this.exception = e
-      log.debug("! Caught ${e.class.simpleName} while performing device actions of ${this.class.simpleName}. " +
+      log.warn("! Caught ${e.class.simpleName} while performing device actions of ${this.class.simpleName}. " +
         "Returning failed ${ExplorationActionRunResult.class.simpleName} with the exception assigned to a field.")
     }
 
-    // For post-conditions, see the constructor.
+    // For post-conditions, see inside the constructor call made line below.
     return new ExplorationActionRunResult(successful, this.logs, this.snapshot, this.exception)
   }
 
-  abstract protected void performDeviceActions(IApk app, IDeviceWithReadableLogs device) throws DeviceException
+  abstract protected void performDeviceActions(IApk app, IRobustDevice device) throws DeviceException
+
+  protected void assertAppIsNotRunning(IRobustDevice device, IApk apk)
+  {
+    assert device.appIsNotRunning(apk)
+  }
+
+  protected void assertAppIsRunning(IRobustDevice device, IApk apk)
+  {
+    assert device.appIsRunning(apk)
+  }
+
+
+  protected Boolean appIsRunning(IRobustDevice device, IApk app)
+  {
+    device.appProcessIsRunning(app.packageName) && device.anyMonitorIsReachable()
+  }
 
   @Override
   public String toString()

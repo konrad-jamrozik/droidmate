@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,5 +11,4 @@ package org.droidmate.device
 
 public interface IAndroidDevice extends IDeployableAndroidDevice, IExplorableAndroidDevice
 {
-
 }

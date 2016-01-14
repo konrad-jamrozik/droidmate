@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter
  *
  * </p><p>
  * For example, if the device clock is 3 seconds into the future as compared to the host machine clock,
- * 3 seconds will be subtracted from the input {@code deviceTime}.
+ * 3 seconds will be subtracted from the sync() input, {@code deviceTime}.
  *
  * </p>
  */
@@ -44,6 +44,18 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
   DeviceTimeDiff(IExplorableAndroidDevice device)
   {
     this.device = device
+  }
+
+  @Override
+  public LocalDateTime sync(LocalDateTime deviceTime) throws TcpServerUnreachableException, DeviceException
+  {
+    assert deviceTime != null
+
+    if (diff == null)
+      diff = computeDiff(device)
+    assert diff != null
+
+    return deviceTime.minus(diff)
   }
 
   private Duration computeDiff(IExplorableAndroidDevice device) throws TcpServerUnreachableException, DeviceException
@@ -66,18 +78,6 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
   }
 
   @Override
-  public LocalDateTime sync(LocalDateTime deviceTime) throws TcpServerUnreachableException, DeviceException
-  {
-    assert deviceTime != null
-
-    if (diff == null)
-      diff = computeDiff(device)
-    assert diff != null
-
-    return deviceTime.minus(diff)
-  }
-
-  @Override
   List<ITimeFormattedLogcatMessage> syncMessages(List<ITimeFormattedLogcatMessage> messages)
   {
     return messages.collect {
@@ -86,5 +86,11 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
         it.level, it.tag, it.pidString, it.messagePayload)
     }
 
+  }
+
+  @Override
+  void reset()
+  {
+    diff = null
   }
 }

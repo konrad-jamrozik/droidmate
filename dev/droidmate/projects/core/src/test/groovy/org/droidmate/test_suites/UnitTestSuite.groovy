@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -13,7 +13,7 @@ import org.droidmate.command.uia_test_cases.UiaTestCaseLogsProcessorTest
 import org.droidmate.tests.android_sdk.AaptWrapperTest
 import org.droidmate.tests.android_sdk.AdbWrapperTest
 import org.droidmate.tests.configuration.ConfigurationBuilderTest
-import org.droidmate.tests.device.AndroidDeviceTest
+import org.droidmate.tests.device.DeviceTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
@@ -30,7 +30,7 @@ import org.junit.runners.Suite
   UiaTestCaseLogsProcessorTest,
   AaptWrapperTest,
   AdbWrapperTest,
-  AndroidDeviceTest,
+  DeviceTest,
   ExplorationTestSuite,
 ])
 class UnitTestSuite

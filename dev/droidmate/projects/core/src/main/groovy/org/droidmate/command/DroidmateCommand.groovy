@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -10,14 +10,14 @@ package org.droidmate.command
 
 import groovy.util.logging.Slf4j
 import org.droidmate.configuration.Configuration
-import org.droidmate.common.DroidmateException
+import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.misc.TimeProvider
 
 @Slf4j
 abstract class DroidmateCommand
 {
 
-  abstract void execute(Configuration cfg) throws DroidmateException
+  abstract void execute(Configuration cfg) throws ThrowablesCollection
 
   public static DroidmateCommand build(
     boolean processUiaTestCasesLogs, boolean extractDataFromPreviousRun, Configuration cfg)

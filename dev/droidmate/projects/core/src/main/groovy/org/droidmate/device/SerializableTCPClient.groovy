@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -12,13 +12,14 @@ package org.droidmate.device
 import groovy.util.logging.Slf4j
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.lib_android.MonitorJavaTemplate
 
 @Slf4j
 public class SerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable> implements ISerializableTCPClient<InputToServerT, OutputFromServerT>
 {
 
-  protected final String serverAddress = "localhost";
-  private int socketTimeout
+  private final String        serverAddress = "localhost"
+  private final int           socketTimeout
 
 
   public SerializableTCPClient(int socketTimeout)
@@ -26,22 +27,42 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     this.socketTimeout = socketTimeout
   }
 
+  @Override
+  Boolean isServerReachable(int port) throws DeviceException, ConnectException
+  {
+    try
+    {
+      // KJA read here the data sent from the device
+      return this.queryServer(MonitorJavaTemplate.srvCmd_connCheck, port) != null
+    } catch (TcpServerUnreachableException ignored)
+    {
+      return false
+    } catch (ConnectException exception)
+    {
+      throw exception
+
+    } catch (Throwable throwable)
+    {
+      throw new DeviceException("Unexpected Throwable while checking if isServerReachable. " +
+        "The Throwable is given as a cause of this exception.", throwable, true)
+    }
+  }
+
   /**
    * Sends through TCP socket the serialized {@code input} to server under {@link #serverAddress}:{@code port}.<br/>
    * Next, waits until server returns his answer and returns it.
    */
-  @Override
   @SuppressWarnings("unchecked")
-  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
+  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException, ConnectException
   {
 
     OutputFromServerT output
     try
     {
       log.trace("Socket socket = new Socket($serverAddress, $port)")
-      // Managed to get here "java.net.ConnectException: Connection refused: connect" when I manually unplugged the USB cable
-      // during a test. For logs, see: C:\my\local\repos\chair\droidmate\resources\debug_logs\forced_manual_usb_cable_unplug
-      Socket socket = new Socket(serverAddress, port)
+
+      Socket socket = this.tryGetSocket(serverAddress, port)
+
       socket.soTimeout = this.socketTimeout
 
       ObjectInputStream inputStream
@@ -56,8 +77,13 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
       try
       {
 //        log.trace("inputStream = new ObjectInputStream(socket.inputStream)")
+        // Got here once java.net.SocketTimeoutException: Read timed out on
+        // monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, it)
         inputStream = new ObjectInputStream(socket.inputStream)
       } catch (EOFException e)
+      {
+        throw new TcpServerUnreachableException(e)
+      } catch (SocketTimeoutException e)
       {
         throw new TcpServerUnreachableException(e)
       }
@@ -89,9 +115,22 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     }
     catch (IOException | ClassNotFoundException e)
     {
-      throw new DeviceException("SerializableTCPClient has thrown exception while querying server.", e)
+      throw new DeviceException("SerializableTCPClient has thrown exception while querying server.", e, true)
     }
 
     return output
+  }
+
+  private Socket tryGetSocket(String serverAddress, int port) throws ConnectException
+  {
+    Socket socket
+    try
+    {
+      socket = new Socket(serverAddress, port)
+    } catch (ConnectException e)
+    {
+      throw e
+    }
+    return socket
   }
 }

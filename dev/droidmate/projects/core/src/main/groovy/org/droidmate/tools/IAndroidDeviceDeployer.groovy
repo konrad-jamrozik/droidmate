@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -9,6 +9,8 @@
 
 package org.droidmate.tools
 
+import org.droidmate.android_sdk.ApkExplorationException
+import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.exceptions.DeviceException
 
 /**
@@ -16,5 +18,5 @@ import org.droidmate.exceptions.DeviceException
  */
 public interface IAndroidDeviceDeployer
 {
-  void withSetupDevice(int deviceIndex, Closure closure) throws DeviceException
+  List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> closure) throws DeviceException
 }

@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,7 +11,6 @@
 package org.droidmate.common.logcat
 
 import groovy.transform.Canonical
-import groovy.transform.Immutable
 import groovy.util.logging.Slf4j
 import org.droidmate.apis.IApi
 
@@ -109,7 +108,8 @@ class Api implements IApi, Serializable
 
     int uriIndex = paramTypes.findIndexOf {it == "android.net.Uri"}
     String uri = paramValues[uriIndex]
-    assert uri.startsWith("content://")
+
+    assert uri.startsWith("content://") || uri.startsWith("android.resource://") || uri.startsWith("file://")
 
     String[] uriParts = uri.split(/\?/)
     assert uriParts.size() <= 2

@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,10 +11,10 @@ package org.droidmate.android_sdk
 
 import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
+import org.droidmate.common.DroidmateException
 import org.droidmate.common.ISysCmdExecutor
 import org.droidmate.common.SysCmdExecutorException
 import org.droidmate.configuration.Configuration
-import org.droidmate.common.DroidmateException
 import org.droidmate.exceptions.NoLaunchableActivityNameException
 
 import java.nio.file.Files
@@ -104,7 +104,7 @@ public class AaptWrapper implements IAaptWrapper
       launchableActivityName = tryGetLaunchableActivityNameFromBadgingDump(aaptBadgingDump)
     } catch (DroidmateException e)
     {
-      log.debug("! Caught ${e.class.simpleName} while trying to obtain launchable activity name. Returning null instead. The exception: $e")
+      log.warn("! Caught ${e.class.simpleName} while trying to obtain launchable activity name. Returning null instead. The exception: $e")
       return null
     }
 
@@ -124,7 +124,7 @@ public class AaptWrapper implements IAaptWrapper
       launchableActivityComponentName = tryGetLaunchableActivityComponentNameFromBadgingDump(aaptBadgingDump)
     } catch (DroidmateException e)
     {
-      log.debug("! Caught ${e.class.simpleName} while trying to obtain launchable activity component name. Returning null instead. The exception: $e")
+      log.warn("! Caught ${e.class.simpleName} while trying to obtain launchable activity component name. Returning null instead. The exception: $e")
       return null
     }
 

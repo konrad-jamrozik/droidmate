@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -15,10 +15,7 @@ import org.droidmate.android_sdk.AdbWrapper
 import org.droidmate.android_sdk.IAaptWrapper
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.common.SysCmdExecutor
-import org.droidmate.common_android.DeviceCommand
-import org.droidmate.common_android.DeviceResponse
 import org.droidmate.configuration.Configuration
-import org.droidmate.device.SerializableTCPClient
 
 @Slf4j
 class DeviceTools implements IDeviceTools
@@ -37,10 +34,8 @@ class DeviceTools implements IDeviceTools
 
     def adbWrapper = substitutes[IAdbWrapper] as IAdbWrapper ?: new AdbWrapper(cfg, sysCmdExecutor)
 
-    def deviceTcpClient = new SerializableTCPClient<DeviceCommand, DeviceResponse>(cfg.socketTimeout)
-
     def deviceFactory = substitutes[IAndroidDeviceFactory] as IAndroidDeviceFactory ?:
-      new AndroidDeviceFactory(cfg, deviceTcpClient, adbWrapper)
+      new AndroidDeviceFactory(cfg, adbWrapper)
 
     deviceDeployer = new AndroidDeviceDeployer(cfg, adbWrapper, deviceFactory)
 

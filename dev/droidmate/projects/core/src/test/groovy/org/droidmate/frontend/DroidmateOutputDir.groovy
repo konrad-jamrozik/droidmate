@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -30,12 +30,14 @@ class DroidmateOutputDir
   public void clearContents()
   {
     if (Files.exists(path))
+    {
       Files.list(path).each {
         if (Files.isDirectory(it))
           it.deleteDir()
         else
           Files.delete(it)
       }
+    }
   }
 
   public IApkExplorationOutput2 readOutput()

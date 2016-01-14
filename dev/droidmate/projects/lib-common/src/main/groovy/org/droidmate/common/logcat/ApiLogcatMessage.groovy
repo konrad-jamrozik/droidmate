@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -10,6 +10,8 @@
 // WISH move to org.droidmate.logcat. Now it is not done as it would break deserialization. See also: org.droidmate.deprecated_still_used.DeprecatedClassesDeserializer
 package org.droidmate.common.logcat
 
+import com.google.common.base.Splitter
+import com.google.common.collect.Lists
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
 import org.droidmate.apis.IApi
@@ -137,11 +139,11 @@ class ApiLogcatMessage implements IApiLogcatMessage, Serializable
 
       Currently such implementation is in place because in the past the API logs were read from logcat, not from TCP socket.
       So far I decided just adapt the new TCP interface to send the same data type as it went through logcat. I did it because
-      then editing the monitor source file was a pain. Since then I streamlined the process so it should be easier.
-
+      then editing the monitor source file was a pain. Since then I streamlined the process so it should be easier to fulfill
+      this wish now.
        */
 
-      List<String> elements = payload.tokenize(' ')
+      List<String> elements = Lists.newArrayList(Splitter.on(" ").split(payload))
       assert !elements.empty
 
       addThreadIdIfNecessary(elements)
@@ -166,7 +168,7 @@ class ApiLogcatMessage implements IApiLogcatMessage, Serializable
       }
     }
 
-    private Map<String, List<String>> computeKeywordToValues(List<String> elements, String payload)
+    private static Map<String, List<String>> computeKeywordToValues(List<String> elements, String payload)
     {
       Map<Integer, String> indexToKeyword = keywords.collectEntries {String keyword ->
 
@@ -197,6 +199,9 @@ class ApiLogcatMessage implements IApiLogcatMessage, Serializable
 
     private Tuple2<List<String>, List<String>> splitAndValidateParams(Map<String, List<String>> keywordToValues)
     {
+      if (keywordToValues[keyword_params].size() == 1 && keywordToValues[keyword_params][0] == "")
+        return new Tuple2([], [])
+
       assert keywordToValues[keyword_params].size() % 2 == 0
 
       List<String> paramTypes = keywordToValues[keyword_params].indexed().findAll {it.key % 2 == 0}.values() as List<String>

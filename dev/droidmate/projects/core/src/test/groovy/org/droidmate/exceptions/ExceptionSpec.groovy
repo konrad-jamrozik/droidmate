@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -16,14 +16,40 @@ class ExceptionSpec implements IExceptionSpec
 
   private static final long serialVersionUID = 1
 
-  final String methodName
-  final String currentlyDeployedPackageName
-  final int callIndex
+  final String  methodName
+  final String  packageName
+  final int     callIndex
+  final boolean throwsEx
+  final Boolean exceptionalReturnBool
+  final boolean throwsAssertionError
 
-  ExceptionSpec(String methodName, String currentlyDeployedPackageName, int callIndex = 1)
+  ExceptionSpec(String methodName, String packageName = null, int callIndex = 1, boolean throwsEx = true, Boolean exceptionalReturnBool = null, boolean throwsAssertionError = false)
   {
     this.methodName = methodName
-    this.currentlyDeployedPackageName = currentlyDeployedPackageName
+    this.packageName = packageName
     this.callIndex = callIndex
+    this.throwsEx = throwsEx
+    this.exceptionalReturnBool = exceptionalReturnBool
+    this.throwsAssertionError = throwsAssertionError
+
+    assert this.throwsEx == (this.exceptionalReturnBool == null)
+    assert this.throwsAssertionError.implies(this.throwsEx)
+  }
+
+  boolean matches(String methodName, String packageName, int callIndex)
+  {
+    if (this.methodName == methodName && (this.packageName in [null, packageName]) && this.callIndex == callIndex)
+      return true
+    return false
+  }
+
+  void throwEx() throws ITestException
+  {
+    assert this.exceptionalReturnBool == null
+    //noinspection GroovyIfStatementWithIdenticalBranches
+    if (this.throwsAssertionError)
+      throw new TestAssertionError(this)
+    else
+      throw new TestDeviceException(this)
   }
 }

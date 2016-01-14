@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -30,6 +30,10 @@ class UnreliableDeviceSimulation implements IDeviceSimulation
   @Override
   void updateState(IAndroidDeviceAction action)
   {
+    // WISH later on support for failing calls to AndroidDevice.clearPackage would be nice. Currently,
+    // org.droidmate.device_simulation.UnreliableDeviceSimulation.transitionClickGuiActionOnInvalidOrAppHasStoppedDialogBoxSnapshot(org.droidmate.device.datatypes.IAndroidDeviceAction)
+    // just updates state of the underlying simulation and that's it.
+
     if (this.unreliableGuiSnapshotProvider.getCurrentWithoutChange().validationResult.valid
       && !(this.unreliableGuiSnapshotProvider.getCurrentWithoutChange().guiState.isAppHasStoppedDialogBox())
     )
@@ -42,6 +46,15 @@ class UnreliableDeviceSimulation implements IDeviceSimulation
     }
   }
 
+  @Override
+  public boolean getAppIsRunning()
+  {
+    IDeviceGuiSnapshot gs = this.unreliableGuiSnapshotProvider.getCurrentWithoutChange()
+    if (gs.validationResult.valid && gs.guiState.isAppHasStoppedDialogBox())
+      return false
+    else
+      return this.simulation.appIsRunning
+  }
 
   @Override
   IDeviceGuiSnapshot getCurrentGuiSnapshot()
@@ -54,8 +67,11 @@ class UnreliableDeviceSimulation implements IDeviceSimulation
     switch (action.class)
     {
       case LaunchMainActivityDeviceAction:
-      case AdbClearPackageAction:
         failWithForbiddenActionOnInvalidGuiSnapshot(action)
+        break
+
+      case AdbClearPackageAction:
+        this.simulation.updateState(action)
         break
 
       case ClickGuiAction:

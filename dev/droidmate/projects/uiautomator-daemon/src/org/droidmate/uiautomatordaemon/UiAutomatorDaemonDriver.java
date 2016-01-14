@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -199,7 +199,8 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
     } catch (UiObjectNotFoundException e)
     {
-      Log.w(uiaDaemon_logcatTag, "No 'settings' to click found, while in the process of ensuring that wifi is on!");
+      Log.w(uiaDaemon_logcatTag, "No 'settings' to click found, while in the process of ensuring that wifi is on! " +
+        "Please ensure the 'settings' app icon is visible (drag-n-drop it to desktop from the list of apps).");
     }
 
     try

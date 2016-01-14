@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -9,8 +9,8 @@
 
 package org.droidmate.deprecated_still_used
 
-import org.droidmate.common.logcat.Api
 import org.droidmate.common.DroidmateException
+import org.droidmate.common.logcat.Api
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.ExplorationAction
 import org.droidmate.exploration.actions.ExplorationActionTestHelper

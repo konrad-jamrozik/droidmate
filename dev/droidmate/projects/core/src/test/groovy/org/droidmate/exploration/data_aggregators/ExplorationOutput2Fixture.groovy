@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -11,8 +11,6 @@ package org.droidmate.exploration.data_aggregators
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
-
-import static ExplorationOutput2Builder.build
 
 class ExplorationOutput2Fixture implements IExplorationOutput2Fixture
 {
@@ -65,9 +63,9 @@ class ExplorationOutput2Fixture implements IExplorationOutput2Fixture
     LocalDateTime init1 = LocalDateTime.parse("${TimeFormattedLogcatMessage.assumedDate.year}-02-03T04:12:23.100")
     LocalDateTime init2 = LocalDateTime.parse("${TimeFormattedLogcatMessage.assumedDate.year}-05-09T06:03:44.353")
 
-    ExplorationOutput2 explOut2 = build() {
+    ExplorationOutput2 explOut2 = ExplorationOutput2Builder.build() {
 
-      apk(name: "com.example.app", monitorInitTime: init1, explorationEndTimeMss: 580) {
+      apk(name: "com.example.app", monitorInitTime: init1, explorationStartTime: init1, explorationEndTimeMss: 580) {
 
         actRes(action: "reset", mss: 0,
           logs: [
@@ -95,7 +93,7 @@ class ExplorationOutput2Fixture implements IExplorationOutput2Fixture
           ])
       }
 
-      apk(name: "org.another.interesting.program", monitorInitTime: init2, explorationEndTimeMss: 600) {
+      apk(name: "org.another.interesting.program", monitorInitTime: init2, explorationStartTime: init2, explorationEndTimeMss: 600) {
 
         actRes(action: "reset", mss: 0,
           logs: [

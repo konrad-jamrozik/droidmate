@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -17,6 +17,10 @@ compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
 compileJava.targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
+
+  // "gradlew build" works without this line, but IntelliJ "make" is unhappy without it. Looks like IntelliJ needs it to pick-up
+  // the META-INF/services/org.codehaus.groovy.runtime.ExtensionModule file.
+  runtime files(new File(sourceSets.main.resources.srcDirs.find(), "."))
 
   compile 'com.github.konrad-jamrozik:utilities:master-SNAPSHOT'
 

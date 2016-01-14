@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -15,8 +15,7 @@ public class Constants
 {
 
   // Why this is constant and not a cmd line parameter? See comment in Configuration class.
-  public static final int AUTADDON_SERVER_PORT  = 59777;
-  public static final int UIADAEMON_SERVER_PORT = 59778;
+  public static final int UIADAEMON_SERVER_PORT = 59800;
 
   // End of DUPLICATION WARNING
 

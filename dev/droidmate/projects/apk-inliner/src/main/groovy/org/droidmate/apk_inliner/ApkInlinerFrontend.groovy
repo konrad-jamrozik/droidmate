@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -78,7 +78,8 @@ public class ApkInlinerFrontend
     String monitorClassName = "org.droidmate.monitor_generator.generated.Monitor"
     String pathToMonitorApkOnAndroidDevice = InitConstants.AVD_dir_for_temp_files + "monitor.apk"
 
-    def jarsignerPath = Paths.get(LocalInitConstants.jdk8_path, "bin/jarsigner.exe")
+    String fileExt = SystemUtils.IS_OS_WINDOWS ? ".exe" : ""
+    def jarsignerPath = Paths.get(LocalInitConstants.jdk8_path, "bin/jarsigner$fileExt")
     assert isRegularFile(jarsignerPath)
 
     def debugKeystorePath = new ResourcePath("debug.keystore").path

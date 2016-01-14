@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -34,6 +34,7 @@ public class AdbWrapper implements IAdbWrapper
 {
 
   private final Configuration   cfg
+  // KJA move to UiautomatorDaemonClient
   private       Thread          uiaDaemonThread
   private       ISysCmdExecutor sysCmdExecutor
 
@@ -107,6 +108,22 @@ public class AdbWrapper implements IAdbWrapper
     return deviceDescriptors
   }
 
+  /*
+    KJA2 KNOWN BUG happens when trying to install app that is installed by default, like google earth or google keep.
+
+    Piece of relevant log from SysCmdExecutor is below. Make the installApk report appropriate failure when this happens.
+
+    2016-01-07 14:54:22.642 TRACE "c:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 015d2109ce0c1a0f install -r "C:\my\local\repos\github\droidmate\dev\droidmate\apks\inlined\com.google.earth_v7.1.3.1255-inlined.apk"
+    2016-01-07 14:54:34.601 TRACE Captured stdout:
+    2016-01-07 14:54:34.602 TRACE 	pkg: /data/local/tmp/com.google.earth_v7.1.3.1255-inlined.apk
+
+    Failure [INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES]
+
+    HOW TO FIX: before installing the app, check if it is not within already installed apps using adb. If it is, issue warning and
+    skip the app.
+
+   */
+
   @Override
   public void installApk(String deviceSerialNumber, IApk apkToInstall)
     throws AdbWrapperException
@@ -169,6 +186,7 @@ public class AdbWrapper implements IAdbWrapper
   @Override
   public void forwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
   {
+    log.debug("forwardPort($deviceSerialNumber, $port)")
     assert deviceSerialNumber != null
 
     try
@@ -204,6 +222,7 @@ public class AdbWrapper implements IAdbWrapper
   @Override
   void reverseForwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
   {
+    log.debug("reverseForwardPort($deviceSerialNumber, $port)")
     assert deviceSerialNumber != null
 
     try
@@ -221,6 +240,32 @@ public class AdbWrapper implements IAdbWrapper
       throw new AdbWrapperException("Executing 'adb forward' failed. Oh my.", e)
     }
 
+  }
+
+  @Override
+  public void reboot(String deviceSerialNumber) throws AdbWrapperException
+  {
+    log.debug("reboot($deviceSerialNumber)")
+    assert deviceSerialNumber != null
+
+    try
+    {
+      String commandDescription = String
+        .format("Executing adb (Android Debug Bridge) to reboot android device with s/n %s.", deviceSerialNumber)
+
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "reboot")
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb reboot' failed. Oh my.", e)
+    }
+  }
+
+  @Override
+  boolean uiaDaemonThreadIsAlive()
+  {
+    assert this.uiaDaemonThread != null
+    return this.uiaDaemonThread.alive
   }
 
   @Override
@@ -278,7 +323,27 @@ public class AdbWrapper implements IAdbWrapper
     {
       throw new AdbWrapperException(e)
     }
+  }
 
+  @Override
+  String ps(String deviceSerialNumber) throws AdbWrapperException
+  {
+    try
+    {
+      String commandDescription = String
+        .format("Executing adb (Android Debug Bridge) to list processes (ps).")
+
+      String[] stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell ps")
+
+      String stdout = stdStreams[0]
+      return stdout
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException(e)
+    }
   }
 
   @Override
@@ -302,7 +367,7 @@ public class AdbWrapper implements IAdbWrapper
 
   @Override
   public List<String> waitForMessagesOnLogcat(
-    String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryInterval)
+    String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryDelay)
     throws AdbWrapperException
   {
 
@@ -313,9 +378,9 @@ public class AdbWrapper implements IAdbWrapper
       int timeLeftToQuery = waitTimeout
       while (timeLeftToQuery >= 0 && readMessages.size() < minMessagesCount)
       {
-//        log.verbose("waitForMessagesOnLogcat.sleep(queryInterval=$queryInterval)")
-        Thread.sleep(queryInterval)
-        timeLeftToQuery -= queryInterval
+//        log.verbose("waitForMessagesOnLogcat.sleep(queryDelay=$queryDelay)")
+        Thread.sleep(queryDelay)
+        timeLeftToQuery -= queryDelay
 //        log.verbose("waitForMessagesOnLogcat.readMessagesFromLogcat(messageTag=$messageTag) " +
 //          "timeLeftToQuery=$timeLeftToQuery readMessages.size()=${readMessages.size()} minMessagesCount=$minMessagesCount")
         readMessages = this.readMessagesFromLogcat(deviceSerialNumber, messageTag)
@@ -334,7 +399,7 @@ public class AdbWrapper implements IAdbWrapper
         "messageTag: $messageTag, " +
         "minMessageCount: $minMessagesCount, " +
         "waitTimeout: $waitTimeout, " +
-        "queryInterval: $queryInterval")
+        "queryDelay: $queryDelay")
 
     }
 
@@ -405,21 +470,27 @@ public class AdbWrapper implements IAdbWrapper
     // See http://stackoverflow.com/questions/2213340/what-is-daemon-thread-in-java
     // http://stackoverflow.com/questions/19421027/how-to-create-a-daemon-thread-and-what-for?rq=1
 
-    uiaDaemonThread = new Thread(new UiAutomatorThreadRunnable(deviceSerialNumber))
-    uiaDaemonThread.start()
+    this.uiaDaemonThread = startUiaDaemonThread(deviceSerialNumber)
 
     List<String> msgs = this.waitForMessagesOnLogcat(
       deviceSerialNumber,
       Constants.UIADAEMON_SERVER_START_TAG,
       1,
       cfg.uiautomatorDaemonServerStartTimeout,
-      cfg.uiautomatorDaemonServerStartQueryInterval)
+      cfg.uiautomatorDaemonServerStartQueryDelay)
 
     assert !msgs?.empty
     assert (msgs.size() == 1):
       "Expected exactly one message on logcat (with tag $Constants.UIADAEMON_SERVER_START_MSG) " +
         "confirming that uia-daemon server has started. Instead, got ${msgs.size()} messages. Msgs:\n${msgs.join("\n")}"
     assert msgs[0].contains(Constants.UIADAEMON_SERVER_START_MSG)
+  }
+
+  private Thread startUiaDaemonThread(String deviceSerialNumber)
+  {
+    Thread uiaDaemonThread = new Thread(new UiAutomatorThreadRunnable(deviceSerialNumber))
+    uiaDaemonThread.start()
+    return uiaDaemonThread
   }
 
   private class UiAutomatorThreadRunnable implements Runnable
@@ -539,7 +610,7 @@ public class AdbWrapper implements IAdbWrapper
 
       // Reference:
       // http://developer.android.com/tools/help/adb.html#am
-      String[] stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+      String[] stdStreams = sysCmdExecutor.executeWithTimeout(commandDescription, cfg.launchActivityTimeout, cfg.adbCommand,
         "-s", deviceSerialNumber,
         "shell am start", // start an activity using Activity Manager (am)
         "-W", // wait for launch to complete

@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -19,7 +19,7 @@ public class ThrowablesCollection extends DroidmateException
 
   public ThrowablesCollection(List<Throwable> throwables)
   {
-    super("Aggregating exception holding a collection of ${Throwable.simpleName}s.")
+    super("An aggregating exception holding a collection of ${Throwable.simpleName}s.")
     this.throwables = throwables
   }
 }

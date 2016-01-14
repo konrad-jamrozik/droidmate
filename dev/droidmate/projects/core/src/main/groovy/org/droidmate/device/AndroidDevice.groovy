@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -14,6 +14,7 @@ import groovy.transform.TypeCheckingMode
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.android_sdk.IApk
+import org.droidmate.common.Boolean3
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.common_android.DeviceCommand
 import org.droidmate.common_android.DeviceResponse
@@ -21,6 +22,7 @@ import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.NoAndroidDevicesAvailableException
 import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
@@ -51,38 +53,20 @@ import static org.droidmate.common_android.NoDeviceResponse.getNoDeviceResponse
 public class AndroidDevice implements IAndroidDevice
 {
 
-  private final String serialNumber
-
-  private final Configuration                                         cfg
-  private final ISerializableTCPClient<DeviceCommand, DeviceResponse> client
-  private final IAdbWrapper                                           adbWrapper
-  private final ISerializableTCPClient<String, ArrayList<ArrayList<String>>> apiLogsClient
+  private final String        serialNumber
+  private final Configuration cfg
+  private final IAdbWrapper   adbWrapper
+  private final ITcpClients   tcpClients
 
   AndroidDevice(
     String serialNumber,
     Configuration cfg,
-    ISerializableTCPClient<DeviceCommand, DeviceResponse> client,
     IAdbWrapper adbWrapper)
   {
     this.serialNumber = serialNumber
     this.cfg = cfg
-    this.client = client
     this.adbWrapper = adbWrapper
-    this.apiLogsClient = new SerializableTCPClient<>(cfg.socketTimeout)
-  }
-
-  @Override
-  void forwardPort(int port) throws DeviceException
-  {
-    log.debug("forwardPort($port)")
-    adbWrapper.forwardPort(serialNumber, port)
-  }
-
-  @Override
-  void reverseForwardPort(int port) throws DeviceException
-  {
-    log.debug("reverseForwardPort($port)")
-    adbWrapper.reverseForwardPort(serialNumber, port)
+    this.tcpClients = new TcpClients(this.adbWrapper, this.serialNumber, cfg.socketTimeout, cfg.uiautomatorDaemonTcpPort)
   }
 
   @Override
@@ -134,6 +118,8 @@ public class AndroidDevice implements IAndroidDevice
     return noDeviceResponse
   }
 
+  // Used by old exploration code
+  @Deprecated
   DeviceResponse internalPerform(AdbClearPackageAction action) throws DeviceException
   {
     clearPackage(action.packageName)
@@ -157,7 +143,7 @@ public class AndroidDevice implements IAndroidDevice
    * device response, unless there were errors along the way. If there were errors, it throws an exception.
    * </p><p>
    * The issued command can be potentially handled either by aut-addon or uiautomator-daemon. This method resolves
-   * who should be the recipient and sends the command using {@link #client}.
+   * who should be the recipient and sends the command using {@link #uiautomatorClient}.
    *
    * </p><p>
    * <i>This doc was last reviewed on 14 Sep '13.</i>
@@ -172,7 +158,7 @@ public class AndroidDevice implements IAndroidDevice
     if (!uiaDaemonHandlesCommand)
       throw new DeviceException(String.format("Unhandled command of %s", deviceCommand.command))
 
-    deviceResponse = client.queryServer(deviceCommand, cfg.uiautomatorDaemonTcpPort)
+    deviceResponse = this.tcpClients.sendCommandToUiautomatorDaemon(deviceCommand)
 
     assert deviceResponse != null
 
@@ -193,13 +179,52 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  public void stopUiaDaemon() throws DeviceException
+  public void closeConnection() throws DeviceException
+  {
+    this.stopUiaDaemon()
+  }
+
+  private void stopUiaDaemon() throws DeviceException
   {
     log.trace("stopUiaDaemon()")
     this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
     adbWrapper.waitForUiaDaemonToClose()
     log.trace("DONE stopUiaDaemon()")
 
+  }
+
+
+  @Override
+  void reboot() throws DeviceException
+  {
+    log.debug("reboot(${this.serialNumber})")
+    this.adbWrapper.reboot(this.serialNumber)
+  }
+
+  @Override
+  boolean isAvailable() throws DeviceException
+  {
+    log.debug("isAvailable(${this.serialNumber})")
+    try
+    {
+      this.adbWrapper.androidDevicesDescriptors.any { it.deviceSerialNumber == this.serialNumber }
+    } catch (NoAndroidDevicesAvailableException ignored)
+    {
+      return false
+    }
+  }
+
+  @Override
+  boolean uiaDaemonClientThreadIsAlive()
+  {
+    return this.adbWrapper.uiaDaemonThreadIsAlive()
+  }
+
+  @Override
+  void setupConnection() throws DeviceException
+  {
+    this.tcpClients.forwardPorts()
+    this.startUiaDaemon()
   }
 
   @Override
@@ -211,10 +236,10 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  List<ITimeFormattedLogcatMessage> waitForLogcatMessages(String messageTag, int minMessagesCount, int waitTimeout, int queryInterval) throws DeviceException
+  List<ITimeFormattedLogcatMessage> waitForLogcatMessages(String messageTag, int minMessagesCount, int waitTimeout, int queryDelay) throws DeviceException
   {
-    log.debug("waitForLogcatMessages(tag: $messageTag, minMessagesCount: $minMessagesCount, waitTimeout: $waitTimeout, queryInterval: $queryInterval)")
-    List<String> messages = adbWrapper.waitForMessagesOnLogcat(this.serialNumber, messageTag, minMessagesCount, waitTimeout, queryInterval)
+    log.debug("waitForLogcatMessages(tag: $messageTag, minMessagesCount: $minMessagesCount, waitTimeout: $waitTimeout, queryDelay: $queryDelay)")
+    List<String> messages = adbWrapper.waitForMessagesOnLogcat(this.serialNumber, messageTag, minMessagesCount, waitTimeout, queryDelay)
     log.debug("waitForLogcatMessages(): obtained messages: ${messages.join("\n")}")
     return messages.collect {TimeFormattedLogcatMessage.from(it)}
   }
@@ -224,7 +249,7 @@ public class AndroidDevice implements IAndroidDevice
   {
     log.debug("readAndClearMonitorTcpMessages()")
 
-    ArrayList<ArrayList<String>> msgs = apiLogsClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, cfg.monitorTcpPort)
+    ArrayList<ArrayList<String>> msgs = this.tcpClients.getLogs()
 
     msgs.each {ArrayList<String> msg ->
       assert msg.size() == 3
@@ -239,7 +264,7 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   LocalDateTime getCurrentTime() throws TcpServerUnreachableException, DeviceException
   {
-    List<List<String>> msgs = apiLogsClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, cfg.monitorTcpPort)
+    List<List<String>> msgs = this.tcpClients.getCurrentTime()
 
     assert msgs.size() == 1
     assert msgs[0].size() == 3
@@ -253,10 +278,31 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  void startUiaDaemon() throws DeviceException
+  Boolean appProcessIsRunning(String appPackageName) throws DeviceException
+  {
+    log.debug("appProcessIsRunning($appPackageName)")
+    String ps = this.adbWrapper.ps(this.serialNumber)
+
+    boolean out = ps.contains(appPackageName)
+    if (out)
+      log.trace("App process of $appPackageName is running")
+    else
+      log.trace("App process of $appPackageName is not running")
+    return out
+  }
+
+  @Override
+  Boolean anyMonitorIsReachable() throws DeviceException
+  {
+    log.debug("anyMonitorIsReachable()")
+    return this.tcpClients.anyMonitorIsReachable()
+  }
+
+  private void startUiaDaemon() throws DeviceException
   {
     log.debug("startUiaDaemon()")
-    adbWrapper.startUiaDaemon(serialNumber)
+    this.adbWrapper.startUiaDaemon(this.serialNumber)
+    assert this.uiaDaemonClientThreadIsAlive()
     log.trace("DONE startUiaDaemon()")
   }
 
@@ -281,19 +327,20 @@ public class AndroidDevice implements IAndroidDevice
     adbWrapper.uninstallApk(serialNumber, apkPackageName, warnAboutFailure)
   }
 
-  void launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  @Override
+  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
     log.debug("launchMainActivity($launchableActivityComponentName)")
     adbWrapper.launchMainActivity(serialNumber, launchableActivityComponentName)
-    sleep(cfg.delayAfterLaunchingActivity)
+    sleep(cfg.launchActivityDelay)
+    return Boolean3.True
   }
 
   @Override
-  Boolean clearPackage(String apkPackageName) throws DeviceException
+  void clearPackage(String apkPackageName) throws DeviceException
   {
     log.debug("clearPackage($apkPackageName)")
     adbWrapper.clearPackage(serialNumber, apkPackageName)
-    return true
   }
 
   @Override
@@ -318,9 +365,7 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   public String toString()
   {
-    return "AndroidDevice{" +
-      "serialNumber='" + serialNumber + '\'' +
-      '}'
+    return "{device $serialNumber}"
   }
 
 }

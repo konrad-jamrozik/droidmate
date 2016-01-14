@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -34,7 +34,6 @@ class TerminationCriterion implements ITerminationCriterion
    * Starts at 2, because the first exploration action is issued before a request to log is issued.*/
   private int logRequestIndex = 2
 
-
   public TerminationCriterion(Configuration config, int timeLimit, Ticker ticker)
   {
     this.timeLimit = timeLimit
@@ -56,28 +55,38 @@ class TerminationCriterion implements ITerminationCriterion
     }
   }
 
+
+  private long currentDecideElapsedSeconds
+
   @Override
   String getLogMessage()
   {
     if (timeLimited)
     {
-      long m = stopwatch.elapsed(TimeUnit.MINUTES)
-      long s = stopwatch.elapsed(TimeUnit.SECONDS) - m * 60
-      long lm = (int) (timeLimit / 60)
-      long ls = timeLimit % 60
+      long m = (long) (this.currentDecideElapsedSeconds / 60)
+      long s = this.currentDecideElapsedSeconds - m * 60
+      long lm = (int) (this.timeLimit / 60)
+      long ls = this.timeLimit % 60
 
-      return String.format("%3dm %2ds / %3dm %2ds i: %4d", m, s, lm, ls, logRequestIndex++)
+      return String.format("%3dm %2ds / %3dm %2ds i: %4d", m, s, lm, ls, this.logRequestIndex++)
     } else
-      return (startingActionsLeft - actionsLeft).toString() + "/" + "${startingActionsLeft}"
+      return (this.startingActionsLeft - this.actionsLeft).toString() + "/" + "${this.startingActionsLeft}"
   }
 
   @Override
-  void assertPreDecide()
+  void initDecideCall(boolean firstCall)
   {
     if (timeLimited)
-      assert true: "Nothing to verify"
-    else
+    {
+      if (firstCall)
+        stopwatch.start()
+
+      this.currentDecideElapsedSeconds = this.stopwatch.elapsed(TimeUnit.SECONDS)
+    }
+
+    if (!timeLimited)
       assert actionsLeft >= 0
+
   }
 
   @Override
@@ -95,7 +104,7 @@ class TerminationCriterion implements ITerminationCriterion
   {
     if (timeLimited)
     {
-      return stopwatch.elapsed(TimeUnit.SECONDS) >= timeLimit
+      return this.currentDecideElapsedSeconds >= timeLimit
     } else
       return actionsLeft == 0
   }
@@ -123,10 +132,4 @@ class TerminationCriterion implements ITerminationCriterion
     }
   }
 
-  @Override
-  void init()
-  {
-    if (timeLimited)
-      stopwatch.start()
-  }
 }

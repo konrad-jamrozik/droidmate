@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -44,6 +44,28 @@ TId: 1 objCls: android.webkit.WebView mthd: methd retCls: void params:  stacktra
 """
     // Act
     ApiLogcatMessage.from(msg)
+  }
+
+  @Test
+  public void "Parses param values being empty strings"()
+  {
+    String msg1 = """\
+TId: 1 objCls: android.webkit.WebView mthd: loadDataWithBaseURL retCls: void \
+params: \
+java.lang.String  \
+stacktrace: dalvik.system.VMStack.getThreadStackTrace(Native Method)->dalvik.system.NativeStart.main(Native Method)\
+"""
+    // Act 1
+    ApiLogcatMessage.from(msg1)
+
+    String msg2 = """\
+TId: 1 objCls: android.webkit.WebView mthd: loadDataWithBaseURL retCls: void \
+params: \
+java.lang.String  java.lang.String  java.lang.String  \
+stacktrace: dalvik.system.VMStack.getThreadStackTrace(Native Method)->dalvik.system.NativeStart.main(Native Method)\
+"""
+    // Act 2
+    ApiLogcatMessage.from(msg2)
   }
 
   @Test
@@ -134,9 +156,12 @@ dalvik.system.NativeStart.main(Native Method)\
     ApiLogcatMessage.from(msg)
   }
 
-
+  /**
+   * Bug: Parsing message throws StackOverflowError
+   * https://hg.st.cs.uni-saarland.de/issues/992
+   */
   @Test
-  void "Parses without throwing StackOverflowError / bug #992"()
+  void "Has no bug #992"()
   {
     String msg = """\
 TId: 1 objCls: android.webkit.WebView mthd: loadDataWithBaseURL retCls: void \

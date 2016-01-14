@@ -1,7 +1,1 @@
-# Inputs dir
-target-apks/*
-input-apks/*
-# Outputs dir
-inlined-apks/*
-
-tmp-test**
+tmp-test-toremove**

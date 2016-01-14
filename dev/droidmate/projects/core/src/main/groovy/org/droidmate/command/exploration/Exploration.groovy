@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -23,9 +23,10 @@ import org.droidmate.exploration.actions.RunnableExplorationAction
 import org.droidmate.exploration.actions.RunnableTerminateExplorationAction
 import org.droidmate.exploration.data_aggregators.ApkExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.exploration.device.IDeviceWithReadableLogs
+import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.exploration.strategy.IExplorationStrategy
+import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.TimeProvider
 
@@ -51,15 +52,22 @@ class Exploration implements IExploration
   }
 
   @Override
-  IApkExplorationOutput2 tryRun(IApk app, IDeviceWithReadableLogs device) throws DeviceException
+  Failable<IApkExplorationOutput2, DeviceException> run(IApk app, IRobustDevice device)
   {
     log.info("run(${app?.packageName}, device)")
 
     assert app != null
     assert device != null
+    device.resetTimeSync()
 
-    tryAssertDeviceHasPackageInstalled(device, app.packageName)
-    tryWarnDeviceDisplaysHomeScreen(device, app.fileName)
+    try
+    {
+      tryDeviceHasPackageInstalled(device, app.packageName)
+      tryWarnDeviceDisplaysHomeScreen(device, app.fileName)
+    } catch (DeviceException e)
+    {
+      return new Failable<IApkExplorationOutput2, DeviceException>(null, e)
+    }
 
     IApkExplorationOutput2 output = explorationLoop(app, device)
 
@@ -69,10 +77,10 @@ class Exploration implements IExploration
       log.warn("! Encountered ${output.exception.class.simpleName} during the exploration of ${app.packageName} " +
         "after already obtaining some exploration output.")
 
-    return output
+    return new Failable<IApkExplorationOutput2, DeviceException>(output, output.noException ? null : output.exception)
   }
 
-  public IApkExplorationOutput2 explorationLoop(IApk app, IDeviceWithReadableLogs device)
+  public IApkExplorationOutput2 explorationLoop(IApk app, IRobustDevice device)
   {
     // Construct initial action and run it on the device to obtain initial result.
     IRunnableExplorationAction action = RunnableExplorationAction.from(
@@ -81,13 +89,19 @@ class Exploration implements IExploration
     log.debug("explorationLoop(app=${app?.fileName}, device)")
     log.info("Initial action: ${action.base}")
 
+
     assert app != null
     assert device != null
 
+
+    // Construct the output holder.
+    IApkExplorationOutput2 output = new ApkExplorationOutput2(app)
+
+    output.explorationStartTime = timeProvider.now
+    log.debug("Exploration start time: " + output.explorationStartTime)
+
     IExplorationActionRunResult result = action.run(app, device)
 
-    // Construct the output holder
-    IApkExplorationOutput2 output = new ApkExplorationOutput2(app)
     // Write the initial action and its execution result to the output holder.
     output.add(action, result)
 
@@ -115,12 +129,12 @@ class Exploration implements IExploration
     return output
   }
 
-  private void tryAssertDeviceHasPackageInstalled(IExplorableAndroidDevice device, String packageName) throws DeviceException
+  private void tryDeviceHasPackageInstalled(IExplorableAndroidDevice device, String packageName) throws DeviceException
   {
-    log.trace("tryAssertDeviceHasPackageInstalled(device, $packageName)")
+    log.trace("tryDeviceHasPackageInstalled(device, $packageName)")
 
-    // KJA bug #994
-    assert device.hasPackageInstalled(packageName)
+    if (!device.hasPackageInstalled(packageName))
+      throw new DeviceException()
   }
 
   private void tryWarnDeviceDisplaysHomeScreen(IExplorableAndroidDevice device, String fileName) throws DeviceException

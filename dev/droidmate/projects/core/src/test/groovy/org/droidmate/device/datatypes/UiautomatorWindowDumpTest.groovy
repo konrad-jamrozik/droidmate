@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -32,13 +32,14 @@ class UiautomatorWindowDumpTest extends DroidmateGroovyTestCase
 {
 
   /**
+   * Bug: ANR with disabled OK button is invalid
    * https://hg.st.cs.uni-saarland.de/issues/987
    */
   @Test
-  void "ANR with disabled OK button is invalid / bug #987"()
+  void "Has no bug #987"()
   {
     UiautomatorWindowDump gs = newAppHasStoppedDialogOKDisabledWindowDump()
-    assert !gs.validationResult.valid
+    assert !(gs.validationResult.valid)
   }
 
   @Test

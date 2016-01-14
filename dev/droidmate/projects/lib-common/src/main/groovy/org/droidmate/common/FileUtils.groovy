@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -46,4 +46,12 @@ class FileUtils
       throw new DroidmateException("Directory $dir doesn't exist or is not a directory. \n" +
         "Expected path: ${dir.toAbsolutePath()}");
   }
+
+  static void validateDirectory(File dir)
+  {
+    if (!dir.isDirectory())
+      throw new DroidmateException("Directory $dir doesn't exist or is not a directory. \n" +
+        "Expected path: ${dir.absolutePath}");
+  }
+
 }

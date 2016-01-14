@@ -1,5 +1,5 @@
-// Copyright (c) 2013-2015 Saarland University
-// All right reserved.
+// Copyright (c) 2012-2015 Saarland University
+// All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
 //
@@ -12,6 +12,7 @@ import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DroidmateError
 import org.droidmate.exploration.actions.*
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.storage.IStorage2
@@ -30,6 +31,7 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
 
   List<RunnableExplorationActionWithResult> actRess = new ArrayList<>()
 
+  LocalDateTime explorationStartTime = null
   LocalDateTime explorationEndTime = null
 
   ApkExplorationOutput2(IApk apk)
@@ -53,6 +55,15 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   }
 
   @Override
+  void setExplorationStartTime(LocalDateTime time)
+  {
+    assert time != null
+    assert explorationStartTime == null
+    this.explorationStartTime = time
+  }
+
+
+  @Override
   void setExplorationEndTime(LocalDateTime time)
   {
     assert time != null
@@ -61,15 +72,21 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   }
 
   @Override
-  void verify()
+  void verify() throws DroidmateError
   {
-    assert actRess.size() >= 1
-    assertFirstActionIsReset()
-    assertFirstActionResultContainsMonitorInitMsgsOrIsFailure()
-    assertLastActionIsTerminateOrResultIsFailure()
-    assertLastGuiSnapshotIsHomeOrResultIsFailure()
-    assertOnlyLastActionMightHaveDeviceException()
-    assertLogsAreSortedByTime()
+    try
+    {
+      assert this.actRess.size() >= 1
+      assert this.containsExplorationStartTime
+      assertFirstActionIsReset()
+      assertLastActionIsTerminateOrResultIsFailure()
+      assertLastGuiSnapshotIsHomeOrResultIsFailure()
+      assertOnlyLastActionMightHaveDeviceException()
+      assertLogsAreSortedByTime()
+    } catch (AssertionError e)
+    {
+      throw new DroidmateError(e)
+    }
   }
 
   public void assertLogsAreSortedByTime()
@@ -77,33 +94,17 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     List<IApiLogcatMessage> apiLogs = this.actRess*.result*.deviceLogs*.apiLogsOrEmpty.flatten() as List<IApiLogcatMessage>
     List<LocalDateTime> apiLogsSortedTimes = apiLogs*.time.collect().sort()
 
-    assert !containsMonitorInitTime || explorationStartTime <= explorationEndTime
-    assert apiLogs*.time == apiLogsSortedTimes
+    assert explorationStartTime <= explorationEndTime
+
+    assert apiLogs.sortedByTimePerPID()
 
     if (!apiLogsSortedTimes.empty)
     {
-      assert !containsMonitorInitTime || explorationStartTime <= apiLogsSortedTimes.first()
+      assert explorationStartTime <= apiLogsSortedTimes.first()
       assert apiLogsSortedTimes.last() <= explorationEndTime
     }
 
   }
-
-  boolean getContainsMonitorInitTime()
-  {
-    if (actRess.empty)
-      return false
-
-    IExplorationActionRunResult firstActionResult = actRess.first().result
-    return firstActionResult.successful && firstActionResult.deviceLogs.containsMonitorInitMsgs
-  }
-
-
-  LocalDateTime getMonitorInitTime()
-  {
-    assert containsMonitorInitTime
-    return actRess.first().result.deviceLogs.monitorInitTime
-  }
-
 
   void assertOnlyLastActionMightHaveDeviceException()
   {
@@ -113,29 +114,21 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   }
 
   @Override
-  LocalDateTime getExplorationStartTime()
-  {
-    assert containsMonitorInitTime
-    return monitorInitTime
-  }
-
-  @Override
   Integer getExplorationTimeInMs()
   {
-    assert containsMonitorInitTime
     return MILLIS.between(explorationStartTime, explorationEndTime)
   }
 
   @Override
   boolean getContainsExplorationStartTime()
   {
-    return containsMonitorInitTime
+    return this.explorationStartTime != null
   }
 
   @Override
   boolean getNoException()
   {
-    def lastResultSuccessful = actRess.last().result.successful
+    boolean lastResultSuccessful = actRess.last().result.successful
     assert lastResultSuccessful || (actRess.last().result.exception != null)
     return lastResultSuccessful
   }
@@ -162,12 +155,6 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   void assertFirstActionIsReset()
   {
     assert actRess.first().action instanceof RunnableResetAppExplorationAction
-  }
-
-  void assertFirstActionResultContainsMonitorInitMsgsOrIsFailure()
-  {
-    IExplorationActionRunResult firstActionResult = actRess.first().result
-    assert !firstActionResult.successful || firstActionResult.deviceLogs.containsMonitorInitMsgs
   }
 
   void assertLastActionIsTerminateOrResultIsFailure()
