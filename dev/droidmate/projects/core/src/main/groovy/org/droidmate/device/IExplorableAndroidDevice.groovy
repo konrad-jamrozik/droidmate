@@ -13,7 +13,6 @@ import org.droidmate.common.Boolean3
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
@@ -32,9 +31,9 @@ public interface IExplorableAndroidDevice
 
   void clearLogcat() throws DeviceException
 
-  List<List<String>> readAndClearMonitorTcpMessages() throws TcpServerUnreachableException, DeviceException
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceException
 
-  LocalDateTime getCurrentTime() throws TcpServerUnreachableException, DeviceException
+  LocalDateTime getCurrentTime() throws DeviceException
 
   Boolean appProcessIsRunning(String appPackageName) throws DeviceException
 

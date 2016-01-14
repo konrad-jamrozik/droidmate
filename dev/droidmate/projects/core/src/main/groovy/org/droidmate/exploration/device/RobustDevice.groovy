@@ -20,6 +20,7 @@ import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.device.datatypes.ValidationResult
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
+import org.droidmate.logcat.IApiLogcatMessage
 
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newPressHomeDeviceAction
 
@@ -132,7 +133,6 @@ class RobustDevice implements IRobustDevice
     assert waitForCanRebootDelay >= 0
   }
 
-  // KJA the contract should be: if device needs reboot, it will reboot and return home screen
   @Override
   IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
   {
@@ -304,9 +304,9 @@ class RobustDevice implements IRobustDevice
     try
     {
       out = this.device.getGuiSnapshot()
-    } catch (DeviceNeedsRebootException ignored)
+    } catch (DeviceNeedsRebootException e)
     {
-      log.debug("Device needs a reboot while trying to get GUI snapshot. Rebooting and restoring connection.")
+      log.debug("! Caught $e while trying to get GUI snapshot. Rebooting and restoring connection.")
       this.rebootAndRestoreConnection()
       out = this.device.getGuiSnapshot()
     }
@@ -365,6 +365,14 @@ class RobustDevice implements IRobustDevice
 
     assert !this.device.uiaDaemonClientThreadIsAlive()
   }
+
+  @Override
+  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceException
+  {
+    // KJA add here handling of 'needs reboot' exceptions
+    return this.messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer()
+  }
+
 
   private Boolean _appIsRunning(String appPackageName)
   {

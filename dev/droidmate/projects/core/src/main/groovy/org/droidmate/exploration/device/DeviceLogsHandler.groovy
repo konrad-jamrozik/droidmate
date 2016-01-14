@@ -12,7 +12,6 @@ import groovy.util.logging.Slf4j
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ForbiddenOperationError
-import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.slf4j.Logger
@@ -104,21 +103,12 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     return this.logs
   }
 
-  // KJA needs reboot device exception handling
+  // KJA needs 'reboot device' exception handling
   private List<IApiLogcatMessage> _readAndClearApiLogs() throws DeviceException
   {
-    try
-    {
-      def logs = device.getAndClearCurrentApiLogsFromMonitorTcpServer()
-      assert logs != null
-      return logs
-
-    } catch (TcpServerUnreachableException e)
-    {
-      log.warn("! Caught ${TcpServerUnreachableException.simpleName} from " +
-        "messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer(). Rethrowing.")
-      throw e
-    }
+    def logs = this.device.getAndClearCurrentApiLogsFromMonitorTcpServer()
+    assert logs != null
+    return logs
   }
 
 }

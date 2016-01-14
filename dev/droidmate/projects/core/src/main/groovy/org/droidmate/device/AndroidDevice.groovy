@@ -23,7 +23,6 @@ import org.droidmate.configuration.Configuration
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
-import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
@@ -256,7 +255,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  List<List<String>> readAndClearMonitorTcpMessages() throws TcpServerUnreachableException, DeviceException
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceException
   {
     log.debug("readAndClearMonitorTcpMessages()")
 
@@ -273,7 +272,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  LocalDateTime getCurrentTime() throws TcpServerUnreachableException, DeviceException
+  LocalDateTime getCurrentTime() throws DeviceException
   {
     List<List<String>> msgs = this.tcpClients.getCurrentTime()
 

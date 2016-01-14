@@ -9,7 +9,6 @@
 package org.droidmate.exploration.device
 
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
@@ -21,7 +20,7 @@ interface IDeviceMessagesReader
 
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException
 
-  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws TcpServerUnreachableException, DeviceException
+  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceException
 
   void resetTimeSync()
 }

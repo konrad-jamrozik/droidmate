@@ -9,7 +9,6 @@
 package org.droidmate.exploration.device
 
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
@@ -17,9 +16,9 @@ import java.time.LocalDateTime
 interface IDeviceTimeDiff
 {
 
-  LocalDateTime sync(LocalDateTime deviceTime) throws TcpServerUnreachableException, DeviceException
+  LocalDateTime sync(LocalDateTime deviceTime) throws DeviceException
 
-  List<ITimeFormattedLogcatMessage> syncMessages(List<ITimeFormattedLogcatMessage> messages)
+  List<ITimeFormattedLogcatMessage> syncMessages(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
 
   void reset()
 }

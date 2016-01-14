@@ -12,7 +12,6 @@ import groovy.util.logging.Slf4j
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
@@ -47,7 +46,7 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
   }
 
   @Override
-  public LocalDateTime sync(LocalDateTime deviceTime) throws TcpServerUnreachableException, DeviceException
+  public LocalDateTime sync(LocalDateTime deviceTime) throws DeviceException
   {
     assert deviceTime != null
 
@@ -58,7 +57,7 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
     return deviceTime.minus(diff)
   }
 
-  private Duration computeDiff(IExplorableAndroidDevice device) throws TcpServerUnreachableException, DeviceException
+  private Duration computeDiff(IExplorableAndroidDevice device) throws DeviceException
   {
     LocalDateTime deviceTime = device.currentTime
     LocalDateTime now = LocalDateTime.now()
@@ -78,7 +77,7 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
   }
 
   @Override
-  List<ITimeFormattedLogcatMessage> syncMessages(List<ITimeFormattedLogcatMessage> messages)
+  List<ITimeFormattedLogcatMessage> syncMessages(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
   {
     return messages.collect {
       TimeFormattedLogcatMessage.from(
