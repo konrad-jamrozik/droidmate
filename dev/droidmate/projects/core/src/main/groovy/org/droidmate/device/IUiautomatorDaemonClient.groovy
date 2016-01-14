@@ -11,14 +11,14 @@ package org.droidmate.device
 import org.droidmate.common_android.DeviceCommand
 import org.droidmate.common_android.DeviceResponse
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
 
 interface IUiautomatorDaemonClient
 {
-  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws TcpServerUnreachableException, DeviceException, ConnectException
+  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
 
-  // KJA rename
-  void forwardPorts() throws DeviceException
+  void forwardPort() throws DeviceException
 
   void startUiaDaemon() throws DeviceException
 

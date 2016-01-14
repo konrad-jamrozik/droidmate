@@ -13,6 +13,7 @@ import org.droidmate.common_android.Constants
 import org.droidmate.common_android.DeviceCommand
 import org.droidmate.common_android.DeviceResponse
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
 
 class UiautomatorDaemonClient implements IUiautomatorDaemonClient
@@ -40,13 +41,13 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
   }
 
   @Override
-  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws TcpServerUnreachableException, DeviceException, ConnectException
+  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
   {
     this.client.queryServer(deviceCommand, this.port)
   }
 
   @Override
-  void forwardPorts() throws DeviceException
+  void forwardPort() throws DeviceException
   {
     this.adbWrapper.forwardPort(this.deviceSerialNumber, this.port)
   }
@@ -87,7 +88,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
 
   private static Thread startUiaDaemonThread(IAdbWrapper adbWrapper, String deviceSerialNumber, int port)
   {
-    // KJA consider collapsing to groovys Thread.start {}.
+    // KJA2 consider collapsing to groovys Thread.start {}.
     // http://docs.groovy-lang.org/latest/html/groovy-jdk/java/lang/Thread.html
     // WISH consider making it a daemon thread
     // See http://stackoverflow.com/questions/2213340/what-is-daemon-thread-in-java

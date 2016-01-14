@@ -118,6 +118,7 @@ public class AndroidDevice implements IAndroidDevice
     internalPerform(action)
   }
 
+  // KJA2 multimethod to switch
   DeviceResponse internalPerform(LaunchMainActivityDeviceAction action) throws DeviceException
   {
     launchMainActivity(action.launchableActivityComponentName)
@@ -179,8 +180,9 @@ public class AndroidDevice implements IAndroidDevice
   {
     if (deviceResponse.throwable != null)
       throw new DeviceException(String.format(
-        "Device returned DeviceResponse with non-null throwable, indicating something exploded on the A(V)D. The exception is " +
-          "given as a cause of this one. If it doesn't have enough information, try inspecting the logcat output of the A(V)D.",
+        "Device returned DeviceResponse with non-null throwable, indicating something went horribly wrong on the A(V)D. " +
+          "The exception is given as a cause of this one. If it doesn't have enough information, " +
+          "try inspecting the logcat output of the A(V)D.",
       ), deviceResponse.throwable)
   }
 
@@ -203,14 +205,14 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   void reboot() throws DeviceException
   {
-    log.debug("reboot(${this.serialNumber})")
+    log.trace("reboot(${this.serialNumber})")
     this.adbWrapper.reboot(this.serialNumber)
   }
 
   @Override
   boolean isAvailable() throws DeviceException
   {
-    log.debug("isAvailable(${this.serialNumber})")
+    log.trace("isAvailable(${this.serialNumber})")
     try
     {
       this.adbWrapper.androidDevicesDescriptors.any {it.deviceSerialNumber == this.serialNumber}
@@ -229,8 +231,11 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   void setupConnection() throws DeviceException
   {
+    log.trace("setupConnection($serialNumber) / this.tcpClients.forwardPorts()")
     this.tcpClients.forwardPorts()
+    log.trace("setupConnection($serialNumber) / this.startUiaDaemon()")
     this.startUiaDaemon()
+    log.trace("setupConnection($serialNumber) / DONE")
   }
 
   @Override

@@ -227,23 +227,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
   IRobustDevice robustWithReadableLogs(IAndroidDevice device)
   {
-    return new RobustDevice(device,
-      this.cfg.monitorServerStartTimeout,
-      this.cfg.monitorServerStartQueryDelay,
-      this.cfg.clearPackageRetryAttempts,
-      this.cfg.clearPackageRetryDelay,
-      this.cfg.getValidGuiSnapshotRetryAttempts,
-      this.cfg.getValidGuiSnapshotRetryDelay,
-      this.cfg.checkAppIsRunningRetryAttempts,
-      this.cfg.checkAppIsRunningRetryDelay,
-      this.cfg.stopAppRetryAttempts,
-      this.cfg.stopAppSuccessCheckDelay,
-      this.cfg.closeANRAttempts,
-      this.cfg.closeANRDelay,
-      this.cfg.checkDeviceAvailableAfterRebootAttempts,
-      this.cfg.checkDeviceAvailableAfterRebootFirstDelay,
-      this.cfg.checkDeviceAvailableAfterRebootLaterDelays
-    )
+    return new RobustDevice(device, this.cfg)
 
   }
 

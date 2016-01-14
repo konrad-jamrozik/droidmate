@@ -104,6 +104,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     return this.logs
   }
 
+  // KJA needs reboot device exception handling
   private List<IApiLogcatMessage> _readAndClearApiLogs() throws DeviceException
   {
     try

@@ -114,13 +114,13 @@ public class Configuration implements IConfiguration
   public static final String pn_uiautomatorDaemonServerStartTimeout          = "-uiautomatorDaemonServerStartTimeout"
   public static final String pn_uiautomatorDaemonServerStartQueryDelay       = "-uiautomatorDaemonServerStartQueryDelay"
   public static final String pn_uiautomatorDaemonTcpPort                     = "-tcpPort"
-  // KJA rename and add to config for test
   public static final String pn_uiautomatorDaemonWaitForGuiToStabilize       = "-waitForGuiToStabilize"
   public static final String pn_uiautomatorDaemonWaitForWindowUpdateTimeout  = "-waitForWindowUpdateTimeout"
   public static final String pn_uninstallApk                                 = "-uninstallApk"
   public static final String pn_useApkFixturesDir                            = "-useApkFixturesDir"
   public static final String pn_stopAppRetryAttempts                         = "-stopAppRetryAttempts"
   public static final String pn_stopAppSuccessCheckDelay                     = "-stopAppSuccessCheckDelay"
+  public static final String pn_waitForCanRebootDelay                        = "-waitForCanRebootDelay"
   public static final String pn_widgetIndexes                                = "-widgetIndexes"
   // @formatter:on
   //endregion
@@ -315,6 +315,9 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_stopAppSuccessCheckDelay])
   public int stopAppSuccessCheckDelay = 1000
+
+  @Parameter(names = [Configuration.pn_waitForCanRebootDelay])
+  public int waitForCanRebootDelay = 30 * 1000
 
   @Parameter(names = ["-widgetUniqueStringWithFieldPrecedence"], arity = 1)
   public boolean widgetUniqueStringWithFieldPrecedence = true

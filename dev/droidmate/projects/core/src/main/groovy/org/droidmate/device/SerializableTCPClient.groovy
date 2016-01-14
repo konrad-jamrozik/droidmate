@@ -11,6 +11,7 @@ package org.droidmate.device
 
 import groovy.util.logging.Slf4j
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
 
@@ -18,8 +19,8 @@ import org.droidmate.lib_android.MonitorJavaTemplate
 public class SerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable> implements ISerializableTCPClient<InputToServerT, OutputFromServerT>
 {
 
-  private final String        serverAddress = "localhost"
-  private final int           socketTimeout
+  private final String serverAddress = "localhost"
+  private final int    socketTimeout
 
 
   public SerializableTCPClient(int socketTimeout)
@@ -28,23 +29,29 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
   }
 
   @Override
-  Boolean isServerReachable(int port) throws DeviceException, ConnectException
+  Boolean isServerReachable(int port) throws DeviceNeedsRebootException, DeviceException
   {
     try
     {
-      // KJA read here the data sent from the device
+      // KJA2 read here the data sent from the device
       return this.queryServer(MonitorJavaTemplate.srvCmd_connCheck, port) != null
+
+    } catch (DeviceNeedsRebootException e)
+    {
+      throw e
+
     } catch (TcpServerUnreachableException ignored)
     {
       return false
-    } catch (ConnectException exception)
+
+    } catch (DeviceException e)
     {
-      throw exception
+      throw e
 
     } catch (Throwable throwable)
     {
-      throw new DeviceException("Unexpected Throwable while checking if isServerReachable. " +
-        "The Throwable is given as a cause of this exception.", throwable, true)
+      throw new DeviceException("Unexpected Throwable while checking if isServerReachable(). " +
+        "The Throwable is given as a cause of this exception. Requesting to stop further apk explorations.", throwable, true)
     }
   }
 
@@ -53,7 +60,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
    * Next, waits until server returns his answer and returns it.
    */
   @SuppressWarnings("unchecked")
-  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException, ConnectException
+  public OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
   {
 
     OutputFromServerT output
@@ -67,18 +74,15 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
 
       ObjectInputStream inputStream
 
-      // This will block until corresponding socket output stream (located on server) is flushed.
-      //
-      // Reference:
-      // 1. the ObjectInputStream constructor comment.
-      // 2. search for: "Note - The ObjectInputStream constructor blocks until" in:
-      // http://docs.oracle.com/javase/7/docs/platform/serialization/spec/input.html
-      //
       try
       {
-//        log.trace("inputStream = new ObjectInputStream(socket.inputStream)")
-        // Got here once java.net.SocketTimeoutException: Read timed out on
-        // monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, it)
+        // This will block until corresponding socket output stream (located on server) is flushed.
+        //
+        // Reference:
+        // 1. the ObjectInputStream constructor comment.
+        // 2. search for: "Note - The ObjectInputStream constructor blocks until" in:
+        // http://docs.oracle.com/javase/7/docs/platform/serialization/spec/input.html
+        //
         inputStream = new ObjectInputStream(socket.inputStream)
       } catch (EOFException e)
       {
@@ -92,7 +96,6 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
       ObjectOutputStream outputStream
       try
       {
-//        log.trace("outputStream = new ObjectOutputStream(socket.outputStream)")
         outputStream = new ObjectOutputStream(socket.outputStream)
       } catch (EOFException e)
       {
@@ -100,14 +103,16 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
       }
       assert outputStream != null
 
-//      log.trace("outputStream.writeObject(input)")
       outputStream.writeObject(input)
       outputStream.flush()
 
-//      log.trace("output = (OutputFromServerT) inputStream.readObject()")
-      // KJA Managed to get here "java.io.EOFException: null" when I manually unplugged the USB cable
-      // during a test. For logs, see: C:\my\local\repos\chair\droidmate\resources\debug_logs\forced_manual_usb_cable_unplug
-      output = (OutputFromServerT) inputStream.readObject()
+      try
+      {
+        output = (OutputFromServerT) inputStream.readObject()
+      } catch (EOFException e)
+      {
+        throw new DeviceNeedsRebootException(e)
+      }
 
       log.trace("socket.close()")
       socket.close()
@@ -115,13 +120,14 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     }
     catch (IOException | ClassNotFoundException e)
     {
-      throw new DeviceException("SerializableTCPClient has thrown exception while querying server.", e, true)
+      throw new DeviceException("SerializableTCPClient has thrown exception while querying server. " +
+        "Requesting to stop further apk explorations.", e, true)
     }
 
     return output
   }
 
-  private Socket tryGetSocket(String serverAddress, int port) throws ConnectException
+  private Socket tryGetSocket(String serverAddress, int port) throws DeviceNeedsRebootException
   {
     Socket socket
     try
@@ -129,7 +135,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
       socket = new Socket(serverAddress, port)
     } catch (ConnectException e)
     {
-      throw e
+      throw new DeviceNeedsRebootException(e)
     }
     return socket
   }

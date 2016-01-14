@@ -12,12 +12,14 @@ import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
 import org.droidmate.common.Boolean3
 import org.droidmate.common.Utils
+import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.AndroidDeviceAction
 import org.droidmate.device.datatypes.AppHasStoppedDialogBoxGuiState
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.device.datatypes.ValidationResult
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newPressHomeDeviceAction
 
@@ -50,6 +52,29 @@ class RobustDevice implements IRobustDevice
   private final int checkDeviceAvailableAfterRebootFirstDelay
   private final int checkDeviceAvailableAfterRebootLaterDelays
 
+  private final int waitForCanRebootDelay
+
+  RobustDevice(IAndroidDevice device, Configuration cfg)
+  {
+    this(device,
+      cfg.monitorServerStartTimeout,
+      cfg.monitorServerStartQueryDelay,
+      cfg.clearPackageRetryAttempts,
+      cfg.clearPackageRetryDelay,
+      cfg.getValidGuiSnapshotRetryAttempts,
+      cfg.getValidGuiSnapshotRetryDelay,
+      cfg.checkAppIsRunningRetryAttempts,
+      cfg.checkAppIsRunningRetryDelay,
+      cfg.stopAppRetryAttempts,
+      cfg.stopAppSuccessCheckDelay,
+      cfg.closeANRAttempts,
+      cfg.closeANRDelay,
+      cfg.checkDeviceAvailableAfterRebootAttempts,
+      cfg.checkDeviceAvailableAfterRebootFirstDelay,
+      cfg.checkDeviceAvailableAfterRebootLaterDelays,
+      cfg.waitForCanRebootDelay)
+  }
+
   RobustDevice(IAndroidDevice device,
                int monitorServerStartTimeout,
                int monitorServerStartQueryDelay,
@@ -65,7 +90,8 @@ class RobustDevice implements IRobustDevice
                int closeANRDelay,
                int checkDeviceAvailableAfterRebootAttempts,
                int checkDeviceAvailableAfterRebootFirstDelay,
-               int checkDeviceAvailableAfterRebootLaterDelays)
+               int checkDeviceAvailableAfterRebootLaterDelays,
+               int waitForCanRebootDelay)
   {
     this.device = device
     this.messagesReader = new DeviceMessagesReader(device, monitorServerStartTimeout, monitorServerStartQueryDelay)
@@ -89,6 +115,8 @@ class RobustDevice implements IRobustDevice
     this.checkDeviceAvailableAfterRebootFirstDelay = checkDeviceAvailableAfterRebootFirstDelay
     this.checkDeviceAvailableAfterRebootLaterDelays = checkDeviceAvailableAfterRebootLaterDelays
 
+    this.waitForCanRebootDelay = waitForCanRebootDelay
+
     assert clearPackageRetryAttempts >= 1
     assert checkAppIsRunningRetryAttempts >= 1
     assert stopAppRetryAttempts >= 1
@@ -101,10 +129,10 @@ class RobustDevice implements IRobustDevice
     assert closeANRDelay >= 0
     assert checkDeviceAvailableAfterRebootFirstDelay >= 0
     assert checkDeviceAvailableAfterRebootLaterDelays >= 0
-
-
+    assert waitForCanRebootDelay >= 0
   }
 
+  // KJA the contract should be: if device needs reboot, it will reboot and return home screen
   @Override
   IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
   {
@@ -261,13 +289,29 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getValidGuiSnapshot() throws DeviceException
   {
-    IDeviceGuiSnapshot snapshot = device.getGuiSnapshot()
+    IDeviceGuiSnapshot snapshot = this.getGuiSnapshotRebootingIfNecessary()
     ValidationResult vres = snapshot.validationResult
 
     if (!vres.valid)
       throw new DeviceException("Failed to obtain valid GUI snapshot. Validation (failed) result: ${vres.description}")
 
     return snapshot
+  }
+
+  private IDeviceGuiSnapshot getGuiSnapshotRebootingIfNecessary() throws DeviceException
+  {
+    IDeviceGuiSnapshot out
+    try
+    {
+      out = this.device.getGuiSnapshot()
+    } catch (DeviceNeedsRebootException ignored)
+    {
+      log.debug("Device needs a reboot while trying to get GUI snapshot. Rebooting and restoring connection.")
+      this.rebootAndRestoreConnection()
+      out = this.device.getGuiSnapshot()
+    }
+    assert out != null
+    return out
   }
 
   @Override
@@ -277,20 +321,47 @@ class RobustDevice implements IRobustDevice
     this.setupConnection()
   }
 
+  // WISH use "adb wait-for-device" where appropriate.
   @Override
-  void reboot()
+  void reboot() throws DeviceException
   {
-    assert this.device.uiaDaemonClientThreadIsAlive()
+    log.trace("Checking if the device can be rebooted.")
+    if (this.device.available)
+    {
+      log.trace("Device can be rebooted.")
+    } else
+    {
+      log.trace("Device not yet available for a reboot. Waiting $waitForCanRebootDelay milliseconds. If the device still won't be available, " +
+        "assuming it cannot be reached at all.")
 
+      sleep(this.waitForCanRebootDelay)
+
+      if (this.device.available)
+        log.trace("Device can be rebooted after the wait.")
+      else
+        throw new DeviceException("Device is not available for a reboot, even after the wait. Requesting to stop further apk explorations.", true)
+    }
+
+    log.trace("Rebooting.")
     this.device.reboot()
 
     sleep(this.checkDeviceAvailableAfterRebootFirstDelay)
-    Utils.retryOnFalse({
+    boolean rebootResult = Utils.retryOnFalse({
       def out = this.device.available
       if (!out)
         log.trace("Device not yet available after rebooting, waiting $checkDeviceAvailableAfterRebootLaterDelays milliseconds and retrying")
       return out
     }, checkDeviceAvailableAfterRebootAttempts, checkDeviceAvailableAfterRebootLaterDelays)
+
+    if (rebootResult)
+    {
+      assert this.device.available
+      log.trace("Reboot completed successfully.")
+    } else
+    {
+      assert !this.device.available
+      throw new DeviceException("Device is not available after a reboot. Requesting to stop further apk explorations.", true)
+    }
 
     assert !this.device.uiaDaemonClientThreadIsAlive()
   }
@@ -305,32 +376,4 @@ class RobustDevice implements IRobustDevice
   {
     return "robust-" + this.device.toString()
   }
-
-//  public OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
-//  {
-//    OutputFromServerT output
-//    try
-//    {
-//      output = this._queryServer(input, port) as OutputFromServerT
-//
-//    } catch (ConnectException exception)
-//    {
-//      log.debug("Querying server resulted in $exception. Rebooting device and trying again.")
-//
-//      // KJA here instead the robustDevice.reboot functionality should be implemented.
-//      this.deviceReboot.tryRun()
-//
-//      try
-//      {
-//        output = this._queryServer(input, port) as OutputFromServerT
-//
-//      } catch (ConnectException exception2)
-//      {
-//        throw new DeviceException("Querying server resulted in $exception2 even after device reboot.", /* stopFurtherApkExplorations */ true)
-//      }
-//    }
-//
-//    assert output != null
-//    return output
-//  }
 }

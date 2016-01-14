@@ -93,23 +93,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
       deviceTools.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
 
         // Act
-        out = exploration.run(deployedApk, new RobustDevice(device,
-          cfg.monitorServerStartTimeout,
-          cfg.monitorServerStartQueryDelay,
-          cfg.clearPackageRetryAttempts,
-          cfg.clearPackageRetryDelay,
-          cfg.getValidGuiSnapshotRetryAttempts,
-          cfg.getValidGuiSnapshotRetryDelay,
-          cfg.checkAppIsRunningRetryAttempts,
-          cfg.checkAppIsRunningRetryDelay,
-          cfg.stopAppRetryAttempts,
-          cfg.stopAppSuccessCheckDelay,
-          cfg.closeANRAttempts,
-          cfg.closeANRDelay,
-          cfg.checkDeviceAvailableAfterRebootAttempts,
-          cfg.checkDeviceAvailableAfterRebootFirstDelay,
-          cfg.checkDeviceAvailableAfterRebootLaterDelays
-        )).result
+        out = exploration.run(deployedApk, new RobustDevice(device, cfg)).result
 
       }
     }
@@ -148,23 +132,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
 
     def apk = ApkTestHelper.build("mock_app1")
     def simulator = new AndroidDeviceSimulator(timeGenerator, [apk.packageName], simulatorSpec, exceptionSpecs)
-    def simulatedDevice = new RobustDevice(simulator,
-      cfg.monitorServerStartTimeout,
-      cfg.monitorServerStartQueryDelay,
-      cfg.clearPackageRetryAttempts,
-      cfg.clearPackageRetryDelay,
-      cfg.getValidGuiSnapshotRetryAttempts,
-      cfg.getValidGuiSnapshotRetryDelay,
-      cfg.checkAppIsRunningRetryAttempts,
-      cfg.checkAppIsRunningRetryDelay,
-      cfg.stopAppRetryAttempts,
-      cfg.stopAppSuccessCheckDelay,
-      cfg.closeANRAttempts,
-      cfg.closeANRDelay,
-      cfg.checkDeviceAvailableAfterRebootAttempts,
-      cfg.checkDeviceAvailableAfterRebootFirstDelay,
-      cfg.checkDeviceAvailableAfterRebootLaterDelays
-    )
+    def simulatedDevice = new RobustDevice(simulator, cfg)
 
     Exploration exploration = Exploration.build(cfg, timeGenerator)
 

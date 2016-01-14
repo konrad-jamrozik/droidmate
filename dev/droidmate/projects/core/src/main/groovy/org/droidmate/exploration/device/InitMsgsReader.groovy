@@ -150,6 +150,7 @@ class InitMsgsReader implements IInitMsgsReader
     assert messages.size() in [2, 4]
   }
 
+  @Deprecated
   @Override
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
   {
