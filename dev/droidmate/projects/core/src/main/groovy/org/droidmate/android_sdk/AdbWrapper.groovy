@@ -184,7 +184,7 @@ public class AdbWrapper implements IAdbWrapper
   @Override
   public void forwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
   {
-    log.debug("forwardPort($deviceSerialNumber, $port)")
+    log.trace("forwardPort($deviceSerialNumber, $port)")
     assert deviceSerialNumber != null
 
     try
@@ -243,7 +243,6 @@ public class AdbWrapper implements IAdbWrapper
   @Override
   public void reboot(String deviceSerialNumber) throws AdbWrapperException
   {
-    log.debug("reboot($deviceSerialNumber)")
     assert deviceSerialNumber != null
 
     try

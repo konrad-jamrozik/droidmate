@@ -156,7 +156,7 @@ class ExploreCommand extends DroidmateCommand
 
           if (allApksExplorationExceptions.any {it.shouldStopFurtherApkExplorations()})
           {
-            log.warn("Encountered and exception that stops further apk explorations. Skipping exploring the remaining apks.")
+            log.warn("Encountered an exception that stops further apk explorations. Skipping exploring the remaining apks.")
             encounteredApkExplorationsStoppingException = true
           }
         }

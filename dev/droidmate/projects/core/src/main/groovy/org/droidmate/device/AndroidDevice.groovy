@@ -205,14 +205,14 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   void reboot() throws DeviceException
   {
-    log.debug("reboot(${this.serialNumber})")
+    log.trace("reboot(${this.serialNumber})")
     this.adbWrapper.reboot(this.serialNumber)
   }
 
   @Override
   boolean isAvailable() throws DeviceException
   {
-    log.debug("isAvailable(${this.serialNumber})")
+    log.trace("isAvailable(${this.serialNumber})")
     try
     {
       this.adbWrapper.androidDevicesDescriptors.any {it.deviceSerialNumber == this.serialNumber}
@@ -231,8 +231,11 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   void setupConnection() throws DeviceException
   {
+    log.trace("setupConnection($serialNumber) / this.tcpClients.forwardPorts()")
     this.tcpClients.forwardPorts()
+    log.trace("setupConnection($serialNumber) / this.startUiaDaemon()")
     this.startUiaDaemon()
+    log.trace("setupConnection($serialNumber) / DONE")
   }
 
   @Override

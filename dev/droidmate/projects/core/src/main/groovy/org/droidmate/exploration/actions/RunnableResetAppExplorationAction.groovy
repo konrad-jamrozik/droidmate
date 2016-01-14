@@ -41,11 +41,9 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     device.clearPackage(app.packageName)
 
     log.debug("2. ensure home screen is displayed")
-
     device.ensureHomeScreenIsDisplayed()
 
     log.debug("3. turn wifi on")
-
     device.perform(newTurnWifiOnDeviceAction())
 
     log.debug("4. get GUI snapshot to ensure device displays valid screen that is not \"app has stopped\" dialog box.")
@@ -58,7 +56,6 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     logsHandler.logUiaDaemonLogsFromLogcat()
     logsHandler.clearLogcat()
-
 
     log.debug("7. Launch main activity")
     // Launch result is ignored because practice shows that the success of launching main activity cannot be used to determine
