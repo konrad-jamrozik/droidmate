@@ -19,16 +19,21 @@ class TcpClients implements ITcpClients
   @Delegate
   private final IUiautomatorDaemonClient uiautomatorClient
 
-  private final int         uiautomatorDaemonTcpPort
-  private final IAdbWrapper adbWrapper
-  private final String      deviceSerialNumber
-
-  TcpClients(IAdbWrapper adbWrapper, String deviceSerialNumber, int socketTimeout, int uiautomatorDaemonTcpPort)
+  TcpClients(
+    IAdbWrapper adbWrapper,
+    String deviceSerialNumber,
+    int socketTimeout,
+    int uiautomatorDaemonTcpPort,
+    int uiautomatorDaemonServerStartTimeout,
+    int uiautomatorDaemonServerStartQueryDelay)
   {
-    this.deviceSerialNumber = deviceSerialNumber
-    this.adbWrapper = adbWrapper
-    this.uiautomatorDaemonTcpPort = uiautomatorDaemonTcpPort
-    this.uiautomatorClient = new UiautomatorDaemonClient(socketTimeout, uiautomatorDaemonTcpPort, deviceSerialNumber, adbWrapper)
+    this.uiautomatorClient = new UiautomatorDaemonClient(
+      adbWrapper,
+      deviceSerialNumber,
+      uiautomatorDaemonTcpPort,
+      socketTimeout,
+      uiautomatorDaemonServerStartTimeout,
+      uiautomatorDaemonServerStartQueryDelay)
     this.monitorsClient = new MonitorsClient(socketTimeout, deviceSerialNumber, adbWrapper)
   }
 

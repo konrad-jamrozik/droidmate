@@ -114,6 +114,7 @@ public class Configuration implements IConfiguration
   public static final String pn_uiautomatorDaemonServerStartTimeout          = "-uiautomatorDaemonServerStartTimeout"
   public static final String pn_uiautomatorDaemonServerStartQueryDelay       = "-uiautomatorDaemonServerStartQueryDelay"
   public static final String pn_uiautomatorDaemonTcpPort                     = "-tcpPort"
+  // KJA rename and add to config for test
   public static final String pn_uiautomatorDaemonWaitForGuiToStabilize       = "-waitForGuiToStabilize"
   public static final String pn_uiautomatorDaemonWaitForWindowUpdateTimeout  = "-waitForWindowUpdateTimeout"
   public static final String pn_uninstallApk                                 = "-uninstallApk"

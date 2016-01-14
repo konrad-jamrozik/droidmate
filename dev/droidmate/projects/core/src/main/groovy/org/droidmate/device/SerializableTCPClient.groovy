@@ -105,7 +105,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
       outputStream.flush()
 
 //      log.trace("output = (OutputFromServerT) inputStream.readObject()")
-      // Managed to get here "java.io.EOFException: null" when I manually unplugged the USB cable
+      // KJA Managed to get here "java.io.EOFException: null" when I manually unplugged the USB cable
       // during a test. For logs, see: C:\my\local\repos\chair\droidmate\resources\debug_logs\forced_manual_usb_cable_unplug
       output = (OutputFromServerT) inputStream.readObject()
 
