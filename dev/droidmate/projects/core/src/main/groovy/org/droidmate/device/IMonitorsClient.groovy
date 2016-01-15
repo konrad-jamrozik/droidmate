@@ -18,7 +18,7 @@ interface IMonitorsClient
 
   ArrayList<ArrayList<String>> getCurrentTime() throws DeviceNeedsRebootException, DeviceException
 
-  ArrayList<ArrayList<String>> getLogs() throws DeviceException // KJA
+  ArrayList<ArrayList<String>> getLogs() throws DeviceNeedsRebootException, DeviceException
 
   List<Integer> getPorts()
 

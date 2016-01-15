@@ -103,7 +103,7 @@ class ApiLogsReader implements IApiLogsReader
     return deviceTimeDiff.syncMessages(messages)
   }
 
-  List<ITimeFormattedLogcatMessage> getAndClearMessagesFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws DeviceNeedsRebootException, DeviceException
+  private List<ITimeFormattedLogcatMessage> getAndClearMessagesFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws DeviceNeedsRebootException, DeviceException
   {
     List<List<String>> messages = device.readAndClearMonitorTcpMessages()
 

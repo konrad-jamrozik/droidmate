@@ -32,7 +32,7 @@ public interface IExplorableAndroidDevice
 
   void clearLogcat() throws DeviceException
 
-  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceException
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException
 
   LocalDateTime getCurrentTime() throws DeviceNeedsRebootException, DeviceException
 

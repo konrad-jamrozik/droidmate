@@ -72,7 +72,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public ArrayList<ArrayList<String>> getLogs() throws DeviceException
+  public ArrayList<ArrayList<String>> getLogs() throws DeviceNeedsRebootException, DeviceException
   {
     Collection<ArrayList<ArrayList<String>>> out = ports.findResults {
       try

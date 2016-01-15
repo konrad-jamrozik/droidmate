@@ -256,7 +256,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceException // KJA
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException // KJA
   {
     log.debug("readAndClearMonitorTcpMessages()")
 
