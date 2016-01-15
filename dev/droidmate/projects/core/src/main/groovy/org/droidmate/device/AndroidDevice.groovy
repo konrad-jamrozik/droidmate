@@ -256,7 +256,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException // KJA
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("readAndClearMonitorTcpMessages()")
 
@@ -303,7 +303,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  Boolean anyMonitorIsReachable() throws DeviceException
+  Boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("anyMonitorIsReachable()")
     return this.tcpClients.anyMonitorIsReachable()

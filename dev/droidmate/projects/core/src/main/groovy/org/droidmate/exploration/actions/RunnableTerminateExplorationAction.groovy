@@ -42,6 +42,7 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
     device.clearPackage(app.packageName)
 
     log.debug("4. Assert app is not running.")
+    // KJA2 handle reboot
     assertAppIsNotRunning(device, app)
 
     log.debug("5. Get GUI snapshot, ensuring home screen is displayed.")

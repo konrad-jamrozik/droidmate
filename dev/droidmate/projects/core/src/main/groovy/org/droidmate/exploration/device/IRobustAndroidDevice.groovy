@@ -15,13 +15,14 @@ import org.droidmate.exceptions.DeviceException
 
 public interface IRobustDevice extends IAndroidDevice, IDeviceMessagesReader
 {
+  // KJA2 move the methods to AndroidDevice
   IDeviceGuiSnapshot ensureHomeScreenIsDisplayed() throws DeviceException
 
-  Boolean appIsRunningCheckOnce(String appPackageName)
+  Boolean appIsRunningCheckOnce(String appPackageName) throws DeviceException
 
-  Boolean appIsRunning(IApk apk)
+  Boolean appIsRunning(IApk apk) throws DeviceException
 
-  Boolean appIsNotRunning(IApk apk)
+  Boolean appIsNotRunning(IApk apk) throws DeviceException
 
   void rebootAndRestoreConnection() throws DeviceException
 }

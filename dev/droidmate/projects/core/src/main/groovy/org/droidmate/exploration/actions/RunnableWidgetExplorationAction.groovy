@@ -44,8 +44,7 @@ class RunnableWidgetExplorationAction extends RunnableExplorationAction
 
     log.debug("3. Read and clear API logs if any, then seal logs reading")
 
-    if (appIsRunning(device, app))
-      logsHandler.readAndClearApiLogs()
+    logsHandler.readAndClearApiLogs()
 
     this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
 

@@ -374,7 +374,9 @@ class RobustDevice implements IRobustDevice
   }
 
 
-  private Boolean _appIsRunning(String appPackageName)
+  // KJA2 move to AndroidDevice
+  // KJA handle device need reboot
+  private Boolean _appIsRunning(String appPackageName) throws DeviceException
   {
     return device.anyMonitorIsReachable() && device.appProcessIsRunning(appPackageName)
   }

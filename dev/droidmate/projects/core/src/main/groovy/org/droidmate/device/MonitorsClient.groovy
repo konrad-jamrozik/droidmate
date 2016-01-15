@@ -33,7 +33,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public boolean anyMonitorIsReachable()
+  public boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
   {
     boolean out = ports.any {
       this.monitorTcpClient.isServerReachable(it)
