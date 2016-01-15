@@ -153,8 +153,8 @@ class ExplorationStrategy implements IExplorationStrategy
     if (lastGuiScreen == null) {
       lastGuiScreen = result.guiSnapshot.guiState
       guiStatesSeen.add(lastGuiScreen)
-      log.trace(Markers.gui,"<elements_seen>1</elements_seen>")
-      log.trace(Markers.gui,"<gui_screens_seen>" + guiStatesSeen.size() + "</gui_screens_seen>")
+      log.trace(Markers.gui,"<elements_seen>" + lastGuiScreen.widgets.size() + "</elements_seen>")
+      log.trace(Markers.gui,"<gui_screens_seen>1</gui_screens_seen>")
     }
     //--------------
 
