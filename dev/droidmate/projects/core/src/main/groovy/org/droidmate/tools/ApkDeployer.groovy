@@ -111,6 +111,7 @@ public class ApkDeployer implements IApkDeployer
 
   private void tryUndeployApk(IDeployableAndroidDevice device, IApk apk) throws DeviceException
   {
+    // KNOWN BUG after reboot fails in 'check-wifi' action due to permanent loss of connection to device, this fails first with SysCmdExecutorException "'adb logcat -c' failed"
     device.clearLogcat() // Do so, so the logcat messages sent from the uninstalled apk won't interfere with the next one.
 
     if (cfg.uninstallApk)

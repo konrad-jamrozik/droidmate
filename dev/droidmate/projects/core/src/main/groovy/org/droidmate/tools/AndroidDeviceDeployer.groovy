@@ -92,6 +92,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
     deviceIsSetup = false
 
+    // KNOWN BUG after reboot fails in 'check-wifi' action due to permanent loss of connection to device, this fails second with DeviceException "Device is not availabe for a reboot, even after the wait"
     device.closeConnection()
     device.removeJar(cfg.uiautomatorDaemonJar)
     device.removeJar(cfg.monitorApk)

@@ -66,6 +66,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     log.debug("8. Get GUI snapshot")
     // GUI snapshot has to be obtained before a check is made if app is running. Why? Because obtaining GUI snapshot closes all
     // ANR dialogs, and if the app crashed with ANR, it will be deemed as running until the ANR is closed.
+    // KJA KNOWN BUG fails to get valid GUI snapshot
     this.snapshot = device.guiSnapshot
 
     log.debug("9. Try to read API logs.")

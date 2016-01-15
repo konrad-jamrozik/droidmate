@@ -49,6 +49,7 @@ class RunnableWidgetExplorationAction extends RunnableExplorationAction
     this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
 
     log.debug("4. Get GUI snapshot")
+    // KJA KNOWN BUG fails to get valid GUI snapshot
     this.snapshot = device.guiSnapshot
 
     log.debug("5. Log uia-daemon logs and clear logcat")
