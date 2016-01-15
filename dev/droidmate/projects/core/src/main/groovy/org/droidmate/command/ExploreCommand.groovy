@@ -154,13 +154,13 @@ class ExploreCommand extends DroidmateCommand
 
         log.trace(Markers.gui,"<apk>")
         log.trace(Markers.gui,"<name>"+apk.fileName+"</name>")
+          log.trace(Markers.gui,"<events>")
           allApksExplorationExceptions +=
             this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
-		log.trace(Markers.gui,"<events>")              
               tryExploreOnDeviceAndSerialize(deployedApk, device, out)
-  		log.trace(Markers.gui,"</events>")
             }
-	log.trace(Markers.gui,"</apk>")
+          log.trace(Markers.gui,"</events>")
+	    log.trace(Markers.gui,"</apk>")
 
           if (allApksExplorationExceptions.any {it.shouldStopFurtherApkExplorations()})
           {
