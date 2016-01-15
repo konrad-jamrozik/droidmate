@@ -13,8 +13,6 @@ import org.droidmate.exceptions.DeviceNeedsRebootException
 
 interface IMonitorsClient
 {
-
-  // KJA current
   boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
 
   ArrayList<ArrayList<String>> getCurrentTime() throws DeviceNeedsRebootException, DeviceException

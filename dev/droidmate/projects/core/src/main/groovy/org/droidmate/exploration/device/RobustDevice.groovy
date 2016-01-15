@@ -155,7 +155,7 @@ class RobustDevice implements IRobustDevice
       // if indeed all of them have been stopped.
       sleep(this.stopAppSuccessCheckDelay)
 
-      return !this.appIsRunningCheckOnce(apkPackageName)
+      return !this.getAppIsRunningRebootingIfNecessary(apkPackageName)
 
     },
       this.stopAppRetryAttempts,
@@ -181,27 +181,18 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
-  Boolean appIsRunningCheckOnce(String appPackageName) throws DeviceException
+  public Boolean appIsNotRunning(IApk apk) throws DeviceException
   {
-    return _appIsRunning(appPackageName)
-  }
-
-  @Override
-  Boolean appIsRunning(IApk apk) throws DeviceException
-  {
-    return Utils.retryOnFalse(this.&_appIsRunning.curry(apk.packageName),
+    return Utils.retryOnFalse({ !this.getAppIsRunningRebootingIfNecessary(apk.packageName)},
       checkAppIsRunningRetryAttempts,
       checkAppIsRunningRetryDelay,
     )
   }
 
-  @Override
-  Boolean appIsNotRunning(IApk apk) throws DeviceException
+  private boolean getAppIsRunningRebootingIfNecessary(String packageName) throws DeviceException
   {
-    return Utils.retryOnFalse({!this._appIsRunning(apk.packageName)},
-      checkAppIsRunningRetryAttempts,
-      checkAppIsRunningRetryDelay,
-    )
+    // KJA handle DeviceNeedsRebootException
+    this.device.appIsRunning(packageName)
   }
 
   @Override
@@ -369,17 +360,12 @@ class RobustDevice implements IRobustDevice
   @Override
   List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceException
   {
-    // KJA add here handling of 'needs reboot' exceptions
+    // KJA handle DeviceNeedsRebootException
     return this.messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer()
   }
 
 
-  // KJA2 move to AndroidDevice
-  // KJA handle device need reboot
-  private Boolean _appIsRunning(String appPackageName) throws DeviceException
-  {
-    return device.anyMonitorIsReachable() && device.appProcessIsRunning(appPackageName)
-  }
+
 
   @Override
   String toString()

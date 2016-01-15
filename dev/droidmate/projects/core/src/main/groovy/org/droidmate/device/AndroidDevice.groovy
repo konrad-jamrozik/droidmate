@@ -288,8 +288,7 @@ public class AndroidDevice implements IAndroidDevice
 
   }
 
-  @Override
-  Boolean appProcessIsRunning(String appPackageName) throws DeviceException
+  private Boolean appProcessIsRunning(String appPackageName) throws DeviceException
   {
     log.debug("appProcessIsRunning($appPackageName)")
     String ps = this.adbWrapper.ps(this.serialNumber)
@@ -371,7 +370,11 @@ public class AndroidDevice implements IAndroidDevice
     ]
   }
 
-
+  @Override
+  public Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
+  {
+    return this.anyMonitorIsReachable() && this.appProcessIsRunning(appPackageName)
+  }
   @Override
   public String toString()
   {

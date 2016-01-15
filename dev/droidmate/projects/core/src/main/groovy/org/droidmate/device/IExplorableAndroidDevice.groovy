@@ -36,10 +36,10 @@ public interface IExplorableAndroidDevice
 
   LocalDateTime getCurrentTime() throws DeviceNeedsRebootException, DeviceException
 
-  Boolean appProcessIsRunning(String appPackageName) throws DeviceException
-
   Boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
 
   Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
+
+  Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
 }
 
