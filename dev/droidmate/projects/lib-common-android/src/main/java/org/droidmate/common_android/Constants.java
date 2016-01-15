@@ -20,7 +20,8 @@ public class Constants
 
   public static final String uiaDaemon_logcatFileName = "droidmate_uiad_logcat.txt";
 
-  public static final String uiaDaemon_logcatTag = "droidmate/uiad";
+  public static final String deviceLogcatTagPrefix = "droidmate/";
+  public static final String uiaDaemon_logcatTag = deviceLogcatTagPrefix + "uiad";
 
   // End of DUPLICATION WARNING
 

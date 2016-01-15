@@ -80,6 +80,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
 
   private Logger uiadLogger = LoggerFactory.getLogger(LogbackConstants.logger_name_uiad)
 
+  // KJA to remove
   @Override
   void logUiaDaemonLogsFromLogcat() throws DeviceException
   {
