@@ -12,14 +12,12 @@ package org.droidmate.exploration.strategy
 import com.google.common.base.Ticker
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device.datatypes.IGuiState
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
-import org.droidmate.exploration.actions.ExplorationAction
-import org.droidmate.exploration.actions.IExplorationActionRunResult
-import org.droidmate.exploration.actions.ResetAppExplorationAction
-import org.droidmate.exploration.actions.TerminateExplorationAction
+import org.droidmate.exploration.actions.*
 
 import static groovy.transform.TypeCheckingMode.SKIP
 import static org.droidmate.exploration.actions.ExplorationAction.*
@@ -127,10 +125,45 @@ class ExplorationStrategy implements IExplorationStrategy
     not only widget indexes. It has to work for all kinds of exploration actions.
      */
 
+
     assert outExplAction != null
     terminationCriterion.assertPostDecide(outExplAction)
+
+    frontendHook(outExplAction)
+
     return outExplAction
 
+  }
+
+
+
+  /**
+   * Allows to hook into the the next ExplorationAction to be executed on the device.
+   */
+  void frontendHook(ExplorationAction explorationAction)
+  {
+    // To-do for SE team
+
+    switch (explorationAction)
+    {
+      case WidgetExplorationAction:
+        Widget w = (explorationAction as WidgetExplorationAction).widget
+
+        String text = w.text // For other properties, see org.droidmate.common.exploration.datatypes.Widget
+
+        // Otherwise the widget is not interesting (DroidMate will never do anything with it)
+        boolean canBeActedUpon = w.canBeActedUpon()
+
+        break
+      case ResetAppExplorationAction:
+        // No interesting properties, but just knowing the class is useful.
+        break
+      case TerminateExplorationAction:
+        // No interesting properties, but just knowing the class is useful.
+        break
+      default:
+        throw new UnexpectedIfElseFallthroughError()
+    }
   }
 
   @Override
