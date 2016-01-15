@@ -296,17 +296,17 @@ class RobustDevice implements IRobustDevice
     rebootIfNecessary { this.device.getGuiSnapshot() }
   }
 
-  private <T> T rebootIfNecessary(Closure<T> closure) throws DeviceException
+  private <T> T rebootIfNecessary(Closure<T> operationOnDevice) throws DeviceException
   {
     T out
     try
     {
-      out = closure()
+      out = operationOnDevice()
     } catch (DeviceNeedsRebootException e)
     {
       log.debug("! Caught $e. Rebooting and restoring connection.")
       rebootAndRestoreConnection()
-      out = closure()
+      out = operationOnDevice()
     }
     assert out != null
     return out
