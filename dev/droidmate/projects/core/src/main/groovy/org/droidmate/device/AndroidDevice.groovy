@@ -104,7 +104,6 @@ public class AndroidDevice implements IAndroidDevice
     return outSnapshot
   }
 
-  // KJA handle DeviceNeedsRebootException
   @Override
   void perform(IAndroidDeviceAction action) throws DeviceNeedsRebootException, DeviceException
   {

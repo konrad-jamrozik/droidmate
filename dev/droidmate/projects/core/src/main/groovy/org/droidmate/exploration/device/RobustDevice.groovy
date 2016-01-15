@@ -14,10 +14,7 @@ import org.droidmate.common.Boolean3
 import org.droidmate.common.Utils
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
-import org.droidmate.device.datatypes.AndroidDeviceAction
-import org.droidmate.device.datatypes.AppHasStoppedDialogBoxGuiState
-import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.device.datatypes.ValidationResult
+import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.logcat.IApiLogcatMessage
@@ -181,6 +178,12 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
+  void perform(IAndroidDeviceAction action) throws DeviceNeedsRebootException, DeviceException
+  {
+    rebootIfNecessary {this.device.perform(action); return true }
+  }
+
+  @Override
   public Boolean appIsNotRunning(IApk apk) throws DeviceException
   {
     return Utils.retryOnFalse({ !this.getAppIsRunningRebootingIfNecessary(apk.packageName)},
@@ -191,8 +194,7 @@ class RobustDevice implements IRobustDevice
 
   private boolean getAppIsRunningRebootingIfNecessary(String packageName) throws DeviceException
   {
-    // KJA handle DeviceNeedsRebootException
-    this.device.appIsRunning(packageName)
+    rebootIfNecessary { this.device.appIsRunning(packageName) }
   }
 
   @Override
@@ -291,22 +293,26 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getGuiSnapshotRebootingIfNecessary() throws DeviceException
   {
-    IDeviceGuiSnapshot out
+    rebootIfNecessary { this.device.getGuiSnapshot() }
+  }
+
+  private <T> T rebootIfNecessary(Closure<T> closure) throws DeviceException
+  {
+    T out
     try
     {
-      out = this.device.getGuiSnapshot()
+      out = closure()
     } catch (DeviceNeedsRebootException e)
     {
-      log.debug("! Caught $e while trying to get GUI snapshot. Rebooting and restoring connection.")
-      this.rebootAndRestoreConnection()
-      out = this.device.getGuiSnapshot()
+      log.debug("! Caught $e. Rebooting and restoring connection.")
+      rebootAndRestoreConnection()
+      out = closure()
     }
     assert out != null
     return out
   }
 
-  @Override
-  void rebootAndRestoreConnection() throws DeviceException
+  private void rebootAndRestoreConnection() throws DeviceException
   {
     this.reboot()
     this.setupConnection()
@@ -360,12 +366,14 @@ class RobustDevice implements IRobustDevice
   @Override
   List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceException
   {
-    // KJA handle DeviceNeedsRebootException
-    return this.messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer()
+    rebootIfNecessary { this.messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer() }
   }
 
-
-
+  @Override
+  public void closeConnection() throws DeviceException
+  {
+    rebootIfNecessary { this.device.closeConnection(); return true }
+  }
 
   @Override
   String toString()

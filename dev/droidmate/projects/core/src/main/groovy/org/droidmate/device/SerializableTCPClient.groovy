@@ -33,7 +33,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
   {
     try
     {
-      // KJA2 read here the data sent from the device
+      // KJA 1 read here the data sent from the device
       return this.queryServer(MonitorJavaTemplate.srvCmd_connCheck, port) != null
 
     } catch (DeviceNeedsRebootException e)

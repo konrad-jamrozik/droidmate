@@ -24,7 +24,7 @@ public interface IExplorableAndroidDevice
 
   IDeviceGuiSnapshot getGuiSnapshot() throws DeviceNeedsRebootException, DeviceException
 
-  void perform(IAndroidDeviceAction action) throws DeviceException
+  void perform(IAndroidDeviceAction action) throws DeviceNeedsRebootException, DeviceException
 
   List<ITimeFormattedLogcatMessage> readLogcatMessages(String messageTag) throws DeviceException
 
