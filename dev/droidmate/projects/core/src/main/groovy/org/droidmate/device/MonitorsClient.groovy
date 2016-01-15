@@ -36,13 +36,32 @@ class MonitorsClient implements IMonitorsClient
   public boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
   {
     boolean out = ports.any {
-      this.monitorTcpClient.isServerReachable(it)
+      this.isServerReachable(it)
     }
     if (out)
       log.trace("At least one monitor is reachable.")
     else
       log.trace("No monitor is reachable.")
     return out
+  }
+
+  private Boolean isServerReachable(int port)
+  {
+    ArrayList<ArrayList<String>> out
+    try
+    {
+      out = this.monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_connCheck, port)
+    } catch (TcpServerUnreachableException ignored)
+    {
+      return false
+    }
+
+    ArrayList<String> diagnostics = out.findSingle()
+    assert diagnostics.size() >= 2
+    String pid = diagnostics[0]
+    String packageName = diagnostics[1]
+    log.trace("Reached server at port $port. PID: $pid package: $packageName")
+    return true
   }
 
   @Override

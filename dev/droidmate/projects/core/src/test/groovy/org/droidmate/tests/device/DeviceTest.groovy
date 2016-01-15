@@ -45,7 +45,7 @@ class DeviceTest extends DroidmateGroovyTestCase
     withApkDeployedOnDevice() {IRobustDevice device, IApk deployedApk ->
 
       device.getGuiSnapshot()
-      device.rebootAndRestoreConnection()
+      device.reboot()
       device.getGuiSnapshot()
     }
   }

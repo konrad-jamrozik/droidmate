@@ -13,7 +13,6 @@ import groovy.util.logging.Slf4j
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
-import org.droidmate.lib_android.MonitorJavaTemplate
 
 @Slf4j
 public class SerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable> implements ISerializableTCPClient<InputToServerT, OutputFromServerT>
@@ -28,32 +27,6 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
     this.socketTimeout = socketTimeout
   }
 
-  @Override
-  Boolean isServerReachable(int port) throws DeviceNeedsRebootException, DeviceException
-  {
-    try
-    {
-      // KJA 1 read here the data sent from the device
-      return this.queryServer(MonitorJavaTemplate.srvCmd_connCheck, port) != null
-
-    } catch (DeviceNeedsRebootException e)
-    {
-      throw e
-
-    } catch (TcpServerUnreachableException ignored)
-    {
-      return false
-
-    } catch (DeviceException e)
-    {
-      throw e
-
-    } catch (Throwable throwable)
-    {
-      throw new DeviceException("Unexpected Throwable while checking if isServerReachable(). " +
-        "The Throwable is given as a cause of this exception. Requesting to stop further apk explorations.", throwable, true)
-    }
-  }
 
   /**
    * Sends through TCP socket the serialized {@code input} to server under {@link #serverAddress}:{@code port}.<br/>
@@ -118,10 +91,14 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
       socket.close()
 
     }
-    catch (IOException | ClassNotFoundException e)
+    catch (TcpServerUnreachableException e)
     {
-      throw new DeviceException("SerializableTCPClient has thrown exception while querying server. " +
-        "Requesting to stop further apk explorations.", e, true)
+      throw e
+    }
+    catch (Throwable t)
+    {
+      throw new DeviceException("SerializableTCPClient has thrown a ${t.class.simpleName} while querying server. " +
+        "Requesting to stop further apk explorations.", t, true)
     }
 
     return output
