@@ -9,6 +9,7 @@
 package org.droidmate.exploration.device
 
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
@@ -16,9 +17,9 @@ import java.time.LocalDateTime
 interface IDeviceTimeDiff
 {
 
-  LocalDateTime sync(LocalDateTime deviceTime) throws DeviceException
+  LocalDateTime sync(LocalDateTime deviceTime) throws DeviceNeedsRebootException, DeviceException
 
-  List<ITimeFormattedLogcatMessage> syncMessages(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
+  List<ITimeFormattedLogcatMessage> syncMessages(List<ITimeFormattedLogcatMessage> messages) throws DeviceNeedsRebootException, DeviceException
 
   void reset()
 }

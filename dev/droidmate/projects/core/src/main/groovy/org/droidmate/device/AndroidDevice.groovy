@@ -256,7 +256,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceException
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceException // KJA
   {
     log.debug("readAndClearMonitorTcpMessages()")
 
@@ -273,7 +273,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  LocalDateTime getCurrentTime() throws DeviceException
+  LocalDateTime getCurrentTime() throws DeviceNeedsRebootException, DeviceException
   {
     List<List<String>> msgs = this.tcpClients.getCurrentTime()
 

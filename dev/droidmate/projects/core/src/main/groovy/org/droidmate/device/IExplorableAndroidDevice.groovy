@@ -34,7 +34,7 @@ public interface IExplorableAndroidDevice
 
   List<List<String>> readAndClearMonitorTcpMessages() throws DeviceException
 
-  LocalDateTime getCurrentTime() throws DeviceException
+  LocalDateTime getCurrentTime() throws DeviceNeedsRebootException, DeviceException
 
   Boolean appProcessIsRunning(String appPackageName) throws DeviceException
 

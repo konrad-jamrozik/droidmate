@@ -9,15 +9,16 @@
 package org.droidmate.device
 
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 
 interface IMonitorsClient
 {
 
-  boolean anyMonitorIsReachable() throws DeviceException
+  boolean anyMonitorIsReachable() throws DeviceException // KJA
 
-  ArrayList<ArrayList<String>> getCurrentTime() throws DeviceException
+  ArrayList<ArrayList<String>> getCurrentTime() throws DeviceNeedsRebootException, DeviceException
 
-  ArrayList<ArrayList<String>> getLogs() throws DeviceException
+  ArrayList<ArrayList<String>> getLogs() throws DeviceException // KJA
 
   List<Integer> getPorts()
 

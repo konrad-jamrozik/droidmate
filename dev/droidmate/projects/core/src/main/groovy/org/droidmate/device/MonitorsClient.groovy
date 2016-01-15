@@ -11,6 +11,7 @@ package org.droidmate.device
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
 
@@ -45,12 +46,17 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public ArrayList<ArrayList<String>> getCurrentTime() throws DeviceException
+  public ArrayList<ArrayList<String>> getCurrentTime() throws DeviceNeedsRebootException, DeviceException
   {
     ArrayList<ArrayList<String>> out = ports.findResult {
       try
       {
         return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, it)
+
+      } catch (DeviceNeedsRebootException e)
+      {
+        throw e
+
       } catch (TcpServerUnreachableException ignored)
       {
         log.trace("Did not reach monitor TCP server at port $it.")
