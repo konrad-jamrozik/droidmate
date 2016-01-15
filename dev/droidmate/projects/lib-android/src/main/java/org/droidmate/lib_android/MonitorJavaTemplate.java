@@ -119,7 +119,7 @@ public class MonitorJavaTemplate
   {
     try
     {
-      startMonitorTCPServer();
+      server = startMonitorTCPServer();
       Log.i(tag_init, msg_ctor_success);
 
     } catch (Throwable e)
@@ -133,7 +133,7 @@ public class MonitorJavaTemplate
   public void init(android.content.Context context)
   {
     if (server == null)
-      Log.i(tag_init, "Didn't set context: MonitorTCPServer is null");
+      Log.i(tag_srv, "Init: Didn't set context: MonitorTCPServer is null");
     else
       server.context = context;
 
@@ -150,7 +150,7 @@ public class MonitorJavaTemplate
   //region TCP server code
 
   @SuppressWarnings("ConstantConditions")
-  private static void startMonitorTCPServer() throws Throwable
+  private static MonitorTCPServer startMonitorTCPServer() throws Throwable
   {
     Log.d(tag_srv, "Starting monitor TCP server...");
 
@@ -186,6 +186,7 @@ public class MonitorJavaTemplate
     if (tcpServer.isClosed()) throw new AssertionError();
 
     Log.d(tag_srv, "Starting monitor TCP server succeeded. Port used: " + portUsed + " PID: " + getPid());
+    return tcpServer;
   }
 
   static class MonitorTCPServer extends SerializableTCPServerBase<String, ArrayList<ArrayList<String>>>
