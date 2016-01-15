@@ -135,8 +135,6 @@ class ExplorationStrategy implements IExplorationStrategy
 
   }
 
-
-
   /**
    * Allows to hook into the the next ExplorationAction to be executed on the device.
    */

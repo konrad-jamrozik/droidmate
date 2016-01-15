@@ -93,7 +93,9 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
 
     // For post-conditions, see inside the constructor call made line below.
     ExplorationActionRunResult result = new ExplorationActionRunResult(successful, this.logs, this.snapshot, this.exception)
+
     frontendHook(result)
+
     return result
   }
 
