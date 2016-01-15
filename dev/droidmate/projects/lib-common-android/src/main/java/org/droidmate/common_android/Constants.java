@@ -14,8 +14,13 @@ package org.droidmate.common_android;
 public class Constants
 {
 
-  // Why this is constant and not a cmd line parameter? See comment in Configuration class.
+  // To understand why this is constant and not a cmd line parameter, see comment in
+  // org.droidmate.configuration.ConfigurationBuilder.bindAndValidate()
   public static final int UIADAEMON_SERVER_PORT = 59800;
+
+  public static final String uiaDaemon_logcatFileName = "droidmate_uiad_logcat.txt";
+
+  public static final String uiaDaemon_logcatTag = "droidmate/uiad";
 
   // End of DUPLICATION WARNING
 
@@ -43,7 +48,6 @@ public class Constants
   public static final String uiaDaemonParam_waitForGuiToStabilize      = "wait_for_gui_to_stabilize";
   public static final String uiaDaemonParam_waitForWindowUpdateTimeout = "wait_for_window_update_timeout";
   public static final String uiaDaemonParam_tcpPort                    = "uiadaemon_server_tcp_port";
-  public static final String uiaDaemon_logcatTag                       = "org.droidmate.uiad";
 
   // !!! DUPLICATION WARNING !!!
   // These values are duplicated in Instrumentation library from Philipp.
