@@ -25,6 +25,7 @@ import org.droidmate.exceptions.NoAndroidDevicesAvailableException
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
+import org.droidmate.logging.LogbackUtils
 
 import java.awt.*
 import java.time.LocalDateTime
@@ -135,6 +136,7 @@ public class AndroidDevice implements IAndroidDevice
     return issueCommand(new DeviceCommand(DEVICE_COMMAND_PERFORM_ACTION, action.guiAction))
   }
 
+  // KJA 2 to remove
   // Deprecated on 15 Jan 2016. To remove soon.
   @Deprecated
   public DeviceResponse getIsDeviceOrientationLandscape() throws DeviceNeedsRebootException, DeviceException
@@ -235,6 +237,18 @@ public class AndroidDevice implements IAndroidDevice
     log.trace("setupConnection($serialNumber) / this.startUiaDaemon()")
     this.startUiaDaemon()
     log.trace("setupConnection($serialNumber) / DONE")
+  }
+
+  @Override
+  void removeLogcatLogFile() throws DeviceException
+  {
+    this.adbWrapper.deleteFile(this.serialNumber, logcatLogFileName)
+  }
+
+  @Override
+  void pullLogcatLogFile() throws DeviceException
+  {
+    this.adbWrapper.pullFile(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"))
   }
 
   @Override

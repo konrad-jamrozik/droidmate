@@ -49,4 +49,8 @@ public interface IAdbWrapper {
   void reboot(String deviceSerialNumber) throws AdbWrapperException
 
   void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
+
+  void deleteFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+
+  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
 }

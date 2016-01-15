@@ -36,4 +36,8 @@ public interface IDeployableAndroidDevice
   boolean uiaDaemonClientThreadIsAlive()
 
   void setupConnection() throws DeviceException
+
+  void removeLogcatLogFile() throws DeviceException
+
+  void pullLogcatLogFile() throws DeviceException
 }

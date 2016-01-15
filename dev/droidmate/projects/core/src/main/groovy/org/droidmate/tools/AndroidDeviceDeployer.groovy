@@ -68,8 +68,10 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
    */
   protected void trySetUp(IDeployableAndroidDevice device) throws DeviceException
   {
-
     this.adbWrapper.startAdbServer()
+
+    // KJA ensure that without it the file is being appended
+    // device.removeLogcatLogFile()
     device.pushJar(this.cfg.uiautomatorDaemonJar)
     device.pushJar(this.cfg.monitorApk)
 
@@ -92,6 +94,8 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
     deviceIsSetup = false
 
+    // KJA
+    // device.pullLogcatLogFile()
     // KNOWN BUG after reboot fails in 'check-wifi' action due to permanent loss of connection to device, this fails second with DeviceException "Device is not availabe for a reboot, even after the wait"
     device.closeConnection()
     device.removeJar(cfg.uiautomatorDaemonJar)

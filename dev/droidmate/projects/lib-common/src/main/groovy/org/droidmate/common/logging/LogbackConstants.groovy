@@ -17,7 +17,8 @@ public class LogbackConstants
 
   private static String getLogsDirPath()
   {
-    // WISH not logsDir has to be set on VM arg instead of normal arg. Maybe making it normal arg and then resetting the config as described here [1] would help. [1]: http://logback.qos.ch/manual/configuration.html#joranDirectly
+    // WISH note: logsDir has to be set on VM arg instead of normal arg. Maybe making it normal arg and then resetting
+    // the config as described here [1] would help. [1]: http://logback.qos.ch/manual/configuration.html#joranDirectly
     String logsDir = System.getProperty("logsDir")
     if (logsDir == null)
       return "." + File.separator + "dev1" + File.separator + "logs"

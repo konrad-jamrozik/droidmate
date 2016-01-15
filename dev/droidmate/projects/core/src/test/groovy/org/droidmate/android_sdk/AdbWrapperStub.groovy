@@ -120,7 +120,17 @@ class AdbWrapperStub implements IAdbWrapper
 
 
   @Override
-  void startUiautomatorDaemon(String deviceSerialNumber, int port)
+  void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
+  {
+  }
+
+  @Override
+  void deleteFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+  {
+  }
+
+  @Override
+  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
   {
   }
 }

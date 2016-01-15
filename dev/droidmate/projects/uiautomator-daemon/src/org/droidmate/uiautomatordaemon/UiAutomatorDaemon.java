@@ -66,9 +66,10 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
   }
 
   public void saveLogcatToFile() {
-    String fileName = uiaDaemon_logcatFileName;
 
-    File outputFile = new File(Environment.getDataDirectory(),fileName);
+    String fileName = logcatLogFileName;
+
+    File outputFile = new File(Environment.getDataDirectory(), fileName);
 
     if (outputFile.exists())
     {

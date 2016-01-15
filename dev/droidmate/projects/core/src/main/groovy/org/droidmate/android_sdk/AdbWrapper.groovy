@@ -20,6 +20,9 @@ import org.droidmate.exceptions.AdbWrapperException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
 import org.droidmate.init.InitConstants
 
+import java.nio.file.Files
+import java.nio.file.Paths
+
 /**
  * Provides clean interface for communication with the Android SDK's Android Debug Bridge (ADB) tool.<br/>
  * <br/>
@@ -35,6 +38,9 @@ public class AdbWrapper implements IAdbWrapper
 
   private final Configuration   cfg
   private       ISysCmdExecutor sysCmdExecutor
+
+  // This should be set to the value of android.os.Environment.getDataDirectory()
+  private final String deviceEnvironmentDataDirectory = "data/local/tmp/"
 
 
   AdbWrapper(
@@ -607,4 +613,42 @@ public class AdbWrapper implements IAdbWrapper
     }
   }
 
+  @Override
+  void deleteFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+  {
+    // KJA current work
+  }
+
+  @Override
+  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
+  {
+    // KJA test
+    assert deviceSerialNumber != null
+    assert pulledFileName != null
+    assert destinationFilePath != null
+
+    assert pulledFileName.size() > 0
+
+    // WISH make it stubbable by taking filesystem from configuration. But then also logback logs should take filesystem from
+    // configuration, but they do not as of 15 Jan 2016
+    assert Files.notExists(Paths.get(destinationFilePath))
+
+    String commandDescription = String
+      .format(
+      "Executing adb to pull file %s from Android Device with s/n %s.",
+      pulledFileName, deviceSerialNumber)
+
+    try
+    {
+      // Executed command based on step 4 from:
+      // http://developer.android.com/tools/testing/testing_ui.html#builddeploy
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "pull", deviceEnvironmentDataDirectory + pulledFileName, destinationFilePath)
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb pull ...' failed. Oh my.", e)
+    }
+  }
 }

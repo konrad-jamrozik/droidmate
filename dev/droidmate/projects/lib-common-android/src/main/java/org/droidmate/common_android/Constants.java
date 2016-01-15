@@ -18,7 +18,7 @@ public class Constants
   // org.droidmate.configuration.ConfigurationBuilder.bindAndValidate()
   public static final int UIADAEMON_SERVER_PORT = 59800;
 
-  public static final String uiaDaemon_logcatFileName = "droidmate_uiad_logcat.txt";
+  public static final String logcatLogFileName = "droidmate_logcat.txt";
 
   public static final String deviceLogcatTagPrefix = "droidmate/";
   public static final String uiaDaemon_logcatTag = deviceLogcatTagPrefix + "uiad";
