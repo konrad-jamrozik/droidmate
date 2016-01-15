@@ -50,6 +50,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     device.getGuiSnapshot()
 
     log.debug("5. Assert app is not running.")
+    // KJA2 assert fail here
     assertAppIsNotRunning(device, app)
 
     log.debug("6. Log uia-daemon logs and clear logcat")
