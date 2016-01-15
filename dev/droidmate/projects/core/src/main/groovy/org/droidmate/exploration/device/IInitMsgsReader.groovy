@@ -17,8 +17,10 @@ import java.time.LocalDateTime
 interface IInitMsgsReader
 {
 
+  @Deprecated
   LocalDateTime readMonitorMessages(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
 
+  @Deprecated
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
 }
 
