@@ -9,7 +9,10 @@
 
 package org.droidmate.uiautomatordaemon;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.util.Log;
+import org.droidmate.common_android.Constants;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,7 +31,7 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
   private String serverStartMessageTag;
   private String serverStartMessage;
 
-  private final static String thisClassName = SerializableTCPServerBase.class.getSimpleName();
+  private final static String tagBase = Constants.deviceLogcatTagPrefix + "server_base";
 
   protected SerializableTCPServerBase(String serverStartMessageTag, String serverStartMessage)
   {
@@ -40,42 +43,37 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
 
   protected abstract boolean shouldCloseServerSocket(ServerInputT serverInput);
 
-  // Used in org.droidmate.uiautomatordaemon.UiAutomatorDaemon.init()
   public Thread start(int port) throws InterruptedException
   {
+    this.port = port;
+    ServerRunnable serverRunnable = new ServerRunnable();
+    Thread serverThread = new Thread(serverRunnable);
 
-    try
+    //noinspection SynchronizationOnLocalVariableOrMethodParameter
+    synchronized (serverRunnable)
     {
-      this.port = port;
-      ServerRunnable serverRunnable = new ServerRunnable();
-      Thread serverThread = new Thread(serverRunnable);
-
-      //noinspection SynchronizationOnLocalVariableOrMethodParameter
-      synchronized (serverRunnable)
-      {
-        assert (serverSocket == null);
-        serverThread.start();
-        serverRunnable.wait();
-        assert (serverSocket != null);
-      }
-      Log.i(serverStartMessageTag, serverStartMessage);
-
-      return serverThread;
-
-    } catch (InterruptedException e)
-    {
-      throw e;
+      if (serverSocket != null) throw new AssertionError();
+      serverThread.start();
+      serverRunnable.wait();
+      if (serverSocket == null) throw new AssertionError();
     }
+    Log.i(serverStartMessageTag, serverStartMessage);
+
+    return serverThread;
+
   }
 
+  @TargetApi(Build.VERSION_CODES.FROYO)
   public void close()
   {
     try
     {
+      Log.i("DEBUG_XXX", "serverSocket.close();");
       serverSocket.close();
     } catch (IOException e)
     {
-      Log.wtf(thisClassName, "Failed to close SerializableTCPServerBase.");
+      Log.i("DEBUG_XXX", "Log.wtf(thisClassName, \"Failed to close SerializableTCPServerBase.\");");
+      Log.wtf(tagBase, "Failed to close SerializableTCPServerBase.");
     }
   }
 
@@ -88,12 +86,13 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
   private class ServerRunnable implements Runnable
   {
 
-    private final String serverRunnableClassName = ServerRunnable.class.getSimpleName() + port;
+    private final String tagRunnable = Constants.deviceLogcatTagPrefix + "server_runnable" + port;
+
 
     public void run()
     {
 
-      Log.d(serverRunnableClassName, "Started ServerRunnable.");
+      Log.d(tagRunnable, "Started ServerRunnable.");
       try
       {
 
@@ -107,10 +106,13 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
 
         while (!serverSocket.isClosed())
         {
-          Log.d(serverRunnableClassName, String.format("Accepting socket from client on port %s...", port));
+          // KJA2 DEBUG_XXX
+          Log.d(tagRunnable, String.format("Accepting socket from client on port %s...", port));
+          Log.i("DEBUG_XXX", "serverSocket.accept()");
           Socket clientSocket = serverSocket.accept();
-          Log.v(serverRunnableClassName, "Socket accepted.");
+          Log.v(tagRunnable, "Socket accepted.");
 
+          Log.i("DEBUG_XXX", "ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());");
           ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
 
           /*
@@ -122,8 +124,10 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
            * 2. Search for: "Note - The ObjectInputStream constructor blocks until" in:
            * http://docs.oracle.com/javase/7/docs/platform/serialization/spec/input.html
            */
+          Log.i("DEBUG_XXX", "Output.flush()");
           output.flush();
 
+          Log.i("DEBUG_XXX", "ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());");
           ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
 
           ServerInputT serverInput = null;
@@ -132,43 +136,51 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
 
           try
           {
+            Log.i("DEBUG_XXX", "ServerInputT localVarForSuppressionAnnotation = (ServerInputT) input.readObject();");
             @SuppressWarnings("unchecked") // Without this var here, there is no place to put the "unchecked" suppression warning.
               ServerInputT localVarForSuppressionAnnotation = (ServerInputT) input.readObject();
             serverInput = localVarForSuppressionAnnotation;
 
           } catch (ClassNotFoundException e)
           {
+            Log.i("DEBUG_XXX", "serverInputReadEx = handleInputReadObjectException(input, e); " + e);
             serverInputReadEx = handleInputReadObjectException(input, e);
           } catch (IOException e)
           {
+            Log.i("DEBUG_XXX", "serverInputReadEx = handleInputReadObjectException(input, e); " + e);
             serverInputReadEx = handleInputReadObjectException(input, e);
           }
 
           ServerOutputT serverOutput;
+          Log.i("DEBUG_XXX", "serverOutput = OnServerRequest(serverInput, serverInputReadEx);");
           serverOutput = OnServerRequest(serverInput, serverInputReadEx);
+          Log.i("DEBUG_XXX", "output.writeObject(serverOutput);");
           output.writeObject(serverOutput);
+          Log.i("DEBUG_XXX", "clientSocket.close();");
           clientSocket.close();
 
           if (shouldCloseServerSocket(serverInput))
             close();
         }
 
-        Log.i(serverRunnableClassName, "Closed ServerRunnable.");
+        Log.i(tagRunnable, "Closed ServerRunnable.");
 
       } catch (SocketTimeoutException e)
       {
-        Log.e(serverRunnableClassName, "Closing ServerRunnable due to a timeout.", e);
+        Log.i("DEBUG_XXX", "Log.e(serverRunnableClassName, \"Closing ServerRunnable due to a timeout.\", e); " + e);
+        Log.e(tagRunnable, "Closing ServerRunnable due to a timeout.", e);
         close();
       } catch (IOException e)
       {
-        Log.e(serverRunnableClassName, "Exception was thrown while operating DroidmateServer", e);
+        Log.i("DEBUG_XXX", "Log.e(serverRunnableClassName, \"Exception was thrown while operating DroidmateServer\", e); " + e);
+        Log.e(tagRunnable, "Exception was thrown while operating DroidmateServer", e);
       }
     }
 
     private Exception handleInputReadObjectException(ObjectInputStream input, Exception e) throws IOException
     {
       Exception serverInputReadEx;
-      Log.e(serverRunnableClassName, "Exception was thrown while reading input sent to DroidmateServer from " +
+      Log.e(tagRunnable, "Exception was thrown while reading input sent to DroidmateServer from " +
         "client through socket.", e);
       serverInputReadEx = e;
       input.close();
