@@ -20,6 +20,7 @@ import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.IDeployableAndroidDevice
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
 
@@ -87,7 +88,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
    * @throws DeviceException if any of the operations fails.
    * @see #trySetUp(IDeployableAndroidDevice)
    */
-  protected void tryTearDown(IDeployableAndroidDevice device) throws DeviceException
+  protected void tryTearDown(IDeployableAndroidDevice device) throws DeviceNeedsRebootException, DeviceException
   {
     assert device != null
 

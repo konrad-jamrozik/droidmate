@@ -9,8 +9,6 @@
 
 package org.droidmate.device
 
-import groovy.transform.TypeChecked
-import groovy.transform.TypeCheckingMode
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.android_sdk.IApk
@@ -22,7 +20,9 @@ import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
+import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
@@ -32,7 +32,6 @@ import java.time.format.DateTimeFormatter
 import java.util.List
 
 import static org.droidmate.common_android.Constants.*
-import static org.droidmate.common_android.NoDeviceResponse.getNoDeviceResponse
 
 /**
  * <p>
@@ -90,7 +89,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  public IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
+  public IDeviceGuiSnapshot getGuiSnapshot() throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("getGuiSnapshot()")
 
@@ -105,39 +104,41 @@ public class AndroidDevice implements IAndroidDevice
     return outSnapshot
   }
 
-  @TypeChecked(TypeCheckingMode.SKIP)
+  // KJA handle DeviceNeedsRebootException
   @Override
-  void perform(IAndroidDeviceAction action) throws DeviceException
+  void perform(IAndroidDeviceAction action) throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("perform($action)")
     //noinspection GroovyInArgumentCheck
     assert action?.class in [ClickGuiAction, AdbClearPackageAction, LaunchMainActivityDeviceAction]
 
     //noinspection GroovyAssignabilityCheck
-    internalPerform(action)
+    switch (action)
+    {
+      case ClickGuiAction:
+        performGuiClick((action as ClickGuiAction))
+        break
+      // Case @Deprecated. Used by old code. Instead, call the method directly.
+      case LaunchMainActivityDeviceAction:
+        launchMainActivity((action as LaunchMainActivityDeviceAction).launchableActivityComponentName)
+        break
+      // Case @Deprecated. Used by old code. Instead, call the method directly.
+      case AdbClearPackageAction:
+        clearPackage((action as AdbClearPackageAction).packageName)
+        break
+      default:
+        throw new UnexpectedIfElseFallthroughError()
+    }
   }
 
-  // KJA2 multimethod to switch
-  DeviceResponse internalPerform(LaunchMainActivityDeviceAction action) throws DeviceException
-  {
-    launchMainActivity(action.launchableActivityComponentName)
-    return noDeviceResponse
-  }
-
-  // Used by old exploration code
-  @Deprecated
-  DeviceResponse internalPerform(AdbClearPackageAction action) throws DeviceException
-  {
-    clearPackage(action.packageName)
-    return noDeviceResponse
-  }
-
-  DeviceResponse internalPerform(ClickGuiAction action) throws DeviceException
+  DeviceResponse performGuiClick(ClickGuiAction action) throws DeviceNeedsRebootException, DeviceException
   {
     return issueCommand(new DeviceCommand(DEVICE_COMMAND_PERFORM_ACTION, action.guiAction))
   }
 
-  public DeviceResponse getIsDeviceOrientationLandscape() throws DeviceException
+  // Deprecated on 15 Jan 2016. To remove soon.
+  @Deprecated
+  public DeviceResponse getIsDeviceOrientationLandscape() throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("getIsDeviceOrientationLandscape()")
     return this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_IS_ORIENTATION_LANDSCAPE))
@@ -155,7 +156,7 @@ public class AndroidDevice implements IAndroidDevice
    * <i>This doc was last reviewed on 14 Sep '13.</i>
    * </p>
    */
-  private DeviceResponse issueCommand(DeviceCommand deviceCommand) throws DeviceException
+  private DeviceResponse issueCommand(DeviceCommand deviceCommand) throws DeviceNeedsRebootException, DeviceException
   {
     DeviceResponse deviceResponse
 
@@ -186,12 +187,12 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  public void closeConnection() throws DeviceException
+  public void closeConnection() throws DeviceNeedsRebootException, DeviceException
   {
     this.stopUiaDaemon()
   }
 
-  private void stopUiaDaemon() throws DeviceException
+  private void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
   {
     log.trace("stopUiaDaemon()")
     this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))

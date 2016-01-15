@@ -13,6 +13,7 @@ import org.droidmate.common.Boolean3
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
@@ -21,7 +22,7 @@ public interface IExplorableAndroidDevice
 {
   boolean hasPackageInstalled(String packageName) throws DeviceException
 
-  IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
+  IDeviceGuiSnapshot getGuiSnapshot() throws DeviceNeedsRebootException, DeviceException
 
   void perform(IAndroidDeviceAction action) throws DeviceException
 

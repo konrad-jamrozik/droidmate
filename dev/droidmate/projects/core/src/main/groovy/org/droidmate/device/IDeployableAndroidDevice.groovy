@@ -11,6 +11,7 @@ package org.droidmate.device
 
 import org.droidmate.android_sdk.IApk
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 
 public interface IDeployableAndroidDevice
 {
@@ -26,7 +27,7 @@ public interface IDeployableAndroidDevice
 
   void clearLogcat() throws DeviceException
 
-  void closeConnection() throws DeviceException
+  void closeConnection() throws DeviceNeedsRebootException, DeviceException
 
   void reboot() throws DeviceException
 
