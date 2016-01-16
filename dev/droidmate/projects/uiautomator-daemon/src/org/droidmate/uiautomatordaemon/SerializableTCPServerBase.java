@@ -68,12 +68,10 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
   {
     try
     {
-      // KJA
-      Log.i("DEBUG_XXX", "serverSocket.close();");
+      Log.v(tagBase, "serverSocket.close();");
       serverSocket.close();
     } catch (IOException e)
     {
-      Log.i("DEBUG_XXX", "Log.wtf(thisClassName, \"Failed to close SerializableTCPServerBase.\");");
       Log.wtf(tagBase, "Failed to close SerializableTCPServerBase.");
     }
   }
@@ -92,8 +90,7 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
 
     public void run()
     {
-
-      Log.d(tagRunnable, "Started ServerRunnable.");
+      Log.d(tagRunnable, "run()");
       try
       {
 
@@ -107,13 +104,10 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
 
         while (!serverSocket.isClosed())
         {
-          // KJA2 DEBUG_XXX
-          Log.d(tagRunnable, String.format("Accepting socket from client on port %s...", port));
-          Log.i("DEBUG_XXX", "serverSocket.accept()");
+          Log.v(tagRunnable, "serverSocket.accept("+port+")");
           Socket clientSocket = serverSocket.accept();
-          Log.v(tagRunnable, "Socket accepted.");
 
-          Log.i("DEBUG_XXX", "ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());");
+          Log.v(tagRunnable, "ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());");
           ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
 
           /*
@@ -125,39 +119,38 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
            * 2. Search for: "Note - The ObjectInputStream constructor blocks until" in:
            * http://docs.oracle.com/javase/7/docs/platform/serialization/spec/input.html
            */
-          Log.i("DEBUG_XXX", "Output.flush()");
+          Log.v(tagRunnable, "Output.flush()");
           output.flush();
 
-          Log.i("DEBUG_XXX", "ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());");
+          Log.v(tagRunnable, "input = new ObjectInputStream(clientSocket.getInputStream());");
           ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
 
           ServerInputT serverInput = null;
 
           Exception serverInputReadEx = null;
 
+          //noinspection TryWithIdenticalCatches
           try
           {
-            Log.i("DEBUG_XXX", "ServerInputT localVarForSuppressionAnnotation = (ServerInputT) input.readObject();");
+            Log.v(tagRunnable, "input.readObject();");
             @SuppressWarnings("unchecked") // Without this var here, there is no place to put the "unchecked" suppression warning.
               ServerInputT localVarForSuppressionAnnotation = (ServerInputT) input.readObject();
             serverInput = localVarForSuppressionAnnotation;
 
           } catch (ClassNotFoundException e)
           {
-            Log.i("DEBUG_XXX", "serverInputReadEx = handleInputReadObjectException(input, e); " + e);
             serverInputReadEx = handleInputReadObjectException(input, e);
           } catch (IOException e)
           {
-            Log.i("DEBUG_XXX", "serverInputReadEx = handleInputReadObjectException(input, e); " + e);
             serverInputReadEx = handleInputReadObjectException(input, e);
           }
 
           ServerOutputT serverOutput;
-          Log.i("DEBUG_XXX", "serverOutput = OnServerRequest(serverInput, serverInputReadEx);");
+          Log.v(tagRunnable, "serverOutput = OnServerRequest(serverInput, serverInputReadEx);");
           serverOutput = OnServerRequest(serverInput, serverInputReadEx);
-          Log.i("DEBUG_XXX", "output.writeObject(serverOutput);");
+          Log.v(tagRunnable, "output.writeObject(serverOutput);");
           output.writeObject(serverOutput);
-          Log.i("DEBUG_XXX", "clientSocket.close();");
+          Log.v(tagRunnable, "clientSocket.close();");
           clientSocket.close();
 
           if (shouldCloseServerSocket(serverInput))
@@ -168,12 +161,10 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
 
       } catch (SocketTimeoutException e)
       {
-        Log.i("DEBUG_XXX", "Log.e(serverRunnableClassName, \"Closing ServerRunnable due to a timeout.\", e); " + e);
         Log.e(tagRunnable, "Closing ServerRunnable due to a timeout.", e);
         close();
       } catch (IOException e)
       {
-        Log.i("DEBUG_XXX", "Log.e(serverRunnableClassName, \"Exception was thrown while operating DroidmateServer\", e); " + e);
         Log.e(tagRunnable, "Exception was thrown while operating DroidmateServer", e);
       }
     }
