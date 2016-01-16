@@ -136,15 +136,6 @@ public class AndroidDevice implements IAndroidDevice
     return issueCommand(new DeviceCommand(DEVICE_COMMAND_PERFORM_ACTION, action.guiAction))
   }
 
-  // KJA 2 to remove
-  // Deprecated on 15 Jan 2016. To remove soon.
-  @Deprecated
-  public DeviceResponse getIsDeviceOrientationLandscape() throws DeviceNeedsRebootException, DeviceException
-  {
-    log.debug("getIsDeviceOrientationLandscape()")
-    return this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_IS_ORIENTATION_LANDSCAPE))
-  }
-
   /**
    * <p>
    * Issues given {@code deviceCommand} to the A(V)D, obtains the device answer, checks for errors and return the
