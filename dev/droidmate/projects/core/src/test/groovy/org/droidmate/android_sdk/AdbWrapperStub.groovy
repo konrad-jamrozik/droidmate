@@ -125,7 +125,7 @@ class AdbWrapperStub implements IAdbWrapper
   }
 
   @Override
-  void deleteFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+  void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
   {
   }
 

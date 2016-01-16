@@ -529,7 +529,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   {
     File dataDirectory = Environment.getDataDirectory();
     File windowDumpDir = new File(dataDirectory, "local/tmp");
-    // WISH likely this "local/tmp" can be removed, as it is duplicated, resulting in dir of "data/local/tmp/local/tmp/"
+    // KJA likely this "local/tmp" can be removed, as it is duplicated, resulting in dir of "data/local/tmp/local/tmp/"
     File windowDump = new File(dataDirectory, "local/tmp/" + windowDumpFileName);
 
 

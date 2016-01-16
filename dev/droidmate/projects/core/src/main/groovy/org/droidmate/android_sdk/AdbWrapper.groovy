@@ -614,37 +614,53 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  void deleteFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+  void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
   {
-    // KJA current work
+    assert deviceSerialNumber != null
+    assert fileName != null
+    assert fileName.size() > 0
+
+    String filePath = deviceEnvironmentDataDirectory + fileName
+    String commandDescription = String
+      .format(
+      "Executing adb to delete file %s from Android Device with s/n %s.",
+      filePath, deviceSerialNumber)
+
+    try
+    {
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell rm", filePath)
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
+    }
   }
 
   @Override
   void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
   {
-    // KJA test
     assert deviceSerialNumber != null
-    assert pulledFileName != null
-    assert destinationFilePath != null
-
-    assert pulledFileName.size() > 0
+    assert pulledFileName?.size() > 0
+    assert destinationFilePath?.size() > 0
 
     // WISH make it stubbable by taking filesystem from configuration. But then also logback logs should take filesystem from
     // configuration, but they do not as of 15 Jan 2016
     assert Files.notExists(Paths.get(destinationFilePath))
 
+    String pulledFilePath = deviceEnvironmentDataDirectory + pulledFileName
     String commandDescription = String
       .format(
       "Executing adb to pull file %s from Android Device with s/n %s.",
-      pulledFileName, deviceSerialNumber)
+      pulledFilePath, deviceSerialNumber)
 
     try
     {
-      // Executed command based on step 4 from:
-      // http://developer.android.com/tools/testing/testing_ui.html#builddeploy
+
       sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
-        "pull", deviceEnvironmentDataDirectory + pulledFileName, destinationFilePath)
+        "pull", pulledFilePath, destinationFilePath)
 
     } catch (SysCmdExecutorException e)
     {

@@ -50,7 +50,7 @@ public interface IAdbWrapper {
 
   void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
 
-  void deleteFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+  void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
 
   void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
 }

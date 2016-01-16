@@ -68,6 +68,7 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
   {
     try
     {
+      // KJA
       Log.i("DEBUG_XXX", "serverSocket.close();");
       serverSocket.close();
     } catch (IOException e)

@@ -259,11 +259,20 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  List<List<String>> readAndClearMonitorTcpMessages()
+  void removeLogcatLogFile() throws DeviceException
+  {
+  }
+
+  @Override
+  void pullLogcatLogFile() throws DeviceException
+  {
+  }
+
+  @Override
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException
   {
     return []
   }
-
 
   public static AndroidDeviceSimulator build(
     ITimeGenerator timeGenerator = new TimeGenerator(),
