@@ -96,7 +96,7 @@ public class ApkDeployer implements IApkDeployer
     try
     {
       // Deployment of apk on device will read some information from logcat, so it has to be cleared to ensure the
-      // anticipated commands are not matched against logcat messages from previous deployments.
+      // anticipated commands are not matched against logcat messages from  deployments of previously explored apks.
       device.clearLogcat()
       tryReinstallApk(device, apk)
 
@@ -111,9 +111,6 @@ public class ApkDeployer implements IApkDeployer
 
   private void tryUndeployApk(IDeployableAndroidDevice device, IApk apk) throws DeviceException
   {
-    // KNOWN BUG after reboot fails in 'check-wifi' action due to permanent loss of connection to device, this fails first with SysCmdExecutorException "'adb logcat -c' failed"
-    device.clearLogcat() // Do so, so the logcat messages sent from the uninstalled apk won't interfere with the next one.
-
     if (cfg.uninstallApk)
     {
       log.info("Uninstalling $apk.fileName")
