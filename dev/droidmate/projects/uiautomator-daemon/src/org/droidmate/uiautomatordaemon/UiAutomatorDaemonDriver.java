@@ -525,44 +525,35 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     }
   }
 
-  private File prepareWindowDumpFile(String windowDumpFileName) throws UiAutomatorDaemonException
+  private File prepareWindowDumpFile(String fileName) throws UiAutomatorDaemonException
   {
-    File dataDirectory = Environment.getDataDirectory();
-    File windowDumpDir = new File(dataDirectory, "local/tmp");
-    // KJA likely this "local/tmp" can be removed, as it is duplicated, resulting in dir of "data/local/tmp/local/tmp/"
-    File windowDump = new File(dataDirectory, "local/tmp/" + windowDumpFileName);
+    // Copied from com.android.uiautomator.core.UiDevice.dumpWindowHierarchy()
+    final File dir = new File(Environment.getDataDirectory(), "local/tmp");
+    File file = new File(dir, fileName);
 
-
-    if (windowDump.isDirectory())
-      throw new UiAutomatorDaemonException("windowDump.isDirectory()");
-
-    if (!windowDumpDir.isDirectory())
-      if (!windowDumpDir.mkdirs())
+    // Here we ensure the directory of the target file exists.
+    if (!dir.isDirectory())
+      if (!dir.mkdirs())
         throw new UiAutomatorDaemonException("!windowDumpDir.isDirectory() && !windowDumpDir.mkdirs()");
 
-    if (windowDump.exists())
-      if (!windowDump.delete())
+    // Here we ensure the target file doesn't exist.
+    if (file.isDirectory())
+      throw new UiAutomatorDaemonException("windowDumpFile.isDirectory()");
+    if (file.exists())
+      if (!file.delete())
         throw new UiAutomatorDaemonException("windowDump.exists() && !windowDump.delete()");
 
-    if (windowDump.exists())
+    // Here we check if we ensured things correctly.
+    if (file.exists())
     {
       throw new AssertionError("Following assertion failed: !windowDump.exists()");
     }
-    if (!(windowDump.getParentFile().isDirectory()))
+    if (!(file.getParentFile().isDirectory()))
     {
       throw new AssertionError("Following assertion failed: windowDump.getParentFile().isDirectory()");
     }
 
-    try
-    {
-      if (!windowDump.createNewFile())
-        throw new UiAutomatorDaemonException("!windowDump.createNewFile()");
-    } catch (IOException e)
-    {
-      throw new UiAutomatorDaemonException(e);
-    }
-
-    return windowDump;
+    return file;
   }
 
 
