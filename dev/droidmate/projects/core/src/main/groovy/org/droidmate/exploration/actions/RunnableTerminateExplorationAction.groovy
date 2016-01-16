@@ -31,25 +31,20 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
   @Override
   protected void performDeviceActions(IApk app, IRobustDevice device) throws DeviceException
   {
+    log.debug("1. Read background API logs, if any.")
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
-    log.debug("1. Assert only background API logs are present, if any.")
     logsHandler.readClearAndAssertOnlyBackgroundApiLogsIfAny()
+    this.logs = logsHandler.getLogs()
 
-    log.debug("2. Seal logs reading.")
-    this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
-
-    log.debug("3. Reset package ${app.packageName}}")
+    log.debug("2. Clear package ${app.packageName}}")
     device.clearPackage(app.packageName)
 
-    log.debug("4. Assert app is not running.")
+    log.debug("3. Assert app is not running.")
     assertAppIsNotRunning(device, app)
 
-    log.debug("5. Get GUI snapshot, ensuring home screen is displayed.")
+    log.debug("4. Get GUI snapshot, ensuring home screen is displayed.")
     this.snapshot = device.ensureHomeScreenIsDisplayed()
 
-    log.debug("6. Log uia-daemon logs and clear logcat")
-    logsHandler.logUiaDaemonLogsFromLogcat()
-    logsHandler.clearLogcat()
   }
 
 }

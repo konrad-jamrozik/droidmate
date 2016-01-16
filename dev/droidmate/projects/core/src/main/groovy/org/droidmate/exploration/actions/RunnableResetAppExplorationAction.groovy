@@ -53,29 +53,21 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     // KJA 2 KNOWN BUG assert fail here
     assertAppIsNotRunning(device, app)
 
-    log.debug("6. Log uia-daemon logs and clear logcat")
-    IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
-    logsHandler.logUiaDaemonLogsFromLogcat()
-    logsHandler.clearLogcat()
-
-    log.debug("7. Launch main activity")
+    log.debug("6. Launch main activity")
     // Launch result is ignored because practice shows that the success of launching main activity cannot be used to determine
     // if app is running or not.
     device.launchMainActivity(app.launchableActivityComponentName)
 
-    log.debug("8. Get GUI snapshot")
+    log.debug("7. Get GUI snapshot")
     // GUI snapshot has to be obtained before a check is made if app is running. Why? Because obtaining GUI snapshot closes all
     // ANR dialogs, and if the app crashed with ANR, it will be deemed as running until the ANR is closed.
     // KJA2 KNOWN BUG fails to get valid GUI snapshot
     this.snapshot = device.guiSnapshot
 
-    log.debug("9. Try to read API logs.")
+    log.debug("8. Try to read API logs.")
+    IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     logsHandler.readAndClearApiLogs()
-
-    log.debug("10. Log uia-daemon logs, clear logcat and seal reading")
-    logsHandler.logUiaDaemonLogsFromLogcat()
-    logsHandler.clearLogcat()
-    this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
+    this.logs = logsHandler.getLogs()
   }
 }
 

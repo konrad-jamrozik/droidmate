@@ -9,23 +9,15 @@
 package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
-import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ForbiddenOperationError
 import org.droidmate.logcat.IApiLogcatMessage
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-
-import static org.droidmate.common_android.Constants.uiaDaemon_logcatTag
 
 @Slf4j
 class DeviceLogsHandler implements IDeviceLogsHandler
 {
 
   IRobustDevice device
-
-  boolean readingSealed = false
 
   IDeviceLogs logs = new DeviceLogs()
 
@@ -34,24 +26,25 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     this.device = device
   }
 
-
-  @Override
-  void clearLogcat() throws DeviceException
-  {
-    device.clearLogcat()
-  }
-
   @Override
   void readAndClearApiLogs() throws DeviceException
   {
-    if (readingSealed)
-      throw new ForbiddenOperationError()
-
     List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs()
     addApiLogs(apiLogs)
   }
 
-  public void addApiLogs(List<IApiLogcatMessage> apiLogs)
+  private static final String uiThreadId = "1"
+
+  @Override
+  void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
+  {
+    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs()
+    assert this.logs.apiLogs.every {it.threadId != uiThreadId}
+
+    addApiLogs(apiLogs)
+  }
+
+  private void addApiLogs(List<IApiLogcatMessage> apiLogs)
   {
     assert apiLogs != null
 
@@ -64,43 +57,13 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     this.logs.apiLogs.addAll(apiLogs)
   }
 
-  private static final String uiThreadId = "1"
-
+  boolean gotLogs = false
   @Override
-  void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
+  IDeviceLogs getLogs()
   {
-    if (readingSealed)
+    if (gotLogs)
       throw new ForbiddenOperationError()
-
-    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs()
-    assert this.logs.apiLogs.every {it.threadId != uiThreadId}
-
-    addApiLogs(apiLogs)
-  }
-
-  private Logger uiadLogger = LoggerFactory.getLogger(LogbackConstants.logger_name_uiad)
-
-  // KJA 1.5 to remove
-  @Override
-  void logUiaDaemonLogsFromLogcat() throws DeviceException
-  {
-    List<ITimeFormattedLogcatMessage> uiaDaemonLogs = device.readLogcatMessages(uiaDaemon_logcatTag)
-
-    uiaDaemonLogs.each {
-      if (it.level == "W")
-        uiadLogger.warn("${it.messagePayload}")
-      else
-        uiadLogger.trace("${it.messagePayload}")
-    }
-  }
-
-  @Override
-  IDeviceLogs sealReadingAndReturnDeviceLogs()
-  {
-    if (this.readingSealed)
-      throw new ForbiddenOperationError()
-
-    this.readingSealed = true
+    this.gotLogs = true
     return this.logs
   }
 

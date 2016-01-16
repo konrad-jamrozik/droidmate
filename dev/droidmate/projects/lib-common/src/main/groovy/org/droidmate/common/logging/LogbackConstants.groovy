@@ -32,6 +32,7 @@ public class LogbackConstants
     appender_name_runData
   ]
 
+  @Deprecated
   /**
    * Denotes name of logger for logs that have been obtained from logcat from uiautomator-daemon classes during exploration.
    */
@@ -42,6 +43,7 @@ public class LogbackConstants
    */
   public static final String logger_name_monitor = "from monitor"
 
+  @Deprecated
   public static final String appender_name_uiad = "uiad.txt"
 
   public static final String appender_name_monitor = "monitor.txt"
