@@ -140,8 +140,14 @@ public class AdbWrapper implements IAdbWrapper
         .format("Executing adb (Android Debug Bridge) to install %s on Android (Virtual) Device.",
         apkToInstall.fileName)
 
-      sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "install -r",
+      def stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "install -r",
         apkToInstall.absolutePath)
+
+      if (stdStreams[0].contains("[INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES]"))
+        throw new AdbWrapperException("Execution of 'adb -s $deviceSerialNumber install -r ${apkToInstall.absolutePath}' " +
+          "resulted in [INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES] being output to stdout. Thus, no app was actually " +
+          "installed. Likely reason for the problem: you are trying to install a built in Google app that cannot be uninstalled" +
+          "or reinstalled. DroidMate doesn't support such apps and likely never will.")
 
     } catch (SysCmdExecutorException e)
     {
@@ -154,7 +160,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean warnAboutFailure)
+  public void uninstallApk(String deviceSerialNumber, String apkPackageName)
     throws AdbWrapperException
   {
     assert deviceSerialNumber != null
