@@ -322,10 +322,9 @@ class RobustDevice implements IRobustDevice
   @Override
   void reboot() throws DeviceException
   {
-    log.trace("Checking if the device can be rebooted.")
     if (this.device.available)
     {
-      log.trace("Device can be rebooted.")
+      log.trace("Device is available for rebooting.")
     } else
     {
       log.trace("Device not yet available for a reboot. Waiting $waitForCanRebootDelay milliseconds. If the device still won't be available, " +

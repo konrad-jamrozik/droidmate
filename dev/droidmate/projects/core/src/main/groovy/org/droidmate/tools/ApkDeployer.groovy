@@ -113,9 +113,15 @@ public class ApkDeployer implements IApkDeployer
   {
     if (cfg.uninstallApk)
     {
-      log.info("Uninstalling $apk.fileName")
-      device.clearPackage(apk.packageName)
-      device.uninstallApk(apk.packageName, /* ignoreFailure = */ false)
+      if (device.available)
+      {
+        log.info("Uninstalling $apk.fileName")
+        device.clearPackage(apk.packageName)
+        device.uninstallApk(apk.packageName, /* ignoreFailure = */ false)
+      }
+      else
+        log.info("Device not available. Skipping uninstalling $apk.fileName")
+
     } else
     {
       // If the apk is not uninstalled, some of its monitored services might remain, interfering with monitored

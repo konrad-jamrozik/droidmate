@@ -94,11 +94,16 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
     deviceIsSetup = false
 
-    device.pullLogcatLogFile()
-    // KNOWN BUG after reboot fails in 'check-wifi' action due to permanent loss of connection to device, this fails with DeviceException "Device is not availabe for a reboot, even after the wait"
-    device.closeConnection()
-    device.removeJar(cfg.uiautomatorDaemonJar)
-    device.removeJar(cfg.monitorApk)
+    if (device.available)
+    {
+      log.trace("Tearing down.")
+      device.pullLogcatLogFile()
+      device.closeConnection()
+      device.removeJar(cfg.uiautomatorDaemonJar)
+      device.removeJar(cfg.monitorApk)
+    }
+    else
+      log.trace("Device is not available. Skipping tear down.")
   }
 
   /**
@@ -118,10 +123,10 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
     List<ExplorationException> explorationExceptions = []
     //noinspection GroovyAssignabilityCheck
-    def (IRobustDevice device, String serialNumber, DeviceException setupDeviceException) = setupDevice(deviceIndex)
-    if (setupDeviceException != null)
+    def (IRobustDevice device, String serialNumber, Throwable throwable) = setupDevice(deviceIndex)
+    if (throwable != null)
     {
-      explorationExceptions << new ExplorationException(setupDeviceException)
+      explorationExceptions << new ExplorationException(throwable)
       return explorationExceptions
     }
 

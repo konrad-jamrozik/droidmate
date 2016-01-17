@@ -135,11 +135,7 @@ public class AdbWrapper implements IAdbWrapper
 
     } catch (SysCmdExecutorException e)
     {
-      throw new AdbWrapperException(
-        "Executing 'adb install' failed. Possible cause: no android devices are available. To view available Android "
-          +
-          "devices, please run from cmdline: \"<android sdk>/platform-tools/adb devices\"",
-        e)
+      throw new AdbWrapperException("Executing 'adb install' failed. Oh my.", e)
     }
   }
 
@@ -168,10 +164,7 @@ public class AdbWrapper implements IAdbWrapper
 
     } catch (SysCmdExecutorException e)
     {
-      throw new AdbWrapperException(
-        "Calling 'adb uninstall' failed. Possible cause: no android devices are available. To view available " +
-          "Android devices, please run from cmdline: \"<android sdk path>/platform-tools/adb devices\"",
-        e)
+      throw new AdbWrapperException("Calling 'adb uninstall' failed. Oh my.", e)
     }
   }
 
