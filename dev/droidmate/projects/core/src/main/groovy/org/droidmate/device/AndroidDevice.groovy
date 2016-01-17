@@ -89,6 +89,7 @@ public class AndroidDevice implements IAndroidDevice
     return packageEntries.contains("package:" + packageName)
   }
 
+
   @Override
   public IDeviceGuiSnapshot getGuiSnapshot() throws DeviceNeedsRebootException, DeviceException
   {

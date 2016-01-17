@@ -23,7 +23,6 @@ import java.util.regex.Matcher
 
 import static Utils.getAndValidateFirstMatch
 
-// KJA prediscover apps that are already on the device
 /**
  * Wrapper for the {@code aapt} tool from Android SDK.
  */
