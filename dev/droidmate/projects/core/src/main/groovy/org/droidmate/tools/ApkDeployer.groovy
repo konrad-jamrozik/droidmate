@@ -115,7 +115,7 @@ public class ApkDeployer implements IApkDeployer
     {
       log.info("Uninstalling $apk.fileName")
       device.clearPackage(apk.packageName)
-      device.uninstallApk(apk.packageName, /* warnAboutFailure = */ true)
+      device.uninstallApk(apk.packageName, /* ignoreFailure = */ false)
     } else
     {
       // If the apk is not uninstalled, some of its monitored services might remain, interfering with monitored
@@ -131,7 +131,7 @@ public class ApkDeployer implements IApkDeployer
      - a different version of the same app can be installed, if necessary (without uninstall, an error will be issued about
      certificates not matching (or something like that))
     */
-    device.uninstallApk(apk.packageName, /* warnAboutFailure  = */ false)
+    device.uninstallApk(apk.packageName, /* ignoreFailure  = */ true)
     device.installApk(apk)
   }
 

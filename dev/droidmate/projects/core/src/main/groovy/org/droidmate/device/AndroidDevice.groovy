@@ -336,10 +336,10 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  void uninstallApk(String apkPackageName, boolean warnAboutFailure) throws DeviceException
+  void uninstallApk(String apkPackageName, boolean ignoreFailure) throws DeviceException
   {
-    log.debug("uninstallApk($apkPackageName, warnAboutFailure: $warnAboutFailure)")
-    adbWrapper.uninstallApk(serialNumber, apkPackageName, warnAboutFailure)
+    log.debug("uninstallApk($apkPackageName, ignoreFailure: $ignoreFailure)")
+    adbWrapper.uninstallApk(serialNumber, apkPackageName, ignoreFailure)
   }
 
   @Override

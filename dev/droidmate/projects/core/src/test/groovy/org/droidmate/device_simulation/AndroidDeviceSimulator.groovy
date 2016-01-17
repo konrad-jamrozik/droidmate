@@ -223,7 +223,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  void uninstallApk(String apkPackageName, boolean warnAboutFailure) throws DroidmateException
+  void uninstallApk(String apkPackageName, boolean ignoreFailure) throws DroidmateException
   {
     findMatchingExceptionSpecAndThrowIfApplies("uninstallApk", apkPackageName)
   }

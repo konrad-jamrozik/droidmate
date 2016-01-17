@@ -21,7 +21,7 @@ public interface IDeployableAndroidDevice
 
   void installApk(IApk apk) throws DeviceException
 
-  void uninstallApk(String apkPackageName, boolean warnAboutFailure) throws DeviceException
+  void uninstallApk(String apkPackageName, boolean ignoreFailure) throws DeviceException
 
   void clearPackage(String apkPackageName) throws DeviceException
 

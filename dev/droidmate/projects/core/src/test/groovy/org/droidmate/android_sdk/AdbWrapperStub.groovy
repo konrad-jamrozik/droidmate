@@ -70,7 +70,7 @@ class AdbWrapperStub implements IAdbWrapper
   }
 
   @Override
-  void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean warnAboutFailure) throws AdbWrapperException
+  void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean ignoreFailure) throws AdbWrapperException
   {
     assert false: "Not yet implemented!"
   }

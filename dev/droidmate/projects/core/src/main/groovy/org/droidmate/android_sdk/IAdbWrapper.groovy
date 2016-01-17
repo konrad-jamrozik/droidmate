@@ -32,7 +32,7 @@ public interface IAdbWrapper {
 
   void installApk(String deviceSerialNumber, IApk instrumentedApk) throws AdbWrapperException
 
-  void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean warnAboutFailure) throws AdbWrapperException
+  void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean ignoreFailure) throws AdbWrapperException
 
   void launchMainActivity(String deviceSerialNumber, String launchableActivityName) throws AdbWrapperException
 
