@@ -41,5 +41,7 @@ public interface IExplorableAndroidDevice
   Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
 
   Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
+
+  void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
 }
 

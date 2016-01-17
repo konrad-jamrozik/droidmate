@@ -231,6 +231,23 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
+  void launchApp(IApk app) throws DeviceException
+  {
+    log.debug("launchApp(${app.packageName})")
+
+    if (app.launchableActivityName != null)
+      this.launchMainActivity(app.launchableActivityComponentName)
+    else
+      this.clickAppIcon(app.applicationLabel)
+  }
+
+  @Override
+  void clickAppIcon(String iconLabel) throws DeviceException
+  {
+    rebootIfNecessary { this.device.clickAppIcon(iconLabel); return true; }
+  }
+
+  @Override
   Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
     try

@@ -36,7 +36,7 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
     logsHandler.readClearAndAssertOnlyBackgroundApiLogsIfAny()
     this.logs = logsHandler.getLogs()
 
-    log.debug("2. Clear package ${app.packageName}}")
+    log.debug("2. Clear package ${app.packageName}}.")
     device.clearPackage(app.packageName)
 
     log.debug("3. Assert app is not running.")

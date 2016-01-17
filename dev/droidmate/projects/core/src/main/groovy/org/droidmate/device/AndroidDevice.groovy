@@ -33,6 +33,7 @@ import java.time.format.DateTimeFormatter
 import java.util.List
 
 import static org.droidmate.common_android.Constants.*
+import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchAppDeviceAction
 
 /**
  * <p>
@@ -119,11 +120,11 @@ public class AndroidDevice implements IAndroidDevice
       case ClickGuiAction:
         performGuiClick((action as ClickGuiAction))
         break
-      // Case @Deprecated. Used by old code. Instead, call the method directly.
+    // Case @Deprecated. Used by old code. Instead, call the method directly.
       case LaunchMainActivityDeviceAction:
         launchMainActivity((action as LaunchMainActivityDeviceAction).launchableActivityComponentName)
         break
-      // Case @Deprecated. Used by old code. Instead, call the method directly.
+    // Case @Deprecated. Used by old code. Instead, call the method directly.
       case AdbClearPackageAction:
         clearPackage((action as AdbClearPackageAction).packageName)
         break
@@ -382,6 +383,13 @@ public class AndroidDevice implements IAndroidDevice
   {
     return this.anyMonitorIsReachable() && this.appProcessIsRunning(appPackageName)
   }
+
+  @Override
+  void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
+  {
+    this.perform(newLaunchAppDeviceAction(iconLabel))
+  }
+
   @Override
   public String toString()
   {

@@ -28,6 +28,7 @@ class Apk implements IApk, Serializable
   final String packageName
   final String launchableActivityName
   final String launchableActivityComponentName
+  final String applicationLabel
 
   public static Apk build(IAaptWrapper aapt, Path path)
   {
@@ -35,23 +36,19 @@ class Apk implements IApk, Serializable
     assert path != null
     assert Files.isRegularFile(path)
 
-    def (String packageName, String launchableActivityName, String launchableActivityComponentName) = aapt.getMetadata(path)
+    def (String packageName, String launchableActivityName, String launchableActivityComponentName, String applicationLabel) = aapt.getMetadata(path)
 
-    if ([packageName, launchableActivityName, launchableActivityComponentName].any {it == null})
+    if ([launchableActivityName, launchableActivityComponentName].any {it == null})
     {
-      log.warn("Failed to create $Apk.simpleName class instance for ${path.toString()} because some of its metadata is null: " +
-        "packageName=$packageName, " +
-        "launchableActivityName=$launchableActivityName, " +
-        "launchableActivityComponentName=$launchableActivityComponentName. Skipping the apk.")
-      return null
+      assert [launchableActivityName, launchableActivityComponentName].every { it == null }
+      log.debug("$Apk.simpleName class instance for ${path.toString()} has null launchableActivityName and thus also " +
+        "launchableActivityComponentName.")
     }
-    else
-    {
-      return new Apk(path, packageName, launchableActivityName, launchableActivityComponentName)
-    }
+
+    return new Apk(path, packageName, launchableActivityName, launchableActivityComponentName, applicationLabel)
   }
 
-  Apk(Path path, String packageName, String launchableActivityName, String launchableActivityComponentName)
+  Apk(Path path, String packageName, String launchableActivityName, String launchableActivityComponentName, String applicationLabel)
   {
     String fileName = path.fileName.toString()
     String absolutePath = path.toAbsolutePath().toString()
@@ -60,16 +57,15 @@ class Apk implements IApk, Serializable
     assert fileName.endsWith(".apk")
     assert absolutePath?.size() > 0
     assert packageName?.size() > 0
-    assert launchableActivityName?.size() > 0
-    assert launchableActivityComponentName?.size() > 0
+    assert applicationLabel?.size() > 0
 
     this.fileName = fileName
     this.absolutePath = absolutePath
     this.packageName = packageName
     this.launchableActivityName = launchableActivityName
     this.launchableActivityComponentName = launchableActivityComponentName
+    this.applicationLabel = applicationLabel
   }
-
 }
 
 

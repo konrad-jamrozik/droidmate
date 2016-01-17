@@ -18,4 +18,6 @@ public interface IRobustDevice extends IAndroidDevice, IDeviceMessagesReader
   IDeviceGuiSnapshot ensureHomeScreenIsDisplayed() throws DeviceException
 
   Boolean appIsNotRunning(IApk apk) throws DeviceException
+
+  void launchApp(IApk apk) throws DeviceException
 }

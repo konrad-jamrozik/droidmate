@@ -43,7 +43,6 @@ public class Constants
   public static final String guiActionCommand_pressBack  = "press_back";
   public static final String guiActionCommand_pressHome  = "press_home";
   public static final String guiActionCommand_turnWifiOn = "turn_wifi_on";
-  @SuppressWarnings("unused") // Used in org.droidmate.uiautomatordaemon.UiAutomatorDaemonDriver.performAction()
   public static final String guiActionCommand_launchApp  = "launch_app";
 
   public static final String uiaDaemonParam_waitForGuiToStabilize      = "wait_for_gui_to_stabilize";

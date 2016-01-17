@@ -111,11 +111,8 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
       } else if (action.guiActionCommand.equals(guiActionCommand_launchApp))
       {
-        String[] data = action.resourceId.split(" ");
-        String appLaunchIconText = data[0];
-        String appPackageName = data[1];
+        launchApp(action.resourceId);
 
-        launchApp(appLaunchIconText, appPackageName);
       } else
       {
         throw new UiAutomatorDaemonException(String.format("Unrecognized GUI action command: %s",
@@ -173,7 +170,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
         clickResult = click(deviceCommand, clickXCoor, clickYCoor);
 
-        // WISH does this really mean the click failed, or some APIs are still being logged?
+        // WISH what does it actually mean that click failed?
         if (!clickResult)
         {
           Log.w(uiaDaemon_logcatTag, (String.format("The operation ui.getUiDevice().click(%d, %d) failed for the second time. Giving up.", clickXCoor, clickYCoor)));
@@ -556,30 +553,39 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     return file;
   }
 
-
   //region Launching app
-  private void launchApp(String appLaunchIconText, String appPackageName) throws UiAutomatorDaemonException
+  private void launchApp(String appLaunchIconText) throws UiAutomatorDaemonException
   {
-    UiObject app = navigateToAppLaunchIcon(appLaunchIconText);
+    boolean clickResult;
     try
     {
-      app.clickAndWaitForNewWindow();
+      UiObject app = navigateToAppLaunchIcon(appLaunchIconText);
+      Log.i(uiaDaemon_logcatTag, "Pressing the " + appLaunchIconText + " app icon to launch it.");
+      clickResult = app.clickAndWaitForNewWindow();
+
     } catch (UiObjectNotFoundException e)
     {
-      throw new UiAutomatorDaemonException(e);
+      Log.w(uiaDaemon_logcatTag, String.format("Attempt to navigate to and click on the icon labeled '%s' to launch the app threw an exception: ", appLaunchIconText), e);
+      Log.d(uiaDaemon_logcatTag, "Pressing 'home' button after failed app launch.");
+      ui.getUiDevice().pressHome();
+      waitForGuiToStabilize();
+      return;
     }
-    Log.i(uiaDaemon_logcatTag, "Pressing the " + appLaunchIconText + " app icon to launch it.");
 
-    throwIfNotTrue(getPackageName().equals(appPackageName), "Expected: " + appPackageName + " but got instead: " + getPackageName());
+    if (clickResult)
+        waitForGuiToStabilize();
+    else
+      Log.w(uiaDaemon_logcatTag, (String.format("A click on the icon labeled '%s' to launch the app returned false", appLaunchIconText)));
   }
 
+  // Was used in launchApp to check package name
   private void throwIfNotTrue(boolean pred, String msg) throws UiAutomatorDaemonException
   {
     if (!pred)
       throw new UiAutomatorDaemonException(msg);
   }
 
-  private UiObject navigateToAppLaunchIcon(String appLaunchIconName) throws UiAutomatorDaemonException
+  private UiObject navigateToAppLaunchIcon(String appLaunchIconName) throws UiObjectNotFoundException
   {
     // Simulate a short press on the HOME button.
     ui.getUiDevice().pressHome();
@@ -593,37 +599,31 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     UiObject allAppsButton = new UiObject(new UiSelector().description("Apps"));
 
     // Simulate a click to bring up the All Apps screen.
-    try
-    {
-      allAppsButton.clickAndWaitForNewWindow();
+    allAppsButton.clickAndWaitForNewWindow();
 
 
-      // In the All Apps screen, the app launch icon is located in
-      // the Apps tab. To simulate the user bringing up the Apps tab,
-      // we create a UiSelector to find a tab with the text
-      // label “Apps”.
-      UiObject appsTab = new UiObject(new UiSelector().text("Apps"));
+    // In the All Apps screen, the app launch icon is located in
+    // the Apps tab. To simulate the user bringing up the Apps tab,
+    // we create a UiSelector to find a tab with the text
+    // label “Apps”.
+    UiObject appsTab = new UiObject(new UiSelector().text("Apps"));
 
-      // Simulate a click to enter the Apps tab.
-      appsTab.click();
+    // Simulate a click to enter the Apps tab.
+    appsTab.click();
 
-      // Next, in the apps tabs, we can simulate a user swiping until
-      // they come to the app launch icon. Since the container view
-      // is scrollable, we can use a UiScrollable object.
-      UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
+    // Next, in the apps tabs, we can simulate a user swiping until
+    // they come to the app launch icon. Since the container view
+    // is scrollable, we can use a UiScrollable object.
+    UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
 
-      // Set the swiping mode to horizontal (the default is vertical)
-      appViews.setAsHorizontalList();
+    // Set the swiping mode to horizontal (the default is vertical)
+    appViews.setAsHorizontalList();
 
-      // Create a UiSelector to find the app launch icon and simulate
-      // a user click to launch the app.
-      return appViews.getChildByText(
-        new UiSelector().className(android.widget.TextView.class.getName()),
-        appLaunchIconName);
-    } catch (UiObjectNotFoundException e)
-    {
-      throw new UiAutomatorDaemonException(e);
-    }
+    // Create a UiSelector to find the app launch icon and simulate
+    // a user click to launch the app.
+    return appViews.getChildByText(
+      new UiSelector().className(android.widget.TextView.class.getName()),
+      appLaunchIconName);
   }
 
   private String getPackageName() throws UiAutomatorDaemonException

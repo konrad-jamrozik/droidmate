@@ -76,7 +76,7 @@ class GuiState implements Serializable, IGuiState
   @Override
   boolean isHomeScreen()
   {
-    return this.topNodePackageName == package_android_launcher
+    return this.topNodePackageName == package_android_launcher && !this.widgets.any { it.text == "Widgets" }
   }
 
   @Override

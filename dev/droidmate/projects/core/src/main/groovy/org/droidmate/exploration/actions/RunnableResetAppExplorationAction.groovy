@@ -33,32 +33,31 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
   @Override
   protected void performDeviceActions(IApk app, IRobustDevice device) throws DeviceException
   {
-    log.debug("1. Clear package ${app?.packageName}")
+    log.debug("1. Clear package ${app?.packageName}.")
 
     assert app != null
     assert device != null
 
     device.clearPackage(app.packageName)
 
-    log.debug("2. ensure home screen is displayed")
+    log.debug("2. Ensure home screen is displayed.")
     device.ensureHomeScreenIsDisplayed()
 
-    log.debug("3. turn wifi on")
+    log.debug("3. Turn wifi on.")
     device.perform(newTurnWifiOnDeviceAction())
 
-    log.debug("4. get GUI snapshot to ensure device displays valid screen that is not \"app has stopped\" dialog box.")
+    log.debug("4. Get GUI snapshot to ensure device displays valid screen that is not \"app has stopped\" dialog box.")
     device.getGuiSnapshot()
 
     log.debug("5. Assert app is not running.")
     // KNOWN BUG assert fail in reset / assertAppIsNotRunning(device, app)
     assertAppIsNotRunning(device, app)
 
-    log.debug("6. Launch main activity")
-    // Launch result is ignored because practice shows that the success of launching main activity cannot be used to determine
-    // if app is running or not.
-    device.launchMainActivity(app.launchableActivityComponentName)
+    log.debug("6. Start app $app.packageName.")
+    // KJA correctly log case when none of the methods work, which is for: ch.threema.qrscannerplugin_v1.1-inlined
+    device.launchApp(app)
 
-    log.debug("7. Get GUI snapshot")
+    log.debug("7. Get GUI snapshot.")
     // GUI snapshot has to be obtained before a check is made if app is running. Why? Because obtaining GUI snapshot closes all
     // ANR dialogs, and if the app crashed with ANR, it will be deemed as running until the ANR is closed.
     // KNOWN BUG reset / exhaust attempts to get valid GUI snapshot

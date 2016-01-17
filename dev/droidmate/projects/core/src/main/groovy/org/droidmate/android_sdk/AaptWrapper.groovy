@@ -97,18 +97,9 @@ public class AaptWrapper implements IAaptWrapper
   {
     assert Files.isRegularFile(apk)
 
-    String aaptBadgingDump = aaptDumpBadging(apk)
-    String launchableActivityName
-    try
-    {
-      launchableActivityName = tryGetLaunchableActivityNameFromBadgingDump(aaptBadgingDump)
-    } catch (NoLaunchableActivityNameException ignored)
-    {
-      log.trace("No launchable activity name found for ${apk.toString()}. Returning null.")
-      return null
-    }
+    String launchableActivityName = tryGetLaunchableActivityNameFromBadgingDump(aaptDumpBadging(apk))
 
-    assert launchableActivityName?.length() > 0;
+    assert launchableActivityName?.length() > 0
     return launchableActivityName
   }
 
@@ -117,27 +108,52 @@ public class AaptWrapper implements IAaptWrapper
   {
     assert Files.isRegularFile(apk)
 
-    String aaptBadgingDump = aaptDumpBadging(apk)
-    String launchableActivityComponentName
-    try
-    {
-      launchableActivityComponentName = tryGetLaunchableActivityComponentNameFromBadgingDump(aaptBadgingDump)
-    } catch (NoLaunchableActivityNameException ignored)
-    {
-      log.trace("No launchable activity name found for ${apk.toString()}. Returning null.")
-      return null
-    }
+    String launchableActivityComponentName = tryGetLaunchableActivityComponentNameFromBadgingDump(aaptDumpBadging(apk))
 
     assert launchableActivityComponentName?.length() > 0
     return launchableActivityComponentName
   }
 
   @Override
+  String getApplicationLabel(Path apk) throws DroidmateException
+  {
+    assert Files.isRegularFile(apk)
+
+    String aaptBadgingDump = aaptDumpBadging(apk)
+    return tryGetApplicationLabelFromBadgingDump(aaptBadgingDump)
+  }
+
+  private static String tryGetApplicationLabelFromBadgingDump(String aaptBadgingDump) throws DroidmateException
+  {
+    assert aaptBadgingDump?.length() > 0
+
+    Matcher matcher = aaptBadgingDump =~ /(?:.*)application-label:'(.*)'.*/
+
+    if (matcher.size() == 0)
+      throw new DroidmateException("No application label found in 'aapt dump badging'")
+    else if (matcher.size() > 1)
+      throw new DroidmateException("More than one application label found in 'aapt dump badging'")
+    else
+    {
+      String applicationLabel = getAndValidateFirstMatch(matcher)
+      return applicationLabel
+    }
+  }
+
+  @Override
   List<String> getMetadata(Path apk)
   {
-    [getPackageName(apk),
-     getLaunchableActivityName(apk),
-     getLaunchableActivityComponentName(apk)]
+    List<String> activity
+    try
+    {
+      activity = [getLaunchableActivityName(apk), getLaunchableActivityComponentName(apk)]
+    } catch (NoLaunchableActivityNameException ignored)
+    {
+      log.trace("No launchable activity name found for ${apk.toString()}. Returning null.")
+      activity = [null, null]
+    }
+
+    return [getPackageName(apk)] + activity + getApplicationLabel(apk)
   }
 
   @Memoized

@@ -207,6 +207,12 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
+  {
+    assert false: "Not yet implemented!"
+  }
+
+  @Override
   void pushJar(File jar) throws DroidmateException
   {
   }

@@ -100,7 +100,7 @@ public class DroidmateFrontend
     String timestampFormat = "yyyy MMM dd HH:mm:ss"
 
     if (runFinishedWithThrowablePropagatedToMain)
-      log.warn("DroidMate run finished, possibly prematurely, because a (subtype of) Throwable " +
+      log.warn("DroidMate run finished, possibly prematurely, because a (possibly subtype of) Throwable " +
         "was propagated to main method. See previous logs for details on the Throwable.")
     else
       log.info("DroidMate run finished successfully.")

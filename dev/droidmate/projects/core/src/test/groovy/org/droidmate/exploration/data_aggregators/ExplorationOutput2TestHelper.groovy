@@ -22,7 +22,8 @@ class ExplorationOutput2TestHelper
       ApkTestHelper.build(
         FilesystemTestFixtures.apkFixture_simple_packageName,
         FilesystemTestFixtures.apkFixture_simple_launchableActivityComponentName,
-        FilesystemTestFixtures.apkFixture_simple_packageName + "1")
+        FilesystemTestFixtures.apkFixture_simple_packageName + "1",
+        "applicationLabel")
     )
 
     out.add(apkOut)
