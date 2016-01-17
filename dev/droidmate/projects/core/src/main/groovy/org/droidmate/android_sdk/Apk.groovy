@@ -39,7 +39,7 @@ class Apk implements IApk, Serializable
 
     if ([packageName, launchableActivityName, launchableActivityComponentName].any {it == null})
     {
-      log.warn("Failed to build apk from ${path.toString()} because some of its metadata is null: " +
+      log.warn("Failed to create $Apk.simpleName class instance for ${path.toString()} because some of its metadata is null: " +
         "packageName=$packageName, " +
         "launchableActivityName=$launchableActivityName, " +
         "launchableActivityComponentName=$launchableActivityComponentName. Skipping the apk.")

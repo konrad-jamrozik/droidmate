@@ -102,9 +102,9 @@ public class AaptWrapper implements IAaptWrapper
     try
     {
       launchableActivityName = tryGetLaunchableActivityNameFromBadgingDump(aaptBadgingDump)
-    } catch (DroidmateException e)
+    } catch (NoLaunchableActivityNameException ignored)
     {
-      log.warn("! Caught ${e.class.simpleName} while trying to obtain launchable activity name. Returning null instead. The exception: $e")
+      log.trace("No launchable activity name found for ${apk.toString()}. Returning null.")
       return null
     }
 
@@ -122,9 +122,9 @@ public class AaptWrapper implements IAaptWrapper
     try
     {
       launchableActivityComponentName = tryGetLaunchableActivityComponentNameFromBadgingDump(aaptBadgingDump)
-    } catch (DroidmateException e)
+    } catch (NoLaunchableActivityNameException ignored)
     {
-      log.warn("! Caught ${e.class.simpleName} while trying to obtain launchable activity component name. Returning null instead. The exception: $e")
+      log.trace("No launchable activity name found for ${apk.toString()}. Returning null.")
       return null
     }
 
