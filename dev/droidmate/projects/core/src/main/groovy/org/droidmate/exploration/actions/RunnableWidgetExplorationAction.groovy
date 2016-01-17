@@ -47,7 +47,7 @@ class RunnableWidgetExplorationAction extends RunnableExplorationAction
     this.logs = logsHandler.getLogs()
 
     log.debug("4. Get GUI snapshot")
-    // KNOWN BUG fails to get valid GUI snapshot
+    // KNOWN BUG reset / exhaust attempts to get valid GUI snapshot
     this.snapshot = device.guiSnapshot
   }
 
