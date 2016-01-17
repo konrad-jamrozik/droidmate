@@ -50,7 +50,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     device.getGuiSnapshot()
 
     log.debug("5. Assert app is not running.")
-    // KJA 2 KNOWN BUG assert fail here
+    // KNOWN BUG assert fail here
     assertAppIsNotRunning(device, app)
 
     log.debug("6. Launch main activity")
@@ -61,7 +61,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     log.debug("7. Get GUI snapshot")
     // GUI snapshot has to be obtained before a check is made if app is running. Why? Because obtaining GUI snapshot closes all
     // ANR dialogs, and if the app crashed with ANR, it will be deemed as running until the ANR is closed.
-    // KJA2 KNOWN BUG fails to get valid GUI snapshot
+    // KNOWN BUG fails to get valid GUI snapshot
     this.snapshot = device.guiSnapshot
 
     log.debug("8. Try to read API logs.")
