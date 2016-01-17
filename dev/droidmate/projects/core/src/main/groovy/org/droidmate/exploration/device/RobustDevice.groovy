@@ -31,6 +31,8 @@ class RobustDevice implements IRobustDevice
   @Delegate
   private final IDeviceMessagesReader messagesReader
 
+  public static final int ensureHomeScreenIsDisplayedAttempts = 3
+
   private final int clearPackageRetryAttempts
   private final int clearPackageRetryDelay
 
@@ -165,28 +167,59 @@ class RobustDevice implements IRobustDevice
   IDeviceGuiSnapshot ensureHomeScreenIsDisplayed() throws DeviceException
   {
     def guiSnapshot = this.guiSnapshot
-    if (!guiSnapshot.guiState.isHomeScreen())
-    {
-      device.perform(newPressHomeDeviceAction())
-      guiSnapshot = this.guiSnapshot
-      if (!guiSnapshot.guiState.isHomeScreen())
-        throw new DeviceException("Failed to ensure home screen is displayed. " +
-          "Pressing 'home' button didn't help. Instead, ended with GUI state of: ${guiSnapshot.guiState}")
+    if (guiSnapshot.guiState.isHomeScreen())
+      return guiSnapshot
 
+    Utils.retryOnFalse({
+      if (!guiSnapshot.guiState.isHomeScreen())
+      {
+        if (guiSnapshot.guiState.isSelectAHomeAppDialogBox())
+        {
+          guiSnapshot = closeSelectAHomeAppDialogBox(guiSnapshot)
+        } else
+        {
+          device.perform(newPressHomeDeviceAction())
+          guiSnapshot = this.guiSnapshot
+        }
+      }
+      return guiSnapshot.guiState.isHomeScreen()
+    }, ensureHomeScreenIsDisplayedAttempts, /* delay */ 0)
+
+    if (!guiSnapshot.guiState.isHomeScreen())
+      throw new DeviceException("Failed to ensure home screen is displayed. " +
+        "Pressing 'home' button didn't help. Instead, ended with GUI state of: ${guiSnapshot.guiState}")
+
+    return guiSnapshot
+  }
+
+  private IDeviceGuiSnapshot closeSelectAHomeAppDialogBox(IDeviceGuiSnapshot guiSnapshot)
+  {
+    device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
+      guiSnapshot.guiState.widgets.findSingle({it.text == "Launcher"}))
+    )
+
+    guiSnapshot = this.guiSnapshot
+    if (guiSnapshot.guiState.isSelectAHomeAppDialogBox())
+    {
+      device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
+        guiSnapshot.guiState.widgets.findSingle({it.text == "Just once"}))
+      )
+      guiSnapshot = this.guiSnapshot
     }
+    assert !guiSnapshot.guiState.isSelectAHomeAppDialogBox()
     return guiSnapshot
   }
 
   @Override
   void perform(IAndroidDeviceAction action) throws DeviceNeedsRebootException, DeviceException
   {
-    rebootIfNecessary {this.device.perform(action); return true }
+    rebootIfNecessary {this.device.perform(action); return true}
   }
 
   @Override
   public Boolean appIsNotRunning(IApk apk) throws DeviceException
   {
-    return Utils.retryOnFalse({ !this.getAppIsRunningRebootingIfNecessary(apk.packageName)},
+    return Utils.retryOnFalse({!this.getAppIsRunningRebootingIfNecessary(apk.packageName)},
       checkAppIsRunningRetryAttempts,
       checkAppIsRunningRetryDelay,
     )
@@ -194,7 +227,7 @@ class RobustDevice implements IRobustDevice
 
   private boolean getAppIsRunningRebootingIfNecessary(String packageName) throws DeviceException
   {
-    rebootIfNecessary { this.device.appIsRunning(packageName) }
+    rebootIfNecessary {this.device.appIsRunning(packageName)}
   }
 
   @Override
@@ -293,7 +326,7 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getGuiSnapshotRebootingIfNecessary() throws DeviceException
   {
-    rebootIfNecessary { this.device.getGuiSnapshot() }
+    rebootIfNecessary {this.device.getGuiSnapshot()}
   }
 
   private <T> T rebootIfNecessary(Closure<T> operationOnDevice) throws DeviceException
@@ -318,7 +351,7 @@ class RobustDevice implements IRobustDevice
     this.setupConnection()
   }
 
-  // WISH use "adb wait-for-device" where appropriate.
+// WISH use "adb wait-for-device" where appropriate.
   @Override
   void reboot() throws DeviceException
   {
@@ -365,13 +398,13 @@ class RobustDevice implements IRobustDevice
   @Override
   List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceException
   {
-    rebootIfNecessary { this.messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer() }
+    rebootIfNecessary {this.messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer()}
   }
 
   @Override
   public void closeConnection() throws DeviceException
   {
-    rebootIfNecessary { this.device.closeConnection(); return true }
+    rebootIfNecessary {this.device.closeConnection(); return true}
   }
 
   @Override
@@ -379,4 +412,5 @@ class RobustDevice implements IRobustDevice
   {
     return "robust-" + this.device.toString()
   }
+
 }
