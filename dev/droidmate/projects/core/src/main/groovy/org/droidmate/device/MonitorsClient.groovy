@@ -11,6 +11,7 @@ package org.droidmate.device
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.lib_android.MonitorJavaTemplate
 
@@ -32,10 +33,10 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public boolean anyMonitorIsReachable()
+  public boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
   {
     boolean out = ports.any {
-      this.monitorTcpClient.isServerReachable(it)
+      this.isServerReachable(it)
     }
     if (out)
       log.trace("At least one monitor is reachable.")
@@ -44,13 +45,37 @@ class MonitorsClient implements IMonitorsClient
     return out
   }
 
+  private Boolean isServerReachable(int port)
+  {
+    ArrayList<ArrayList<String>> out
+    try
+    {
+      out = this.monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_connCheck, port)
+    } catch (TcpServerUnreachableException ignored)
+    {
+      return false
+    }
+
+    ArrayList<String> diagnostics = out.findSingle()
+    assert diagnostics.size() >= 2
+    String pid = diagnostics[0]
+    String packageName = diagnostics[1]
+    log.trace("Reached server at port $port. PID: $pid package: $packageName")
+    return true
+  }
+
   @Override
-  public ArrayList<ArrayList<String>> getCurrentTime() throws DeviceException
+  public ArrayList<ArrayList<String>> getCurrentTime() throws DeviceNeedsRebootException, DeviceException
   {
     ArrayList<ArrayList<String>> out = ports.findResult {
       try
       {
         return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, it)
+
+      } catch (DeviceNeedsRebootException e)
+      {
+        throw e
+
       } catch (TcpServerUnreachableException ignored)
       {
         log.trace("Did not reach monitor TCP server at port $it.")
@@ -66,7 +91,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public ArrayList<ArrayList<String>> getLogs() throws DeviceException
+  public ArrayList<ArrayList<String>> getLogs() throws DeviceNeedsRebootException, DeviceException
   {
     Collection<ArrayList<ArrayList<String>>> out = ports.findResults {
       try

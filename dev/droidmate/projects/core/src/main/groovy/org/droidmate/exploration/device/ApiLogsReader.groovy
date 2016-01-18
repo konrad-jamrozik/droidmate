@@ -17,7 +17,7 @@ import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
@@ -62,7 +62,7 @@ class ApiLogsReader implements IApiLogsReader
   }
 
   @Override
-  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws TcpServerUnreachableException, DeviceException
+  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)")
     assert deviceTimeDiff != null
@@ -103,14 +103,14 @@ class ApiLogsReader implements IApiLogsReader
     return deviceTimeDiff.syncMessages(messages)
   }
 
-  List<ITimeFormattedLogcatMessage> getAndClearMessagesFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws TcpServerUnreachableException, DeviceException
+  private List<ITimeFormattedLogcatMessage> getAndClearMessagesFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws DeviceNeedsRebootException, DeviceException
   {
     List<List<String>> messages = device.readAndClearMonitorTcpMessages()
 
     return extractLogcatMessagesFromTcpMessages(messages, deviceTimeDiff)
   }
 
-  private List<ITimeFormattedLogcatMessage> extractLogcatMessagesFromTcpMessages(List<List<String>> messages, IDeviceTimeDiff deviceTimeDiff)
+  private List<ITimeFormattedLogcatMessage> extractLogcatMessagesFromTcpMessages(List<List<String>> messages, IDeviceTimeDiff deviceTimeDiff) throws DeviceNeedsRebootException, DeviceException
   {
     return deviceTimeDiff.syncMessages(messages.collect {List<String> msg ->
 

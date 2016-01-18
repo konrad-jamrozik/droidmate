@@ -96,7 +96,7 @@ public class ApkDeployer implements IApkDeployer
     try
     {
       // Deployment of apk on device will read some information from logcat, so it has to be cleared to ensure the
-      // anticipated commands are not matched against logcat messages from previous deployments.
+      // anticipated commands are not matched against logcat messages from  deployments of previously explored apks.
       device.clearLogcat()
       tryReinstallApk(device, apk)
 
@@ -111,13 +111,17 @@ public class ApkDeployer implements IApkDeployer
 
   private void tryUndeployApk(IDeployableAndroidDevice device, IApk apk) throws DeviceException
   {
-    device.clearLogcat() // Do so, so the logcat messages sent from the uninstalled apk won't interfere with the next one.
-
     if (cfg.uninstallApk)
     {
-      log.info("Uninstalling $apk.fileName")
-      device.clearPackage(apk.packageName)
-      device.uninstallApk(apk.packageName, /* warnAboutFailure = */ true)
+      if (device.available)
+      {
+        log.info("Uninstalling $apk.fileName")
+        device.clearPackage(apk.packageName)
+        device.uninstallApk(apk.packageName, /* ignoreFailure = */ false)
+      }
+      else
+        log.info("Device not available. Skipping uninstalling $apk.fileName")
+
     } else
     {
       // If the apk is not uninstalled, some of its monitored services might remain, interfering with monitored
@@ -133,7 +137,7 @@ public class ApkDeployer implements IApkDeployer
      - a different version of the same app can be installed, if necessary (without uninstall, an error will be issued about
      certificates not matching (or something like that))
     */
-    device.uninstallApk(apk.packageName, /* warnAboutFailure  = */ false)
+    device.uninstallApk(apk.packageName, /* ignoreFailure  = */ true)
     device.installApk(apk)
   }
 

@@ -51,7 +51,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   @Override
   public DeviceResponse executeCommand(DeviceCommand deviceCommand) throws UiAutomatorDaemonException
   {
-    Log.d(uiaDaemon_logcatTag, "Executing device command: " + deviceCommand.command);
+    Log.v(uiaDaemon_logcatTag, "Executing device command: " + deviceCommand.command);
 
     if (deviceCommand.command.equals(DEVICE_COMMAND_STOP_UIADAEMON))
     {
@@ -75,6 +75,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
   private DeviceResponse getIsNaturalOrientation()
   {
+    Log.d(uiaDaemon_logcatTag, "Getting 'isNaturalOrientation'");
     ui.getUiDevice().waitForIdle();
     DeviceResponse deviceResponse = new DeviceResponse();
     deviceResponse.isNaturalOrientation = ui.getUiDevice().isNaturalOrientation();
@@ -111,11 +112,8 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
       } else if (action.guiActionCommand.equals(guiActionCommand_launchApp))
       {
-        String[] data = action.resourceId.split(" ");
-        String appLaunchIconText = data[0];
-        String appPackageName = data[1];
+        launchApp(action.resourceId);
 
-        launchApp(appLaunchIconText, appPackageName);
       } else
       {
         throw new UiAutomatorDaemonException(String.format("Unrecognized GUI action command: %s",
@@ -124,6 +122,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
     } else if (deviceCommand.guiAction.resourceId != null)
     {
+      Log.d(uiaDaemon_logcatTag, String.format("Setting text of widget with resource ID %s to %s.", deviceCommand.guiAction.resourceId, deviceCommand.guiAction.textToEnter));
       try
       {
         boolean enterResult = new UiObject(
@@ -161,7 +160,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       clickResult = click(deviceCommand, clickXCoor, clickYCoor);
       if (!clickResult)
       {
-        Log.w(uiaDaemon_logcatTag, (String.format("The operation ui.getUiDevice().click(%d, %d) failed (the 'click' method returned 'false'). Retrying after 2 seconds.", clickXCoor, clickYCoor)));
+        Log.d(uiaDaemon_logcatTag, (String.format("The operation ui.getUiDevice().click(%d, %d) failed (the 'click' method returned 'false'). Retrying after 2 seconds.", clickXCoor, clickYCoor)));
 
         try
         {
@@ -173,14 +172,14 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
         clickResult = click(deviceCommand, clickXCoor, clickYCoor);
 
-        // WISH does this really mean the click failed, or some APIs are still being logged?
+        // WISH what does it actually mean that click failed?
         if (!clickResult)
         {
           Log.w(uiaDaemon_logcatTag, (String.format("The operation ui.getUiDevice().click(%d, %d) failed for the second time. Giving up.", clickXCoor, clickYCoor)));
         }
-        Log.w(uiaDaemon_logcatTag, "The click retry attempt succeeded!");
+        else
+          Log.d(uiaDaemon_logcatTag, "The click retry attempt succeeded.");
       }
-
     }
 
     DeviceResponse deviceResponse = new DeviceResponse();
@@ -292,10 +291,11 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
    */
   private void waitForGuiToStabilize()
   {
-    Log.v(uiaDaemon_logcatTag, "Waiting for GUI to stabilize...");
+
 
     if (waitForGuiToStabilize)
     {
+      Log.v(uiaDaemon_logcatTag, "Waiting for GUI to stabilize.");
 
       /* If we would like to extends wait for idle time to more than 500 ms, here are possible ways to do it:
 
@@ -331,11 +331,11 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       if (guiStabilizationAttemptsExhausted(iteration, maxIterations))
         Log.w(uiaDaemon_logcatTag, "GUI failed to stabilize. Continuing nonetheless.");
       else
-        Log.v(uiaDaemon_logcatTag, "GUI stabilized after " + iteration + " iterations / " + (System.currentTimeMillis() - initialWaitForIdleStartTime) + "ms");
+        Log.d(uiaDaemon_logcatTag, "GUI stabilized after " + iteration + " iterations / " + (System.currentTimeMillis() - initialWaitForIdleStartTime) + "ms");
 
     } else
     {
-      Log.v(uiaDaemon_logcatTag, "...skipped.");
+      Log.v(uiaDaemon_logcatTag, "Skipped waiting for GUI to stabilize.");
     }
 
   }
@@ -383,6 +383,8 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
    */
   private UiautomatorWindowHierarchyDumpDeviceResponse getWindowHierarchyDump() throws UiAutomatorDaemonException
   {
+    Log.d(uiaDaemon_logcatTag, "Getting window hierarchy dump");
+
     String windowDumpFileName = "window_hierarchy_dump.xml";
     File windowDump = prepareWindowDumpFile(windowDumpFileName);
 
@@ -525,70 +527,74 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     }
   }
 
-  private File prepareWindowDumpFile(String windowDumpFileName) throws UiAutomatorDaemonException
+  private File prepareWindowDumpFile(String fileName) throws UiAutomatorDaemonException
   {
-    File dataDirectory = Environment.getDataDirectory();
-    File windowDumpDir = new File(dataDirectory, "local/tmp");
-    // WISH likely this "local/tmp" can be removed, as it is duplicated, resulting in dir of "data/local/tmp/local/tmp/"
-    File windowDump = new File(dataDirectory, "local/tmp/" + windowDumpFileName);
+    // Copied from com.android.uiautomator.core.UiDevice.dumpWindowHierarchy()
+    final File dir = new File(Environment.getDataDirectory(), "local/tmp");
+    File file = new File(dir, fileName);
 
-
-    if (windowDump.isDirectory())
-      throw new UiAutomatorDaemonException("windowDump.isDirectory()");
-
-    if (!windowDumpDir.isDirectory())
-      if (!windowDumpDir.mkdirs())
+    // Here we ensure the directory of the target file exists.
+    if (!dir.isDirectory())
+      if (!dir.mkdirs())
         throw new UiAutomatorDaemonException("!windowDumpDir.isDirectory() && !windowDumpDir.mkdirs()");
 
-    if (windowDump.exists())
-      if (!windowDump.delete())
+    // Here we ensure the target file doesn't exist.
+    if (file.isDirectory())
+      throw new UiAutomatorDaemonException("windowDumpFile.isDirectory()");
+    if (file.exists())
+      if (!file.delete())
         throw new UiAutomatorDaemonException("windowDump.exists() && !windowDump.delete()");
 
-    if (windowDump.exists())
+    // Here we check if we ensured things correctly.
+    if (file.exists())
     {
       throw new AssertionError("Following assertion failed: !windowDump.exists()");
     }
-    if (!(windowDump.getParentFile().isDirectory()))
+    if (!(file.getParentFile().isDirectory()))
     {
       throw new AssertionError("Following assertion failed: windowDump.getParentFile().isDirectory()");
     }
 
-    try
-    {
-      if (!windowDump.createNewFile())
-        throw new UiAutomatorDaemonException("!windowDump.createNewFile()");
-    } catch (IOException e)
-    {
-      throw new UiAutomatorDaemonException(e);
-    }
-
-    return windowDump;
+    return file;
   }
-
 
   //region Launching app
-  private void launchApp(String appLaunchIconText, String appPackageName) throws UiAutomatorDaemonException
+  private void launchApp(String appLaunchIconText) throws UiAutomatorDaemonException
   {
-    UiObject app = navigateToAppLaunchIcon(appLaunchIconText);
+    Log.d(uiaDaemon_logcatTag, "Launching app by navigating to and clicking icon with text "+appLaunchIconText);
+
+    boolean clickResult;
     try
     {
-      app.clickAndWaitForNewWindow();
+      UiObject app = navigateToAppLaunchIcon(appLaunchIconText);
+      Log.v(uiaDaemon_logcatTag, "Pressing the " + appLaunchIconText + " app icon to launch it.");
+      clickResult = app.clickAndWaitForNewWindow();
+
     } catch (UiObjectNotFoundException e)
     {
-      throw new UiAutomatorDaemonException(e);
+      Log.w(uiaDaemon_logcatTag,
+        String.format("Attempt to navigate to and click on the icon labeled '%s' to launch the app threw an exception: %s: %s",
+          appLaunchIconText, e.getClass().getSimpleName(), e.getLocalizedMessage()));
+      Log.d(uiaDaemon_logcatTag, "Pressing 'home' button after failed app launch.");
+      ui.getUiDevice().pressHome();
+      waitForGuiToStabilize();
+      return;
     }
-    Log.i(uiaDaemon_logcatTag, "Pressing the " + appLaunchIconText + " app icon to launch it.");
 
-    throwIfNotTrue(getPackageName().equals(appPackageName), "Expected: " + appPackageName + " but got instead: " + getPackageName());
+    if (clickResult)
+        waitForGuiToStabilize();
+    else
+      Log.w(uiaDaemon_logcatTag, (String.format("A click on the icon labeled '%s' to launch the app returned false", appLaunchIconText)));
   }
 
+  // Was used in launchApp to check package name
   private void throwIfNotTrue(boolean pred, String msg) throws UiAutomatorDaemonException
   {
     if (!pred)
       throw new UiAutomatorDaemonException(msg);
   }
 
-  private UiObject navigateToAppLaunchIcon(String appLaunchIconName) throws UiAutomatorDaemonException
+  private UiObject navigateToAppLaunchIcon(String appLaunchIconName) throws UiObjectNotFoundException
   {
     // Simulate a short press on the HOME button.
     ui.getUiDevice().pressHome();
@@ -602,39 +608,34 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     UiObject allAppsButton = new UiObject(new UiSelector().description("Apps"));
 
     // Simulate a click to bring up the All Apps screen.
-    try
-    {
-      allAppsButton.clickAndWaitForNewWindow();
+    allAppsButton.clickAndWaitForNewWindow();
 
 
-      // In the All Apps screen, the app launch icon is located in
-      // the Apps tab. To simulate the user bringing up the Apps tab,
-      // we create a UiSelector to find a tab with the text
-      // label “Apps”.
-      UiObject appsTab = new UiObject(new UiSelector().text("Apps"));
+    // In the All Apps screen, the app launch icon is located in
+    // the Apps tab. To simulate the user bringing up the Apps tab,
+    // we create a UiSelector to find a tab with the text
+    // label “Apps”.
+    UiObject appsTab = new UiObject(new UiSelector().text("Apps"));
 
-      // Simulate a click to enter the Apps tab.
-      appsTab.click();
+    // Simulate a click to enter the Apps tab.
+    appsTab.click();
 
-      // Next, in the apps tabs, we can simulate a user swiping until
-      // they come to the app launch icon. Since the container view
-      // is scrollable, we can use a UiScrollable object.
-      UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
+    // Next, in the apps tabs, we can simulate a user swiping until
+    // they come to the app launch icon. Since the container view
+    // is scrollable, we can use a UiScrollable object.
+    UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
 
-      // Set the swiping mode to horizontal (the default is vertical)
-      appViews.setAsHorizontalList();
+    // Set the swiping mode to horizontal (the default is vertical)
+    appViews.setAsHorizontalList();
 
-      // Create a UiSelector to find the app launch icon and simulate
-      // a user click to launch the app.
-      return appViews.getChildByText(
-        new UiSelector().className(android.widget.TextView.class.getName()),
-        appLaunchIconName);
-    } catch (UiObjectNotFoundException e)
-    {
-      throw new UiAutomatorDaemonException(e);
-    }
+    // Create a UiSelector to find the app launch icon and simulate
+    // a user click to launch the app.
+    return appViews.getChildByText(
+      new UiSelector().className(android.widget.TextView.class.getName()),
+      appLaunchIconName);
   }
 
+  // KJA toremove
   private String getPackageName() throws UiAutomatorDaemonException
   {
     String packageName = ui.getUiDevice().getCurrentPackageName();

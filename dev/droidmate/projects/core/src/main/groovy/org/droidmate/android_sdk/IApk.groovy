@@ -21,4 +21,5 @@ public interface IApk
 
   String getLaunchableActivityComponentName()
 
+  String getApplicationLabel()
 }

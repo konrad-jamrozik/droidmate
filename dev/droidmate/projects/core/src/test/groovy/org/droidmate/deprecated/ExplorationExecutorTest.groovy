@@ -24,6 +24,7 @@ import org.droidmate.tools.DeviceTools
 import org.droidmate.tools.IDeviceTools
 import org.droidmate.tools.SingleApkFixture
 import org.junit.FixMethodOrder
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
@@ -40,7 +41,7 @@ class ExplorationExecutorTest extends DroidmateGroovyTestCase
 
   @Deprecated
   @Category(RequiresDevice)
-  //@Ignore("Instead, new implementation is tested with a test of the same name in class ExploratorTest.")
+  // @Ignore("New implementation is tested with a test of the same name in class ExploratorTest.")
   @Test
   void "Collects monitored API calls logs during device exploration"()
   {

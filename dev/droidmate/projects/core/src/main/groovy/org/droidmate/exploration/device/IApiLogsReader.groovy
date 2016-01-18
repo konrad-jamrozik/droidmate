@@ -10,7 +10,7 @@
 package org.droidmate.exploration.device
 
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.logcat.IApiLogcatMessage
 
 interface IApiLogsReader
@@ -19,5 +19,5 @@ interface IApiLogsReader
   @Deprecated
   List<IApiLogcatMessage> getCurrentApiLogsFromLogcat(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
 
-  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws TcpServerUnreachableException, DeviceException
+  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws DeviceNeedsRebootException, DeviceException
 }

@@ -274,6 +274,10 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
     if (this.guiState.isCompleteActionUsingDialogBox())
       return "$cls{\"Complete action using\" dialog box.}"
 
+    if (this.guiState.isSelectAHomeAppDialogBox())
+      return "$cls{\"Select a home app\" dialog box.}"
+
+
 
     String returnString = "$cls{${packageName}. Widgets# ${this.guiState.widgets.size()}}"
     // Uncomment when necessary for debugging.

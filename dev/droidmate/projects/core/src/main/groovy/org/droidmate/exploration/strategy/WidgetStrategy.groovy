@@ -154,11 +154,11 @@ class WidgetStrategy implements IWidgetStrategy
     lastWidgetInfo = chosenWidgetInfo
     assert !lastWidgetInfo.blackListed
 
-    ExplorationAction eo
+    ExplorationAction action
     if (chosenWidget.longClickable && !chosenWidget.clickable && !chosenWidget.checkable)
     {
       chosenWidgetInfo.longClickedCount++
-      eo = newWidgetExplorationAction(chosenWidget, /* longClick */ true)
+      action = newWidgetExplorationAction(chosenWidget, /* longClick */ true)
 
     } else if (chosenWidget.longClickable)
     {
@@ -173,17 +173,17 @@ class WidgetStrategy implements IWidgetStrategy
       if (chosenWidgetInfo.actedUponCount % 3 == 1)
       {
         chosenWidgetInfo.longClickedCount++
-        eo = newWidgetExplorationAction(chosenWidget, /* longClick */ true)
+        action = newWidgetExplorationAction(chosenWidget, /* longClick */ true)
       } else
-        eo = newWidgetExplorationAction(chosenWidget)
+        action = newWidgetExplorationAction(chosenWidget)
 
     } else
-      eo = newWidgetExplorationAction(chosenWidget)
+      action = newWidgetExplorationAction(chosenWidget)
 
     chosenWidgetInfo.actedUponCount++
 
     log.debug("Chosen widget info: $chosenWidgetInfo")
-    return eo
+    return action
   }
 
   //region Nested classes

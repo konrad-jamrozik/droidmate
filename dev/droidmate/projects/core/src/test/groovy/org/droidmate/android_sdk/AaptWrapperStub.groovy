@@ -41,9 +41,16 @@ class AaptWrapperStub implements IAaptWrapper
   }
 
   @Override
+  String getApplicationLabel(Path apk) throws DroidmateException
+  {
+    assert false: "Not yet implemented!"
+  }
+
+
+  @Override
   List<String> getMetadata(Path path) throws DroidmateException
   {
     def apk = apks.findSingle {it.absolutePath == path.toAbsolutePath().toString()}
-    return [apk.packageName, apk.launchableActivityName, apk.launchableActivityComponentName]
+    return [apk.packageName, apk.launchableActivityName, apk.launchableActivityComponentName, apk.applicationLabel]
   }
 }

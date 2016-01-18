@@ -17,7 +17,8 @@ public class LogbackConstants
 
   private static String getLogsDirPath()
   {
-    // WISH not logsDir has to be set on VM arg instead of normal arg. Maybe making it normal arg and then resetting the config as described here [1] would help. [1]: http://logback.qos.ch/manual/configuration.html#joranDirectly
+    // WISH note: logsDir has to be set on VM arg instead of normal arg. Maybe making it normal arg and then resetting
+    // the config as described here [1] would help. [1]: http://logback.qos.ch/manual/configuration.html#joranDirectly
     String logsDir = System.getProperty("logsDir")
     if (logsDir == null)
       return "." + File.separator + "dev1" + File.separator + "logs"
@@ -31,6 +32,7 @@ public class LogbackConstants
     appender_name_runData
   ]
 
+  @Deprecated
   /**
    * Denotes name of logger for logs that have been obtained from logcat from uiautomator-daemon classes during exploration.
    */
@@ -41,6 +43,7 @@ public class LogbackConstants
    */
   public static final String logger_name_monitor = "from monitor"
 
+  @Deprecated
   public static final String appender_name_uiad = "uiad.txt"
 
   public static final String appender_name_monitor = "monitor.txt"

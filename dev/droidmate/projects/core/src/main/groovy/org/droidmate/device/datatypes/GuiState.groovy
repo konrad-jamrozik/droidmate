@@ -20,8 +20,7 @@ class GuiState implements Serializable, IGuiState
   private static final long serialVersionUID = 1
 
   public static final  String package_android_launcher                     = "com.android.launcher"
-  private static final String PACKAGE_ANDROID_APP_STOPPED_DIALOG           = "android"
-  private static final String PACKAGE_ANDROID_COMPLETE_ACTION_USING_DIALOG = "android"
+  private static final String PACKAGE_ANDROID                              = "android"
 
   final String       topNodePackageName
   final List<Widget> widgets
@@ -77,13 +76,13 @@ class GuiState implements Serializable, IGuiState
   @Override
   boolean isHomeScreen()
   {
-    return this.topNodePackageName == package_android_launcher
+    return this.topNodePackageName == package_android_launcher && !this.widgets.any { it.text == "Widgets" }
   }
 
   @Override
   boolean isAppHasStoppedDialogBox()
   {
-    return topNodePackageName == PACKAGE_ANDROID_APP_STOPPED_DIALOG &&
+    return topNodePackageName == PACKAGE_ANDROID &&
       widgets.any {it.text == "OK"} &&
       !widgets.any {it.text == "Just once"}
   }
@@ -91,9 +90,17 @@ class GuiState implements Serializable, IGuiState
   @Override
   boolean isCompleteActionUsingDialogBox()
   {
-    return topNodePackageName == PACKAGE_ANDROID_COMPLETE_ACTION_USING_DIALOG &&
+    return !isSelectAHomeAppDialogBox() && topNodePackageName == PACKAGE_ANDROID &&
       widgets.any {it.text == "Just once"}
   }
+
+  @Override
+  boolean isSelectAHomeAppDialogBox()
+  {
+    return topNodePackageName == PACKAGE_ANDROID &&
+      widgets.any {it.text == "Just once"} && widgets.any {it.text == "Select a home app"}
+  }
+
 
   @Override
   boolean belongsToApp(String appPackageName)

@@ -13,7 +13,7 @@ import org.droidmate.common.Boolean3
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
@@ -22,9 +22,9 @@ public interface IExplorableAndroidDevice
 {
   boolean hasPackageInstalled(String packageName) throws DeviceException
 
-  IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
+  IDeviceGuiSnapshot getGuiSnapshot() throws DeviceNeedsRebootException, DeviceException
 
-  void perform(IAndroidDeviceAction action) throws DeviceException
+  void perform(IAndroidDeviceAction action) throws DeviceNeedsRebootException, DeviceException
 
   List<ITimeFormattedLogcatMessage> readLogcatMessages(String messageTag) throws DeviceException
 
@@ -32,14 +32,16 @@ public interface IExplorableAndroidDevice
 
   void clearLogcat() throws DeviceException
 
-  List<List<String>> readAndClearMonitorTcpMessages() throws TcpServerUnreachableException, DeviceException
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException
 
-  LocalDateTime getCurrentTime() throws TcpServerUnreachableException, DeviceException
+  LocalDateTime getCurrentTime() throws DeviceNeedsRebootException, DeviceException
 
-  Boolean appProcessIsRunning(String appPackageName) throws DeviceException
-
-  Boolean anyMonitorIsReachable() throws DeviceException
+  Boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
 
   Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
+
+  Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
+
+  void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
 }
 

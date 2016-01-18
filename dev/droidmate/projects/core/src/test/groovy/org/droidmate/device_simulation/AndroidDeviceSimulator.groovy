@@ -15,10 +15,7 @@ import org.droidmate.common.Boolean3
 import org.droidmate.common.DroidmateException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.IExceptionSpec
-import org.droidmate.exceptions.TestDeviceException
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.exceptions.*
 import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
@@ -191,12 +188,6 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  Boolean appProcessIsRunning(String appPackageName)
-  {
-    this.currentSimulation.packageName == appPackageName && this.currentSimulation.appIsRunning
-  }
-
-  @Override
   Boolean anyMonitorIsReachable()
   {
     this.currentSimulation.appIsRunning
@@ -207,6 +198,18 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   {
     updateSimulatorState(new LaunchMainActivityDeviceAction(launchableActivityComponentName))
     return Boolean3.True
+  }
+
+  @Override
+  Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
+  {
+    return this.currentSimulation.packageName == appPackageName && this.currentSimulation.appIsRunning
+  }
+
+  @Override
+  void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
+  {
+    assert false: "Not yet implemented!"
   }
 
   @Override
@@ -226,7 +229,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  void uninstallApk(String apkPackageName, boolean warnAboutFailure) throws DroidmateException
+  void uninstallApk(String apkPackageName, boolean ignoreFailure) throws DroidmateException
   {
     findMatchingExceptionSpecAndThrowIfApplies("uninstallApk", apkPackageName)
   }
@@ -262,11 +265,20 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  List<List<String>> readAndClearMonitorTcpMessages()
+  void removeLogcatLogFile() throws DeviceException
+  {
+  }
+
+  @Override
+  void pullLogcatLogFile() throws DeviceException
+  {
+  }
+
+  @Override
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException
   {
     return []
   }
-
 
   public static AndroidDeviceSimulator build(
     ITimeGenerator timeGenerator = new TimeGenerator(),

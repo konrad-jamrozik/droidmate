@@ -24,5 +24,7 @@ public interface IAaptWrapper {
 
   String getLaunchableActivityComponentName(Path apk) throws DroidmateException
 
+  String getApplicationLabel(Path apk) throws DroidmateException
+
   List<String> getMetadata(Path apk) throws DroidmateException
 }

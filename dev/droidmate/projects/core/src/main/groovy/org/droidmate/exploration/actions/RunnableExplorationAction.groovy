@@ -10,6 +10,7 @@ package org.droidmate.exploration.actions
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
+import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.device.datatypes.MissingGuiSnapshot
 import org.droidmate.exceptions.DeviceException
@@ -18,6 +19,7 @@ import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.device.IDeviceLogs
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.MissingDeviceLogs
+import org.droidmate.logcat.IApiLogcatMessage
 
 import java.time.LocalDateTime
 
@@ -90,25 +92,49 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
     }
 
     // For post-conditions, see inside the constructor call made line below.
-    return new ExplorationActionRunResult(successful, this.logs, this.snapshot, this.exception)
+    ExplorationActionRunResult result = new ExplorationActionRunResult(successful, this.logs, this.snapshot, this.exception)
+
+    frontendHook(result)
+
+    return result
+  }
+
+  /**
+   * Allows to hook into the result of interacting with the device after an ExplorationAction has been executed on it.
+   */
+  void frontendHook(IExplorationActionRunResult result)
+  {
+    if (!(result.guiSnapshot instanceof MissingGuiSnapshot))
+    {
+      List<Widget> widgets = result.guiSnapshot.guiState.widgets
+      boolean isANR = result.guiSnapshot.guiState.isAppHasStoppedDialogBox()
+      // And so on. see org.droidmate.device.datatypes.IGuiState
+    }
+
+    if (!(result.deviceLogs instanceof MissingDeviceLogs))
+    {
+      List<IApiLogcatMessage> logs = result.deviceLogs.apiLogsOrEmpty
+      logs.each { IApiLogcatMessage log ->
+        String time = log.time
+        String methodName = log.methodName
+        // And so on. See org.droidmate.logcat.ITimeFormattedLogcatMessage
+        // and org.droidmate.apis.IApi
+      }
+    }
+
+    if (!(result.successful))
+    {
+      DeviceException exception = result.exception
+    }
+
+    // To-do for SE team
   }
 
   abstract protected void performDeviceActions(IApk app, IRobustDevice device) throws DeviceException
 
-  protected void assertAppIsNotRunning(IRobustDevice device, IApk apk)
+  protected void assertAppIsNotRunning(IRobustDevice device, IApk apk) throws DeviceException
   {
     assert device.appIsNotRunning(apk)
-  }
-
-  protected void assertAppIsRunning(IRobustDevice device, IApk apk)
-  {
-    assert device.appIsRunning(apk)
-  }
-
-
-  protected Boolean appIsRunning(IRobustDevice device, IApk app)
-  {
-    device.appProcessIsRunning(app.packageName) && device.anyMonitorIsReachable()
   }
 
   @Override

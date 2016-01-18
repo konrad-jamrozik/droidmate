@@ -15,7 +15,6 @@ import org.droidmate.exceptions.TcpServerUnreachableException
 
 public interface ISerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable>
 {
-  Boolean isServerReachable(int port) throws DeviceNeedsRebootException, DeviceException
 
   OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
 }

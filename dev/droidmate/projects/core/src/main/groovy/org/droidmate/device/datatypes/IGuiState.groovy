@@ -27,6 +27,8 @@ interface IGuiState extends Serializable
 
   boolean isCompleteActionUsingDialogBox()
 
+  boolean isSelectAHomeAppDialogBox()
+
   boolean belongsToApp(String appPackageName)
 
 }

@@ -14,11 +14,7 @@ interface IDeviceLogsHandler
 {
   void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
 
-  void logUiaDaemonLogsFromLogcat() throws DeviceException
-
-  void clearLogcat() throws DeviceException
-
   void readAndClearApiLogs() throws DeviceException
 
-  IDeviceLogs sealReadingAndReturnDeviceLogs()
+  IDeviceLogs getLogs()
 }

@@ -24,7 +24,7 @@ class LogbackUtilsRequiringLogbackLog
     if (!logsDir.directory)
       logsDir.mkdirs()
 
-    String logNotDeleted = ""
+    String msg_notDeletedLogFileNames = ""
 
     logsDir.eachFile(FILES) {File logFile ->
 
@@ -33,12 +33,12 @@ class LogbackUtilsRequiringLogbackLog
 
       if (!logFile.delete())
       {
-        logNotDeleted += " $logFile.name,"
+        msg_notDeletedLogFileNames += " $logFile.name,"
         logFile.write("")
       }
     }
 
-    log(logsDir, logNotDeleted)
+    log(logsDir, msg_notDeletedLogFileNames)
   }
 
   private static void log(File logsDir, String logNotDeleted)

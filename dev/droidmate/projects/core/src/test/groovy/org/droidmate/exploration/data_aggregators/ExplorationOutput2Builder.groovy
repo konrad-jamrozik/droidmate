@@ -55,7 +55,8 @@ class ExplorationOutput2Builder
       ApkTestHelper.build(
         packageName,
         "${packageName}/${packageName}.MainActivity",
-        "$packageName" + "1"
+        "$packageName" + "1",
+        "applicationLabel"
       )
     )
     this.currentlyBuiltApkOut2.explorationStartTime = attributes.explorationStartTime

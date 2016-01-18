@@ -78,7 +78,7 @@ public class DroidmateFrontend
       exitStatus = exceptionHandler.handle(e)
     }
 
-    logDroidmateRunEnd(runStart, exitStatus > 0)
+    logDroidmateRunEnd(runStart, /* encounteredExceptionsDuringTheRun */ exitStatus > 0)
     return exitStatus
   }
 
@@ -93,15 +93,14 @@ public class DroidmateFrontend
   }
 
 
-  private static void logDroidmateRunEnd(Date runStart, boolean runFinishedWithThrowablePropagatedToMain)
+  private static void logDroidmateRunEnd(Date runStart, boolean encounteredExceptionsDuringTheRun)
   {
     Date runEnd = new Date()
     TimeDuration runDuration = TimeCategory.minus(runEnd, runStart)
     String timestampFormat = "yyyy MMM dd HH:mm:ss"
 
-    if (runFinishedWithThrowablePropagatedToMain)
-      log.warn("DroidMate run finished, possibly prematurely, because a (subtype of) Throwable " +
-        "was propagated to main method. See previous logs for details on the Throwable.")
+    if (encounteredExceptionsDuringTheRun)
+      log.warn("DroidMate run finished, but some exceptions have been thrown and handled during the run. See previous logs for details.")
     else
       log.info("DroidMate run finished successfully.")
 
