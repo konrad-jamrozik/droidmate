@@ -558,7 +558,6 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     return file;
   }
 
-  // KJA remove stack trace from ex logF
   //region Launching app
   private void launchApp(String appLaunchIconText) throws UiAutomatorDaemonException
   {
