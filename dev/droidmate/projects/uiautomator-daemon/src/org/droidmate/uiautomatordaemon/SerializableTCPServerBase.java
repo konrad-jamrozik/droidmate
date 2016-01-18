@@ -68,7 +68,7 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
   {
     try
     {
-      Log.v(tag, "serverSocket.close();");
+      Log.i(tag, "serverSocket.close() of server using "+ port);
       serverSocket.close();
     } catch (IOException e)
     {
