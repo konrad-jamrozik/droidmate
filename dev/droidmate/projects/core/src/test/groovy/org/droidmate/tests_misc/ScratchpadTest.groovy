@@ -20,12 +20,6 @@ class ScratchpadTest
   @Test
   void test()
   {
-//    Socket s = new Socket("localhost", 59999)
-//    new ObjectInputStream(s.inputStream)
-
-//    def x = new DeviceNeedsRebootException(new Exception(new Exception("subap")));
-//    println "X: $x"
-//    println "Y: ${x.message}"
   }
 
 }
