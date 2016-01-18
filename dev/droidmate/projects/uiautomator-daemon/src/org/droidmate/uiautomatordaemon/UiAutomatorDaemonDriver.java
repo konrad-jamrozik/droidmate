@@ -587,12 +587,6 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       Log.w(uiaDaemon_logcatTag, (String.format("A click on the icon labeled '%s' to launch the app returned false", appLaunchIconText)));
   }
 
-  // Was used in launchApp to check package name
-  private void throwIfNotTrue(boolean pred, String msg) throws UiAutomatorDaemonException
-  {
-    if (!pred)
-      throw new UiAutomatorDaemonException(msg);
-  }
 
   private UiObject navigateToAppLaunchIcon(String appLaunchIconName) throws UiObjectNotFoundException
   {
@@ -635,26 +629,5 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       appLaunchIconName);
   }
 
-  // KJA toremove
-  private String getPackageName() throws UiAutomatorDaemonException
-  {
-    String packageName = ui.getUiDevice().getCurrentPackageName();
-    int getPackageNameAttemptsLeft = 10;
-    while (packageName == null && getPackageNameAttemptsLeft > 0)
-    {
-      try
-      {
-        Thread.sleep(1000);
-      } catch (InterruptedException e)
-      {
-        Log.wtf(uiaDaemon_logcatTag, "Thread interrupted while sleeping when getting package name!");
-      }
-      packageName = ui.getUiDevice().getCurrentPackageName();
-      getPackageNameAttemptsLeft--;
-    }
-    if (packageName == null)
-      throw new UiAutomatorDaemonException("Exhausted all attempts to obtain non-null package name");
-    return packageName;
-  }
   //endregion
 }
