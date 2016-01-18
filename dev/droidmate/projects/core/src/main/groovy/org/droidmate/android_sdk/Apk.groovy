@@ -10,6 +10,7 @@ package org.droidmate.android_sdk
 
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
+import org.droidmate.exceptions.LaunchableActivityNameProblemException
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -36,7 +37,16 @@ class Apk implements IApk, Serializable
     assert path != null
     assert Files.isRegularFile(path)
 
-    def (String packageName, String launchableActivityName, String launchableActivityComponentName, String applicationLabel) = aapt.getMetadata(path)
+    String packageName, launchableActivityName, launchableActivityComponentName, applicationLabel
+    try
+    {
+      (packageName, launchableActivityName, launchableActivityComponentName, applicationLabel) = aapt.getMetadata(path)
+    } catch (LaunchableActivityNameProblemException e)
+    {
+      log.warn("! While getting metadata for ${path.toString()}, got an: $e Returning null apk.")
+      assert e.isFatal
+      return null
+    }
 
     if ([launchableActivityName, launchableActivityComponentName].any {it == null})
     {

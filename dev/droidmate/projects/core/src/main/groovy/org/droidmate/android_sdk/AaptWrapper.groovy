@@ -15,7 +15,7 @@ import org.droidmate.common.DroidmateException
 import org.droidmate.common.ISysCmdExecutor
 import org.droidmate.common.SysCmdExecutorException
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.NoLaunchableActivityNameException
+import org.droidmate.exceptions.LaunchableActivityNameProblemException
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -63,16 +63,16 @@ public class AaptWrapper implements IAaptWrapper
   }
 
 
-  private static String tryGetLaunchableActivityNameFromBadgingDump(String aaptBadgingDump) throws DroidmateException
+  private static String tryGetLaunchableActivityNameFromBadgingDump(String aaptBadgingDump) throws LaunchableActivityNameProblemException
   {
     assert aaptBadgingDump?.length() > 0
 
     Matcher matcher = aaptBadgingDump =~ /(?:.*)launchable-activity: name='(\S*)'.*/
 
     if (matcher.size() == 0)
-      throw new NoLaunchableActivityNameException()
+      throw new LaunchableActivityNameProblemException("No launchable activity found.")
     else if (matcher.size() > 1)
-      throw new DroidmateException("More than one launchable activity found! While some apks have more than one launchable activities, DroidMate doesn't know how to handle such situations.")
+      throw new LaunchableActivityNameProblemException("More than one launchable activity found.", /* isFatal */ true)
     else
     {
       String launchableActivityName = getAndValidateFirstMatch(matcher)
@@ -147,10 +147,18 @@ public class AaptWrapper implements IAaptWrapper
     try
     {
       activity = [getLaunchableActivityName(apk), getLaunchableActivityComponentName(apk)]
-    } catch (NoLaunchableActivityNameException ignored)
+    } catch (LaunchableActivityNameProblemException e)
     {
-      log.trace("No launchable activity name found for ${apk.toString()}. Returning null.")
-      activity = [null, null]
+      if (e.isFatal)
+      {
+        throw e
+      } else
+      {
+        log.trace("While getting metadata for ${apk.toString()}, got an: $e Substituting null for the launchable activity (component) name.")
+        activity = [null, null]
+      }
+
+
     }
 
     return [getPackageName(apk)] + activity + getApplicationLabel(apk)
