@@ -13,6 +13,7 @@ import com.google.common.base.Ticker
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.common.logging.Markers
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device.datatypes.IGuiState
@@ -154,6 +155,8 @@ class ExplorationStrategy implements IExplorationStrategy
         Widget w = (explorationAction as WidgetExplorationAction).widget
 
         String text = w.text // For other properties, see org.droidmate.common.exploration.datatypes.Widget
+
+        log.trace(Markers.gui,"<widget_explored>" + text + "</widget_explored>")
 
         // Otherwise the widget is not interesting (DroidMate will never do anything with it)
         boolean canBeActedUpon = w.canBeActedUpon()
