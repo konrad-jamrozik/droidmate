@@ -85,7 +85,7 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
       // - For explanation of the exec string, see org.droidmate.android_sdk.AdbWrapper.readMessagesFromLogcat()
       // - Manual tests with "adb shell ps" show that the spawned process will be automatically killed when the uiad process dies.
 
-      Runtime.getRuntime().exec(String.format("logcat -v time -f %s %s:W %s:D %s:D" ,
+      Runtime.getRuntime().exec(String.format("logcat -v time -f %s %s:W %s:D %s:D *:D" ,
         outputFile.getAbsolutePath(), instrumentation_redirectionTag, uiaDaemon_logcatTag, SerializableTCPServerBase.tag));
     } catch (IOException e)
     {
