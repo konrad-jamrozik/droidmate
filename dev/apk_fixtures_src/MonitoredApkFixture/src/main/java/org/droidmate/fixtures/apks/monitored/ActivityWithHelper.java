@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2015 Saarland University Software Engineering Chair.
+// Copyright (c) 2012-2016 Saarland University Software Engineering Chair.
 // All right reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
