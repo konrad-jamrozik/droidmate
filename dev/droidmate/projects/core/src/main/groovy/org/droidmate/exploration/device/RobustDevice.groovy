@@ -291,6 +291,7 @@ class RobustDevice implements IRobustDevice
 
     assert guiSnapshot.guiState.isAppHasStoppedDialogBox()
     assert (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
+    log.debug("ANR encountered")
 
     IDeviceGuiSnapshot out = null
 
@@ -304,7 +305,7 @@ class RobustDevice implements IRobustDevice
       if (out.guiState.isAppHasStoppedDialogBox())
       {
         assert (out.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
-        log.trace("Failed to properly close ANR even though OK widget is enabled.")
+        log.debug("ANR encountered - again. Failed to properly close it even though its OK widget was enabled.")
         return false
       } else
         return true
