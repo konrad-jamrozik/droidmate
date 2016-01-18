@@ -84,7 +84,9 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
       // KJA2 filter out junk logs to decrease the file size.
       // - For explanation of the exec string, see org.droidmate.android_sdk.AdbWrapper.readMessagesFromLogcat()
       // - Manual tests with "adb shell ps" show that the spawned process will be automatically killed when the uiad process dies.
-      Runtime.getRuntime().exec("logcat -v time -f "+outputFile.getAbsolutePath());
+
+      Runtime.getRuntime().exec(String.format("logcat -v time -f %s %s:W %s:D " ,
+        outputFile.getAbsolutePath(), instrumentation_redirectionTag, uiaDaemon_logcatTag));
     } catch (IOException e)
     {
       Log.wtf(uiaDaemon_logcatTag, e);

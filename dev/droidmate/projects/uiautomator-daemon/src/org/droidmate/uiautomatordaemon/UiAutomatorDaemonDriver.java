@@ -51,7 +51,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   @Override
   public DeviceResponse executeCommand(DeviceCommand deviceCommand) throws UiAutomatorDaemonException
   {
-    Log.d(uiaDaemon_logcatTag, "Executing device command: " + deviceCommand.command);
+    Log.v(uiaDaemon_logcatTag, "Executing device command: " + deviceCommand.command);
 
     if (deviceCommand.command.equals(DEVICE_COMMAND_STOP_UIADAEMON))
     {
@@ -75,6 +75,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
   private DeviceResponse getIsNaturalOrientation()
   {
+    Log.d(uiaDaemon_logcatTag, "Getting 'isNaturalOrientation'");
     ui.getUiDevice().waitForIdle();
     DeviceResponse deviceResponse = new DeviceResponse();
     deviceResponse.isNaturalOrientation = ui.getUiDevice().isNaturalOrientation();
@@ -121,6 +122,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
     } else if (deviceCommand.guiAction.resourceId != null)
     {
+      Log.d(uiaDaemon_logcatTag, String.format("Setting text of widget with resource ID %s to %s.", deviceCommand.guiAction.resourceId, deviceCommand.guiAction.textToEnter));
       try
       {
         boolean enterResult = new UiObject(
@@ -158,7 +160,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       clickResult = click(deviceCommand, clickXCoor, clickYCoor);
       if (!clickResult)
       {
-        Log.w(uiaDaemon_logcatTag, (String.format("The operation ui.getUiDevice().click(%d, %d) failed (the 'click' method returned 'false'). Retrying after 2 seconds.", clickXCoor, clickYCoor)));
+        Log.d(uiaDaemon_logcatTag, (String.format("The operation ui.getUiDevice().click(%d, %d) failed (the 'click' method returned 'false'). Retrying after 2 seconds.", clickXCoor, clickYCoor)));
 
         try
         {
@@ -175,9 +177,9 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
         {
           Log.w(uiaDaemon_logcatTag, (String.format("The operation ui.getUiDevice().click(%d, %d) failed for the second time. Giving up.", clickXCoor, clickYCoor)));
         }
-        Log.w(uiaDaemon_logcatTag, "The click retry attempt succeeded!");
+        else
+          Log.d(uiaDaemon_logcatTag, "The click retry attempt succeeded.");
       }
-
     }
 
     DeviceResponse deviceResponse = new DeviceResponse();
@@ -289,10 +291,11 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
    */
   private void waitForGuiToStabilize()
   {
-    Log.v(uiaDaemon_logcatTag, "Waiting for GUI to stabilize...");
+
 
     if (waitForGuiToStabilize)
     {
+      Log.v(uiaDaemon_logcatTag, "Waiting for GUI to stabilize.");
 
       /* If we would like to extends wait for idle time to more than 500 ms, here are possible ways to do it:
 
@@ -328,11 +331,11 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       if (guiStabilizationAttemptsExhausted(iteration, maxIterations))
         Log.w(uiaDaemon_logcatTag, "GUI failed to stabilize. Continuing nonetheless.");
       else
-        Log.v(uiaDaemon_logcatTag, "GUI stabilized after " + iteration + " iterations / " + (System.currentTimeMillis() - initialWaitForIdleStartTime) + "ms");
+        Log.d(uiaDaemon_logcatTag, "GUI stabilized after " + iteration + " iterations / " + (System.currentTimeMillis() - initialWaitForIdleStartTime) + "ms");
 
     } else
     {
-      Log.v(uiaDaemon_logcatTag, "...skipped.");
+      Log.v(uiaDaemon_logcatTag, "Skipped waiting for GUI to stabilize.");
     }
 
   }
@@ -380,6 +383,8 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
    */
   private UiautomatorWindowHierarchyDumpDeviceResponse getWindowHierarchyDump() throws UiAutomatorDaemonException
   {
+    Log.d(uiaDaemon_logcatTag, "Getting window hierarchy dump");
+
     String windowDumpFileName = "window_hierarchy_dump.xml";
     File windowDump = prepareWindowDumpFile(windowDumpFileName);
 
@@ -553,19 +558,24 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     return file;
   }
 
+  // KJA remove stack trace from ex logF
   //region Launching app
   private void launchApp(String appLaunchIconText) throws UiAutomatorDaemonException
   {
+    Log.d(uiaDaemon_logcatTag, "Launching app by navigating to and clicking icon with text "+appLaunchIconText);
+
     boolean clickResult;
     try
     {
       UiObject app = navigateToAppLaunchIcon(appLaunchIconText);
-      Log.i(uiaDaemon_logcatTag, "Pressing the " + appLaunchIconText + " app icon to launch it.");
+      Log.v(uiaDaemon_logcatTag, "Pressing the " + appLaunchIconText + " app icon to launch it.");
       clickResult = app.clickAndWaitForNewWindow();
 
     } catch (UiObjectNotFoundException e)
     {
-      Log.w(uiaDaemon_logcatTag, String.format("Attempt to navigate to and click on the icon labeled '%s' to launch the app threw an exception: ", appLaunchIconText), e);
+      Log.w(uiaDaemon_logcatTag,
+        String.format("Attempt to navigate to and click on the icon labeled '%s' to launch the app threw an exception: %s: %s",
+          appLaunchIconText, e.getClass().getSimpleName(), e.getLocalizedMessage()));
       Log.d(uiaDaemon_logcatTag, "Pressing 'home' button after failed app launch.");
       ui.getUiDevice().pressHome();
       waitForGuiToStabilize();
@@ -626,6 +636,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       appLaunchIconName);
   }
 
+  // KJA toremove
   private String getPackageName() throws UiAutomatorDaemonException
   {
     String packageName = ui.getUiDevice().getCurrentPackageName();
