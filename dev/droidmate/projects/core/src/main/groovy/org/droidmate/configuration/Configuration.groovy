@@ -314,7 +314,7 @@ public class Configuration implements IConfiguration
   public int stopAppRetryAttempts = 4
 
   @Parameter(names = [Configuration.pn_stopAppSuccessCheckDelay])
-  public int stopAppSuccessCheckDelay = 1000
+  public int stopAppSuccessCheckDelay = 5000
 
   @Parameter(names = [Configuration.pn_waitForCanRebootDelay])
   public int waitForCanRebootDelay = 30 * 1000
