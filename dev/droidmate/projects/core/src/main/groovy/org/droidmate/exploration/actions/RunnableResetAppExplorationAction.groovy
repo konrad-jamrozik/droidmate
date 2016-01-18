@@ -40,29 +40,37 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
 
     device.clearPackage(app.packageName)
 
-    log.debug("2. Ensure home screen is displayed.")
+    log.debug("2. Clear logcat.")
+    // This is made to clean up the logcat if previous app exploration failed. If the clean would not be made, it might be
+    // possible some API logs will be read from it, wreaking all kinds of havoc, e.g. having timestamp < than the current
+    // exploration start time.
+    device.clearLogcat()
+
+    log.debug("3. Ensure home screen is displayed.")
     device.ensureHomeScreenIsDisplayed()
 
-    log.debug("3. Turn wifi on.")
+    log.debug("4. Turn wifi on.")
     device.perform(newTurnWifiOnDeviceAction())
 
-    log.debug("4. Get GUI snapshot to ensure device displays valid screen that is not \"app has stopped\" dialog box.")
+    log.debug("5. Get GUI snapshot to ensure device displays valid screen that is not \"app has stopped\" dialog box.")
     device.getGuiSnapshot()
 
-    log.debug("5. Assert app is not running.")
-    // KNOWN BUG assert fail in reset / assertAppIsNotRunning(device, app)
-    assertAppIsNotRunning(device, app)
+    log.debug("6. Ensure app is not running.")
+    if (device.appIsRunning(app.packageName))
+    {
+      log.trace("App is still running. Clearing package again.")
+      device.clearPackage(app.packageName)
+    }
 
-    log.debug("6. Launch app $app.packageName.")
+    log.debug("7. Launch app $app.packageName.")
     device.launchApp(app)
 
-    log.debug("7. Get GUI snapshot.")
+    log.debug("8. Get GUI snapshot.")
     // GUI snapshot has to be obtained before a check is made if app is running. Why? Because obtaining GUI snapshot closes all
     // ANR dialogs, and if the app crashed with ANR, it will be deemed as running until the ANR is closed.
-    // KNOWN BUG reset / exhaust attempts to get valid GUI snapshot
     this.snapshot = device.guiSnapshot
 
-    log.debug("8. Try to read API logs.")
+    log.debug("9. Try to read API logs.")
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     logsHandler.readAndClearApiLogs()
     this.logs = logsHandler.getLogs()
