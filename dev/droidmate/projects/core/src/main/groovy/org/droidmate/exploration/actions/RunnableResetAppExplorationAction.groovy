@@ -53,8 +53,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     // KNOWN BUG assert fail in reset / assertAppIsNotRunning(device, app)
     assertAppIsNotRunning(device, app)
 
-    log.debug("6. Start app $app.packageName.")
-    // KJA correctly log case when none of the methods work, which is for: ch.threema.qrscannerplugin_v1.1-inlined
+    log.debug("6. Launch app $app.packageName.")
     device.launchApp(app)
 
     log.debug("7. Get GUI snapshot.")

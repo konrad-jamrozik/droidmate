@@ -16,9 +16,7 @@ package org.droidmate.lib_android;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
 import org.droidmate.common.logcat.Api;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -30,6 +28,9 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+// org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
+// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
 // import de.uds.infsec.instrumentation.Instrumentation;
@@ -73,9 +74,10 @@ public class MonitorJavaTemplate
 {
   //region Fields
 
-  public static final String tag_init = "Monitor_init";
-  public static final String tag_srv  = "Monitor_server";
-  public static final String tag_api  = "Monitored_API_method_call";
+  public static final String tag_prefix = "Monitor";
+  public static final String tag_init = tag_prefix + "_init";
+  public static final String tag_srv  = tag_prefix + "_server";
+  public static final String tag_api  = tag_prefix + "_API_method_call";
 
   public static final String loglevel = "i";
 
