@@ -23,15 +23,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/jsr305-1.3.9.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/jts-1.13.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -47,6 +38,17 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/jsr305-1.3.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -95,7 +97,6 @@
     <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="lib_common_main" />
     <orderEntry type="module" module-name="lib_common_android_main" />
-    <orderEntry type="module" module-name="lib_android_main" />
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
@@ -105,6 +106,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="lib_android_main" />
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.35" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:18.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />
@@ -117,8 +119,6 @@
     <orderEntry type="library" name="Gradle: net.sf.opencsv:opencsv:2.3" level="project" />
     <orderEntry type="library" name="Gradle: org.graphstream:gs-core:1.3" level="project" />
     <orderEntry type="library" name="Gradle: com.google.jimfs:jimfs:1.0" level="project" />
-    <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
-    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Gradle: net.sf.jopt-simple:jopt-simple:4.9" level="project" />
     <orderEntry type="library" name="Gradle: org.graphstream:pherd:1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.graphstream:mbox2:1.0" level="project" />
