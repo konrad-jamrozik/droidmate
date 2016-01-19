@@ -69,6 +69,7 @@ dependencies {
   // http://stackoverflow.com/questions/5644011/multi-project-test-dependencies-with-gradle
   testCompile project(":projects:core").sourceSets.test.output
   compile project(":projects:core")
+  compile project(":projects:reporter")
 }
 
 

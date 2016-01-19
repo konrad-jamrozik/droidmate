@@ -26,6 +26,7 @@ import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.TimeProvider
+import org.droidmate.report.ExplorationOutput2Report
 import org.droidmate.storage.IStorage2
 import org.droidmate.storage.Storage2
 import org.droidmate.tools.*
@@ -120,6 +121,14 @@ class ExploreCommand extends DroidmateCommand
         "Skipping summary output analysis persisting. " +
         "Rethrowing.")
       throw deployExploreSerializeThrowable
+    }
+
+    try
+    {
+      new ExplorationOutput2Report(out).report()
+    } catch (Throwable t)
+    {
+      explorationExceptions << new ExplorationException(t)
     }
 
     try

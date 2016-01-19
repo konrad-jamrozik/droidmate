@@ -29,25 +29,16 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../../projects/uiautomator-daemon/src/org/droidmate/uiautomatordaemon/UiAutomatorDaemon.java" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../projects/uiautomator-daemon/libs/lib-common-android.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../projects/uiautomator-daemon/libs/commons-io-2.4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../../projects/uiautomator-daemon/src/org/droidmate/uiautomatordaemon/UiAutomatorDaemonDriver.java" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -65,7 +56,16 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../../projects/uiautomator-daemon/src/org/droidmate/uiautomatordaemon/UiAutomatorDaemon.java" />
+          <root url="file://$MODULE_DIR$/../../../../projects/uiautomator-daemon/src/org/droidmate/uiautomatordaemon/UiAutomatorDaemonDriver.java" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../projects/uiautomator-daemon/libs/commons-io-2.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
