@@ -53,6 +53,12 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
+/*
+ This project uses test artifacts of core project.
+ WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
+ */
+evaluationDependsOn(":projects:core")
+
 dependencies {
 
   compile 'com.github.konrad-jamrozik:utilities:master-SNAPSHOT'
@@ -60,12 +66,16 @@ dependencies {
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
   testCompile 'org.hamcrest:hamcrest-core:1.3'
+  // https://discuss.gradle.org/t/multiproject-testcompile-dependencies-not-seen-by-dependant-project/6779
+  // http://stackoverflow.com/questions/5644011/multi-project-test-dependencies-with-gradle
+  testCompile project(":projects:core").sourceSets.test.output
 
   compile files("$rootDir/../init/build/libs/init.jar")
 
   compile project(":projects:lib-common")
   compile project(":projects:lib-common-android")
   compile project(":projects:lib-android")
+  compile project(":projects:core")
 
   compile 'com.beust:jcommander:1.35'
   compile 'com.google.guava:guava:18.0'
@@ -91,10 +101,20 @@ dependencies {
   runtime files(new File(sourceSets.main.resources.srcDirs.find(), "logback"))
 }
 
-/*
- This project uses test artifacts of core project.
- WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
- */
-evaluationDependsOn(":projects:core")
 
 //endregion Dependencies
+
+test {
+
+ /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
+
+  API reference:
+  workingDir  http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.testing.Test.html
+  rootDir     http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html
+  */
+  workingDir rootDir
+
+  /* Workaround for GRADLE-1682. */
+  includes = ['']
+
+}
