@@ -9,12 +9,14 @@
 
 package org.droidmate.common
 
+import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.SystemUtils
 import org.slf4j.Logger
 
 import java.nio.file.Files
 import java.nio.file.Paths
 
+@Slf4j
 public class Utils
 {
 
@@ -43,7 +45,7 @@ public class Utils
   }
 
   // WISH make an extension method (on Closure?) and move to github/utilities. The same with this.retryOnFalse()
-  public static <T> T retryOnException(Closure<T> target, Class retryableExceptionClass, int attempts, int delay) throws Throwable
+  public static <T> T retryOnException(Closure<T> target, Class retryableExceptionClass, int attempts, int delay, String targetName) throws Throwable
   {
     assert attempts > 0
     int attemptsLeft = attempts
@@ -64,7 +66,14 @@ public class Utils
         {
           exception = e
           attemptsLeft--
-          sleep(delay)
+
+          if (attemptsLeft > 0)
+          {
+            log.trace("Swallowed $e from \"$targetName\". Sleeping for $delay and retrying.")
+            sleep(delay)
+          }
+          else
+            log.trace("Swallowed $e from \"$targetName\". Giving up.")
         } else
           throw e
       }

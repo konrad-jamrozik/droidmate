@@ -147,7 +147,7 @@ class RobustDevice implements IRobustDevice
 
       Utils.retryOnException(device.&clearPackage.curry(apkPackageName), DeviceException,
         this.clearPackageRetryAttempts,
-        this.clearPackageRetryDelay
+        this.clearPackageRetryDelay, "clearPackage"
       )
 
       // Sleep here to give the device some time to stop all the processes belonging to the cleared package before checking
@@ -324,7 +324,7 @@ class RobustDevice implements IRobustDevice
       this.&getValidGuiSnapshot,
       DeviceException,
       getValidGuiSnapshotRetryAttempts,
-      getValidGuiSnapshotRetryDelay
+      getValidGuiSnapshotRetryDelay, "getValidGuiSnapshot"
     )
 
     assert guiSnapshot.validationResult.valid
