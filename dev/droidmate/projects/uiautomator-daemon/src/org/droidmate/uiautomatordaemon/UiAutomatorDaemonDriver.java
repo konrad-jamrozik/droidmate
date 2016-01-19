@@ -386,14 +386,14 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     Log.d(uiaDaemon_logcatTag, "Getting window hierarchy dump");
 
     String windowDumpFileName = "window_hierarchy_dump.xml";
-    File windowDump = prepareWindowDumpFile(windowDumpFileName);
+    File windowDumpFile = prepareWindowDumpFile(windowDumpFileName);
 
-    dumpWindowHierarchyProtectingAgainstException(windowDumpFileName);
+    dumpWindowHierarchyProtectingAgainstException(windowDumpFile);
 
     String windowHierarchyDump;
     try
     {
-      windowHierarchyDump = FileUtils.readFileToString(windowDump);
+      windowHierarchyDump = FileUtils.readFileToString(windowDumpFile);
     } catch (IOException e)
     {
       throw new UiAutomatorDaemonException(e);
@@ -467,14 +467,14 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
    *
    * </p>
    */
-  private void dumpWindowHierarchyProtectingAgainstException(String windowDumpFileName) throws UiAutomatorDaemonException
+  private void dumpWindowHierarchyProtectingAgainstException(File windowDumpFile) throws UiAutomatorDaemonException
   {
     int dumpAttempts = 5;
     int dumpAttemptsLeft = dumpAttempts;
     boolean dumpSucceeded;
     do
     {
-      dumpSucceeded = tryDumpWindowHierarchy(windowDumpFileName);
+      dumpSucceeded = tryDumpWindowHierarchy(windowDumpFile);
       dumpAttemptsLeft--;
 
       if (!dumpSucceeded)
@@ -503,19 +503,28 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     if (dumpAttemptsLeft <= 0)
     {
       Log.w(uiaDaemon_logcatTag, "UiDevice.dumpWindowHierarchy() failed. No attempts left. Throwing UiAutomatorDaemonException.");
-      throw new UiAutomatorDaemonException(String.format("All %d tryDumpWindowHierarchy(%s) attempts exhausted.", dumpAttempts, windowDumpFileName));
+      throw new UiAutomatorDaemonException(String.format("All %d tryDumpWindowHierarchy(%s) attempts exhausted.", dumpAttempts, windowDumpFile));
     }
   }
 
   /**
    * @see #dumpWindowHierarchyProtectingAgainstException
    */
-  private boolean tryDumpWindowHierarchy(String windowDumpFileName)
+  private boolean tryDumpWindowHierarchy(File windowDumpFile)
   {
     try
     {
-      ui.getUiDevice().dumpWindowHierarchy(windowDumpFileName);
-      return true;
+      ui.getUiDevice().dumpWindowHierarchy(windowDumpFile.getName());
+
+      if (windowDumpFile.exists())
+      {
+        return true;
+      } else
+      {
+        Log.w(uiaDaemon_logcatTag, ".dumpWindowHierarchy returned, but the dumped file doesn't exist!");
+        return false;
+      }
+
     } catch (NullPointerException e)
     {
       Log.w(uiaDaemon_logcatTag, "Caught NPE while dumping window hierarchy. Msg: " + e.getMessage());
