@@ -7,8 +7,6 @@
 //
 // www.droidmate.org
 
-import org.droidmate.init.InitConstants
-
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -50,7 +48,6 @@ compileJava.targetCompatibility = JavaVersion.VERSION_1_8
       Lined fromhttps://youtrack.jetbrains.com/issue/IDEA-125971#comment=27-1267028
  */
 configurations {forceJunitPriority}
-sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
 /*
@@ -61,44 +58,13 @@ evaluationDependsOn(":projects:core")
 
 dependencies {
 
-  compile 'com.github.konrad-jamrozik:utilities:master-SNAPSHOT'
-
   forceJunitPriority 'junit:junit:4.12'
-  testCompile 'junit:junit:4.12'
-  testCompile 'org.hamcrest:hamcrest-core:1.3'
+//  testCompile 'junit:junit:4.12'
+//  testCompile 'org.hamcrest:hamcrest-core:1.3'
   // https://discuss.gradle.org/t/multiproject-testcompile-dependencies-not-seen-by-dependant-project/6779
   // http://stackoverflow.com/questions/5644011/multi-project-test-dependencies-with-gradle
   testCompile project(":projects:core").sourceSets.test.output
-
-  compile files("$rootDir/../init/build/libs/init.jar")
-
-  compile project(":projects:lib-common")
-  compile project(":projects:lib-common-android")
-  compile project(":projects:lib-android")
   compile project(":projects:core")
-
-  compile 'com.beust:jcommander:1.35'
-  compile 'com.google.guava:guava:18.0'
-  compile 'org.apache.commons:commons-lang3:3.3'
-  compile 'commons-io:commons-io:2.4'
-  compile 'org.apache.commons:commons-exec:1.2'
-  compile 'org.codehaus.groovy:groovy-all:2.4.5'
-  compile 'org.slf4j:slf4j-api:1.7.6'
-  compile 'ch.qos.logback:logback-classic:1.0.13'
-  compile 'ch.qos.logback:logback-core:1.0.13'
-  compile 'net.sf.opencsv:opencsv:2.3'
-
-  // For visualizing device GUI model graphs
-  compile 'org.graphstream:gs-core:1.3'
-
-  // Filesystem stubbing
-  compile 'com.google.jimfs:jimfs:1.0'
-
-  // This ensures the files will be properly copied out if ever "application" plugin and "installDist" task will be used.
-  // In particular, this will ensure $APP_DIR$/lib/logback/logback.groovy is present.
-  //runtime files(new File(sourceSets.main.resources.srcDirs.find(), "."))
-
-  runtime files(new File(sourceSets.main.resources.srcDirs.find(), "logback"))
 }
 
 
@@ -115,6 +81,7 @@ test {
   workingDir rootDir
 
   /* Workaround for GRADLE-1682. */
+  // KJA make DFT runs
   includes = ['']
 
 }

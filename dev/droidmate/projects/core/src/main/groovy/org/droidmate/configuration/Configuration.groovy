@@ -12,7 +12,6 @@ import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
 import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
-import org.droidmate.frontend.DroidmateFrontend
 import org.droidmate.init.InitConstants
 import org.droidmate.init.LocalInitConstants
 
@@ -28,7 +27,7 @@ import java.nio.file.Paths
  *
  * Holds all the configuration data of DroidMate. The configuration is obtained from command line arguments with help
  * of {@link ConfigurationBuilder}. This happens just before DroidMate injects dependencies with Guice,
- * at DroidMate bootstrap in {@link DroidmateFrontend DroidmateFrontend}.
+ * at DroidMate bootstrap in DroidmateFrontend.
  * </p><p>
  * The configuration is required to setup most (if not all) classes (components) of Droidmate.
  *
