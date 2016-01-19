@@ -21,4 +21,5 @@ include "projects:core",
   "projects:lib-android",
   "projects:uiautomator-daemon",
   "projects:monitor-generator",
-  "projects:apk-inliner"
+  "projects:apk-inliner",
+  "projects:reporter"
