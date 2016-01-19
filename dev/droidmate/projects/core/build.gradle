@@ -59,7 +59,8 @@ ext.robotLibDir = {
   [2] http://stackoverflow.com/questions/2422378/intellij-idea-with-junit-4-7-junit-version-3-8-or-later-expected
   [3] https://docs.gradle.org/2.5/release-notes#changes-in-ide-classpath-generation
       Linked from: https://youtrack.jetbrains.com/issue/IDEA-125971#comment=27-1087279
-  [4] https://youtrack.jetbrains.com/issue/IDEA-125971#comment=27-1267028
+  [4] https://youtrack.jetbrains.com/issue/IDEA-148402
+      Lined fromhttps://youtrack.jetbrains.com/issue/IDEA-125971#comment=27-1267028
  */
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
