@@ -6,6 +6,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner.iml" group="droidmate modules/projects/apk-inliner" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk_inliner_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk_inliner_main.iml" group="droidmate modules/projects/apk-inliner" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk_inliner_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk_inliner_test.iml" group="droidmate modules/projects/apk-inliner" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command.iml" group="droidmate modules/projects/command" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command_main.iml" group="droidmate modules/projects/command" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command_test.iml" group="droidmate modules/projects/command" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/core/core.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/core/core.iml" group="droidmate modules/projects/core" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/core/core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/core/core_main.iml" group="droidmate modules/projects/core" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/core/core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/core/core_test.iml" group="droidmate modules/projects/core" />

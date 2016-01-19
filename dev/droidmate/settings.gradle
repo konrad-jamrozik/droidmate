@@ -22,4 +22,5 @@ include "projects:core",
   "projects:uiautomator-daemon",
   "projects:monitor-generator",
   "projects:apk-inliner",
-  "projects:reporter"
+  "projects:reporter",
+  "projects:command"

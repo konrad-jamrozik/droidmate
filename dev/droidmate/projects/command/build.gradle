@@ -1,0 +1,100 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+
+import org.droidmate.init.InitConstants
+
+import java.nio.file.Files
+import java.nio.file.Paths
+
+apply plugin: 'groovy'
+apply plugin: 'project-report' // http://www.gradle.org/docs/current/userguide/project_reports_plugin.html
+apply plugin: 'application'
+
+mainClassName = "org.droidmate.frontend.DroidmateFrontend"
+
+run {
+  workingDir rootDir
+
+  java.nio.file.Path argsFile = Paths.get("$rootDir/args.txt")
+  if (Files.exists(argsFile))
+  {
+    List<String> appArgs = argsFile.text.readLines().first().split(" ") as List<String>
+    args appArgs
+  }
+}
+
+compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+
+//region Dependencies
+
+
+/*
+  Workaround for a bug causing tests run from Gradle to fail. Source of the workaround: [1]
+
+  Suspected cause of the bug:
+    Because project(":projects:lib-android") has android.jar as a transitive dependency, running tests
+    from Gradle caused JUnit to throw "Stub!" from Assert method.
+
+  [1] http://stackoverflow.com/a/7253941/986533
+  [2] http://stackoverflow.com/questions/2422378/intellij-idea-with-junit-4-7-junit-version-3-8-or-later-expected
+  [3] https://docs.gradle.org/2.5/release-notes#changes-in-ide-classpath-generation
+      Linked from: https://youtrack.jetbrains.com/issue/IDEA-125971#comment=27-1087279
+  [4] https://youtrack.jetbrains.com/issue/IDEA-148402
+      Lined fromhttps://youtrack.jetbrains.com/issue/IDEA-125971#comment=27-1267028
+ */
+configurations {forceJunitPriority}
+sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
+sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
+
+dependencies {
+
+  compile 'com.github.konrad-jamrozik:utilities:master-SNAPSHOT'
+
+  forceJunitPriority 'junit:junit:4.12'
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.hamcrest:hamcrest-core:1.3'
+
+  compile files("$rootDir/../init/build/libs/init.jar")
+
+  compile project(":projects:lib-common")
+  compile project(":projects:lib-common-android")
+  compile project(":projects:lib-android")
+
+  compile 'com.beust:jcommander:1.35'
+  compile 'com.google.guava:guava:18.0'
+  compile 'org.apache.commons:commons-lang3:3.3'
+  compile 'commons-io:commons-io:2.4'
+  compile 'org.apache.commons:commons-exec:1.2'
+  compile 'org.codehaus.groovy:groovy-all:2.4.5'
+  compile 'org.slf4j:slf4j-api:1.7.6'
+  compile 'ch.qos.logback:logback-classic:1.0.13'
+  compile 'ch.qos.logback:logback-core:1.0.13'
+  compile 'net.sf.opencsv:opencsv:2.3'
+
+  // For visualizing device GUI model graphs
+  compile 'org.graphstream:gs-core:1.3'
+
+  // Filesystem stubbing
+  compile 'com.google.jimfs:jimfs:1.0'
+
+  // This ensures the files will be properly copied out if ever "application" plugin and "installDist" task will be used.
+  // In particular, this will ensure $APP_DIR$/lib/logback/logback.groovy is present.
+  //runtime files(new File(sourceSets.main.resources.srcDirs.find(), "."))
+
+  runtime files(new File(sourceSets.main.resources.srcDirs.find(), "logback"))
+}
+
+/*
+ This project uses test artifacts of core project.
+ WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
+ */
+evaluationDependsOn(":projects:core")
+
+//endregion Dependencies
