@@ -8,7 +8,7 @@
     </extension>
     <module name="core_test" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-    <option name="ALTERNATIVE_JRE_PATH" value="" />
+    <option name="ALTERNATIVE_JRE_PATH" />
     <option name="PACKAGE_NAME" value="org.droidmate.test_suites" />
     <option name="MAIN_CLASS_NAME" value="org.droidmate.test_suites.AllTestSuites" />
     <option name="METHOD_NAME" value="" />

@@ -7,6 +7,8 @@
 //
 // www.droidmate.org
 
+import org.droidmate.init.InitConstants
+
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -48,7 +50,9 @@ compileJava.targetCompatibility = JavaVersion.VERSION_1_8
       Lined fromhttps://youtrack.jetbrains.com/issue/IDEA-125971#comment=27-1267028
  */
 configurations {forceJunitPriority}
+sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
+
 
 /*
  This project uses test artifacts of core project.
@@ -59,8 +63,8 @@ evaluationDependsOn(":projects:core")
 dependencies {
 
   forceJunitPriority 'junit:junit:4.12'
-//  testCompile 'junit:junit:4.12'
-//  testCompile 'org.hamcrest:hamcrest-core:1.3'
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.hamcrest:hamcrest-core:1.3'
   // https://discuss.gradle.org/t/multiproject-testcompile-dependencies-not-seen-by-dependant-project/6779
   // http://stackoverflow.com/questions/5644011/multi-project-test-dependencies-with-gradle
   testCompile project(":projects:core").sourceSets.test.output
@@ -80,8 +84,32 @@ test {
   */
   workingDir rootDir
 
-  /* Workaround for GRADLE-1682. */
-  // KJA make DFT runs
-  includes = ['']
+  /* Lurking bug: GRADLE-1682.
+
+  Currently the bug doesn't manifest itself, but if you run into "superClassName is empty", you bumped into it.
+
+  Reference:
+  http://stackoverflow.com/questions/14814837/gradle-test-fails-with-error
+  http://stackoverflow.com/questions/11129401/debug-gradle-plugins-with-intellij/11129708#11129708
+  http://issues.gradle.org/browse/GRADLE-1682
+  */
+  includes = ['**/FastRegressionTestSuite.class']
+
+
+}
+
+SourceDirectorySet testResDirs = project(":projects:core").sourceSets.test.resources
+assert testResDirs.srcDirs.size() == 1
+File testResDir = testResDirs.srcDirs[0]
+assert testResDir.path.endsWith("test" + File.separator + "resources")
+File apkFixturesDir = new File(testResDir, InitConstants.apk_fixtures)
+assert apkFixturesDir.directory
+task testDevice(type: Test) {
+
+  inputs.dir apkFixturesDir.absolutePath
+
+  workingDir rootDir
+
+  includes = ['**/RequiresDeviceTestSuite.class']
 
 }

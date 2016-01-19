@@ -8,12 +8,13 @@
 // www.droidmate.org
 package org.droidmate.test_suites
 
+import org.droidmate.frontend.DroidmateFrontendTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
 @RunWith(Suite)
 @Suite.SuiteClasses([
-  // KJA DroidmateFrontendTest,
+  DroidmateFrontendTest
 ])
 class IntegrationTestSuite
 {

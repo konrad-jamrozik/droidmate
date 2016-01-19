@@ -17,6 +17,15 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../../projects/core/src/main/resources/logback" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../../init/build/libs/init.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -41,43 +50,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../../projects/core/src/main/resources/logback" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="lib_common_main" />
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../../projects/command/src/main/resources/logback" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module" module-name="lib_common_android_main" />
-    <orderEntry type="module" module-name="lib_android_main" />
-    <orderEntry type="module" module-name="core_main" />
-    <orderEntry type="library" name="Gradle: com.beust:jcommander:1.35" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.guava:guava:18.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />
-    <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />
-    <orderEntry type="library" name="Gradle: org.apache.commons:commons-exec:1.2" level="project" />
-    <orderEntry type="library" name="Gradle: org.codehaus.groovy:groovy-all:2.4.5" level="project" />
-    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.6" level="project" />
-    <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.0.13" level="project" />
-    <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.0.13" level="project" />
-    <orderEntry type="library" name="Gradle: net.sf.opencsv:opencsv:2.3" level="project" />
-    <orderEntry type="library" name="Gradle: org.graphstream:gs-core:1.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.jimfs:jimfs:1.0" level="project" />
-    <orderEntry type="library" name="Gradle: net.sf.jopt-simple:jopt-simple:4.9" level="project" />
-    <orderEntry type="library" name="Gradle: org.graphstream:pherd:1.0" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -123,6 +95,25 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="core_main" />
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="lib_common_main" />
+    <orderEntry type="module" module-name="lib_common_android_main" />
+    <orderEntry type="module" module-name="lib_android_main" />
+    <orderEntry type="library" name="Gradle: com.beust:jcommander:1.35" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:18.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />
+    <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-exec:1.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.groovy:groovy-all:2.4.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.6" level="project" />
+    <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.0.13" level="project" />
+    <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.0.13" level="project" />
+    <orderEntry type="library" name="Gradle: net.sf.opencsv:opencsv:2.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.graphstream:gs-core:1.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.jimfs:jimfs:1.0" level="project" />
+    <orderEntry type="library" name="Gradle: net.sf.jopt-simple:jopt-simple:4.9" level="project" />
+    <orderEntry type="library" name="Gradle: org.graphstream:pherd:1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.graphstream:mbox2:1.0" level="project" />
   </component>
 </module>

@@ -346,49 +346,8 @@ test {
   */
   workingDir rootDir
 
-  /* Lurking bug: GRADLE-1682.
-
-  Currently the bug doesn't manifest itself, but if you run into "superClassName is empty", you bumped into it.
-
-  Reference:
-  http://stackoverflow.com/questions/14814837/gradle-test-fails-with-error
-  http://stackoverflow.com/questions/11129401/debug-gradle-plugins-with-intellij/11129708#11129708
-  http://issues.gradle.org/browse/GRADLE-1682
-  */
-  includes = ['**/FastRegressionTestSuite.class']
-
-  // Uncomment the code below and comment the "includes" clause above if you want for the task to run only 1 test,
-  // e.g. for debugging purposes.
-//  filter {
-//    includeTestsMatching '*Configures'
-//  }
-}
-
-task testDevice(type: Test) {
-
-  inputs.dir apkFixturesDir.absolutePath
-
-  workingDir rootDir
-
-  includes = ['**/RequiresDeviceTestSuite.class']
-
-}
-
-// For interactive, quick testing from cmd line.
-task testi(type: Test) {
-
-  outputs.upToDateWhen {false}
-
-  workingDir rootDir
-  testLogging {events 'failed', 'passed'}
-
-  /* Reference: http://www.gradle.org/docs/current/userguide/java_plugin.html#testfiltering
-
-    If not using filter (comment it out), you could run like:
-    gradle :projects:core:testi --tests *Configures
-  */
-  filter {
-    includeTestsMatching '*Configures'
-  }
+   /* Lurking bug: GRADLE-1682. See :projects:command:test doc for more.*/
+   includes = ['']
 }
 //endregion Testing tasks
+

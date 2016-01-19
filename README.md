@@ -8,7 +8,7 @@
 
   www.droidmate.org
 
-  Date of last full review: 14 Dec 2015
+  Date of last full review: 19 jan 2016
 
 # Introduction #
 
@@ -107,8 +107,8 @@ To run DroidMate regression tests requiring a device:
 ## Running DroidMate ##
 
 Run DroidMate with  
-`./dev/droidmate/gradlew :projects:core:run`, or  
-`./dev/droidmate/gradlew :p:c:run` for short.
+`./dev/droidmate/gradlew :projects:command:run`, or  
+`./dev/droidmate/gradlew :p:com:run` for short.
 
 DroidMate will read command line arguments from the first line of   
 `./dev/droidmate/args.txt` 
@@ -122,7 +122,7 @@ DroidMate cannot run on normal apks, they first have to be `inlined`. To inline 
 * Copy them to `./dev/droidmate/projects/apk-inliner/input-apks`
 * Run the task
 `./dev/droidmate/gradlew :projects:core:prepareInlinedApks`
-or `./dev/droidmate/gradlew :p:c:pIA` for short.
+or `./dev/droidmate/gradlew :p:cor:pIA` for short.
 The apks will be placed in `./dev/droidmate/apks/inlined`
 * Run DroidMate with cmd line arg of `-apksDir=apks/inlined` to use these apks.
 
