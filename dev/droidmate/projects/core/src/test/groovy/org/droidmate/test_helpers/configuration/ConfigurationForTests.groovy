@@ -36,12 +36,13 @@ class ConfigurationForTests
     Configuration.pn_clearPackageRetryDelay, "0",
     Configuration.pn_getValidGuiSnapshotRetryDelay, "0",
     Configuration.pn_stopAppSuccessCheckDelay, "0",
-    Configuration.pn_closeANRDelay, "0",
+    Configuration.pn_closeANRDelay, "0"
   ]
 
   ConfigurationForTests()
   {
-    this.argsList = zeroedTestConfig + [Configuration.pn_droidmateOutputDir, InitConstants.test_temp_dir_name]
+    this.argsList = zeroedTestConfig + [Configuration.pn_droidmateOutputDir, InitConstants.test_temp_dir_name,
+                                        Configuration.pn_reportInputDir, InitConstants.test_temp_dir_name]
   }
 
   public Configuration get()

@@ -57,17 +57,21 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 /*
  This project uses test artifacts of core project.
  WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
+
+ https://discuss.gradle.org/t/multiproject-testcompile-dependencies-not-seen-by-dependant-project/6779
+ http://stackoverflow.com/questions/5644011/multi-project-test-dependencies-with-gradle
  */
 evaluationDependsOn(":projects:core")
+evaluationDependsOn(":projects:reporter")
 
 dependencies {
 
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
   testCompile 'org.hamcrest:hamcrest-core:1.3'
-  // https://discuss.gradle.org/t/multiproject-testcompile-dependencies-not-seen-by-dependant-project/6779
-  // http://stackoverflow.com/questions/5644011/multi-project-test-dependencies-with-gradle
   testCompile project(":projects:core").sourceSets.test.output
+  testCompile project(":projects:reporter").sourceSets.test.output
+
   compile project(":projects:core")
   compile project(":projects:reporter")
 }

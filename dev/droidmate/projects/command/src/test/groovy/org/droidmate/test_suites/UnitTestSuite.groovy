@@ -10,6 +10,7 @@
 package org.droidmate.test_suites
 
 import org.droidmate.command.uia_test_cases.UiaTestCaseLogsProcessorTest
+import org.droidmate.report.ExplorationOutput2ReportTest
 import org.droidmate.tests.android_sdk.AaptWrapperTest
 import org.droidmate.tests.android_sdk.AdbWrapperTest
 import org.droidmate.tests.configuration.ConfigurationBuilderTest
@@ -32,6 +33,7 @@ import org.junit.runners.Suite
   AdbWrapperTest,
   DeviceTest,
   ExplorationTestSuite,
+  ExplorationOutput2ReportTest
 ])
 class UnitTestSuite
 {
