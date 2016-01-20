@@ -117,3 +117,28 @@ task testDevice(type: Test) {
   includes = ['**/RequiresDeviceTestSuite.class']
 
 }
+
+// For interactive, quick testing from cmd line.
+task testi(type: Test) {
+
+  outputs.upToDateWhen {false}
+
+  workingDir rootDir
+  testLogging {events 'failed', 'passed'}
+
+  // show standard out and standard error of the test JVM(s) on the console
+  testLogging.showStandardStreams = true
+
+  // The only thing I managed to get to work.
+  include 'org/droidmate/frontend/MyTestClass.class'
+
+  // DOES NOT WORK :/
+//  /* Reference: http://www.gradle.org/docs/current/userguide/java_plugin.html#testfiltering
+//
+//    If not using filter (comment it out), you could run like:
+//    gradle :projects:core:testi --tests *Configures
+//  */
+//  filter {
+//    includeTestsMatching 'MyTest'
+//  }
+}
