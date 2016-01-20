@@ -16,12 +16,9 @@ import org.droidmate.report.ExplorationOutput2Report
 
 class ReportCommand extends DroidmateCommand
 {
-
-
   @Override
   void execute(Configuration cfg) throws ThrowablesCollection
   {
-    // KJA current work
     ExplorationOutput2 out = new DroidmateOutputDir(cfg.reportInputDirPath).readOutput()
     new ExplorationOutput2Report(out).report()
   }
