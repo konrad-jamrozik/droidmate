@@ -22,9 +22,11 @@ buildscript {
 
 apply plugin: "kotlin"
 
+// Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
+sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath + project(":projects:core").sourceSets.test.runtimeClasspath
 
 /*
  This project uses test artifacts of core project.

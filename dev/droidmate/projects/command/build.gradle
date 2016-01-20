@@ -34,6 +34,15 @@ compileJava.targetCompatibility = JavaVersion.VERSION_1_8
 
 //region Dependencies
 
+/*
+ This project uses test artifacts of core project.
+ WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
+
+ https://discuss.gradle.org/t/multiproject-testcompile-dependencies-not-seen-by-dependant-project/6779
+ http://stackoverflow.com/questions/5644011/multi-project-test-dependencies-with-gradle
+ */
+evaluationDependsOn(":projects:core")
+evaluationDependsOn(":projects:reporter")
 
 /*
   Workaround for a bug causing tests run from Gradle to fail. Source of the workaround: [1]
@@ -53,16 +62,16 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
-
-/*
- This project uses test artifacts of core project.
- WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
-
- https://discuss.gradle.org/t/multiproject-testcompile-dependencies-not-seen-by-dependant-project/6779
- http://stackoverflow.com/questions/5644011/multi-project-test-dependencies-with-gradle
- */
-evaluationDependsOn(":projects:core")
-evaluationDependsOn(":projects:reporter")
+// Without this line, the ResourcePaths required by ConfigurationBuilder resolve only to files within jar, e.g. this line:
+// new ResourcePath(InitConstants.appGuardApisList.fileName.toString()).toFile()
+// fails, as the only available URL of the file is:
+//
+//   jar:file:(...)droidmate/dev/droidmate/projects/core/build/libs/core.jar!/appguard_apis.txt
+//
+// With this line added, the URL ultimately used will be:
+//
+//   file:/(...)droidmate/dev/droidmate/projects/core/build/resources/main/appguard_apis.txt
+sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath + project(":projects:core").sourceSets.test.runtimeClasspath
 
 dependencies {
 
