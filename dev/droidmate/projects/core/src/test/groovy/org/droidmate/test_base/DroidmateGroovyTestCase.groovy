@@ -39,6 +39,12 @@ class DroidmateGroovyTestCase extends GroovyTestCase
   static {
     // WISH maybe better solution is to use @Rule: https://edgblog.wordpress.com/2013/10/21/a-junit-rule-to-turn-test-logging-onoff/
     LogbackAppenders.setThresholdLevelOfStdStreamsAppenders(stdoutAppendersLogLevelForTesting)
+    // KJA fails initialization when run: gradlew :projects:command:test or gradlew :projects:reporter:test.
+    // If set to null, then I am getting java.nio.file.FileSystemNotFoundException because in ConfigurationBuilder this
+    // new ResourcePath(InitConstants.appGuardApisList.fileName.toString()).toFile()
+    // inside ResourcePath resolves to URI of
+    // jar:file:/C:/my/local/repos/github/droidmate/dev/droidmate/projects/core/build/libs/core.jar!/appguard_apis.txt
+    // and resource path doesn't support ResourcePath as of now.
     fixtures = new FilesystemTestFixtures(new AaptWrapper(Configuration.default, new SysCmdExecutor()))
   }
 
