@@ -105,6 +105,7 @@ public class Configuration implements IConfiguration
   public static final String pn_monitorServerStartQueryDelay                 = "-monitorServerStartQueryDelay"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
   public static final String pn_randomSeed                                   = "-randomSeed"
+  public static final String pn_reportInputDir                               = "-reportInputDir"
   public static final String pn_resetEveryNthExplorationForward              = "-resetEvery"
   public static final String pn_splitCharts                                  = "-splitCharts"
   public static final String pn_socketTimeout                                = "-socketTimeout"
@@ -183,7 +184,7 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_compareRuns], arity = 1)
   public boolean compareRuns = false
 
-  @Parameter(names = [Configuration.pn_droidmateOutputDir], description =
+  @Parameter(names = [Configuration.pn_droidmateOutputDir, "-outputDir"], description =
     "Path to the directory that will contain DroidMate exploration output.")
   public String droidmateOutputDir = defaultDroidmateOutputDir
 
@@ -259,6 +260,10 @@ public class Configuration implements IConfiguration
   @Parameter(names = ["-removeHardCodedApis"], arity = 1)
   public boolean removeHardCodedApis = true
 
+  @Parameter(names = [Configuration.pn_reportInputDir], description =
+    "Path to the directory that will contain DroidMate exploration output.")
+  public String reportInputDir = "."+File.separator + "reportInput"
+
   @Parameter(names = [Configuration.pn_resetEveryNthExplorationForward])
   public int resetEveryNthExplorationForward = defaultResetEveryNthExplorationForward
 
@@ -330,6 +335,8 @@ public class Configuration implements IConfiguration
   //region Values set by ConfigurationBuilder
 
   public Path droidmateOutputDirPath
+
+  public Path reportInputDirPath
 
   public Path apksDirPath
 
