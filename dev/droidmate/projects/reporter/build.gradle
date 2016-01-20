@@ -38,6 +38,20 @@ dependencies {
 
   compile project(":projects:core")
   compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0-beta-4584'
+}
 
+
+test {
+
+  /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
+
+   API reference:
+   workingDir  http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.testing.Test.html
+   rootDir     http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html
+   */
+  workingDir rootDir
+
+  /* Lurking bug: GRADLE-1682. */
+  includes = ['**/ExplorationOutput2ReportTest.class']
 
 }
