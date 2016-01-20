@@ -100,7 +100,6 @@ test {
   */
   includes = ['**/FastRegressionTestSuite.class']
 
-
 }
 
 SourceDirectorySet testResDirs = project(":projects:core").sourceSets.test.resources

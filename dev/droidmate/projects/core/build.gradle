@@ -60,7 +60,7 @@ ext.robotLibDir = {
   [3] https://docs.gradle.org/2.5/release-notes#changes-in-ide-classpath-generation
       Linked from: https://youtrack.jetbrains.com/issue/IDEA-125971#comment=27-1087279
   [4] https://youtrack.jetbrains.com/issue/IDEA-148402
-      Lined fromhttps://youtrack.jetbrains.com/issue/IDEA-125971#comment=27-1267028
+      Linked from https://youtrack.jetbrains.com/issue/IDEA-125971#comment=27-1267028
  */
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
