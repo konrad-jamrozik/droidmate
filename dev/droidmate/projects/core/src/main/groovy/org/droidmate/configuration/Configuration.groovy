@@ -206,7 +206,8 @@ public class Configuration implements IConfiguration
   public boolean extractAdditionalData = false
 
   @Parameter(names = ["-extractData"], description =
-    "If present, instead of normal run, DroidMate will deserialize previous exploration output and extract data from it, for example it will extract input data for pgfplots charting tool.")
+    "(Deprecated! Use -report instead) If present, instead of normal run, DroidMate will deserialize previous exploration output and extract data from it, for example it will extract input data for pgfplots charting tool.")
+  @Deprecated
   public Boolean extractData = false
 
   @Parameter(names = ["-extractSaturationCharts", "-esc"], arity = 1)
@@ -301,6 +302,9 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_useApkFixturesDir], arity = 1)
   public boolean useApkFixturesDir = false
 
+  @Parameter(names = ["-report"], description =
+    "If present, instead of normal run, DroidMate will generate reports from previously serialized data.")
+  public Boolean report = false
 
   @Parameter(names = [Configuration.pn_timeLimit])
   public int timeLimit = 0

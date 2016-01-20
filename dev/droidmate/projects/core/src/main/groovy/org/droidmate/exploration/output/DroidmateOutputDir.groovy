@@ -6,10 +6,9 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.frontend
+package org.droidmate.exploration.output
 
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
-import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.storage.IStorage2
 import org.droidmate.storage.Storage2
 
@@ -40,13 +39,11 @@ class DroidmateOutputDir
     }
   }
 
-  public IApkExplorationOutput2 readOutput()
+  public ExplorationOutput2 readOutput()
   {
     IStorage2 storage = new Storage2(path)
-    def out = ExplorationOutput2.from(storage)
-    assert out.size() == 1
-    IApkExplorationOutput2 apkOut = out[0]
-    return apkOut
+    return ExplorationOutput2.from(storage)
   }
+
 
 }

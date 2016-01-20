@@ -65,7 +65,7 @@ public class DroidmateFrontend
       if (cmd == null)
       {
         //noinspection GroovyAssignmentToMethodParameter
-        cmd = DroidmateCommand.build(cfg.processUiaTestCasesLogs, cfg.extractData, cfg)
+        cmd = DroidmateCommand.build(cfg.processUiaTestCasesLogs, cfg.extractData, cfg.report, cfg)
       }
 
       log.info("Welcome to DroidMate. Lie back, relax and enjoy.")

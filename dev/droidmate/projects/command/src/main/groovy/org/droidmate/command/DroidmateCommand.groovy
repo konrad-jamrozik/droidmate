@@ -20,14 +20,16 @@ abstract class DroidmateCommand
   abstract void execute(Configuration cfg) throws ThrowablesCollection
 
   public static DroidmateCommand build(
-    boolean processUiaTestCasesLogs, boolean extractDataFromPreviousRun, Configuration cfg)
+    boolean processUiaTestCasesLogs, boolean extractDataFromPreviousRun, boolean report, Configuration cfg)
   {
-    assert !(processUiaTestCasesLogs && extractDataFromPreviousRun)
+    assert [processUiaTestCasesLogs, extractDataFromPreviousRun, report].count { it } <= 1
 
     if (processUiaTestCasesLogs)
       return ProcessUiaTestCasesLogsCommand.build(cfg)
     else if (extractDataFromPreviousRun)
       return ExtractDataFromPreviousRunCommand.build(cfg)
+    else if (report)
+      return new ReportCommand()
     else
       return ExploreCommand.build(new TimeProvider(), cfg)
   }

@@ -20,6 +20,7 @@ import org.droidmate.exceptions.ExceptionSpec
 import org.droidmate.exceptions.ITestException
 import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
+import org.droidmate.exploration.output.DroidmateOutputDir
 import org.droidmate.filesystem.MockFileSystem
 import org.droidmate.init.InitConstants
 import org.droidmate.logcat.IApiLogcatMessage
@@ -236,7 +237,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     // Act
     DroidmateFrontend.main(args, FileSystems.getDefault(), new ExceptionHandler())
 
-    IApkExplorationOutput2 apkOut = outputDir.readOutput()
+    IApkExplorationOutput2 apkOut = outputDir.readOutput().findSingle()
 
     List<List<IApiLogcatMessage>> apiLogs = apkOut?.apiLogs
 
@@ -264,7 +265,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
   private IDeviceSimulation getDeviceSimulation(Path outputDirPath)
   {
-    IApkExplorationOutput2 apkOut = new DroidmateOutputDir(outputDirPath).readOutput()
+    IApkExplorationOutput2 apkOut = new DroidmateOutputDir(outputDirPath).readOutput().findSingle()
     def deviceSimulation = new DeviceSimulation(apkOut)
     return deviceSimulation
   }
