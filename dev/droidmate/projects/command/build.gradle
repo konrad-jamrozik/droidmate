@@ -108,7 +108,7 @@ File testResDir = testResDirs.srcDirs[0]
 assert testResDir.path.endsWith("test" + File.separator + "resources")
 File apkFixturesDir = new File(testResDir, InitConstants.apk_fixtures)
 assert apkFixturesDir.directory
-task testDevice(type: Test) {
+task testDevice(type: Test, dependsOn: testClasses) {
 
   inputs.dir apkFixturesDir.absolutePath
 
@@ -119,18 +119,18 @@ task testDevice(type: Test) {
 }
 
 // For interactive, quick testing from cmd line.
-task testi(type: Test) {
+task testi(type: Test, dependsOn: testClasses) {
 
   outputs.upToDateWhen {false}
 
-  workingDir rootDir
+  //workingDir rootDir
   testLogging {events 'failed', 'passed'}
 
   // show standard out and standard error of the test JVM(s) on the console
   testLogging.showStandardStreams = true
 
   // The only thing I managed to get to work.
-  include 'org/droidmate/frontend/MyTestClass.class'
+  //include 'org/droidmate/frontend/MyTestClass.class'
 
   // DOES NOT WORK :/
 //  /* Reference: http://www.gradle.org/docs/current/userguide/java_plugin.html#testfiltering
