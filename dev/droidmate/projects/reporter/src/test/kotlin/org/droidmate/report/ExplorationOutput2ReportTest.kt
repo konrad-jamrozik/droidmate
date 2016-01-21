@@ -8,11 +8,19 @@ class ExplorationOutput2ReportTest {
   @Test
   fun reports() {
 
-    val cfg = ConfigurationForTests().get()
+    val cfg = ConfigurationForTests().withMockFileSystem().get()
     val out = ReportDir(cfg.reportInputDirPath).readOutput()
 
+    val report = ExplorationOutput2Report(out, cfg.reportInputDirPath)
+
     // Act
-    ExplorationOutput2Report(out, cfg.reportInputDirPath).report()
+    report.writeOut()
+
+    report.files.forEach {
+      println(it.fileName)
+      println(it.text())
+    }
   }
 }
+
 

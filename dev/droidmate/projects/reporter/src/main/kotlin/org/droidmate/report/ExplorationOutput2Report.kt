@@ -5,7 +5,10 @@ import java.nio.file.Path
 
 class ExplorationOutput2Report(val output: ExplorationOutput2, val dir: Path) {
 
-  fun report(): Unit {
+  val files: List<Path>
+    get() = emptyList() // KJA current work
+
+  fun writeOut(): Unit {
     // KJA current work
     output.forEach {
       GUICoverageReportFile(it, dir).writeOut()

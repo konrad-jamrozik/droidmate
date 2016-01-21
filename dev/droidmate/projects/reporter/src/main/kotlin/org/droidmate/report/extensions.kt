@@ -9,8 +9,13 @@
 package org.droidmate.report
 
 import com.google.common.collect.Table
+import org.codehaus.groovy.runtime.NioGroovyMethods
 import java.nio.file.Files
 import java.nio.file.Path
+
+fun Path.text() {
+  NioGroovyMethods.getText(this)
+}
 
 fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
 
