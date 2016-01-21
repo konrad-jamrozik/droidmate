@@ -31,15 +31,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/jts-1.13.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/javax.inject-1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -58,7 +49,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../../projects/lib-common/src/main/resources" />
+          <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/jts-1.13.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -67,7 +58,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$ANDROID_SDK$/platforms/android-19/android.jar!/" />
+          <root url="file://$MODULE_DIR$/../../../../projects/lib-common/src/main/resources" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -77,6 +68,15 @@
       <library>
         <CLASSES>
           <root url="file://$MODULE_DIR$/../../../../projects/core/src/main/resources/logback" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$ANDROID_SDK$/platforms/android-19/android.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -96,7 +96,7 @@
     <orderEntry type="module" module-name="lib_common_android_main" />
     <orderEntry type="module" module-name="lib_android_main" />
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.35" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.guava:guava:18.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-exec:1.2" level="project" />
