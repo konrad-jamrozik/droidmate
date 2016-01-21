@@ -12,7 +12,7 @@ class ExplorationOutput2ReportTest {
     val out = ReportDir(cfg.reportInputDirPath).readOutput()
 
     // Act
-    ExplorationOutput2Report(out).report()
+    ExplorationOutput2Report(out, cfg.reportInputDirPath).report()
   }
 }
 

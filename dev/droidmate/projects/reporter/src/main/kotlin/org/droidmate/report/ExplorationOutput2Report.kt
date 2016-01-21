@@ -6,26 +6,25 @@ import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
-class ExplorationOutput2Report(val output: ExplorationOutput2) {
+class ExplorationOutput2Report(val output: ExplorationOutput2, val dir: Path) {
 
   fun report(): Unit {
     // KJA current work
     output.forEach {
-      GUICoverageReportFile(it).writeOut()
+      GUICoverageReportFile(it, dir).writeOut()
     }
   }
 }
 
-class GUICoverageReportFile(val it: IApkExplorationOutput2) {
+class GUICoverageReportFile(val data: IApkExplorationOutput2, val dir: Path) {
+
+  val file = dir.resolve("${data.apk.fileName}_GUIReportFile.txt")
 
   fun writeOut() {
 
-    val file = Paths.get("./temp_dir_for_tests/${it.apk.fileName}_GUIReportFile.txt")
-    GUICoverage(it).table().writeOut(file)
+    GUICoverage(data).table().writeOut(file)
   }
-
 }
 
 fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
