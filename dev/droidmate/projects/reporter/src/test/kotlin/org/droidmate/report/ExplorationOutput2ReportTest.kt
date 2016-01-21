@@ -8,7 +8,9 @@ class ExplorationOutput2ReportTest {
   @Test
   fun reports() {
 
-    val cfg = ConfigurationForTests().withMockFileSystem().get()
+    // KJA use ConfigurationForTests().withMockFileSystem().get()
+    // For that, I have to copy data to the mock file system. See
+    val cfg = ConfigurationForTests().get()
     val out = ReportDir(cfg.reportInputDirPath).readOutput()
 
     val report = ExplorationOutput2Report(out, cfg.reportInputDirPath)
@@ -16,7 +18,7 @@ class ExplorationOutput2ReportTest {
     // Act
     report.writeOut()
 
-    report.files.forEach {
+    report.reportFiles.forEach {
       println(it.fileName)
       println(it.text())
     }

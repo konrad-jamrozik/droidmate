@@ -5,14 +5,16 @@ import java.nio.file.Path
 
 class ExplorationOutput2Report(val output: ExplorationOutput2, val dir: Path) {
 
-  val files: List<Path>
-    get() = emptyList() // KJA current work
+  val guiCoverageReports: List<GUICoverageReport> by lazy {
+    this.output.map { GUICoverageReport(it, dir) }
+  }
+
+  val reportFiles: List<Path> by lazy {
+    this.guiCoverageReports.map { it.file }
+  }
 
   fun writeOut(): Unit {
-    // KJA current work
-    output.forEach {
-      GUICoverageReportFile(it, dir).writeOut()
-    }
+    this.guiCoverageReports.forEach { it.writeOut() }
   }
 }
 

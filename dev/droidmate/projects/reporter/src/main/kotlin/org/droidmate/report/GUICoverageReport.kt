@@ -11,12 +11,17 @@ package org.droidmate.report
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import java.nio.file.Path
 
-class GUICoverageReportFile(val data: IApkExplorationOutput2, val dir: Path) {
+class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
-  val file = dir.resolve("${data.apk.fileName}_GUIReportFile.txt")
+  val file: Path by lazy {
+    this.dir.resolve("${data.apk.fileName}_GUIReportFile.txt")
+  }
+
+  val guiCoverage: GUICoverage by lazy {
+    GUICoverage(this.data)
+  }
 
   fun writeOut() {
-
-    GUICoverage(data).toTable().writeOut(file)
+    this.guiCoverage.toTable().writeOut(file)
   }
-}
+  }
