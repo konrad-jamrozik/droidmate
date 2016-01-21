@@ -14,7 +14,6 @@ import java.nio.file.Path
 
 fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
 
-  // KJA establish column sorting order.
   val headerRowString = this.columnKeySet().joinToString(separator = "|")
 
   val dataRowsStrings: List<String> = this.rowMap().map {
@@ -24,6 +23,5 @@ fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
 
   val tableString = headerRowString + "\n" + dataRowsStrings.joinToString(separator = "\n")
 
-  //val cellsString = this.cellSet().joinToString { it.toString() }
   Files.write(file, tableString.toByteArray())
 }

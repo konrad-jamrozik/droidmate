@@ -8,25 +8,33 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import com.google.common.collect.HashBasedTable
+import com.google.common.collect.ImmutableTable
 import com.google.common.collect.Table
+import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
 class GUICoverage(val data: IApkExplorationOutput2) {
   fun toTable(): Table<Int, String, Int> {
-    var table = HashBasedTable.create<Int, String, Int>()
-    table.put(0, "time", 10)
-    table.put(1, "time", 20)
-    table.put(2, "time", 30)
-    table.put(3, "time", 40)
-    table.put(4, "time", 50)
-    table.put(5, "time", 60)
-    table.put(0, "GUI elements seen", 0)
-    table.put(1, "GUI elements seen", 1)
-    table.put(2, "GUI elements seen", 3)
-    table.put(3, "GUI elements seen", 7)
-    table.put(4, "GUI elements seen", 16)
-    table.put(5, "GUI elements seen", 16)
+    //var table = HashBasedTable.create<Int, String, Int>()
+    var table = ImmutableTable.Builder<Int, String, Int>()
+      .orderColumnsBy(compareBy {
+        when (it) { "time" -> 0; "GUI elements seen" -> 1 else -> throw UnexpectedIfElseFallthroughError()
+        }
+      })
+      .orderRowsBy(naturalOrder<Int>())
+      .put(0, "time", 10)
+      .put(1, "time", 20)
+      .put(2, "time", 30)
+      .put(3, "time", 40)
+      .put(4, "time", 50)
+      .put(5, "time", 60)
+      .put(0, "GUI elements seen", 0)
+      .put(1, "GUI elements seen", 1)
+      .put(2, "GUI elements seen", 3)
+      .put(3, "GUI elements seen", 7)
+      .put(4, "GUI elements seen", 16)
+      .put(5, "GUI elements seen", 16)
+      .build()
     return table
   }
 }
