@@ -44,7 +44,9 @@ class UniqueWidgets(val data: IApkExplorationOutput2) {
   }
 
   private val widgetsAtTime: List<Pair<Long, List<Widget>>> by lazy {
+
     val zeroTimeZeroWidgets = listOf(Pair<Long, List<Widget>>(0, emptyList()))
+
     val widgetsAtTime: List<Pair<Long, List<Widget>>> =
       zeroTimeZeroWidgets.plus(data.actRess.map {
 

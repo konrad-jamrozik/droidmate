@@ -19,7 +19,7 @@ class GUICoverage(val data: IApkExplorationOutput2) {
 
     val uniqueWidgets = UniqueWidgets(data)
 
-    // KJA extract ms step
+    // KJA extract ms (millisecond) step
     val timeRange = 0.rangeTo(data.explorationTimeInMs).step(1000)
 
     val rows: List<Triple<Int, Int, Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
