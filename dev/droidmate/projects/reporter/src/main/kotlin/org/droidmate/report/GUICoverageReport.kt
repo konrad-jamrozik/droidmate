@@ -22,6 +22,6 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
   }
 
   fun writeOut() {
-    this.guiCoverage.toTable().writeOut(file)
+    this.guiCoverage.table.writeOut(file)
   }
   }

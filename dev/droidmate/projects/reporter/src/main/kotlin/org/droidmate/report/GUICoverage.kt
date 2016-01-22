@@ -14,27 +14,46 @@ import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
 class GUICoverage(val data: IApkExplorationOutput2) {
-  fun toTable(): Table<Int, String, Int> {
-    //var table = HashBasedTable.create<Int, String, Int>()
-    var table = ImmutableTable.Builder<Int, String, Int>()
+
+  val table: Table<Int, String, Int> by lazy {
+
+    val widgetsSeen = WidgetsSeen(data)
+
+    val timeRange = 0.rangeTo(data.explorationTimeInMs).step(1000)
+
+    val rows: List<Triple<Int, Int, Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
+      Triple(tickIndex, timePassed, widgetsSeen.byTime(timePassed))
+    }
+
+    // KJA extract "make table from (column headers, rows represented by triplets)
+    tableBuilder().apply {
+      rows.forEach { row ->
+        // KJA dry up column headers
+        put(row.first, "Time", row.second)
+        put(row.first, "Views seen", row.third)
+      }
+    }.build()
+  }
+
+  private fun tableBuilder(): ImmutableTable.Builder<Int, String, Int> {
+
+    return ImmutableTable
+      .Builder<Int, String, Int>()
       .orderColumnsBy(compareBy {
-        when (it) { "time" -> 0; "GUI elements seen" -> 1 else -> throw UnexpectedIfElseFallthroughError()
+        when (it) {
+          "Time" -> 0
+          "Views seen" -> 1
+          else -> throw UnexpectedIfElseFallthroughError()
         }
       })
       .orderRowsBy(naturalOrder<Int>())
-      .put(0, "time", 10)
-      .put(1, "time", 20)
-      .put(2, "time", 30)
-      .put(3, "time", 40)
-      .put(4, "time", 50)
-      .put(5, "time", 60)
-      .put(0, "GUI elements seen", 0)
-      .put(1, "GUI elements seen", 1)
-      .put(2, "GUI elements seen", 3)
-      .put(3, "GUI elements seen", 7)
-      .put(4, "GUI elements seen", 16)
-      .put(5, "GUI elements seen", 16)
-      .build()
-    return table
   }
+}
+
+class WidgetsSeen(val data: IApkExplorationOutput2) {
+  fun byTime(timePassed: Int): Int {
+    // KJA current work
+    return timePassed / 2
+  }
+
 }
