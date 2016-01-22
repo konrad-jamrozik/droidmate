@@ -5,7 +5,7 @@
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
     <option name="PACKAGE_NAME" value="org.droidmate.tests_misc" />
-    <option name="MAIN_CLASS_NAME" value="org.droidmate.tests_misc.ScratchpadTest" />
+    <option name="MAIN_CLASS_NAME" value="org.droidmate.tests_misc.GroovyScratchpadTestClass" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
     <option name="VM_PARAMETERS" value="-ea -DlogsDir=&quot;temp_dir_for_tests/logs&quot;" />

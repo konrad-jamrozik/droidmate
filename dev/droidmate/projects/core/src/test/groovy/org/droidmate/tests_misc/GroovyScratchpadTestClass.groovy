@@ -16,11 +16,11 @@ import org.junit.runners.JUnit4
 import java.nio.file.Paths
 
 @RunWith(JUnit4)
-class ScratchpadTest
+class GroovyScratchpadTestClass
 {
 
   @Test
-  void test()
+  void groovyTest()
   {
     println Paths.get(".","ah").toString()
   }
