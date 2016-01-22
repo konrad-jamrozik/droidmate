@@ -116,6 +116,7 @@ public class ApkDeployer implements IApkDeployer
       if (device.available)
       {
         log.info("Uninstalling $apk.fileName")
+        // KNOWN BUG [clear package]/2 times out (120 sec) even though device.available returned true!
         device.clearPackage(apk.packageName)
         device.uninstallApk(apk.packageName, /* ignoreFailure = */ false)
       }
