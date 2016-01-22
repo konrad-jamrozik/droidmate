@@ -10,8 +10,11 @@ package org.droidmate.report
 
 import com.google.common.collect.ImmutableTable
 import com.google.common.collect.Table
+import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
+import java.time.Duration
+import java.util.*
 
 class GUICoverage(val data: IApkExplorationOutput2) {
 
@@ -54,7 +57,27 @@ class GUICoverage(val data: IApkExplorationOutput2) {
 
 class WidgetsSeen(val data: IApkExplorationOutput2) {
   fun byTime(timePassed: Int): Int {
-    // KJA current work
+
+    val widgetsAtTime: List<Pair<Long, List<Widget>>> = data.actRess.map {
+      val timePassedForWidgets = Duration.between(data.explorationStartTime, it.action.timestamp).toMillis()
+      val widgets: List<Widget> = it.result.guiSnapshot.guiState.widgets
+      Pair(timePassedForWidgets, widgets)
+    }
+
+    var uniqueWidgetsSeenAccumulator: MutableList<Widget> = ArrayList()
+
+    val uniqueWidgetsAtTime: List<Pair<Long, List<Widget>>> = widgetsAtTime.map {
+
+      // KJA
+      val newUniqueWidgets: List<Widget> = it.second /* all such widgets in current item that are not yet in accumulator with regards to uniqueness comparison */
+        uniqueWidgetsSeenAccumulator.addAll(newUniqueWidgets)
+      it.copy(second = uniqueWidgetsSeenAccumulator.toList())
+      //Pair(it.first, uniqueWidgets)
+    }
+
+    // KJA
+    // val widgetsByTime: List<Widget> = uniqueWidgetsAtTime.dropWhile { it.first < timePassed }.first().second
+
     return timePassed / 2
   }
 
