@@ -18,21 +18,17 @@ fun Path.text(): String {
   return NioGroovyMethods.getText(this)
 }
 
-fun Path.copyDirRecursivelyToDirInDifferentFileSystem(destDir: Path): Unit {
-  FileSystemsOperations().copyDirRecursivelyToDirInDifferentFileSystem(this, destDir)
-}
-
 fun Path.copyDirContentsRecursivelyToDirInDifferentFileSystem(destDir: Path): Unit {
   FileSystemsOperations().copyDirContentsRecursivelyToDirInDifferentFileSystem(this, destDir)
 }
 
 fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
 
-  val headerRowString = this.columnKeySet().joinToString(separator = "|")
+  val headerRowString = this.columnKeySet().joinToString(separator = "\t")
 
   val dataRowsStrings: List<String> = this.rowMap().map {
     val rowValues = it.value.values
-    rowValues.joinToString(separator = "|")
+    rowValues.joinToString(separator = "\t")
   }
 
   val tableString = headerRowString + "\n" + dataRowsStrings.joinToString(separator = "\n")
