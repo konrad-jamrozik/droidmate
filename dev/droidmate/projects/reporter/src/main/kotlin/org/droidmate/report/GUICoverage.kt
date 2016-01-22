@@ -19,9 +19,11 @@ class GUICoverage(val data: IApkExplorationOutput2) {
 
     val widgetsSeen = WidgetsSeen(data)
 
+    // KJA extract ms step
     val timeRange = 0.rangeTo(data.explorationTimeInMs).step(1000)
 
     val rows: List<Triple<Int, Int, Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
+      // KJA the "widgetsSeen.byTime" is the only variable, all the rest can be extracted. The variable is "some value that got increment by given other value"
       Triple(tickIndex, timePassed, widgetsSeen.byTime(timePassed))
     }
 
