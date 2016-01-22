@@ -64,19 +64,19 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../../projects/core/src/main/resources/logback" />
+          <root url="jar://$ANDROID_SDK$/platforms/android-19/android.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar://$ANDROID_SDK$/platforms/android-19/android.jar!/" />
+          <root url="file://$MODULE_DIR$/../../../../projects/core/src/main/resources/logback" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

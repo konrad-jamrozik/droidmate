@@ -96,6 +96,7 @@
     </orderEntry>
     <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="lib_common_main" />
+    <orderEntry type="module" module-name="lib_common_android_main" />
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
@@ -105,7 +106,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="lib_common_android_main" />
     <orderEntry type="module" module-name="lib_android_main" />
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.35" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />
