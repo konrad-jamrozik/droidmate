@@ -11,6 +11,7 @@ class ExplorationOutput2ReportTest {
   @Test
   fun reports() {
 
+    // KJA change the dir and ensure there is some input data in the dir
     val reportInputDirReal = ConfigurationForTests().get().reportInputDirPath
     val reportInputDirMock = ConfigurationForTests().withMockFileSystem().get().reportInputDirPath
     reportInputDirReal.copyDirContentsRecursivelyToDirInDifferentFileSystem(reportInputDirMock)

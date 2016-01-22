@@ -11,6 +11,8 @@ package org.droidmate.report
 import com.github.konrad_jamrozik.FileSystemsOperations
 import com.google.common.collect.Table
 import org.codehaus.groovy.runtime.NioGroovyMethods
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -23,6 +25,9 @@ fun Path.copyDirContentsRecursivelyToDirInDifferentFileSystem(destDir: Path): Un
 }
 
 fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
+
+  val DEBUGlog: Logger = LoggerFactory.getLogger("Table")
+  DEBUGlog.info("DEBUG Writing out to $file")
 
   val headerRowString = this.columnKeySet().joinToString(separator = "\t")
 
