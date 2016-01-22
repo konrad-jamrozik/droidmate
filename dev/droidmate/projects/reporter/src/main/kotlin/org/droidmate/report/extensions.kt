@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.report
 
+import com.github.konrad_jamrozik.FileSystemsOperations
 import com.google.common.collect.Table
 import org.codehaus.groovy.runtime.NioGroovyMethods
 import java.nio.file.Files
@@ -15,6 +16,14 @@ import java.nio.file.Path
 
 fun Path.text(): String {
   return NioGroovyMethods.getText(this)
+}
+
+fun Path.copyDirRecursivelyToDirInDifferentFileSystem(destDir: Path): Unit {
+  FileSystemsOperations().copyDirRecursivelyToDirInDifferentFileSystem(this, destDir)
+}
+
+fun Path.copyDirContentsRecursivelyToDirInDifferentFileSystem(destDir: Path): Unit {
+  FileSystemsOperations().copyDirContentsRecursivelyToDirInDifferentFileSystem(this, destDir)
 }
 
 fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {

@@ -17,7 +17,7 @@ class WritableExplorationOutput2Analysis implements IWritableExplorationOutput2A
   private final ExplorationOutput2          explOut2
   private final List<IWritableApkApisChart> apkCharts
 
-  // KJA unused "new legacy" output classes live in this package
+  // WISH 22 Jan 2016: toremove unused "new legacy" output classes live in this package
   WritableExplorationOutput2Analysis(ExplorationOutput2 explorationOutput2, Integer timeTicks, Integer timeTickSizeInMs)
   {
     this.explOut2 = explorationOutput2

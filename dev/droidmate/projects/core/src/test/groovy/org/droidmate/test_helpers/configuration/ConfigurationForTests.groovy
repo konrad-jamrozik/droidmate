@@ -15,6 +15,7 @@ import org.droidmate.init.InitConstants
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
+import java.nio.file.Paths
 
 class ConfigurationForTests
 {
@@ -41,8 +42,8 @@ class ConfigurationForTests
 
   ConfigurationForTests()
   {
-    this.argsList = zeroedTestConfig + [Configuration.pn_droidmateOutputDir, InitConstants.test_temp_dir_name,
-                                        Configuration.pn_reportInputDir, InitConstants.test_temp_dir_name]
+    this.argsList = zeroedTestConfig + [Configuration.pn_droidmateOutputDir, Paths.get(".",InitConstants.test_temp_dir_name).toString(),
+                                        Configuration.pn_reportInputDir, Paths.get(".",InitConstants.test_temp_dir_name).toString()]
   }
 
   public Configuration get()

@@ -13,7 +13,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-import java.nio.file.Path
 import java.nio.file.Paths
 
 @RunWith(JUnit4)
@@ -23,8 +22,7 @@ class ScratchpadTest
   @Test
   void test()
   {
-    Path p = Paths.get()
-    String text = p.text
+    println Paths.get(".","ah").toString()
   }
 
 }
