@@ -13,6 +13,7 @@ import com.google.common.collect.Table
 import org.codehaus.groovy.runtime.NioGroovyMethods
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.lang.Math.max
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -42,13 +43,13 @@ fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
 }
 
 fun <T, TItem> Iterable<T>.uniqueCountByTime(
-  extractTime: (T) -> Long,
+  extractTime: (T) -> Int,
   extractItems: (T) -> Iterable<TItem>,
   uniqueString: (TItem) -> String
 )
-  : Map<Long, Int> {
+  : Map<Int, Int> {
 
-  val timedItems: Map<Long, Iterable<TItem>> = this.toMap { Pair(extractTime(it), extractItems(it)) }
+  val timedItems: Map<Int, Iterable<TItem>> = this.toMap { Pair(extractTime(it), extractItems(it)) }
 
   val uniqueItemsAcc: MutableSet<String> = hashSetOf()
 
@@ -61,22 +62,48 @@ fun <T, TItem> Iterable<T>.uniqueCountByTime(
   return timedUniqueItems.mapValues { it.value.count() }
 }
 
-fun <T> Collection<Pair<Long, T>>.multiPartition(partitionSize: Long): Collection<Pair<Long, List<T>>> {
+fun <T> Collection<Pair<Int, T>>.multiPartition(partitionSize: Int): Collection<Pair<Int, List<T>>> {
 
-  tailrec fun <T> _multiPartition(acc: Collection<Pair<Long, List<T>>>, remainder: Collection<Pair<Long, T>>, partitionSize: Long, currentPartitionValue: Long): Collection<Pair<Long, List<T>>> {
+  tailrec fun <T> _multiPartition(
+    acc: Collection<Pair<Int, List<T>>>,
+    remainder: Collection<Pair<Int, T>>,
+    partitionSize: Int,
+    currentPartitionValue: Int): Collection<Pair<Int, List<T>>> {
 
     if (remainder.isEmpty()) return acc else {
 
       val currentPartition = remainder.partition { it.first <= currentPartitionValue }
-      val current: List<Pair<Long, T>> = currentPartition.first
-      // val currentTime: Long = if (acc.isEmpty()) partitionSize else acc.last().first + partitionSize
-      val currentValues: List<T> = current.fold<Pair<Long, T>, MutableList<T>>(linkedListOf(), { out, pair -> out.add(pair.second); out })
+      val current: List<Pair<Int, T>> = currentPartition.first
+      val currentValues: List<T> = current.fold<Pair<Int, T>, MutableList<T>>(linkedListOf(), { out, pair -> out.add(pair.second); out })
 
       return _multiPartition(acc.plus(Pair(currentPartitionValue, currentValues)), currentPartition.second, partitionSize, currentPartitionValue + partitionSize)
     }
   }
 
-  return _multiPartition(emptyList(), this, partitionSize, partitionSize)
+  return _multiPartition(linkedListOf(Pair(0, emptyList<T>())), this, partitionSize, partitionSize)
+}
+
+fun <T> Collection<Pair<Int, T>>.maxValueAtPartition(
+  maxPartition: Int,
+  partitionSize: Int,
+  extractMax: (T) -> Int
+): Collection<Pair<Int, Int>> {
+
+  require(maxPartition % partitionSize == 0)
+  require(this.all { it.first % partitionSize == 0 })
+
+  return if (this.isEmpty())
+    (0..maxPartition step partitionSize).map { Pair(it, -1) }
+  else {
+
+    var currMaxVal: Int = 0
+    var currMaxPartition: Int = this.last().first
+
+    this.toMap().mapValues {
+        currMaxVal = max(extractMax(it.value), currMaxVal)
+        currMaxVal
+    }.plus(((currMaxPartition + partitionSize)..maxPartition step partitionSize).map { Pair(it, -1) }).toList()
+  }
 }
 
 

@@ -28,17 +28,17 @@ class ExtensionsTests {
     )
 
     // Act
-    val out: Map<Long, Int> = list.uniqueCountByTime(
-      { Duration.between(startTime, it.first).toMillis() },
-      { it.second },
-      { it.trim() }
+    val out: Map<Int, Int> = list.uniqueCountByTime(
+      extractTime = { Duration.between(startTime, it.first).toMillis().toInt() },
+      extractItems = { it.second },
+      uniqueString = { it.trim() }
     )
 
     assertEquals(mapOf(
-      Pair(3000L, 3), // a b c
-      Pair(7000L, 4), // a b c d
-      Pair(15000L, 4), // a b c d
-      Pair(23000L, 5)), // a b c d e
+      Pair(3000, 3), // a b c
+      Pair(7000, 4), // a b c d
+      Pair(15000, 4), // a b c d
+      Pair(23000, 5)), // a b c d e
       out,
       ""
     )
@@ -47,25 +47,51 @@ class ExtensionsTests {
   @Test
   fun multiPartitionTest() {
 
-    val list: List<Pair<Long, Int>> = listOf(
-      Pair(7L, 1),
-      Pair(9L, 2),
-      Pair(13L, 3),
-      Pair(17L, 4),
-      Pair(31L, 5),
-      Pair(45L, 6)
+    val list: List<Pair<Int, Int>> = listOf(
+      Pair(7, 1),
+      Pair(9, 2),
+      Pair(13, 3),
+      Pair(17, 4),
+      Pair(31, 5),
+      Pair(45, 6)
     )
 
     // Act
-    val out: Collection<Pair<Long, List<Int>>> = list.multiPartition(10)
+    val out: Collection<Pair<Int, List<Int>>> = list.multiPartition(10)
+
+    val multiPartitionFixture = multiPartitionFixture
+    assertEquals(multiPartitionFixture, out, "")
+  }
+
+  private val multiPartitionFixture: List<Pair<Int, List<Int>>> = listOf(
+    Pair(0, listOf()),
+    Pair(10, listOf(1, 2)),
+    Pair(20, listOf(3, 4)),
+    Pair(30, listOf()),
+    Pair(40, listOf(5)),
+    Pair(50, listOf(6))
+  )
+
+  @Test
+  fun maxCountAtPartitionTest() {
+
+    // Act
+    val out: Collection<Pair<Int, Int>> = multiPartitionFixture.maxValueAtPartition(
+      maxPartition = 70,
+      partitionSize = 10,
+      extractMax = { it.max() ?: 0 }
+    )
 
     assertEquals(listOf(
-      Pair(10L, listOf(1,2)),
-      Pair(20L, listOf(3,4)),
-      Pair(30L, listOf()),
-      Pair(40L, listOf(5)),
-      Pair(50L, listOf(6))
-        ),
+      Pair(0, 0),
+      Pair(10, 2),
+      Pair(20, 4),
+      Pair(30, 4),
+      Pair(40, 5),
+      Pair(50, 6),
+      Pair(60, -1),
+      Pair(70, -1)
+    ),
       out,
       ""
     )
