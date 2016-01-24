@@ -14,7 +14,9 @@ import org.droidmate.common.TextUtilsCategory
 import org.droidmate.common.exploration.datatypes.Widget
 
 // WISH Borges this class has to be adapted to work with other devices, e.g. Samsung Galaxy S III
-// DroidMate should ask uiautomator-daemon for the the device model (see http://stackoverflow.com/questions/6579968/how-can-i-get-the-device-name-in-android)
+// DroidMate should ask uiautomator-daemon for the the device model
+// see http://stackoverflow.com/questions/6579968/how-can-i-get-the-device-name-in-android)
+// see http://stackoverflow.com/questions/1995439/get-android-phone-model-programmatically
 // Probably the data should be obtained in a similar manner as in org.droidmate.device.MonitorsClient.isServerReachable
 // but instead the uiautomator-daemon should be asked, and the call probably should be made during
 // org.droidmate.tools.AndroidDeviceDeployer.trySetUp to then keep the obtained info inside the RobustDevice instance.
