@@ -42,7 +42,7 @@ fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
   Files.write(file, tableString.toByteArray())
 }
 
-fun <T, TItem> Iterable<T>.uniqueCountByTime(
+fun <T, TItem> Iterable<T>.uniqueCountAtTime(
   extractTime: (T) -> Int,
   extractItems: (T) -> Iterable<TItem>,
   uniqueString: (TItem) -> String
@@ -62,7 +62,7 @@ fun <T, TItem> Iterable<T>.uniqueCountByTime(
   return timedUniqueItems.mapValues { it.value.count() }
 }
 
-fun <T> Collection<Pair<Int, T>>.multiPartition(partitionSize: Int): Collection<Pair<Int, List<T>>> {
+fun <T> Map<Int, T>.multiPartition(partitionSize: Int): Collection<Pair<Int, List<T>>> {
 
   tailrec fun <T> _multiPartition(
     acc: Collection<Pair<Int, List<T>>>,
@@ -80,7 +80,7 @@ fun <T> Collection<Pair<Int, T>>.multiPartition(partitionSize: Int): Collection<
     }
   }
 
-  return _multiPartition(linkedListOf(Pair(0, emptyList<T>())), this, partitionSize, partitionSize)
+  return _multiPartition(linkedListOf(Pair(0, emptyList<T>())), this.toList(), partitionSize, partitionSize)
 }
 
 fun <T> Collection<Pair<Int, T>>.maxValueAtPartition(

@@ -16,7 +16,7 @@ import kotlin.test.assertEquals
 class ExtensionsTests {
 
   @Test
-  fun uniqueCountByTimeTest() {
+  fun uniqueCountAtTimeTest() {
 
     val startTime: LocalDateTime = LocalDateTime.of(2000, 1, 1, 0, 0)
 
@@ -28,7 +28,7 @@ class ExtensionsTests {
     )
 
     // Act
-    val out: Map<Int, Int> = list.uniqueCountByTime(
+    val out: Map<Int, Int> = list.uniqueCountAtTime(
       extractTime = { Duration.between(startTime, it.first).toMillis().toInt() },
       extractItems = { it.second },
       uniqueString = { it.trim() }
@@ -47,7 +47,7 @@ class ExtensionsTests {
   @Test
   fun multiPartitionTest() {
 
-    val list: List<Pair<Int, Int>> = listOf(
+    val map: Map<Int, Int> = mapOf(
       Pair(7, 1),
       Pair(9, 2),
       Pair(13, 3),
@@ -57,7 +57,7 @@ class ExtensionsTests {
     )
 
     // Act
-    val out: Collection<Pair<Int, List<Int>>> = list.multiPartition(10)
+    val out: Collection<Pair<Int, List<Int>>> = map.multiPartition(10)
 
     val multiPartitionFixture = multiPartitionFixture
     assertEquals(multiPartitionFixture, out, "")

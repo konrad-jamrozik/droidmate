@@ -56,6 +56,15 @@ class UniqueWidgets(val data: IApkExplorationOutput2) {
     uniqueWidgetsAtTime
   }
 
+
+  fun uniqueWidgetCountAtTime() : Map<Int, Int> {
+    return data.actRess.uniqueCountAtTime(
+      extractTime = { Duration.between(data.explorationStartTime, it.action.timestamp).toMillis().toInt() + 500 },
+      extractItems = { it.result.guiSnapshot.guiState.widgets },
+      uniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString }
+    )
+  }
+
   private val widgetsAtTime: List<Pair<Long, List<Widget>>> by lazy {
 
     val zeroTimeZeroWidgets = listOf(Pair<Long, List<Widget>>(0, emptyList()))

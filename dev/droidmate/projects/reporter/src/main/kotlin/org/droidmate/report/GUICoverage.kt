@@ -17,14 +17,14 @@ class GUICoverage(val data: IApkExplorationOutput2) {
 
   val table: Table<Int, String, Int> by lazy {
 
-    val uniqueWidgets = UniqueWidgets(data)
+    val uniqueWidgetCountAtTime: Map<Int, Int> = UniqueWidgets(data).uniqueWidgetCountAtTime()
+    val uniqueWidgetCountByTime: Map<Int, Int> = uniqueWidgetCountAtTime.multiPartition(1000).maxValueAtPartition(data.explorationTimeInMs, 1000, { it.max() ?: 0 }).toMap()
 
     // KJA extract ms (millisecond) step
     val timeRange = 0.rangeTo(data.explorationTimeInMs).step(1000)
 
     val rows: List<Triple<Int, Int, Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
-      // KJA the "widgetsSeen.byTime" is the only variable, all the rest can be extracted. The variable is "some value that got increment by given other value"
-      Triple(tickIndex, timePassed, uniqueWidgets.byTime(timePassed))
+      Triple(tickIndex, timePassed, uniqueWidgetCountByTime[timePassed]!!)
     }
 
     // KJA extract "make table from (column headers, rows represented by triplets)
