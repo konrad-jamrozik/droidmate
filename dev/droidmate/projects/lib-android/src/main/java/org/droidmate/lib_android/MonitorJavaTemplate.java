@@ -209,19 +209,20 @@ public class MonitorJavaTemplate
 
         removeSocketInitLogFromMonitorTCPServer(currentLogs);
 
-        if (Objects.equals(input, srvCmd_connCheck))
+
+        if (srvCmd_connCheck.equals(input))
         {
           final ArrayList<String> payload = new ArrayList<String>(Arrays.asList(getPid(), getPackageName(), ""));
           return new ArrayList<ArrayList<String>>(Collections.singletonList(payload));
 
-        } else if (Objects.equals(input, srvCmd_get_logs))
+        } else if (srvCmd_get_logs.equals(input))
         {
           ArrayList<ArrayList<String>> logsToSend = new ArrayList<ArrayList<String>>(currentLogs);
           currentLogs.clear();
 
           return logsToSend;
 
-        } else if (Objects.equals(input, srvCmd_get_time))
+        } else if (srvCmd_get_time.equals(input))
         {
           final String time = getNowDate();
 
@@ -230,7 +231,7 @@ public class MonitorJavaTemplate
           Log.d(tag_srv, "Sending time: " + time);
           return new ArrayList<ArrayList<String>>(Collections.singletonList(payload));
 
-        } else if (Objects.equals(input, srvCmd_close))
+        } else if (srvCmd_close.equals(input))
         {
           // Do nothing here. The command will is handled in org.droidmate.lib_android.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
           return new ArrayList<ArrayList<String>>();
@@ -316,7 +317,7 @@ public class MonitorJavaTemplate
     @Override
     protected boolean shouldCloseServerSocket(String serverInput)
     {
-      return Objects.equals(serverInput, srvCmd_close);
+      return srvCmd_close.equals(serverInput);
     }
   }
 
@@ -356,7 +357,8 @@ public class MonitorJavaTemplate
       }
       if (serverSocketException != null)
       {
-        if (Objects.equals(serverSocketException.getCause().getMessage(), "bind failed: EADDRINUSE (Address already in use)"))
+
+        if ("bind failed: EADDRINUSE (Address already in use)".equals(serverSocketException.getCause().getMessage()))
         {
           Log.d(tag_srv, "Failed to start TCP server because 'bind failed: EADDRINUSE (Address already in use)'. " +
             "Returning null Thread.");
