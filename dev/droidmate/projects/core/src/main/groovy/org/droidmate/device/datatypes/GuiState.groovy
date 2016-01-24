@@ -76,7 +76,22 @@ class GuiState implements Serializable, IGuiState
   @Override
   boolean isHomeScreen()
   {
-    return this.topNodePackageName == package_android_launcher && !this.widgets.any { it.text == "Widgets" }
+    // WISH DroidMate should ask uiautomator-daemon for the the device model (see http://stackoverflow.com/questions/6579968/how-can-i-get-the-device-name-in-android)
+    // Probably the data should be obtained in a similar manner as in org.droidmate.device.MonitorsClient.isServerReachable
+    // but instead the uiautomator-daemon should be asked, and the call probably should be made during
+    // org.droidmate.tools.AndroidDeviceDeployer.trySetUp to then keep the obtained info inside the RobustDevice instance.
+    return isNexus7HomeScreen() || isSamsungGalaxyS3HomeScreen()
+  }
+
+  private boolean isNexus7HomeScreen()
+  {
+    return this.topNodePackageName == package_android_launcher && !this.widgets.any {it.text == "Widgets"}
+  }
+
+  private boolean isSamsungGalaxyS3HomeScreen()
+  {
+
+    return this.topNodePackageName == "com.sec.android.app.launcher" && !this.widgets.any {it.text == "Widgets"}
   }
 
   @Override
