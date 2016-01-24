@@ -41,9 +41,42 @@ fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
   Files.write(file, tableString.toByteArray())
 }
 
-fun <T, TItem> Iterable<T>.uniqueCountByTime(extractTime: (T) -> Long, extractItems: (T) -> Iterable<TItem>): Map<Long, Int> {
+fun <T, TItem> Iterable<T>.uniqueCountByTime(
+  extractTime: (T) -> Long,
+  extractItems: (T) -> Iterable<TItem>,
+  uniqueString: (TItem) -> String
+)
+  : Map<Long, Int> {
 
   val timedItems: Map<Long, Iterable<TItem>> = this.toMap { Pair(extractTime(it), extractItems(it)) }
-  // KJA current work
-  return  timedItems.mapValues { it.value.count() }
+
+  val uniqueItemsAcc: MutableSet<String> = hashSetOf()
+
+  val timedUniqueItems = timedItems.mapValues {
+
+    uniqueItemsAcc.addAll(it.value.map { uniqueString(it) })
+    uniqueItemsAcc.toSet()
+  }
+
+  return timedUniqueItems.mapValues { it.value.count() }
 }
+
+fun <T> Collection<Pair<Long, T>>.multiPartition(partitionSize: Long): Collection<Pair<Long, List<T>>> {
+
+  tailrec fun <T> _multiPartition(acc: Collection<Pair<Long, List<T>>>, remainder: Collection<Pair<Long, T>>, partitionSize: Long, currentPartitionValue: Long): Collection<Pair<Long, List<T>>> {
+
+    if (remainder.isEmpty()) return acc else {
+
+      val currentPartition = remainder.partition { it.first <= currentPartitionValue }
+      val current: List<Pair<Long, T>> = currentPartition.first
+      // val currentTime: Long = if (acc.isEmpty()) partitionSize else acc.last().first + partitionSize
+      val currentValues: List<T> = current.fold<Pair<Long, T>, MutableList<T>>(linkedListOf(), { out, pair -> out.add(pair.second); out })
+
+      return _multiPartition(acc.plus(Pair(currentPartitionValue, currentValues)), currentPartition.second, partitionSize, currentPartitionValue + partitionSize)
+    }
+  }
+
+  return _multiPartition(emptyList(), this, partitionSize, partitionSize)
+}
+
+
