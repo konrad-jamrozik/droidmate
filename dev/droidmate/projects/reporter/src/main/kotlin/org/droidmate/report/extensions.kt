@@ -40,3 +40,10 @@ fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
 
   Files.write(file, tableString.toByteArray())
 }
+
+fun <T, TItem> Iterable<T>.uniqueCountByTime(extractTime: (T) -> Long, extractItems: (T) -> Iterable<TItem>): Map<Long, Int> {
+
+  val timedItems: Map<Long, Iterable<TItem>> = this.toMap { Pair(extractTime(it), extractItems(it)) }
+  // KJA current work
+  return  timedItems.mapValues { it.value.count() }
+}
