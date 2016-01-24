@@ -9,17 +9,19 @@
 package org.droidmate.report
 
 import org.junit.Test
-import java.util.*
 
 class KotlinScratchpadTestClass {
+
+  val p1 by lazy {
+    println("inside p1")
+  }
 
   @Test
   fun KotlinScratchpadTest() {
 
-    val l: MutableList<Int> = ArrayList(listOf(1,2,3))
-    l.add(4)
-    val l2 = l.toList()
-    l.add(5)
-    l2.forEach { println(it) }
+    println("start")
+    p1
+    println("end")
   }
 }
+
