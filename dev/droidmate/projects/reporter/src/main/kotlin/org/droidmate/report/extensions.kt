@@ -13,8 +13,6 @@ import com.google.common.collect.Table
 import org.codehaus.groovy.runtime.NioGroovyMethods
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.lang.Math.max
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -31,9 +29,6 @@ fun Path.copyDirContentsRecursivelyToDirInDifferentFileSystem(destDir: Path): Un
 }
 
 fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
-
-  val DEBUGlog: Logger = LoggerFactory.getLogger("Table")
-  DEBUGlog.info("DEBUG Writing out to $file")
 
   val headerRowString = this.columnKeySet().joinToString(separator = "\t")
 
