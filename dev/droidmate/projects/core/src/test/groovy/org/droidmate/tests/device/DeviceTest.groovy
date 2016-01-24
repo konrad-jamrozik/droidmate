@@ -30,8 +30,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
 
-import static org.droidmate.device.datatypes.AndroidDeviceAction.newClickGuiDeviceAction
-import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchActivityDeviceAction
+import static org.droidmate.device.datatypes.AndroidDeviceAction.*
 
 @TypeChecked
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -79,6 +78,17 @@ class DeviceTest extends DroidmateGroovyTestCase
       // Act 6
       assert !device.anyMonitorIsReachable()
 
+    }
+  }
+
+  @Category([RequiresDevice])
+  @Test
+  void "Turns wifi on"()
+  {
+    IDeviceTools deviceTools = new DeviceTools(new ConfigurationForTests().forDevice().get())
+    deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
+      device.perform(newTurnWifiOnDeviceAction())
+      return []
     }
   }
 
