@@ -59,6 +59,6 @@ test {
   workingDir rootDir
 
   /* Lurking bug: GRADLE-1682. */
-  includes = ['**/ExplorationOutput2ReportTest.class']
+  includes = ['**/ReporterTestSuite.class']
 
 }

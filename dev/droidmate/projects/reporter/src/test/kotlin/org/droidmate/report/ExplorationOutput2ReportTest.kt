@@ -3,12 +3,15 @@ package org.droidmate.report
 import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
+import org.droidmate.test_suite_categories.UnderConstruction
 import org.junit.Test
+import org.junit.experimental.categories.Category
 
 class ExplorationOutput2ReportTest {
 
   // KJA current work
   @Test
+  @Category(UnderConstruction::class)
   fun reports() {
 
     // KJA change the dir and ensure there is some input data in the dir
