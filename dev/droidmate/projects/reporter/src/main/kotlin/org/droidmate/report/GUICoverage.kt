@@ -17,10 +17,7 @@ class GUICoverage(val data: IApkExplorationOutput2) {
 
   val table: Table<Int, String, Int> by lazy {
 
-    val uniqueWidgetCountAtTime: Map<Int, Int> = UniqueWidgets(data).uniqueWidgetCountAtTime()
-    val uniqueWidgetCountByTime: Map<Int, Int> = uniqueWidgetCountAtTime
-      .multiPartition(1000)
-      .maxValueAtPartition(data.explorationTimeInMs.zeroDigits(3), 1000, { it.max() ?: 0 }).toMap()
+    val uniqueWidgetCountByTime: Map<Int, Int> = data.uniqueWidgetCountByTime()
 
     // KJA extract ms (millisecond) step
     val timeRange = 0.rangeTo(data.explorationTimeInMs).step(1000)

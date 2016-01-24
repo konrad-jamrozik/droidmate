@@ -11,6 +11,8 @@ package org.droidmate.report
 import com.github.konrad_jamrozik.FileSystemsOperations
 import com.google.common.collect.Table
 import org.codehaus.groovy.runtime.NioGroovyMethods
+import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
+import org.droidmate.exploration.strategy.WidgetStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.lang.Math.max
@@ -18,6 +20,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.nio.file.Files
 import java.nio.file.Path
+import java.time.Duration
 
 fun Path.text(): String {
   return NioGroovyMethods.getText(this)
@@ -111,4 +114,21 @@ fun <T> Collection<Pair<Int, T>>.maxValueAtPartition(
 // Reference: http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
 fun Int.zeroDigits(digitsToZero: Int) : Int {
   return BigDecimal(toString()).setScale(-digitsToZero, RoundingMode.DOWN).toBigInteger().toInt()
+}
+
+fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Int, Int> {
+
+  fun uniqueWidgetCountAtTime(): Map<Int, Int> {
+    return this.actRess.uniqueCountAtTime(
+      // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
+      extractTime = { Duration.between(this.explorationStartTime, it.action.timestamp).toMillis().toInt() + 500 },
+      extractItems = { it.result.guiSnapshot.guiState.widgets },
+      uniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString }
+    )
+  }
+
+  return uniqueWidgetCountAtTime()
+    .multiPartition(1000)
+    .maxValueAtPartition(this.explorationTimeInMs.zeroDigits(3), 1000, { it.max() ?: 0 }).toMap()
+
 }
