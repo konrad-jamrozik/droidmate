@@ -116,6 +116,7 @@ fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Int, Int> {
   fun uniqueWidgetCountAtTime(): Map<Int, Int> {
     return this.actRess.uniqueCountAtTime(
       // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
+      // The workaround is to add 500 milliseconds.
       extractTime = { Duration.between(this.explorationStartTime, it.action.timestamp).toMillis().toInt() + 500 },
       extractItems = { it.result.guiSnapshot.guiState.widgets },
       uniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString }

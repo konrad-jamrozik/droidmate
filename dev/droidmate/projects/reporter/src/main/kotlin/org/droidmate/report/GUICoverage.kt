@@ -15,23 +15,24 @@ import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
 class GUICoverage(val data: IApkExplorationOutput2) {
 
+  private val headerTime = "Time"
+  private val headerViewsSeen = "Views seen"
+  private val stepSizeInMs = 1000
+
   val table: Table<Int, String, Int> by lazy {
 
     val uniqueWidgetCountByTime: Map<Int, Int> = data.uniqueWidgetCountByTime()
 
-    // KJA extract ms (millisecond) step
-    val timeRange = 0.rangeTo(data.explorationTimeInMs).step(1000)
+    val timeRange = 0.rangeTo(data.explorationTimeInMs).step(stepSizeInMs)
 
     val rows: List<Triple<Int, Int, Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
-      Triple(tickIndex, timePassed/1000, uniqueWidgetCountByTime[timePassed]!!)
+      Triple(tickIndex, timePassed/ stepSizeInMs, uniqueWidgetCountByTime[timePassed]!!)
     }
 
-    // KJA extract "make table from (column headers, rows represented by triplets)
     tableBuilder().apply {
       rows.forEach { row ->
-        // KJA dry up column headers
-        put(row.first, "Time", row.second)
-        put(row.first, "Views seen", row.third)
+        put(row.first, headerTime, row.second)
+        put(row.first, headerViewsSeen, row.third)
       }
     }.build()
   }
@@ -42,8 +43,8 @@ class GUICoverage(val data: IApkExplorationOutput2) {
       .Builder<Int, String, Int>()
       .orderColumnsBy(compareBy {
         when (it) {
-          "Time" -> 0
-          "Views seen" -> 1
+          headerTime -> 0
+          headerViewsSeen -> 1
           else -> throw UnexpectedIfElseFallthroughError()
         }
       })

@@ -6,7 +6,7 @@ import java.nio.file.Path
 
 class OutputDir(val dir: Path) {
 
-  fun readOutput() : ExplorationOutput2
+  fun read() : ExplorationOutput2
   {
     return ExplorationOutput2.from(Storage2(dir))
   }

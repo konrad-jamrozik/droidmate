@@ -9,18 +9,21 @@ import org.junit.experimental.categories.Category
 
 class ExplorationOutput2ReportTest {
 
-  // KJA current work
   @Test
   @Category(UnderConstruction::class)
   fun reports() {
 
-    // KJA change the dir and ensure there is some input data in the dir
+    // KJA current work: change the dir and ensure there is some input data in the dir
     val reportInputDirReal = ConfigurationForTests().get().reportInputDirPath
-    val fsMock = ConfigurationForTests().withMockFileSystem().get()
-    val reportInputDirMock = fsMock.reportInputDirPath
-    val reportOutputDirMock = fsMock.reportOutputDirPath
+
+    val mockFs = ConfigurationForTests().withMockFileSystem().get()
+    val reportInputDirMock = mockFs.reportInputDirPath
+    val reportOutputDirMock = mockFs.reportOutputDirPath
+
     reportInputDirReal.copyDirContentsRecursivelyToDirInDifferentFileSystem(reportInputDirMock)
-    val out = OutputDir(reportInputDirMock).readOutput()
+
+    val out = OutputDir(reportInputDirMock).read()
+
     check(out.isNotEmpty())
 
     Jimfs.newFileSystem(Configuration.unix())
