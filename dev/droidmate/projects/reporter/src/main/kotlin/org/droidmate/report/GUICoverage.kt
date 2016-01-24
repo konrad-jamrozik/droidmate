@@ -23,7 +23,7 @@ class GUICoverage(val data: IApkExplorationOutput2) {
     val timeRange = 0.rangeTo(data.explorationTimeInMs).step(1000)
 
     val rows: List<Triple<Int, Int, Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
-      Triple(tickIndex, timePassed, uniqueWidgetCountByTime[timePassed]!!)
+      Triple(tickIndex, timePassed/1000, uniqueWidgetCountByTime[timePassed]!!)
     }
 
     // KJA extract "make table from (column headers, rows represented by triplets)
