@@ -42,8 +42,11 @@ class ConfigurationForTests
 
   ConfigurationForTests()
   {
-    this.argsList = zeroedTestConfig + [Configuration.pn_droidmateOutputDir, Paths.get(".",InitConstants.test_temp_dir_name).toString(),
-                                        Configuration.pn_reportInputDir, Paths.get(".",InitConstants.test_temp_dir_name).toString()]
+    this.argsList = zeroedTestConfig + [
+      Configuration.pn_droidmateOutputDir, Paths.get(".", InitConstants.test_temp_dir_name).toString(),
+      Configuration.pn_reportInputDir, Paths.get(".", InitConstants.test_temp_dir_name).toString(),
+      Configuration.pn_reportOutputDir, Paths.get(".", InitConstants.test_temp_dir_name).toString()
+    ]
   }
 
   public Configuration get()

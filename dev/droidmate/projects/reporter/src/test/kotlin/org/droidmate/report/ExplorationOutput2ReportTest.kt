@@ -16,13 +16,15 @@ class ExplorationOutput2ReportTest {
 
     // KJA change the dir and ensure there is some input data in the dir
     val reportInputDirReal = ConfigurationForTests().get().reportInputDirPath
-    val reportInputDirMock = ConfigurationForTests().withMockFileSystem().get().reportInputDirPath
+    val fsMock = ConfigurationForTests().withMockFileSystem().get()
+    val reportInputDirMock = fsMock.reportInputDirPath
+    val reportOutputDirMock = fsMock.reportOutputDirPath
     reportInputDirReal.copyDirContentsRecursivelyToDirInDifferentFileSystem(reportInputDirMock)
-    val out = ReportDir(reportInputDirMock).readOutput()
+    val out = OutputDir(reportInputDirMock).readOutput()
     check(out.isNotEmpty())
 
     Jimfs.newFileSystem(Configuration.unix())
-    val report = ExplorationOutput2Report(out, reportInputDirMock)
+    val report = ExplorationOutput2Report(out, reportOutputDirMock)
 
     // Act
     report.writeOut()
