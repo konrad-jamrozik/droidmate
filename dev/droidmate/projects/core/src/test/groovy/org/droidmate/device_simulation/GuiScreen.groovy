@@ -27,7 +27,7 @@ class GuiScreen implements IGuiScreen
   public static final String              idChrome                = "chrome"
   public static final Set<String>         reservedIds             = [idHome, idChrome]
   public static final Map<String, String> reservedIdsPackageNames = [
-    (idHome)  : GuiState.package_android_launcher,
+    (idHome)  : GuiState.package_android_launcher_nexus7,
     (idChrome): "com.android.chrome"
   ]
 

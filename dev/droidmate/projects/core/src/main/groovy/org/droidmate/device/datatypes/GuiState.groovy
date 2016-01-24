@@ -13,14 +13,23 @@ import groovy.transform.Canonical
 import org.droidmate.common.TextUtilsCategory
 import org.droidmate.common.exploration.datatypes.Widget
 
+// WISH Borges this class has to be adapted to work with other devices, e.g. Samsung Galaxy S III
+// DroidMate should ask uiautomator-daemon for the the device model (see http://stackoverflow.com/questions/6579968/how-can-i-get-the-device-name-in-android)
+// Probably the data should be obtained in a similar manner as in org.droidmate.device.MonitorsClient.isServerReachable
+// but instead the uiautomator-daemon should be asked, and the call probably should be made during
+// org.droidmate.tools.AndroidDeviceDeployer.trySetUp to then keep the obtained info inside the RobustDevice instance.
+//
+// Note that isHomeScreen is already adapted.
 @Canonical(excludes = "id")
 class GuiState implements Serializable, IGuiState
 {
 
   private static final long serialVersionUID = 1
 
-  public static final  String package_android_launcher                     = "com.android.launcher"
-  private static final String PACKAGE_ANDROID                              = "android"
+  public static final  String package_android_launcher_nexus7            = "com.android.launcher"
+  public static final  String package_android_launcher_samsung_galaxy_s3 = "com.sec.android.app.launcher"
+  private static final String package_android                            = "android"
+
 
   final String       topNodePackageName
   final List<Widget> widgets
@@ -76,28 +85,25 @@ class GuiState implements Serializable, IGuiState
   @Override
   boolean isHomeScreen()
   {
-    // WISH DroidMate should ask uiautomator-daemon for the the device model (see http://stackoverflow.com/questions/6579968/how-can-i-get-the-device-name-in-android)
-    // Probably the data should be obtained in a similar manner as in org.droidmate.device.MonitorsClient.isServerReachable
-    // but instead the uiautomator-daemon should be asked, and the call probably should be made during
-    // org.droidmate.tools.AndroidDeviceDeployer.trySetUp to then keep the obtained info inside the RobustDevice instance.
+
     return isNexus7HomeScreen() || isSamsungGalaxyS3HomeScreen()
   }
 
   private boolean isNexus7HomeScreen()
   {
-    return this.topNodePackageName == package_android_launcher && !this.widgets.any {it.text == "Widgets"}
+    return this.topNodePackageName == package_android_launcher_nexus7 && !this.widgets.any {it.text == "Widgets"}
   }
 
   private boolean isSamsungGalaxyS3HomeScreen()
   {
 
-    return this.topNodePackageName == "com.sec.android.app.launcher" && !this.widgets.any {it.text == "Widgets"}
+    return this.topNodePackageName == package_android_launcher_samsung_galaxy_s3 && !this.widgets.any {it.text == "Widgets"}
   }
 
   @Override
   boolean isAppHasStoppedDialogBox()
   {
-    return topNodePackageName == PACKAGE_ANDROID &&
+    return topNodePackageName == package_android &&
       widgets.any {it.text == "OK"} &&
       !widgets.any {it.text == "Just once"}
   }
@@ -105,14 +111,14 @@ class GuiState implements Serializable, IGuiState
   @Override
   boolean isCompleteActionUsingDialogBox()
   {
-    return !isSelectAHomeAppDialogBox() && topNodePackageName == PACKAGE_ANDROID &&
+    return !isSelectAHomeAppDialogBox() && topNodePackageName == package_android &&
       widgets.any {it.text == "Just once"}
   }
 
   @Override
   boolean isSelectAHomeAppDialogBox()
   {
-    return topNodePackageName == PACKAGE_ANDROID &&
+    return topNodePackageName == package_android &&
       widgets.any {it.text == "Just once"} && widgets.any {it.text == "Select a home app"}
   }
 
