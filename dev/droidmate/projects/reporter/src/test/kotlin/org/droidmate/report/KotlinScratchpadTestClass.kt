@@ -12,16 +12,11 @@ import org.junit.Test
 
 class KotlinScratchpadTestClass {
 
-  val p1 by lazy {
-    println("inside p1")
-  }
 
   @Test
   fun KotlinScratchpadTest() {
 
-    println("start")
-    p1
-    println("end")
+    println(1299.zeroDigits(2))
   }
 }
 

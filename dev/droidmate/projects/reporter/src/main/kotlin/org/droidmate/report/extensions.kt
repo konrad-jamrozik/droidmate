@@ -14,6 +14,8 @@ import org.codehaus.groovy.runtime.NioGroovyMethods
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.lang.Math.max
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -89,7 +91,7 @@ fun <T> Collection<Pair<Int, T>>.maxValueAtPartition(
   extractMax: (T) -> Int
 ): Collection<Pair<Int, Int>> {
 
-  require(maxPartition % partitionSize == 0)
+  require(maxPartition % partitionSize == 0, { "maxPartition: $maxPartition partitionSize: $partitionSize" })
   require(this.all { it.first % partitionSize == 0 })
 
   return if (this.isEmpty())
@@ -106,4 +108,7 @@ fun <T> Collection<Pair<Int, T>>.maxValueAtPartition(
   }
 }
 
-
+// Reference: http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+fun Int.zeroDigits(digitsToZero: Int) : Int {
+  return BigDecimal(toString()).setScale(-digitsToZero, RoundingMode.DOWN).toBigInteger().toInt()
+}
