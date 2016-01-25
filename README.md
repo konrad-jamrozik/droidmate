@@ -162,7 +162,7 @@ Simply make a `jre/lib` directory within java home and symlink `rt.jar` within i
 
 # Working with DroidMate code base
 
-DroidMate is developed with IntelliJ IDEA, using the directory-based project format (`.idea`  directory). To work with DroidMate, IntelliJ has to be configured with all the dependencies used for daily building (e.g. JDKs) plus it has to have the following:
+DroidMate is developed with IntelliJ IDEA 16 EAP, using the directory-based project format (`.idea`  directory). To work with DroidMate, IntelliJ has to be configured with all the dependencies used for daily building (e.g. JDKs) plus it has to have the following:
 
 * Gradle plugin.
 * Android Support plugin.
