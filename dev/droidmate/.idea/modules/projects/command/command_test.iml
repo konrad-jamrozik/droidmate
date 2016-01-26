@@ -99,6 +99,7 @@
     </orderEntry>
     <orderEntry type="module" module-name="core_main" />
     <orderEntry type="module" module-name="reporter_main" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-test:1.0.0-beta-4589" level="project" />
     <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="lib_common_main" />
     <orderEntry type="module" module-name="lib_common_android_main" />
