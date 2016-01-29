@@ -10,6 +10,7 @@
 package org.droidmate.device.datatypes
 
 import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.configuration.device.DeviceConfigurationFactory
 
 import static WidgetTestHelper.newTopLevelWidget
 import static org.droidmate.device.datatypes.UiautomatorWindowDumpTestHelper.*
@@ -20,12 +21,12 @@ class GuiStateTestHelper
 
   public static GuiState newEmptyGuiState(String appPackageName = apkFixture_simple_packageName, String id = null)
   {
-    return new GuiState(appPackageName, id, [] as List<Widget>)
+    return new GuiState(appPackageName, id, [] as List<Widget>, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration())
   }
 
   public static GuiState newGuiStateWithTopLevelNodeOnly(String appPackageName = apkFixture_simple_packageName, String id = null)
   {
-    return new GuiState(appPackageName, id, [newTopLevelWidget(appPackageName)] as List<Widget>)
+    return new GuiState(appPackageName, id, [newTopLevelWidget(appPackageName)] as List<Widget>, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration())
   }
 
 
@@ -52,7 +53,8 @@ class GuiStateTestHelper
         idsList    : widgetIds,
         enabledList: [enabled] * widgetCount
       ],
-      /* widgetIdPrefix */ guiStateId ?: getNextGuiStateName()))
+      /* widgetIdPrefix */ guiStateId ?: getNextGuiStateName()),
+      new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration())
     assert gs.widgets.every {it.packageName == gs.topNodePackageName}
     return gs
   }

@@ -184,7 +184,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
 
     def gs = new GuiState(topNodePackage, id, widgets, this.deviceConfiguration)
     if (gs.isAppHasStoppedDialogBox())
-      return new AppHasStoppedDialogBoxGuiState(topNodePackage, widgets)
+      return new AppHasStoppedDialogBoxGuiState(topNodePackage, widgets, this.deviceConfiguration)
     else
       return gs
   }

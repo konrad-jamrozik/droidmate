@@ -16,4 +16,5 @@ import org.droidmate.device.datatypes.GuiState
 public interface IDeviceSpecificConfiguration extends Serializable
 {
   boolean isHomeScreen(GuiState guiState)
+  String getPackageAndroidLauncher()
 }

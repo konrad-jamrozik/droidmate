@@ -16,7 +16,7 @@ import org.droidmate.device.datatypes.GuiState
  */
 public class Nexus7Configuration implements IDeviceSpecificConfiguration
 {
-  private static final  String package_android_launcher = "com.android.launcher"
+  public static final String package_android_launcher = "com.android.launcher"
 
   @Override
   boolean isHomeScreen(GuiState guiState)
@@ -24,5 +24,11 @@ public class Nexus7Configuration implements IDeviceSpecificConfiguration
     String topNodePackageName = guiState.getTopNodePackageName()
     List<Widget> widgets = guiState.getWidgets()
     return topNodePackageName == package_android_launcher && !widgets.any {it.text == "Widgets"}
+  }
+
+  @Override
+  String getPackageAndroidLauncher()
+  {
+    return packageAndroidLauncher;
   }
 }

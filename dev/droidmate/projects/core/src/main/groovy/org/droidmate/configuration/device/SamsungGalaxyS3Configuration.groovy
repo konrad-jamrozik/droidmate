@@ -16,7 +16,7 @@ import org.droidmate.device.datatypes.GuiState
  */
 class SamsungGalaxyS3Configuration implements IDeviceSpecificConfiguration
 {
-  private static final  String package_android_launcher = "com.sec.android.app.launcher"
+  public static final String package_android_launcher = "com.sec.android.app.launcher"
 
   @Override
   boolean isHomeScreen(GuiState guiState)
@@ -24,5 +24,11 @@ class SamsungGalaxyS3Configuration implements IDeviceSpecificConfiguration
     String topNodePackageName = guiState.getTopNodePackageName()
     List<Widget> widgets = guiState.getWidgets()
     return topNodePackageName == package_android_launcher && !widgets.any {it.text == "Widgets"}
+  }
+
+  @Override
+  String getPackageAndroidLauncher()
+  {
+    return packageAndroidLauncher;
   }
 }
