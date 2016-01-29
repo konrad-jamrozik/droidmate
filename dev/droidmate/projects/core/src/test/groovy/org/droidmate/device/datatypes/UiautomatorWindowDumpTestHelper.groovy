@@ -11,6 +11,7 @@ package org.droidmate.device.datatypes
 
 import groovy.transform.TypeChecked
 import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.configuration.device.DeviceConfigurationFactory
 import org.droidmate.configuration.device.Nexus7Configuration
 
 import java.awt.*
@@ -29,45 +30,45 @@ class UiautomatorWindowDumpTestHelper
 
   public static UiautomatorWindowDump newNullWindowDump()
   {
-    return new UiautomatorWindowDump(null, deviceDimensionsForTesting_Nexus7y2012vert)
+    return new UiautomatorWindowDump(null, deviceDimensionsForTesting_Nexus7y2012vert, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration())
   }
 
   public static UiautomatorWindowDump newEmptyWindowDump()
   {
-    return new UiautomatorWindowDump("", deviceDimensionsForTesting_Nexus7y2012vert)
+    return new UiautomatorWindowDump("", deviceDimensionsForTesting_Nexus7y2012vert, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration())
   }
 
   public static UiautomatorWindowDump newEmptyActivityWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_tsa_emptyAct, deviceDimensionsForTesting_Nexus7y2012vert, new Nexus7Configuration())
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_tsa_emptyAct, deviceDimensionsForTesting_Nexus7y2012vert, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration())
   }
 
   public static UiautomatorWindowDump newAppHasStoppedDialogWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_dialogbox, deviceDimensionsForTesting_Nexus7y2012vert, new Nexus7Configuration())
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_dialogbox, deviceDimensionsForTesting_Nexus7y2012vert, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration())
   }
 
   public static UiautomatorWindowDump newAppHasStoppedDialogOKDisabledWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_OK_disabled, deviceDimensionsForTesting_Nexus7y2012vert, new Nexus7Configuration())
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_OK_disabled, deviceDimensionsForTesting_Nexus7y2012vert, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration())
   }
 
 
   public static UiautomatorWindowDump newCompleteActionUsingWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_complActUsing_dialogbox, deviceDimensionsForTesting_Nexus7y2012vert, new Nexus7Configuration())
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_complActUsing_dialogbox, deviceDimensionsForTesting_Nexus7y2012vert, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration())
   }
 
 
   public static UiautomatorWindowDump newHomeScreenWindowDump(String id = null)
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_nexus7_home_screen, deviceDimensionsForTesting_Nexus7y2012vert, new Nexus7Configuration(), id)
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_nexus7_home_screen, deviceDimensionsForTesting_Nexus7y2012vert, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration(), id)
   }
 
 
   public static UiautomatorWindowDump newAppOutOfScopeWindowDump(String id = null)
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_chrome_offline, deviceDimensionsForTesting_Nexus7y2012vert, id)
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_chrome_offline, deviceDimensionsForTesting_Nexus7y2012vert, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration(), id)
   }
 
   //endregion Fixture dumps
@@ -75,7 +76,7 @@ class UiautomatorWindowDumpTestHelper
 
   public static UiautomatorWindowDump newWindowDump(String windowHierarchyDump)
   {
-    return new UiautomatorWindowDump(windowHierarchyDump, new Nexus7Configuration(), deviceDimensionsForTesting_Nexus7y2012vert)
+    return new UiautomatorWindowDump(windowHierarchyDump, new Nexus7Configuration(), deviceDimensionsForTesting_Nexus7y2012vert, new DeviceConfigurationFactory(org.droidmate.common_android.Constants.DEVICE_DEFAULT).getConfiguration())
   }
 
 

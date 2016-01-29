@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.configuration.device
 
+import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
 
 /**
@@ -30,13 +31,13 @@ class DeviceConfigurationFactory implements IDeviceConfigurationFactory
     // WISH Borges replace for constant
     switch (this.deviceModel)
     {
-      case "google-Nexus7": //DEVICE_GOOGLE_NEXUS_7:
+      case Constants.DEVICE_GOOGLE_NEXUS_7:
         result = new Nexus7Configuration()
         break
-      case "samsung-GT-I9300": //DEVICE_SAMSUNG_GALAXY_S3_GT_I9300:
+      case Constants.DEVICE_SAMSUNG_GALAXY_S3_GT_I9300:
         result = new SamsungGalaxyS3Configuration()
         break
-      case "default":
+      case Constants.DEVICE_DEFAULT:
         result = new Nexus7Configuration()
         break
       default:
