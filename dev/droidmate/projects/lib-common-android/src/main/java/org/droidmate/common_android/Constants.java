@@ -25,6 +25,8 @@ public class Constants
 
   // End of DUPLICATION WARNING
 
+  public static final String SAMSUNG_GALAXY_S3_GT_I9300 = "samsung-GT-I9300";
+
   public static final String UIADAEMON_SERVER_START_TAG = "uiautomator-daemon_server_start_tag";
   public static final String UIADAEMON_SERVER_START_MSG = "UiAutomator Daemon server started successfully";
 
@@ -32,6 +34,7 @@ public class Constants
   public static final String DEVICE_COMMAND_GET_IS_ORIENTATION_LANDSCAPE          = "get_is_orientation_landscape";
   public static final String DEVICE_COMMAND_PERFORM_ACTION                        = "perform_action";
   public static final String DEVICE_COMMAND_STOP_UIADAEMON                        = "stop_uiadaemon";
+  public static final String DEVICE_COMMAND_GET_DEVICE_MODEL                      = "get_device_model";
 
   /**
    * Method name to be called when initializing {@code UiAutomatorDaemon} through adb.<br/>

@@ -40,4 +40,6 @@ public interface IDeployableAndroidDevice
   void removeLogcatLogFile() throws DeviceException
 
   void pullLogcatLogFile() throws DeviceException
+
+  String getDeviceModel() throws DeviceException
 }

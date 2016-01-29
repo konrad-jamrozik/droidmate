@@ -70,7 +70,33 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     if (deviceCommand.command.equals(DEVICE_COMMAND_PERFORM_ACTION))
       return performAction(deviceCommand);
 
+    if (deviceCommand.command.equals(DEVICE_COMMAND_GET_DEVICE_MODEL))
+      return getDeviceModel();
+
     throw new UiAutomatorDaemonException(String.format("The command %s is not implemented yet!", deviceCommand.command));
+  }
+
+  private DeviceResponse getDeviceModel()
+  {
+    Log.d(uiaDaemon_logcatTag, "Getting 'DeviceModel'");
+    String model = android.os.Build.MODEL;
+    String manufacturer = Build.MANUFACTURER;
+    DeviceResponse deviceResponse = new DeviceResponse();
+    deviceResponse.model = manufacturer + "-" + model;
+    return deviceResponse;
+  }
+
+  private String getsWifiSwitchWidgetName()
+  {
+    String deviceModel = this.getDeviceModel().model;
+
+    String switchWidgetName;
+    if (deviceModel.equals(SAMSUNG_GALAXY_S3_GT_I9300))
+      switchWidgetName = "android:id/switchWidget";
+    else
+      switchWidgetName = "com.android.settings:id/switchWidget";
+
+    return switchWidgetName;
   }
 
   private DeviceResponse getIsNaturalOrientation()
@@ -207,7 +233,8 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       // WISH Borges this doesn't work on Samsung Galaxy S III. Consider using droidmate/dev/droidmate/scripts/vis_dump_gui.sh
       // to investigate the screen what actually has to be clicked and adapt the code. The code should make only one attempt,
       // which should be deduced from android.os.Build.MODEL. See also comment in org.droidmate.device.datatypes.GuiState
-      UiObject wifiSwitch = new UiObject(new UiSelector().resourceId("com.android.settings:id/switchWidget"));
+      String switchWidgetName = this.getsWifiSwitchWidgetName();
+      UiObject wifiSwitch = new UiObject(new UiSelector().resourceId(switchWidgetName));
       if (wifiSwitch.getText().equals("OFF"))
       {
         Log.i(uiaDaemon_logcatTag, "Turning wifi on.");

@@ -280,6 +280,11 @@ public class AndroidDeviceSimulator implements IAndroidDevice
     return []
   }
 
+  String getDeviceModel() throws DeviceException
+  {
+    return "Simulation using: " + this.class.name
+  }
+
   public static AndroidDeviceSimulator build(
     ITimeGenerator timeGenerator = new TimeGenerator(),
     List<String> pkgNames,

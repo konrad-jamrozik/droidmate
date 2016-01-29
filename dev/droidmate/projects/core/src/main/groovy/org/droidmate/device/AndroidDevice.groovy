@@ -57,6 +57,7 @@ public class AndroidDevice implements IAndroidDevice
   private final Configuration cfg
   private final IAdbWrapper   adbWrapper
   private final ITcpClients   tcpClients
+  private       String        deviceModel
 
   AndroidDevice(
     String serialNumber,
@@ -374,7 +375,8 @@ public class AndroidDevice implements IAndroidDevice
       DEVICE_COMMAND_PERFORM_ACTION,
       DEVICE_COMMAND_STOP_UIADAEMON,
       DEVICE_COMMAND_GET_UIAUTOMATOR_WINDOW_HIERARCHY_DUMP,
-      DEVICE_COMMAND_GET_IS_ORIENTATION_LANDSCAPE
+      DEVICE_COMMAND_GET_IS_ORIENTATION_LANDSCAPE,
+      DEVICE_COMMAND_GET_DEVICE_MODEL
     ]
   }
 
@@ -388,6 +390,19 @@ public class AndroidDevice implements IAndroidDevice
   void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
   {
     this.perform(newLaunchAppDeviceAction(iconLabel))
+  }
+
+  @Override
+  String getDeviceModel() throws DeviceException
+  {
+    if (this.deviceModel == null)
+    {
+      DeviceResponse response = this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
+      assert response.model != null
+
+      this.deviceModel = response.model
+    }
+    return this.deviceModel
   }
 
   @Override
