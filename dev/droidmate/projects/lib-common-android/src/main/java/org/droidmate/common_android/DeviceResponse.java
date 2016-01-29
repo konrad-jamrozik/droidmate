@@ -16,4 +16,6 @@ public class DeviceResponse implements Serializable {
   public Throwable throwable;
 
   public boolean isNaturalOrientation;
+
+  public String model;
 }
