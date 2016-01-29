@@ -18,7 +18,7 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="apk_inliner_main" target="1.8" />
       <module name="apk_inliner_test" target="1.8" />
       <module name="command_main" target="1.8" />

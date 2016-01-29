@@ -12,6 +12,8 @@ import com.google.common.collect.ImmutableTable
 import com.google.common.collect.Table
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
+import kotlin.comparisons.compareBy
+import kotlin.comparisons.naturalOrder
 
 class GUICoverage(val data: IApkExplorationOutput2) {
 
@@ -41,7 +43,7 @@ class GUICoverage(val data: IApkExplorationOutput2) {
 
     return ImmutableTable
       .Builder<Int, String, Int>()
-      .orderColumnsBy(compareBy {
+      .orderColumnsBy(compareBy<String?> {
         when (it) {
           headerTime -> 0
           headerViewsSeen -> 1

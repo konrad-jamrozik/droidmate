@@ -49,7 +49,7 @@ fun <T, TItem> Iterable<T>.uniqueCountAtTime(
 )
   : Map<Int, Int> {
 
-  val timedItems: Map<Int, Iterable<TItem>> = this.toMap { Pair(extractTime(it), extractItems(it)) }
+  val timedItems: Map<Int, Iterable<TItem>> = this.associate { Pair(extractTime(it), extractItems(it)) }
 
   val uniqueItemsAcc: MutableSet<String> = hashSetOf()
 
@@ -74,13 +74,13 @@ fun <T> Map<Int, T>.multiPartition(partitionSize: Int): Collection<Pair<Int, Lis
 
       val currentPartition = remainder.partition { it.first <= currentPartitionValue }
       val current: List<Pair<Int, T>> = currentPartition.first
-      val currentValues: List<T> = current.fold<Pair<Int, T>, MutableList<T>>(linkedListOf(), { out, pair -> out.add(pair.second); out })
+      val currentValues: List<T> = current.fold<Pair<Int, T>, MutableList<T>>(mutableListOf(), { out, pair -> out.add(pair.second); out })
 
       return _multiPartition(acc.plus(Pair(currentPartitionValue, currentValues)), currentPartition.second, partitionSize, currentPartitionValue + partitionSize)
     }
   }
 
-  return _multiPartition(linkedListOf(Pair(0, emptyList<T>())), this.toList(), partitionSize, partitionSize)
+  return _multiPartition(mutableListOf(Pair(0, emptyList<T>())), this.toList(), partitionSize, partitionSize)
 }
 
 fun <T> Collection<Pair<Int, T>>.maxValueAtPartition(
