@@ -18,6 +18,8 @@ import org.droidmate.common_android.DeviceCommand
 import org.droidmate.common_android.DeviceResponse
 import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse
 import org.droidmate.configuration.Configuration
+import org.droidmate.configuration.device.DeviceConfigurationFactory
+import org.droidmate.configuration.device.IDeviceSpecificConfiguration
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
@@ -100,9 +102,12 @@ public class AndroidDevice implements IAndroidDevice
     def response = this.issueCommand(
       new DeviceCommand(DEVICE_COMMAND_GET_UIAUTOMATOR_WINDOW_HIERARCHY_DUMP)) as UiautomatorWindowHierarchyDumpDeviceResponse
 
+    IDeviceSpecificConfiguration deviceSpecificConfiguration = new DeviceConfigurationFactory(this.getDeviceModel()).getConfiguration()
     def outSnapshot = new UiautomatorWindowDump(
       response.windowHierarchyDump,
-      new Dimension(response.displayWidth, response.displayHeight))
+      new Dimension(response.displayWidth, response.displayHeight),
+      deviceSpecificConfiguration
+    )
 
     log.debug("getGuiSnapshot(): $outSnapshot")
     return outSnapshot

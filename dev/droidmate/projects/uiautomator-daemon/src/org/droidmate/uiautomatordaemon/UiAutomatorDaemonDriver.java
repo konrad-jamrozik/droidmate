@@ -91,7 +91,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     String deviceModel = this.getDeviceModel().model;
 
     String switchWidgetName;
-    if (deviceModel.equals(SAMSUNG_GALAXY_S3_GT_I9300))
+    if (deviceModel.equals(DEVICE_SAMSUNG_GALAXY_S3_GT_I9300))
       switchWidgetName = "android:id/switchWidget";
     else
       switchWidgetName = "com.android.settings:id/switchWidget";

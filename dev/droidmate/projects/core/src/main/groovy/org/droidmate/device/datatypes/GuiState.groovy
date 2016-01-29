@@ -12,6 +12,7 @@ package org.droidmate.device.datatypes
 import groovy.transform.Canonical
 import org.droidmate.common.TextUtilsCategory
 import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.configuration.device.IDeviceSpecificConfiguration
 
 // WISH Borges this class has to be adapted to work with other devices, e.g. Samsung Galaxy S III
 // DroidMate should ask uiautomator-daemon for the the device model
@@ -28,9 +29,9 @@ class GuiState implements Serializable, IGuiState
 
   private static final long serialVersionUID = 1
 
-  public static final  String package_android_launcher_nexus7            = "com.android.launcher"
-  public static final  String package_android_launcher_samsung_galaxy_s3 = "com.sec.android.app.launcher"
   private static final String package_android                            = "android"
+
+  private final IDeviceSpecificConfiguration deviceConfiguration
 
 
   final String       topNodePackageName
@@ -40,27 +41,29 @@ class GuiState implements Serializable, IGuiState
    * representation. */
   final String id
 
-
-  GuiState(String topNodePackageName, List<Widget> widgets)
+  GuiState(String topNodePackageName, List<Widget> widgets, IDeviceSpecificConfiguration deviceConfiguration)
   {
-    this(topNodePackageName, null, widgets)
+    this(topNodePackageName, null, widgets, deviceConfiguration)
   }
 
-  GuiState(String topNodePackageName, String id, List<Widget> widgets)
+  GuiState(String topNodePackageName, String id, List<Widget> widgets, IDeviceSpecificConfiguration deviceConfiguration)
   {
     this.topNodePackageName = topNodePackageName
     this.widgets = widgets
     this.id = id
+    this.deviceConfiguration = deviceConfiguration
 
+    assert this.deviceConfiguration != null
     assert !this.topNodePackageName?.empty
     assert widgets != null
   }
 
-  GuiState(IGuiState guiState, String id)
+  GuiState(IGuiState guiState, String id, IDeviceSpecificConfiguration deviceConfiguration)
   {
     this.topNodePackageName = guiState.topNodePackageName
     this.widgets = guiState.widgets
     this.id = id
+    this.deviceConfiguration = deviceConfiguration
   }
 
 
@@ -87,19 +90,7 @@ class GuiState implements Serializable, IGuiState
   @Override
   boolean isHomeScreen()
   {
-
-    return isNexus7HomeScreen() || isSamsungGalaxyS3HomeScreen()
-  }
-
-  private boolean isNexus7HomeScreen()
-  {
-    return this.topNodePackageName == package_android_launcher_nexus7 && !this.widgets.any {it.text == "Widgets"}
-  }
-
-  private boolean isSamsungGalaxyS3HomeScreen()
-  {
-
-    return this.topNodePackageName == package_android_launcher_samsung_galaxy_s3 && !this.widgets.any {it.text == "Widgets"}
+    return this.deviceConfiguration.isHomeScreen(this)
   }
 
   @Override
