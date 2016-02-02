@@ -431,4 +431,10 @@ class RobustDevice implements IRobustDevice
     return "robust-" + this.device.toString()
   }
 
+  @Override
+  void initModel() throws DeviceException
+  {
+    this.device.initModel()
+    //rebootIfNecessary {this.device.initModel()}
+  }
 }

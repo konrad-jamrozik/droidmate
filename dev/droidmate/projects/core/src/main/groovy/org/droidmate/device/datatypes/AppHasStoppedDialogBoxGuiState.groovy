@@ -11,16 +11,16 @@ package org.droidmate.device.datatypes
 
 import groovy.transform.Canonical
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.configuration.device.IDeviceSpecificConfiguration
+import org.droidmate.configuration.model.IDeviceModel
 
 @Canonical
 class AppHasStoppedDialogBoxGuiState extends GuiState implements Serializable
 {
   private static final long serialVersionUID = 1
 
-  AppHasStoppedDialogBoxGuiState(String topNodePackageName, List<Widget> widgets, IDeviceSpecificConfiguration deviceConfiguration)
+  AppHasStoppedDialogBoxGuiState(String topNodePackageName, List<Widget> widgets, IDeviceModel deviceModel)
   {
-    super(topNodePackageName, widgets, deviceConfiguration)
+    super(topNodePackageName, widgets, deviceModel)
   }
 
   Widget getOKWidget() {

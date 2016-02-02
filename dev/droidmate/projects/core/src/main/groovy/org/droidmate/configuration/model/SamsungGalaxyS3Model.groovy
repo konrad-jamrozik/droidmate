@@ -6,15 +6,19 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.configuration.device
+package org.droidmate.configuration.model
 
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.datatypes.GuiState
 
 /**
- * Created by Nataniel Borges Jr. on 26/01/2016.
+ * Provides device specific methods for a Samsung Galaxy S3 GT-I9300 using Factory Method Pattern
+ * {@link http://www.dofactory.com/net/factory-method-design-pattern}. <br/>
+ * Role: ConcreteProduct
+ *
+ * @author Nataniel Borges Jr.
  */
-class SamsungGalaxyS3Configuration implements IDeviceSpecificConfiguration
+class SamsungGalaxyS3Model extends AbstractDeviceModel
 {
   public static final String package_android_launcher = "com.sec.android.app.launcher"
 

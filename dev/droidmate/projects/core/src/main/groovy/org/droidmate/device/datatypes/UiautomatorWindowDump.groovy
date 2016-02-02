@@ -16,7 +16,7 @@ import groovy.util.slurpersupport.GPathResult
 import org.droidmate.common.exceptions.InvalidWidgetBoundsException
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logging.LogbackConstants
-import org.droidmate.configuration.device.IDeviceSpecificConfiguration
+import org.droidmate.configuration.model.IDeviceModel
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 
 import java.awt.*
@@ -68,9 +68,9 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   final         Rectangle      deviceDisplayBounds
   private final WellFormedness wellFormedness
 
-  private final IGuiState                    guiState
-  final         ValidationResult             validationResult
-  private final IDeviceSpecificConfiguration deviceConfiguration
+  private final IGuiState        guiState
+  final         ValidationResult validationResult
+  private final IDeviceModel     deviceConfiguration
 
   /** Id is used only for tests, for:
    * - easy determination by human which widget is which when looking at widget string representation
@@ -79,7 +79,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   String id = null
 
 
-  UiautomatorWindowDump(String windowHierarchyDump, Dimension displayDimensions, IDeviceSpecificConfiguration deviceConfiguration, String id = null)
+  UiautomatorWindowDump(String windowHierarchyDump, Dimension displayDimensions, IDeviceModel deviceConfiguration, String id = null)
   {
     this.id = id
     this.windowHierarchyDump = windowHierarchyDump

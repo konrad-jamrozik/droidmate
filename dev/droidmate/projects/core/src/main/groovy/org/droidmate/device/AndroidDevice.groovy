@@ -18,8 +18,8 @@ import org.droidmate.common_android.DeviceCommand
 import org.droidmate.common_android.DeviceResponse
 import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse
 import org.droidmate.configuration.Configuration
-import org.droidmate.configuration.device.DeviceConfigurationFactory
-import org.droidmate.configuration.device.IDeviceSpecificConfiguration
+import org.droidmate.configuration.model.DeviceModelHelper
+import org.droidmate.configuration.model.IDeviceModel
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
@@ -59,7 +59,7 @@ public class AndroidDevice implements IAndroidDevice
   private final Configuration cfg
   private final IAdbWrapper   adbWrapper
   private final ITcpClients   tcpClients
-  private       String        deviceModel
+  private       IDeviceModel  deviceModel
 
   AndroidDevice(
     String serialNumber,
@@ -102,11 +102,10 @@ public class AndroidDevice implements IAndroidDevice
     def response = this.issueCommand(
       new DeviceCommand(DEVICE_COMMAND_GET_UIAUTOMATOR_WINDOW_HIERARCHY_DUMP)) as UiautomatorWindowHierarchyDumpDeviceResponse
 
-    IDeviceSpecificConfiguration deviceSpecificConfiguration = new DeviceConfigurationFactory(this.getDeviceModel()).getConfiguration()
     def outSnapshot = new UiautomatorWindowDump(
       response.windowHierarchyDump,
       new Dimension(response.displayWidth, response.displayHeight),
-      deviceSpecificConfiguration
+      this.deviceModel
     )
 
     log.debug("getGuiSnapshot(): $outSnapshot")
@@ -150,7 +149,7 @@ public class AndroidDevice implements IAndroidDevice
    * device response, unless there were errors along the way. If there were errors, it throws an exception.
    * </p><p>
    * The issued command can be potentially handled either by aut-addon or uiautomator-daemon. This method resolves
-   * who should be the recipient and sends the command using {@link #uiautomatorClient}.
+   * who should be the recipient and sends the command using {@link TcpClients#uiautomatorClient}.
    *
    * </p><p>
    * <i>This doc was last reviewed on 14 Sep '13.</i>
@@ -398,16 +397,13 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  String getDeviceModel() throws DeviceException
+  public void initModel() throws DeviceException
   {
-    if (this.deviceModel == null)
-    {
-      DeviceResponse response = this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
-      assert response.model != null
+    DeviceResponse response = this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
+    assert response.model != null
 
-      this.deviceModel = response.model
-    }
-    return this.deviceModel
+    this.deviceModel = DeviceModelHelper.build(response.model)
+    assert this.deviceModel != null
   }
 
   @Override

@@ -230,9 +230,6 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
     try
     {
-      // WISH Borges this doesn't work on Samsung Galaxy S III. Consider using droidmate/dev/droidmate/scripts/vis_dump_gui.sh
-      // to investigate the screen what actually has to be clicked and adapt the code. The code should make only one attempt,
-      // which should be deduced from android.os.Build.MODEL. See also comment in org.droidmate.device.datatypes.GuiState
       String switchWidgetName = this.getsWifiSwitchWidgetName();
       UiObject wifiSwitch = new UiObject(new UiSelector().resourceId(switchWidgetName));
       if (wifiSwitch.getText().equals("OFF"))

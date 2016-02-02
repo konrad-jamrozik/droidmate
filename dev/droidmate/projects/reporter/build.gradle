@@ -14,9 +14,11 @@
 buildscript {
   repositories {
     mavenCentral()
+    maven {url "https://dl.bintray.com/kotlin/kotlin-eap/"}
+    'https://dl.bintray.com/kotlin/kotlin-eap/'
   }
   dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0-beta-4584'
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0-rc-1017'
   }
 }
 
@@ -26,7 +28,7 @@ apply plugin: "kotlin"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
-sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath + project(":projects:core").sourceSets.test.runtimeClasspath
+sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
 
 /*
  This project uses test artifacts of core project.
@@ -39,14 +41,14 @@ dependencies {
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
   testCompile 'org.hamcrest:hamcrest-core:1.3'
-  testCompile 'org.jetbrains.kotlin:kotlin-test:1.0.0-beta-4589'
-  testCompile 'org.jetbrains.kotlin:kotlin-test-junit:1.0.0-beta-4589'
+  testCompile 'org.jetbrains.kotlin:kotlin-test:1.0.0-rc-1017'
+  testCompile 'org.jetbrains.kotlin:kotlin-test-junit:1.0.0-rc-1017'
   testCompile project(":projects:core").sourceSets.test.output
 
   compile project(":projects:core")
-  compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0-beta-4589'
 
 
+  compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0-rc-1017'
 }
 
 

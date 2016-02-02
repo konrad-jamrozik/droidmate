@@ -41,5 +41,5 @@ public interface IDeployableAndroidDevice
 
   void pullLogcatLogFile() throws DeviceException
 
-  String getDeviceModel() throws DeviceException
+  void initModel() throws DeviceException
 }

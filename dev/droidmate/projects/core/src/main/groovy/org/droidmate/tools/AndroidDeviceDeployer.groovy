@@ -76,6 +76,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     device.pushJar(this.cfg.uiautomatorDaemonJar)
     device.pushJar(this.cfg.monitorApk)
     device.setupConnection()
+    device.initModel()
 
     this.deviceIsSetup = true
   }

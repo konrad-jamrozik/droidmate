@@ -71,7 +71,7 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 // With this line added, the URL ultimately used will be:
 //
 //   file:/(...)droidmate/dev/droidmate/projects/core/build/resources/main/appguard_apis.txt
-sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath + project(":projects:core").sourceSets.test.runtimeClasspath
+sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
 
 dependencies {
 
@@ -84,7 +84,7 @@ dependencies {
   // Workaround for: 'gradlew :p:command:test' fails when reporter tests are run from command.
   // It works when run from IntelliJ or when run with 'gradlew :p:reporter:test'
   // This is possibly fixed by https://github.com/JetBrains/kotlin/commit/dbc2299cf20686aa6e747241030ac2047e5735fb
-  testCompile 'org.jetbrains.kotlin:kotlin-test:1.0.0-beta-4589'
+  testCompile 'org.jetbrains.kotlin:kotlin-test:1.0.0-rc-1017'
 
   compile project(":projects:core")
   compile project(":projects:reporter")
