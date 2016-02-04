@@ -12,13 +12,8 @@ package org.droidmate.exploration.strategy
 import com.google.common.base.Ticker
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
-<<<<<<< HEAD
 import org.droidmate.common.logging.Markers
 import org.droidmate.common.exploration.datatypes.Widget
-=======
-import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.common.logging.Markers
->>>>>>> abb53f9448aec0d7f1ea6e7e71b3626e53b304ae
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device.datatypes.IGuiState
