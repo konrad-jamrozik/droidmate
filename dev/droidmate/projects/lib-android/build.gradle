@@ -32,8 +32,8 @@ dependencies {
 
   testCompile 'junit:junit:4.12'
 
-  Path androidJarFile = Paths.get(InitConstants.android_platform_dir, "android.jar")
-  assert Files.exists(androidJarFile)
+  File androidJarFile = new File(InitConstants.android_platform_dir.toString(), "android.jar")
+  assert androidJarFile.file
   compile files(androidJarFile)
 
   compile project(":projects:lib-common")

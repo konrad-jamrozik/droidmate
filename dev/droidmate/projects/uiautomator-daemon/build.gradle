@@ -38,11 +38,11 @@ dependencies {
   libsDirFileTree.setBuiltBy(['pullLibCommonAndroidJar'])
   compile libsDirFileTree
   // Required by IntelliJ; when building with Gradle, the underlying ant script knows this dependency.
-  File uiautomatorFile = new File(InitConstants.android_platform_dir, "uiautomator.jar")
+  File uiautomatorFile = new File(InitConstants.android_platform_dir.toString(), "uiautomator.jar")
   assert uiautomatorFile.file
   compile files(uiautomatorFile)
 
-  File androidJarFile = new File(InitConstants.android_platform_dir, "android.jar")
+  File androidJarFile = new File(InitConstants.android_platform_dir.toString(), "android.jar")
   assert androidJarFile.file
   compile files(androidJarFile)
 }
