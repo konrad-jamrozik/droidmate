@@ -192,7 +192,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
   private static void bindDirsAndResources(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
-    cfg.appGuardApisList = new ResourcePath(InitConstants.appGuardApisList.fileName.toString()).toFile()
+    cfg.appGuardApisList = new ResourcePath(InitConstants.appGuardApisList.fileName.toString())
 
     cfg.uiautomatorDaemonJar = new ResourcePath("uiautomator-daemon.jar")
 
@@ -239,8 +239,8 @@ class ConfigurationBuilder implements IConfigurationBuilder
   {
     config.with {
 
-      aaptCommand = FilenameUtils.concat(config.androidSdkDir.path, "build-tools/$buildToolsVersion/aapt")
-      adbCommand = FilenameUtils.concat(config.androidSdkDir.path, "platform-tools/adb")
+      aaptCommand = FilenameUtils.concat(config.androidSdkDir.toString(), "build-tools/$buildToolsVersion/aapt")
+      adbCommand = FilenameUtils.concat(config.androidSdkDir.toString(), "platform-tools/adb")
 
       if (SystemUtils.IS_OS_WINDOWS)
       {

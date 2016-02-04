@@ -40,8 +40,8 @@ public class InitConstants
   /**
    * Required by droidmate project gradle build scripts to obtain references to uiautomator.jar and android.jar.
    */
-  public static
-  final File android_platform_dir = new File(LocalInitConstants.android_sdk_dir, "platforms/android-$android_platform_version")
+
+  public static final Path android_platform_dir = Paths.get(LocalInitConstants.android_sdk_dir.toString(), "platforms/android-$android_platform_version")
 
   public static final String apks_dir = "apks"
 
@@ -53,27 +53,28 @@ public class InitConstants
   public static final File apk_fixtures_src_project_dir = new File((LocalInitConstants.droidmate_project_dir_path - "/dev/droidmate") + "/dev/apk_fixtures_src")
 
   /** This string makes an assumption that the apk inliner adds the "-inlined" suffix. */
-  public static final String monitored_inlined_apk_fixture_name = "MonitoredApkFixture-debug-inlined.apk"
+  public static
+  final String monitored_inlined_apk_fixture_name = "MonitoredApkFixture-debug-inlined.apk"
 
   public static
-  final File monitor_generator_proj_dir = new File(LocalInitConstants.droidmate_project_dir_path, "projects/monitor-generator")
+  final Path monitor_generator_proj_dir = Paths.get(LocalInitConstants.droidmate_project_dir_path, "projects/monitor-generator")
 
   public static
-  final File monitor_generator_apk_scaffolding_dir = new File(monitor_generator_proj_dir, "monitor-apk-scaffolding")
+  final Path monitor_generator_apk_scaffolding_dir = Paths.get(monitor_generator_proj_dir.toString(), "monitor-apk-scaffolding")
 
   public static final String monitor_generator_res_name_monitor_template = "monitorTemplate.txt"
 
   public static final Path monitor_generator_generated_monitor =
-    Paths.get(monitor_generator_apk_scaffolding_dir.path, "src/org/droidmate/monitor_generator/generated/Monitor.java")
+    Paths.get(monitor_generator_apk_scaffolding_dir.toString(), "src/org/droidmate/monitor_generator/generated/Monitor.java")
 
   public static final File monitor_generator_apk_scaffolding_local_properties_file =
-    new File(monitor_generator_apk_scaffolding_dir, "local.properties")
+    new File(monitor_generator_apk_scaffolding_dir.toString(), "local.properties")
 
-  public static final File uiautomator_daemon_local_properties_file =
-    new File(LocalInitConstants.droidmate_project_dir_path, "/projects/uiautomator-daemon/local.properties")
+  public static final Path uiautomator_daemon_local_properties_file =
+    Paths.get(LocalInitConstants.droidmate_project_dir_path.toString(), "/projects/uiautomator-daemon/local.properties")
 
-  public static final File apk_fixtures_src_local_properties_file =
-    new File(apk_fixtures_src_project_dir, "local.properties")
+  public static final Path apk_fixtures_src_local_properties_file =
+    Paths.get(apk_fixtures_src_project_dir.toString(), "local.properties")
 
 
   public static final Path apk_inliner_proj_dir                 = Paths.get(LocalInitConstants.droidmate_project_dir_path, "projects/apk-inliner")
@@ -135,19 +136,23 @@ public class InitConstants
 
 
   static {
+    //$android_platform_version
+    //Path a = LocalInitConstants.android_sdk_dir
+    Path test = Paths.get(LocalInitConstants.android_sdk_dir.toString(), "platforms/android-$android_platform_version")
+    test.toString()
     assert new File(LocalInitConstants.droidmate_project_dir_path).directory
     assert new File(LocalInitConstants.jdk8_path).directory
     assert new File(LocalInitConstants.jdk7_path).directory
     assert new File(LocalInitConstants.jdk6_path).directory
-    assert LocalInitConstants.android_sdk_dir.directory
-    assert android_platform_dir.directory
+    assert Files.isDirectory(LocalInitConstants.android_sdk_dir)
+    assert Files.isDirectory(android_platform_dir)
 
     assert absolute_apks_dir.directory
 
     assert apk_fixtures_src_project_dir.directory
 
-    assert monitor_generator_proj_dir.directory
-    assert monitor_generator_apk_scaffolding_dir.directory
+    assert Files.isDirectory(monitor_generator_proj_dir)
+    assert Files.isDirectory(monitor_generator_apk_scaffolding_dir)
     assert Files.notExists(monitor_generator_generated_monitor) || Files.isWritable(monitor_generator_generated_monitor)
 
     assert Files.isDirectory(apk_inliner_proj_dir)
@@ -158,16 +163,16 @@ public class InitConstants
       monitor_generator_apk_scaffolding_local_properties_file.write("sdk.dir=" + LocalInitConstants.android_sdk_dir.path.replace("\\", "\\\\"))
     }
 
-    if (!uiautomator_daemon_local_properties_file.exists())
+    if (Files.notExists(uiautomator_daemon_local_properties_file))
     {
-      assert uiautomator_daemon_local_properties_file.createNewFile()
-      uiautomator_daemon_local_properties_file.write("sdk.dir=" + LocalInitConstants.android_sdk_dir.path.replace("\\", "\\\\"))
+      assert Files.createFile(uiautomator_daemon_local_properties_file)
+      uiautomator_daemon_local_properties_file.write("sdk.dir=" + LocalInitConstants.android_sdk_dir.toString().replace("\\", "\\\\"))
     }
 
-    if (!apk_fixtures_src_local_properties_file.exists())
+    if (Files.notExists(apk_fixtures_src_local_properties_file))
     {
-      assert apk_fixtures_src_local_properties_file.createNewFile()
-      apk_fixtures_src_local_properties_file.write("sdk.dir=" + LocalInitConstants.android_sdk_dir.path.replace("\\", "\\\\"))
+      assert Files.createFile(apk_fixtures_src_local_properties_file)
+      apk_fixtures_src_local_properties_file.write("sdk.dir=" + LocalInitConstants.android_sdk_dir.toString().replace("\\", "\\\\"))
     }
 
     assert Files.isDirectory(sharedResourcesDir)

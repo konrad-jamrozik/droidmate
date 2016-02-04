@@ -166,8 +166,14 @@ DroidMate is developed with IntelliJ IDEA 16 EAP, using the directory-based proj
 
 * Gradle plugin.
 * Android Support plugin.
+* Kotlin plugin EAP ([installation instructions](https://discuss.kotlinlang.org/t/kotlin-early-access-preview/1437))
 
 After opening an IntelliJ project (see section below), run `Refresh all gradle projects` from `Gradle` plugin toolbar. After this you should be able to `Build -> Make Project` and run the tests (see section below).
+
+
+### IntelliJ settings
+
+My settings.jar can be obtained from [this GitHub repo](https://github.com/konrad-jamrozik/utilities/tree/master/resources). To import them to IntelliJ click: `File -> Import Settings...`
 
 ## Running tests from IntelliJ
 

@@ -355,9 +355,9 @@ public class Configuration implements IConfiguration
   /** The command of the adb tool from the Android SDK. Configured by {@link ConfigurationBuilder}. */
   public String adbCommand
 
-  public File androidSdkDir = LocalInitConstants.android_sdk_dir
+  public Path androidSdkDir = LocalInitConstants.android_sdk_dir
 
-  public File appGuardApisList
+  public Path appGuardApisList
 
   /**
    * Jar with uiautomator-daemon location on the file system. The jar is to be deployed on the android (virtual) device

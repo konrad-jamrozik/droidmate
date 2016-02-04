@@ -51,6 +51,4 @@ class DeprecatedClassesDeserializer extends ObjectInputStream
     return desc
   }
 
-
-
 }
