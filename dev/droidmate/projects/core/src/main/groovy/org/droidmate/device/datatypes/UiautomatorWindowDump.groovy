@@ -70,7 +70,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
 
   private final IGuiState        guiState
   final         ValidationResult validationResult
-  private final IDeviceModel     deviceConfiguration
+  private final IDeviceModel     deviceModel
 
   /** Id is used only for tests, for:
    * - easy determination by human which widget is which when looking at widget string representation
@@ -79,7 +79,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   String id = null
 
 
-  UiautomatorWindowDump(String windowHierarchyDump, Dimension displayDimensions, IDeviceModel deviceConfiguration, String id = null)
+  UiautomatorWindowDump(String windowHierarchyDump, Dimension displayDimensions, IDeviceModel deviceModel, String id = null)
   {
     this.id = id
     this.windowHierarchyDump = windowHierarchyDump
@@ -87,7 +87,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
 
     this.wellFormedness = this.checkWellFormedness()
 
-    this.deviceConfiguration = deviceConfiguration
+    this.deviceModel = deviceModel
 
     if (this.wellFormedness == WellFormedness.OK)
       this.guiState = computeGuiState()
@@ -182,9 +182,9 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
       }
     }.findAll {it != null}
 
-    def gs = new GuiState(topNodePackage, id, widgets, this.deviceConfiguration)
+    def gs = new GuiState(topNodePackage, id, widgets, this.deviceModel)
     if (gs.isAppHasStoppedDialogBox())
-      return new AppHasStoppedDialogBoxGuiState(topNodePackage, widgets, this.deviceConfiguration)
+      return new AppHasStoppedDialogBoxGuiState(topNodePackage, widgets, this.deviceModel)
     else
       return gs
   }

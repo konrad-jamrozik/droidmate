@@ -30,6 +30,7 @@ import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.logging.LogbackUtils
 
 import java.awt.*
+import java.nio.file.Path
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.List
@@ -79,7 +80,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  void pushJar(File jar) throws DeviceException
+  void pushJar(Path jar) throws DeviceException
   {
     log.debug("pushJar(${jar.path})")
     adbWrapper.pushJar(serialNumber, jar)
@@ -366,11 +367,10 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  void removeJar(File jar) throws DeviceException
+  void removeJar(Path jar) throws DeviceException
   {
     log.debug("removeJar($jar)")
     adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemonJar)
-
   }
 
   private static boolean uiaDaemonHandlesCommand(DeviceCommand deviceCommand)

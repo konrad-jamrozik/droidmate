@@ -347,7 +347,7 @@ public class Configuration implements IConfiguration
 
   public Path apksDirPath
 
-  public File monitorApk
+  public Path monitorApk
 
   /** The command of the aapt tool from the Android SDK. Configured by {@link ConfigurationBuilder}. */
   public String aaptCommand
@@ -363,7 +363,7 @@ public class Configuration implements IConfiguration
    * Jar with uiautomator-daemon location on the file system. The jar is to be deployed on the android (virtual) device
    * to enable GUI actions execution.
    */
-  public File uiautomatorDaemonJar
+  public Path uiautomatorDaemonJar
 
   //endregion
 }

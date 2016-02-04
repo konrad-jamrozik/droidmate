@@ -11,6 +11,8 @@ package org.droidmate.android_sdk
 
 import org.droidmate.exceptions.AdbWrapperException
 
+import java.nio.file.Path
+
 public interface IAdbWrapper {
 
   void startAdbServer() throws AdbWrapperException
@@ -26,9 +28,9 @@ public interface IAdbWrapper {
 
   void reverseForwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
 
-  void pushJar(String deviceSerialNumber, File jarFile) throws AdbWrapperException
+  void pushJar(String deviceSerialNumber, Path  jarFile) throws AdbWrapperException
 
-  void removeJar(String deviceSerialNumber, File jarFile) throws AdbWrapperException
+  void removeJar(String deviceSerialNumber, Path  jarFile) throws AdbWrapperException
 
   void installApk(String deviceSerialNumber, IApk instrumentedApk) throws AdbWrapperException
 

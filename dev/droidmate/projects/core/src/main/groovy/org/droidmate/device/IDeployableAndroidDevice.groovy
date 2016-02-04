@@ -9,15 +9,16 @@
 
 package org.droidmate.device
 
+import java.nio.file.Path
 import org.droidmate.android_sdk.IApk
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
 
 public interface IDeployableAndroidDevice
 {
-  void pushJar(File jar) throws DeviceException
+  void pushJar(Path jar) throws DeviceException
 
-  void removeJar(File jar) throws DeviceException
+  void removeJar(Path jar) throws DeviceException
 
   void installApk(IApk apk) throws DeviceException
 

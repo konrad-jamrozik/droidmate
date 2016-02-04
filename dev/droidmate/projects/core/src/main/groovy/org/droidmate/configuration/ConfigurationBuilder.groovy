@@ -194,9 +194,9 @@ class ConfigurationBuilder implements IConfigurationBuilder
   {
     cfg.appGuardApisList = new ResourcePath(InitConstants.appGuardApisList.fileName.toString()).toFile()
 
-    cfg.uiautomatorDaemonJar = new ResourcePath("uiautomator-daemon.jar").toFile()
+    cfg.uiautomatorDaemonJar = new ResourcePath("uiautomator-daemon.jar")
 
-    cfg.monitorApk = new ResourcePath("monitor.apk").toFile()
+    cfg.monitorApk = new ResourcePath("monitor.apk")
 
     cfg.droidmateOutputDirPath = fs.getPath(cfg.droidmateOutputDir)
 
