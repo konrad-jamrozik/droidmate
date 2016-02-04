@@ -8,8 +8,7 @@
 // www.droidmate.org
 package org.droidmate.configuration.model
 
-import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.device.datatypes.GuiState
+import java.awt.Dimension
 
 /**
  * Provides device specific methods for a Samsung Galaxy S3 GT-I9300 using Factory Method Pattern
@@ -18,21 +17,25 @@ import org.droidmate.device.datatypes.GuiState
  *
  * @author Nataniel Borges Jr.
  */
-class SamsungGalaxyS3Model extends AbstractDeviceModel
+class GalaxyS3Model extends AbstractDeviceModel
 {
   public static final String package_android_launcher = "com.sec.android.app.launcher"
 
   @Override
-  boolean isHomeScreen(GuiState guiState)
+  protected String getPackageAndroidLauncherName()
   {
-    String topNodePackageName = guiState.getTopNodePackageName()
-    List<Widget> widgets = guiState.getWidgets()
-    return topNodePackageName == package_android_launcher && !widgets.any {it.text == "Widgets"}
+    return package_android_launcher
   }
 
   @Override
   String getPackageAndroidLauncher()
   {
     return packageAndroidLauncher;
+  }
+
+  @Override
+  Dimension getDeviceVerticalDimensionsForTesting()
+  {
+    return new Dimension(720, 1205)
   }
 }

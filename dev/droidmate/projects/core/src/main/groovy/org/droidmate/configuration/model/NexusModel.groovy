@@ -8,20 +8,26 @@
 // www.droidmate.org
 package org.droidmate.configuration.model
 
-import java.awt.Dimension
-
 /**
- * Provides device specific methods for a Google Nexus 7 device using Factory Method Pattern
+ * Provides device specific methods for a Google Nexus device using Factory Method Pattern
  * {@link http://www.dofactory.com/net/factory-method-design-pattern}. <br/>
  * Role: ConcreteProduct <br/>
  *
  * @author Nataniel Borges Jr.
  */
-class Nexus7Model extends NexusModel
+public abstract class NexusModel extends AbstractDeviceModel
 {
+  public static final String package_android_launcher = "com.android.launcher"
+
   @Override
-  Dimension getDeviceVerticalDimensionsForTesting()
+  protected String getPackageAndroidLauncherName()
   {
-    return new Dimension(800, 1205)
+    return package_android_launcher
+  }
+
+  @Override
+  String getPackageAndroidLauncher()
+  {
+    return packageAndroidLauncher;
   }
 }

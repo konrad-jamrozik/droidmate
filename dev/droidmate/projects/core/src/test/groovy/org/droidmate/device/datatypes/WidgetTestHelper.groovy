@@ -10,6 +10,8 @@
 package org.droidmate.device.datatypes
 
 import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.common_android.Constants
+import org.droidmate.configuration.model.DeviceModelHelper
 
 import java.awt.*
 import java.util.List
@@ -208,7 +210,7 @@ class WidgetTestHelper
       password      : args.password      ?: false,
       selected      : args.selected      ?: false,
       bounds        : new Rectangle(lowX, lowY, highX - lowX, highY - lowY),
-      deviceDisplayBounds: new Rectangle(UiautomatorWindowDumpTestHelper.deviceDimensionsForTesting_Nexus7y2012vert)
+      deviceDisplayBounds: new Rectangle(DeviceModelHelper.build(Constants.DEVICE_DEFAULT).getDeviceVerticalDimensionsForTesting())
       // @formatter:on
     )
   }

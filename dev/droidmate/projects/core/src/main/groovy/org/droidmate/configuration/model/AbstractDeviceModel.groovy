@@ -22,6 +22,8 @@ public abstract class AbstractDeviceModel implements IDeviceModel
 {
   protected final String package_android = "android"
 
+  protected abstract String getPackageAndroidLauncherName()
+
   @Override
   boolean isAppHasStoppedDialogBox(GuiState guiState)
   {
@@ -42,6 +44,14 @@ public abstract class AbstractDeviceModel implements IDeviceModel
     return !isSelectAHomeAppDialogBox(guiState) &&
       topNodePackageName == package_android &&
       widgets.any {it.text == "Just once"}
+  }
+
+  @Override
+  boolean isHomeScreen(GuiState guiState)
+  {
+    String topNodePackageName = guiState.getTopNodePackageName()
+    List<Widget> widgets = guiState.getWidgets()
+    return topNodePackageName == this.getPackageAndroidLauncherName() && !widgets.any {it.text == "Widgets"}
   }
 
   @Override

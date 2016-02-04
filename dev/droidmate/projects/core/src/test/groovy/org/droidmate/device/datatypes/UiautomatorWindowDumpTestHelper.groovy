@@ -13,6 +13,7 @@ import groovy.transform.TypeChecked
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.configuration.model.DeviceModelHelper
 import org.droidmate.common_android.Constants
+import org.droidmate.configuration.model.IDeviceModel
 
 import java.awt.*
 
@@ -23,52 +24,51 @@ import static org.droidmate.test_base.FilesystemTestFixtures.apkFixture_simple_p
 @TypeChecked(SKIP)
 class UiautomatorWindowDumpTestHelper
 {
-
-  static final Dimension deviceDimensionsForTesting_Nexus7y2012vert = new Dimension(800, 1205)
+  private static final IDeviceModel deviceModel = DeviceModelHelper.build(Constants.DEVICE_DEFAULT)
 
   //region Fixture dumps
 
   public static UiautomatorWindowDump newNullWindowDump()
   {
-    return new UiautomatorWindowDump(null, deviceDimensionsForTesting_Nexus7y2012vert, DeviceModelHelper.build(Constants.DEVICE_DEFAULT))
+    return new UiautomatorWindowDump(null, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
   }
 
   public static UiautomatorWindowDump newEmptyWindowDump()
   {
-    return new UiautomatorWindowDump("", deviceDimensionsForTesting_Nexus7y2012vert, DeviceModelHelper.build(Constants.DEVICE_DEFAULT))
+    return new UiautomatorWindowDump("", deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
   }
 
   public static UiautomatorWindowDump newEmptyActivityWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_tsa_emptyAct, deviceDimensionsForTesting_Nexus7y2012vert, DeviceModelHelper.build(Constants.DEVICE_DEFAULT))
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_tsa_emptyAct, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
   }
 
   public static UiautomatorWindowDump newAppHasStoppedDialogWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_dialogbox, deviceDimensionsForTesting_Nexus7y2012vert, DeviceModelHelper.build(Constants.DEVICE_DEFAULT))
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_dialogbox, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
   }
 
   public static UiautomatorWindowDump newAppHasStoppedDialogOKDisabledWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_OK_disabled, deviceDimensionsForTesting_Nexus7y2012vert, DeviceModelHelper.build(Constants.DEVICE_DEFAULT))
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_OK_disabled, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
   }
 
 
   public static UiautomatorWindowDump newCompleteActionUsingWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_complActUsing_dialogbox, deviceDimensionsForTesting_Nexus7y2012vert, DeviceModelHelper.build(Constants.DEVICE_DEFAULT))
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_complActUsing_dialogbox, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
   }
 
 
   public static UiautomatorWindowDump newHomeScreenWindowDump(String id = null)
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_nexus7_home_screen, deviceDimensionsForTesting_Nexus7y2012vert, DeviceModelHelper.build(Constants.DEVICE_DEFAULT), id)
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_nexus7_home_screen, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel, id)
   }
 
 
   public static UiautomatorWindowDump newAppOutOfScopeWindowDump(String id = null)
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_chrome_offline, deviceDimensionsForTesting_Nexus7y2012vert, DeviceModelHelper.build(Constants.DEVICE_DEFAULT), id)
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_chrome_offline, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel, id)
   }
 
   //endregion Fixture dumps
@@ -76,7 +76,7 @@ class UiautomatorWindowDumpTestHelper
 
   public static UiautomatorWindowDump newWindowDump(String windowHierarchyDump)
   {
-    return new UiautomatorWindowDump(windowHierarchyDump, deviceDimensionsForTesting_Nexus7y2012vert, DeviceModelHelper.build(Constants.DEVICE_DEFAULT))
+    return new UiautomatorWindowDump(windowHierarchyDump, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
   }
 
 
@@ -95,7 +95,7 @@ class UiautomatorWindowDumpTestHelper
 
   private static UiautomatorWindowDump skeletonWithPayload(String payload, String id = null)
   {
-    new UiautomatorWindowDump(createDumpSkeleton(payload), deviceDimensionsForTesting_Nexus7y2012vert, DeviceModelHelper.build(Constants.DEVICE_DEFAULT), id)
+    new UiautomatorWindowDump(createDumpSkeleton(payload), deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel, id)
   }
 
   static String createDumpSkeleton(String payload)

@@ -10,6 +10,8 @@ package org.droidmate.configuration.model
 
 import org.droidmate.device.datatypes.GuiState
 
+import java.awt.Dimension
+
 /**
  * Provides an interface with device specific methods using Factory Method Pattern
  * {@link http://www.dofactory.com/net/factory-method-design-pattern}. <br/>
@@ -61,4 +63,11 @@ public interface IDeviceModel extends Serializable
    * @return If the device has a "Select a home app" dialog option
    */
   boolean isSelectAHomeAppDialogBox(GuiState guiState)
+
+  /**
+   * Determine the size of the device screen that can be used for testing
+   *
+   * @return The size of the device screen (device on vertical)
+   */
+  Dimension getDeviceVerticalDimensionsForTesting()
 }
