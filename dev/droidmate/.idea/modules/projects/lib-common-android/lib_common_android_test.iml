@@ -11,4 +11,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="lib_common_android_main" />
   </component>
+  <component name="TestModuleProperties" production-module="lib-common-android_main" />
 </module>

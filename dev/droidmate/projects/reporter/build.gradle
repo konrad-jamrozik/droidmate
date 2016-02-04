@@ -24,6 +24,9 @@ buildscript {
 
 apply plugin: "kotlin"
 
+compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+
 // Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
@@ -46,11 +49,8 @@ dependencies {
   testCompile project(":projects:core").sourceSets.test.output
 
   compile project(":projects:core")
-
-
   compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0-rc-1017'
 }
-
 
 test {
 
