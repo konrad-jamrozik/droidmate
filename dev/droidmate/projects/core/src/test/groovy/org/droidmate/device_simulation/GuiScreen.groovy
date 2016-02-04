@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -27,7 +27,7 @@ class GuiScreen implements IGuiScreen
   public static final String              idChrome                = "chrome"
   public static final Set<String>         reservedIds             = [idHome, idChrome]
   public static final Map<String, String> reservedIdsPackageNames = [
-    (idHome)  : GuiState.package_android_launcher,
+    (idHome)  : GuiState.package_android_launcher_nexus7,
     (idChrome): "com.android.chrome"
   ]
 

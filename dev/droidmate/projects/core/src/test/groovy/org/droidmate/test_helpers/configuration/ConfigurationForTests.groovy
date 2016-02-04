@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -15,6 +15,7 @@ import org.droidmate.init.InitConstants
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
+import java.nio.file.Paths
 
 class ConfigurationForTests
 {
@@ -36,12 +37,16 @@ class ConfigurationForTests
     Configuration.pn_clearPackageRetryDelay, "0",
     Configuration.pn_getValidGuiSnapshotRetryDelay, "0",
     Configuration.pn_stopAppSuccessCheckDelay, "0",
-    Configuration.pn_closeANRDelay, "0",
+    Configuration.pn_closeANRDelay, "0"
   ]
 
   ConfigurationForTests()
   {
-    this.argsList = zeroedTestConfig + [Configuration.pn_droidmateOutputDir, InitConstants.test_temp_dir_name]
+    this.argsList = zeroedTestConfig + [
+      Configuration.pn_droidmateOutputDir, Paths.get(".", InitConstants.test_temp_dir_name).toString(),
+      Configuration.pn_reportInputDir, Paths.get(".", InitConstants.test_temp_dir_name).toString(),
+      Configuration.pn_reportOutputDir, Paths.get(".", InitConstants.test_temp_dir_name).toString()
+    ]
   }
 
   public Configuration get()

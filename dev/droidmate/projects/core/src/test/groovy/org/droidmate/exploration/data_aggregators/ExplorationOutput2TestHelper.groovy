@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -22,7 +22,8 @@ class ExplorationOutput2TestHelper
       ApkTestHelper.build(
         FilesystemTestFixtures.apkFixture_simple_packageName,
         FilesystemTestFixtures.apkFixture_simple_launchableActivityComponentName,
-        FilesystemTestFixtures.apkFixture_simple_packageName + "1")
+        FilesystemTestFixtures.apkFixture_simple_packageName + "1",
+        "applicationLabel")
     )
 
     out.add(apkOut)

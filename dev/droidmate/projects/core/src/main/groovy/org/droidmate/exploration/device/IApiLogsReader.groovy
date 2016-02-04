@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -10,7 +10,7 @@
 package org.droidmate.exploration.device
 
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.logcat.IApiLogcatMessage
 
 interface IApiLogsReader
@@ -19,5 +19,5 @@ interface IApiLogsReader
   @Deprecated
   List<IApiLogcatMessage> getCurrentApiLogsFromLogcat(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
 
-  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws TcpServerUnreachableException, DeviceException
+  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws DeviceNeedsRebootException, DeviceException
 }

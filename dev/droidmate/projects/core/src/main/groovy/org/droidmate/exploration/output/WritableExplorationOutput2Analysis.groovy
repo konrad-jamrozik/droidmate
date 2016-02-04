@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -17,6 +17,7 @@ class WritableExplorationOutput2Analysis implements IWritableExplorationOutput2A
   private final ExplorationOutput2          explOut2
   private final List<IWritableApkApisChart> apkCharts
 
+  // WISH 22 Jan 2016: toremove unused "new legacy" output classes live in this package
   WritableExplorationOutput2Analysis(ExplorationOutput2 explorationOutput2, Integer timeTicks, Integer timeTickSizeInMs)
   {
     this.explOut2 = explorationOutput2

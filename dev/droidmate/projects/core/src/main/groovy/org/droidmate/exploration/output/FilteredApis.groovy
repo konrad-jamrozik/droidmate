@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -21,13 +21,11 @@ class FilteredApis implements IFilteredApis
   {
     def flatApiLogs = apiLogs.flatten() as List<IApiLogcatMessage>
 
-    def remappedPackageName = remapPackageName(packageName)
-
     flatApiLogs = flatApiLogs.findAll {
       assertNoMonitorSocketInitLogs(it.stackTraceFrames)
-      return fromMonitoredApp(it.stackTraceFrames, remappedPackageName) &&
+      return fromMonitoredApp(it.stackTraceFrames, packageName) &&
         !redundantApiCall(it.stackTraceFrames) &&
-        !callToInternalActivity(it, remappedPackageName)
+        !callToInternalActivity(it, packageName)
     }
 
     this.apiLogs = flatApiLogs
@@ -58,20 +56,6 @@ class FilteredApis implements IFilteredApis
   Collection<List<IApiLogcatMessage>> groupByUniqueString()
   {
     apiLogs.groupBy {it.uniqueString}.values()
-  }
-
-  // WISH fix hardcoded package name mappings
-  // One idea: use apktool to extract AndroidManifest.xml and look at the package name of <application>. For example, for firefox
-  // it is: <application (...) android:name="org.mozilla.gecko.GeckoApplication">
-  public static String remapPackageName(String appPackageName)
-  {
-    if (appPackageName == "org.mozilla.firefox")
-      appPackageName = "org.mozilla.gecko"
-    if (appPackageName == "com.picsart.studio")
-      appPackageName = "myobfuscated"
-    if (appPackageName == "com.cleanmaster.security")
-      appPackageName = "ks.cm.antivirus"
-    return appPackageName
   }
 
   /**

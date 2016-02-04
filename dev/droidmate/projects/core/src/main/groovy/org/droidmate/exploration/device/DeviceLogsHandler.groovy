@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -9,24 +9,15 @@
 package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
-import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ForbiddenOperationError
-import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.logcat.IApiLogcatMessage
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-
-import static org.droidmate.common_android.Constants.uiaDaemon_logcatTag
 
 @Slf4j
 class DeviceLogsHandler implements IDeviceLogsHandler
 {
 
   IRobustDevice device
-
-  boolean readingSealed = false
 
   IDeviceLogs logs = new DeviceLogs()
 
@@ -35,24 +26,25 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     this.device = device
   }
 
-
-  @Override
-  void clearLogcat() throws DeviceException
-  {
-    device.clearLogcat()
-  }
-
   @Override
   void readAndClearApiLogs() throws DeviceException
   {
-    if (readingSealed)
-      throw new ForbiddenOperationError()
-
     List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs()
     addApiLogs(apiLogs)
   }
 
-  public void addApiLogs(List<IApiLogcatMessage> apiLogs)
+  private static final String uiThreadId = "1"
+
+  @Override
+  void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
+  {
+    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs()
+    assert this.logs.apiLogs.every {it.threadId != uiThreadId}
+
+    addApiLogs(apiLogs)
+  }
+
+  private void addApiLogs(List<IApiLogcatMessage> apiLogs)
   {
     assert apiLogs != null
 
@@ -65,60 +57,21 @@ class DeviceLogsHandler implements IDeviceLogsHandler
     this.logs.apiLogs.addAll(apiLogs)
   }
 
-  private static final String uiThreadId = "1"
-
+  boolean gotLogs = false
   @Override
-  void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
+  IDeviceLogs getLogs()
   {
-    if (readingSealed)
+    if (gotLogs)
       throw new ForbiddenOperationError()
-
-    List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs()
-    assert this.logs.apiLogs.every {it.threadId != uiThreadId}
-
-    addApiLogs(apiLogs)
-  }
-
-  private Logger uiadLogger = LoggerFactory.getLogger(LogbackConstants.logger_name_uiad)
-
-  @Override
-  void logUiaDaemonLogsFromLogcat() throws DeviceException
-  {
-    List<ITimeFormattedLogcatMessage> uiaDaemonLogs = device.readLogcatMessages(uiaDaemon_logcatTag)
-
-    uiaDaemonLogs.each {
-      if (it.level == "W")
-        uiadLogger.warn("${it.messagePayload}")
-      else
-        uiadLogger.trace("${it.messagePayload}")
-    }
-  }
-
-  @Override
-  IDeviceLogs sealReadingAndReturnDeviceLogs()
-  {
-    if (this.readingSealed)
-      throw new ForbiddenOperationError()
-
-    this.readingSealed = true
+    this.gotLogs = true
     return this.logs
   }
 
-  // KJA needs reboot device exception handling
   private List<IApiLogcatMessage> _readAndClearApiLogs() throws DeviceException
   {
-    try
-    {
-      def logs = device.getAndClearCurrentApiLogsFromMonitorTcpServer()
-      assert logs != null
-      return logs
-
-    } catch (TcpServerUnreachableException e)
-    {
-      log.warn("! Caught ${TcpServerUnreachableException.simpleName} from " +
-        "messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer(). Rethrowing.")
-      throw e
-    }
+    def logs = this.device.getAndClearCurrentApiLogsFromMonitorTcpServer()
+    assert logs != null
+    return logs
   }
 
 }

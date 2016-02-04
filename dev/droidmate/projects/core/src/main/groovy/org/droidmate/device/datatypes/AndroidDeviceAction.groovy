@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -61,6 +61,11 @@ abstract class AndroidDeviceAction implements IAndroidDeviceAction
   public static ClickGuiAction newTurnWifiOnDeviceAction()
   {
     return new ClickGuiAction(GuiAction.createTurnWifiOnGuiAction())
+  }
+
+  public static ClickGuiAction newLaunchAppDeviceAction(String iconLabel)
+  {
+    return new ClickGuiAction(GuiAction.createLaunchAppGuiAction(iconLabel))
   }
 
 

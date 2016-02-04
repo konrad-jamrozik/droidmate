@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -55,7 +55,8 @@ class ExplorationOutput2Builder
       ApkTestHelper.build(
         packageName,
         "${packageName}/${packageName}.MainActivity",
-        "$packageName" + "1"
+        "$packageName" + "1",
+        "applicationLabel"
       )
     )
     this.currentlyBuiltApkOut2.explorationStartTime = attributes.explorationStartTime

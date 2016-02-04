@@ -1,0 +1,68 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+/*
+  This project contains classes reused by multiple projects, none of which are run on an Android device.
+  Because none of them are run on an Android Device, the classes in this project can and are compiled with Groovy and Java 8.
+*/
+
+buildscript {
+  repositories {
+    mavenCentral()
+    maven {url "https://dl.bintray.com/kotlin/kotlin-eap/"}
+    'https://dl.bintray.com/kotlin/kotlin-eap/'
+  }
+  dependencies {
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0-rc-1017'
+  }
+}
+
+apply plugin: "kotlin"
+
+compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+
+// Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
+configurations {forceJunitPriority}
+sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
+sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
+sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
+
+/*
+ This project uses test artifacts of core project.
+ WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
+ */
+evaluationDependsOn(":projects:core")
+
+dependencies {
+
+  forceJunitPriority 'junit:junit:4.12'
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.hamcrest:hamcrest-core:1.3'
+  testCompile 'org.jetbrains.kotlin:kotlin-test:1.0.0-rc-1017'
+  testCompile 'org.jetbrains.kotlin:kotlin-test-junit:1.0.0-rc-1017'
+  testCompile project(":projects:core").sourceSets.test.output
+
+  compile project(":projects:core")
+  compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0-rc-1017'
+}
+
+test {
+
+  /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
+
+   API reference:
+   workingDir  http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.testing.Test.html
+   rootDir     http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html
+   */
+  workingDir rootDir
+
+  /* Lurking bug: GRADLE-1682. */
+  includes = ['**/ReporterTestSuite.class']
+
+}

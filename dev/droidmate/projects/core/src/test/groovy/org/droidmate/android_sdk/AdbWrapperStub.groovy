@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -70,7 +70,7 @@ class AdbWrapperStub implements IAdbWrapper
   }
 
   @Override
-  void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean warnAboutFailure) throws AdbWrapperException
+  void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean ignoreFailure) throws AdbWrapperException
   {
     assert false: "Not yet implemented!"
   }
@@ -120,7 +120,17 @@ class AdbWrapperStub implements IAdbWrapper
 
 
   @Override
-  void startUiautomatorDaemon(String deviceSerialNumber, int port)
+  void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
+  {
+  }
+
+  @Override
+  void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+  {
+  }
+
+  @Override
+  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
   {
   }
 }

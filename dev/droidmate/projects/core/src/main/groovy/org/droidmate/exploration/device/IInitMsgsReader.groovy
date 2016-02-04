@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -17,8 +17,10 @@ import java.time.LocalDateTime
 interface IInitMsgsReader
 {
 
+  @Deprecated
   LocalDateTime readMonitorMessages(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
 
+  @Deprecated
   List<ITimeFormattedLogcatMessage> readInstrumentationMessages(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
 }
 

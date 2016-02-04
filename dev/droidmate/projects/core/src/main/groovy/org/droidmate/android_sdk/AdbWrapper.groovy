@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -20,6 +20,9 @@ import org.droidmate.exceptions.AdbWrapperException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
 import org.droidmate.init.InitConstants
 
+import java.nio.file.Files
+import java.nio.file.Paths
+
 /**
  * Provides clean interface for communication with the Android SDK's Android Debug Bridge (ADB) tool.<br/>
  * <br/>
@@ -35,6 +38,9 @@ public class AdbWrapper implements IAdbWrapper
 
   private final Configuration   cfg
   private       ISysCmdExecutor sysCmdExecutor
+
+  // This should be set to the value of android.os.Environment.getDataDirectory()
+  private final String deviceEnvironmentDataDirectory = "data/local/tmp/"
 
 
   AdbWrapper(
@@ -106,22 +112,6 @@ public class AdbWrapper implements IAdbWrapper
     return deviceDescriptors
   }
 
-  /*
-    KJA2 KNOWN BUG happens when trying to install app that is installed by default, like google earth or google keep.
-
-    Piece of relevant log from SysCmdExecutor is below. Make the installApk report appropriate failure when this happens.
-
-    2016-01-07 14:54:22.642 TRACE "c:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 015d2109ce0c1a0f install -r "C:\my\local\repos\github\droidmate\dev\droidmate\apks\inlined\com.google.earth_v7.1.3.1255-inlined.apk"
-    2016-01-07 14:54:34.601 TRACE Captured stdout:
-    2016-01-07 14:54:34.602 TRACE 	pkg: /data/local/tmp/com.google.earth_v7.1.3.1255-inlined.apk
-
-    Failure [INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES]
-
-    HOW TO FIX: before installing the app, check if it is not within already installed apps using adb. If it is, issue warning and
-    skip the app.
-
-   */
-
   @Override
   public void installApk(String deviceSerialNumber, IApk apkToInstall)
     throws AdbWrapperException
@@ -134,21 +124,23 @@ public class AdbWrapper implements IAdbWrapper
         .format("Executing adb (Android Debug Bridge) to install %s on Android (Virtual) Device.",
         apkToInstall.fileName)
 
-      sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "install -r",
+      def stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "install -r",
         apkToInstall.absolutePath)
+
+      if (stdStreams[0].contains("[INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES]"))
+        throw new AdbWrapperException("Execution of 'adb -s $deviceSerialNumber install -r ${apkToInstall.absolutePath}' " +
+          "resulted in [INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES] being output to stdout. Thus, no app was actually " +
+          "installed. Likely reason for the problem: you are trying to install a built in Google app that cannot be uninstalled" +
+          "or reinstalled. DroidMate doesn't support such apps.")
 
     } catch (SysCmdExecutorException e)
     {
-      throw new AdbWrapperException(
-        "Executing 'adb install' failed. Possible cause: no android devices are available. To view available Android "
-          +
-          "devices, please run from cmdline: \"<android sdk>/platform-tools/adb devices\"",
-        e)
+      throw new AdbWrapperException("Executing 'adb install' failed. Oh my.", e)
     }
   }
 
   @Override
-  public void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean warnAboutFailure)
+  public void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean ignoreFailure)
     throws AdbWrapperException
   {
     assert deviceSerialNumber != null
@@ -167,17 +159,12 @@ public class AdbWrapper implements IAdbWrapper
       String stdout = stdStreams[0]
 
       // "Failure" is what the adb's "uninstall" command outputs when it fails.
-      if (warnAboutFailure && stdout.contains("Failure"))
-        log.warn(
-          "Failed to uninstall the apk package {}. Please see DEBUG and/or TRACE messages in Droidmate logs for " +
-            "details.", apkPackageName)
+      if (!ignoreFailure && stdout.contains("Failure"))
+        throw new AdbWrapperException("Failed to uninstall the apk package $apkPackageName.")
 
     } catch (SysCmdExecutorException e)
     {
-      throw new AdbWrapperException(
-        "Calling 'adb uninstall' failed. Possible cause: no android devices are available. To view available " +
-          "Android devices, please run from cmdline: \"<android sdk path>/platform-tools/adb devices\"",
-        e)
+      throw new AdbWrapperException("Calling 'adb uninstall' failed. Oh my.", e)
     }
   }
 
@@ -607,4 +594,58 @@ public class AdbWrapper implements IAdbWrapper
     }
   }
 
+  @Override
+  void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+  {
+    assert deviceSerialNumber != null
+    assert fileName != null
+    assert fileName.size() > 0
+
+    String filePath = deviceEnvironmentDataDirectory + fileName
+    String commandDescription = String
+      .format(
+      "Executing adb to delete file %s from Android Device with s/n %s.",
+      filePath, deviceSerialNumber)
+
+    try
+    {
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell rm", filePath)
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
+    }
+  }
+
+  @Override
+  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
+  {
+    assert deviceSerialNumber != null
+    assert pulledFileName?.size() > 0
+    assert destinationFilePath?.size() > 0
+
+    // WISH make it stubbable by taking filesystem from configuration. But then also logback logs should take filesystem from
+    // configuration, but they do not as of 15 Jan 2016
+    assert Files.notExists(Paths.get(destinationFilePath))
+
+    String pulledFilePath = deviceEnvironmentDataDirectory + pulledFileName
+    String commandDescription = String
+      .format(
+      "Executing adb to pull file %s from Android Device with s/n %s.",
+      pulledFilePath, deviceSerialNumber)
+
+    try
+    {
+
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "pull", pulledFilePath, destinationFilePath)
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb pull ...' failed. Oh my.", e)
+    }
+  }
 }

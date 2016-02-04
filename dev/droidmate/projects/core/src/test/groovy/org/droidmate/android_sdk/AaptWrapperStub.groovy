@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -41,9 +41,16 @@ class AaptWrapperStub implements IAaptWrapper
   }
 
   @Override
+  String getApplicationLabel(Path apk) throws DroidmateException
+  {
+    assert false: "Not yet implemented!"
+  }
+
+
+  @Override
   List<String> getMetadata(Path path) throws DroidmateException
   {
     def apk = apks.findSingle {it.absolutePath == path.toAbsolutePath().toString()}
-    return [apk.packageName, apk.launchableActivityName, apk.launchableActivityComponentName]
+    return [apk.packageName, apk.launchableActivityName, apk.launchableActivityComponentName, apk.applicationLabel]
   }
 }

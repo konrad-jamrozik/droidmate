@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -12,7 +12,6 @@ import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
 import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
-import org.droidmate.frontend.DroidmateFrontend
 import org.droidmate.init.InitConstants
 import org.droidmate.init.LocalInitConstants
 
@@ -28,7 +27,7 @@ import java.nio.file.Paths
  *
  * Holds all the configuration data of DroidMate. The configuration is obtained from command line arguments with help
  * of {@link ConfigurationBuilder}. This happens just before DroidMate injects dependencies with Guice,
- * at DroidMate bootstrap in {@link DroidmateFrontend DroidmateFrontend}.
+ * at DroidMate bootstrap in DroidmateFrontend.
  * </p><p>
  * The configuration is required to setup most (if not all) classes (components) of Droidmate.
  *
@@ -106,6 +105,8 @@ public class Configuration implements IConfiguration
   public static final String pn_monitorServerStartQueryDelay                 = "-monitorServerStartQueryDelay"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
   public static final String pn_randomSeed                                   = "-randomSeed"
+  public static final String pn_reportInputDir                               = "-reportInputDir"
+  public static final String pn_reportOutputDir                              = "-reportOutputDir"
   public static final String pn_resetEveryNthExplorationForward              = "-resetEvery"
   public static final String pn_splitCharts                                  = "-splitCharts"
   public static final String pn_socketTimeout                                = "-socketTimeout"
@@ -184,7 +185,7 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_compareRuns], arity = 1)
   public boolean compareRuns = false
 
-  @Parameter(names = [Configuration.pn_droidmateOutputDir], description =
+  @Parameter(names = [Configuration.pn_droidmateOutputDir, "-outputDir"], description =
     "Path to the directory that will contain DroidMate exploration output.")
   public String droidmateOutputDir = defaultDroidmateOutputDir
 
@@ -207,7 +208,8 @@ public class Configuration implements IConfiguration
   public boolean extractAdditionalData = false
 
   @Parameter(names = ["-extractData"], description =
-    "If present, instead of normal run, DroidMate will deserialize previous exploration output and extract data from it, for example it will extract input data for pgfplots charting tool.")
+    "(Deprecated! Use -report instead) If present, instead of normal run, DroidMate will deserialize previous exploration output and extract data from it, for example it will extract input data for pgfplots charting tool.")
+  @Deprecated
   public Boolean extractData = false
 
   @Parameter(names = ["-extractSaturationCharts", "-esc"], arity = 1)
@@ -259,6 +261,14 @@ public class Configuration implements IConfiguration
   @Parameter(names = ["-removeHardCodedApis"], arity = 1)
   public boolean removeHardCodedApis = true
 
+  @Parameter(names = [Configuration.pn_reportInputDir], description =
+    "Path to the directory that will be expected to have DroidMate exploration output for reporting purposes.")
+  public String reportInputDir = "."+File.separator + "reportInput"
+
+  @Parameter(names = [Configuration.pn_reportOutputDir], description =
+    "Path to the directory that will contain DroidMate the report files generated from exploration output.")
+  public String reportOutputDir = "."+File.separator + "reportOutput"
+
   @Parameter(names = [Configuration.pn_resetEveryNthExplorationForward])
   public int resetEveryNthExplorationForward = defaultResetEveryNthExplorationForward
 
@@ -302,6 +312,9 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_useApkFixturesDir], arity = 1)
   public boolean useApkFixturesDir = false
 
+  @Parameter(names = ["-report"], description =
+    "If present, instead of normal run, DroidMate will generate reports from previously serialized data.")
+  public Boolean report = false
 
   @Parameter(names = [Configuration.pn_timeLimit])
   public int timeLimit = 0
@@ -314,7 +327,7 @@ public class Configuration implements IConfiguration
   public int stopAppRetryAttempts = 4
 
   @Parameter(names = [Configuration.pn_stopAppSuccessCheckDelay])
-  public int stopAppSuccessCheckDelay = 1000
+  public int stopAppSuccessCheckDelay = 5000
 
   @Parameter(names = [Configuration.pn_waitForCanRebootDelay])
   public int waitForCanRebootDelay = 30 * 1000
@@ -327,6 +340,10 @@ public class Configuration implements IConfiguration
   //region Values set by ConfigurationBuilder
 
   public Path droidmateOutputDirPath
+
+  public Path reportInputDirPath
+
+  public Path reportOutputDirPath
 
   public Path apksDirPath
 

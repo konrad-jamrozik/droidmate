@@ -1,5 +1,5 @@
 
-  Copyright (c) 2012-2015 Saarland University  
+  Copyright (c) 2012-2016 Saarland University  
   All rights reserved.
 
   Author: Konrad Jamrozik, github.com/konrad-jamrozik
@@ -8,7 +8,7 @@
 
   www.droidmate.org
 
-  Date of last full review: 14 Dec 2015
+  Date of last full review: 19 jan 2016
 
 # Introduction #
 
@@ -107,8 +107,8 @@ To run DroidMate regression tests requiring a device:
 ## Running DroidMate ##
 
 Run DroidMate with  
-`./dev/droidmate/gradlew :projects:core:run`, or  
-`./dev/droidmate/gradlew :p:c:run` for short.
+`./dev/droidmate/gradlew :projects:command:run`, or  
+`./dev/droidmate/gradlew :p:com:run` for short.
 
 DroidMate will read command line arguments from the first line of   
 `./dev/droidmate/args.txt` 
@@ -122,7 +122,7 @@ DroidMate cannot run on normal apks, they first have to be `inlined`. To inline 
 * Copy them to `./dev/droidmate/projects/apk-inliner/input-apks`
 * Run the task
 `./dev/droidmate/gradlew :projects:core:prepareInlinedApks`
-or `./dev/droidmate/gradlew :p:c:pIA` for short.
+or `./dev/droidmate/gradlew :p:cor:pIA` for short.
 The apks will be placed in `./dev/droidmate/apks/inlined`
 * Run DroidMate with cmd line arg of `-apksDir=apks/inlined` to use these apks.
 
@@ -162,12 +162,18 @@ Simply make a `jre/lib` directory within java home and symlink `rt.jar` within i
 
 # Working with DroidMate code base
 
-DroidMate is developed with IntelliJ IDEA, using the directory-based project format (`.idea`  directory). To work with DroidMate, IntelliJ has to be configured with all the dependencies used for daily building (e.g. JDKs) plus it has to have the following:
+DroidMate is developed with IntelliJ IDEA 16 EAP, using the directory-based project format (`.idea`  directory). To work with DroidMate, IntelliJ has to be configured with all the dependencies used for daily building (e.g. JDKs) plus it has to have the following:
 
 * Gradle plugin.
 * Android Support plugin.
+* Kotlin plugin EAP ([installation instructions](https://discuss.kotlinlang.org/t/kotlin-early-access-preview/1437))
 
 After opening an IntelliJ project (see section below), run `Refresh all gradle projects` from `Gradle` plugin toolbar. After this you should be able to `Build -> Make Project` and run the tests (see section below).
+
+
+### IntelliJ settings
+
+My settings.jar can be obtained from [this GitHub repo](https://github.com/konrad-jamrozik/utilities/tree/master/resources). To import them to IntelliJ click: `File -> Import Settings...`
 
 ## Running tests from IntelliJ
 

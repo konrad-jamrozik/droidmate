@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -452,9 +452,8 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
 
           writer.write("Stack trace:\n")
 
-          String pkgName = FilteredApis.remapPackageName(aeo.appPackageName)
           List<String> stFrames = st.split(Api.stack_trace_frame_delimiter).dropWhile {String it -> !(it.startsWith(Api.monitorRedirectionPrefix))}
-          stFrames = ["(...)", stFrames[0], "(...)"] + stFrames.dropWhile {String it -> !(it.startsWith(pkgName))}
+          stFrames = ["(...)", stFrames[0], "(...)"] + stFrames.dropWhile {String it -> !(it.startsWith(aeo.appPackageName))}
 
           stFrames.each {writer.write("  $it\n")}
           writer.write("\n")
@@ -484,7 +483,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
       apiCallData.each {IApiLogcatMessage api ->
 
         List<String> stFrames = api.stackTrace.split(Api.stack_trace_frame_delimiter).findAll {
-          it.startsWith(Api.monitorRedirectionPrefix) || it.startsWith(FilteredApis.remapPackageName(aeo.appPackageName))
+          it.startsWith(Api.monitorRedirectionPrefix) || it.startsWith(aeo.appPackageName)
         }
 
         String paddedThreadId = api.threadId.padLeft(4, ' ')
@@ -612,8 +611,6 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
   {
     List<List<IApiLogcatMessage>> out = []
 
-    appPackageName = FilteredApis.remapPackageName(appPackageName)
-
     apiLogs.each {List<IApiLogcatMessage> logsPerMethod ->
 
       List<IApiLogcatMessage> currentFilteredList = []
@@ -621,14 +618,9 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
       logsPerMethod.each {IApiLogcatMessage log ->
         List<String> st = log.stackTrace.split(Api.stack_trace_frame_delimiter)
 
-        // KJA2 KNOWN BUG this seems to kill many of valid logs (?) if a log is read from monitor, it pretty much had to came from the app
-        // Filter out API calls that do not come from the monitored app.
-        if (st.any {it.startsWith(appPackageName)})
-        {
-          assert !FilteredApis.isStackTraceOfMonitorTcpServerSocketInit(st): "The Socket.<init> monitor logs were expected to be removed by monitor before being sent to the host machine."
-          if (!FilteredApis.isStackTraceOfRedundantApiCall(st))
-            currentFilteredList << log
-        }
+        assert !FilteredApis.isStackTraceOfMonitorTcpServerSocketInit(st): "The Socket.<init> monitor logs were expected to be removed by monitor before being sent to the host machine."
+        if (!FilteredApis.isStackTraceOfRedundantApiCall(st))
+          currentFilteredList << log
       }
 
       if (config.removeHardCodedApis)

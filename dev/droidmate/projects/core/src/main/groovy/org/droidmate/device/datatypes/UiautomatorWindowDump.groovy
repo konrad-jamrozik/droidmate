@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -273,6 +273,10 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
 
     if (this.guiState.isCompleteActionUsingDialogBox())
       return "$cls{\"Complete action using\" dialog box.}"
+
+    if (this.guiState.isSelectAHomeAppDialogBox())
+      return "$cls{\"Select a home app\" dialog box.}"
+
 
 
     String returnString = "$cls{${packageName}. Widgets# ${this.guiState.widgets.size()}}"

@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -199,6 +199,10 @@ class ConfigurationBuilder implements IConfigurationBuilder
     cfg.monitorApk = new ResourcePath("monitor.apk").toFile()
 
     cfg.droidmateOutputDirPath = fs.getPath(cfg.droidmateOutputDir)
+
+    cfg.reportInputDirPath = fs.getPath(cfg.reportInputDir)
+
+    cfg.reportOutputDirPath = fs.getPath(cfg.reportOutputDir)
 
     if (cfg.useApkFixturesDir)
       cfg.apksDirPath = new ResourcePath(InitConstants.apk_fixtures).path

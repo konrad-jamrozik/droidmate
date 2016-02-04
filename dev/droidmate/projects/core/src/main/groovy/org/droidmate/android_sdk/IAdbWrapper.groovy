@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -32,7 +32,7 @@ public interface IAdbWrapper {
 
   void installApk(String deviceSerialNumber, IApk instrumentedApk) throws AdbWrapperException
 
-  void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean warnAboutFailure) throws AdbWrapperException
+  void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean ignoreFailure) throws AdbWrapperException
 
   void launchMainActivity(String deviceSerialNumber, String launchableActivityName) throws AdbWrapperException
 
@@ -49,4 +49,8 @@ public interface IAdbWrapper {
   void reboot(String deviceSerialNumber) throws AdbWrapperException
 
   void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
+
+  void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+
+  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
 }

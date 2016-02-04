@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -15,7 +15,6 @@ import org.droidmate.exceptions.TcpServerUnreachableException
 
 public interface ISerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable>
 {
-  Boolean isServerReachable(int port) throws DeviceNeedsRebootException, DeviceException
 
   OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
 }

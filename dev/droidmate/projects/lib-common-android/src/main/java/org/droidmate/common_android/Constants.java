@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -14,8 +14,14 @@ package org.droidmate.common_android;
 public class Constants
 {
 
-  // Why this is constant and not a cmd line parameter? See comment in Configuration class.
+  // To understand why this is constant and not a cmd line parameter, see comment in
+  // org.droidmate.configuration.ConfigurationBuilder.bindAndValidate()
   public static final int UIADAEMON_SERVER_PORT = 59800;
+
+  public static final String logcatLogFileName = "droidmate_logcat.txt";
+
+  public static final String deviceLogcatTagPrefix = "droidmate/";
+  public static final String uiaDaemon_logcatTag = deviceLogcatTagPrefix + "uiad";
 
   // End of DUPLICATION WARNING
 
@@ -37,13 +43,11 @@ public class Constants
   public static final String guiActionCommand_pressBack  = "press_back";
   public static final String guiActionCommand_pressHome  = "press_home";
   public static final String guiActionCommand_turnWifiOn = "turn_wifi_on";
-  @SuppressWarnings("unused") // Used in org.droidmate.uiautomatordaemon.UiAutomatorDaemonDriver.performAction()
   public static final String guiActionCommand_launchApp  = "launch_app";
 
   public static final String uiaDaemonParam_waitForGuiToStabilize      = "wait_for_gui_to_stabilize";
   public static final String uiaDaemonParam_waitForWindowUpdateTimeout = "wait_for_window_update_timeout";
   public static final String uiaDaemonParam_tcpPort                    = "uiadaemon_server_tcp_port";
-  public static final String uiaDaemon_logcatTag                       = "org.droidmate.uiad";
 
   // !!! DUPLICATION WARNING !!!
   // These values are duplicated in Instrumentation library from Philipp.

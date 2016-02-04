@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -10,6 +10,7 @@ package org.droidmate.android_sdk
 
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
+import org.droidmate.exceptions.LaunchableActivityNameProblemException
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -28,6 +29,7 @@ class Apk implements IApk, Serializable
   final String packageName
   final String launchableActivityName
   final String launchableActivityComponentName
+  final String applicationLabel
 
   public static Apk build(IAaptWrapper aapt, Path path)
   {
@@ -35,23 +37,28 @@ class Apk implements IApk, Serializable
     assert path != null
     assert Files.isRegularFile(path)
 
-    def (String packageName, String launchableActivityName, String launchableActivityComponentName) = aapt.getMetadata(path)
-
-    if ([packageName, launchableActivityName, launchableActivityComponentName].any {it == null})
+    String packageName, launchableActivityName, launchableActivityComponentName, applicationLabel
+    try
     {
-      log.warn("Failed to build apk from ${path.toString()} because some of its metadata is null: " +
-        "packageName=$packageName, " +
-        "launchableActivityName=$launchableActivityName, " +
-        "launchableActivityComponentName=$launchableActivityComponentName. Skipping the apk.")
+      (packageName, launchableActivityName, launchableActivityComponentName, applicationLabel) = aapt.getMetadata(path)
+    } catch (LaunchableActivityNameProblemException e)
+    {
+      log.warn("! While getting metadata for ${path.toString()}, got an: $e Returning null apk.")
+      assert e.isFatal
       return null
     }
-    else
+
+    if ([launchableActivityName, launchableActivityComponentName].any {it == null})
     {
-      return new Apk(path, packageName, launchableActivityName, launchableActivityComponentName)
+      assert [launchableActivityName, launchableActivityComponentName].every { it == null }
+      log.debug("$Apk.simpleName class instance for ${path.toString()} has null launchableActivityName and thus also " +
+        "launchableActivityComponentName.")
     }
+
+    return new Apk(path, packageName, launchableActivityName, launchableActivityComponentName, applicationLabel)
   }
 
-  Apk(Path path, String packageName, String launchableActivityName, String launchableActivityComponentName)
+  Apk(Path path, String packageName, String launchableActivityName, String launchableActivityComponentName, String applicationLabel)
   {
     String fileName = path.fileName.toString()
     String absolutePath = path.toAbsolutePath().toString()
@@ -60,16 +67,15 @@ class Apk implements IApk, Serializable
     assert fileName.endsWith(".apk")
     assert absolutePath?.size() > 0
     assert packageName?.size() > 0
-    assert launchableActivityName?.size() > 0
-    assert launchableActivityComponentName?.size() > 0
+    assert applicationLabel?.size() > 0
 
     this.fileName = fileName
     this.absolutePath = absolutePath
     this.packageName = packageName
     this.launchableActivityName = launchableActivityName
     this.launchableActivityComponentName = launchableActivityComponentName
+    this.applicationLabel = applicationLabel
   }
-
 }
 
 

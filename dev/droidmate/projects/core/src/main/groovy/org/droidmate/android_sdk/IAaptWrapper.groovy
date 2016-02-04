@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -23,6 +23,8 @@ public interface IAaptWrapper {
   String getLaunchableActivityName(Path apk) throws DroidmateException
 
   String getLaunchableActivityComponentName(Path apk) throws DroidmateException
+
+  String getApplicationLabel(Path apk) throws DroidmateException
 
   List<String> getMetadata(Path apk) throws DroidmateException
 }

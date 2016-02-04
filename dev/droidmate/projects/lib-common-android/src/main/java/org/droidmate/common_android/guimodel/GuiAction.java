@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -36,12 +36,12 @@ public class GuiAction implements Serializable
     this.textToEnter = null;
   }
 
-  public GuiAction(String resourceId, String textToEnter)
+  public GuiAction(String guiActionCommand, String resourceId, String textToEnter)
   {
     this.clickXCoor = null;
     this.clickYCoor = null;
     this.longClick = false;
-    this.guiActionCommand = null;
+    this.guiActionCommand = guiActionCommand;
     this.resourceId = resourceId;
     this.textToEnter = textToEnter;
 
@@ -56,6 +56,7 @@ public class GuiAction implements Serializable
     this.resourceId = null;
     this.textToEnter = null;
   }
+
 
   @Override
   public String toString()
@@ -107,7 +108,7 @@ public class GuiAction implements Serializable
 
   public static GuiAction createEnterTextGuiAction(String resourceId, String textToEnter)
   {
-    return new GuiAction(resourceId, textToEnter);
+    return new GuiAction(null, resourceId, textToEnter);
   }
 
   public static GuiAction createPressHomeGuiAction()
@@ -120,6 +121,10 @@ public class GuiAction implements Serializable
     return new GuiAction(Constants.guiActionCommand_turnWifiOn);
   }
 
+  public static GuiAction createLaunchAppGuiAction(String iconLabel)
+  {
+    return new GuiAction(Constants.guiActionCommand_launchApp, iconLabel, null);
+  }
 
 
   @Override

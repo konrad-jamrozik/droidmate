@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -48,17 +48,10 @@ ext.robotLibDir = {
     return "$projectDir/$libsDirPath/robot/Mac_OS"
 }
 
-/*
-  Workaround for a bug causing tests run from Gradle to fail. Source of the workaround: [1]
-
-  Suspected cause of the bug:
-    Because project(":projects:lib-android") has android.jar as a transitive dependency, running tests
-    from Gradle caused JUnit to throw "Stub!" from Assert method.
-
-  [1] http://stackoverflow.com/a/7253941/986533
- */
+// Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
+sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
 dependencies {
 
@@ -82,7 +75,7 @@ dependencies {
   compile libsDirFileTree
 
   compile 'com.beust:jcommander:1.35'
-  compile 'com.google.guava:guava:18.0'
+  compile 'com.google.guava:guava:19.0'
   compile 'org.apache.commons:commons-lang3:3.3'
   compile 'commons-io:commons-io:2.4'
   compile 'org.apache.commons:commons-exec:1.2'
@@ -340,49 +333,8 @@ test {
   */
   workingDir rootDir
 
-  /* Lurking bug: GRADLE-1682.
-
-  Currently the bug doesn't manifest itself, but if you run into "superClassName is empty", you bumped into it.
-
-  Reference:
-  http://stackoverflow.com/questions/14814837/gradle-test-fails-with-error
-  http://stackoverflow.com/questions/11129401/debug-gradle-plugins-with-intellij/11129708#11129708
-  http://issues.gradle.org/browse/GRADLE-1682
-  */
-  includes = ['**/FastRegressionTestSuite.class']
-
-  // Uncomment the code below and comment the "includes" clause above if you want for the task to run only 1 test,
-  // e.g. for debugging purposes.
-//  filter {
-//    includeTestsMatching '*Configures'
-//  }
-}
-
-task testDevice(type: Test) {
-
-  inputs.dir apkFixturesDir.absolutePath
-
-  workingDir rootDir
-
-  includes = ['**/RequiresDeviceTestSuite.class']
-
-}
-
-// For interactive, quick testing from cmd line.
-task testi(type: Test) {
-
-  outputs.upToDateWhen {false}
-
-  workingDir rootDir
-  testLogging {events 'failed', 'passed'}
-
-  /* Reference: http://www.gradle.org/docs/current/userguide/java_plugin.html#testfiltering
-
-    If not using filter (comment it out), you could run like:
-    gradle :projects:core:testi --tests *Configures
-  */
-  filter {
-    includeTestsMatching '*Configures'
-  }
+   /* Lurking bug: GRADLE-1682. See :projects:command:test doc for more.*/
+   includes = ['']
 }
 //endregion Testing tasks
+

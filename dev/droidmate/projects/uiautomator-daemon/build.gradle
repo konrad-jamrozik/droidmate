@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -41,6 +41,10 @@ dependencies {
   File uiautomatorFile = new File(InitConstants.android_platform_dir, "uiautomator.jar")
   assert uiautomatorFile.file
   compile files(uiautomatorFile)
+
+  File androidJarFile = new File(InitConstants.android_platform_dir, "android.jar")
+  assert androidJarFile.file
+  compile files(androidJarFile)
 }
 
 task classes (overwrite: true) {

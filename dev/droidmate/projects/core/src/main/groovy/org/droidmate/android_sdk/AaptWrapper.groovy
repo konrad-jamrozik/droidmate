@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -15,7 +15,7 @@ import org.droidmate.common.DroidmateException
 import org.droidmate.common.ISysCmdExecutor
 import org.droidmate.common.SysCmdExecutorException
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.NoLaunchableActivityNameException
+import org.droidmate.exceptions.LaunchableActivityNameProblemException
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -63,16 +63,16 @@ public class AaptWrapper implements IAaptWrapper
   }
 
 
-  private static String tryGetLaunchableActivityNameFromBadgingDump(String aaptBadgingDump) throws DroidmateException
+  private static String tryGetLaunchableActivityNameFromBadgingDump(String aaptBadgingDump) throws LaunchableActivityNameProblemException
   {
     assert aaptBadgingDump?.length() > 0
 
     Matcher matcher = aaptBadgingDump =~ /(?:.*)launchable-activity: name='(\S*)'.*/
 
     if (matcher.size() == 0)
-      throw new NoLaunchableActivityNameException()
+      throw new LaunchableActivityNameProblemException("No launchable activity found.")
     else if (matcher.size() > 1)
-      throw new DroidmateException("More than one launchable activity found! While some apks have more than one launchable activities, DroidMate doesn't know how to handle such situations.")
+      throw new LaunchableActivityNameProblemException("More than one launchable activity found.", /* isFatal */ true)
     else
     {
       String launchableActivityName = getAndValidateFirstMatch(matcher)
@@ -97,18 +97,9 @@ public class AaptWrapper implements IAaptWrapper
   {
     assert Files.isRegularFile(apk)
 
-    String aaptBadgingDump = aaptDumpBadging(apk)
-    String launchableActivityName
-    try
-    {
-      launchableActivityName = tryGetLaunchableActivityNameFromBadgingDump(aaptBadgingDump)
-    } catch (DroidmateException e)
-    {
-      log.warn("! Caught ${e.class.simpleName} while trying to obtain launchable activity name. Returning null instead. The exception: $e")
-      return null
-    }
+    String launchableActivityName = tryGetLaunchableActivityNameFromBadgingDump(aaptDumpBadging(apk))
 
-    assert launchableActivityName?.length() > 0;
+    assert launchableActivityName?.length() > 0
     return launchableActivityName
   }
 
@@ -117,27 +108,60 @@ public class AaptWrapper implements IAaptWrapper
   {
     assert Files.isRegularFile(apk)
 
-    String aaptBadgingDump = aaptDumpBadging(apk)
-    String launchableActivityComponentName
-    try
-    {
-      launchableActivityComponentName = tryGetLaunchableActivityComponentNameFromBadgingDump(aaptBadgingDump)
-    } catch (DroidmateException e)
-    {
-      log.warn("! Caught ${e.class.simpleName} while trying to obtain launchable activity component name. Returning null instead. The exception: $e")
-      return null
-    }
+    String launchableActivityComponentName = tryGetLaunchableActivityComponentNameFromBadgingDump(aaptDumpBadging(apk))
 
     assert launchableActivityComponentName?.length() > 0
     return launchableActivityComponentName
   }
 
   @Override
+  String getApplicationLabel(Path apk) throws DroidmateException
+  {
+    assert Files.isRegularFile(apk)
+
+    String aaptBadgingDump = aaptDumpBadging(apk)
+    return tryGetApplicationLabelFromBadgingDump(aaptBadgingDump)
+  }
+
+  private static String tryGetApplicationLabelFromBadgingDump(String aaptBadgingDump) throws DroidmateException
+  {
+    assert aaptBadgingDump?.length() > 0
+
+    Matcher matcher = aaptBadgingDump =~ /(?:.*)application-label:'(.*)'.*/
+
+    if (matcher.size() == 0)
+      throw new DroidmateException("No application label found in 'aapt dump badging'")
+    else if (matcher.size() > 1)
+      throw new DroidmateException("More than one application label found in 'aapt dump badging'")
+    else
+    {
+      String applicationLabel = getAndValidateFirstMatch(matcher)
+      return applicationLabel
+    }
+  }
+
+  @Override
   List<String> getMetadata(Path apk)
   {
-    [getPackageName(apk),
-     getLaunchableActivityName(apk),
-     getLaunchableActivityComponentName(apk)]
+    List<String> activity
+    try
+    {
+      activity = [getLaunchableActivityName(apk), getLaunchableActivityComponentName(apk)]
+    } catch (LaunchableActivityNameProblemException e)
+    {
+      if (e.isFatal)
+      {
+        throw e
+      } else
+      {
+        log.trace("While getting metadata for ${apk.toString()}, got an: $e Substituting null for the launchable activity (component) name.")
+        activity = [null, null]
+      }
+
+
+    }
+
+    return [getPackageName(apk)] + activity + getApplicationLabel(apk)
   }
 
   @Memoized

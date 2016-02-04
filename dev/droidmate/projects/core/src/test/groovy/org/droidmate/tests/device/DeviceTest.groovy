@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -30,8 +30,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
 
-import static org.droidmate.device.datatypes.AndroidDeviceAction.newClickGuiDeviceAction
-import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchActivityDeviceAction
+import static org.droidmate.device.datatypes.AndroidDeviceAction.*
 
 @TypeChecked
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -45,7 +44,7 @@ class DeviceTest extends DroidmateGroovyTestCase
     withApkDeployedOnDevice() {IRobustDevice device, IApk deployedApk ->
 
       device.getGuiSnapshot()
-      device.rebootAndRestoreConnection()
+      device.reboot()
       device.getGuiSnapshot()
     }
   }
@@ -60,7 +59,7 @@ class DeviceTest extends DroidmateGroovyTestCase
       assert device.guiSnapshot.guiState.belongsToApp(deployedApk.packageName)
 
       // Act 1
-      assert device.appProcessIsRunning(deployedApk.packageName)
+      assert device.appIsRunning(deployedApk.packageName)
 
       // Act 2
       assert device.anyMonitorIsReachable()
@@ -74,11 +73,22 @@ class DeviceTest extends DroidmateGroovyTestCase
       assert device.guiSnapshot.guiState.isHomeScreen()
 
       // Act 5
-      assert !device.appProcessIsRunning(deployedApk.packageName)
+      assert !device.appIsRunning(deployedApk.packageName)
 
       // Act 6
       assert !device.anyMonitorIsReachable()
 
+    }
+  }
+
+  @Category([RequiresDevice])
+  @Test
+  void "Turns wifi on"()
+  {
+    IDeviceTools deviceTools = new DeviceTools(new ConfigurationForTests().forDevice().get())
+    deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
+      device.perform(newTurnWifiOnDeviceAction())
+      return []
     }
   }
 

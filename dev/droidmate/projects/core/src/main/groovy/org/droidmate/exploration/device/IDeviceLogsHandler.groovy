@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -14,11 +14,7 @@ interface IDeviceLogsHandler
 {
   void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
 
-  void logUiaDaemonLogsFromLogcat() throws DeviceException
-
-  void clearLogcat() throws DeviceException
-
   void readAndClearApiLogs() throws DeviceException
 
-  IDeviceLogs sealReadingAndReturnDeviceLogs()
+  IDeviceLogs getLogs()
 }

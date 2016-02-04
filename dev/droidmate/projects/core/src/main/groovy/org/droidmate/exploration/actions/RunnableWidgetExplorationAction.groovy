@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -35,26 +35,19 @@ class RunnableWidgetExplorationAction extends RunnableExplorationAction
 
   protected void performDeviceActions(IApk app, IRobustDevice device) throws DeviceException
   {
-    IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     log.debug("1. Assert only background API logs are present, if any.")
+    IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     logsHandler.readClearAndAssertOnlyBackgroundApiLogsIfAny()
 
-    log.debug("2. Perform widget click: ${action}")
+    log.debug("2. Perform widget click: ${action}.")
     device.perform(newClickGuiDeviceAction(action.widget, action.longClick))
 
-    log.debug("3. Read and clear API logs if any, then seal logs reading")
+    log.debug("3. Read and clear API logs if any, then seal logs reading.")
+    logsHandler.readAndClearApiLogs()
+    this.logs = logsHandler.getLogs()
 
-    if (appIsRunning(device, app))
-      logsHandler.readAndClearApiLogs()
-
-    this.logs = logsHandler.sealReadingAndReturnDeviceLogs()
-
-    log.debug("4. Get GUI snapshot")
+    log.debug("4. Get GUI snapshot.")
     this.snapshot = device.guiSnapshot
-
-    log.debug("5. Log uia-daemon logs and clear logcat")
-    logsHandler.logUiaDaemonLogsFromLogcat()
-    logsHandler.clearLogcat()
   }
 
 }

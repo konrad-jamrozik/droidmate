@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2015 Saarland University Software Engineering Chair.
+// Copyright (c) 2012-2016 Saarland University Software Engineering Chair.
 // All right reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -38,6 +38,7 @@ public class LocalInitConstantsTemplate
    * The "init" project of DroidMate. The project has to be built from gradle cmd line to generate init.jar, used by other
    * DroidMate projects. See README file in this project dir for details.
    */
+  // KNOWN BUG backward slashes do not work here (\\).
   public static final String init_project_dir_path = "c:/my/local/repos/chair/droidmate/dev/init"
 
   /**

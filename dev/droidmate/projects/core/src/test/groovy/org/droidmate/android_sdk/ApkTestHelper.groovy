@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -25,17 +25,19 @@ public class ApkTestHelper
       Paths.get("/path/to/${name}.apk"),
       "${name}.pkg_name",
       "${name}_lActName",
-      "${name}_lActCompName")
+      "${name}_lActCompName",
+      "${name}_applicationLabel")
   }
 
-  public static Apk build(String packageName, String launchableActivityName, String launchableActivityComponentName)
+  public static Apk build(String packageName, String launchableActivityName, String launchableActivityComponentName, String applicationLabel)
   {
     Path path = Paths.get("/path/to/${packageName}.apk")
     return new Apk(
       path,
       packageName,
       launchableActivityName,
-      launchableActivityComponentName)
+      launchableActivityComponentName,
+      applicationLabel)
   }
 
   public static Apk build(Path path)
@@ -47,7 +49,8 @@ public class ApkTestHelper
       path,
       "${name}.pkg_name",
       "${name}_lActName",
-      "${name}_lActCompName")
+      "${name}_lActCompName",
+      "${name}_applicationLabel")
   }
 
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -9,8 +9,6 @@
 
 package org.droidmate.device
 
-import groovy.transform.TypeChecked
-import groovy.transform.TypeCheckingMode
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.android_sdk.IApk
@@ -22,10 +20,12 @@ import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
-import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
+import org.droidmate.logging.LogbackUtils
 
 import java.awt.*
 import java.time.LocalDateTime
@@ -33,7 +33,7 @@ import java.time.format.DateTimeFormatter
 import java.util.List
 
 import static org.droidmate.common_android.Constants.*
-import static org.droidmate.common_android.NoDeviceResponse.getNoDeviceResponse
+import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchAppDeviceAction
 
 /**
  * <p>
@@ -90,8 +90,9 @@ public class AndroidDevice implements IAndroidDevice
     return packageEntries.contains("package:" + packageName)
   }
 
+
   @Override
-  public IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
+  public IDeviceGuiSnapshot getGuiSnapshot() throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("getGuiSnapshot()")
 
@@ -106,42 +107,35 @@ public class AndroidDevice implements IAndroidDevice
     return outSnapshot
   }
 
-  @TypeChecked(TypeCheckingMode.SKIP)
   @Override
-  void perform(IAndroidDeviceAction action) throws DeviceException
+  void perform(IAndroidDeviceAction action) throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("perform($action)")
     //noinspection GroovyInArgumentCheck
     assert action?.class in [ClickGuiAction, AdbClearPackageAction, LaunchMainActivityDeviceAction]
 
     //noinspection GroovyAssignabilityCheck
-    internalPerform(action)
+    switch (action)
+    {
+      case ClickGuiAction:
+        performGuiClick((action as ClickGuiAction))
+        break
+    // Case @Deprecated. Used by old code. Instead, call the method directly.
+      case LaunchMainActivityDeviceAction:
+        launchMainActivity((action as LaunchMainActivityDeviceAction).launchableActivityComponentName)
+        break
+    // Case @Deprecated. Used by old code. Instead, call the method directly.
+      case AdbClearPackageAction:
+        clearPackage((action as AdbClearPackageAction).packageName)
+        break
+      default:
+        throw new UnexpectedIfElseFallthroughError()
+    }
   }
 
-  // KJA2 multimethod to switch
-  DeviceResponse internalPerform(LaunchMainActivityDeviceAction action) throws DeviceException
-  {
-    launchMainActivity(action.launchableActivityComponentName)
-    return noDeviceResponse
-  }
-
-  // Used by old exploration code
-  @Deprecated
-  DeviceResponse internalPerform(AdbClearPackageAction action) throws DeviceException
-  {
-    clearPackage(action.packageName)
-    return noDeviceResponse
-  }
-
-  DeviceResponse internalPerform(ClickGuiAction action) throws DeviceException
+  DeviceResponse performGuiClick(ClickGuiAction action) throws DeviceNeedsRebootException, DeviceException
   {
     return issueCommand(new DeviceCommand(DEVICE_COMMAND_PERFORM_ACTION, action.guiAction))
-  }
-
-  public DeviceResponse getIsDeviceOrientationLandscape() throws DeviceException
-  {
-    log.debug("getIsDeviceOrientationLandscape()")
-    return this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_IS_ORIENTATION_LANDSCAPE))
   }
 
   /**
@@ -156,7 +150,7 @@ public class AndroidDevice implements IAndroidDevice
    * <i>This doc was last reviewed on 14 Sep '13.</i>
    * </p>
    */
-  private DeviceResponse issueCommand(DeviceCommand deviceCommand) throws DeviceException
+  private DeviceResponse issueCommand(DeviceCommand deviceCommand) throws DeviceNeedsRebootException, DeviceException
   {
     DeviceResponse deviceResponse
 
@@ -187,12 +181,12 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  public void closeConnection() throws DeviceException
+  public void closeConnection() throws DeviceNeedsRebootException, DeviceException
   {
     this.stopUiaDaemon()
   }
 
-  private void stopUiaDaemon() throws DeviceException
+  private void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
   {
     log.trace("stopUiaDaemon()")
     this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
@@ -239,6 +233,20 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
+  void removeLogcatLogFile() throws DeviceException
+  {
+    log.debug("removeLogcatLogFile()")
+    this.adbWrapper.removeFile(this.serialNumber, logcatLogFileName)
+  }
+
+  @Override
+  void pullLogcatLogFile() throws DeviceException
+  {
+    log.debug("pullLogcatLogFile()")
+    this.adbWrapper.pullFile(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"))
+  }
+
+  @Override
   List<ITimeFormattedLogcatMessage> readLogcatMessages(String messageTag) throws DeviceException
   {
     log.debug("readLogcatMessages(tag: $messageTag)")
@@ -256,7 +264,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  List<List<String>> readAndClearMonitorTcpMessages() throws TcpServerUnreachableException, DeviceException
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("readAndClearMonitorTcpMessages()")
 
@@ -273,7 +281,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  LocalDateTime getCurrentTime() throws TcpServerUnreachableException, DeviceException
+  LocalDateTime getCurrentTime() throws DeviceNeedsRebootException, DeviceException
   {
     List<List<String>> msgs = this.tcpClients.getCurrentTime()
 
@@ -288,8 +296,7 @@ public class AndroidDevice implements IAndroidDevice
 
   }
 
-  @Override
-  Boolean appProcessIsRunning(String appPackageName) throws DeviceException
+  private Boolean appProcessIsRunning(String appPackageName) throws DeviceException
   {
     log.debug("appProcessIsRunning($appPackageName)")
     String ps = this.adbWrapper.ps(this.serialNumber)
@@ -303,7 +310,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  Boolean anyMonitorIsReachable() throws DeviceException
+  Boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("anyMonitorIsReachable()")
     return this.tcpClients.anyMonitorIsReachable()
@@ -331,10 +338,10 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  void uninstallApk(String apkPackageName, boolean warnAboutFailure) throws DeviceException
+  void uninstallApk(String apkPackageName, boolean ignoreFailure) throws DeviceException
   {
-    log.debug("uninstallApk($apkPackageName, warnAboutFailure: $warnAboutFailure)")
-    adbWrapper.uninstallApk(serialNumber, apkPackageName, warnAboutFailure)
+    log.debug("uninstallApk($apkPackageName, ignoreFailure: $ignoreFailure)")
+    adbWrapper.uninstallApk(serialNumber, apkPackageName, ignoreFailure)
   }
 
   @Override
@@ -371,6 +378,17 @@ public class AndroidDevice implements IAndroidDevice
     ]
   }
 
+  @Override
+  public Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
+  {
+    return this.anyMonitorIsReachable() && this.appProcessIsRunning(appPackageName)
+  }
+
+  @Override
+  void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
+  {
+    this.perform(newLaunchAppDeviceAction(iconLabel))
+  }
 
   @Override
   public String toString()

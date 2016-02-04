@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -24,7 +24,7 @@ class LogbackUtilsRequiringLogbackLog
     if (!logsDir.directory)
       logsDir.mkdirs()
 
-    String logNotDeleted = ""
+    String msg_notDeletedLogFileNames = ""
 
     logsDir.eachFile(FILES) {File logFile ->
 
@@ -33,12 +33,12 @@ class LogbackUtilsRequiringLogbackLog
 
       if (!logFile.delete())
       {
-        logNotDeleted += " $logFile.name,"
+        msg_notDeletedLogFileNames += " $logFile.name,"
         logFile.write("")
       }
     }
 
-    log(logsDir, logNotDeleted)
+    log(logsDir, msg_notDeletedLogFileNames)
   }
 
   private static void log(File logsDir, String logNotDeleted)

@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -14,12 +14,10 @@ import org.droidmate.common.Boolean3
 import org.droidmate.common.Utils
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
-import org.droidmate.device.datatypes.AndroidDeviceAction
-import org.droidmate.device.datatypes.AppHasStoppedDialogBoxGuiState
-import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.device.datatypes.ValidationResult
+import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
+import org.droidmate.logcat.IApiLogcatMessage
 
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newPressHomeDeviceAction
 
@@ -32,6 +30,8 @@ class RobustDevice implements IRobustDevice
 
   @Delegate
   private final IDeviceMessagesReader messagesReader
+
+  public static final int ensureHomeScreenIsDisplayedAttempts = 3
 
   private final int clearPackageRetryAttempts
   private final int clearPackageRetryDelay
@@ -132,7 +132,6 @@ class RobustDevice implements IRobustDevice
     assert waitForCanRebootDelay >= 0
   }
 
-  // KJA the contract should be: if device needs reboot, it will reboot and return home screen
   @Override
   IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
   {
@@ -148,14 +147,14 @@ class RobustDevice implements IRobustDevice
 
       Utils.retryOnException(device.&clearPackage.curry(apkPackageName), DeviceException,
         this.clearPackageRetryAttempts,
-        this.clearPackageRetryDelay
+        this.clearPackageRetryDelay, "clearPackage"
       )
 
       // Sleep here to give the device some time to stop all the processes belonging to the cleared package before checking
       // if indeed all of them have been stopped.
       sleep(this.stopAppSuccessCheckDelay)
 
-      return !this.appIsRunningCheckOnce(apkPackageName)
+      return !this.getAppIsRunningRebootingIfNecessary(apkPackageName)
 
     },
       this.stopAppRetryAttempts,
@@ -168,40 +167,84 @@ class RobustDevice implements IRobustDevice
   IDeviceGuiSnapshot ensureHomeScreenIsDisplayed() throws DeviceException
   {
     def guiSnapshot = this.guiSnapshot
-    if (!guiSnapshot.guiState.isHomeScreen())
-    {
-      device.perform(newPressHomeDeviceAction())
-      guiSnapshot = this.guiSnapshot
-      if (!guiSnapshot.guiState.isHomeScreen())
-        throw new DeviceException("Failed to ensure home screen is displayed. " +
-          "Pressing 'home' button didn't help. Instead, ended with GUI state of: ${guiSnapshot.guiState}")
+    if (guiSnapshot.guiState.isHomeScreen())
+      return guiSnapshot
 
+    Utils.retryOnFalse({
+      if (!guiSnapshot.guiState.isHomeScreen())
+      {
+        if (guiSnapshot.guiState.isSelectAHomeAppDialogBox())
+        {
+          guiSnapshot = closeSelectAHomeAppDialogBox(guiSnapshot)
+        } else
+        {
+          device.perform(newPressHomeDeviceAction())
+          guiSnapshot = this.guiSnapshot
+        }
+      }
+      return guiSnapshot.guiState.isHomeScreen()
+    }, ensureHomeScreenIsDisplayedAttempts, /* delay */ 0)
+
+    if (!guiSnapshot.guiState.isHomeScreen())
+      throw new DeviceException("Failed to ensure home screen is displayed. " +
+        "Pressing 'home' button didn't help. Instead, ended with GUI state of: ${guiSnapshot.guiState}")
+
+    return guiSnapshot
+  }
+
+  private IDeviceGuiSnapshot closeSelectAHomeAppDialogBox(IDeviceGuiSnapshot guiSnapshot)
+  {
+    device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
+      guiSnapshot.guiState.widgets.findSingle({it.text == "Launcher"}))
+    )
+
+    guiSnapshot = this.guiSnapshot
+    if (guiSnapshot.guiState.isSelectAHomeAppDialogBox())
+    {
+      device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
+        guiSnapshot.guiState.widgets.findSingle({it.text == "Just once"}))
+      )
+      guiSnapshot = this.guiSnapshot
     }
+    assert !guiSnapshot.guiState.isSelectAHomeAppDialogBox()
     return guiSnapshot
   }
 
   @Override
-  Boolean appIsRunningCheckOnce(String appPackageName) throws DeviceException
+  void perform(IAndroidDeviceAction action) throws DeviceNeedsRebootException, DeviceException
   {
-    return _appIsRunning(appPackageName)
+    rebootIfNecessary {this.device.perform(action); return true}
   }
 
   @Override
-  Boolean appIsRunning(IApk apk) throws DeviceException
+  public Boolean appIsNotRunning(IApk apk) throws DeviceException
   {
-    return Utils.retryOnFalse(this.&_appIsRunning.curry(apk.packageName),
+    return Utils.retryOnFalse({!this.getAppIsRunningRebootingIfNecessary(apk.packageName)},
       checkAppIsRunningRetryAttempts,
       checkAppIsRunningRetryDelay,
     )
   }
 
-  @Override
-  Boolean appIsNotRunning(IApk apk) throws DeviceException
+  private boolean getAppIsRunningRebootingIfNecessary(String packageName) throws DeviceException
   {
-    return Utils.retryOnFalse({!this._appIsRunning(apk.packageName)},
-      checkAppIsRunningRetryAttempts,
-      checkAppIsRunningRetryDelay,
-    )
+    rebootIfNecessary {this.device.appIsRunning(packageName)}
+  }
+
+  @Override
+  void launchApp(IApk app) throws DeviceException
+  {
+    log.debug("launchApp(${app.packageName})")
+
+    if (app.launchableActivityName != null)
+      this.launchMainActivity(app.launchableActivityComponentName)
+    else
+      this.clickAppIcon(app.applicationLabel)
+  }
+
+  @Override
+  void clickAppIcon(String iconLabel) throws DeviceException
+  {
+    rebootIfNecessary { this.device.clickAppIcon(iconLabel); return true; }
   }
 
   @Override
@@ -248,6 +291,7 @@ class RobustDevice implements IRobustDevice
 
     assert guiSnapshot.guiState.isAppHasStoppedDialogBox()
     assert (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
+    log.debug("ANR encountered")
 
     IDeviceGuiSnapshot out = null
 
@@ -261,7 +305,7 @@ class RobustDevice implements IRobustDevice
       if (out.guiState.isAppHasStoppedDialogBox())
       {
         assert (out.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled
-        log.trace("Failed to properly close ANR even though OK widget is enabled.")
+        log.debug("ANR encountered - again. Failed to properly close it even though its OK widget was enabled.")
         return false
       } else
         return true
@@ -280,7 +324,7 @@ class RobustDevice implements IRobustDevice
       this.&getValidGuiSnapshot,
       DeviceException,
       getValidGuiSnapshotRetryAttempts,
-      getValidGuiSnapshotRetryDelay
+      getValidGuiSnapshotRetryDelay, "getValidGuiSnapshot"
     )
 
     assert guiSnapshot.validationResult.valid
@@ -300,35 +344,38 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getGuiSnapshotRebootingIfNecessary() throws DeviceException
   {
-    IDeviceGuiSnapshot out
+    rebootIfNecessary {this.device.getGuiSnapshot()}
+  }
+
+  private <T> T rebootIfNecessary(Closure<T> operationOnDevice) throws DeviceException
+  {
+    T out
     try
     {
-      out = this.device.getGuiSnapshot()
-    } catch (DeviceNeedsRebootException ignored)
+      out = operationOnDevice()
+    } catch (DeviceNeedsRebootException e)
     {
-      log.debug("Device needs a reboot while trying to get GUI snapshot. Rebooting and restoring connection.")
-      this.rebootAndRestoreConnection()
-      out = this.device.getGuiSnapshot()
+      log.debug("! Caught $e. Rebooting and restoring connection.")
+      rebootAndRestoreConnection()
+      out = operationOnDevice()
     }
     assert out != null
     return out
   }
 
-  @Override
-  void rebootAndRestoreConnection() throws DeviceException
+  private void rebootAndRestoreConnection() throws DeviceException
   {
     this.reboot()
     this.setupConnection()
   }
 
-  // WISH use "adb wait-for-device" where appropriate.
+// WISH use "adb wait-for-device" where appropriate.
   @Override
   void reboot() throws DeviceException
   {
-    log.trace("Checking if the device can be rebooted.")
     if (this.device.available)
     {
-      log.trace("Device can be rebooted.")
+      log.trace("Device is available for rebooting.")
     } else
     {
       log.trace("Device not yet available for a reboot. Waiting $waitForCanRebootDelay milliseconds. If the device still won't be available, " +
@@ -366,9 +413,16 @@ class RobustDevice implements IRobustDevice
     assert !this.device.uiaDaemonClientThreadIsAlive()
   }
 
-  private Boolean _appIsRunning(String appPackageName)
+  @Override
+  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceException
   {
-    return device.anyMonitorIsReachable() && device.appProcessIsRunning(appPackageName)
+    rebootIfNecessary {this.messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer()}
+  }
+
+  @Override
+  public void closeConnection() throws DeviceException
+  {
+    rebootIfNecessary {this.device.closeConnection(); return true}
   }
 
   @Override
@@ -376,4 +430,5 @@ class RobustDevice implements IRobustDevice
   {
     return "robust-" + this.device.toString()
   }
+
 }

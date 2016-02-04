@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 Saarland University
+// Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
 // Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
@@ -73,9 +73,10 @@ public class MonitorJavaTemplate
 {
   //region Fields
 
-  public static final String tag_init = "Monitor_init";
-  public static final String tag_srv  = "Monitor_server";
-  public static final String tag_api  = "Monitored_API_method_call";
+  public static final String tag_prefix = "Monitor";
+  public static final String tag_init = tag_prefix + "_init";
+  public static final String tag_srv  = tag_prefix + "_server";
+  public static final String tag_api  = tag_prefix + "_API_method_call";
 
   public static final String loglevel = "i";
 
@@ -119,7 +120,7 @@ public class MonitorJavaTemplate
   {
     try
     {
-      startMonitorTCPServer();
+      server = startMonitorTCPServer();
       Log.i(tag_init, msg_ctor_success);
 
     } catch (Throwable e)
@@ -133,7 +134,7 @@ public class MonitorJavaTemplate
   public void init(android.content.Context context)
   {
     if (server == null)
-      Log.i(tag_init, "Didn't set context: MonitorTCPServer is null");
+      Log.i(tag_srv, "Init: Didn't set context: MonitorTCPServer is null");
     else
       server.context = context;
 
@@ -150,7 +151,7 @@ public class MonitorJavaTemplate
   //region TCP server code
 
   @SuppressWarnings("ConstantConditions")
-  private static void startMonitorTCPServer() throws Throwable
+  private static MonitorTCPServer startMonitorTCPServer() throws Throwable
   {
     Log.d(tag_srv, "Starting monitor TCP server...");
 
@@ -186,11 +187,11 @@ public class MonitorJavaTemplate
     if (tcpServer.isClosed()) throw new AssertionError();
 
     Log.d(tag_srv, "Starting monitor TCP server succeeded. Port used: " + portUsed + " PID: " + getPid());
+    return tcpServer;
   }
 
   static class MonitorTCPServer extends SerializableTCPServerBase<String, ArrayList<ArrayList<String>>>
   {
-    private final static String serverClassName = MonitorTCPServer.class.getSimpleName();
 
     public Context context;
 
@@ -204,39 +205,40 @@ public class MonitorJavaTemplate
     {
       synchronized (currentLogs)
       {
-        Log.d(serverClassName, "OnServerRequest(" + input + ")");
+        Log.v(tag_srv, "OnServerRequest(" + input + ")");
 
         removeSocketInitLogFromMonitorTCPServer(currentLogs);
 
-        if (Objects.equals(input, srvCmd_connCheck))
+
+        if (srvCmd_connCheck.equals(input))
         {
           final ArrayList<String> payload = new ArrayList<String>(Arrays.asList(getPid(), getPackageName(), ""));
           return new ArrayList<ArrayList<String>>(Collections.singletonList(payload));
 
-        } else if (Objects.equals(input, srvCmd_get_logs))
+        } else if (srvCmd_get_logs.equals(input))
         {
           ArrayList<ArrayList<String>> logsToSend = new ArrayList<ArrayList<String>>(currentLogs);
           currentLogs.clear();
 
           return logsToSend;
 
-        } else if (Objects.equals(input, srvCmd_get_time))
+        } else if (srvCmd_get_time.equals(input))
         {
           final String time = getNowDate();
 
           final ArrayList<String> payload = new ArrayList<String>(Arrays.asList(time, null, null));
 
-          Log.d(serverClassName, "Sending time: " + time);
+          Log.d(tag_srv, "Sending time: " + time);
           return new ArrayList<ArrayList<String>>(Collections.singletonList(payload));
 
-        } else if (Objects.equals(input, srvCmd_close))
+        } else if (srvCmd_close.equals(input))
         {
           // Do nothing here. The command will is handled in org.droidmate.lib_android.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
           return new ArrayList<ArrayList<String>>();
 
         } else
         {
-          Log.wtf(serverClassName, "Unexpected command from DroidMate TCP client. The command: " + input);
+          Log.e(tag_srv, "Unexpected command from DroidMate TCP client. The command: " + input);
           return new ArrayList<ArrayList<String>>();
         }
       }
@@ -315,7 +317,7 @@ public class MonitorJavaTemplate
     @Override
     protected boolean shouldCloseServerSocket(String serverInput)
     {
-      return Objects.equals(serverInput, srvCmd_close);
+      return srvCmd_close.equals(serverInput);
     }
   }
 
@@ -343,45 +345,34 @@ public class MonitorJavaTemplate
       this.serverSocketException = null;
       this.port = port;
 
-      try
+      MonitorServerRunnable monitorServerRunnable = new MonitorServerRunnable();
+      Thread serverThread = new Thread(monitorServerRunnable);
+      synchronized (monitorServerRunnable)
       {
-        MonitorServerRunnable monitorServerRunnable = new MonitorServerRunnable();
-        Thread serverThread = new Thread(monitorServerRunnable);
-
-        //noinspection SynchronizationOnLocalVariableOrMethodParameter
-        synchronized (monitorServerRunnable)
-        {
-          if (!(serverSocket == null && serverSocketException == null)) throw new AssertionError();
-          serverThread.start();
-          monitorServerRunnable.wait();
-          //noinspection SimplifiableBooleanExpression
-          if (!(serverSocket != null ^ serverSocketException != null)) throw new AssertionError();
-        }
-
-        if (serverSocketException != null)
-        {
-          if (Objects.equals(serverSocketException.getCause().getMessage(), "bind failed: EADDRINUSE (Address already in use)"))
-          {
-            Log.d(tag_srv, "Failed to start TCP server because 'bind failed: EADDRINUSE (Address already in use)'. " +
-              "Returning null Thread.");
-
-            return null;
-
-          } else
-          {
-            throw new Exception(String.format("Failed to start monitor TCP server thread of %s. " +
-                "Cause of this exception is the one returned by the failed thread.",
-              monitorServerRunnable.runnableClassName),
-              serverSocketException);
-          }
-        }
-
-        return serverThread;
-
-      } catch (InterruptedException e)
-      {
-        throw e;
+        if (!(serverSocket == null && serverSocketException == null)) throw new AssertionError();
+        serverThread.start();
+        monitorServerRunnable.wait();
+        //noinspection SimplifiableBooleanExpression
+        if (!(serverSocket != null ^ serverSocketException != null)) throw new AssertionError();
       }
+      if (serverSocketException != null)
+      {
+
+        if ("bind failed: EADDRINUSE (Address already in use)".equals(serverSocketException.getCause().getMessage()))
+        {
+          Log.d(tag_srv, "Failed to start TCP server because 'bind failed: EADDRINUSE (Address already in use)'. " +
+            "Returning null Thread.");
+
+          return null;
+
+        } else
+        {
+          throw new Exception(String.format("Failed to start monitor TCP server thread for port %s. " +
+              "Cause of this exception is the one returned by the failed thread.", port),
+            serverSocketException);
+        }
+      }
+      return serverThread;
     }
 
     public void closeServerSocket()
@@ -391,7 +382,7 @@ public class MonitorJavaTemplate
         serverSocket.close();
       } catch (IOException e)
       {
-        Log.wtf(thisClassName, "Failed to close server socket.");
+        Log.e(thisClassName, "Failed to close server socket.");
       }
     }
 
@@ -403,12 +394,11 @@ public class MonitorJavaTemplate
     private class MonitorServerRunnable implements Runnable
     {
 
-      public final String runnableClassName = MonitorServerRunnable.class.getSimpleName() + port;
 
       public void run()
       {
 
-        Log.d(runnableClassName, "Started MonitorServerRunnable.");
+        Log.v(tag_srv, "MonitorServerRunnable.run() using "+port);
         try
         {
 
@@ -416,7 +406,7 @@ public class MonitorJavaTemplate
           // serverSocket is initialized.
           synchronized (this)
           {
-            Log.d(runnableClassName, String.format("Creating server socket bound to port %s...", port));
+            Log.d(tag_srv, String.format("Creating server socket bound to port %s...", port));
 
             try
             {
@@ -430,15 +420,15 @@ public class MonitorJavaTemplate
 
           if (serverSocketException != null)
           {
-            Log.d(runnableClassName, String.format("! Failed during startup to bind server socket on port %s. Stopping thread.", port));
+            Log.e(tag_srv, String.format("! Failed during startup to bind server socket on port %s. Stopping thread.", port));
             return;
           }
 
           while (!serverSocket.isClosed())
           {
-            Log.d(runnableClassName, String.format("Accepting socket from client on port %s...", port));
+            Log.v(tag_srv, String.format("Accepting socket from client on port %s...", port));
             Socket clientSocket = serverSocket.accept();
-            Log.d(runnableClassName, "Socket accepted.");
+            Log.v(tag_srv, "Socket accepted.");
 
 //            Log.v(runnableClassName, "ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());");
             ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -465,7 +455,7 @@ public class MonitorJavaTemplate
 
             } catch (Exception e)
             {
-              Log.e(runnableClassName, "Exception was thrown while reading input sent to MonitorServerRunnable from " +
+              Log.e(tag_srv, "Exception was thrown while reading input sent to monitor TCP server from " +
                 "client through socket.", e);
               closeServerSocket();
               break;
@@ -482,15 +472,15 @@ public class MonitorJavaTemplate
               closeServerSocket();
           }
 
-          Log.d(runnableClassName, "Closed MonitorServerRunnable.");
+          Log.d(tag_srv, "Closed monitor TCP server.");
 
         } catch (SocketTimeoutException e)
         {
-          Log.e(runnableClassName, "Closing MonitorServerRunnable due to a timeout.", e);
+          Log.e(tag_srv, "Closing monitor TCP server due to a timeout.", e);
           closeServerSocket();
         } catch (IOException e)
         {
-          Log.e(runnableClassName, "Exception was thrown while operating MonitorServerRunnable", e);
+          Log.e(tag_srv, "Exception was thrown while operating monitor TCP server.", e);
         }
       }
 

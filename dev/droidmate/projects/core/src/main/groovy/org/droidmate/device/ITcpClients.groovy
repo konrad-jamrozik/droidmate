@@ -8,9 +8,6 @@
 // www.droidmate.org
 package org.droidmate.device
 
-import org.droidmate.exceptions.DeviceException
-
 interface ITcpClients extends IMonitorsClient, IUiautomatorDaemonClient
 {
-  void forwardPort() throws DeviceException
 }
