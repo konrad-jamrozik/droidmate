@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GuiApkFixture/GuiApkFixture.iml" filepath="$PROJECT_DIR$/GuiApkFixture/GuiApkFixture.iml" />
-      <module fileurl="file://$PROJECT_DIR$/InstrumentedApkFixture/InstrumentedApkFixture.iml" filepath="$PROJECT_DIR$/InstrumentedApkFixture/InstrumentedApkFixture.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MonitoredApkFixture/MonitoredApkFixture.iml" filepath="$PROJECT_DIR$/MonitoredApkFixture/MonitoredApkFixture.iml" />
-      <module fileurl="file://$PROJECT_DIR$/apk_fixtures_src.iml" filepath="$PROJECT_DIR$/apk_fixtures_src.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib-apk_fixtures/lib-apk_fixtures.iml" filepath="$PROJECT_DIR$/lib-apk_fixtures/lib-apk_fixtures.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GuiApkFixture/GuiApkFixture.iml" filepath="$PROJECT_DIR$/.idea/modules/GuiApkFixture/GuiApkFixture.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/InstrumentedApkFixture/InstrumentedApkFixture.iml" filepath="$PROJECT_DIR$/.idea/modules/InstrumentedApkFixture/InstrumentedApkFixture.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MonitoredApkFixture/MonitoredApkFixture.iml" filepath="$PROJECT_DIR$/.idea/modules/MonitoredApkFixture/MonitoredApkFixture.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/apk_fixtures_src.iml" filepath="$PROJECT_DIR$/.idea/modules/apk_fixtures_src.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib-apk_fixtures/lib-apk_fixtures.iml" filepath="$PROJECT_DIR$/.idea/modules/lib-apk_fixtures/lib-apk_fixtures.iml" />
     </modules>
   </component>
 </project>
