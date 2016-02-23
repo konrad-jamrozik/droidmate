@@ -11,7 +11,7 @@
 project.ext.utils = new GroovyShell().parse(new File("${project.projectDir}/GroovyUtils/Utils.groovy"))
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '2.8'
+  gradleVersion = '2.10'
 }
 
 /* java plugin uses "build" for outputs by default, but the underlying ant script uses "bin".
