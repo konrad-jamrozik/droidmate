@@ -71,7 +71,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/intermediates/instant-run-support" />
       <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/intermediates/jniLibs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/intermediates/pre-dexed" />
       <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/intermediates/res" />
@@ -80,8 +79,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/intermediates/transforms" />
       <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/outputs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/reports" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/test-results" />
       <excludeFolder url="file://$MODULE_DIR$/../../../InstrumentedApkFixture/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />

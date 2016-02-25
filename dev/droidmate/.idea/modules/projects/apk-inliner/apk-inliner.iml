@@ -1,12 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id=":projects:apk-inliner" external.linked.project.path="$MODULE_DIR$/../../../../projects/apk-inliner" external.root.project.path="$MODULE_DIR$/../../../.." external.system.id="GRADLE" external.system.module.group="droidmate.projects" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+  <component name="FacetManager">
+    <facet type="android-gradle" name="Android-Gradle">
+      <configuration>
+        <option name="GRADLE_PROJECT_PATH" value=":projects:apk-inliner" />
+      </configuration>
+    </facet>
+    <facet type="java-gradle" name="Java-Gradle">
+      <configuration>
+        <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/../../../../projects/apk-inliner/build" />
+        <option name="BUILDABLE" value="true" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../../../../projects/apk-inliner/build/classes/main" />
+    <output-test url="file://$MODULE_DIR$/../../../../projects/apk-inliner/build/classes/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../../projects/apk-inliner">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="lib-common" exported="" />
+    <orderEntry type="library" exported="" name="utilities-master-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="groovy-all-2.4.5" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
+    <orderEntry type="library" exported="" name="jimfs-1.0" level="project" />
+    <orderEntry type="library" exported="" name="commons-exec-1.2" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang3-3.3" level="project" />
+    <orderEntry type="library" exported="" name="jopt-simple-4.9" level="project" />
+    <orderEntry type="library" exported="" name="logback-classic-1.0.13" level="project" />
+    <orderEntry type="library" exported="" name="logback-core-1.0.13" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.7.6" level="project" />
+    <orderEntry type="library" exported="" name="guava-19.0" level="project" />
+    <orderEntry type="library" exported="" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_lib_common_src_main_resources" level="project" />
+    <orderEntry type="library" exported="" name="init" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_apk_inliner_src_main_resources_logback" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
+    <orderEntry type="library" exported="" name="apk-inliner.apk-inliner" level="project" />
   </component>
 </module>

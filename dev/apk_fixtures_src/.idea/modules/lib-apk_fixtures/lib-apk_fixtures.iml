@@ -6,6 +6,12 @@
         <option name="GRADLE_PROJECT_PATH" value=":lib-apk_fixtures" />
       </configuration>
     </facet>
+    <facet type="java-gradle" name="Java-Gradle">
+      <configuration>
+        <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/../../../lib-apk_fixtures/build" />
+        <option name="BUILDABLE" value="true" />
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../lib-apk_fixtures/build/classes/main" />
