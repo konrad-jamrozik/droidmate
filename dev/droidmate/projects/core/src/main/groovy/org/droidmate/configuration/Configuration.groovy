@@ -363,7 +363,7 @@ public class Configuration implements IConfiguration
    * Jar with uiautomator-daemon location on the file system. The jar is to be deployed on the android (virtual) device
    * to enable GUI actions execution.
    */
-  public Path uiautomatorDaemonJar
+  public Path uiautomatorDaemon
 
   //endregion
 }

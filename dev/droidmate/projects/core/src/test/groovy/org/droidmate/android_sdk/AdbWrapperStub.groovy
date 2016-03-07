@@ -66,7 +66,13 @@ class AdbWrapperStub implements IAdbWrapper
   }
 
   @Override
-  void installApk(String deviceSerialNumber, IApk instrumentedApk) throws AdbWrapperException
+  void installApk(String deviceSerialNumber, IApk apkToInstall) throws AdbWrapperException
+  {
+    assert false: "Not yet implemented!"
+  }
+
+  @Override
+  void installApk(String deviceSerialNumber, Path apkToInstall) throws AdbWrapperException
   {
     assert false: "Not yet implemented!"
   }
@@ -125,6 +131,11 @@ class AdbWrapperStub implements IAdbWrapper
   void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
   {
   }
+
+  /*@Override
+  void stopUiautomatorDaemon(String deviceSerialNumber) throws AdbWrapperException
+  {
+  }*/
 
   @Override
   void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException

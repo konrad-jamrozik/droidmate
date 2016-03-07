@@ -26,7 +26,7 @@ public class DeviceModelHelper
    * To create a default device use {@link org.droidmate.common_android.Constants#DEVICE_DEFAULT}.
    * The default device is a Google Nexus 7.
    *
-   * @param deviceModel Device manufacturer + model as returned by {@link org.droidmate.uiautomatordaemon.UiAutomatorDaemonDriver#getDeviceModel()}
+   * @param deviceModel Device manufacturer + model as returned by {@link org.droidmate.uiautomator2daemon.UiAutomatorDaemonDriver#getDeviceModel()}
    * *
    * @return Device specific issues handler
    * @throws UnknownDeviceException If the device model is not mapped to any device

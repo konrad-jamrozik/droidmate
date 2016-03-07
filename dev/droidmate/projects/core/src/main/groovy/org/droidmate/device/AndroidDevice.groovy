@@ -196,6 +196,7 @@ public class AndroidDevice implements IAndroidDevice
   {
     log.trace("stopUiaDaemon()")
     this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
+    //this.adbWrapper.stopUiautomatorDaemon(this.serialNumber);
     this.tcpClients.waitForUiaDaemonToClose()
     log.trace("DONE stopUiaDaemon()")
 
@@ -370,7 +371,14 @@ public class AndroidDevice implements IAndroidDevice
   void removeJar(Path jar) throws DeviceException
   {
     log.debug("removeJar($jar)")
-    adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemonJar)
+    adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemon)
+  }
+
+  @Override
+  void installApk(Path apk) throws DeviceException
+  {
+    log.debug("installApk($apk.fileName)")
+    adbWrapper.installApk(serialNumber, apk)
   }
 
   private static boolean uiaDaemonHandlesCommand(DeviceCommand deviceCommand)

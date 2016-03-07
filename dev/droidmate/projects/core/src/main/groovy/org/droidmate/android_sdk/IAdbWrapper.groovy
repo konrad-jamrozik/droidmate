@@ -32,7 +32,9 @@ public interface IAdbWrapper {
 
   void removeJar(String deviceSerialNumber, Path  jarFile) throws AdbWrapperException
 
-  void installApk(String deviceSerialNumber, IApk instrumentedApk) throws AdbWrapperException
+  void installApk(String deviceSerialNumber, Path apkToInstall) throws AdbWrapperException
+
+  void installApk(String deviceSerialNumber, IApk apkToInstall) throws AdbWrapperException
 
   void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean ignoreFailure) throws AdbWrapperException
 
@@ -51,6 +53,8 @@ public interface IAdbWrapper {
   void reboot(String deviceSerialNumber) throws AdbWrapperException
 
   void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
+
+  //void stopUiautomatorDaemon(String deviceSerialNumber) throws AdbWrapperException
 
   void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
 

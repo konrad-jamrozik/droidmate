@@ -6,18 +6,15 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-
 package org.droidmate.uiautomator2daemon;
 
 import android.annotation.TargetApi;
+import android.app.Instrumentation;
 import android.os.Build;
 import android.os.Environment;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.uiautomator.*;
 import android.util.Log;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiObjectNotFoundException;
-import android.support.test.uiautomator.UiScrollable;
-import android.support.test.uiautomator.UiSelector;
-import android.support.test.uiautomator.UiAutomatorTestCase;
 import org.apache.commons.io.FileUtils;
 import org.droidmate.common_android.DeviceCommand;
 import org.droidmate.common_android.DeviceResponse;
@@ -32,7 +29,7 @@ import static org.droidmate.common_android.Constants.*;
 
 public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 {
-  private final UiAutomatorTestCase ui;
+  private final UiDevice device;
 
   /**
    * Decides if {@link #UiAutomatorDaemonDriver} should wait for the window to go to idle state after each click.
@@ -40,9 +37,13 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   private final boolean waitForGuiToStabilize;
   private final int     waitForWindowUpdateTimeout;
 
-  public UiAutomatorDaemonDriver(UiAutomatorTestCase uiAutomatorTestCase, boolean waitForGuiToStabilize, int waitForWindowUpdateTimeout)
+  public UiAutomatorDaemonDriver(boolean waitForGuiToStabilize, int waitForWindowUpdateTimeout)
   {
-    this.ui = uiAutomatorTestCase;
+    // The instrumentation required to run uiautomator2-daemon is
+    // provided by the adb command adb am shell instrument <PACKAGE>/<RUNNER>
+    Instrumentation instr = InstrumentationRegistry.getInstrumentation();
+    assert instr != null;
+    this.device = UiDevice.getInstance(instr);
     this.waitForGuiToStabilize = waitForGuiToStabilize;
     this.waitForWindowUpdateTimeout = waitForWindowUpdateTimeout;
   }
@@ -102,9 +103,9 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   private DeviceResponse getIsNaturalOrientation()
   {
     Log.d(uiaDaemon_logcatTag, "Getting 'isNaturalOrientation'");
-    ui.getUiDevice().waitForIdle();
+    this.device.waitForIdle();
     DeviceResponse deviceResponse = new DeviceResponse();
-    deviceResponse.isNaturalOrientation = ui.getUiDevice().isNaturalOrientation();
+    deviceResponse.isNaturalOrientation = device.isNaturalOrientation();
     return deviceResponse;
   }
 
@@ -125,12 +126,12 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       if (action.guiActionCommand.equals(guiActionCommand_pressBack))
       {
         Log.d(uiaDaemon_logcatTag, "Pressing 'back' button.");
-        ui.getUiDevice().pressBack();
+        this.device.pressBack();
         waitForGuiToStabilize();
       } else if (action.guiActionCommand.equals(guiActionCommand_pressHome))
       {
         Log.d(uiaDaemon_logcatTag, "Pressing 'home' button.");
-        ui.getUiDevice().pressHome();
+        this.device.pressHome();
         waitForGuiToStabilize();
       } else if (action.guiActionCommand.equals(guiActionCommand_turnWifiOn))
       {
@@ -176,17 +177,17 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       if (clickXCoor < 0) throw new AssertionError("assert clickXCoor >= 0");
       if (clickYCoor < 0) throw new AssertionError("assert clickYCoor >= 0");
 
-      if (clickXCoor > ui.getUiDevice().getDisplayWidth())
-        throw new AssertionError("assert clickXCoor <= ui.getUiDevice().getDisplayWidth()");
-      if (clickYCoor > ui.getUiDevice().getDisplayHeight())
-        throw new AssertionError("assert clickXCoor <= ui.getUiDevice().getDisplayHeight()");
+      if (clickXCoor > this.device.getDisplayWidth())
+        throw new AssertionError("assert clickXCoor <= device.getDisplayWidth()");
+      if (clickYCoor > this.device.getDisplayHeight())
+        throw new AssertionError("assert clickXCoor <= device.getDisplayHeight()");
 
       // WISH return clickResult in deviceResponse, so we can try to click again on 'app has stopped' and other dialog boxes. Right now there is just last chance attempt in org.droidmate.exploration.VerifiableDeviceActionsExecutor.executeAndVerify()
       boolean clickResult;
       clickResult = click(deviceCommand, clickXCoor, clickYCoor);
       if (!clickResult)
       {
-        Log.d(uiaDaemon_logcatTag, (String.format("The operation ui.getUiDevice().click(%d, %d) failed (the 'click' method returned 'false'). Retrying after 2 seconds.", clickXCoor, clickYCoor)));
+        Log.d(uiaDaemon_logcatTag, (String.format("The operation device.click(%d, %d) failed (the 'click' method returned 'false'). Retrying after 2 seconds.", clickXCoor, clickYCoor)));
 
         try
         {
@@ -209,7 +210,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     }
 
     DeviceResponse deviceResponse = new DeviceResponse();
-    deviceResponse.isNaturalOrientation = ui.getUiDevice().isNaturalOrientation();
+    deviceResponse.isNaturalOrientation = this.device.isNaturalOrientation();
 
     return deviceResponse;
   }
@@ -219,7 +220,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     Log.d(uiaDaemon_logcatTag, "Checking wifi state.");
     try
     {
-      new UiObject(new UiSelector().textContains("Settings")).click();
+      this.device.findObject(new UiSelector().textContains("Settings")).click();
       waitForGuiToStabilize();
 
     } catch (UiObjectNotFoundException e)
@@ -231,14 +232,14 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     try
     {
       String switchWidgetName = this.getsWifiSwitchWidgetName();
-      UiObject wifiSwitch = new UiObject(new UiSelector().resourceId(switchWidgetName));
+      UiObject wifiSwitch = this.device.findObject(new UiSelector().resourceId(switchWidgetName));
       if (wifiSwitch.getText().equals("OFF"))
       {
         Log.i(uiaDaemon_logcatTag, "Turning wifi on.");
         wifiSwitch.click();
         waitForGuiToStabilize();
 
-        // WISH toremove if it ultimately proves to be unnecessary.
+        // WISH to remove if it ultimately proves to be unnecessary.
 //            try
 //            {
 //              Thread.sleep(0);
@@ -259,7 +260,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       Log.w(uiaDaemon_logcatTag, "No wifi switch found while in the process of ensuring that wifi is on!");
     }
 
-    ui.getUiDevice().pressHome();
+    this.device.pressHome();
     waitForGuiToStabilize();
   }
 
@@ -267,9 +268,9 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   {
     boolean clickResult;
     if (deviceCommand.guiAction.longClick)
-      clickResult = ui.getUiDevice().swipe(clickXCoor, clickYCoor, clickXCoor, clickYCoor, 100); // 100 ~ 2s. Empirical evaluation.
+      clickResult = this.device.swipe(clickXCoor, clickYCoor, clickXCoor, clickYCoor, 100); // 100 ~ 2s. Empirical evaluation.
     else
-      clickResult = ui.getUiDevice().click(clickXCoor, clickYCoor);
+      clickResult = this.device.click(clickXCoor, clickYCoor);
 
     if (clickResult)
       waitForGuiToStabilize();
@@ -338,7 +339,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
        */
 
       long initialWaitForIdleStartTime = System.currentTimeMillis();
-      ui.getUiDevice().waitForIdle();
+      this.device.waitForIdle();
       long initialWaitForIdleWaitTime = System.currentTimeMillis() - initialWaitForIdleStartTime;
       Log.v(uiaDaemon_logcatTag, "waitForGuiToStabilize: initial waitForIdle took " + initialWaitForIdleWaitTime + "ms");
 
@@ -381,7 +382,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   {
     boolean waitForWindowUpdateReachedTimeout;
     long waitForWindowUpdateStartTime = System.currentTimeMillis();
-    ui.getUiDevice().waitForWindowUpdate(null, waitForWindowUpdateTimeout);
+    this.device.waitForWindowUpdate(null, waitForWindowUpdateTimeout);
     long waitForWindowUpdateWaitTime = System.currentTimeMillis() - waitForWindowUpdateStartTime;
     Log.v(uiaDaemon_logcatTag, "waitForGuiToStabilize: iteration " + i + " waitForWindowUpdate took " + waitForWindowUpdateWaitTime + "ms");
 
@@ -393,7 +394,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   {
     boolean waitForIdleReturnedImmediately;
     long waitForIdleStartTime = System.currentTimeMillis();
-    ui.getUiDevice().waitForIdle();
+    this.device.waitForIdle();
     long waitForIdleWaitTime = System.currentTimeMillis() - waitForIdleStartTime;
     Log.v(uiaDaemon_logcatTag, "waitForGuiToStabilize: iteration " + i + " waitForIdle took " + waitForIdleWaitTime + "ms");
 
@@ -426,8 +427,8 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       throw new UiAutomatorDaemonException(e);
     }
 
-    int width = ui.getUiDevice().getDisplayWidth();
-    int height = ui.getUiDevice().getDisplayHeight();
+    int width = this.device.getDisplayWidth();
+    int height = this.device.getDisplayHeight();
     /* We don't make calls to:
      ui.getUiDevice().getCurrentActivityName();
      ui.getUiDevice().getCurrentPackageName();
@@ -511,7 +512,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
           Log.w(uiaDaemon_logcatTag, "UiDevice.dumpWindowHierarchy() failed. Attempts left: 1. Pressing home screen button.");
           // Countermeasure for "Illegal character (d83d)". See the doc of this method and
           // https://hg.st.cs.uni-saarland.de/issues/981
-          ui.getUiDevice().pressHome();
+          this.device.pressHome();
         } else
         {
           Log.w(uiaDaemon_logcatTag, "UiDevice.dumpWindowHierarchy() failed. Attempts left: " + dumpAttemptsLeft);
@@ -537,11 +538,16 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   /**
    * @see #dumpWindowHierarchyProtectingAgainstException
    */
+  // Note on read/write permissions:
+  //   http://stackoverflow.com/questions/23527767/open-failed-eacces-permission-denied
   private boolean tryDumpWindowHierarchy(File windowDumpFile)
   {
     try
     {
-      ui.getUiDevice().dumpWindowHierarchy(windowDumpFile.getName());
+      Log.w(uiaDaemon_logcatTag, String.format("Trying to create dump file '%s'", windowDumpFile.toString()));
+      Log.w(uiaDaemon_logcatTag, "Executing dump");
+      this.device.dumpWindowHierarchy(windowDumpFile);
+      Log.w(uiaDaemon_logcatTag, "Dump executed");
 
       if (windowDumpFile.exists())
       {
@@ -560,38 +566,50 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     {
       Log.w(uiaDaemon_logcatTag, "Caught IllegalArgumentException while dumping window hierarchy. Msg: " + e.getMessage());
       return false;
+    } catch (IOException e)
+    {
+      Log.w(uiaDaemon_logcatTag, "Caught IOException while dumping window hierarchy. Msg: " + e.getMessage());
+      return false;
     }
   }
 
   private File prepareWindowDumpFile(String fileName) throws UiAutomatorDaemonException
   {
-    // Copied from com.android.uiautomator.core.UiDevice.dumpWindowHierarchy()
-    final File dir = new File(Environment.getDataDirectory(), "local/tmp");
-    File file = new File(dir, fileName);
-
-    // Here we ensure the directory of the target file exists.
-    if (!dir.isDirectory())
-      if (!dir.mkdirs())
-        throw new UiAutomatorDaemonException("!windowDumpDir.isDirectory() && !windowDumpDir.mkdirs()");
-
-    // Here we ensure the target file doesn't exist.
-    if (file.isDirectory())
-      throw new UiAutomatorDaemonException("windowDumpFile.isDirectory()");
-    if (file.exists())
-      if (!file.delete())
-        throw new UiAutomatorDaemonException("windowDump.exists() && !windowDump.delete()");
-
-    // Here we check if we ensured things correctly.
-    if (file.exists())
+    try
     {
-      throw new AssertionError("Following assertion failed: !windowDump.exists()");
-    }
-    if (!(file.getParentFile().isDirectory()))
-    {
-      throw new AssertionError("Following assertion failed: windowDump.getParentFile().isDirectory()");
-    }
+      // Copied from com.android.uiautomator.core.UiDevice.dumpWindowHierarchy()
+      File file = File.createTempFile(fileName, "xml");
+      final File dir = file.getParentFile();
+      Log.w(uiaDaemon_logcatTag, String.format("Dump data directory: %s", dir.getAbsolutePath().toString()));
+      Log.w(uiaDaemon_logcatTag, String.format("Dump data file: %s", file.getAbsolutePath().toString()));
 
-    return file;
+      // Here we ensure the directory of the target file exists.
+      if (!dir.isDirectory())
+        if (!dir.mkdirs())
+          throw new UiAutomatorDaemonException("!windowDumpDir.isDirectory() && !windowDumpDir.mkdirs()");
+
+      // Here we ensure the target file doesn't exist.
+      if (file.isDirectory())
+        throw new UiAutomatorDaemonException("windowDumpFile.isDirectory()");
+      if (file.exists())
+        if (!file.delete())
+          throw new UiAutomatorDaemonException("windowDump.exists() && !windowDump.delete()");
+
+      // Here we check if we ensured things correctly.
+      if (file.exists())
+      {
+        throw new AssertionError("Following assertion failed: !windowDump.exists()");
+      }
+      if (!(file.getParentFile().isDirectory()))
+      {
+        throw new AssertionError("Following assertion failed: windowDump.getParentFile().isDirectory()");
+      }
+
+      return file;
+    } catch(IOException e)
+    {
+      throw new UiAutomatorDaemonException("Caught IOException while preparing window dump file. Msg: " + e.getMessage());
+    }
   }
 
   //region Launching app
@@ -612,7 +630,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
         String.format("Attempt to navigate to and click on the icon labeled '%s' to launch the app threw an exception: %s: %s",
           appLaunchIconText, e.getClass().getSimpleName(), e.getLocalizedMessage()));
       Log.d(uiaDaemon_logcatTag, "Pressing 'home' button after failed app launch.");
-      ui.getUiDevice().pressHome();
+      this.device.pressHome();
       waitForGuiToStabilize();
       return;
     }
@@ -627,7 +645,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   private UiObject navigateToAppLaunchIcon(String appLaunchIconName) throws UiObjectNotFoundException
   {
     // Simulate a short press on the HOME button.
-    ui.getUiDevice().pressHome();
+    this.device.pressHome();
 
     // We’re now in the home screen. Next, we want to simulate
     // a user bringing up the All Apps screen.

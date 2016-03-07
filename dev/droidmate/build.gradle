@@ -18,7 +18,8 @@ task wrapper(type: Wrapper) {
    This is setup in root project, not in the target project, as this way we guarantee the property
    is set before it is read by any of the projects.
 */
-project(":projects:uiautomator-daemon").buildDir = "bin"
+// WISH Borges: removed to use uiautomator2-daemon
+//project(":projects:uiautomator-daemon").buildDir = "bin"
 
 buildscript {
   String initJarPath = "$rootDir/../init/build/libs/init.jar"

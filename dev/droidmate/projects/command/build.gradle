@@ -71,7 +71,8 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 // With this line added, the URL ultimately used will be:
 //
 //   file:/(...)droidmate/dev/droidmate/projects/core/build/resources/main/appguard_apis.txt
-sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
+sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath.add(project(":projects:core").sourceSets.main.output)
+sourceSets.main.runtimeClasspath = sourceSets.main.runtimeClasspath.add(project(":projects:core").sourceSets.main.output)
 
 dependencies {
 

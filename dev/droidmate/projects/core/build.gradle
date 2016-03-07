@@ -71,7 +71,7 @@ dependencies {
   def libsDirFileTree = fileTree(dir: "$projectDir/$libsDirPath", include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
   /* Making this additional setter call instead of supplying a value in constructor is a workaround for an issue I discovered
      on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */
-  libsDirFileTree.setBuiltBy(['pullUiaDaemonJar'])
+  libsDirFileTree.setBuiltBy(['pullUiaDaemon'])
   compile libsDirFileTree
 
   compile 'com.beust:jcommander:1.35'
@@ -111,7 +111,7 @@ evaluationDependsOn(":projects:apk-inliner")
 /* Note: The 'compile[Test]Java.dependsOn' clauses are redundant with 'builtBy' property in the 'dependencies' closure,
    but they are left here for documentation purposes.
  */
-compileGroovy.dependsOn "pullUiaDaemonJar"
+compileGroovy.dependsOn "pullUiaDaemon"
 processResources.dependsOn "pullMonitorApk"
 
 /*
@@ -126,12 +126,16 @@ processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 
 //region Preparation of resources for the 'compileGroovy' task
 
-Project uiaDaemon = findProject(":projects:uiautomator-daemon");
-task pullUiaDaemonJar(dependsOn: ":projects:uiautomator-daemon:build") {
+// WISH Borges: testing
+Project uiaDaemon = findProject(":projects:uiautomator2-daemon");
+task pullUiaDaemon(dependsOn: ":projects:uiautomator2-daemon:assembleAndroidTest") {
+//Project uiaDaemon = findProject(":projects:uiautomator-daemon");
+//task pullUiaDaemon(dependsOn: ":projects:uiautomator-daemon:build") {
 
   File coreResDir = getCoreResDir()
 
-  def copyFrom = file("${uiaDaemon.buildDir}/${uiaDaemon.name}.jar")
+  def copyFrom = file("${uiaDaemon.buildDir}/outputs/apk/${uiaDaemon.name}-debug-androidTest-unaligned.apk")
+  //def copyFrom = file("${uiaDaemon.buildDir}/${uiaDaemon.name}.jar")
   def copyTo = coreResDir
 
   inputs.file copyFrom
@@ -144,6 +148,9 @@ task pullUiaDaemonJar(dependsOn: ":projects:uiautomator-daemon:build") {
     def copyResult = copy {
       from copyFrom
       into copyTo
+      rename { String fileName ->
+        fileName.replace("-debug-androidTest-unaligned", "")
+      }
     }
     if (!copyResult.didWork)
       throw new GradleException("Failed to copy file(s).\n" +
@@ -271,7 +278,8 @@ processResources.dependsOn "pullAppGuardApisList"
 //region Preparation of resources: common code
 private File getCoreResDir()
 {
-  Set<File> coreResDirs = sourceSets.main.resources.srcDirs.findAll {it.path.contains(project.name)}
+  Set<File> coreResDirs = sourceSets.test.resources.srcDirs.findAll {it.path.contains(project.name)}
+  //Set<File> coreResDirs = sourceSets.main.resources.srcDirs.findAll {it.path.contains(project.name)}
   assert coreResDirs.size() == 1
   return coreResDirs.find()
 }

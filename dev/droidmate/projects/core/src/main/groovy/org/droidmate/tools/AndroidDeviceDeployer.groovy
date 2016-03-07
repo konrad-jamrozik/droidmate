@@ -16,6 +16,7 @@ import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.common.Assert
 import org.droidmate.common.DroidmateException
+import org.droidmate.common_android.Constants
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.IDeployableAndroidDevice
@@ -73,7 +74,9 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     device.removeLogcatLogFile()
     device.clearLogcat()
 
-    device.pushJar(this.cfg.uiautomatorDaemonJar)
+    // differently from uiautomador-daemon,
+    // uiautomator2-daemon is an APK and must be installed
+    device.installApk(this.cfg.uiautomatorDaemon)
     device.pushJar(this.cfg.monitorApk)
     device.setupConnection()
     device.initModel()
@@ -100,7 +103,10 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       log.trace("Tearing down.")
       device.pullLogcatLogFile()
       device.closeConnection()
-      device.removeJar(cfg.uiautomatorDaemonJar)
+      // differently from uiautomator-daemon,
+      // uiautomator2-daemon is an APK and must be uninstalled
+      device.uninstallApk(Constants.uiaDaemon_packageName, true)
+      //device.removeJar(cfg.uiautomatorDaemon)
       device.removeJar(cfg.monitorApk)
     }
     else

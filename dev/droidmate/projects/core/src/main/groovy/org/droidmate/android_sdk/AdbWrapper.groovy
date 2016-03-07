@@ -42,6 +42,7 @@ public class AdbWrapper implements IAdbWrapper
 
   // This should be set to the value of android.os.Environment.getDataDirectory()
   private final String deviceEnvironmentDataDirectory = "data/local/tmp/"
+  //private final String deviceEnvironmentDataDirectory = "/data/"
 
 
   AdbWrapper(
@@ -114,8 +115,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void installApk(String deviceSerialNumber, IApk apkToInstall)
-    throws AdbWrapperException
+  void installApk(String deviceSerialNumber, Path apkToInstall) throws AdbWrapperException
   {
     try
     {
@@ -125,11 +125,11 @@ public class AdbWrapper implements IAdbWrapper
         .format("Executing adb (Android Debug Bridge) to install %s on Android (Virtual) Device.",
         apkToInstall.fileName)
 
-      def stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "install -r",
-        apkToInstall.absolutePath)
+      String[] stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "install -r",
+        apkToInstall.toAbsolutePath().toString())
 
       if (stdStreams[0].contains("[INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES]"))
-        throw new AdbWrapperException("Execution of 'adb -s $deviceSerialNumber install -r ${apkToInstall.absolutePath}' " +
+        throw new AdbWrapperException("Execution of 'adb -s $deviceSerialNumber install -r ${apkToInstall.toAbsolutePath().toString()}' " +
           "resulted in [INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES] being output to stdout. Thus, no app was actually " +
           "installed. Likely reason for the problem: you are trying to install a built in Google app that cannot be uninstalled" +
           "or reinstalled. DroidMate doesn't support such apps.")
@@ -138,6 +138,14 @@ public class AdbWrapper implements IAdbWrapper
     {
       throw new AdbWrapperException("Executing 'adb install' failed. Oh my.", e)
     }
+  }
+
+  @Override
+  public void installApk(String deviceSerialNumber, IApk apkToInstall)
+    throws AdbWrapperException
+  {
+    Path apkFile = Paths.get(apkToInstall.absolutePath)
+    this.installApk(deviceSerialNumber, apkFile)
   }
 
   @Override
@@ -570,7 +578,62 @@ public class AdbWrapper implements IAdbWrapper
     }
   }
 
+  /*@Override
+  public void stopUiautomatorDaemon(String deviceSerialNumber) throws AdbWrapperException
+  {
+    try
+    {
+      String commandDescription = String
+        .format(
+        "Executing adb to stop UiAutomatorDaemon service on Android Device with " +
+          "s/n %s.",
+        deviceSerialNumber)
+
+      // WISH Borges replace for package + class name
+      this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell am force-stop",
+        "adb shell am force-stop org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb shell am force-stop org.droidmate.uiautomator2daemon.UiAutomator2Daemon' failed. Oh my.", e)
+    }
+  }*/
+
   @Override
+  public void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
+  {
+    try
+    {
+      String commandDescription = String
+        .format(
+        "Executing adb to start UiAutomatorDaemon service on Android Device with " +
+          "s/n %s.",
+        deviceSerialNumber)
+
+      // WISH Borges code to start UIAutomatorDaemon2 service should be put here
+      String uiaDaemonCmdLine = String.format("-e %s %s -e %s %s -e %s %s",
+        Constants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
+        Constants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
+        Constants.uiaDaemonParam_tcpPort, port)
+
+      // WISH Borges replace for package + class name
+      this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell am instrument",
+        "--user 0",
+        uiaDaemonCmdLine,
+        "-w",
+        Constants.uiaDaemon_packageName + "/" + Constants.uiaDaemon_testRunner)
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb shell instrument --user 0 -w org.droidmate.uiautomator2daemon ...' failed. Oh my.", e)
+    }
+  }
+
+  /*@Override
   public void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
   {
     try
@@ -590,14 +653,14 @@ public class AdbWrapper implements IAdbWrapper
       this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
         "shell uiautomator runtest",
-        cfg.uiautomatorDaemonJar.fileName.toString(),
+        cfg.uiautomatorDaemon.fileName.toString(),
         uiaDaemonCmdLine)
 
     } catch (SysCmdExecutorException e)
     {
       throw new AdbWrapperException("Executing 'adb shell uiautomator runtest ...' failed. Oh my.", e)
     }
-  }
+  }*/
 
   @Override
   void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException

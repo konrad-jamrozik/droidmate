@@ -6,7 +6,6 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-
 package org.droidmate.uiautomator2daemon;
 
 import org.droidmate.common_android.DeviceCommand;
@@ -15,6 +14,6 @@ import org.droidmate.common_android.UiAutomatorDaemonException;
 
 public interface IUiAutomatorDaemonDriver  {
 
-    DeviceResponse executeCommand(DeviceCommand deviceCommand) throws UiAutomatorDaemonException;
+  DeviceResponse executeCommand(DeviceCommand deviceCommand) throws UiAutomatorDaemonException;
 
 }

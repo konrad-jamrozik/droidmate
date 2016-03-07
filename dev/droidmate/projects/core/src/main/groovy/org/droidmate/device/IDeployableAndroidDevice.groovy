@@ -20,6 +20,8 @@ public interface IDeployableAndroidDevice
 
   void removeJar(Path jar) throws DeviceException
 
+  void installApk(Path apk) throws DeviceException
+
   void installApk(IApk apk) throws DeviceException
 
   void uninstallApk(String apkPackageName, boolean ignoreFailure) throws DeviceException

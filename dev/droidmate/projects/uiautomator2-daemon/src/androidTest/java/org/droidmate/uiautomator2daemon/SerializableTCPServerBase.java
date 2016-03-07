@@ -6,10 +6,7 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-
-package org.droidmate.uiautomator2daemon;
-
-import android.annotation.TargetApi;
+package org.droidmate.uiautomator2daemon;import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
 import org.droidmate.common_android.Constants;
