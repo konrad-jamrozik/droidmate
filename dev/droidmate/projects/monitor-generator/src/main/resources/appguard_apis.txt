@@ -9,7 +9,7 @@
 # 1. deploying the instrumented monitored app on the device,
 # 2. observing the logcat messages with "Instrumentation" tag,
 # 3. diagnosing any failures and comparing the list definitions with the source,
-# 4. fixing the list and writing down the finding.
+# 4. fixing the list and writing down the findings.
 
 Landroid/app/ActivityThread;->installContentProviders(Landroid/content/Context;Ljava/util/List;)V
 Landroid/app/Activity;->onResume()V
@@ -328,7 +328,7 @@ Ljava/net/Socket;->connect(Ljava/net/SocketAddress;)V
 Ljava/net/Socket;->connect(Ljava/net/SocketAddress;I)V
 Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
 
-# Instrumentation fails, but workaround iu applied.
+# Instrumentation fails, but workaround is applied.
 # // forgot to copy-paste here the instrumentation failure log
 #
 # DefaultHttpClient doesn't actually contain the execute() method [1]. It inherits it from AbstractHttpClient [2].
