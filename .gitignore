@@ -57,6 +57,8 @@ lib-android.jar
 autAddonBytecode.dex
 uiautomator-daemon.jar
 lib-apk_fixtures.jar
+uiautomator2-daemon.apk
+uiautomator2-daemon-debug-androidTest-unaligned.apk
 
 # Temporary stuff
 out.txt
