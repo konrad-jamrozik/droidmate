@@ -69,20 +69,18 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/dependency-cache" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/incremental" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/instant-run-support" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/jniLibs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/pre-dexed" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/res" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/restart-dex" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/intermediates/transforms" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../GuiApkFixture/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="android-android-19" level="project" />
+    <orderEntry type="library" exported="" name="android-android-23" level="project" />
   </component>
 </module>

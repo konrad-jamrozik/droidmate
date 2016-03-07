@@ -68,6 +68,5 @@
     <orderEntry type="library" exported="" scope="TEST" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_core_build_resources_test" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_reporter_build_classes_test" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_reporter_build_resources_test" level="project" />
-    <orderEntry type="library" exported="" name="command.command" level="project" />
   </component>
 </module>

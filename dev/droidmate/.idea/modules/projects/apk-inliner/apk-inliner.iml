@@ -46,6 +46,5 @@
     <orderEntry type="library" exported="" scope="RUNTIME" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_apk_inliner_src_main_resources_logback" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
-    <orderEntry type="library" exported="" name="apk-inliner.apk-inliner" level="project" />
   </component>
 </module>

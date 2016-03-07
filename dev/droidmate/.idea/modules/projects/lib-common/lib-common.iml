@@ -44,6 +44,5 @@
     <orderEntry type="library" exported="" scope="RUNTIME" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_lib_common_src_main_resources" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
-    <orderEntry type="library" exported="" name="lib-common.lib-common" level="project" />
   </component>
 </module>

@@ -19,9 +19,9 @@ include "projects:core",
   "projects:lib-common",
   "projects:lib-common-android",
   "projects:lib-android",
-  "projects:uiautomator-daemon",
+  //"projects:uiautomator-daemon",
+  "projects:uiautomator2-daemon",
   "projects:monitor-generator",
   "projects:apk-inliner",
   "projects:reporter",
-  "projects:command",
-  "projects:uiautomator2-daemon"
+  "projects:command"

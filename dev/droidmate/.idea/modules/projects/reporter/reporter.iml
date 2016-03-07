@@ -34,6 +34,8 @@
     <orderEntry type="module" module-name="lib-common-android" exported="" />
     <orderEntry type="module" module-name="lib-android" exported="" />
     <orderEntry type="library" exported="" name="kotlin-stdlib-1.0.0-rc-1017" level="project" />
+    <orderEntry type="library" exported="" name="junit-4.12" level="project" />
+    <orderEntry type="library" exported="" name="hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" name="utilities-master-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="jcommander-1.35" level="project" />
     <orderEntry type="library" exported="" name="guava-19.0" level="project" />
@@ -49,10 +51,8 @@
     <orderEntry type="library" exported="" name="jimfs-1.0" level="project" />
     <orderEntry type="library" exported="" name="kotlin-runtime-1.0.0-rc-1017" level="project" />
     <orderEntry type="library" exported="" name="jopt-simple-4.9" level="project" />
-    <orderEntry type="library" exported="" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" name="pherd-1.0" level="project" />
     <orderEntry type="library" exported="" name="mbox2-1.0" level="project" />
-    <orderEntry type="library" exported="" name="hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_core_src_main_resources_logback" level="project" />
     <orderEntry type="library" exported="" name="init" level="project" />
     <orderEntry type="library" exported="" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_lib_common_src_main_resources" level="project" />
@@ -66,6 +66,5 @@
     <orderEntry type="library" exported="" scope="TEST" name="kotlin-test-junit-1.0.0-rc-1017" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_core_build_classes_test" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="C__Users_natan_000_Desktop_Saarland_repositories_droidmate_dev_droidmate_projects_core_build_resources_test" level="project" />
-    <orderEntry type="library" exported="" name="reporter.reporter" level="project" />
   </component>
 </module>

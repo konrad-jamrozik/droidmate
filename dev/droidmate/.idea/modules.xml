@@ -13,7 +13,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor-generator.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/projects.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/projects.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/reporter/reporter.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/reporter/reporter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator2-daemon/uiautomator2-daemon.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator2-daemon/uiautomator2-daemon.iml" />
     </modules>
   </component>
