@@ -11,7 +11,6 @@ package org.droidmate.uiautomator2daemon;
 import android.annotation.TargetApi;
 import android.app.Instrumentation;
 import android.os.Build;
-import android.os.Environment;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.uiautomator.*;
 import android.util.Log;
@@ -27,7 +26,7 @@ import java.io.IOException;
 
 import static org.droidmate.common_android.Constants.*;
 
-public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
+class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 {
   private final UiDevice device;
 
@@ -37,7 +36,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   private final boolean waitForGuiToStabilize;
   private final int     waitForWindowUpdateTimeout;
 
-  public UiAutomatorDaemonDriver(boolean waitForGuiToStabilize, int waitForWindowUpdateTimeout)
+  UiAutomatorDaemonDriver(boolean waitForGuiToStabilize, int waitForWindowUpdateTimeout)
   {
     // The instrumentation required to run uiautomator2-daemon is
     // provided by the adb command adb am shell instrument <PACKAGE>/<RUNNER>
@@ -152,7 +151,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       Log.d(uiaDaemon_logcatTag, String.format("Setting text of widget with resource ID %s to %s.", deviceCommand.guiAction.resourceId, deviceCommand.guiAction.textToEnter));
       try
       {
-        boolean enterResult = new UiObject(
+        boolean enterResult = this.device.findObject(
           new UiSelector().resourceId(deviceCommand.guiAction.resourceId)
         ).setText(deviceCommand.guiAction.textToEnter);
 
@@ -580,8 +579,8 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       // Copied from com.android.uiautomator.core.UiDevice.dumpWindowHierarchy()
       File file = File.createTempFile(fileName, "xml");
       final File dir = file.getParentFile();
-      Log.w(uiaDaemon_logcatTag, String.format("Dump data directory: %s", dir.getAbsolutePath().toString()));
-      Log.w(uiaDaemon_logcatTag, String.format("Dump data file: %s", file.getAbsolutePath().toString()));
+      Log.w(uiaDaemon_logcatTag, String.format("Dump data directory: %s", dir.toString()));
+      Log.w(uiaDaemon_logcatTag, String.format("Dump data file: %s", file.toString()));
 
       // Here we ensure the directory of the target file exists.
       if (!dir.isDirectory())
@@ -653,7 +652,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     // of the Home screen, notice that the All Apps button’s
     // content-description property has the value “Apps”.  We can
     // use this property to create a UiSelector to find the button.
-    UiObject allAppsButton = new UiObject(new UiSelector().description("Apps"));
+    UiObject allAppsButton = this.device.findObject(new UiSelector().description("Apps"));
 
     // Simulate a click to bring up the All Apps screen.
     allAppsButton.clickAndWaitForNewWindow();
@@ -663,7 +662,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     // the Apps tab. To simulate the user bringing up the Apps tab,
     // we create a UiSelector to find a tab with the text
     // label “Apps”.
-    UiObject appsTab = new UiObject(new UiSelector().text("Apps"));
+    UiObject appsTab = this.device.findObject(new UiSelector().text("Apps"));
 
     // Simulate a click to enter the Apps tab.
     appsTab.click();
