@@ -26,8 +26,7 @@ public class Constants
   // End of DUPLICATION WARNING
 
   public static final String DEVICE_SAMSUNG_GALAXY_S3_GT_I9300 = "samsung-GT-I9300";
-  // WISH Borges replace for correct name, need a Nexus7 to test
-  public static final String DEVICE_GOOGLE_NEXUS_7             = "google-Nexus7";
+  public static final String DEVICE_GOOGLE_NEXUS_7             = "asus-Nexus 7";
   public static final String DEVICE_GOOGLE_NEXUS_10            = "samsung-Nexus 10";
   public static final String DEVICE_DEFAULT                    = "default";
 
