@@ -101,9 +101,9 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-test:1.0.0-rc-1017" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.0.0-rc-1017" level="project" />
     <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="lib_common_main" />
-    <orderEntry type="module" module-name="lib_common_android_main" />
-    <orderEntry type="module" module-name="lib_android_main" />
+    <orderEntry type="module" module-name="lib-common_main" />
+    <orderEntry type="module" module-name="lib-common-android_main" />
+    <orderEntry type="module" module-name="lib-android_main" />
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.35" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />

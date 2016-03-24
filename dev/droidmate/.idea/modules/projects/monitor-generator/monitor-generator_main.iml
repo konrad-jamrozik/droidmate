@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":projects:apk-inliner:main" external.linked.project.path="$MODULE_DIR$/../../../../projects/apk-inliner" external.root.project.path="$MODULE_DIR$/../../../.." external.system.id="GRADLE" external.system.module.group="droidmate.projects" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":projects:monitor-generator:main" external.linked.project.path="$MODULE_DIR$/../../../../projects/monitor-generator" external.root.project.path="$MODULE_DIR$/../../../.." external.system.id="GRADLE" external.system.module.group="droidmate.projects" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../../projects/apk-inliner/build/classes/main" />
+    <output url="file://$MODULE_DIR$/../../../../projects/monitor-generator/build/classes/main" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/main">
-      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/main/resources" type="java-resource" />
+    <content url="file://$MODULE_DIR$/../../../../projects/monitor-generator/src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/monitor-generator/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/monitor-generator/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../../projects/monitor-generator/src/main/resources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -28,26 +28,36 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../../projects/apk-inliner/src/main/resources/logback" />
+          <root url="jar://$ANDROID_SDK$/platforms/android-19/android.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="lib_common_main" />
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../../projects/monitor-generator/src/main/resources/logback" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="lib-common_main" />
     <orderEntry type="library" name="Gradle: org.codehaus.groovy:groovy-all:2.4.5" level="project" />
-    <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.jimfs:jimfs:1.0" level="project" />
+    <orderEntry type="module" module-name="lib-android_main" />
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-exec:1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />
+    <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Gradle: net.sf.jopt-simple:jopt-simple:4.9" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.0.13" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.0.13" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.6" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.jimfs:jimfs:1.0" level="project" />
   </component>
 </module>

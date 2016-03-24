@@ -3,35 +3,35 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DummyAndroidApp/DummyAndroidApp.iml" filepath="$PROJECT_DIR$/DummyAndroidApp/DummyAndroidApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner.iml" group="droidmate modules/projects/apk-inliner" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk_inliner_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk_inliner_main.iml" group="droidmate modules/projects/apk-inliner" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk_inliner_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk_inliner_test.iml" group="droidmate modules/projects/apk-inliner" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command.iml" group="droidmate modules/projects/command" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command_main.iml" group="droidmate modules/projects/command" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command_test.iml" group="droidmate modules/projects/command" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/core/core.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/core/core.iml" group="droidmate modules/projects/core" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/core/core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/core/core_main.iml" group="droidmate modules/projects/core" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/core/core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/core/core_test.iml" group="droidmate modules/projects/core" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/droidmate.iml" filepath="$PROJECT_DIR$/.idea/modules/droidmate.iml" group="droidmate modules" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-android/lib-android.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-android/lib-android.iml" group="droidmate modules/projects/lib-android" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common/lib-common.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common/lib-common.iml" group="droidmate modules/projects/lib-common" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib-common-android.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib-common-android.iml" group="droidmate modules/projects/lib-common-android" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-android/lib_android_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-android/lib_android_main.iml" group="droidmate modules/projects/lib-android" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-android/lib_android_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-android/lib_android_test.iml" group="droidmate modules/projects/lib-android" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib_common_android_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib_common_android_main.iml" group="droidmate modules/projects/lib-common-android" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib_common_android_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib_common_android_test.iml" group="droidmate modules/projects/lib-common-android" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common/lib_common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common/lib_common_main.iml" group="droidmate modules/projects/lib-common" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common/lib_common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common/lib_common_test.iml" group="droidmate modules/projects/lib-common" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor-generator.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor-generator.iml" group="droidmate modules/projects/monitor-generator" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor_generator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor_generator_main.iml" group="droidmate modules/projects/monitor-generator" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor_generator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor_generator_test.iml" group="droidmate modules/projects/monitor-generator" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/projects.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/projects.iml" group="droidmate modules/projects" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/reporter/reporter.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/reporter/reporter.iml" group="droidmate modules/projects/reporter" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_main.iml" group="droidmate modules/projects/reporter" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_test.iml" group="droidmate modules/projects/reporter" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon.iml" group="droidmate modules/projects/uiautomator-daemon" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator_daemon_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator_daemon_main.iml" group="droidmate modules/projects/uiautomator-daemon" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator_daemon_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator_daemon_test.iml" group="droidmate modules/projects/uiautomator-daemon" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner.iml" group="projects/apk-inliner" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner_main.iml" group="projects/apk-inliner" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner_test.iml" group="projects/apk-inliner" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command.iml" group="projects/command" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command_main.iml" group="projects/command" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command_test.iml" group="projects/command" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/core/core.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/core/core.iml" group="projects/core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/core/core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/core/core_main.iml" group="projects/core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/core/core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/core/core_test.iml" group="projects/core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/droidmate.iml" filepath="$PROJECT_DIR$/.idea/modules/droidmate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-android/lib-android.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-android/lib-android.iml" group="projects/lib-android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-android/lib-android_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-android/lib-android_main.iml" group="projects/lib-android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-android/lib-android_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-android/lib-android_test.iml" group="projects/lib-android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common/lib-common.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common/lib-common.iml" group="projects/lib-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib-common-android.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib-common-android.iml" group="projects/lib-common-android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib-common-android_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib-common-android_main.iml" group="projects/lib-common-android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib-common-android_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common-android/lib-common-android_test.iml" group="projects/lib-common-android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common/lib-common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common/lib-common_main.iml" group="projects/lib-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/lib-common/lib-common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/lib-common/lib-common_test.iml" group="projects/lib-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor-generator.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor-generator.iml" group="projects/monitor-generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor-generator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor-generator_main.iml" group="projects/monitor-generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor-generator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/monitor-generator/monitor-generator_test.iml" group="projects/monitor-generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/projects.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/projects.iml" group="projects" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/reporter/reporter.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/reporter/reporter.iml" group="projects/reporter" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_main.iml" group="projects/reporter" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_test.iml" group="projects/reporter" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon.iml" group="projects/uiautomator-daemon" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon_main.iml" group="projects/uiautomator-daemon" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon_test.iml" group="projects/uiautomator-daemon" />
     </modules>
   </component>
 </project>
