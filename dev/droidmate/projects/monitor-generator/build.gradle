@@ -37,7 +37,7 @@ SourceDirectorySet resDirs = sourceSets.main.resources
 assert resDirs.srcDirs.size() == 1
 File resDir = resDirs.srcDirs[0]
 
-File monitorApkScaffoldingDir = InitConstants.monitor_generator_apk_scaffolding_dir
+File monitorApkScaffoldingDir = InitConstants.monitor_generator_apk_scaffolding_dir.toFile()
 assert monitorApkScaffoldingDir.isDirectory()
 
 File monitorJava = InitConstants.monitor_generator_generated_monitor.toFile()

@@ -18,6 +18,8 @@ import org.droidmate.common_android.DeviceCommand
 import org.droidmate.common_android.DeviceResponse
 import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse
 import org.droidmate.configuration.Configuration
+import org.droidmate.configuration.model.DeviceModelHelper
+import org.droidmate.configuration.model.IDeviceModel
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
@@ -28,6 +30,7 @@ import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.logging.LogbackUtils
 
 import java.awt.*
+import java.nio.file.Path
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.List
@@ -57,6 +60,7 @@ public class AndroidDevice implements IAndroidDevice
   private final Configuration cfg
   private final IAdbWrapper   adbWrapper
   private final ITcpClients   tcpClients
+  private       IDeviceModel  deviceModel
 
   AndroidDevice(
     String serialNumber,
@@ -76,7 +80,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  void pushJar(File jar) throws DeviceException
+  void pushJar(Path jar) throws DeviceException
   {
     log.debug("pushJar(${jar.path})")
     adbWrapper.pushJar(serialNumber, jar)
@@ -101,7 +105,9 @@ public class AndroidDevice implements IAndroidDevice
 
     def outSnapshot = new UiautomatorWindowDump(
       response.windowHierarchyDump,
-      new Dimension(response.displayWidth, response.displayHeight))
+      new Dimension(response.displayWidth, response.displayHeight),
+      this.deviceModel
+    )
 
     log.debug("getGuiSnapshot(): $outSnapshot")
     return outSnapshot
@@ -144,7 +150,7 @@ public class AndroidDevice implements IAndroidDevice
    * device response, unless there were errors along the way. If there were errors, it throws an exception.
    * </p><p>
    * The issued command can be potentially handled either by aut-addon or uiautomator-daemon. This method resolves
-   * who should be the recipient and sends the command using {@link #uiautomatorClient}.
+   * who should be the recipient and sends the command using {@link TcpClients#uiautomatorClient}.
    *
    * </p><p>
    * <i>This doc was last reviewed on 14 Sep '13.</i>
@@ -361,11 +367,10 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  void removeJar(File jar) throws DeviceException
+  void removeJar(Path jar) throws DeviceException
   {
     log.debug("removeJar($jar)")
     adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemonJar)
-
   }
 
   private static boolean uiaDaemonHandlesCommand(DeviceCommand deviceCommand)
@@ -374,7 +379,8 @@ public class AndroidDevice implements IAndroidDevice
       DEVICE_COMMAND_PERFORM_ACTION,
       DEVICE_COMMAND_STOP_UIADAEMON,
       DEVICE_COMMAND_GET_UIAUTOMATOR_WINDOW_HIERARCHY_DUMP,
-      DEVICE_COMMAND_GET_IS_ORIENTATION_LANDSCAPE
+      DEVICE_COMMAND_GET_IS_ORIENTATION_LANDSCAPE,
+      DEVICE_COMMAND_GET_DEVICE_MODEL
     ]
   }
 
@@ -388,6 +394,16 @@ public class AndroidDevice implements IAndroidDevice
   void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
   {
     this.perform(newLaunchAppDeviceAction(iconLabel))
+  }
+
+  @Override
+  public void initModel() throws DeviceException
+  {
+    DeviceResponse response = this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
+    assert response.model != null
+
+    this.deviceModel = DeviceModelHelper.build(response.model)
+    assert this.deviceModel != null
   }
 
   @Override

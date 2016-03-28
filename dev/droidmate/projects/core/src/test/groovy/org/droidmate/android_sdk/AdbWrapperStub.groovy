@@ -11,6 +11,8 @@ package org.droidmate.android_sdk
 
 import org.droidmate.exceptions.AdbWrapperException
 
+import java.nio.file.Path
+
 class AdbWrapperStub implements IAdbWrapper
 {
 
@@ -52,13 +54,13 @@ class AdbWrapperStub implements IAdbWrapper
   }
 
   @Override
-  void pushJar(String deviceSerialNumber, File jarFile) throws AdbWrapperException
+  void pushJar(String deviceSerialNumber, Path jarFile) throws AdbWrapperException
   {
     assert false: "Not yet implemented!"
   }
 
   @Override
-  void removeJar(String deviceSerialNumber, File jarFile) throws AdbWrapperException
+  void removeJar(String deviceSerialNumber, Path jarFile) throws AdbWrapperException
   {
     assert false: "Not yet implemented!"
   }

@@ -16,6 +16,7 @@ import groovy.util.slurpersupport.GPathResult
 import org.droidmate.common.exceptions.InvalidWidgetBoundsException
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logging.LogbackConstants
+import org.droidmate.configuration.model.IDeviceModel
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 
 import java.awt.*
@@ -68,7 +69,8 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   private final WellFormedness wellFormedness
 
   private final IGuiState        guiState
-  final ValidationResult validationResult
+  final         ValidationResult validationResult
+  private final IDeviceModel     deviceModel
 
   /** Id is used only for tests, for:
    * - easy determination by human which widget is which when looking at widget string representation
@@ -77,13 +79,15 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   String id = null
 
 
-  UiautomatorWindowDump(String windowHierarchyDump, Dimension displayDimensions, String id = null)
+  UiautomatorWindowDump(String windowHierarchyDump, Dimension displayDimensions, IDeviceModel deviceModel, String id = null)
   {
     this.id = id
     this.windowHierarchyDump = windowHierarchyDump
     this.deviceDisplayBounds = new Rectangle(displayDimensions)
 
     this.wellFormedness = this.checkWellFormedness()
+
+    this.deviceModel = deviceModel
 
     if (this.wellFormedness == WellFormedness.OK)
       this.guiState = computeGuiState()
@@ -178,9 +182,9 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
       }
     }.findAll {it != null}
 
-    def gs = new GuiState(topNodePackage, id, widgets)
+    def gs = new GuiState(topNodePackage, id, widgets, this.deviceModel)
     if (gs.isAppHasStoppedDialogBox())
-      return new AppHasStoppedDialogBoxGuiState(topNodePackage, widgets)
+      return new AppHasStoppedDialogBoxGuiState(topNodePackage, widgets, this.deviceModel)
     else
       return gs
   }

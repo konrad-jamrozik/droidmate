@@ -13,6 +13,7 @@ import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.common_android.Constants
 import org.droidmate.common_android.guimodel.GuiAction
+import org.droidmate.configuration.model.NexusModel
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exceptions.UnsupportedMultimethodDispatch
@@ -22,12 +23,13 @@ import org.droidmate.misc.ITimeGenerator
 
 class GuiScreen implements IGuiScreen
 {
+  //private static final String packageAndroidLancher = new DeviceConfigurationFactory(Constants.DEVICE_DEFAULT).getConfiguration().getPackageAndroidLauncher()
 
   public static final String              idHome                  = "home"
   public static final String              idChrome                = "chrome"
   public static final Set<String>         reservedIds             = [idHome, idChrome]
   public static final Map<String, String> reservedIdsPackageNames = [
-    (idHome)  : GuiState.package_android_launcher_nexus7,
+    (idHome)  : NexusModel.package_android_launcher,
     (idChrome): "com.android.chrome"
   ]
 
@@ -78,7 +80,7 @@ class GuiScreen implements IGuiScreen
   IScreenTransitionResult perform(IAndroidDeviceAction action)
   {
     assert finishedBuilding
-    return internalPerform(action)
+     internalPerform(action)
   }
 
   //region internalPerform multimethod

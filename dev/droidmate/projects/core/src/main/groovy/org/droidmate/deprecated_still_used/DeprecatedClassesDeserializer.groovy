@@ -8,7 +8,7 @@
 // www.droidmate.org
 package org.droidmate.deprecated_still_used
 
-import org.droidmate.device.datatypes.GuiState
+import org.droidmate.device.datatypes.GuiStateLegacy
 import org.droidmate.exploration.actions.ResetAppExplorationAction
 import org.droidmate.exploration.actions.TerminateExplorationAction
 import org.droidmate.exploration.actions.WidgetExplorationAction
@@ -29,7 +29,7 @@ class DeprecatedClassesDeserializer extends ObjectInputStream
       "org.droidmate.exploration.datatypes.ResetAppExplorationAction"   : ResetAppExplorationAction,
       "org.droidmate.exploration.datatypes.WidgetExplorationAction"     : WidgetExplorationAction,
       "org.droidmate.exploration.datatypes.TerminateExplorationAction"  : TerminateExplorationAction,
-      "org.droidmate.exploration.datatypes.GuiState"                    : GuiState,
+      "org.droidmate.exploration.datatypes.GuiState"                    : GuiStateLegacy,
     ]
     return Collections.unmodifiableMap(res)
   }

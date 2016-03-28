@@ -22,6 +22,7 @@ import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.test_base.FilesystemTestFixtures
 
+import java.nio.file.Path
 import java.time.LocalDateTime
 
 @Slf4j
@@ -213,12 +214,12 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  void pushJar(File jar) throws DroidmateException
+  void pushJar(Path jar) throws DroidmateException
   {
   }
 
   @Override
-  void removeJar(File jar) throws DroidmateException
+  void removeJar(Path jar) throws DroidmateException
   {
   }
 
@@ -298,4 +299,9 @@ public class AndroidDeviceSimulator implements IAndroidDevice
     return this.class.simpleName
   }
 
+  @Override
+  void initModel() throws DeviceException
+  {
+    // Do nothing
+  }
 }
