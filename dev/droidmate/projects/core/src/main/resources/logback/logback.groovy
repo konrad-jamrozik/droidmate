@@ -113,7 +113,7 @@ appender(appender_name_warnings, LazyFileAppender) {
   filter(LevelFilter) {level = WARN; onMatch = ACCEPT; onMismatch = DENY}
   encoder(PatternLayoutEncoder) {pattern = pat_date_level_logger}
 }
-//tobi
+
 [[appender_name_monitor, logger_name_monitor]].each {list ->
   String appenderName = list[0]
   String loggerName = list[1]
