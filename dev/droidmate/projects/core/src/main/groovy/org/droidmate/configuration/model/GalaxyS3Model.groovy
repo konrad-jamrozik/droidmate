@@ -34,7 +34,7 @@ class GalaxyS3Model extends AbstractDeviceModel
   }
 
   @Override
-  Dimension getDeviceVerticalDimensionsForTesting()
+  Dimension getDeviceDisplayDimensionsForTesting()
   {
     return new Dimension(720, 1205)
   }

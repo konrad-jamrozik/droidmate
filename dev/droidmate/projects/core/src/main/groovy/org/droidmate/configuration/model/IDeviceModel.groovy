@@ -69,5 +69,5 @@ public interface IDeviceModel extends Serializable
    *
    * @return The size of the device screen (device on vertical)
    */
-  Dimension getDeviceVerticalDimensionsForTesting()
+  Dimension getDeviceDisplayDimensionsForTesting()
 }
