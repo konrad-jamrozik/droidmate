@@ -64,5 +64,5 @@ public class LocalInitConstantsTemplate
    */
   public static final String jdk6_path = "C:/Program Files/Java/jdk1.6.0_45"
 
-  public static final Path android_sdk_dir = Paths.get("c:/Program%20Files%20(x86)/Android/android-sdk/")
+  public static final Path android_sdk_dir = Paths.get("c:/Program Files (x86)/Android/android-sdk/")
 }
