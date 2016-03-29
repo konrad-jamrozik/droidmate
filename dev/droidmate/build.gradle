@@ -10,10 +10,6 @@
 
 project.ext.utils = new GroovyShell().parse(new File("${project.projectDir}/GroovyUtils/Utils.groovy"))
 
-task wrapper(type: Wrapper) {
-  gradleVersion = '2.8'
-}
-
 /* java plugin uses "build" for outputs by default, but the underlying ant script uses "bin".
    This is setup in root project, not in the target project, as this way we guarantee the property
    is set before it is read by any of the projects.

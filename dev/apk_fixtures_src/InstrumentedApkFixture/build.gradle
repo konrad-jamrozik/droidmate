@@ -7,11 +7,13 @@
 //
 // www.droidmate.org
 buildscript {
+    // Reference: http://stackoverflow.com/a/35186295/986533
+    System.properties['com.android.build.gradle.overrideVersionCheck'] = 'true'
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:1.5.0'
     }
 }
 apply plugin: 'com.android.application'

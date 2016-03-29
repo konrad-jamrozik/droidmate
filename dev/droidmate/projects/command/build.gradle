@@ -71,9 +71,9 @@ sourceSets.main.runtimeClasspath += project(":projects:core").sourceSets.main.ru
 // This command has to happen after modifying main runtimeClasspath, otherwise the classpath won't be setup correctly,
 // as enforced by the assert below.
 apply plugin: 'application'
+mainClassName = "org.droidmate.frontend.DroidmateFrontend"
 (tasks.run as JavaExec).configure {
   assert sourceSets.main.runtimeClasspath == classpath
-  main = "org.droidmate.frontend.DroidmateFrontend"
 
   workingDir rootDir
   java.nio.file.Path argsFile = Paths.get("$rootDir/args.txt")

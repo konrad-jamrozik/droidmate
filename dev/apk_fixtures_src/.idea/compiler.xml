@@ -18,5 +18,9 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="lib-apk_fixtures_main" target="1.6" />
+      <module name="lib-apk_fixtures_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
