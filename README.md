@@ -56,11 +56,11 @@ As of March 29, 2016, DroidMate uses the following versions of tools that are in
 | Kotlin        | 1.0.1-1 |
 | Android Plugin for Gradle | 1.5.0 |
 
-As of March 29, 2016, following local setups is proven to work with DroidMate:
+As of March 29, 2016, following local setup is proven to work with DroidMate:
 
 | Tech.         | Version |
 | ------------- | ------- |
-| Windows | 10 |
+| Windows  | 10 |
 | IntelliJ | 2016.1 #IU-145.258 |
 | JDK 8    | 77-b03 x64 |
 | JDK 7    | 79-b15 x64 |
