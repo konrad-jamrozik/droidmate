@@ -21,6 +21,7 @@ import org.droidmate.device.datatypes.GuiState
 public abstract class AbstractDeviceModel implements IDeviceModel
 {
   protected final String package_android = "android"
+  protected final String res_id_runtime_permission_dialog = "com.android.packageinstaller:id/dialog_container"
 
   protected abstract String getPackageAndroidLauncherName()
 
@@ -63,5 +64,14 @@ public abstract class AbstractDeviceModel implements IDeviceModel
     return topNodePackageName == package_android &&
       widgets.any {it.text == "Just once"} &&
       widgets.any {it.text == "Select a home app"}
+  }
+
+  @Override
+  boolean isRequestRuntimePermissionDialogBox(GuiState guiState)
+  {
+    List<Widget> widgets = guiState.getWidgets()
+    boolean isRuntimeDialog = widgets.any {it.resourceId == res_id_runtime_permission_dialog}
+
+    return isRuntimeDialog
   }
 }
