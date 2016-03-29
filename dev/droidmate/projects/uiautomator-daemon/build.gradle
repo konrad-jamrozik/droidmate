@@ -21,11 +21,21 @@ import org.droidmate.init.InitConstants
 
 apply plugin: 'java'
 
-/* These tasks come from Gradle's java plugin which is applied
-  only to make IntelliJ happy and is not fully configured. */
-tasks.remove(classes)
-tasks.remove(jar)
-tasks.remove(test)
+/* The tasks below are pruned and/or disabled as they come from Gradle's java plugin which is applied
+  only to make IntelliJ happy and is not fully configured.
+
+  There are more tasks like that that should be disabled, but I hope you know what you are doing.
+
+  Use only "build" and "clean" tasks. */
+tasks.build.dependsOn.remove("check")
+tasks.build.dependsOn.remove("assemble")
+tasks.check.enabled = false
+tasks.assemble.enabled = false
+tasks.jar.enabled = false
+
+/* "antBuild" and "antClean" tasks are defined below */
+tasks.build.dependsOn("antBuild")
+tasks.clean.dependsOn("antClean")
 
 sourceSets {
   main.java.srcDirs = ["src"]
@@ -52,6 +62,8 @@ dependencies {
   assert androidJarFile.file
   compile files(androidJarFile)
 }
+
+
 
 /* --- end of MAKE INTELLIJ IDEA HAPPY ZONE --- */
 
@@ -80,16 +92,15 @@ task pullLibCommonAndroidJar(dependsOn: ":projects:lib-common-android:jar") {
   }
 }
 
-/*
-  Note: The 'dependsOn' clause is redundant with 'builtBy' property in the 'dependencies' closure,
-  but it is left here for documentation purposes.
 
+/*
   Note: the underlying ant script inputs all files in libs dir, so if some additional .jar files will be
   found in it (e.g. with sources), the 'antBuild' task will fail to produce output due to classpath clashes.
  */
 task antBuild(dependsOn: [pullLibCommonAndroidJar]) {
   group = "build"
-  description = "Runs the underlying customized ant build file, generated with Android SDK."
+  description = "Runs the underlying customized ant build file with 'ant build'. The ant file was originally " +
+    "generated with Android SDK."
 
   inputs.files configurations.compile
   outputs.dir buildDir
@@ -104,14 +115,10 @@ task antBuild(dependsOn: [pullLibCommonAndroidJar]) {
   }
 }
 
-task build(overwrite: true, dependsOn: antBuild) {
-  group = "build"
-  description = "Runs the underlying customized ant build file, generated with Android SDK."
-}
-
-task clean(overwrite: true) {
+task antClean {
   group = "build"
   description = "Runs 'ant clean'."
+
   doLast {
     utils.executeCommand(
       "${project.name} ant clean",
