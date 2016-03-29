@@ -86,13 +86,15 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     return deviceResponse;
   }
 
-  private String getsWifiSwitchWidgetName()
+  private String getWifiSwitchWidgetName()
   {
     String deviceModel = this.getDeviceModel().model;
 
     String switchWidgetName;
     if (deviceModel.equals(DEVICE_SAMSUNG_GALAXY_S3_GT_I9300))
       switchWidgetName = "android:id/switchWidget";
+    else if (deviceModel.equals(DEVICE_GOOGLE_NEXUS_7))
+      switchWidgetName = "com.android.settings:id/switch_widget";
     else
       switchWidgetName = "com.android.settings:id/switchWidget";
 
@@ -230,9 +232,50 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
     try
     {
-      String switchWidgetName = this.getsWifiSwitchWidgetName();
+      String switchWidgetName = this.getWifiSwitchWidgetName();
       UiObject wifiSwitch = this.device.findObject(new UiSelector().resourceId(switchWidgetName));
-      if (wifiSwitch.getText().equals("OFF"))
+
+      // Check if it is possible to access the wifi switch
+      boolean hasWifiSwitch;
+      try
+      {
+        wifiSwitch.getText();
+        hasWifiSwitch = true;
+      } catch (UiObjectNotFoundException e)
+      {
+        hasWifiSwitch = false;
+      }
+
+      // On some Android versions (6.0, for example) the switch stays in a different
+      // window, accessible through a button.
+
+      // If is a button, however, the clickable is the linear layout, i.e.,
+      // its parent's parent, which does not possess a resource-id.
+      // The options are either to iterate through the layouts,
+      // of to click on a screen position and let Android OS handle the rest
+      // WISH Find a more elegant way of doing this
+      if (!hasWifiSwitch)
+      {
+        Log.i(uiaDaemon_logcatTag, "Wifi switch not found, looking for button.");
+        //UiObject wifiButton = this.device.findObject(new UiSelector().text("Wi-Fi"));
+        // Locate the Wifi container
+        UiObject wifiButton = this.device.findObject(new UiSelector().className("android.widget.LinearLayout").instance(4));
+
+        int x = wifiButton.getBounds().centerX();
+        Log.e(uiaDaemon_logcatTag, "Wifi container position x=" + x);
+        int y = wifiButton.getBounds().centerY();
+        Log.e(uiaDaemon_logcatTag, "Wifi container position y=" + y);
+        Log.i(uiaDaemon_logcatTag, "Wifi button located, pressing it.");
+        // Click on the screen
+        this.device.click(x, y);
+        waitForGuiToStabilize();
+
+        // Locate the switch
+        Log.i(uiaDaemon_logcatTag, "Locating wifi switch, again.");
+        wifiSwitch = this.device.findObject(new UiSelector().resourceId(switchWidgetName));
+      }
+
+      if (wifiSwitch.getText().equalsIgnoreCase("OFF"))
       {
         Log.i(uiaDaemon_logcatTag, "Turning wifi on.");
         wifiSwitch.click();
@@ -247,7 +290,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 //              Log.wtf(uiaDaemon_logcatTag, "Thread interrupted while sleeping after turning wifi on!");
 //            }
 
-        if (wifiSwitch.getText().equals("ON"))
+        if (wifiSwitch.getText().equalsIgnoreCase("ON"))
           Log.i(uiaDaemon_logcatTag, "Wifi turned on successfully.");
         else
           Log.w(uiaDaemon_logcatTag, "Clicked to make wifi on, but it is not ON!");
@@ -574,41 +617,40 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
   private File prepareWindowDumpFile(String fileName) throws UiAutomatorDaemonException
   {
-    try
+    // Replaced original location for application directory due to the following access denied exception:
+    //    Caught IOException while dumping window hierarchy.
+    //       Msg: /data/local/tmp/window_hierarchy_dump.xml: open failed: EACCES (Permission denied)
+    // More information in: http://stackoverflow.com/questions/23424602/android-permission-denied-for-data-local-tmp
+
+    final File dir = InstrumentationRegistry.getTargetContext().getFilesDir();
+    File file = new File(dir, fileName);
+
+    Log.w(uiaDaemon_logcatTag, String.format("Dump data directory: %s", dir.toString()));
+    Log.w(uiaDaemon_logcatTag, String.format("Dump data file: %s", file.toString()));
+
+    // Here we ensure the directory of the target file exists.
+    if (!dir.isDirectory())
+      if (!dir.mkdirs())
+        throw new UiAutomatorDaemonException("!windowDumpDir.isDirectory() && !windowDumpDir.mkdirs()");
+
+    // Here we ensure the target file doesn't exist.
+    if (file.isDirectory())
+      throw new UiAutomatorDaemonException("windowDumpFile.isDirectory()");
+    if (file.exists())
+      if (!file.delete())
+        throw new UiAutomatorDaemonException("windowDump.exists() && !windowDump.delete()");
+
+    // Here we check if we ensured things correctly.
+    if (file.exists())
     {
-      // Copied from com.android.uiautomator.core.UiDevice.dumpWindowHierarchy()
-      File file = File.createTempFile(fileName, "xml");
-      final File dir = file.getParentFile();
-      Log.w(uiaDaemon_logcatTag, String.format("Dump data directory: %s", dir.toString()));
-      Log.w(uiaDaemon_logcatTag, String.format("Dump data file: %s", file.toString()));
-
-      // Here we ensure the directory of the target file exists.
-      if (!dir.isDirectory())
-        if (!dir.mkdirs())
-          throw new UiAutomatorDaemonException("!windowDumpDir.isDirectory() && !windowDumpDir.mkdirs()");
-
-      // Here we ensure the target file doesn't exist.
-      if (file.isDirectory())
-        throw new UiAutomatorDaemonException("windowDumpFile.isDirectory()");
-      if (file.exists())
-        if (!file.delete())
-          throw new UiAutomatorDaemonException("windowDump.exists() && !windowDump.delete()");
-
-      // Here we check if we ensured things correctly.
-      if (file.exists())
-      {
-        throw new AssertionError("Following assertion failed: !windowDump.exists()");
-      }
-      if (!(file.getParentFile().isDirectory()))
-      {
-        throw new AssertionError("Following assertion failed: windowDump.getParentFile().isDirectory()");
-      }
-
-      return file;
-    } catch(IOException e)
-    {
-      throw new UiAutomatorDaemonException("Caught IOException while preparing window dump file. Msg: " + e.getMessage());
+      throw new AssertionError("Following assertion failed: !windowDump.exists()");
     }
+    if (!(file.getParentFile().isDirectory()))
+    {
+      throw new AssertionError("Following assertion failed: windowDump.getParentFile().isDirectory()");
+    }
+
+    return file;
   }
 
   //region Launching app

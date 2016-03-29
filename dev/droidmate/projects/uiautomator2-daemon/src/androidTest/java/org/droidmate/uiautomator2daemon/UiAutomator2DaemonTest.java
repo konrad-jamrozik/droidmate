@@ -9,7 +9,6 @@
 package org.droidmate.uiautomator2daemon;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.SdkSuppress;
 //import android.support.test.rule.ServiceTestRule;
@@ -85,7 +84,7 @@ public class UiAutomator2DaemonTest
 
   private void saveLogcatToFile() {
     String fileName = logcatLogFileName;
-    File outputFile = new File(Environment.getDataDirectory(), fileName);
+    File outputFile = new File(InstrumentationRegistry.getTargetContext().getFilesDir(), fileName);
 
     if (outputFile.exists())
     {
@@ -99,7 +98,6 @@ public class UiAutomator2DaemonTest
     {
       // - For explanation of the exec string, see org.droidmate.android_sdk.AdbWrapper.readMessagesFromLogcat()
       // - Manual tests with "adb shell ps" show that the executed process will be automatically killed when the uiad process dies.
-      Log.d(uiaDaemon_logcatTag, Runtime.getRuntime().toString());
       Runtime.getRuntime().exec(String.format("logcat -v time -f %s *:D %s:W %s:D %s:D dalvikvm:I ActivityManager:V AccessibilityNodeInfoDumper:S View:E ResourceType:E HSAd-HSAdBannerView:I" ,
         outputFile.getAbsolutePath(), instrumentation_redirectionTag, uiaDaemon_logcatTag, SerializableTCPServerBase.tag));
     } catch (IOException e)
