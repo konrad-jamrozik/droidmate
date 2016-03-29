@@ -14,20 +14,6 @@ import java.nio.file.Paths
 
 apply plugin: 'groovy'
 apply plugin: 'project-report' // http://www.gradle.org/docs/current/userguide/project_reports_plugin.html
-apply plugin: 'application'
-
-mainClassName = "org.droidmate.frontend.DroidmateFrontend"
-
-run {
-  workingDir rootDir
-
-  java.nio.file.Path argsFile = Paths.get("$rootDir/args.txt")
-  if (Files.exists(argsFile))
-  {
-    List<String> appArgs = argsFile.text.readLines().first().split(" ") as List<String>
-    args appArgs
-  }
-}
 
 compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
 compileJava.targetCompatibility = JavaVersion.VERSION_1_8
@@ -75,15 +61,27 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 //
 //   file:(...)droidmate/dev/droidmate/projects/core/build/resources/main/appguard_apis.txt
 sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
-// The line above also automatically copies sourceSets.main.runtimeClasspath
 
-// Without this, the following error happens when running :projects:command:run
+// Without this line, the following error happens when running :projects:command:run
 //
 // java.io.IOException: No URL found for path appguard_apis.txt that starts with 'file' protocol. The found URLs:
 // jar:file:/C:/my/local/repos/github/droidmate/dev/droidmate/projects/core/build/libs/core.jar!/appguard_apis.txt
-//
-run {
-  classpath = files(sourceSets.main.runtimeClasspath, project(":projects:core").sourceSets.main.runtimeClasspath)
+sourceSets.main.runtimeClasspath += project(":projects:core").sourceSets.main.runtimeClasspath
+
+// This command has to happen after modifying main runtimeClasspath, otherwise the classpath won't be setup correctly,
+// as enforced by the assert below.
+apply plugin: 'application'
+(tasks.run as JavaExec).configure {
+  assert sourceSets.main.runtimeClasspath == classpath
+  main = "org.droidmate.frontend.DroidmateFrontend"
+
+  workingDir rootDir
+  java.nio.file.Path argsFile = Paths.get("$rootDir/args.txt")
+  if (Files.exists(argsFile))
+  {
+    List<String> appArgs = argsFile.text.readLines().first().split(" ") as List<String>
+    args appArgs
+  }
 }
 
 dependencies {
