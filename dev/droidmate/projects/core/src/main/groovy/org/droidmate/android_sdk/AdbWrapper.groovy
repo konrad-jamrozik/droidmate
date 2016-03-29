@@ -41,9 +41,7 @@ public class AdbWrapper implements IAdbWrapper
   private       ISysCmdExecutor sysCmdExecutor
 
   // This should be set to the value of android.os.Environment.getDataDirectory()
-  private final String deviceEnvironmentDataDirectory = "data/local/tmp/"
-  //private final String deviceEnvironmentDataDirectory = "/data/"
-
+  private final String deviceEnvironmentDataDirectory = "/data/user/0/" + Constants.uiaDaemon_packageName + "/files/"
 
   AdbWrapper(
     Configuration cfg,
@@ -589,7 +587,6 @@ public class AdbWrapper implements IAdbWrapper
           "s/n %s.",
         deviceSerialNumber)
 
-      // WISH Borges replace for package + class name
       this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
         "shell am force-stop",
@@ -612,20 +609,18 @@ public class AdbWrapper implements IAdbWrapper
           "s/n %s.",
         deviceSerialNumber)
 
-      // WISH Borges code to start UIAutomatorDaemon2 service should be put here
       String uiaDaemonCmdLine = String.format("-e %s %s -e %s %s -e %s %s",
         Constants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
         Constants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
         Constants.uiaDaemonParam_tcpPort, port)
 
-      // WISH Borges replace for package + class name
       this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
         "shell am instrument",
         "--user 0",
         uiaDaemonCmdLine,
         "-w",
-        Constants.uiaDaemon_packageName + "/" + Constants.uiaDaemon_testRunner)
+        Constants.uiaDaemon_testPackageName + "/" + Constants.uiaDaemon_testRunner)
 
     } catch (SysCmdExecutorException e)
     {
@@ -663,7 +658,7 @@ public class AdbWrapper implements IAdbWrapper
   }*/
 
   @Override
-  void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+  void removeFile(String deviceSerialNumber, String fileName, String runAsPackage) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
     assert fileName != null
@@ -677,9 +672,15 @@ public class AdbWrapper implements IAdbWrapper
 
     try
     {
-      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "shell rm", filePath)
+      if (runAsPackage == null)
+        sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+          "-s", deviceSerialNumber,
+          "shell rm", filePath)
+      else
+        sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+          "-s", deviceSerialNumber,
+          "shell run-as", runAsPackage,
+          "rm", filePath)
 
     } catch (SysCmdExecutorException e)
     {
@@ -688,7 +689,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
+  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String runAsPackage) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
     assert pulledFileName?.size() > 0
@@ -707,9 +708,30 @@ public class AdbWrapper implements IAdbWrapper
     try
     {
 
-      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "pull", pulledFilePath, destinationFilePath)
+      if (runAsPackage == null)
+        sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+          "-s", deviceSerialNumber,
+          "pull", pulledFilePath, destinationFilePath)
+      else
+      {
+        // To solve a problem with permissions (enhanced security on Android 6)
+        // it is necessary to run the software as a specific package to get the file
+        // The command is: adb exec-out run-as <APPLICATION> cat <SOURCE> <DESTINATION>
+        // More information:
+        //   http://stackoverflow.com/questions/18471780/android-adb-retrieve-database-using-run-as
+        String[] executionOutput = sysCmdExecutor.execute(
+          commandDescription, cfg.adbCommand,
+          "-s", deviceSerialNumber,
+          "exec-out",
+          "run-as", runAsPackage,
+          "cat", pulledFilePath)
+
+        // Output was acquired with CAT not with PULL,
+        // create the output file and save file content
+        FileWriter writer = new FileWriter(destinationFilePath)
+        writer.write(executionOutput[0])
+        writer.close()
+      }
 
     } catch (SysCmdExecutorException e)
     {

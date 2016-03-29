@@ -14,6 +14,7 @@ import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.android_sdk.IApk
 import org.droidmate.common.Boolean3
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
+import org.droidmate.common_android.Constants
 import org.droidmate.common_android.DeviceCommand
 import org.droidmate.common_android.DeviceResponse
 import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse
@@ -243,14 +244,14 @@ public class AndroidDevice implements IAndroidDevice
   void removeLogcatLogFile() throws DeviceException
   {
     log.debug("removeLogcatLogFile()")
-    this.adbWrapper.removeFile(this.serialNumber, logcatLogFileName)
+    this.adbWrapper.removeFile(this.serialNumber, logcatLogFileName, Constants.uiaDaemon_packageName)
   }
 
   @Override
   void pullLogcatLogFile() throws DeviceException
   {
     log.debug("pullLogcatLogFile()")
-    this.adbWrapper.pullFile(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"))
+    this.adbWrapper.pullFile(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"), Constants.uiaDaemon_packageName)
   }
 
   @Override

@@ -44,7 +44,8 @@ public class Constants
    * <br/>
    * Name format according to help obtained by issuing {@code adb shell uiautomator runtest} in terminal.
    */
-  public static final String uiaDaemon_packageName = "org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test";
+  public static final String uiaDaemon_packageName = "org.droidmate.uiautomator2daemon.UiAutomator2Daemon";
+  public static final String uiaDaemon_testPackageName = uiaDaemon_packageName + ".test";
   public static final String uiaDaemon_testRunner = "android.support.test.runner.AndroidJUnitRunner";
 
   public static final String guiActionCommand_pressBack  = "press_back";

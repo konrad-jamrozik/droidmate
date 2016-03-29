@@ -138,12 +138,12 @@ class AdbWrapperStub implements IAdbWrapper
   }*/
 
   @Override
-  void removeFile(String deviceSerialNumber, String fileName) throws AdbWrapperException
+  void removeFile(String deviceSerialNumber, String fileName, String runAsPackage) throws AdbWrapperException
   {
   }
 
   @Override
-  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
+  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String runAsPackage) throws AdbWrapperException
   {
   }
 }
