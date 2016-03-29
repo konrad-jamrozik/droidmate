@@ -10,8 +10,11 @@
 package org.droidmate.test_base
 
 import com.github.konrad_jamrozik.ResourcePath
+import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.IAaptWrapper
+import org.droidmate.common.SysCmdExecutor
+import org.droidmate.configuration.Configuration
 import org.droidmate.init.InitConstants
 
 import java.nio.file.Path
@@ -36,9 +39,15 @@ class FilesystemTestFixtures
   public String f_aaptBadgingDump
   public Path   f_uiaTestCaseLog
   public Path   f_legacySer
+  public Path   f_monitoredSer2
 
   public final ApkFixtures        apks
   public final WindowDumpFixtures windowDumps = new WindowDumpFixtures()
+
+  static FilesystemTestFixtures build()
+  {
+    return new FilesystemTestFixtures(new AaptWrapper(Configuration.default, new SysCmdExecutor()))
+  }
 
   FilesystemTestFixtures(IAaptWrapper aapt)
   {
@@ -46,6 +55,7 @@ class FilesystemTestFixtures
     f_aaptBadgingDump = new ResourcePath("fixtures/f_aaptBadgingDump.txt").path.text
     f_uiaTestCaseLog = new ResourcePath("fixtures/f_uia_test_case_log.txt").path
     f_legacySer = new ResourcePath("fixtures/serialized_results/2015 Oct 01 1723 com.antivirus.ser").path
+    f_monitoredSer2 = new ResourcePath("fixtures/serialized_results/2016 Mar 29 1650 org.droidmate.fixtures.apks.monitored.ser2").path
   }
 
   public class ApkFixtures

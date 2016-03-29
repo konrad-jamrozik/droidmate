@@ -31,6 +31,7 @@ class ConfigurationForTests
     Configuration.pn_monitorServerStartQueryDelay, "0",
     Configuration.pn_checkAppIsRunningRetryDelay, "0",
     // Commented out, as there are no tests simulating rebooting. However, sometimes I am manually testing real-world rebooting.
+    // Such real-world rebooting require the delays to be present, not zeroed.
 //    Configuration.pn_checkDeviceAvailableAfterRebootFirstDelay, "0",
 //    Configuration.pn_checkDeviceAvailableAfterRebootLaterDelays, "0",
 //    Configuration.pn_waitForCanRebootDelay, "0",

@@ -2,6 +2,7 @@ package org.droidmate.report
 
 import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
+import org.droidmate.test_base.FilesystemTestFixtures
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.UnderConstruction
 import org.junit.Test
@@ -13,7 +14,8 @@ class ExplorationOutput2ReportTest {
   @Category(UnderConstruction::class)
   fun reports() {
 
-    // KJA current work: change the dir and ensure there is some input data in the dir
+    // KJA 2 use fixtures.f_monitoredSer2 instead of entire dir
+    val ser2 = FilesystemTestFixtures.build().f_monitoredSer2
     val reportInputDirReal = ConfigurationForTests().get().reportInputDirPath
 
     val mockFs = ConfigurationForTests().withMockFileSystem().get()
@@ -24,7 +26,7 @@ class ExplorationOutput2ReportTest {
 
     val out = OutputDir(reportInputDirMock).read()
 
-    check(out.isNotEmpty())
+    check(out.isNotEmpty(), { "Check failed: out.isNotEmpty()" })
 
     Jimfs.newFileSystem(Configuration.unix())
     val report = ExplorationOutput2Report(out, reportOutputDirMock)
@@ -38,5 +40,3 @@ class ExplorationOutput2ReportTest {
     }
   }
 }
-
-
