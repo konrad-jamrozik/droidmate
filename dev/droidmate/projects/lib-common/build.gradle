@@ -28,7 +28,7 @@ dependencies {
   compile files("$rootDir/../init/build/libs/init.jar")
 
   // Groovy lang
-  compile 'org.codehaus.groovy:groovy-all:2.4.5'
+  compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
   // General utils
   compile 'org.apache.commons:commons-exec:1.2'
