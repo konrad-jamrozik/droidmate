@@ -127,7 +127,7 @@ class ApkInliner implements IApkInliner
 
     sysCmdExecutor.execute(
       "Inlining ${targetApk.toRealPath().toString()}",
-      "java -jar",
+      "java", "-jar",
       inlinerJar.toRealPath().toString(),
       targetApk.toRealPath().toString(),
       appGuardLoader.toRealPath().toString(),
