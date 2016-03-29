@@ -62,7 +62,10 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
-// Without this line, the ResourcePaths required by ConfigurationBuilder resolve only to files within jar, e.g. this line:
+// Without this line, the following test fails while running :projects:command:test
+// org.droidmate.tests.configuration.ConfigurationBuilderTest.Builds configuration
+//
+// Without this line, the ResourcePath-s required by ConfigurationBuilder resolve only to files within jar, e.g. this line:
 // new ResourcePath(InitConstants.appGuardApisList.fileName.toString()).toFile()
 // fails, as the only available URL of the file is:
 //
@@ -70,8 +73,9 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 //
 // With this line added, the URL ultimately used will be:
 //
-//   file:/(...)droidmate/dev/droidmate/projects/core/build/resources/main/appguard_apis.txt
+//   file:(...)droidmate/dev/droidmate/projects/core/build/resources/main/appguard_apis.txt
 sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
+// The line above also automatically copies sourceSets.main.runtimeClasspath
 
 dependencies {
 
