@@ -105,7 +105,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       device.closeConnection()
       // differently from uiautomator-daemon,
       // uiautomator2-daemon is an APK and must be uninstalled
-      device.uninstallApk(Constants.uiaDaemon_packageName, true)
+      device.uninstallApk(Constants.uiaDaemon_testPackageName, true)
       //device.removeJar(cfg.uiautomatorDaemon)
       device.removeJar(cfg.monitorApk)
     }

@@ -65,6 +65,15 @@ public interface IDeviceModel extends Serializable
   boolean isSelectAHomeAppDialogBox(GuiState guiState)
 
   /**
+   * Determine if the {@link GuiState} has a request runtime permission dialog box (Android 6)
+   *
+   * @param guiState GUI State that will be evaluated
+   *
+   * @return If the device has a request runtime permission dialog box
+   */
+  boolean isRequestRuntimePermissionDialogBox(GuiState guiState)
+
+  /**
    * Determine the size of the device screen that can be used for testing
    *
    * @return The size of the device screen (device on vertical)

@@ -60,6 +60,12 @@ class GuiStateLegacy implements Serializable, IGuiState
   }
 
   @Override
+  boolean isRequestRuntimePermissionDialogBox()
+  {
+    return this.createNewGuiState().isRequestRuntimePermissionDialogBox()
+  }
+
+  @Override
   boolean isCompleteActionUsingDialogBox()
   {
     return this.createNewGuiState().isCompleteActionUsingDialogBox()

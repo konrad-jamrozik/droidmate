@@ -14,20 +14,20 @@ import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.configuration.model.IDeviceModel
 
 /**
- * Specialized GuiState class that represents an application with an active "App has stopped" dialog box
+ * Specialized GuiState class that represents an application with an active "Runtime permission" dialog box
  */
 @Canonical
-class AppHasStoppedDialogBoxGuiState extends GuiState implements Serializable
+class RuntimePermissionDialogBoxGuiState extends GuiState implements Serializable
 {
   private static final long serialVersionUID = 1
 
-  AppHasStoppedDialogBoxGuiState(String topNodePackageName, List<Widget> widgets, IDeviceModel deviceModel)
+  RuntimePermissionDialogBoxGuiState(String topNodePackageName, List<Widget> widgets, IDeviceModel deviceModel)
   {
     super(topNodePackageName, widgets, deviceModel)
   }
 
-  Widget getOKWidget() {
-    return this.widgets.find { it.text == "OK" }
+  Widget getAllowWidget() {
+    return this.widgets.find { it.text == "Allow" }
   }
 
 }

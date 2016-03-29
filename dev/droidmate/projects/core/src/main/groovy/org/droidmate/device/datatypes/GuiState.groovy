@@ -14,15 +14,6 @@ import org.droidmate.common.TextUtilsCategory
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.configuration.model.IDeviceModel
 
-// WISH Borges this class has to be adapted to work with other devices, e.g. Samsung Galaxy S III
-// DroidMate should ask uiautomator-daemon for the the device model
-// see http://stackoverflow.com/questions/6579968/how-can-i-get-the-device-name-in-android)
-// see http://stackoverflow.com/questions/1995439/get-android-phone-model-programmatically
-// Probably the data should be obtained in a similar manner as in org.droidmate.device.MonitorsClient.isServerReachable
-// but instead the uiautomator-daemon should be asked, and the call probably should be made during
-// org.droidmate.tools.AndroidDeviceDeployer.trySetUp to then keep the obtained info inside the RobustDevice instance.
-//
-// Note that isHomeScreen is already adapted.
 @Canonical(excludes = "id")
 class GuiState implements Serializable, IGuiState
 {
@@ -74,6 +65,9 @@ class GuiState implements Serializable, IGuiState
       if (this instanceof AppHasStoppedDialogBoxGuiState)
         return "GUI state of \"App has stopped\" dialog box. OK widget enabled: ${(this as AppHasStoppedDialogBoxGuiState).OKWidget.enabled}".wrapWith("<>")
 
+      if (this instanceof RuntimePermissionDialogBoxGuiState)
+        return "GUI state of \"Runtime permission\" dialog box. Allow widget enabled: ${(this as RuntimePermissionDialogBoxGuiState).allowWidget.enabled}".wrapWith("<>")
+
       return "GuiState " + (id != null ? "id=$id " : "") + "pkg=$topNodePackageName Widgets count = ${widgets.size()}".wrapWith("<>")
     }
   }
@@ -103,9 +97,14 @@ class GuiState implements Serializable, IGuiState
   }
 
   @Override
+  boolean isRequestRuntimePermissionDialogBox()
+  {
+    return this.deviceModel.isRequestRuntimePermissionDialogBox(this)
+  }
+
+  @Override
   boolean belongsToApp(String appPackageName)
   {
     return this.topNodePackageName == appPackageName
   }
-
 }

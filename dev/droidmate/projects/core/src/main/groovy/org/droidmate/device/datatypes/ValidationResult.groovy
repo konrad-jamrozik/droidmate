@@ -13,6 +13,8 @@ public enum ValidationResult {
   OK(true, "The window xml hierarchy dump is well-formed and does not represent an 'app has stopped' dialog box."),
   app_has_stopped_dialog_box_with_OK_button_enabled(true, "The window xml hierarchy dump represents 'app has stopped' dialog box and the 'OK' button is enabled."),
   app_has_stopped_dialog_box_with_OK_button_disabled(false, "The window xml hierarchy dump represents 'app has stopped' dialog box, but the 'OK' button is disabled."),
+  request_runtime_permission_dialog_box_with_Allow_button_enabled(true, "The window xml hierarchy dump represents 'request runtime permission' dialog box and the 'Allow' button is enabled."),
+  request_runtime_permission_dialog_box_with_Allow_button_disabled(false, "The window xml hierarchy dump represents 'request runtime permission' dialog box, but the 'Allow' button is disabled."),
   missing_root_xml_node_prefix(false, "The window xml hierarchy dump doesn't contain the root node prefix, i.e.: " + UiautomatorWindowDump.rootXmlNodePrefix),
   is_empty(false, "The window xml hierarchy dump is empty (its string length is zero)"),
   is_null(false, "The window xml hierarchy dump is null")
