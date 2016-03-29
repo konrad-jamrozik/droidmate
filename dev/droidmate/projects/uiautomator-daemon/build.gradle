@@ -9,7 +9,7 @@
 
 def libsDir = file("$projectDir/libs")
 
-/* --- MAKE IntelliJ IDEA HAPPY ZONE ---
+/* --- MAKE INTELLIJ IDEA HAPPY ZONE ---
 
   The code below is here to make sure that when "Refresh all Gradle projects" is hit in IntelliJ IDEA, the source folders
   and dependencies will be properly configured in the IDE.
@@ -20,6 +20,12 @@ def libsDir = file("$projectDir/libs")
 import org.droidmate.init.InitConstants
 
 apply plugin: 'java'
+
+/* These tasks come from Gradle's java plugin which is applied
+  only to make IntelliJ happy and is not fully configured. */
+tasks.remove(classes)
+tasks.remove(jar)
+tasks.remove(test)
 
 sourceSets {
   main.java.srcDirs = ["src"]
@@ -47,24 +53,7 @@ dependencies {
   compile files(androidJarFile)
 }
 
-task classes (overwrite: true) {
-  /* This task definition is overwritten with "do nothing" here. This is task coming from Gradle's java plugin which is applied
-  only to make IntelliJ happy and is not fully configured. */
-}
-
-
-task test (overwrite: true, type: Test) {
-  /* This task definition is overwritten with "do nothing" here. This is task coming from Gradle's java plugin which is applied
-  only to make IntelliJ happy and is not fully configured. */
-
-  // Workaround for GRADLE-1682. See http://stackoverflow.com/a/14947906/986533
-  // includes = ['**/MonitorGeneratorFrontendTest.class']
-  // Test not included because the test shouldn't be run as part of a test suite.
-  includes = ['']
-
-}
-
-/* --- end of MAKE IntelliJ IDEA HAPPY ZONE --- */
+/* --- end of MAKE INTELLIJ IDEA HAPPY ZONE --- */
 
 def projectLibCommon = findProject(":projects:lib-common-android");
 def antBuildFileName = "build-customized.xml"
