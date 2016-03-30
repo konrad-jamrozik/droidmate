@@ -45,6 +45,8 @@
       <module name="monitor_generator_test" target="1.8" />
       <module name="reporter_main" target="1.8" />
       <module name="reporter_test" target="1.8" />
+      <module name="robot_main" target="1.8" />
+      <module name="robot_test" target="1.8" />
       <module name="uiautomator-daemon_main" target="1.8" />
       <module name="uiautomator-daemon_test" target="1.8" />
       <module name="uiautomator_daemon_main" target="1.8" />

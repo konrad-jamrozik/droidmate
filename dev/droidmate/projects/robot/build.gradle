@@ -1,0 +1,59 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+
+import org.droidmate.init.InitConstants
+
+import java.nio.file.Files
+import java.nio.file.Paths
+
+apply plugin: 'groovy'
+
+compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+
+//region Dependencies
+
+// See :command project for explanation
+evaluationDependsOn(":projects:core")
+
+// See :command project for explanation
+configurations {forceJunitPriority}
+sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
+sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
+
+// See :command project for explanation
+sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
+
+// See :command project for explanation
+sourceSets.main.runtimeClasspath += project(":projects:core").sourceSets.main.runtimeClasspath
+
+
+dependencies {
+
+  forceJunitPriority 'junit:junit:4.12'
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.hamcrest:hamcrest-core:1.3'
+  testCompile project(":projects:core").sourceSets.test.output
+
+  compile project(":projects:core")
+}
+
+
+//endregion Dependencies
+
+test {
+
+  // See :command project for explanation
+  workingDir rootDir
+
+  // See :command project for explanation
+  includes = ['']
+
+}
+
