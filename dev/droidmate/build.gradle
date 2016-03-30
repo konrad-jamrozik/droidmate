@@ -16,7 +16,10 @@ project.ext.utils = new GroovyShell().parse(new File("${project.projectDir}/Groo
 */
 project(":projects:uiautomator-daemon").buildDir = "bin"
 
+ext.kotlin_version = '1.0.1-1'
+
 buildscript {
+
   String initJarPath = "$rootDir/../init/build/libs/init.jar"
   File initJar = file(initJarPath)
   assert initJar.file: "init.jar not found (if you are building DroidMate for the first time, this is to be expected).\n" +
@@ -37,7 +40,6 @@ subprojects {
   repositories {
     mavenCentral()
     maven {url "https://jitpack.io"}
-    maven {url "https://dl.bintray.com/kotlin/kotlin-eap/"}
 //  mavenLocal()
   }
 

@@ -92,10 +92,9 @@ dependencies {
   testCompile project(":projects:core").sourceSets.test.output
   testCompile project(":projects:reporter").sourceSets.test.output
 
-  // Workaround for: 'gradlew :p:command:test' fails when reporter tests are run from command.
+  // Workaround for: 'gradlew :p:command:test' fails when reporter tests are run from command line.
   // It works when run from IntelliJ or when run with 'gradlew :p:reporter:test'
-  // This is possibly fixed by https://github.com/JetBrains/kotlin/commit/dbc2299cf20686aa6e747241030ac2047e5735fb
-  testCompile 'org.jetbrains.kotlin:kotlin-test:1.0.0-rc-1017'
+  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
 
   compile project(":projects:core")
   compile project(":projects:reporter")
