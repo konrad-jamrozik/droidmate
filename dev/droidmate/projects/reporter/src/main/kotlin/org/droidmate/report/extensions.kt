@@ -24,9 +24,8 @@ fun Path.text(): String {
   return NioGroovyMethods.getText(this)
 }
 
-// KJA 1 add method that doesnt't take dir Path as input, but list of file Paths.
-fun Path.copyDirContentsRecursivelyToDirInDifferentFileSystem(destDir: Path): Unit {
-  FileSystemsOperations().copyDirContentsRecursivelyToDirInDifferentFileSystem(this, destDir)
+fun List<Path>.copyFilesToDirInDifferentFileSystem(destDir: Path): Unit {
+  FileSystemsOperations().copyFilesToDirInDifferentFileSystem(this, destDir)
 }
 
 fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
