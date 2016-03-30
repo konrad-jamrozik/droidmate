@@ -7,32 +7,38 @@
 //
 // www.droidmate.org
 
-import org.droidmate.init.InitConstants
-
-import java.nio.file.Files
-import java.nio.file.Paths
-
 apply plugin: 'groovy'
 
 compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
 compileJava.targetCompatibility = JavaVersion.VERSION_1_8
 
-//region Dependencies
-
-// See :command project for explanation
+// See :projects:command project for explanation of this code
 evaluationDependsOn(":projects:core")
 
-// See :command project for explanation
+// See :projects:command project for explanation of this code
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
-// See :command project for explanation
+// See :projects:command project for explanation of this code
 sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
 
-// See :command project for explanation
+// See :projects:command project for explanation of this code
 sourceSets.main.runtimeClasspath += project(":projects:core").sourceSets.main.runtimeClasspath
 
+String libsRobotDirPath = "libs_robot"
+def osIsWindows() {
+  if (System.properties['os.name'].toLowerCase().contains('windows'))
+    1 else 0
+}
+// Returns the path to directory of OS-dependent library required to interact with a robot through serial port.
+def robotLibDir = {
+  if (osIsWindows())
+  // not sure if the libraries in this dir will work on windows versions different than Windows 7 x64
+    return "$projectDir/$libsRobotDirPath/Windows_7"
+  else
+    return "$projectDir/$libsRobotDirPath/Mac_OS"
+}
 
 dependencies {
 
@@ -42,17 +48,17 @@ dependencies {
   testCompile project(":projects:core").sourceSets.test.output
 
   compile project(":projects:core")
+  compile fileTree(dir: robotLibDir(), include: '*.jar')
 }
 
 
-//endregion Dependencies
 
 test {
 
-  // See :command project for explanation
+  // See :projects:command project for explanation of this code
   workingDir rootDir
 
-  // See :command project for explanation
+  // See :projects:command project for explanation of this code
   includes = ['']
 
 }

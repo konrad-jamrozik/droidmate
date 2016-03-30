@@ -10,9 +10,10 @@
 package org.droidmate.robot
 
 import com.google.common.collect.Lists
+import groovy.util.logging.Slf4j
 import org.droidmate.configuration.Configuration
-import org.slf4j.Logger
 
+@Slf4j
 public class RobotController implements IRobotController
 {
 
@@ -28,8 +29,6 @@ public class RobotController implements IRobotController
   private float currentY;
   private final double slowdownLength = 40;
   private final double speedupLength = 40;
-
-  private static Logger log;
 
   RobotController(Configuration config, RobotConfiguration robotConfig, Reader userInputReader,
                   ISerialDriver serialDriver, ICoordinateMapper coordinateMapper, IRobotPathPlotter robotPathPlotter)

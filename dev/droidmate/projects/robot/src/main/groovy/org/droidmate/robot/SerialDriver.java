@@ -192,8 +192,11 @@ public class SerialDriver implements ISerialDriver
           "Got instead: %s",
         expectedResponse, receipt.toString()));
 
-    log.trace("DONE receiving from serial port. Message received: {}", receipt.toString());
-    log.trace(serialDriver, "RECV {}", receipt.toString());
+    // KJA restore log
+    System.out.println("DONE receiving from serial port. Message received: "+receipt.toString());
+    System.out.println("RECV "+ receipt.toString());
+//    log.trace("DONE receiving from serial port. Message received: {}", receipt.toString());
+//    log.trace(serialDriver, "RECV {}", receipt.toString());
 
     return receipt.toString();
   }

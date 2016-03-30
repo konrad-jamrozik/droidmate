@@ -39,15 +39,6 @@ compileJava.targetCompatibility = JavaVersion.VERSION_1_8
 String libsDirPath = "libs"
 File testLibsDir = file("${projectDir.path}/testLibs")
 
-// Returns the path to directory of OS-dependent library required to interact with a robot through serial port.
-ext.robotLibDir = {
-  if (utils.osIsWindows())
-  // not sure if the libraries in this dir will work on windows versions different than Windows 7 x64
-    return "$projectDir/$libsDirPath/robot/Windows_7"
-  else
-    return "$projectDir/$libsDirPath/robot/Mac_OS"
-}
-
 // Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
@@ -69,7 +60,6 @@ dependencies {
   compile project(":projects:lib-common-android")
   compile project(":projects:lib-android")
 
-  compile fileTree(dir: robotLibDir(), include: '*.jar')
   def libsDirFileTree = fileTree(dir: "$projectDir/$libsDirPath", include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
   /* Making this additional setter call instead of supplying a value in constructor is a workaround for an issue I discovered
      on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */

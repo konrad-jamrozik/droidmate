@@ -20,10 +20,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="core_main" />
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="lib-common_main" />
-    <orderEntry type="module" module-name="lib-common-android_main" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -46,15 +42,6 @@
       <library>
         <CLASSES>
           <root url="jar://$ANDROID_SDK$/platforms/android-19/android.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/robot/Windows_7/RXTXcomm.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -96,6 +83,19 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../projects/robot/libs_robot/Windows_7/RXTXcomm.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="core_main" />
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="lib-common_main" />
+    <orderEntry type="module" module-name="lib-common-android_main" />
     <orderEntry type="module" module-name="lib-android_main" />
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.35" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />

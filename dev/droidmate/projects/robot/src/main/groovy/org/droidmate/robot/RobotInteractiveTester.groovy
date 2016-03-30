@@ -17,7 +17,7 @@ import org.droidmate.configuration.Configuration
 public class RobotInteractiveTester
 {
 
-  private static RobotConfiguration robotConfig = new RobotConfiguration();
+  private static RobotConfiguration robotConfig
 
   // These values will be set from config.
   private static int speed = 0;
@@ -41,6 +41,11 @@ public class RobotInteractiveTester
     Reader userInputReader = new InputStreamReader(System.in, "UTF-8")
     PrintWriter outputWriter = new PrintWriter(System.out, true)
     Configuration config = Configuration.getDefault()
+
+    robotConfig = new RobotConfiguration();
+    if (args.any { it.contains("echoCable")})
+      robotConfig.echoCable = true;
+
     IRobotController robotController = new RobotController(
       config,
       robotConfig,
