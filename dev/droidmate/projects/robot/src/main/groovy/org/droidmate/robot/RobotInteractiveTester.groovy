@@ -54,7 +54,7 @@ public class RobotInteractiveTester
       new CoordinateMapperNexus10(
         config,
         robotConfig),
-      new RobotPathPlotterStraightLine()
+      new RobotPathPlotterArc(config, robotConfig)
     )
 
     speed = robotConfig.robotSpeed;
@@ -198,7 +198,7 @@ public class RobotInteractiveTester
 //    robotController.moveToCoordinates(0, 0, speed, true);
     robotController.moveToCoordinates(0, 0, robotConfig.robotSpeedSlow, true);
     click(robotController);
-    robotController.moveToCoordinates((int) cx / 2, (int) cy / 2, speed, true);
+    robotController.moveToCoordinates((int) (cx / 2), (int) (cy / 2), speed, true);
     click(robotController);
     robotController.moveToCoordinates(cx, cy, speed, true);
     click(robotController);
@@ -210,9 +210,9 @@ public class RobotInteractiveTester
     click(robotController);
     robotController.moveToCoordinates(0, y, speed, true);
     click(robotController);
-    robotController.moveToCoordinates((int) x, (int) 2 * y / 3, speed, true);
+    robotController.moveToCoordinates((int) x, (int) (2 * y / 3), speed, true);
     click(robotController);
-    robotController.moveToCoordinates((int) 0, (int) 1 * y / 3, speed, true);
+    robotController.moveToCoordinates((int) 0, (int) (1 * y / 3), speed, true);
     click(robotController);
     robotController.moveToCoordinates(x, y, speed, true);
     click(robotController);
