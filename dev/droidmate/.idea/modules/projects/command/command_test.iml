@@ -12,9 +12,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="command_main" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
-    <orderEntry type="module" module-name="core_test" production-on-test="" />
     <orderEntry type="module" module-name="core_main" scope="RUNTIME" />
     <orderEntry type="module" module-name="reporter_test" production-on-test="" />
+    <orderEntry type="module" module-name="core_test" production-on-test="" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="module-library">
       <library>
@@ -55,15 +55,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/robot/Windows_7/RXTXcomm.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/aopalliance-1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -83,15 +74,6 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/jsr305-1.3.9.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/jts-1.13.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

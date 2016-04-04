@@ -11,7 +11,6 @@ package org.droidmate.robot;
 
 import com.google.common.base.Stopwatch;
 import gnu.io.*;
-import org.droidmate.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -121,7 +120,7 @@ public class SerialDriver implements ISerialDriver
 
   /**
    * The bytes will be received from {@link #serialPortIn} and converted to string until {@code ok} is encountered
-   * or a fixed amount of time passes, given as a command line argument {@link Configuration}
+   * or a fixed amount of time passes, given as a command line argument {@link RobotConfiguration}
    */
   @Override
   public String receive() throws RobotException
@@ -136,10 +135,6 @@ public class SerialDriver implements ISerialDriver
 
     StringBuilder receipt = new StringBuilder();
 
-    // Requires Guava 15.0.0
-//    Stopwatch executionTimeStopwatch = Stopwatch.createStarted();
-    // Doesn't require Guava 15.0.0, deprecated!
-    // TODO this worked normally contrary to the bug described in build.gradle, but it fails on CeBIT 2014 iMac / MacOSX. "NoSuchMethodException".
     Stopwatch stopwatch = Stopwatch.createUnstarted();
 
     byte[] buffer = new byte[1024];
@@ -147,12 +142,12 @@ public class SerialDriver implements ISerialDriver
     {
       int bytesRead = serialPortIn.read(buffer);
 
-      // commented out because it is too verbose!
+      // commented out because it is too verbose.
 //      log.trace("Number of bytes read from serial port InputStream: {}", bytesRead);
 
       String answer = new String(Arrays.copyOfRange(buffer, 0, bytesRead));
 
-      // commented out because it is too verbose!
+      // commented out because it is too verbose.
 //      log.trace("Received from serial port: " + answer);
 
       receipt.append(answer);
@@ -166,12 +161,12 @@ public class SerialDriver implements ISerialDriver
       {
         bytesRead = serialPortIn.read(buffer);
 
-        // commented out because it is too verbose!
+        // commented out because it is too verbose.
 //        log.trace("Number of bytes read from serial port InputStream: {}", bytesRead);
 
         answer = new String(Arrays.copyOfRange(buffer, 0, bytesRead));
 
-        // commented out because it is too verbose!
+        // commented out because it is too verbose.
 //        log.trace("Received from serial port: " + answer);
 
         receipt.append(answer);
