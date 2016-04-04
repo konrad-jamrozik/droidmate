@@ -46,11 +46,6 @@ public class Markers
    */
   public static final Marker runData = MarkerFactory.getMarker("MARKER_RUN_DATA")
 
-  /**
-   * Used by robot.
-   */
-  public static final Marker serialDriver = MarkerFactory.getMarker("MARKER_SERIAL_DRIVER")
-
   public static List<Marker> getAllMarkers()
   {
     return Markers.fields.collect {it as Marker}

@@ -9,10 +9,7 @@
 
 package org.droidmate.robot;
 
-
-import org.droidmate.common.DroidmateException;
-
-public class RobotException extends DroidmateException
+public class RobotException extends Exception
 {
   private static final long serialVersionUID = 1L;
 

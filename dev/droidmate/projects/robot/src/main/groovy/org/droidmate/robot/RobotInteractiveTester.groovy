@@ -11,7 +11,6 @@ package org.droidmate.robot
 
 import com.google.common.base.Splitter
 import com.google.common.collect.Lists
-import org.droidmate.common.DroidmateException
 import org.droidmate.configuration.Configuration
 
 public class RobotInteractiveTester
@@ -36,7 +35,7 @@ public class RobotInteractiveTester
   /**
    * @param args
    */
-  public static void main(String[] args) throws DroidmateException
+  public static void main(String[] args)
   {
     Reader userInputReader = new InputStreamReader(System.in, "UTF-8")
     PrintWriter outputWriter = new PrintWriter(System.out, true)

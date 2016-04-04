@@ -14,6 +14,8 @@ import gnu.io.*;
 import org.droidmate.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,10 +25,10 @@ import java.util.Enumeration;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
-import static org.droidmate.common.logging.Markers.serialDriver;
-
 public class SerialDriver implements ISerialDriver
 {
+  public static final Marker serialDriver = MarkerFactory.getMarker("MARKER_SERIAL_DRIVER");
+
   private InputStream serialPortIn;
   private OutputStream serialPortOut;
   private SerialPort serialPort;
