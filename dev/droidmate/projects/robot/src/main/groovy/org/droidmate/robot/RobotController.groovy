@@ -11,7 +11,6 @@ package org.droidmate.robot
 
 import com.google.common.collect.Lists
 import groovy.util.logging.Slf4j
-import org.droidmate.configuration.Configuration
 
 @Slf4j
 public class RobotController implements IRobotController
@@ -19,7 +18,6 @@ public class RobotController implements IRobotController
 
   public static final String CEBIT_IMAC_EXPECTED_SERIAL_PORT = "/dev/tty.usbmodem1.0.1";
   public static final String WINDOWS_EXPECTED_SERIAL_PORT = "COM12";
-  private Configuration config;
   private RobotConfiguration robotConfig;
   private Reader userInputReader;
   private ISerialDriver serialDriver;
@@ -30,10 +28,9 @@ public class RobotController implements IRobotController
   private final double slowdownLength = 40;
   private final double speedupLength = 40;
 
-  RobotController(Configuration config, RobotConfiguration robotConfig, Reader userInputReader,
-                  ISerialDriver serialDriver, ICoordinateMapper coordinateMapper, IRobotPathPlotter robotPathPlotter)
+  RobotController(RobotConfiguration robotConfig, Reader userInputReader, ISerialDriver serialDriver,
+                  ICoordinateMapper coordinateMapper, IRobotPathPlotter robotPathPlotter)
   {
-    this.config = config;
     this.robotConfig = robotConfig;
 
     this.userInputReader = userInputReader;

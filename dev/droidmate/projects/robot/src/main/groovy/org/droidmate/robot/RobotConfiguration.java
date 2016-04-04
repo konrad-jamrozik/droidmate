@@ -10,9 +10,8 @@
 package org.droidmate.robot;
 
 import com.beust.jcommander.Parameter;
-import org.droidmate.configuration.IConfiguration;
 
-public class RobotConfiguration implements IConfiguration
+public class RobotConfiguration
 {
   private static final String PARAM_NAME_ROBOT_RESPONSE_CONFIRMATION = "-robotResponseConfirmation";
 

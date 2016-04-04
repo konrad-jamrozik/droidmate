@@ -14,7 +14,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.util.GeometricShapeFactory;
-import org.droidmate.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +26,6 @@ public class RobotPathPlotterArc implements IRobotPathPlotter
   // 90 degrees
   private static double quarterCircle = Angle.angle(new Coordinate(0, 1));
 
-  private Configuration config;
 
   public double lastPlottedArcLength;
 
@@ -35,9 +33,8 @@ public class RobotPathPlotterArc implements IRobotPathPlotter
 
   private static Logger log = LoggerFactory.getLogger(SerialDriver.class.getSimpleName());
 
-  RobotPathPlotterArc(Configuration config, RobotConfiguration robotConfig)
+  RobotPathPlotterArc(RobotConfiguration robotConfig)
   {
-    this.config = config;
     this.robotConfig = robotConfig;
   }
 

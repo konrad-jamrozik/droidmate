@@ -11,7 +11,6 @@ package org.droidmate.robot
 
 import com.google.common.base.Splitter
 import com.google.common.collect.Lists
-import org.droidmate.configuration.Configuration
 
 public class RobotInteractiveTester
 {
@@ -39,21 +38,17 @@ public class RobotInteractiveTester
   {
     Reader userInputReader = new InputStreamReader(System.in, "UTF-8")
     PrintWriter outputWriter = new PrintWriter(System.out, true)
-    Configuration config = Configuration.getDefault()
 
     robotConfig = new RobotConfiguration();
     if (args.any { it.contains("echoCable")})
       robotConfig.echoCable = true;
 
     IRobotController robotController = new RobotController(
-      config,
       robotConfig,
       userInputReader,
       new SerialDriver(robotConfig),
-      new CoordinateMapperNexus10(
-        config,
-        robotConfig),
-      new RobotPathPlotterArc(config, robotConfig)
+      new CoordinateMapperNexus10(robotConfig),
+      new RobotPathPlotterArc(robotConfig)
     )
 
     speed = robotConfig.robotSpeed;
