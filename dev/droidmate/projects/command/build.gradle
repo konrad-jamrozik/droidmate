@@ -103,6 +103,7 @@ dependencies {
 
 //endregion Dependencies
 
+// WISH use test.configure instead. Do it everywhere.
 test {
 
  /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
