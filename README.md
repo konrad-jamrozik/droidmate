@@ -82,9 +82,9 @@ Android 4.4.2 SDK Platform
 
 ### 2. Do the one-time local setup ###
 
-1. Setup local installation constants by following instructions given in `./dev/init/src/main/groovy/org/droidmate/init/LocalInitConstantsTemplate.groovy`
+1. Setup local installation constants by following instructions given in `./dev/init/src/main/groovy/org/droidmate/init/LocalInitConstantsTemplate.groovy` 
 **IMPORTANT** When following the instructions, be double sure that you followed to the letter the step 1. in the class groovydoc!
-* (optional) set `GRADLE_USER_HOME` system environment variable to a directory in which Gradle  will locally cache the dependencies downloaded from maven repository. [Gradle doc link](https://docs.gradle.org/current/userguide/gradle_command_line.html).
+* (optional) set `GRADLE_USER_HOME` system environment variable () to a directory in which Gradle  will locally cache the dependencies downloaded from maven repository ([Gradle doc](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties)).
 * Run initial build setup:
 `./dev/init/gradlew build`
 Note: on Linux and Mac OS will need to first do `chmod +x gradlew`
