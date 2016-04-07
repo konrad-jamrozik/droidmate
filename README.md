@@ -8,20 +8,20 @@
 
   www.droidmate.org
 
-  Date of last full review: 19 jan 2016
+  Date of last full review: 7 April 2016
 
 # Introduction #
 
-**DroidMate** is an automated GUI execution generator for Android apps.
+**DroidMate** is an automated GUI execution generator (or: UI fuzzer; dynamic analysis engine) for Android apps.
 
 This file pertains to DroidMate source. You should have found it at DroidMate
-repository root dir, denoted in this file as `.` (dot).
+repository root dir, denoted in this file as `repo`.
 
 This file explains:
 
-- What is DroidMate and how it works.
+- What DroidMate is and how it works.
 - How to build, test and run DroidMate.
-- How to setup an IDE for development.
+- How to setup an IDE for DroidMate development.
 - How to navigate DroidMate sources and technical documentation.
 
 
@@ -31,9 +31,11 @@ DroidMate fully automatically decides and clicks on Android app's GUI. DroidMate
 
 DroidMate is fully automatic: after it has been set up and started, the exploration itself does not require human presence.
 
-As input, DroidMate reads a directory containing Android apps (.apk files). It outputs a serialized data structure containing the exploration output. It also outputs .txt files having various human-readable information extracted from the serialized exploration output.
+As input, DroidMate reads a directory containing Android apps (.apk files). It outputs a serialized Java object representing the exploration output. It also outputs .txt files having various human-readable information extracted from the serialized exploration output.
 
 DroidMate can click and long-click the AUE’s GUI, restart the AUE,  press ‘home’ button and  it can terminate the exploration. Any of this is called an **exploration action**. DroidMate’s **exploration strategy** decides which exploration action to execute based on the XML representation of the currently visible device GUI, a **GUI snapshot**, and on the set of Android framework methods that have been called after last exploration action, a set of **API calls**.
+
+For more information, please see the papers available on the website linked above.
 
 # Building, testing and running DroidMate #
 
@@ -45,9 +47,9 @@ DroidMate build process was tested on Windows 10, Windows 7, Mac OS and Ubuntu.
 
 DroidMate was tested with Nexus 7 2012 running Android 4.4. It also worked with an emulator. It should work with other Android devices running Android 4.4.
 
-In case you run into problems, please see the [Troubleshooting Mac OS problems](#troubleshooting-mac-os-problems) section.
+For Mac OS, please see [troubleshooting Mac OS problems](#troubleshooting-mac-os-problems).
 
-As of March 29, 2016, DroidMate uses the following versions of tools that are independent from local setup:
+As of 7 April 2016, DroidMate uses the following versions of tools that are independent from local setup:
 
 | Tech.         | Version |
 | ------------- | ------- |
@@ -56,7 +58,7 @@ As of March 29, 2016, DroidMate uses the following versions of tools that are in
 | Kotlin        | 1.0.1-1 |
 | Android Plugin for Gradle | 1.5.0 |
 
-As of March 29, 2016, following local setup is proven to work with DroidMate:
+As of 7 April 2016, following local setup is proven to work with DroidMate:
 
 | Tech.         | Version |
 | ------------- | ------- |
@@ -82,11 +84,12 @@ Android 4.4.2 SDK Platform
 
 ### 2. Do the one-time local setup ###
 
-1. Setup local installation constants by following instructions given in `./dev/init/src/main/groovy/org/droidmate/init/LocalInitConstantsTemplate.groovy` 
-**IMPORTANT** When following the instructions, be double sure that you followed to the letter the step 1. in the class groovydoc!
-* (optional) set `GRADLE_USER_HOME` system environment variable () to a directory in which Gradle  will locally cache the dependencies downloaded from maven repository ([Gradle doc](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties)).
-* Run initial build setup:
-`./dev/init/gradlew build`
+1. Setup local installation constants by following instructions given in `repo/dev/init/src/main/groovy/org/droidmate/init/LocalInitConstantsTemplate.groovy`  
+**IMPORTANT** When following the instructions, be double sure that you followed to the letter the step 1. in the class documentation comment!
+* (optional) set `GRADLE_USER_HOME` system environment variable to a directory in which Gradle  will locally cache the dependencies downloaded from maven repository ([Gradle doc about environment variables](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties)).
+* Run initial build setup:  
+`cd repo/dev/init`  
+`./gradlew build`  
 Note: on Linux and Mac OS will need to first do `chmod +x gradlew`
 
 ### 3. Do the build ###
@@ -100,14 +103,14 @@ If this step finished with `BUILD SUCCESSFUL` you successfully built DroidMate a
 Now you should setup an Android device and run tests requiring it:
 
 1. Setup an Android device, as described in the [official doc](http://developer.android.com/training/basics/firstapp/running-app.html#RealDevice).
-* Ensure the "settings" app is on the main home screen on the device. You can drag & drop it from the apps list. If you omit this step, DroidMate will not be able to ensure WiFi is enabled before each app restart during exploration. It will work however, just issuing a warning to logcat.
+* Ensure the "settings" app is on the main home screen on the device. You can drag & drop it from the apps list. If you omit this step, DroidMate will not be able to ensure WiFi is enabled before each app restart during exploration. It will work,  but will issue a warning to logcat.
 * Run DroidMate tests requiring device as described in the section below.
 
 ## Daily building and testing ##
 
-To build DroidMate and run all regression tests that do not require a device:
-
-`./dev/droidmate/gradlew build`
+To build DroidMate and run all regression tests that do not require a device:  
+`cd repo/dev/droidmate`  
+`./gradlew build`  
 
 To skip tests: `gradlew build -x test`
 
@@ -121,39 +124,41 @@ To run DroidMate regression tests requiring a device:
 
 1. Ensure `adb devices` shows the device is available.
 * Ensure the device displays home screen.
-* Run `./dev/droidmate/gradlew testDevice`.
+* Run:  
+`cd repo/dev/droidmate`  
+`./gradlew testDevice`
 
 ## Running DroidMate ##
 
-Run DroidMate with
-`./dev/droidmate/gradlew :projects:command:run`, or
-`./dev/droidmate/gradlew :p:com:run` for short.
+To run DroidMate:  
+`cd root/dev/droimate`  
+`./gradlew :projects:command:run` or `./gradlew :p:com:run` for short.
 
 DroidMate will read command line arguments from the first line of
-`./dev/droidmate/args.txt`
+`repo/dev/droidmate/args.txt`
 
-Most likely, the input apks will be taken from `./dev/droidmate/apks` (as determined by the first line of args.txt)
+Most likely, the input apks will be taken from `repo/dev/droidmate/apks` (as determined by the first line of `args.txt`)
 
 ### Preparing apks for DroidMate ####
 
 DroidMate cannot run on normal apks, they first have to be `inlined`. To inline a set of apks, do the following:
 
-* Copy them to `./dev/droidmate/projects/apk-inliner/input-apks`
-* Run the task
-`./dev/droidmate/gradlew :projects:core:prepareInlinedApks`
-or `./dev/droidmate/gradlew :p:cor:pIA` for short.
-The apks will be placed in `./dev/droidmate/apks/inlined`
+* Copy the apks to `repo/dev/droidmate/projects/apk-inliner/input-apks`
+* Run:  
+`cd repo/dev/droidmate`  
+`./gradlew :projects:core:prepareInlinedApks` or `./gradlew :p:cor:pIA` for short.  
+The apks will be placed in `repo/dev/droidmate/apks/inlined`
 * Run DroidMate with cmd line arg of `-apksDir=apks/inlined` to use these apks.
 
 Inlined apks can be distinguished by an `-inlined.apk` suffix in their name.
 
 ### Obtaining apks ###
 
-You can obtain `.apk` files of the apps in following ways:
+You can obtain .apk files of the apps in following ways:
 
 * Use a dedicated app for that. See [androidpit.com/how-to-download-apk-file-from-google-play](https://www.androidpit.com/how-to-download-apk-file-from-google-play)
-* Copy the artificial apk fixtures coming from DroidMate, that can be found in `./dev/droidmate/projects/core/src/test/resources/fixtures/apks`
-after DroidMate was successfully built. Their sources are available in the `./dev/apk-fixtures-src` project.
+* Copy the artificial apk fixtures coming from DroidMate, that can be found in `repo/dev/droidmate/projects/core/src/test/resources/fixtures/apks`
+after DroidMate was successfully built. Their sources are available in the `repo/dev/apk_fixtures_src` project.
 * Download `Samples for SDK` using Android SDK Manager and build them.
 * Install an app from Google Play Store to an Android device and then pull the app from the device using `adb` from Android SDK. For example, the [currency converter](https://play.google.com/store/apps/details?id=com.frank_weber.forex2) has `id=com.frank_weber.forex2` in its URL, denoting its package name. After you install it on the device, you can pull it in the following way: <pre>
 $ adb shell pm path com.frank_weber.forex2
@@ -181,11 +186,11 @@ Simply make a `jre/lib` directory within java home and symlink `rt.jar` within i
 
 # Working with DroidMate code base
 
-DroidMate is developed with IntelliJ IDEA 16 EAP, using the directory-based project format (`.idea`  directory). To work with DroidMate, IntelliJ has to be configured with all the dependencies used for daily building (e.g. JDKs) plus it has to have the following:
+DroidMate is developed with IntelliJ IDEA  using the directory-based project format (`.idea`  directory). To work with DroidMate, IntelliJ has to be configured with all the dependencies used for daily building (e.g. JDKs) plus it has to have the following:
 
 * Gradle plugin.
 * Android Support plugin.
-* Kotlin plugin EAP ([installation instructions](https://discuss.kotlinlang.org/t/kotlin-early-access-preview/1437))
+* Kotlin plugin.
 
 After opening an IntelliJ project (see section below), run `Refresh all gradle projects` from `Gradle` plugin toolbar. After this you should be able to `Build -> Make Project` and run the tests (see section below).
 
@@ -199,7 +204,7 @@ My settings.jar can be obtained from [this GitHub repo](https://github.com/konra
 
 `DroidmateFrontendTest.Explores monitored apk on a real device` runs the most important test that requires a device.
 
-For how these tests relate to Gradle tasks, see `./dev/droidmate/projects/core/build.gradle`.
+For how these tests relate to Gradle tasks, see `repo/dev/droidmate/projects/core/build.gradle`.
 Search in that file for `test {` and `task testDevice`
 
 ##### Setting up IntelliJ for running single tests
@@ -227,15 +232,15 @@ If you still do not have access to some sources and docs, manually add them in I
 
 Following directories are sources which can be opened  as IntelliJ projects (`File -> Open`):
 
-* `./dev/droidmate` -- main sources of DroidMate.
-* `./dev/init` -- sources for the initial build.
-* `./dev/apk-fixtures-src` -- sources of apk fixtures used in the `droidmate` project tests.
+* `repo/dev/droidmate` -- the `droidmate` project: main sources of DroidMate.
+* `repo/dev/init` -- the `init` project: sources for the initial build.
+* `repo/dev/apk_fixtures_src` -- the `apk_fixures_src` project: sources of apk fixtures used in the `droidmate` project tests.
 
 ## Troubleshooting IntelliJ ##
 
 * If IntelliJ builds fail erratically, close it, do full clean and build from Gradle and reopen IntelliJ.
 
-* When opening `./dev/droidmate` in IntelliJ, it is expected to have the following error:
+* When opening `repo/dev/droidmate` in IntelliJ, it is expected to have the following error:
 > Unsupported Modules Detected: Compilation is not supported for following modules: DummyAndroidApp. Unfortunately you can't have non-Gradle Java modules and Android-Gradle modules in one project.
 
 The `DummyAndroidApp` project is added only to enable Android plugin views, like e.g. logcat.
@@ -243,19 +248,19 @@ The `DummyAndroidApp` project is added only to enable Android plugin views, like
 * If you get on Gradle rebuild:
 > Unsupported major.minor version 52.0
 
-Ensure that Gradle is using JDK 8 in: Settings -> Build, Execution, Deployment -> Build Tools -> Gradle -> Gradle JVM.
+Ensure that Gradle is using JDK 8 in: `Settings -> Build, Execution, Deployment -> Build Tools -> Gradle -> Gradle JVM`.
 
 # Technical documentation  #
 
-Technical docs will be  located in `./dev/droidmate/doc`. As of 14 Dec 2015 only severely outdated documentation is available.
+Technical docs will be  located in `repo/dev/droidmate/doc`. As of 7 April 2016 only severely outdated documentation is available.
 
 The entry class of DroidMate is `DroidmateFrontend` and so it is recommended to start code base exploration from this class. You can find it in
 
-`./dev/droidmate/projects/core/src/main/groovy/org/droidmate/frontend/DroidmateFrontend.groovy`
+`repo/dev/droidmate/projects/core/src/main/groovy/org/droidmate/frontend/DroidmateFrontend.groovy`
 
 ### Tests as documentation ###
 
 Tests of DroidMate serve also as example use cases. If given class has a corresponding test class, it will have a `Test` suffix. So `DroidmateFrontend` has a `DroidmateFrontendTest` class with tests for it. You can navigate to tests of given class (if any) in IntelliJ with `ctrl+shift+T` (`Navigate -> Test` in keymap). Tests always live in `<project dir>/src/test`. Tests of core functionality are located in the `core` project.
 
 Run the tests from IntelliJ as described in section above to be able to navigate to them directly. If you run a Gradle build, you can see the test report in:
-`./dev/droidmate/projects/core/build/reports/tests/index.html`
+`repo/dev/droidmate/projects/core/build/reports/tests/index.html`
