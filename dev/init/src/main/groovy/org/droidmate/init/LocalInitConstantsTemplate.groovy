@@ -42,6 +42,8 @@ public class LocalInitConstantsTemplate
    * DroidMate projects. See README file in this project dir for details.
    */
   // KNOWN BUG backward slashes do not work here (\\).
+  // KJA handle cases in which slash is given at the end
+  // !!! WARNING !!! DO NOT end the path with slash! 
   public static final String init_project_dir_path = "c:/my/local/repos/chair/droidmate/dev/init"
 
   /**
