@@ -50,6 +50,7 @@ public class InitConstants
   /**
    * The project of DroidMate that builds apk fixtures used in tests.
    */
+  // KJA looks like can be made private
   public static final File apk_fixtures_src_project_dir = new File((LocalInitConstants.droidmate_project_dir_path - "/dev/droidmate") + "/dev/apk_fixtures_src")
 
   /** This string makes an assumption that the apk inliner adds the "-inlined" suffix. */
@@ -73,11 +74,12 @@ public class InitConstants
   public static final Path uiautomator_daemon_local_properties_file =
     Paths.get(LocalInitConstants.droidmate_project_dir_path.toString(), "/projects/uiautomator-daemon/local.properties")
 
+  // KJA can be made private
   public static final Path apk_fixtures_src_local_properties_file =
     Paths.get(apk_fixtures_src_project_dir.toString(), "local.properties")
 
-
   public static final Path apk_inliner_proj_dir                 = Paths.get(LocalInitConstants.droidmate_project_dir_path, "projects/apk-inliner")
+  // KJA these 2 are tricky. Have to be made compatible with file() and with default cmd line arg value.
   public static final Path apk_inliner_param_input_default      = apk_inliner_proj_dir.resolve("input-apks")
   public static final Path apk_inliner_param_output_dir_default = apk_inliner_proj_dir.resolve("output-apks")
 
@@ -123,6 +125,7 @@ public class InitConstants
    * </p>
    */
   // @formatter:on
+  // KJA can be made relative, so that it works with 'droidmate' project's file() command.
   public static final Path sharedResourcesDir = Paths.get(LocalInitConstants.init_project_dir_path, "shared_resources")
 
   /**

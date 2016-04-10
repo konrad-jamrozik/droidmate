@@ -284,6 +284,7 @@ task cleanTest(type: GradleBuild) {
 
 task prepareInlinedApks(dependsOn: ":projects:apk-inliner:run") {
 
+  // KJA relativize
   File inlinedApksDir = new File(InitConstants.absolute_apks_dir, "inlined")
   if (!inlinedApksDir.isDirectory())
     inlinedApksDir.mkdir()

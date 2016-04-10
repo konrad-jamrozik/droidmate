@@ -43,28 +43,36 @@ public class LocalInitConstantsTemplate
    */
   // KNOWN BUG backward slashes do not work here (\\).
   // KJA handle cases in which slash is given at the end
-  // !!! WARNING !!! DO NOT end the path with slash! 
+  // !!! WARNING !!! DO NOT end the path with slash!
+  // KJA this probably can be completely removed
+  // KJA looks like can be made private
   public static final String init_project_dir_path = "c:/my/local/repos/chair/droidmate/dev/init"
 
   /**
    * The "main" project of DroidMate.
    */
+  // KJA move out from local constants
+  // KJA this is mostly used to auto-gen local.properties files with android sdk path. Instead, these paths should be taken from ANDROID_HOME.
   public static final String droidmate_project_dir_path = (init_project_dir_path - "/init") + "/droidmate"
 
   /**
    * Java sources of modules not deployed to any device use jdk 8. For example, apk-inliner.
    */
+  // KJA env: JAVA_HOME
   public static final String jdk8_path = "C:/Program Files/Java/jdk1.8.0_25"
 
   /**
    * Java sources deployed to Android devices have to be build with jdk 7 at most.
    */
+  // KJA env: JAVA7_HOME
   public static final String jdk7_path = "C:/Program Files/Java/jdk1.7.0_71"
 
   /**
    * Apk fixtures are being built with legacy Android ant scripts, which support jdk 6 at most.
    */
+  // KJA env: JAVA6_HOME
   public static final String jdk6_path = "C:/Program Files/Java/jdk1.6.0_45"
 
+  // KJA env: ANDROID_HOME
   public static final Path android_sdk_dir = Paths.get("c:/Program Files (x86)/Android/android-sdk/")
 }
