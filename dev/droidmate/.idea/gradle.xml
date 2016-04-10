@@ -18,7 +18,6 @@
             <option value="$PROJECT_DIR$/projects/lib-common-android" />
             <option value="$PROJECT_DIR$/projects/monitor-generator" />
             <option value="$PROJECT_DIR$/projects/reporter" />
-            <option value="$PROJECT_DIR$/projects/robot" />
             <option value="$PROJECT_DIR$/projects/uiautomator-daemon" />
           </set>
         </option>

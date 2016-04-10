@@ -29,9 +29,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/reporter/reporter.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/reporter/reporter.iml" group="projects/reporter" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_main.iml" group="projects/reporter" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/reporter/reporter_test.iml" group="projects/reporter" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/robot/robot.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/robot/robot.iml" group="projects/robot" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/robot/robot_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/robot/robot_main.iml" group="projects/robot" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/robot/robot_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/robot/robot_test.iml" group="projects/robot" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon.iml" group="projects/uiautomator-daemon" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon_main.iml" group="projects/uiautomator-daemon" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/uiautomator-daemon/uiautomator-daemon_test.iml" group="projects/uiautomator-daemon" />
