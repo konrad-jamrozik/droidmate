@@ -16,6 +16,7 @@
 */
 
 import org.droidmate.init.LocalInitConstants
+import org.droidmate.init.LocalInitConstantsTemplate
 
 apply plugin: 'java'
 
@@ -31,7 +32,4 @@ apply plugin: 'java'
 */
 compileJava.sourceCompatibility = JavaVersion.VERSION_1_7
 compileJava.targetCompatibility = JavaVersion.VERSION_1_7
-
-File rtJar = new File("${LocalInitConstants.jdk7_path}/jre/lib/rt.jar")
-assert rtJar.file
-compileJava.options.bootClasspath = rtJar.path
+compileJava.options.bootClasspath = LocalInitConstantsTemplate.java7rtJar.toString()

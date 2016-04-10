@@ -16,9 +16,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
 
-import java.nio.file.Path
-import java.nio.file.Paths
-
 @TypeChecked
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4)
@@ -34,6 +31,7 @@ public class InitConstantsTest
 
       // This instruction is present here to force static init block of the class to run.
       InitConstants.build_tools_version
+      LocalInitConstantsTemplate.java7rtJar
       assert true // No exception was thrown during static initialization of the tested class.
   }
 

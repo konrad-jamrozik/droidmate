@@ -1,13 +1,15 @@
+task build(dependsOn: "assemble")
+
 task assemble(dependsOn: "assemble_droidmate")
 
 task assemble_droidmate(type: GradleBuild, dependsOn: "assemble_init") {
   buildFile = "dev/droidmate/build.gradle"
-  tasks = ["assemble"]
+  tasks = ["build"]
 }
 
 task assemble_init(type: GradleBuild) {
   buildFile = "dev/init/build.gradle"
-  tasks = ["assemble"]
+  tasks = ["build"]
 }
 
 /*

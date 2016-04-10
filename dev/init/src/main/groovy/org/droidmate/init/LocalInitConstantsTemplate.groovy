@@ -9,6 +9,7 @@
 
 package org.droidmate.init
 
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 /**
@@ -32,11 +33,11 @@ import java.nio.file.Paths
  * </p>
  *
  */
-// Explanation of @SuppressWarnings("GroovyUnusedDeclaration"):
-// the file is intended to serve as a template, see the comment above.
-@SuppressWarnings("GroovyUnusedDeclaration")
 public class LocalInitConstantsTemplate
 {
+  
+  // KJA current work
+  
   /**
    * The "init" project of DroidMate. The project has to be built from gradle cmd line to generate init.jar, used by other
    * DroidMate projects. See README file in this project dir for details.
@@ -57,22 +58,50 @@ public class LocalInitConstantsTemplate
 
   /**
    * Java sources of modules not deployed to any device use jdk 8. For example, apk-inliner.
+   * Example path on windows: "C:/Program Files/Java/jdk1.8.0_25"
    */
   // KJA env: JAVA_HOME
-  public static final String jdk8_path = "C:/Program Files/Java/jdk1.8.0_25"
+  public static final String jdk8_path = System.getenv("JAVA_HOME")
 
   /**
-   * Java sources deployed to Android devices have to be build with jdk 7 at most.
+   * Example value of JAVA7_HOME on Windows: "C:/Program Files/Java/jdk1.7.0_71"
    */
-  // KJA env: JAVA7_HOME
-  public static final String jdk7_path = "C:/Program Files/Java/jdk1.7.0_71"
+  public static final Path java7rtJar = resolveFile(getEnvDir("JAVA7_HOME"), "jre/lib/rt.jar")
 
   /**
-   * Apk fixtures are being built with legacy Android ant scripts, which support jdk 6 at most.
+   * Example value of JAVA6_HOME on Windows: "C:/Program Files/Java/jdk1.6.0_45"
    */
-  // KJA env: JAVA6_HOME
-  public static final String jdk6_path = "C:/Program Files/Java/jdk1.6.0_45"
+  public static final Path java6rtJar = resolveFile(getEnvDir("JAVA6_HOME"), "jre/lib/rt.jar")
 
   // KJA env: ANDROID_HOME
   public static final Path android_sdk_dir = Paths.get("c:/Program Files (x86)/Android/android-sdk/")
+
+  static Path getEnvDir(String variable)
+  {
+    String value = System.getenv(variable)
+    assert value?.size() > 0 : "System.getenv($variable) should be a string denoting a directory. It is instead: $value"
+    
+    Path dir = Paths.get(value)
+    assert Files.isDirectory(dir) : "System.getenv($variable) should be a path pointing to an existing directory. " +
+      "The faulty path: ${dir.toString()}"
+    return dir
+  }
+  
+  static Path resolveDir(Path path, String subdir)
+  {
+    assert Files.isDirectory(path)
+    assert subdir?.size() > 0
+    Path resolved = path.resolve(subdir)
+    assert Files.isDirectory(resolved)
+    return resolved
+  }
+
+  static Path resolveFile(Path path, String filepath)
+  {
+    assert Files.isDirectory(path)
+    assert filepath?.size() > 0
+    Path resolved = path.resolve(filepath)
+    assert Files.isRegularFile(resolved)
+    return resolved
+  }
 }
