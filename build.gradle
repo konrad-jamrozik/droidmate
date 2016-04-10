@@ -1,0 +1,36 @@
+task build(dependsOn: "build_droidmate")
+
+task build_droidmate(type: GradleBuild, dependsOn: "build_init") {
+  buildFile = "dev/droidmate/build.gradle"
+  tasks = ["build"]
+}
+
+task build_init(type: GradleBuild) {
+  buildFile = "dev/init/build.gradle"
+  tasks = ["build"]
+}
+
+/*
+"clean" doesn't work because clean_init doesn't work:
+
+  FAILURE: Build failed with an exception.
+  
+  * What went wrong:
+  Execution failed for task ':clean'.
+  > Unable to delete file: repo\droidmate\dev\init\build\libs\init.jar
+
+It has to be executed independently.
+
+ */
+//task clean(dependsOn: "clean_init")
+//
+//task clean_init(type: GradleBuild, dependsOn: "clean_droidmate") {
+//  buildFile = "dev/init/build.gradle"
+//  tasks = ["clean"]
+//}
+//
+//task clean_droidmate(type: GradleBuild) {
+//  buildFile = "dev/droidmate/build.gradle"
+//  tasks = ["clean"]
+//}
+
