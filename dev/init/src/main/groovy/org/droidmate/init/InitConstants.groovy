@@ -125,8 +125,8 @@ public class InitConstants
    * </p>
    */
   // @formatter:on
-  // KJA can be made relative, so that it works with 'droidmate' project's file() command.
-  public static final Path sharedResourcesDir = Paths.get(LocalInitConstants.init_project_dir_path, "shared_resources")
+  private static final String sharedResourcesDirName = "shared_resources" 
+  public static final String appGuardApisListFileName = "appguard_apis.txt"
 
   /**
    * <p>
@@ -135,8 +135,7 @@ public class InitConstants
    *  - core project to filter out APIs that are present in AppGuard (as opposed to the APIs present in PScout)
    *  </p>
    */
-  public static final Path appGuardApisList = sharedResourcesDir.resolve("appguard_apis.txt")
-
+  public static final String appGuardApisListInInit = "$sharedResourcesDirName${File.separator}$appGuardApisListFileName"
 
   static {
     Path test = Paths.get(LocalInitConstantsTemplate.androidSdkDir.toString(), "platforms/android-$android_platform_version")
@@ -172,9 +171,6 @@ public class InitConstants
       assert Files.createFile(apk_fixtures_src_local_properties_file)
       apk_fixtures_src_local_properties_file.write("sdk.dir=" + LocalInitConstantsTemplate.androidSdkDir.toString().replace("\\", "\\\\"))
     }
-
-    assert Files.isDirectory(sharedResourcesDir)
-    assert Files.isRegularFile(appGuardApisList)
   }
 
   //region Constants for testing

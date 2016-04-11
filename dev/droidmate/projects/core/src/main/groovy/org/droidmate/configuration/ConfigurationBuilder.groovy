@@ -192,7 +192,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
   private static void bindDirsAndResources(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
-    cfg.appGuardApisList = new ResourcePath(InitConstants.appGuardApisList.fileName.toString())
+    cfg.appGuardApisList = new ResourcePath(InitConstants.appGuardApisListFileName)
 
     cfg.uiautomatorDaemonJar = new ResourcePath("uiautomator-daemon.jar")
 

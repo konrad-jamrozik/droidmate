@@ -221,7 +221,7 @@ task buildApkFixtures(type: GradleBuild) {
 //region Preparation of resources: API list stats
 task pullAppGuardApisList(type: Copy) {
 
-  File appGuardApisList = file(InitConstants.appGuardApisList.toFile())
+  File appGuardApisList = file("$rootDir/../init/${InitConstants.appGuardApisListInInit}")
   assert appGuardApisList.file
 
   from appGuardApisList
@@ -285,7 +285,7 @@ task prepareInlinedApks(dependsOn: ":projects:apk-inliner:run") {
 
 //region Testing tasks
 
-test {
+tasks.test {
 
   inputs.dir apkFixturesDir.absolutePath
 

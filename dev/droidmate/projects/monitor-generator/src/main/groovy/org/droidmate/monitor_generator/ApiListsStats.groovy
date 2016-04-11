@@ -41,7 +41,7 @@ class ApiListsStats
     ApiMapping pscoutMapping = new ApiMapping(jellybeanPublishedApiMapping, jellybeanStaticMethods, appguardLegacyApis)
     pscoutApis = pscoutMapping.apis.findAll {!(new ExcludedApis().contains(it.methodName))}
 
-    List<String> appGuardApiMappingLines = new ResourcePath(InitConstants.appGuardApisList.fileName.toString()).path.readLines()
+    List<String> appGuardApiMappingLines = new ResourcePath(InitConstants.appGuardApisListFileName).path.readLines()
     appGuardApis = ApiMapping.parseAppguardLegacyApis(appGuardApiMappingLines)
 
 

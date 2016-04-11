@@ -124,7 +124,7 @@ task cleanRun(type: Delete) {
 clean.dependsOn cleanRun, cleanMonitorApk
 build.dependsOn buildMonitorApk
 
-test {
+tasks.test {
 
 
   // Workaround for GRADLE-1682. See http://stackoverflow.com/a/14947906/986533
@@ -137,7 +137,7 @@ test {
 task pullAppGuardApisList(type: Copy) {
 
 
-  File appGuardApisList = file(InitConstants.appGuardApisList.toFile())
+  File appGuardApisList = file("$rootDir/../init/${InitConstants.appGuardApisListInInit}")
   assert appGuardApisList.file
 
   from appGuardApisList

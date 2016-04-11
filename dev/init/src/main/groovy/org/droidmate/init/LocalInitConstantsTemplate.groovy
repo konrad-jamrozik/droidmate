@@ -40,22 +40,14 @@ public class LocalInitConstantsTemplate
   // KJA add ANDROID_HOME, JAVA6_HOME, JAVA7_HOME and JAVA8_HOME to travis-CI
   
   /**
-   * The "init" project of DroidMate. The project has to be built from gradle cmd line to generate init.jar, used by other
-   * DroidMate projects. See README file in this project dir for details.
+   * The "main" project of DroidMate.
    */
   // KNOWN BUG backward slashes do not work here (\\).
   // KJA handle cases in which slash is given at the end
   // !!! WARNING !!! DO NOT end the path with slash!
-  // KJA this probably can be completely removed
-  // KJA looks like can be made private
-  public static final String init_project_dir_path = "c:/my/local/repos/chair/droidmate/dev/init"
-
-  /**
-   * The "main" project of DroidMate.
-   */
   // KJA move out from local constants
   // KJA this is mostly used to auto-gen local.properties files with android sdk path. Instead, these paths should be taken from ANDROID_HOME.
-  public static final String droidmate_project_dir_path = (init_project_dir_path - "/init") + "/droidmate"
+  public static final String droidmate_project_dir_path = "c:/my/local/repos/github/droidmate/dev/droidmate"
 
   /**
    * Example value of JAVA8_HOME on Windows: "C:\Program Files\Java\jdk1.8.0_77"
