@@ -41,7 +41,7 @@ public class InitConstants
    * Required by droidmate project gradle build scripts to obtain references to uiautomator.jar and android.jar.
    */
 
-  public static final Path android_platform_dir = Paths.get(LocalInitConstants.android_sdk_dir.toString(), "platforms/android-$android_platform_version")
+  public static final Path android_platform_dir = Paths.get(LocalInitConstantsTemplate.androidSdkDir.toString(), "platforms/android-$android_platform_version")
 
   public static final String apks_dir = "apks"
 
@@ -139,10 +139,10 @@ public class InitConstants
 
 
   static {
-    Path test = Paths.get(LocalInitConstants.android_sdk_dir.toString(), "platforms/android-$android_platform_version")
+    Path test = Paths.get(LocalInitConstantsTemplate.androidSdkDir.toString(), "platforms/android-$android_platform_version")
     test.toString()
     assert new File(LocalInitConstants.droidmate_project_dir_path).directory
-    assert Files.isDirectory(LocalInitConstants.android_sdk_dir)
+    assert Files.isDirectory(LocalInitConstantsTemplate.androidSdkDir)
     assert Files.isDirectory(android_platform_dir)
 
     assert absolute_apks_dir.directory
@@ -158,19 +158,19 @@ public class InitConstants
     if (!monitor_generator_apk_scaffolding_local_properties_file.exists())
     {
       assert monitor_generator_apk_scaffolding_local_properties_file.createNewFile()
-      monitor_generator_apk_scaffolding_local_properties_file.write("sdk.dir=" + LocalInitConstants.android_sdk_dir.path.replace("\\", "\\\\"))
+      monitor_generator_apk_scaffolding_local_properties_file.write("sdk.dir=" + LocalInitConstantsTemplate.androidSdkDir.path.replace("\\", "\\\\"))
     }
 
     if (Files.notExists(uiautomator_daemon_local_properties_file))
     {
       assert Files.createFile(uiautomator_daemon_local_properties_file)
-      uiautomator_daemon_local_properties_file.write("sdk.dir=" + LocalInitConstants.android_sdk_dir.toString().replace("\\", "\\\\"))
+      uiautomator_daemon_local_properties_file.write("sdk.dir=" + LocalInitConstantsTemplate.androidSdkDir.toString().replace("\\", "\\\\"))
     }
 
     if (Files.notExists(apk_fixtures_src_local_properties_file))
     {
       assert Files.createFile(apk_fixtures_src_local_properties_file)
-      apk_fixtures_src_local_properties_file.write("sdk.dir=" + LocalInitConstants.android_sdk_dir.toString().replace("\\", "\\\\"))
+      apk_fixtures_src_local_properties_file.write("sdk.dir=" + LocalInitConstantsTemplate.androidSdkDir.toString().replace("\\", "\\\\"))
     }
 
     assert Files.isDirectory(sharedResourcesDir)
