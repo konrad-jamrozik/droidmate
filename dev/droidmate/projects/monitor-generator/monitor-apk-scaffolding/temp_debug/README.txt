@@ -1,1 +1,0 @@
-See C:\my\local\repos\chair\droidmate\dev\droidmate\projects\monitor-generator\build.gradle:59
