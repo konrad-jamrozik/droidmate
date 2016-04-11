@@ -28,6 +28,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
@@ -37,7 +38,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="lib-common_main" />
     <orderEntry type="library" name="Gradle: org.codehaus.groovy:groovy-all:2.4.6" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />

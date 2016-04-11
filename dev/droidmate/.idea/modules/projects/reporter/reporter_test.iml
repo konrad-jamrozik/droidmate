@@ -12,8 +12,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="reporter_main" />
     <orderEntry type="module" module-name="core_test" production-on-test="" />
-    <orderEntry type="module" module-name="core_main" scope="RUNTIME" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="module" module-name="core_main" scope="RUNTIME" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="module-library">
       <library>
@@ -102,15 +102,6 @@
     <orderEntry type="library" name="Gradle: net.sf.jopt-simple:jopt-simple:4.9" level="project" />
     <orderEntry type="library" name="Gradle: org.graphstream:pherd:1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.graphstream:mbox2:1.0" level="project" />
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../projects/core/testLibs/lib-apk_fixtures.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
   <component name="TestModuleProperties" production-module="reporter_main" />
 </module>
