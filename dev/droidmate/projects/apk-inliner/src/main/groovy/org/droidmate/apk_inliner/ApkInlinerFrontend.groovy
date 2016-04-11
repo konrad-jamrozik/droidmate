@@ -19,6 +19,7 @@ import org.droidmate.common.Jar
 import org.droidmate.common.SysCmdExecutor
 import org.droidmate.init.InitConstants
 import org.droidmate.init.LocalInitConstants
+import org.droidmate.init.LocalInitConstantsTemplate
 
 import java.nio.file.FileSystem
 import java.nio.file.Path
@@ -78,10 +79,7 @@ public class ApkInlinerFrontend
     String monitorClassName = "org.droidmate.monitor_generator.generated.Monitor"
     String pathToMonitorApkOnAndroidDevice = InitConstants.AVD_dir_for_temp_files + "monitor.apk"
 
-    String fileExt = SystemUtils.IS_OS_WINDOWS ? ".exe" : ""
-    def jarsignerPath = Paths.get(LocalInitConstants.jdk8_path, "bin/jarsigner$fileExt")
-    assert isRegularFile(jarsignerPath)
-
+    def jarsignerPath = LocalInitConstantsTemplate.jarsignerPath
     def debugKeystorePath = new ResourcePath("debug.keystore").path
 
     return new ApkInliner(

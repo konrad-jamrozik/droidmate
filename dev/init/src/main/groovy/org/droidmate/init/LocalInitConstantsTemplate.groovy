@@ -37,6 +37,7 @@ public class LocalInitConstantsTemplate
 {
   
   // KJA current work
+  // KJA add JAVA6_HOME and JAVA7_HOME to travis-CI
   
   /**
    * The "init" project of DroidMate. The project has to be built from gradle cmd line to generate init.jar, used by other
@@ -57,12 +58,15 @@ public class LocalInitConstantsTemplate
   public static final String droidmate_project_dir_path = (init_project_dir_path - "/init") + "/droidmate"
 
   /**
-   * Java sources of modules not deployed to any device use jdk 8. For example, apk-inliner.
-   * Example path on windows: "C:/Program Files/Java/jdk1.8.0_25"
+   * Example value of JAVA8_HOME on Windows: "C:/Program Files/Java/jdk1.8.0_77"
    */
-  // KJA env: JAVA_HOME
-  public static final String jdk8_path = System.getenv("JAVA_HOME")
+  static String exe = osIsWindows() ? ".exe" : ""
+  public static final Path jarsignerPath = resolveFile(getEnvDir("JAVA8_HOME"), "bin/jarsigner$exe")
 
+  static String osIsWindows() {
+    if ((System.properties['os.name'] as String).toLowerCase().contains('windows'))
+      1 else 0
+  }
   /**
    * Example value of JAVA7_HOME on Windows: "C:/Program Files/Java/jdk1.7.0_71"
    */

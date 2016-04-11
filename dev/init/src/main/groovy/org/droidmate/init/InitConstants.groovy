@@ -142,7 +142,6 @@ public class InitConstants
     Path test = Paths.get(LocalInitConstants.android_sdk_dir.toString(), "platforms/android-$android_platform_version")
     test.toString()
     assert new File(LocalInitConstants.droidmate_project_dir_path).directory
-    assert new File(LocalInitConstants.jdk8_path).directory
     assert Files.isDirectory(LocalInitConstants.android_sdk_dir)
     assert Files.isDirectory(android_platform_dir)
 
