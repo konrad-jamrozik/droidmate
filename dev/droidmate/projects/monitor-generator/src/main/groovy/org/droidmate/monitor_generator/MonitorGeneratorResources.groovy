@@ -32,7 +32,7 @@ class MonitorGeneratorResources implements IConfiguration
 
   MonitorGeneratorResources()
   {
-    Path monitorSrcOut = InitConstants.monitor_generator_generated_monitor
+    Path monitorSrcOut = InitConstants.monitor_generator_output_relative_path
     assert monitorSrcOut != null
     assert notExists(monitorSrcOut) || isWritable(monitorSrcOut)
     this.monitorSrcOutPath = monitorSrcOut

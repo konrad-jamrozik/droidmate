@@ -19,10 +19,11 @@ class MonitorSrcFile
  {
    assert contents?.size() > 0
    assert path != null
-   assert Files.notExists(path) || Files.isWritable(path)
-   assert path.fileName.toString().endsWith(".java")
+   Path absolutePath = path.toAbsolutePath()
+   assert Files.notExists(absolutePath) || Files.isWritable(absolutePath)
+   assert absolutePath.fileName.toString().endsWith(".java")
 
-   Files.createDirectories(path.parent)
-   Files.write(path, contents.getBytes())
+   Files.createDirectories(absolutePath.parent)
+   Files.write(absolutePath, contents.getBytes())
  }
 }

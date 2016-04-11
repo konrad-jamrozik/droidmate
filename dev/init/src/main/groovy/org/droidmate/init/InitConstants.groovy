@@ -57,6 +57,8 @@ public class InitConstants
 
   public static final String monitor_generator_res_name_monitor_template = "monitorTemplate.txt"
 
+  public static final Path monitor_generator_output_relative_path = Paths.get("temp/generated_Monitor.java")
+  
   public static final Path monitor_generator_generated_monitor =
     Paths.get(monitor_generator_apk_scaffolding_dir.toString(), "src/org/droidmate/monitor_generator/generated/Monitor.java")
 
