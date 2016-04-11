@@ -60,11 +60,7 @@ public class InitConstants
   public static final Path monitor_generator_generated_monitor =
     Paths.get(monitor_generator_apk_scaffolding_dir.toString(), "src/org/droidmate/monitor_generator/generated/Monitor.java")
 
-  public static final File monitor_generator_apk_scaffolding_local_properties_file =
-    new File(monitor_generator_apk_scaffolding_dir.toString(), "local.properties")
 
-  public static final Path uiautomator_daemon_local_properties_file =
-    Paths.get(LocalInitConstants.droidmate_project_dir_path.toString(), "/projects/uiautomator-daemon/local.properties")
 
   public static final Path apk_inliner_proj_dir                 = Paths.get(LocalInitConstants.droidmate_project_dir_path, "projects/apk-inliner")
   // KJA these 2 are tricky. Have to be made compatible with file() and with default cmd line arg value.
@@ -138,17 +134,6 @@ public class InitConstants
 
     assert Files.isDirectory(apk_inliner_proj_dir)
 
-    if (!monitor_generator_apk_scaffolding_local_properties_file.exists())
-    {
-      assert monitor_generator_apk_scaffolding_local_properties_file.createNewFile()
-      monitor_generator_apk_scaffolding_local_properties_file.write("sdk.dir=" + LocalInitConstantsTemplate.androidSdkDir.toString().replace("\\", "\\\\"))
-    }
-
-    if (Files.notExists(uiautomator_daemon_local_properties_file))
-    {
-      assert Files.createFile(uiautomator_daemon_local_properties_file)
-      uiautomator_daemon_local_properties_file.write("sdk.dir=" + LocalInitConstantsTemplate.androidSdkDir.toString().replace("\\", "\\\\"))
-    }
   }
 
   //region Constants for testing
