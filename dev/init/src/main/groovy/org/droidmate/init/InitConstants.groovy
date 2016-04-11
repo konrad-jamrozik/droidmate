@@ -45,14 +45,6 @@ public class InitConstants
 
   public static final String apks_dir = "apks"
 
-  public static final File absolute_apks_dir = new File(LocalInitConstants.droidmate_project_dir_path, apks_dir)
-
-  /**
-   * The project of DroidMate that builds apk fixtures used in tests.
-   */
-  // KJA looks like can be made private
-  public static final File apk_fixtures_src_project_dir = new File((LocalInitConstants.droidmate_project_dir_path - "/dev/droidmate") + "/dev/apk_fixtures_src")
-
   /** This string makes an assumption that the apk inliner adds the "-inlined" suffix. */
   public static
   final String monitored_inlined_apk_fixture_name = "MonitoredApkFixture-debug-inlined.apk"
@@ -73,10 +65,6 @@ public class InitConstants
 
   public static final Path uiautomator_daemon_local_properties_file =
     Paths.get(LocalInitConstants.droidmate_project_dir_path.toString(), "/projects/uiautomator-daemon/local.properties")
-
-  // KJA can be made private
-  public static final Path apk_fixtures_src_local_properties_file =
-    Paths.get(apk_fixtures_src_project_dir.toString(), "local.properties")
 
   public static final Path apk_inliner_proj_dir                 = Paths.get(LocalInitConstants.droidmate_project_dir_path, "projects/apk-inliner")
   // KJA these 2 are tricky. Have to be made compatible with file() and with default cmd line arg value.
@@ -144,10 +132,6 @@ public class InitConstants
     assert Files.isDirectory(LocalInitConstantsTemplate.androidSdkDir)
     assert Files.isDirectory(android_platform_dir)
 
-    assert absolute_apks_dir.directory
-
-    assert apk_fixtures_src_project_dir.directory
-
     assert Files.isDirectory(monitor_generator_proj_dir)
     assert Files.isDirectory(monitor_generator_apk_scaffolding_dir)
     assert Files.notExists(monitor_generator_generated_monitor) || Files.isWritable(monitor_generator_generated_monitor)
@@ -157,19 +141,13 @@ public class InitConstants
     if (!monitor_generator_apk_scaffolding_local_properties_file.exists())
     {
       assert monitor_generator_apk_scaffolding_local_properties_file.createNewFile()
-      monitor_generator_apk_scaffolding_local_properties_file.write("sdk.dir=" + LocalInitConstantsTemplate.androidSdkDir.path.replace("\\", "\\\\"))
+      monitor_generator_apk_scaffolding_local_properties_file.write("sdk.dir=" + LocalInitConstantsTemplate.androidSdkDir.toString().replace("\\", "\\\\"))
     }
 
     if (Files.notExists(uiautomator_daemon_local_properties_file))
     {
       assert Files.createFile(uiautomator_daemon_local_properties_file)
       uiautomator_daemon_local_properties_file.write("sdk.dir=" + LocalInitConstantsTemplate.androidSdkDir.toString().replace("\\", "\\\\"))
-    }
-
-    if (Files.notExists(apk_fixtures_src_local_properties_file))
-    {
-      assert Files.createFile(apk_fixtures_src_local_properties_file)
-      apk_fixtures_src_local_properties_file.write("sdk.dir=" + LocalInitConstantsTemplate.androidSdkDir.toString().replace("\\", "\\\\"))
     }
   }
 
