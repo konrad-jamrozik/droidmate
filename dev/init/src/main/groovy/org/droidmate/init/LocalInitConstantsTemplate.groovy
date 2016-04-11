@@ -37,7 +37,7 @@ public class LocalInitConstantsTemplate
 {
   
   // KJA current work
-  // KJA add JAVA6_HOME and JAVA7_HOME to travis-CI
+  // KJA add ANDROID_HOME, JAVA6_HOME, JAVA7_HOME and JAVA8_HOME to travis-CI
   
   /**
    * The "init" project of DroidMate. The project has to be built from gradle cmd line to generate init.jar, used by other
@@ -58,7 +58,7 @@ public class LocalInitConstantsTemplate
   public static final String droidmate_project_dir_path = (init_project_dir_path - "/init") + "/droidmate"
 
   /**
-   * Example value of JAVA8_HOME on Windows: "C:/Program Files/Java/jdk1.8.0_77"
+   * Example value of JAVA8_HOME on Windows: "C:\Program Files\Java\jdk1.8.0_77"
    */
   static String exe = osIsWindows() ? ".exe" : ""
   public static final Path jarsignerPath = resolveFile(getEnvDir("JAVA8_HOME"), "bin/jarsigner$exe")
@@ -68,18 +68,20 @@ public class LocalInitConstantsTemplate
       1 else 0
   }
   /**
-   * Example value of JAVA7_HOME on Windows: "C:/Program Files/Java/jdk1.7.0_71"
+   * Example value of JAVA7_HOME on Windows: "C:\Program Files\Java\jdk1.7.0_71"
    */
   public static final Path java7rtJar = resolveFile(getEnvDir("JAVA7_HOME"), "jre/lib/rt.jar")
 
   /**
-   * Example value of JAVA6_HOME on Windows: "C:/Program Files/Java/jdk1.6.0_45"
+   * Example value of JAVA6_HOME on Windows: "C:\Program Files\Java\jdk1.6.0_45"
    */
   public static final Path java6rtJar = resolveFile(getEnvDir("JAVA6_HOME"), "jre/lib/rt.jar")
 
-  // KJA env: ANDROID_HOME
-  public static final Path android_sdk_dir = Paths.get("c:/Program Files (x86)/Android/android-sdk/")
-
+  /**
+   * Example value of ANDROID_HOME on Windows: "c:\Program Files (x86)\Android\android-sdk"
+   */
+  public static final Path androidSdkDir = getEnvDir("ANDROID_HOME")
+  
   static Path getEnvDir(String variable)
   {
     String value = System.getenv(variable)

@@ -14,6 +14,7 @@ import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
 import org.droidmate.init.InitConstants
 import org.droidmate.init.LocalInitConstants
+import org.droidmate.init.LocalInitConstantsTemplate
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -355,7 +356,7 @@ public class Configuration implements IConfiguration
   /** The command of the adb tool from the Android SDK. Configured by {@link ConfigurationBuilder}. */
   public String adbCommand
 
-  public Path androidSdkDir = LocalInitConstants.android_sdk_dir
+  public Path androidSdkDir = LocalInitConstantsTemplate.androidSdkDir
 
   public Path appGuardApisList
 
