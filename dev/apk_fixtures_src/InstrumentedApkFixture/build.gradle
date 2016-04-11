@@ -59,5 +59,4 @@ preBuild {
 
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
-  compile project(':lib-apk_fixtures')
 }

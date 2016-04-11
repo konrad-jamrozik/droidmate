@@ -11,16 +11,6 @@
             <option value="$PROJECT_DIR$/GuiApkFixture" />
             <option value="$PROJECT_DIR$/InstrumentedApkFixture" />
             <option value="$PROJECT_DIR$/MonitoredApkFixture" />
-            <option value="$PROJECT_DIR$/lib-apk_fixtures" />
-          </set>
-        </option>
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/GuiApkFixture" />
-            <option value="$PROJECT_DIR$/InstrumentedApkFixture" />
-            <option value="$PROJECT_DIR$/MonitoredApkFixture" />
-            <option value="$PROJECT_DIR$/lib-apk_fixtures" />
           </set>
         </option>
       </GradleProjectSettings>

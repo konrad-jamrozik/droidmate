@@ -84,10 +84,6 @@ dependencies {
   // Filesystem stubbing
   compile 'com.google.jimfs:jimfs:1.0'
 
-  def testLibsDirFileTree = fileTree(dir: testLibsDir, include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
-  testLibsDirFileTree.setBuiltBy(['pullApkFixturesLibJar'])
-  testCompile testLibsDirFileTree
-
   // This ensures the files will be properly copied out if ever "application" plugin and "installDist" task will be used.
   // In particular, this will ensure $APP_DIR$/lib/logback/logback.groovy is present.
   //runtime files(new File(sourceSets.main.resources.srcDirs.find(), "."))
@@ -113,7 +109,6 @@ processResources.dependsOn "pullMonitorApk"
  */
 clean.dependsOn "cleanTest"
 
-compileTestGroovy.dependsOn "pullApkFixturesLibJar"
 processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 //endregion Dependencies
 
@@ -182,33 +177,8 @@ File apkFixturesProjectDir = file("${project.rootDir}/../apk_fixtures_src")
 assert apkFixturesProjectDir.directory
 File apkFixturesDroidmateStagingDir = new File("${apkFixturesProjectDir.path}/build")
 String apkFixturesBuildTask = "stageForDroidmate"
-File libApkFixturesJar = file("${apkFixturesProjectDir.path}/lib-apk_fixtures/build/libs/lib-apk_fixtures.jar")
 String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
 // end of DUPLICATION WARNING
-
-task pullApkFixturesLibJar(dependsOn: "buildApkFixtures") {
-
-  def copyFrom = libApkFixturesJar
-  def copyTo = testLibsDir
-
-  inputs.file copyFrom
-  outputs.dir copyTo
-
-  doLast {
-
-    assert copyFrom.file
-    assert copyTo.directory
-
-    def copyResult = copy {
-      from copyFrom
-      into copyTo
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file(s).\n" +
-        "Path of file(s) to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-  }
-}
 
 JavaExec inlinerExec = project(":projects:apk-inliner").tasks.run as JavaExec
 
