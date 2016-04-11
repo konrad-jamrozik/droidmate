@@ -9,7 +9,7 @@
 
 apply plugin: 'groovy'
 
-sourceCompatibility = 1.8
+compileJava.sourceCompatibility = 1.8
 
 
 repositories {
@@ -34,16 +34,4 @@ test {
 
 artifacts {
     archives sourcesJar
-}
-
-compileGroovy {
-
-    doFirst {
-        File localInitConstantsTemplate = sourceSets.main.groovy.find { it.name == "LocalInitConstantsTemplate.groovy" }
-        assert localInitConstantsTemplate.file
-        assert sourceSets.main.groovy.any { it.name == "LocalInitConstants.groovy" } : "LocalInitConstants.groovy not found. " +
-          "This is to be expected if you are building this project for the first time: the missing file will contain settings " +
-          "local to your machine. Please make a copy of\n$localInitConstantsTemplate.path\n" +
-          "with name LocalInitConstants.groovy in the same dir. Follow the instructions given in the copy you just made"
-    }
 }

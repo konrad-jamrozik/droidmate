@@ -15,7 +15,6 @@
   Because some of the classes are deployed on an Android Device, the classes in this project are compiled with Java 7.
 */
 
-import org.droidmate.init.LocalInitConstants
 import org.droidmate.init.LocalInitConstantsTemplate
 
 apply plugin: 'java'

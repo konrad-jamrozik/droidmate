@@ -13,7 +13,6 @@ import com.beust.jcommander.Parameters
 import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
 import org.droidmate.init.InitConstants
-import org.droidmate.init.LocalInitConstants
 import org.droidmate.init.LocalInitConstantsTemplate
 
 import java.nio.file.FileSystem
