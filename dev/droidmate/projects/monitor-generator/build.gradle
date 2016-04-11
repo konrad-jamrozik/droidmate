@@ -47,10 +47,6 @@ SourceDirectorySet resDirs = sourceSets.main.resources
 assert resDirs.srcDirs.size() == 1
 File resDir = resDirs.srcDirs[0]
 
-// KJA
-File monitorApkScaffoldingDir = InitConstants.monitor_generator_apk_scaffolding_dir.toFile()
-assert monitorApkScaffoldingDir.isDirectory()
-
 apply plugin: 'application'
 mainClassName = "org.droidmate.monitor_generator.MonitorGeneratorFrontend"
 
@@ -85,11 +81,10 @@ task buildMonitorJavaTemplateFromSource(type: Copy) {
   rename { InitConstants.monitor_generator_res_name_monitor_template }
 }
 
-// KJA
-//File monitor_generator_apk_scaffolding_dir = file "monitor-apk-scaffolding"
-//
-//new File(monitor_generator_apk_scaffolding_dir.toString(), "src/org/droidmate/monitor_generator/generated/Monitor.java")
-File monitorJava = InitConstants.monitor_generator_generated_monitor.toFile()
+File monitorApkScaffoldingDir = file "monitor-apk-scaffolding"
+assert monitorApkScaffoldingDir.isDirectory()
+
+File monitorJava = new File(monitorApkScaffoldingDir, "src/org/droidmate/monitor_generator/generated/Monitor.java")
 assert monitorJava.parentFile.isDirectory()
 
 task copyGeneratedMonitorToScaffolding(type: Copy, dependsOn: "run") { Copy copy ->

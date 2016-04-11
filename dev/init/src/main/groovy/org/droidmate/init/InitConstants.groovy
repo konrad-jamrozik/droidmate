@@ -49,25 +49,12 @@ public class InitConstants
   public static
   final String monitored_inlined_apk_fixture_name = "MonitoredApkFixture-debug-inlined.apk"
 
-  public static
-  final Path monitor_generator_proj_dir = Paths.get(LocalInitConstants.droidmate_project_dir_path, "projects/monitor-generator")
-
-  public static
-  final Path monitor_generator_apk_scaffolding_dir = Paths.get(monitor_generator_proj_dir.toString(), "monitor-apk-scaffolding")
-
   public static final String monitor_generator_res_name_monitor_template = "monitorTemplate.txt"
 
   public static final Path monitor_generator_output_relative_path = Paths.get("temp/generated_Monitor.java")
   
-  public static final Path monitor_generator_generated_monitor =
-    Paths.get(monitor_generator_apk_scaffolding_dir.toString(), "src/org/droidmate/monitor_generator/generated/Monitor.java")
-
-
-
-  public static final Path apk_inliner_proj_dir                 = Paths.get(LocalInitConstants.droidmate_project_dir_path, "projects/apk-inliner")
-  // KJA these 2 are tricky. Have to be made compatible with file() and with default cmd line arg value.
-  public static final Path apk_inliner_param_input_default      = apk_inliner_proj_dir.resolve("input-apks")
-  public static final Path apk_inliner_param_output_dir_default = apk_inliner_proj_dir.resolve("output-apks")
+  public static final Path apk_inliner_param_input_default      = Paths.get("input-apks")
+  public static final Path apk_inliner_param_output_dir_default = Paths.get("output-apks")
 
   public static final String apk_inliner_param_input      = "-input"
   public static final String apk_inliner_param_output_dir = "-outputDir"
@@ -126,21 +113,12 @@ public class InitConstants
   static {
     Path test = Paths.get(LocalInitConstantsTemplate.androidSdkDir.toString(), "platforms/android-$android_platform_version")
     test.toString()
-    assert new File(LocalInitConstants.droidmate_project_dir_path).directory
     assert Files.isDirectory(LocalInitConstantsTemplate.androidSdkDir)
     assert Files.isDirectory(android_platform_dir)
-
-    assert Files.isDirectory(monitor_generator_proj_dir)
-    assert Files.isDirectory(monitor_generator_apk_scaffolding_dir)
-    assert Files.notExists(monitor_generator_generated_monitor) || Files.isWritable(monitor_generator_generated_monitor)
-
-    assert Files.isDirectory(apk_inliner_proj_dir)
-
   }
 
   //region Constants for testing
   public static final String test_temp_dir_name = "temp_dir_for_tests"
-  public static final File absolute_path_test_temp_dir = new File(LocalInitConstants.droidmate_project_dir_path, test_temp_dir_name)
   //endregion
 
 

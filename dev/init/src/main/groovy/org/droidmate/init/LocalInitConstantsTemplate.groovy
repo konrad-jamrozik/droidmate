@@ -35,20 +35,9 @@ import java.nio.file.Paths
  */
 public class LocalInitConstantsTemplate
 {
-  
   // KJA current work
   // KJA add ANDROID_HOME, JAVA6_HOME, JAVA7_HOME and JAVA8_HOME to travis-CI
   
-  /**
-   * The "main" project of DroidMate.
-   */
-  // KNOWN BUG backward slashes do not work here (\\).
-  // KJA handle cases in which slash is given at the end
-  // !!! WARNING !!! DO NOT end the path with slash!
-  // KJA move out from local constants
-  // KJA this is mostly used to auto-gen local.properties files with android sdk path. Instead, these paths should be taken from ANDROID_HOME.
-  public static final String droidmate_project_dir_path = "c:/my/local/repos/github/droidmate/dev/droidmate"
-
   /**
    * Example value of JAVA8_HOME on Windows: "C:\Program Files\Java\jdk1.8.0_77"
    */

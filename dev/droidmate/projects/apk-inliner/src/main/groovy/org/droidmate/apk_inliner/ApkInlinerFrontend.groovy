@@ -13,19 +13,15 @@ import com.github.konrad_jamrozik.ResourcePath
 import groovy.util.logging.Slf4j
 import joptsimple.OptionParser
 import joptsimple.OptionSet
-import org.apache.commons.lang3.SystemUtils
 import org.droidmate.common.Dex
 import org.droidmate.common.Jar
 import org.droidmate.common.SysCmdExecutor
 import org.droidmate.init.InitConstants
-import org.droidmate.init.LocalInitConstants
 import org.droidmate.init.LocalInitConstantsTemplate
 
-import java.nio.file.FileSystem
+import java.nio.file.FileSystems
 import java.nio.file.Path
-import java.nio.file.Paths
 
-import static java.nio.file.Files.isRegularFile
 import static org.droidmate.apk_inliner.PathValueConverter.pathIn
 
 @Slf4j
@@ -52,14 +48,12 @@ public class ApkInlinerFrontend
   {
     assert args?.length == 0 || args[0][0] == "-"
 
-    FileSystem fileSystem = InitConstants.apk_inliner_proj_dir.fileSystem
-
     OptionParser parser = new OptionParser()
 
     String inputParam = InitConstants.apk_inliner_param_input.drop(1)
     String outputParam = InitConstants.apk_inliner_param_output_dir.drop(1)
-    parser.accepts(inputParam).withOptionalArg().defaultsTo(InitConstants.apk_inliner_param_input_default).withValuesConvertedBy(pathIn(fileSystem))
-    parser.accepts(outputParam).withRequiredArg().defaultsTo(InitConstants.apk_inliner_param_output_dir_default).withValuesConvertedBy(pathIn(fileSystem))
+    parser.accepts(inputParam).withOptionalArg().defaultsTo(InitConstants.apk_inliner_param_input_default).withValuesConvertedBy(pathIn(FileSystems.default))
+    parser.accepts(outputParam).withRequiredArg().defaultsTo(InitConstants.apk_inliner_param_output_dir_default).withValuesConvertedBy(pathIn(FileSystems.default))
 
     OptionSet options = parser.parse(args)
 

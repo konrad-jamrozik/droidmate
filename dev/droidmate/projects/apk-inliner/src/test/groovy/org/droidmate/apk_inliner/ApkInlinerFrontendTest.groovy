@@ -20,6 +20,7 @@ import org.junit.runners.MethodSorters
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 import static groovy.transform.TypeCheckingMode.SKIP
 
@@ -45,8 +46,8 @@ public class ApkInlinerFrontendTest
     Path inputApkFixture = new ApkPath(Files.list(inputApkFixturesDir).find() as Path).path
     assert inputApkFixture.fileName.toString() == "com.estrongs.android.taskmanager.apk"
 
-    Path inputDir = InitConstants.apk_inliner_proj_dir.resolve("tmp-test-toremove_input-apks")
-    Path outputDir = InitConstants.apk_inliner_proj_dir.resolve("tmp-test-toremove_output-apks")
+    Path inputDir = Paths.get("tmp-test-toremove_input-apks")
+    Path outputDir = Paths.get("tmp-test-toremove_output-apks")
     inputDir.deleteDir()
     outputDir.deleteDir()
     Files.createDirectory(inputDir)
