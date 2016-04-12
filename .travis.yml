@@ -1,11 +1,9 @@
 language: groovy
 jdk:
   - oraclejdk8
-  - oraclejdk7
-  - openjdk6
+#  - oraclejdk7
+#  - openjdk6
 before_install:
- - echo "java home:"
- - echo $JAVA_HOME
  - chmod +x gradlew
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -14,6 +12,7 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 env:
- - JAVA8_HOME=$JAVA_HOME
- - JAVA7_HOME=$JAVA_HOME
- - JAVA6_HOME=$JAVA_HOME
+  global:
+    - JAVA8_HOME=$JAVA_HOME
+    - JAVA7_HOME=$JAVA_HOME
+    - JAVA6_HOME=$JAVA_HOME
