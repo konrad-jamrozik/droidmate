@@ -50,20 +50,18 @@ DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userg
 To be able to build DroidMate on your local machine, do the following:
 
 * Install Java Development Kit (JDK) 8, 7 and 6.
-  * Set JAVA8_HOME environment variable to point to JDK 8 location. Analogously for JAVA7_HOME and JAVA6_HOME.
-* Install Android SDK. Set ANDROID_HOME environment variable to point to its location.
+  * Set `JAVA8_HOME` environment variable to point to JDK 8 location. Analogously for `JAVA7_HOME` and `JAVA6_HOME`.
+* Install Android SDK. Set `ANDROID_HOME` environment variable to point to its location.
 * Run SDK Manager of Android SDK with admin rights. Download the following:
   * Android SDK Build-tools 19.1
   * Android 4.4.2 SDK Platform
-* Install Apache Ant (newest version should work) and add its `bin` directory to the PATH environment variable.
-* (optional) Set `GRADLE_USER_HOME` environment variable to a directory in which Gradle  will locally cache the dependencies downloaded from maven repository ([Gradle doc about environment variables](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties)).
-
-Remember you can always consult Travis CI build for help.
+* Install Apache Ant (newest version should work) and add its `bin` directory to the `PATH` environment variable.
+* (optional) Set `GRADLE_USER_HOME` environment variable to a directory in which Gradle will locally cache the dependencies downloaded from maven repository ([Gradle doc about environment variables](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties)).
 
 ## Build steps ##
 
 * Setup the local build requirements as described above. 
-* Clone this repository. Let the directory you choose be called `repo` in this document.
+* Clone this repository. This document denotes the root directory of your clone as `repo`.
 * `cd repo`
 * On Unix systems, run `chmod +x gradlew`
 * Run `./gradlew build`
