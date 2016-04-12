@@ -35,16 +35,10 @@ import java.nio.file.Paths
  */
 public class LocalInitConstantsTemplate
 {
-  // KJA add to readme java6 and 7 explanation:
-  // https://blogs.oracle.com/darcy/entry/bootclasspath_older_source
-  // http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCIJIEG
-  
-  // KJA current work
-  // KJA add ANDROID_HOME, JAVA6_HOME, JAVA7_HOME and JAVA8_HOME to travis-CI
-  
   /**
    * Example value of JAVA8_HOME on Windows: "C:\Program Files\Java\jdk1.8.0_77"
    */
+  // KJA inline jarsignerPath, but first, make getEnvDir and related an utilities/kotlin extension method
   static String exe = osIsWindows() ? ".exe" : ""
   public static final Path jarsignerPath = resolveFile(getEnvDir("JAVA8_HOME"), "bin/jarsigner$exe")
 
