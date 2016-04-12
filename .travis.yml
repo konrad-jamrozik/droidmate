@@ -5,31 +5,23 @@ jdk:
 
 android:
   components:
+    
     # Build tools compatible with DroidMate.
     - build-tools-19.1.0
+    
     # DroidMate currently supports Android 4.4.2 (API 19).
     - android-19
-    
+
+# Gradle-specific    
 before_install:
-# REGION For debugging
-  - ls /usr/lib
-  - ls /usr/lib/jvm
-  - ls /usr/local
-  - ls /usr/local/android-sdk
-  - ls /usr/local/android-sdk-24.0.2
-  - ls /usr/local/lib
-# /REGION
-
-# REGION Gradle-specific
   - chmod +x gradlew
-
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-# /REGION
+# /Gradle-specific    
     
 script:
 # By default, 'android' language uses connectedCheck instead of build
@@ -37,11 +29,15 @@ script:
  
 env:
   global:
+    
     # Required to obtain reference to jarsigner.
     - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+    
     # Required for rt.jar, to build projects deployed to Android, which supports Java 7 but not 8.
     - JAVA7_HOME=/usr/lib/jvm/java-7-oracle
-    # Required for rt.jar, to build projects building .apk files with the legacy Ant scripts requiring such old Java.
+    
+    # Required for rt.jar, to build projects building .apk files with the legacy Android ant scripts, which do not support Java >=7.
     - JAVA6_HOME=/usr/lib/jvm/java-6-openjdk-amd64
+    
     # Required to obtain handles to aapt and adb.
     - ANDROID_HOME=/usr/local/android-sdk
