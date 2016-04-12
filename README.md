@@ -43,7 +43,7 @@ For more information, please see the papers available on the website linked abov
 
 # Building, testing and running DroidMate #
 
-DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userguide.html). DroidMate is also being build on continuous integration Travis CI server whose configuration file, `repo/.travis.yml`, you can consult to understand how to setup DroidMate build process. For the detailed build process logs, click on [![Build Status](https://travis-ci.org/konrad-jamrozik/droidmate.svg?branch=master)](https://travis-ci.org/konrad-jamrozik/droidmate)
+DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userguide.html). Each DroidMate commit is built with Travis CI, a continuous integration server. You can use it as a reference to troubleshoot your local build setup. Please refer to its configuration file, `repo/.travis.yml`. For its build details, click on: [![Build Status](https://travis-ci.org/konrad-jamrozik/droidmate.svg?branch=master)](https://travis-ci.org/konrad-jamrozik/droidmate)
 
 ## Local build requirements ##
 
