@@ -81,6 +81,5 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform 1.7" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="android-android-19" level="project" />
   </component>
 </module>

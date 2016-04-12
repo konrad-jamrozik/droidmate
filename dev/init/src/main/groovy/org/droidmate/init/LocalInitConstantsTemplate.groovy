@@ -35,6 +35,10 @@ import java.nio.file.Paths
  */
 public class LocalInitConstantsTemplate
 {
+  // KJA add to readme java6 and 7 explanation:
+  // https://blogs.oracle.com/darcy/entry/bootclasspath_older_source
+  // http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCIJIEG
+  
   // KJA current work
   // KJA add ANDROID_HOME, JAVA6_HOME, JAVA7_HOME and JAVA8_HOME to travis-CI
   
