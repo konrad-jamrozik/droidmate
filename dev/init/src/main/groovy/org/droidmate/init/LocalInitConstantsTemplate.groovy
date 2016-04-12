@@ -48,12 +48,10 @@ public class LocalInitConstantsTemplate
   static String exe = osIsWindows() ? ".exe" : ""
   public static final Path jarsignerPath = resolveFile(getEnvDir("JAVA8_HOME"), "bin/jarsigner$exe")
 
-  static String osIsWindows() {
-    println "Travis-CI debug"
-    println System.properties['os.name'] as String
-    if ((System.properties['os.name'] as String).toLowerCase().contains('windows'))
-      1 else 0
+  static boolean osIsWindows() {
+    return (System.properties['os.name'] as String).toLowerCase().contains('windows')
   }
+  
   /**
    * Example value of JAVA7_HOME on Windows: "C:\Program Files\Java\jdk1.7.0_71"
    */

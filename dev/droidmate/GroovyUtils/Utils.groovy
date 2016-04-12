@@ -11,6 +11,9 @@
  */
 import org.gradle.api.file.FileCollection
 
+
+// KJA to remove this file
+
 def noLocalSettingsMsg(File localFile)
 {
     return "Some settings local to your environment haven't been defined - you have to do this manually.\n" +
