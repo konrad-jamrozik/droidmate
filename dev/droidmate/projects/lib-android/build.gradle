@@ -10,7 +10,7 @@
   This project contains classes that:
   - require access to Android API: they depend on Android.jar;
   - will be compiled with legacy android ant script, requiring compatibility with Java 5
-  (this file uses jdk 6, hoping it will be equivalent to 6).
+  (this file uses jdk 6, hoping it will be equivalent to 5).
 
 */
 
@@ -20,10 +20,9 @@ import org.droidmate.init.InitConstants
 
 apply plugin: 'java'
 
-compileJava.sourceCompatibility = JavaVersion.VERSION_1_6
-compileJava.targetCompatibility = JavaVersion.VERSION_1_6
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
 compileJava.options.bootClasspath = LocalInitConstantsTemplate.java6rtJar.toString()
-compileTestJava.options.bootClasspath = compileJava.options.bootClasspath
 
 dependencies {
 

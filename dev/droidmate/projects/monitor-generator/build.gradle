@@ -9,13 +9,10 @@
 
 import org.droidmate.init.InitConstants
 
-import java.nio.file.Files
-import java.nio.file.Paths
-
 apply plugin: 'groovy'
 
-compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
-compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 // For explanations of these commands, please see :command project build.gradle
 configurations {forceJunitPriority}

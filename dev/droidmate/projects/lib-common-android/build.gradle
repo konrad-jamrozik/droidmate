@@ -29,6 +29,6 @@ apply plugin: 'java'
    http://stackoverflow.com/questions/16654951/gradle-sourcecompatibility-vs-targetcompatibility
    http://stackoverflow.com/questions/7816423/warning-options-bootstrap-class-path-not-set-in-conjunction-with-source-1-5
 */
-compileJava.sourceCompatibility = JavaVersion.VERSION_1_7
-compileJava.targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
 compileJava.options.bootClasspath = LocalInitConstantsTemplate.java7rtJar.toString()
