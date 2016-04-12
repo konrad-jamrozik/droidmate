@@ -10,18 +10,13 @@ This file is necessary because of gradle 'com.android.application' plugin.
     package="org.droidmate.uiautomator2daemon" >
   <application>
     <service
-      android:name="uiautomator2-daemon"
+      android:name="uiautomator2daemon"
       android:exported="true">
-        <!--<intent-filter>
-          <action android:name="org.droidmate.uiautomator2daemon.UiAutomatorDaemonService"/>
-        </intent-filter>-->
     </service>
   </application>
 
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-  <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
 
 </manifest>
