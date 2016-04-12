@@ -28,8 +28,10 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 test {
     testLogging {
+        showStandardStreams = true
         exceptionFormat = 'full'
     }
+  
 }
 
 artifacts {

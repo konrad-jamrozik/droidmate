@@ -14,4 +14,4 @@ env:
   global:
     - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
     - JAVA7_HOME=/usr/lib/jvm/java-7-oracle
-    - JAVA6_HOME=/usr/lib/jvm/java-6-openjdk
+    - JAVA6_HOME=/usr/lib/jvm/java-6-openjdk-amd64
