@@ -9,9 +9,7 @@ android:
     - android-19
 before_install:
 # - ls /usr/lib/jvm
- - echo $PWD
- - echo $ANDROID_HOME
- - ls $ANDROID_HOME
+ - ls /usr/local
  - chmod +x gradlew
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -19,9 +17,11 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+before_script:
+ - echo $(where android)
 env:
   global:
     - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
     - JAVA7_HOME=/usr/lib/jvm/java-7-oracle
     - JAVA6_HOME=/usr/lib/jvm/java-6-openjdk-amd64
-    - ANDROID_HOME=$PWD/android-sdk-linux
+#    - ANDROID_HOME=$PWD/android-sdk-linux
