@@ -12,16 +12,16 @@ android:
     
 before_install:
 # REGION For debugging
-- ls /usr/lib
-- ls /usr/lib/jvm
-- ls /usr/local
-- ls /usr/local/android-sdk
-- ls /usr/local/android-sdk-24.0.2
-- ls /usr/local/lib
+  - ls /usr/lib
+  - ls /usr/lib/jvm
+  - ls /usr/local
+  - ls /usr/local/android-sdk
+  - ls /usr/local/android-sdk-24.0.2
+  - ls /usr/local/lib
 # /REGION
 
 # REGION Gradle-specific
- - chmod +x gradlew
+  - chmod +x gradlew
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -33,7 +33,7 @@ cache:
     
 script:
 # By default, 'android' language uses connectedCheck instead of build
- - ./gradlew build
+  - ./gradlew build
  
 env:
   global:
