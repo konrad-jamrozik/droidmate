@@ -14,6 +14,21 @@ import org.droidmate.common.logcat.Api
 import org.droidmate.common.logcat.ApiLogcatMessage
 import org.droidmate.lib_android.MonitorJavaTemplate
 
+/**
+ * Class that add the instrumentation code to {@link MonitorJavaTemplate}
+ *
+ * <p> Informatino about update to Android 6.0: </p>
+ *
+ * Using AAR on ANT Script:
+ *    http://community.openfl.org/t/integrating-aar-files/6837/2
+ *    http://stackoverflow.com/questions/23777423/aar-in-eclipse-ant-project
+ *
+ * Using legacy org.apache.http package on Android 6.0
+ *    http://stackoverflow.com/questions/33357561/compiling-google-download-library-targing-api-23-android-marshmallow
+ *    http://stackoverflow.com/questions/32064633/how-to-include-http-library-in-android-project-using-m-preview-in-eclipse-ant-bu
+ *    (Not working, just for information) http://stackoverflow.com/questions/31653002/how-to-use-the-legacy-apache-http-client-on-android-marshmallow
+ *
+ */
 class RedirectionsGenerator implements IRedirectionsGenerator
 {
 
@@ -37,21 +52,21 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
         // --- The generation of Instrumentation.redirectMethod call ---
 
-        String fromId = $/"${ams.objectClassJni}-><init>(${ams.paramsJni})V"/$
+        /*String fromId = $/"${ams.objectClassJni}-><init>(${ams.paramsJni})V"/$
 
 
         String objectClassAsMethodName = getObjectClassAsMethodName(objectClass)
         ctorRedirNames[id] = "${id}_${objectClassAsMethodName}_ctor${paramClasses.size()}"
         /* We use Object here instead of the proper name because sometimes the class is hidden from public Android API
         and so the generated file couldn't be compiled. The instrumentation still works with Object, though.
-        */
+        * <CLOSE COMMENT HERE> /
         String objectClassJni = "Ljava/lang/Object;" // ams.objectClassJni
         String toId = $/"$redirMethodDefPrefix${ctorRedirNames[id]}($objectClassJni${ams.paramsJni})V"/$
 
         calls << ind6 + "ctorHandles.add(Instrumentation.redirectMethod(" + nl
         calls << ind6 + ind4 + "Signature.fromIdentifier($fromId, classLoaders)," + nl
         calls << ind6 + ind4 + "Signature.fromIdentifier($toId, classLoaders)));" + nl
-        calls << ind6 + nl
+        calls << ind6 + nl*/
 
         // --- The generation of redirected method (target of the .redirectMethod call) ---
 
@@ -77,7 +92,8 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         targets << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
         targets << ind4 + ind4 + "Log.${MonitorJavaTemplate.loglevel}(\"${MonitorJavaTemplate.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         targets << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
-        targets << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
+        //targets << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
+        targets << ind4 + ind4 + "OriginalMethod.by(new \$() {}).invoke(_this$commaSeparatedParamVars);" + nl
         targets << ind4 + "}" + nl
         targets << ind4 + nl
       }
@@ -125,21 +141,31 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
         // Items for call to Instrumentation method returning value.
 
-        String returnStatement = returnClass != "void" ? "return (${degenerify(returnClass)}) " : ""
+        //String returnStatement = returnClass != "void" ? "return (${degenerify(returnClass)}) " : ""
+        String returnStatement = returnClass != "void" ? "return " : ""
         String instrCallStatic = isStatic ? "Static" : ""
         String instrCallType = returnClass in instrCallMethodTypeMap.keySet() ? instrCallMethodTypeMap[returnClass] : "Object"
         String thisVarOrClass = isStatic ? "${objectClassWithDots}.class" : "_this"
         String commaSeparatedParamVars = buildCommaSeparatedParamVarNames(ams, paramVarNames)
 
-        out << ind4 + "@Redirect(\"$objectClass->$methodName\") " + nl
+        out << ind4 + "@Hook(\"$objectClass->$methodName\") " + nl
         out << ind4 + "public static $returnClass $redirMethodName($thisParam$formalParams)" + nl
         out << ind4 + "{" + nl
         out << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
         out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
         out << ind4 + ind4 + "Log.${MonitorJavaTemplate.loglevel}(\"${MonitorJavaTemplate.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
-        out << ind4 + ind4 + "class \$ {} " + nl
-        out << ind4 + ind4 + "${returnStatement}Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
+        //out << ind4 + ind4 + "class \$ {} " + nl
+        //out << ind4 + ind4 + "${returnStatement}Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
+        //
+        if (!isStatic)
+          out << ind4 + ind4 + "${returnStatement}OriginalMethod.by(new \$() {}).invoke(${thisVarOrClass}${commaSeparatedParamVars});" + nl
+        else
+        {
+          // Remove , for static method
+          commaSeparatedParamVars = commaSeparatedParamVars.substring(2);
+          out << ind4 + ind4 + "${returnStatement}OriginalMethod.by(new \$() {}).invokeStatic(${commaSeparatedParamVars});" + nl
+        }
         out << ind4 + "}" + nl
         out << ind4 + nl
       }

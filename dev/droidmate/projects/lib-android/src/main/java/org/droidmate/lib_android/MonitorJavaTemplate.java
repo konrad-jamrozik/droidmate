@@ -32,9 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-// import de.uds.infsec.instrumentation.Instrumentation;
-// import de.uds.infsec.instrumentation.annotation.Redirect;
-// import de.uds.infsec.instrumentation.util.Signature;
+// import de.larma.arthook.*;
 // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 /**<p>
@@ -139,7 +137,7 @@ public class MonitorJavaTemplate
       server.context = context;
 
     // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-    // Instrumentation.processClass(Monitor.class);
+    // ArtHook.hook(Monitor.class);
     // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
     redirectConstructors();
