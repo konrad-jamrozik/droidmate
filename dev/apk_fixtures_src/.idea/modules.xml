@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/GuiApkFixture/GuiApkFixture.iml" filepath="$PROJECT_DIR$/.idea/modules/GuiApkFixture/GuiApkFixture.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/InstrumentedApkFixture/InstrumentedApkFixture.iml" filepath="$PROJECT_DIR$/.idea/modules/InstrumentedApkFixture/InstrumentedApkFixture.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/InstrumentedApkFixtureArtHook/InstrumentedApkFixtureArtHook.iml" filepath="$PROJECT_DIR$/.idea/modules/InstrumentedApkFixtureArtHook/InstrumentedApkFixtureArtHook.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MonitoredApkFixture/MonitoredApkFixture.iml" filepath="$PROJECT_DIR$/.idea/modules/MonitoredApkFixture/MonitoredApkFixture.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/apk_fixtures_src.iml" filepath="$PROJECT_DIR$/.idea/modules/apk_fixtures_src.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib-apk_fixtures/lib-apk_fixtures.iml" filepath="$PROJECT_DIR$/.idea/modules/lib-apk_fixtures/lib-apk_fixtures.iml" />
