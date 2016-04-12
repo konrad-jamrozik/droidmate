@@ -126,11 +126,8 @@ processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 
 //region Preparation of resources for the 'compileGroovy' task
 
-// WISH Borges: testing
 Project uiaDaemon = findProject(":projects:uiautomator2-daemon");
 task pullUiaDaemon(dependsOn: ":projects:uiautomator2-daemon:assembleAndroidTest") {
-//Project uiaDaemon = findProject(":projects:uiautomator-daemon");
-//task pullUiaDaemon(dependsOn: ":projects:uiautomator-daemon:build") {
 
   File coreResDir = getCoreResDir()
 
@@ -197,7 +194,8 @@ assert apkFixturesProjectDir.directory
 File apkFixturesDroidmateStagingDir = new File("${apkFixturesProjectDir.path}/build")
 String apkFixturesBuildTask = "stageForDroidmate"
 File libApkFixturesJar = file("${apkFixturesProjectDir.path}/lib-apk_fixtures/build/libs/lib-apk_fixtures.jar")
-String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
+//String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
+String monitoredApkFixtureName = "InstrumentedApkFixtureArtHook-debug.apk"
 // end of DUPLICATION WARNING
 
 task pullApkFixturesLibJar(dependsOn: "buildApkFixtures") {
@@ -237,10 +235,12 @@ task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
   ["main", "classpath", "standardOutput"].each {delegate."$it" = inlinerExec."$it"}
 
   File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
+  println inputApk.toString()
   args = [
     InitConstants.apk_inliner_param_input, inputApk.canonicalPath,
     InitConstants.apk_inliner_param_output_dir, apkFixturesDir
   ]
+  println args
 
   inputs.file inputApk
   outputs.file new File(apkFixturesDir, InitConstants.monitored_inlined_apk_fixture_name)

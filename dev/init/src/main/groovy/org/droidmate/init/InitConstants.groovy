@@ -30,12 +30,12 @@ public class InitConstants
   /**
    * Required by other constants.
    */
-  public static final String android_platform_version = "19"
+  public static final String android_platform_version = "23"
 
   /**
    * Required by droidmate project Configuration.
    */
-  public static final String build_tools_version = "19.1.0"
+  public static final String build_tools_version = "23.0.2"
 
   /**
    * Required by droidmate project gradle build scripts to obtain references to uiautomator.jar and android.jar.
@@ -54,7 +54,7 @@ public class InitConstants
 
   /** This string makes an assumption that the apk inliner adds the "-inlined" suffix. */
   public static
-  final String monitored_inlined_apk_fixture_name = "MonitoredApkFixture-debug-inlined.apk"
+  final String monitored_inlined_apk_fixture_name = "InstrumentedApkFixtureArtHook-debug-inlined.apk"
 
   public static
   final Path monitor_generator_proj_dir = Paths.get(LocalInitConstants.droidmate_project_dir_path, "projects/monitor-generator")

@@ -10,12 +10,12 @@ buildscript {
 }
 
 android {
-  compileSdkVersion 19
-  buildToolsVersion '19.1.0'
+  compileSdkVersion 23
+  buildToolsVersion "23.0.2"
   defaultConfig {
     applicationId "org.droidmate.uiautomator2daemon.UiAutomator2Daemon"
-    minSdkVersion 18
-    targetSdkVersion 19
+    minSdkVersion 21
+    targetSdkVersion 23
     versionCode 1
     versionName "1.0"
 
@@ -42,7 +42,7 @@ dependencies {
   androidTestCompile 'com.google.guava:guava:18.0'
   // Testing-only dependencies
   // Force usage of support annotations in the test app, since it is internally used by the runner module.
-  androidTestCompile 'com.android.support:support-annotations:19.1.0'
+  androidTestCompile 'com.android.support:support-annotations:23.0.1'
   androidTestCompile 'com.android.support.test:runner:0.4.1'
   androidTestCompile 'com.android.support.test:rules:0.4.1'
   // UiAutomator Testing
