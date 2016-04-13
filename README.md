@@ -136,7 +136,7 @@ DroidMate uses the following versions of tools that are independent from local s
 | ------------- | ------- |
 | Groovy        | 2.4.6   |
 | Gradle        | 2.12    |
-| Kotlin        | 1.0.1-1 |
+| Kotlin        | 1.0.1-2 |
 | Android Plugin for Gradle | 1.5.0 |
 
 Following local setup is proven to work with DroidMate:

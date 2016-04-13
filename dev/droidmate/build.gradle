@@ -16,8 +16,8 @@ project.ext.utils = new GroovyShell().parse(new File("${project.projectDir}/Groo
 */
 project(":projects:uiautomator-daemon").buildDir = "bin"
 
-ext.kotlin_version = '1.0.1-1'
-ext.utilities_version = '940d8cd006'
+ext.kotlin_version = '1.0.1-2'
+ext.utilities_version = '2b983aad11'
 
 buildscript {
 
