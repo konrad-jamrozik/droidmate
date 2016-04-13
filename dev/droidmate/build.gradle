@@ -39,16 +39,12 @@ buildscript {
   }
 }
 
-evaluationDependsOnChildren()
-
-
-
 subprojects {
 
   repositories {
+    mavenLocal()
     mavenCentral()
     maven {url "https://jitpack.io"}
-//  mavenLocal()
   }
 
   it.afterEvaluate {
