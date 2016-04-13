@@ -80,10 +80,10 @@ class ApiLogsReader implements IApiLogsReader
 
     messages.each {monitorLogger.trace("${it.toLogcatMessageString()}")}
 
-    List<ApiLogcatMessage> apiLogs
+    List<IApiLogcatMessage> apiLogs
     try
     {
-      apiLogs = messages.collect {ApiLogcatMessage.from(it)}
+      apiLogs = messages.collect {ApiLogcatMessage.from(it)} as List<IApiLogcatMessage>
     } catch (DroidmateException e)
     {
       throw new DeviceException("Failed to parse API call logs from one of the messages obtained from logcat.", e)
