@@ -17,9 +17,10 @@ project.ext.utils = new GroovyShell().parse(new File("${project.projectDir}/Groo
 project(":projects:uiautomator-daemon").buildDir = "bin"
 
 ext.kotlin_version = '1.0.1-2'
-ext.utilities_version = '2b983aad11'
 
 buildscript {
+
+  ext.utilities_version = '4153c9cfed'
 
   String initJarPath = "$rootDir/../init/build/libs/init.jar"
   File initJar = file(initJarPath)
@@ -27,8 +28,14 @@ buildscript {
     "Full path:\n$initJarPath\n" +
     "Please build the .jar by running 'gradlew clean build' from \n'$rootDir/../init'"
 
+  repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+  }
+
   dependencies {
     classpath files(initJar)
+    classpath "com.github.konrad-jamrozik:utilities:$utilities_version"
   }
 }
 

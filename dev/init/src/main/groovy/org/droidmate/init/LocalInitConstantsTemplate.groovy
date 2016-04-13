@@ -36,19 +36,9 @@ import java.nio.file.Paths
 public class LocalInitConstantsTemplate
 {
   /**
-   * Example value of JAVA8_HOME on Windows: "C:\Program Files\Java\jdk1.8.0_77"
-   */
-  // KJA inline jarsignerPath, but first, make getEnvDir and related an utilities/kotlin extension method
-  static String exe = osIsWindows() ? ".exe" : ""
-  public static final Path jarsignerPath = resolveFile(getEnvDir("JAVA8_HOME"), "bin/jarsigner$exe")
-
-  static boolean osIsWindows() {
-    return (System.properties['os.name'] as String).toLowerCase().contains('windows')
-  }
-  
-  /**
    * Example value of JAVA7_HOME on Windows: "C:\Program Files\Java\jdk1.7.0_71"
    */
+  // KJA next to inline
   public static final Path java7rtJar = resolveFile(getEnvDir("JAVA7_HOME"), "jre/lib/rt.jar")
 
   /**
