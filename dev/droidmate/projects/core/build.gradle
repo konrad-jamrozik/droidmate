@@ -48,7 +48,7 @@ dependencies {
 
   // Force refresh:
   // Reference: https://jitpack.io/docs/#snapshots
-  compile 'com.github.konrad-jamrozik:utilities:940d8cd006'
+  compile "com.github.konrad-jamrozik:utilities:$utilities_version"
 
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'

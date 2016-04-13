@@ -22,7 +22,7 @@ dependencies {
   // the META-INF/services/org.codehaus.groovy.runtime.ExtensionModule file.
   runtime files(new File(sourceSets.main.resources.srcDirs.find(), "."))
 
-  compile 'com.github.konrad-jamrozik:utilities:940d8cd006'
+  compile "com.github.konrad-jamrozik:utilities:$utilities_version"
 
   // Constants shared between most of DroidMate's build scripts and sources
   compile files("$rootDir/../init/build/libs/init.jar")
