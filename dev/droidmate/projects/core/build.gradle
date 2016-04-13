@@ -9,28 +9,7 @@
 
 import org.droidmate.init.InitConstants
 
-import java.nio.file.Files
-import java.nio.file.Paths
-
 apply plugin: 'groovy'
-apply plugin: 'project-report' // http://www.gradle.org/docs/current/userguide/project_reports_plugin.html
-// WISH to remove?
-apply plugin: 'application'
-
-mainClassName = "org.droidmate.frontend.DroidmateFrontend"
-
-run {
-  workingDir rootDir
-
-  java.nio.file.Path argsFile = Paths.get("$rootDir/args.txt")
-  if (Files.exists(argsFile))
-  {
-    List<String> appArgs = argsFile.text.readLines().first().split(" ") as List<String>
-    args appArgs
-  }
-
-
-}
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -39,7 +18,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 String libsDirPath = "libs"
 
-// Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
+// See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
