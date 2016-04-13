@@ -16,7 +16,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
 
-  compile 'com.github.konrad-jamrozik:utilities:master-SNAPSHOT'
+  compile 'com.github.konrad-jamrozik:utilities:940d8cd006'
 
   compile project(":projects:lib-common")
 

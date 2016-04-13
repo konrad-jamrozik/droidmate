@@ -38,7 +38,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
 //region Dependencies
 
 String libsDirPath = "libs"
-File testLibsDir = file("${projectDir.path}/testLibs")
 
 // Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
@@ -49,7 +48,7 @@ dependencies {
 
   // Force refresh:
   // Reference: https://jitpack.io/docs/#snapshots
-  compile 'com.github.konrad-jamrozik:utilities:master-SNAPSHOT'
+  compile 'com.github.konrad-jamrozik:utilities:940d8cd006'
 
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'

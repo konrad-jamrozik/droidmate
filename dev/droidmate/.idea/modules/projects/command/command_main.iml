@@ -76,7 +76,7 @@
     </orderEntry>
     <orderEntry type="module" module-name="core_main" />
     <orderEntry type="module" module-name="reporter_main" />
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:master-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:940d8cd006" level="project" />
     <orderEntry type="module" module-name="lib-common_main" />
     <orderEntry type="module" module-name="lib-common-android_main" />
     <orderEntry type="module" module-name="lib-android_main" />
@@ -92,13 +92,13 @@
     <orderEntry type="library" name="Gradle: net.sf.opencsv:opencsv:2.3" level="project" />
     <orderEntry type="library" name="Gradle: org.graphstream:gs-core:1.3" level="project" />
     <orderEntry type="library" name="Gradle: com.google.jimfs:jimfs:1.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.0.1-1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.0.1-1" level="project" />
     <orderEntry type="library" name="Gradle: net.sf.jopt-simple:jopt-simple:4.9" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: org.graphstream:pherd:1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.graphstream:mbox2:1.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-runtime:1.0.1-1" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.0.1-2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-runtime:1.0.1-2" level="project" />
   </component>
 </module>
