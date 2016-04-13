@@ -9,32 +9,9 @@
 /**
  * This script file is used internally by the build.gradle script of DroidMate.
  */
-import org.gradle.api.file.FileCollection
 
-
-// KJA to remove this file
-
-def noLocalSettingsMsg(File localFile)
-{
-    return "Some settings local to your environment haven't been defined - you have to do this manually.\n" +
-      "Expected path to file with these settings: ${localFile.absolutePath}\n" +
-      "Please follow instructions given in ${localFile.name}.template in the same dir."
-}
-
-def formatClasspath(FileCollection classpath)
-{
-  Set<File> classpathFileSet = classpath.files;
-  return classpathFileSet.join("\n")
-}
-
-def printClasspath(String classpath)
-{
-  println classpath.replace('"', '').replace(';','\n')
-}
-
-def osIsWindows() {
-    if (System.properties['os.name'].toLowerCase().contains('windows'))
-        1 else 0
+private boolean osIsWindows() {
+    return System.properties['os.name'].toLowerCase().contains('windows')
 }
 
 int executeCommand(String commandName, String commandString) {
