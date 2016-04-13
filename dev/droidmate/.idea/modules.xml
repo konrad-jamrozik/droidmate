@@ -6,6 +6,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner.iml" group="projects/apk-inliner" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner_main.iml" group="projects/apk-inliner" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/apk-inliner/apk-inliner_test.iml" group="projects/apk-inliner" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_main.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_main.iml" group="buildSrc" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" group="buildSrc" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command.iml" group="projects/command" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command_main.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command_main.iml" group="projects/command" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/projects/command/command_test.iml" filepath="$PROJECT_DIR$/.idea/modules/projects/command/command_test.iml" group="projects/command" />

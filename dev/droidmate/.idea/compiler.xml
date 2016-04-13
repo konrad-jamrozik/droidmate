@@ -23,6 +23,8 @@
       <module name="apk-inliner_test" target="1.8" />
       <module name="apk_inliner_main" target="1.8" />
       <module name="apk_inliner_test" target="1.8" />
+      <module name="buildSrc_main" target="1.8" />
+      <module name="buildSrc_test" target="1.8" />
       <module name="command_main" target="1.8" />
       <module name="command_test" target="1.8" />
       <module name="core_main" target="1.8" />
