@@ -28,6 +28,21 @@ public class InitConstants
 {
 
   /**
+   * Example value of ANDROID_HOME on Windows: "c:\Program Files (x86)\Android\android-sdk"
+   */
+  public static final Path androidSdkDir = getEnvDir("ANDROID_HOME")
+  static Path getEnvDir(String variable)
+  {
+    String value = System.getenv(variable)
+    assert value?.size() > 0 : "System.getenv($variable) should be a string denoting a directory. It is instead: $value"
+
+    Path dir = Paths.get(value)
+    assert Files.isDirectory(dir) : "System.getenv($variable) should be a path pointing to an existing directory. " +
+      "The faulty path: ${dir.toString()}"
+    return dir
+  }
+  
+  /**
    * Required by other constants.
    */
   public static final String android_platform_version = "19"
@@ -41,7 +56,7 @@ public class InitConstants
    * Required by droidmate project gradle build scripts to obtain references to uiautomator.jar and android.jar.
    */
 
-  public static final Path android_platform_dir = Paths.get(LocalInitConstantsTemplate.androidSdkDir.toString(), "platforms/android-$android_platform_version")
+  public static final Path android_platform_dir = Paths.get(androidSdkDir.toString(), "platforms/android-$android_platform_version")
 
   public static final String apks_dir = "apks"
 
@@ -111,9 +126,9 @@ public class InitConstants
   public static final String appGuardApisListInInit = "$sharedResourcesDirName${File.separator}$appGuardApisListFileName"
 
   static {
-    Path test = Paths.get(LocalInitConstantsTemplate.androidSdkDir.toString(), "platforms/android-$android_platform_version")
+    Path test = Paths.get(androidSdkDir.toString(), "platforms/android-$android_platform_version")
     test.toString()
-    assert Files.isDirectory(LocalInitConstantsTemplate.androidSdkDir)
+    assert Files.isDirectory(androidSdkDir)
     assert Files.isDirectory(android_platform_dir)
   }
 

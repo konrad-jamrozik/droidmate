@@ -18,7 +18,6 @@ import org.droidmate.common.Dex
 import org.droidmate.common.Jar
 import org.droidmate.common.SysCmdExecutor
 import org.droidmate.init.InitConstants
-import org.droidmate.init.LocalInitConstantsTemplate
 
 import java.nio.file.FileSystems
 import java.nio.file.Path

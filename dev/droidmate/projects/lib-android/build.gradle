@@ -14,15 +14,16 @@
 
 */
 
-import org.droidmate.init.LocalInitConstantsTemplate
-
+import com.github.konrad_jamrozik.PathExtensionsKt
+import com.github.konrad_jamrozik.StringExtensionsKt
 import org.droidmate.init.InitConstants
 
 apply plugin: 'java'
 
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
-compileJava.options.bootClasspath = LocalInitConstantsTemplate.java6rtJar.toString()
+def jdk6 = StringExtensionsKt.getAsEnvDir("JAVA6_HOME")
+compileJava.options.bootClasspath = PathExtensionsKt.resolveRegularFile(jdk6, "jre/lib/rt.jar")
 
 dependencies {
 
@@ -33,7 +34,4 @@ dependencies {
   compile files(androidJarFile)
 
   compile project(":projects:lib-common")
-
-
 }
-

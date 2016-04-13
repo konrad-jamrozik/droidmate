@@ -1,3 +1,6 @@
+import com.github.konrad_jamrozik.PathExtensionsKt
+import com.github.konrad_jamrozik.StringExtensionsKt
+
 // Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
@@ -15,8 +18,6 @@
   Because some of the classes are deployed on an Android Device, the classes in this project are compiled with Java 7.
 */
 
-import org.droidmate.init.LocalInitConstantsTemplate
-
 apply plugin: 'java'
 
 /* This project has to be built with Java 7. Otherwise the "ant -f build-customized.xml build" of uiautomator-daemon
@@ -31,4 +32,5 @@ apply plugin: 'java'
 */
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
-compileJava.options.bootClasspath = LocalInitConstantsTemplate.java7rtJar.toString()
+def jdk7 = StringExtensionsKt.getAsEnvDir("JAVA7_HOME")
+compileJava.options.bootClasspath = PathExtensionsKt.resolveRegularFile(jdk7, "jre/lib/rt.jar") 

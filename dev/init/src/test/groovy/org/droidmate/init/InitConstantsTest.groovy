@@ -31,7 +31,6 @@ public class InitConstantsTest
 
       // This instruction is present here to force static init block of the class to run.
       InitConstants.build_tools_version
-      LocalInitConstantsTemplate.java7rtJar
       assert true // No exception was thrown during static initialization of the tested class.
   }
 
