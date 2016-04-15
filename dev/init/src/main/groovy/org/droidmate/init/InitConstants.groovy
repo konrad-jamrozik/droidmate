@@ -9,7 +9,6 @@
 
 package org.droidmate.init
 
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -23,41 +22,8 @@ import java.nio.file.Paths
 // Explanation of @SuppressWarnings("GroovyUnusedDeclaration"):
 // this class is used in most of the projects located in the same dir as the project owning this class. These projects have to be
 // loaded in separate IntelliJ instance.
-@SuppressWarnings("GroovyUnusedDeclaration")
 public class InitConstants
 {
-
-  /**
-   * Example value of ANDROID_HOME on Windows: "c:\Program Files (x86)\Android\android-sdk"
-   */
-  public static final Path androidSdkDir = getEnvDir("ANDROID_HOME")
-  static Path getEnvDir(String variable)
-  {
-    String value = System.getenv(variable)
-    assert value?.size() > 0 : "System.getenv($variable) should be a string denoting a directory. It is instead: $value"
-
-    Path dir = Paths.get(value)
-    assert Files.isDirectory(dir) : "System.getenv($variable) should be a path pointing to an existing directory. " +
-      "The faulty path: ${dir.toString()}"
-    return dir
-  }
-  
-  /**
-   * Required by other constants.
-   */
-  public static final String android_platform_version = "19"
-
-  /**
-   * Required by droidmate project Configuration.
-   */
-  public static final String build_tools_version = "19.1.0"
-
-  /**
-   * Required by droidmate project gradle build scripts to obtain references to uiautomator.jar and android.jar.
-   */
-
-  public static final Path android_platform_dir = Paths.get(androidSdkDir.toString(), "platforms/android-$android_platform_version")
-
   public static final String apks_dir = "apks"
 
   /** This string makes an assumption that the apk inliner adds the "-inlined" suffix. */
@@ -126,8 +92,6 @@ public class InitConstants
   public static final String appGuardApisListInInit = "$sharedResourcesDirName${File.separator}$appGuardApisListFileName"
 
   static {
-    assert Files.isDirectory(androidSdkDir)
-    assert Files.isDirectory(android_platform_dir)
   }
 
   //region Constants for testing

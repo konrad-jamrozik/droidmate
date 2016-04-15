@@ -30,7 +30,7 @@ public class InitConstantsTest
       // logic that is now run in the static init.
 
       // This instruction is present here to force static init block of the class to run.
-      InitConstants.build_tools_version
+      InitConstants.apk_fixtures
       assert true // No exception was thrown during static initialization of the tested class.
   }
 
