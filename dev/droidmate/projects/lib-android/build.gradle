@@ -14,24 +14,19 @@
 
 */
 
-
 import org.droidmate.buildsrc.BuildKt
-import org.droidmate.init.InitConstants
 
 apply plugin: 'java'
 
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
-compileJava.options.bootClasspath = BuildKt.jdk6rtJar
+compileJava.options.bootClasspath = BuildKt.jdk6_rt_jar
 
 dependencies {
 
   testCompile 'junit:junit:4.12'
 
-  // KJA replacing this with BuildKt.android_jar causes stack overflow!
-  File androidJarFile = new File(InitConstants.android_platform_dir.toString(), "android.jar")
-  assert androidJarFile.file
-  compile files(androidJarFile)
+  compile files(BuildKt.android_jar.toString())
 
   compile project(":projects:lib-common")
 }

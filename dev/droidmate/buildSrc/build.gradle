@@ -1,8 +1,10 @@
 apply plugin: 'kotlin'
 
-ext.utilities_version = '4153c9cfed'
+// KJA DRY
+ext.utilities_version = '5dbd3cbb56'
 buildscript {
 
+  // KJA DRY
   ext.kotlin_version = '1.0.1-2'
   
   
@@ -20,10 +22,14 @@ repositories {
 }
 
 dependencies {
-  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
   compile "com.github.konrad-jamrozik:utilities:$utilities_version"
+
+  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+  testCompile "junit:junit:4.12"
+
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

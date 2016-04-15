@@ -20,9 +20,9 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="core_main" scope="RUNTIME" />
-    <orderEntry type="module" module-name="lib-common_main" />
     <orderEntry type="module" module-name="lib-common-android_main" />
     <orderEntry type="module" module-name="lib-android_main" />
+    <orderEntry type="module" module-name="lib-common_main" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -88,7 +88,7 @@
     </orderEntry>
     <orderEntry type="module" module-name="core_main" />
     <orderEntry type="module" module-name="reporter_main" />
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:4153c9cfed" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:5dbd3cbb56" level="project" />
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.35" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />

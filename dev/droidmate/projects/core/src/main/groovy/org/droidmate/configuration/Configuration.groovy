@@ -355,7 +355,7 @@ public class Configuration implements IConfiguration
   /** The command of the adb tool from the Android SDK. Configured by {@link ConfigurationBuilder}. */
   public String adbCommand
 
-  public Path androidSdkDir = BuildKt.androidSdkDir
+  public Path androidSdkDir = BuildKt.android_sdk_dir
 
   public Path appGuardApisList
 
