@@ -34,6 +34,15 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../buildSrc/build/libs/buildSrc.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
           <root url="jar://$ANDROID_SDK$/platforms/android-19/android.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -52,7 +61,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="lib-android_main" />
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:5dbd3cbb56" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:db0f83e702" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-exec:1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />

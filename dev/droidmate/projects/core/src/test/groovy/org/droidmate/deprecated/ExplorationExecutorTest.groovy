@@ -11,12 +11,12 @@ package org.droidmate.deprecated
 
 import groovy.transform.TypeChecked
 import org.droidmate.android_sdk.IApk
+import org.droidmate.buildsrc.BuildKt
 import org.droidmate.common.logcat.MonitoredInlinedApkFixtureApiLogs
 import org.droidmate.configuration.Configuration
 import org.droidmate.deprecated_still_used.IApkExplorationOutput
 import org.droidmate.deprecated_still_used.Storage
 import org.droidmate.exploration.device.IRobustDevice
-import org.droidmate.init.InitConstants
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
@@ -24,7 +24,6 @@ import org.droidmate.tools.DeviceTools
 import org.droidmate.tools.IDeviceTools
 import org.droidmate.tools.SingleApkFixture
 import org.junit.FixMethodOrder
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
@@ -46,8 +45,8 @@ class ExplorationExecutorTest extends DroidmateGroovyTestCase
   void "Collects monitored API calls logs during device exploration"()
   {
     Configuration cfg = new ConfigurationForTests().forDevice().setArgs([
-      Configuration.pn_apksNames          , "[$InitConstants.monitored_inlined_apk_fixture_name]" as String,
-      Configuration.pn_widgetIndexes      , "[0]"
+      Configuration.pn_apksNames, "[$BuildKt.monitored_inlined_apk_fixture_name]" as String,
+      Configuration.pn_widgetIndexes, "[0]"
     ]).get()
 
     IDeviceTools deviceTools = new DeviceTools(cfg)

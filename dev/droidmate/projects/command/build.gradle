@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 
-import org.droidmate.init.InitConstants
+import org.droidmate.buildsrc.BuildKt
 
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -52,7 +52,7 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 // org.droidmate.tests.configuration.ConfigurationBuilderTest.Builds configuration
 //
 // Without this line, the ResourcePath-s required by ConfigurationBuilder resolve only to files within jar, e.g. this line:
-// new ResourcePath(InitConstants.appGuardApisList.fileName.toString()).toFile()
+// new ResourcePath(BuildKt.appGuardApisList.fileName.toString()).toFile()
 // fails, as the only available URL of the file is:
 //
 //   jar:file:(...)droidmate/dev/droidmate/projects/core/build/libs/core.jar!/appguard_apis.txt
@@ -131,7 +131,7 @@ SourceDirectorySet testResDirs = project(":projects:core").sourceSets.test.resou
 assert testResDirs.srcDirs.size() == 1
 File testResDir = testResDirs.srcDirs[0]
 assert testResDir.path.endsWith("test" + File.separator + "resources")
-File apkFixturesDir = new File(testResDir, InitConstants.apk_fixtures)
+File apkFixturesDir = new File(testResDir, BuildKt.apk_fixtures)
 assert apkFixturesDir.directory
 task testDevice(type: Test, dependsOn: testClasses) {
 

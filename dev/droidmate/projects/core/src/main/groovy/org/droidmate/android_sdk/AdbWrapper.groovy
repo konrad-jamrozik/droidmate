@@ -18,7 +18,6 @@ import org.droidmate.common_android.Constants
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.AdbWrapperException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
-import org.droidmate.init.InitConstants
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -463,7 +462,7 @@ public class AdbWrapper implements IAdbWrapper
       // http://developer.android.com/tools/testing/testing_ui.html#builddeploy
       sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
-        "push", jarFile.toAbsolutePath().toString(), InitConstants.AVD_dir_for_temp_files)
+        "push", jarFile.toAbsolutePath().toString(), BuildKt.AVD_dir_for_temp_files)
 
     } catch (SysCmdExecutorException e)
     {
@@ -490,7 +489,7 @@ public class AdbWrapper implements IAdbWrapper
       // Hint: to list files to manually check if the file was deleted, use: adb shell ls
       sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
-        "shell", "rm", InitConstants.AVD_dir_for_temp_files + jarFile.fileName.toString())
+        "shell", "rm", BuildKt.AVD_dir_for_temp_files + jarFile.fileName.toString())
 
     } catch (SysCmdExecutorException e)
     {

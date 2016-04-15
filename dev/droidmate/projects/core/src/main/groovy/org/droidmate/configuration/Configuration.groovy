@@ -13,7 +13,6 @@ import com.beust.jcommander.Parameters
 import org.droidmate.buildsrc.BuildKt
 import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
-import org.droidmate.init.InitConstants
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -150,7 +149,7 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_apksDir],
     description = "Directory containing the apks to be processed by DroidMate.")
-  public String apksDirName = InitConstants.apks_dir
+  public String apksDirName = BuildKt.apks_dir
 
   @Parameter(names = [Configuration.pn_appGuardOnlyApis], arity = 1)
   public boolean appGuardOnlyApis = true

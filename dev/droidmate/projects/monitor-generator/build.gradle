@@ -7,6 +7,7 @@
 //
 // www.droidmate.org
 
+import org.droidmate.buildsrc.BuildKt
 import org.droidmate.init.InitConstants
 
 apply plugin: 'groovy'
@@ -23,6 +24,7 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 dependencies {
 
   compile project(":projects:lib-common")
+  compile buildSrcJars
 
   compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
@@ -53,7 +55,7 @@ tasks.run { JavaExec javaExec ->
     
   standardOutput = new ByteArrayOutputStream() // Mute the task stdout
 
-  project.ext.runOutput = (javaExec.workingDir as File).toPath().resolve(InitConstants.monitor_generator_output_relative_path).toFile()
+  project.ext.runOutput = (javaExec.workingDir as File).toPath().resolve(BuildKt.monitor_generator_output_relative_path).toFile()
   
   outputs.file runOutput
 
@@ -75,7 +77,7 @@ task buildMonitorJavaTemplateFromSource(type: Copy) {
 
   from monitorJavaTemplateSource
   into resDir
-  rename { InitConstants.monitor_generator_res_name_monitor_template }
+  rename { BuildKt.monitor_generator_res_name_monitor_template }
 }
 
 File monitorApkScaffoldingDir = file "monitor-apk-scaffolding"
@@ -88,7 +90,7 @@ task copyGeneratedMonitorToScaffolding(type: Copy, dependsOn: "run") { Copy copy
   
   copy.from project.ext.runOutput
   copy.into monitorJava.parent
-  copy.rename InitConstants.monitor_generator_output_relative_path.toFile().name, monitorJava.name
+  copy.rename BuildKt.monitor_generator_output_relative_path.toFile().name, monitorJava.name
 
   copy.outputs.file monitorJava
   
@@ -168,7 +170,7 @@ tasks.test {
 //region Required by API list stats
 task pullAppGuardApisList(type: Copy) {
 
-
+// KJA
   File appGuardApisList = file("$rootDir/../init/${InitConstants.appGuardApisListInInit}")
   assert appGuardApisList.file
 

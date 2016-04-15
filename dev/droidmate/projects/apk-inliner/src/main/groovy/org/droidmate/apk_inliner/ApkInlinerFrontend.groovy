@@ -17,7 +17,6 @@ import org.droidmate.buildsrc.BuildKt
 import org.droidmate.common.Dex
 import org.droidmate.common.Jar
 import org.droidmate.common.SysCmdExecutor
-import org.droidmate.init.InitConstants
 
 import java.nio.file.FileSystems
 import java.nio.file.Path
@@ -50,10 +49,10 @@ public class ApkInlinerFrontend
 
     OptionParser parser = new OptionParser()
 
-    String inputParam = InitConstants.apk_inliner_param_input.drop(1)
-    String outputParam = InitConstants.apk_inliner_param_output_dir.drop(1)
-    parser.accepts(inputParam).withOptionalArg().defaultsTo(InitConstants.apk_inliner_param_input_default).withValuesConvertedBy(pathIn(FileSystems.default))
-    parser.accepts(outputParam).withRequiredArg().defaultsTo(InitConstants.apk_inliner_param_output_dir_default).withValuesConvertedBy(pathIn(FileSystems.default))
+    String inputParam = BuildKt.apk_inliner_param_input.drop(1)
+    String outputParam = BuildKt.apk_inliner_param_output_dir.drop(1)
+    parser.accepts(inputParam).withOptionalArg().defaultsTo(BuildKt.apk_inliner_param_input_default).withValuesConvertedBy(pathIn(FileSystems.default))
+    parser.accepts(outputParam).withRequiredArg().defaultsTo(BuildKt.apk_inliner_param_output_dir_default).withValuesConvertedBy(pathIn(FileSystems.default))
 
     OptionSet options = parser.parse(args)
 
@@ -71,7 +70,7 @@ public class ApkInlinerFrontend
     Jar inlinerJar = new Jar(new ResourcePath("appguard-inliner.jar").path)
     Dex appGuardLoader = new Dex(new ResourcePath("appguard-loader.dex").path)
     String monitorClassName = "org.droidmate.monitor_generator.generated.Monitor"
-    String pathToMonitorApkOnAndroidDevice = InitConstants.AVD_dir_for_temp_files + "monitor.apk"
+    String pathToMonitorApkOnAndroidDevice = BuildKt.AVD_dir_for_temp_files + "monitor.apk"
 
     def jarsignerPath = BuildKt.jarsigner
     def debugKeystorePath = new ResourcePath("debug.keystore").path

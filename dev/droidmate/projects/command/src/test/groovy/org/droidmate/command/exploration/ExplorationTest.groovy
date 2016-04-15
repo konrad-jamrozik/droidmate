@@ -21,7 +21,6 @@ import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
-import org.droidmate.init.InitConstants
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeGenerator
@@ -77,7 +76,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
   void "Collects monitored API calls logs during device exploration"()
   {
     Configuration cfg = new ConfigurationForTests().forDevice().setArgs([
-      Configuration.pn_apksNames          , "[$InitConstants.monitored_inlined_apk_fixture_name]",
+      Configuration.pn_apksNames          , "[$BuildKt.monitored_inlined_apk_fixture_name]",
       Configuration.pn_widgetIndexes      , "[0]",
     ]).get()
 

@@ -7,6 +7,7 @@
 //
 // www.droidmate.org
 
+import org.droidmate.buildsrc.BuildKt
 import org.droidmate.init.InitConstants
 
 apply plugin: 'groovy'
@@ -166,7 +167,7 @@ SourceDirectorySet testResDirs = sourceSets.test.resources
 assert testResDirs.srcDirs.size() == 1
 File testResDir = testResDirs.srcDirs[0]
 assert testResDir.path.endsWith("test" + File.separator + "resources")
-File apkFixturesDir = new File(testResDir, InitConstants.apk_fixtures)
+File apkFixturesDir = new File(testResDir, BuildKt.apk_fixtures)
 assert apkFixturesDir.directory
 
 task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
@@ -174,12 +175,12 @@ task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
 
   File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
   args = [
-    InitConstants.apk_inliner_param_input, inputApk.canonicalPath,
-    InitConstants.apk_inliner_param_output_dir, apkFixturesDir
+    BuildKt.apk_inliner_param_input, inputApk.canonicalPath,
+    BuildKt.apk_inliner_param_output_dir, apkFixturesDir
   ]
 
   inputs.file inputApk
-  outputs.file new File(apkFixturesDir, InitConstants.monitored_inlined_apk_fixture_name)
+  outputs.file new File(apkFixturesDir, BuildKt.monitored_inlined_apk_fixture_name)
 }
 
 // WISH looks like all the pull- tasks should be of type Copy: http://www.gradle.org/docs/current/userguide/working_with_files.html#sec:copying_files
@@ -201,6 +202,7 @@ task buildApkFixtures(type: GradleBuild) {
 //region Preparation of resources: API list stats
 task pullAppGuardApisList(type: Copy) {
 
+  // KJA
   File appGuardApisList = file("$rootDir/../init/${InitConstants.appGuardApisListInInit}")
   assert appGuardApisList.file
 
@@ -234,7 +236,7 @@ task cleanTest(type: GradleBuild) {
 
 task prepareInlinedApks(dependsOn: ":projects:apk-inliner:run") {
 
-  File inlinedApksDir = file("$rootDir/${InitConstants.apks_dir}/inlined")
+  File inlinedApksDir = file("$rootDir/${BuildKt.apks_dir}/inlined")
   if (!inlinedApksDir.isDirectory())
     inlinedApksDir.mkdir()
 

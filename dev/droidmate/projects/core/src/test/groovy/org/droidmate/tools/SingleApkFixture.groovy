@@ -11,7 +11,6 @@ package org.droidmate.tools
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.IAaptWrapper
 import org.droidmate.configuration.Configuration
-import org.droidmate.init.InitConstants
 
 class SingleApkFixture
 {
@@ -24,7 +23,7 @@ class SingleApkFixture
     assert aapt != null
     assert cfg != null
     assert cfg.useApkFixturesDir
-    assert cfg.apksNames == [InitConstants.monitored_inlined_apk_fixture_name]
+    assert cfg.apksNames == [BuildKt.monitored_inlined_apk_fixture_name]
 
     ApksProvider apksProvider = new ApksProvider(aapt)
 

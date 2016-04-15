@@ -13,9 +13,9 @@ import groovy.transform.TypeChecked
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IApk
+import org.droidmate.buildsrc.BuildKt
 import org.droidmate.configuration.Configuration
 import org.droidmate.exploration.device.IRobustDevice
-import org.droidmate.init.InitConstants
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
@@ -95,7 +95,7 @@ class DeviceTest extends DroidmateGroovyTestCase
   private void withApkDeployedOnDevice(Closure computation)
   {
     Configuration cfg = new ConfigurationForTests().forDevice().setArgs([
-      Configuration.pn_apksNames, "[$InitConstants.monitored_inlined_apk_fixture_name]" as String]
+      Configuration.pn_apksNames, "[$BuildKt.monitored_inlined_apk_fixture_name]" as String]
     ).get()
 
     IDeviceTools deviceTools = new DeviceTools(cfg)

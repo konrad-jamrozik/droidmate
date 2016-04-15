@@ -30,7 +30,7 @@ public class InitConstantsTest
       // logic that is now run in the static init.
 
       // This instruction is present here to force static init block of the class to run.
-      InitConstants.apk_fixtures
+      InitConstants.sharedResourcesDirName
       assert true // No exception was thrown during static initialization of the tested class.
   }
 

@@ -9,9 +9,6 @@
 
 package org.droidmate.init
 
-import java.nio.file.Path
-import java.nio.file.Paths
-
 /**
  * <p>
  * This class contains values that are required by multiple projects being part of DroidMate
@@ -24,41 +21,6 @@ import java.nio.file.Paths
 // loaded in separate IntelliJ instance.
 public class InitConstants
 {
-  public static final String apks_dir = "apks"
-
-  /** This string makes an assumption that the apk inliner adds the "-inlined" suffix. */
-  public static
-  final String monitored_inlined_apk_fixture_name = "MonitoredApkFixture-debug-inlined.apk"
-
-  public static final String monitor_generator_res_name_monitor_template = "monitorTemplate.txt"
-
-  public static final Path monitor_generator_output_relative_path = Paths.get("temp/generated_Monitor.java")
-  
-  public static final Path apk_inliner_param_input_default      = Paths.get("input-apks")
-  public static final Path apk_inliner_param_output_dir_default = Paths.get("output-apks")
-
-  public static final String apk_inliner_param_input      = "-input"
-  public static final String apk_inliner_param_output_dir = "-outputDir"
-
-  public static final String AVD_dir_for_temp_files = "/data/local/tmp/"
-
-  /**
-   * <p>
-   * Denotes name of directory containing apk fixtures for testing. The handle to this path is expected to be obtained
-   * in following ways:
-   *
-   * </p><p>
-   * From a {@code build.gradle} script:<br/>
-   * {@code n ew File(sourceSets.test.resources.srcDirs[0], <this_var_reference>)}
-   *
-   * </p><p>
-   * From compiled source code:<br/>
-   * {@code Paths.get (ClassLoader.getSystemResource(<this_var_reference>).toUri())}
-   *
-   * </p>
-   */
-  public static final String apk_fixtures = "fixtures/apks"
-
   // @formatter:off
   /**
    * <p> Contains files to be pulled to resources dir of the projects depending on these resources. The pulling should happen
@@ -93,10 +55,4 @@ public class InitConstants
 
   static {
   }
-
-  //region Constants for testing
-  public static final String test_temp_dir_name = "temp_dir_for_tests"
-  //endregion
-
-
 }

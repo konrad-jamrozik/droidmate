@@ -15,8 +15,6 @@ import com.beust.jcommander.ParameterException
 import com.github.konrad_jamrozik.ResourcePath
 import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
-import org.apache.commons.io.FilenameUtils
-import org.apache.commons.lang3.SystemUtils
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder
 import org.apache.commons.lang3.builder.StandardToStringStyle
 import org.droidmate.buildsrc.BuildKt
@@ -192,6 +190,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
   private static void bindDirsAndResources(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
+    // KJA
     cfg.appGuardApisList = new ResourcePath(InitConstants.appGuardApisListFileName)
 
     cfg.uiautomatorDaemonJar = new ResourcePath("uiautomator-daemon.jar")
@@ -205,7 +204,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
     cfg.reportOutputDirPath = fs.getPath(cfg.reportOutputDir)
 
     if (cfg.useApkFixturesDir)
-      cfg.apksDirPath = new ResourcePath(InitConstants.apk_fixtures).path
+      cfg.apksDirPath = new ResourcePath(BuildKt.apk_fixtures).path
     else
       cfg.apksDirPath = fs.getPath(cfg.apksDirName.toString())
   }

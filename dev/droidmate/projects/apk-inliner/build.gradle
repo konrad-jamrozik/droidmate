@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 
-import org.droidmate.init.InitConstants
+import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'groovy'
 
@@ -36,8 +36,8 @@ run {
 
   standardOutput = new ByteArrayOutputStream() // Mute the task stdout
 
-  ext.targetApksDir = file(InitConstants.apk_inliner_param_input_default.toFile())
-  ext.inlinedApksDir = file(InitConstants.apk_inliner_param_output_dir_default.toFile())
+  ext.targetApksDir = file(BuildKt.apk_inliner_param_input_default.toFile())
+  ext.inlinedApksDir = file(BuildKt.apk_inliner_param_output_dir_default.toFile())
 
   if (!targetApksDir.isDirectory())
     targetApksDir.mkdir()
