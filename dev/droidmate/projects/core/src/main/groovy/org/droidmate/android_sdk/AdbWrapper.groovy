@@ -12,6 +12,7 @@ package org.droidmate.android_sdk
 import com.google.common.base.Splitter
 import com.google.common.collect.Iterables
 import groovy.util.logging.Slf4j
+import org.droidmate.buildsrc.BuildKt
 import org.droidmate.common.ISysCmdExecutor
 import org.droidmate.common.SysCmdExecutorException
 import org.droidmate.common_android.Constants
