@@ -41,7 +41,7 @@ import static org.droidmate.fixtures.apks.instrumented.InstrumentedActivity.LOG_
  */
 public class InstrumentationClass
 {
-  public static final String API = "Monitored_API_call";
+  public static final String API = "Monitor_API_method_call";
 
   /*
    * Context for the activity that will request the permissions

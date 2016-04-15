@@ -62,25 +62,36 @@ public class InstrumentedActivity extends Activity
     }
   }
 
+  private boolean hasPermission(String permission)
+  {
+    // The call below requires permission: android.permission.CAMERA
+    i(LOG_TAG, "Application requested permission " + permission);
+    int hasPermission = this.checkSelfPermission(permission);
+    if (hasPermission != PackageManager.PERMISSION_GRANTED)
+    {
+      i(LOG_TAG, "Missing runtime permission " + permission + ", requesting and finishing method");
+      this.requestPermissions(new String[] {permission}, 1);
+      return false;
+    }
 
+    return true;
+  }
 
   public void callAndroidAPIs(View view)
   {
     i(LOG_TAG, "====== Calling instrumented Android APIs ======");
 
+    // The calls below require the following permissions:
+    //    android.permission.CAMERA
+    //    android.permission.ACCESS_NETWORK_STATE
+    if (!hasPermission(Manifest.permission.CAMERA))
+      return;
+
+    if (!hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION))
+      return;
+
     try
     {
-      // The call below requires permission: android.permission.CAMERA
-      String permission = Manifest.permission.CAMERA;
-      i(LOG_TAG, "Application requested permission " + permission);
-      int hasPermission = this.checkSelfPermission(permission);
-      if (hasPermission != PackageManager.PERMISSION_GRANTED)
-      {
-        i(LOG_TAG, "Missing runtime permission " + permission + ", requesting and finishing method");
-        this.requestPermissions(new String[] {permission}, 1);
-        return;
-      }
-
       Camera cam = Camera.open(0);
       Log.i(LOG_TAG, "Camera.open() returned: " + cam);
 
@@ -105,7 +116,6 @@ public class InstrumentedActivity extends Activity
     final ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
     try
     {
-      // The calls below require permission: android.permission.ACCESS_NETWORK_STATE
       final NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
       Log.i(LOG_TAG, "ConnectivityManager.getActiveNetworkInfo() returned:" + activeNetworkInfo);
     }
@@ -137,16 +147,6 @@ public class InstrumentedActivity extends Activity
 
     try
     {
-      String permission = Manifest.permission.ACCESS_COARSE_LOCATION;
-      i(LOG_TAG, "Application requested permission " + permission);
-      int hasPermission = this.checkSelfPermission(permission);
-      if (hasPermission != PackageManager.PERMISSION_GRANTED)
-      {
-        i(LOG_TAG, "Missing runtime permission " + permission + ", requesting and finishing method");
-        this.requestPermissions(new String[] {permission}, 1);
-        return;
-      }
-
       final TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
       // The calls below require permission: android.permission.ACCESS_COARSE_LOCATION
       CellLocation cellLocation = tm.getCellLocation();
