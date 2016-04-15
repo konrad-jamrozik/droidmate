@@ -10,6 +10,7 @@ package org.droidmate.configuration
 
 import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
+import org.droidmate.buildsrc.BuildKt
 import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
 import org.droidmate.init.InitConstants
@@ -354,7 +355,7 @@ public class Configuration implements IConfiguration
   /** The command of the adb tool from the Android SDK. Configured by {@link ConfigurationBuilder}. */
   public String adbCommand
 
-  public Path androidSdkDir = "ANDROID_HOME".asEnvDir
+  public Path androidSdkDir = BuildKt.androidSdkDir
 
   public Path appGuardApisList
 
