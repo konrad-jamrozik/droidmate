@@ -25,6 +25,8 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 
 dependencies {
 
+  compile buildSrcJars
+
   // Force refresh:
   // Reference: https://jitpack.io/docs/#snapshots
   compile "com.github.konrad-jamrozik:utilities:$utilities_version"

@@ -18,10 +18,13 @@ project(":projects:uiautomator-daemon").buildDir = "bin"
 
 ext.kotlin_version = '1.0.1-2'
 
+ext.buildSrcJars = fileTree("$rootDir/buildSrc/build/libs") { include("*.jar") exclude("*javadoc.jar", "*sources.jar")}
+
 buildscript {
 
   ext.utilities_version = '4153c9cfed'
 
+  // KJA to remove when refactoring is done
   String initJarPath = "$rootDir/../init/build/libs/init.jar"
   File initJar = file(initJarPath)
   assert initJar.file: "init.jar not found (if you are building DroidMate for the first time, this is to be expected).\n" +
@@ -29,6 +32,7 @@ buildscript {
     "Please build the .jar by running 'gradlew clean build' from \n'$rootDir/../init'"
 
   repositories {
+    mavenLocal()
     mavenCentral()
     maven { url "https://jitpack.io" }
   }

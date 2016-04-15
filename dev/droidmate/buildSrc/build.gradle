@@ -1,1 +1,36 @@
-apply plugin: 'groovy'
+apply plugin: 'kotlin'
+
+ext.utilities_version = '4153c9cfed'
+buildscript {
+
+  ext.kotlin_version = '1.0.1-2'
+  
+  
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
+
+repositories {
+  mavenCentral()
+  maven { url "https://jitpack.io" }
+}
+
+dependencies {
+  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+  compile "com.github.konrad-jamrozik:utilities:$utilities_version"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+artifacts {
+  archives sourcesJar
+}

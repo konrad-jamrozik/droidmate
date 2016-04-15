@@ -13,15 +13,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../../init/build/libs/init.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../projects/core/libs/aopalliance-1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -49,7 +40,18 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../../projects/lib-common/src/main/resources" />
+          <root url="jar://$MODULE_DIR$/../../../../buildSrc/build/libs/buildSrc.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../../buildSrc/build/libs/buildSrc-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../../init/build/libs/init.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -59,6 +61,15 @@
       <library>
         <CLASSES>
           <root url="file://$MODULE_DIR$/../../../../projects/core/src/main/resources/logback" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../../projects/lib-common/src/main/resources" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
