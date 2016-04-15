@@ -296,7 +296,7 @@ class ExplorationStrategy implements IExplorationStrategy
 
   private boolean explorationCanMoveForwardOn(IGuiState guiState)
   {
-    return guiState.belongsToApp(packageName) && hasActionableWidgets(guiState)
+    return (guiState.belongsToApp(packageName) && hasActionableWidgets(guiState)) || guiState.isRequestRuntimePermissionDialogBox()
   }
 
   private boolean hasActionableWidgets(IGuiState guiState)
@@ -314,7 +314,7 @@ class ExplorationStrategy implements IExplorationStrategy
     if (!firstCallToDecideFinished)
       firstCallToDecideFinished = true
 
-    terminationCriterion.updateState()
+    terminationCriterion.updateState(action)
 
     boolean currentActionIsToReset = action instanceof ResetAppExplorationAction
 

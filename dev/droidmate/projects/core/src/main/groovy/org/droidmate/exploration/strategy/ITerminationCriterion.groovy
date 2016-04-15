@@ -18,7 +18,7 @@ interface ITerminationCriterion
 
   void initDecideCall(boolean firstCallToDecideFinished)
 
-  void updateState()
+  void updateState(ExplorationAction performedAction)
 
   boolean met()
 

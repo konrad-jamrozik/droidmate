@@ -14,9 +14,11 @@ import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.datatypes.IGuiState
+import org.droidmate.device.datatypes.RuntimePermissionDialogBoxGuiState
 import org.droidmate.exploration.actions.ExplorationAction
 import org.droidmate.exploration.actions.WidgetExplorationAction
 
+import static org.droidmate.exploration.actions.ExplorationAction.newIgnoreActionForTerminationWidgetExplorationAction
 import static org.droidmate.exploration.actions.ExplorationAction.newWidgetExplorationAction
 
 @Slf4j
@@ -32,7 +34,7 @@ class WidgetStrategy implements IWidgetStrategy
   private List<WidgetContext> widgetContexts       = []
   private WidgetContext       currentWidgetContext = null
   private WidgetInfo          lastWidgetInfo       = null
-
+  private Boolean             repeatLastAction     = false
 
   WidgetStrategy(
     String exploredAppPackageName,
@@ -87,12 +89,55 @@ class WidgetStrategy implements IWidgetStrategy
   {
     alreadyUpdatedAfterLastDecide = false
 
-    if (alwaysClickFirstWidget)
-      return newWidgetExplorationAction(currentWidgetContext[0].widget)
-    else if (widgetIndexes.size() > 0)
-      return clickWidgetByIndex()
+    ExplorationAction action;
+
+    // After closing a "runtime permission dialog"
+    // it is necessary to perform the last action again
+    if (repeatLastAction)
+    {
+      assert lastWidgetInfo != null
+
+      repeatLastAction = false
+
+      // Since this action was previously executed and decreased the
+      // remaining actions count, the second execution of this action
+      // should not be counted, otherwise the system will perform
+      // less actions than it should. This is done by incrementing the
+      // number of available actions
+      action = chooseAction(lastWidgetInfo)
+    }
     else
-      return biasedRandomAction()
+    {
+      if (guiState.requestRuntimePermissionDialogBox)
+      {
+        action = clickRuntimePermissionAllowWidget(guiState)
+        repeatLastAction = true
+      }
+      else if (alwaysClickFirstWidget)
+      {
+        lastWidgetInfo = currentWidgetContext[0]
+        action = newWidgetExplorationAction(currentWidgetContext[0].widget)
+      }
+      else if (widgetIndexes.size() > 0)
+        action = clickWidgetByIndex()
+      else
+        action = biasedRandomAction()
+    }
+
+    return action
+  }
+
+  private WidgetExplorationAction clickRuntimePermissionAllowWidget(IGuiState guiState)
+  {
+    assert guiState instanceof RuntimePermissionDialogBoxGuiState
+
+    Widget allowButton = (guiState as RuntimePermissionDialogBoxGuiState).allowWidget
+    assert allowButton != null
+
+    // Remove blacklist restriction from previous action since it will need to be executed again
+    lastWidgetInfo.blackListed = false
+
+    return newIgnoreActionForTerminationWidgetExplorationAction(allowButton)
   }
 
   private WidgetExplorationAction clickWidgetByIndex()
@@ -101,7 +146,14 @@ class WidgetStrategy implements IWidgetStrategy
     widgetIndexes = widgetIndexes.drop(1)
 
     assert currentWidgetContext.size() >= widgetIndex + 1
-    return newWidgetExplorationAction(currentWidgetContext[widgetIndex].widget)
+
+    Widget chosenWidget = currentWidgetContext[widgetIndex].widget
+    WidgetInfo chosenWidgetInfo = currentWidgetContext.find({it.index == widgetIndex})
+
+    assert chosenWidgetInfo != null
+
+    lastWidgetInfo = chosenWidgetInfo
+    return newWidgetExplorationAction(chosenWidget)
   }
 
   ExplorationAction biasedRandomAction()
@@ -149,10 +201,16 @@ class WidgetStrategy implements IWidgetStrategy
     Collection<WidgetInfo> candidates = widgetContext.findAll {(!it.blackListed && it.actedUponCount == minActedUponCount)}
 
     WidgetInfo chosenWidgetInfo = candidates[random.nextInt(candidates.size())]
-    Widget chosenWidget = chosenWidgetInfo.widget
 
     lastWidgetInfo = chosenWidgetInfo
     assert !lastWidgetInfo.blackListed
+
+    return chooseAction(chosenWidgetInfo)
+  }
+
+  ExplorationAction chooseAction(WidgetInfo chosenWidgetInfo)
+  {
+    Widget chosenWidget = chosenWidgetInfo.widget
 
     ExplorationAction action
     if (chosenWidget.longClickable && !chosenWidget.clickable && !chosenWidget.checkable)
