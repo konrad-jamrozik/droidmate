@@ -16,7 +16,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
 
-  compile "com.github.konrad-jamrozik:utilities:$utilities_version"
+  compile buildSrcJars
 
   compile project(":projects:lib-common")
 

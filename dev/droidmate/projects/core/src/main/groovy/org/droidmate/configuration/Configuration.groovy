@@ -349,13 +349,9 @@ public class Configuration implements IConfiguration
 
   public Path monitorApk
 
-  /** The command of the aapt tool from the Android SDK. Configured by {@link ConfigurationBuilder}. */
-  public String aaptCommand
+  public String aaptCommand = BuildKt.aapt_command.toString()
 
-  /** The command of the adb tool from the Android SDK. Configured by {@link ConfigurationBuilder}. */
-  public String adbCommand
-
-  public Path androidSdkDir = BuildKt.android_sdk_dir
+  public String adbCommand = BuildKt.adb_command.toString()
 
   public Path appGuardApisList
 

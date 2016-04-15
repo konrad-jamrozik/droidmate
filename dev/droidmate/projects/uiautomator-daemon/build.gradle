@@ -53,11 +53,9 @@ dependencies {
     on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */
   libsDirFileTree.setBuiltBy(['pullLibCommonAndroidJar'])
   compile libsDirFileTree
+
   // Required by IntelliJ; when building with Gradle, the underlying ant script knows this dependency.
-  // KJA add uiautomator.jar to BuildKt
-  File uiautomatorFile = new File(BuildKt.android_platform_dir.toString(), "uiautomator.jar")
-  assert uiautomatorFile.file
-  compile files(uiautomatorFile)
+  compile files(BuildKt.uiautomator_jar.toString())
 
   compile files(BuildKt.android_jar.toString())
 }

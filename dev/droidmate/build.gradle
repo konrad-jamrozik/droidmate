@@ -22,7 +22,7 @@ ext.buildSrcJars = fileTree("$rootDir/buildSrc/build/libs") { include("*.jar") e
 
 buildscript {
 
-  ext.utilities_version = '5dbd3cbb56'
+  ext.utilities_version = 'db0f83e702'
 
   // KJA to remove when refactoring is done
   String initJarPath = "$rootDir/../init/build/libs/init.jar"

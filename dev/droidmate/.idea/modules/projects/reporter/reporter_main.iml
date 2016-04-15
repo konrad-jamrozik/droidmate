@@ -12,7 +12,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="lib-common_main" />
     <orderEntry type="module" module-name="lib-android_main" />
-    <orderEntry type="module" module-name="lib-common-android_main" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -22,6 +21,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="lib-common-android_main" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

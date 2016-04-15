@@ -87,7 +87,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
     assert !config.displayHelp: "DroidMate was instructed to display help. By now, it should have done it and exited, " +
       "but instead of exiting the code execution reached this assertion."
 
-    config = bindAndValidate(config, BuildKt.build_tools_version, fs)
+    config = bindAndValidate(config, fs)
 
     assert config != null
     return config
@@ -124,7 +124,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
   }
 
   private static Configuration bindAndValidate(
-    Configuration config, String buildToolsVersion, FileSystem fs) throws ConfigurationException
+    Configuration config, FileSystem fs) throws ConfigurationException
   {
     assert config != null
 
@@ -134,7 +134,6 @@ class ConfigurationBuilder implements IConfigurationBuilder
       bindDirsAndResources(config, fs)
       createAndValidateDirs(config)
       validateExplorationSettings(config)
-      bindToolsCommands(config, buildToolsVersion)
 
       // This increment is done so each connected device will have its uiautomator-daemon reachable on a separate port.
       config.uiautomatorDaemonTcpPort += config.deviceIndex
@@ -216,7 +215,6 @@ class ConfigurationBuilder implements IConfigurationBuilder
     if (!Files.exists(cfg.droidmateOutputDirPath))
       Files.createDirectory(cfg.droidmateOutputDirPath)
 
-    FileUtils.validateDirectory(cfg.androidSdkDir)
     FileUtils.validateDirectory(cfg.apksDirPath)
     FileUtils.validateDirectory(cfg.droidmateOutputDirPath)
   }
@@ -236,34 +234,10 @@ class ConfigurationBuilder implements IConfigurationBuilder
         config.logLevel))
   }
 
-  private static void bindToolsCommands(Configuration config, String buildToolsVersion)
-  {
-    config.with {
-
-      aaptCommand = FilenameUtils.concat(config.androidSdkDir.toString(), "build-tools/$buildToolsVersion/aapt")
-      adbCommand = FilenameUtils.concat(config.androidSdkDir.toString(), "platform-tools/adb")
-
-      if (SystemUtils.IS_OS_WINDOWS)
-      {
-        aaptCommand += ".exe"
-        adbCommand += ".exe"
-      }
-
-      if (!new File(aaptCommand).isFile())
-        throw new ConfigurationException("$aaptCommand file doesn't exist or is not a file. Expected path: "
-          + aaptCommand)
-
-      if (!new File(adbCommand).isFile())
-        throw new ConfigurationException("$adbCommand file doesn't exist or is not a file. Expected path: "
-          + adbCommand)
-    }
-  }
-
   /*
    * To keep the source DRY, we use apache's ReflectionToStringBuilder, which gets the field names and values using
    * reflection.
    */
-
   private static void logConfigurationInEffect(Configuration config)
   {
 

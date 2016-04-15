@@ -9,11 +9,11 @@
 
 package org.droidmate.apk_inliner
 
-import com.github.konrad_jamrozik.OS
 import com.github.konrad_jamrozik.ResourcePath
 import groovy.util.logging.Slf4j
 import joptsimple.OptionParser
 import joptsimple.OptionSet
+import org.droidmate.buildsrc.BuildKt
 import org.droidmate.common.Dex
 import org.droidmate.common.Jar
 import org.droidmate.common.SysCmdExecutor
@@ -73,7 +73,7 @@ public class ApkInlinerFrontend
     String monitorClassName = "org.droidmate.monitor_generator.generated.Monitor"
     String pathToMonitorApkOnAndroidDevice = InitConstants.AVD_dir_for_temp_files + "monitor.apk"
 
-    def jarsignerPath = "JAVA8_HOME".asEnvDir.resolveRegularFile("bin/jarsigner${OS.isWindows ? ".exe" : ""}")
+    def jarsignerPath = BuildKt.jarsigner
     def debugKeystorePath = new ResourcePath("debug.keystore").path
 
     return new ApkInliner(

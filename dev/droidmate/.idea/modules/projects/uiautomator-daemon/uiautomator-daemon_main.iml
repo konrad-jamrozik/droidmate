@@ -47,7 +47,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../projects/uiautomator-daemon/libs/commons-io-2.4.jar!/" />
+          <root url="file://$MODULE_DIR$/../../../../projects/uiautomator-daemon/src/org/droidmate/uiautomatordaemon/UiAutomatorDaemonServer.java" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -56,7 +56,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../../projects/uiautomator-daemon/src/org/droidmate/uiautomatordaemon/UiAutomatorDaemonServer.java" />
+          <root url="jar://$MODULE_DIR$/../../../../projects/uiautomator-daemon/libs/commons-io-2.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

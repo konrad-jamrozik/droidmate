@@ -1,16 +1,15 @@
 apply plugin: 'kotlin'
 
-// KJA DRY
-ext.utilities_version = '5dbd3cbb56'
+ext.utilities_version = 'db0f83e702'
+
 buildscript {
 
-  // KJA DRY
   ext.kotlin_version = '1.0.1-2'
-  
   
   repositories {
     mavenCentral()
   }
+  
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
