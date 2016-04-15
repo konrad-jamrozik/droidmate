@@ -14,6 +14,7 @@
 
 */
 
+
 import org.droidmate.buildsrc.BuildKt
 import org.droidmate.init.InitConstants
 
@@ -27,6 +28,7 @@ dependencies {
 
   testCompile 'junit:junit:4.12'
 
+  // KJA replacing this with BuildKt.android_jar causes stack overflow!
   File androidJarFile = new File(InitConstants.android_platform_dir.toString(), "android.jar")
   assert androidJarFile.file
   compile files(androidJarFile)

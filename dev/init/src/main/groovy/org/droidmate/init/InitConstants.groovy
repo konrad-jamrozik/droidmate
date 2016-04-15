@@ -126,8 +126,6 @@ public class InitConstants
   public static final String appGuardApisListInInit = "$sharedResourcesDirName${File.separator}$appGuardApisListFileName"
 
   static {
-    Path test = Paths.get(androidSdkDir.toString(), "platforms/android-$android_platform_version")
-    test.toString()
     assert Files.isDirectory(androidSdkDir)
     assert Files.isDirectory(android_platform_dir)
   }

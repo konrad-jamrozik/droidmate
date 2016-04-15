@@ -19,6 +19,8 @@ def libsDir = file("$projectDir/libs")
 */
 import org.droidmate.init.InitConstants
 
+import static org.droidmate.buildsrc.BuildKt.*
+
 apply plugin: 'java'
 
 /* The tasks below are pruned and/or disabled as they come from Gradle's java plugin which is applied
@@ -54,7 +56,7 @@ dependencies {
   libsDirFileTree.setBuiltBy(['pullLibCommonAndroidJar'])
   compile libsDirFileTree
   // Required by IntelliJ; when building with Gradle, the underlying ant script knows this dependency.
-  File uiautomatorFile = new File(InitConstants.android_platform_dir.toString(), "uiautomator.jar")
+  File uiautomatorFile = new File(android_platform_dir.toString(), "uiautomator.jar")
   assert uiautomatorFile.file
   compile files(uiautomatorFile)
 

@@ -19,6 +19,7 @@ import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang3.SystemUtils
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder
 import org.apache.commons.lang3.builder.StandardToStringStyle
+import org.droidmate.buildsrc.BuildKt
 import org.droidmate.common.FileUtils
 import org.droidmate.exceptions.ConfigurationException
 import org.droidmate.init.InitConstants
@@ -86,7 +87,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
     assert !config.displayHelp: "DroidMate was instructed to display help. By now, it should have done it and exited, " +
       "but instead of exiting the code execution reached this assertion."
 
-    config = bindAndValidate(config, InitConstants.build_tools_version, fs)
+    config = bindAndValidate(config, BuildKt.build_tools_version, fs)
 
     assert config != null
     return config
