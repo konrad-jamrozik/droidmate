@@ -1,13 +1,10 @@
-
-  [![Build Status](https://travis-ci.org/konrad-jamrozik/droidmate.svg?branch=master)](https://travis-ci.org/konrad-jamrozik/droidmate)
+# DroidMate [![Build Status](https://travis-ci.org/konrad-jamrozik/droidmate.svg?branch=master)](https://travis-ci.org/konrad-jamrozik/droidmate)
   
   Copyright (c) 2012-2016 Saarland University  
   All rights reserved.
 
   Author: Konrad Jamrozik, github.com/konrad-jamrozik
   
-
-
   This file is part of the "DroidMate" project.
 
   www.droidmate.org
