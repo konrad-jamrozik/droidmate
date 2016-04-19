@@ -14,6 +14,7 @@ import org.junit.Test
 class BuildKtTest {
   
   @Test fun initializes() {
-    println(jdk6_rt_jar)
+    @Suppress("UNUSED_VARIABLE")
+    val init = jdk6_rt_jar
   }
 }
