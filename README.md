@@ -219,6 +219,7 @@ If you run into problems, please see the [troubleshooting section](#troubleshoot
 The `DummyAndroidApp` project is added only to enable Android plugin views, like e.g. logcat.
 
 * If you get on Gradle rebuild:
+
 > Unsupported major.minor version 52.0
 
 Ensure that Gradle is using JDK 8 in: `Settings -> Build, Execution, Deployment -> Build Tools -> Gradle -> Gradle JVM`.
