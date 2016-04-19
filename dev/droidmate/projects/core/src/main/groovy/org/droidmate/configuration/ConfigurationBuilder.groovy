@@ -12,7 +12,7 @@ package org.droidmate.configuration
 import ch.qos.logback.classic.Level
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.ParameterException
-import com.github.konrad_jamrozik.ResourcePath
+import com.konradjamrozik.ResourcePath
 import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder

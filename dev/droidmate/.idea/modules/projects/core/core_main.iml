@@ -84,7 +84,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:db0f83e702" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:c52a5ef326" level="project" />
     <orderEntry type="module" module-name="lib-common_main" />
     <orderEntry type="module" module-name="lib-common-android_main" />
     <orderEntry type="module" module-name="lib-android_main" />

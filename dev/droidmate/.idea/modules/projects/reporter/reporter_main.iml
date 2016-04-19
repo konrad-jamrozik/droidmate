@@ -91,7 +91,7 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.0.1-2" level="project" />
     <orderEntry type="module" module-name="core_main" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-runtime:1.0.1-2" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:db0f83e702" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:c52a5ef326" level="project" />
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.35" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />

@@ -8,15 +8,15 @@
 // www.droidmate.org
 
 // "unused" warning is suppressed because vals in this project are being used in the 'droidmate' project gradle build scripts
-// as well as in the projects builts by it.
+// as well as in the 'droidmate' project itself.
 @file:Suppress("unused")
 
 package org.droidmate.buildsrc
 
-import com.github.konrad_jamrozik.OS
-import com.github.konrad_jamrozik.asEnvDir
-import com.github.konrad_jamrozik.resolveDir
-import com.github.konrad_jamrozik.resolveRegularFile
+import com.konradjamrozik.OS
+import com.konradjamrozik.asEnvDir
+import com.konradjamrozik.resolveDir
+import com.konradjamrozik.resolveRegularFile
 import java.nio.file.Paths
 
 val apks_dir = "apks"

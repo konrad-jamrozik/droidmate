@@ -9,7 +9,7 @@
 
 package org.droidmate.monitor_generator
 
-import com.github.konrad_jamrozik.ResourcePath
+import com.konradjamrozik.ResourcePath
 import org.droidmate.buildsrc.BuildKt
 import org.droidmate.common.IConfiguration
 

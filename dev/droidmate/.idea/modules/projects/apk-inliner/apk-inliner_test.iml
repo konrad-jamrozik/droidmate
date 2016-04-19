@@ -50,7 +50,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:db0f83e702" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:c52a5ef326" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-exec:1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />

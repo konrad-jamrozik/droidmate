@@ -37,7 +37,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="lib-common_main" />
-    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:db0f83e702" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.konrad-jamrozik:utilities:c52a5ef326" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.groovy:groovy-all:2.4.6" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-exec:1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3" level="project" />

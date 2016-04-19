@@ -9,7 +9,7 @@
 
 package org.droidmate.apk_inliner
 
-import com.github.konrad_jamrozik.ResourcePath
+import com.konradjamrozik.ResourcePath
 import groovy.util.logging.Slf4j
 import joptsimple.OptionParser
 import joptsimple.OptionSet
