@@ -2,9 +2,9 @@
   <configuration default="false" name="cloc.sh cloc" type="BashConfigurationType" factoryName="Bash" singleton="true">
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="INTERPRETER_PATH" value="C:\Program Files\Git\bin\sh.exe " />
-    <option name="WORKING_DIRECTORY" value="C:\my\local\repos\github\droidmate\dev\droidmate\scripts" />
+    <option name="WORKING_DIRECTORY" value="$DM_REPO$/dev/droidmate/scripts" />
     <option name="PARENT_ENVS" value="true" />
-    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/cloc.sh" />
+    <option name="SCRIPT_NAME" value="cloc.sh" />
     <option name="PARAMETERS" value="cloc" />
     <module name="droidmate" />
     <envs />

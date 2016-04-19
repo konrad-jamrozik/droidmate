@@ -15,7 +15,7 @@
     <option name="TEST_OBJECT" value="class" />
     <option name="VM_PARAMETERS" value="-ea -DlogsDir=&quot;temp_dir_for_tests/logs&quot;" />
     <option name="PARAMETERS" value="" />
-    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+    <option name="WORKING_DIRECTORY" value="file://$DM_REPO$/dev/droidmate" />
     <option name="ENV_VARIABLES" />
     <option name="PASS_PARENT_ENVS" value="true" />
     <option name="TEST_SEARCH_SCOPE">
