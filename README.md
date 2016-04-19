@@ -201,6 +201,8 @@ DroidMate is developed with IntelliJ IDEA  using the directory-based project for
 * Android Support plugin.
 * Kotlin plugin.
 
+You also have to set IntelliJ path variable `DM_REPO` to point to the root directory of your local clone.
+
 After opening an IntelliJ project (see section below), run `Refresh all gradle projects` from `Gradle` plugin toolbar. After this you should be able to `Build -> Make Project` and run the tests (see section below).
 
 ### IntelliJ settings
