@@ -6,9 +6,6 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-/* For instructions on how to build and run DroidMate, see ./README_dev.txt */
-
-project.ext.utils = new GroovyShell().parse(new File("${project.projectDir}/GroovyUtils/Utils.groovy"))
 
 /* java plugin uses "build" for outputs by default, but the underlying ant script uses "bin".
    This is setup in root project, not in the target project, as this way we guarantee the property

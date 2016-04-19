@@ -118,7 +118,7 @@ task buildMonitorApk(dependsOn: "copyGeneratedMonitorToScaffolding") {
 
     assert monitorJava.isFile()
 
-    int exitValue = utils.executeCommand(
+    int exitValue = BuildKt.executeCommand(
       "${monitorApkScaffoldingDir.name} ant debug",
       "ant -f ${monitorApkScaffoldingDir.path}/build.xml debug"
     )
@@ -142,7 +142,7 @@ task buildMonitorApk(dependsOn: "copyGeneratedMonitorToScaffolding") {
 
 task cleanMonitorApk() {
   doLast {
-    int exitValue = utils.executeCommand(
+    int exitValue = BuildKt.executeCommand(
       "${monitorApkScaffoldingDir.name} ant clean",
       "ant -f ${monitorApkScaffoldingDir.path}/build.xml clean"
     )

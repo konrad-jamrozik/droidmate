@@ -17,7 +17,10 @@ import com.konradjamrozik.OS
 import com.konradjamrozik.asEnvDir
 import com.konradjamrozik.resolveDir
 import com.konradjamrozik.resolveRegularFile
+import org.zeroturnaround.exec.ProcessExecutor
+import java.io.ByteArrayOutputStream
 import java.nio.file.Paths
+import java.util.concurrent.TimeUnit
 
 val apks_dir = "apks"
 
@@ -66,3 +69,45 @@ val monitored_inlined_apk_fixture_name = "MonitoredApkFixture-debug-inlined.apk"
 val apk_fixtures = "fixtures/apks"
 
 val test_temp_dir_name = "temp_dir_for_tests"
+
+fun executeCommand(commandName: String, commandContent: String): Int {
+
+  val cmd = if (OS.isWindows) "cmd /c " else ""
+  val commandString = cmd + commandContent
+  
+  println("=========================")
+  println("Executing command named: $commandName")
+  println("Command string:")
+  println(commandString)
+
+  val err = ByteArrayOutputStream()
+  val out = ByteArrayOutputStream()
+  val process = ProcessExecutor()
+    .readOutput(true)
+    .redirectOutput(out)
+    .redirectError(err)
+    .timeout(10, TimeUnit.SECONDS)
+  
+  print("executing...")
+  val result = process.commandSplit(commandString).execute()
+  println(" DONE")
+
+  println("return code: ${result.exitValue}")
+  val stderrContent = err.toString(Charsets.UTF_8.toString())
+  val stdoutContent = out.toString(Charsets.UTF_8.toString())
+
+  if (stderrContent != "") {
+    println("----------------- stderr:")
+    println(stderrContent)
+    println("----------------- /stderr")
+  } else
+    println("stderr is empty")
+
+  if (stdoutContent != "") {
+    println("stdout is ${stdoutContent.length} chars long")
+  } else
+    println("stdout is empty")
+  
+  println("=========================")
+  return result.exitValue
+}

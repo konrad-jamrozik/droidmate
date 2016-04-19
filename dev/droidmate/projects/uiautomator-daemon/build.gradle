@@ -103,7 +103,7 @@ task antBuild(dependsOn: [pullLibCommonAndroidJar]) {
   outputs.dir buildDir
 
   doLast {
-    int exitValue = utils.executeCommand(
+    int exitValue = BuildKt.executeCommand(
       "${project.name} ant build",
       "ant -f $projectDir/$antBuildFileName build"
     )
@@ -117,7 +117,7 @@ task antClean {
   description = "Runs 'ant clean'."
 
   doLast {
-    utils.executeCommand(
+    BuildKt.executeCommand(
       "${project.name} ant clean",
       "ant -f $projectDir/$antBuildFileName clean"
     )
