@@ -205,7 +205,7 @@ DroidMate is developed with IntelliJ IDEA  using the directory-based project for
 
 After opening an IntelliJ project (e.g. `repo/dev/droidmate`), run `Refresh all Gradle projects` from `Gradle` plugin toolbar. After this you should be able to `Build -> Make Project` and run the tests (see section below).
 
-If you run into problems, please see the [troubleshooting section](#Troubleshooting IntelliJ setup).
+If you run into problems, please see the [troubleshooting section](#troubleshooting-intellij-setup).
 
 ### Troubleshooting IntelliJ setup
 
