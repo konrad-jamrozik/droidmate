@@ -2,6 +2,7 @@
 language: android
 
 jdk:
+  
   # Most of DroidMate is compiled with Java 8.
   - oraclejdk8
 
@@ -30,10 +31,15 @@ env:
     - ANDROID_HOME=/usr/local/android-sdk
     
 before_install:
+  
+  # Change to the directory containing the main build script of DroidMate.
+  - cd dev/droidmate   
+  
   # Allow Gradle build script to execute.
   - chmod +x gradlew
   
 before_cache:
+  
   # Allow Gradle to use cache.
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
   
@@ -46,11 +52,8 @@ cache:
     
     # Note: Android SDK should not be cached, according to https://docs.travis-ci.com/user/caching/#Things-not-to-cache
     
-before_script:
-  # Change to the directory containing the main build script of DroidMate.
-  - cd dev/droidmate    
-  
 script:
+  
   # By default, 'android' language uses 'connectedCheck'. Here we replace it with 'build'
   - ./gradlew build
  
