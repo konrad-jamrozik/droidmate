@@ -46,6 +46,10 @@ cache:
     
     # Note: Android SDK should not be cached, according to https://docs.travis-ci.com/user/caching/#Things-not-to-cache
     
+before_script:
+  # Change to the directory containing the main build script of DroidMate.
+  - cd dev/droidmate    
+  
 script:
   # By default, 'android' language uses 'connectedCheck'. Here we replace it with 'build'
   - ./gradlew build
