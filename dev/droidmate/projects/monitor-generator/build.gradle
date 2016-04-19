@@ -8,7 +8,6 @@
 // www.droidmate.org
 
 import org.droidmate.buildsrc.BuildKt
-import org.droidmate.init.InitConstants
 
 apply plugin: 'groovy'
 
@@ -20,6 +19,8 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
+// KJA 
+//sourceSets.main.resources.srcDir(project(":projects").file("resources"))
 
 dependencies {
 
@@ -167,16 +168,6 @@ tasks.test {
   includes = ['']
 
 }
-//region Required by API list stats
-task pullAppGuardApisList(type: Copy) {
 
-// KJA
-  File appGuardApisList = file("$rootDir/../init/${InitConstants.appGuardApisListInInit}")
-  assert appGuardApisList.file
-
-  from appGuardApisList
-  into sourceSets.main.resources.srcDirs[0]
-}
-
-processResources.dependsOn "pullAppGuardApisList"
-//endregion
+// Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
+processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }

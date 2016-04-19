@@ -20,7 +20,6 @@ import org.apache.commons.lang3.builder.StandardToStringStyle
 import org.droidmate.buildsrc.BuildKt
 import org.droidmate.common.FileUtils
 import org.droidmate.exceptions.ConfigurationException
-import org.droidmate.init.InitConstants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -190,9 +189,8 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
   private static void bindDirsAndResources(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
-    // KJA
-    cfg.appGuardApisList = new ResourcePath(InitConstants.appGuardApisListFileName)
-
+    cfg.appGuardApisList = new ResourcePath(BuildKt.appguard_apis_txt)
+    
     cfg.uiautomatorDaemonJar = new ResourcePath("uiautomator-daemon.jar")
 
     cfg.monitorApk = new ResourcePath("monitor.apk")

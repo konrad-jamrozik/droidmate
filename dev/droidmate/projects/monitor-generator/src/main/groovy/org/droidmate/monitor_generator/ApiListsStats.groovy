@@ -13,7 +13,7 @@ import com.konradjamrozik.ResourcePath
 import org.droidmate.apis.ApiMapping
 import org.droidmate.apis.ApiMethodSignature
 import org.droidmate.apis.ExcludedApis
-import org.droidmate.init.InitConstants
+import org.droidmate.buildsrc.BuildKt
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -41,7 +41,7 @@ class ApiListsStats
     ApiMapping pscoutMapping = new ApiMapping(jellybeanPublishedApiMapping, jellybeanStaticMethods, appguardLegacyApis)
     pscoutApis = pscoutMapping.apis.findAll {!(new ExcludedApis().contains(it.methodName))}
 
-    List<String> appGuardApiMappingLines = new ResourcePath(InitConstants.appGuardApisListFileName).path.readLines()
+    List<String> appGuardApiMappingLines = new ResourcePath(BuildKt.appguard_apis_txt).path.readLines()
     appGuardApis = ApiMapping.parseAppguardLegacyApis(appGuardApiMappingLines)
 
 

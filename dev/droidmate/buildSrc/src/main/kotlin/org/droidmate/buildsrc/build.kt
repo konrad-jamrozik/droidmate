@@ -70,6 +70,8 @@ val apk_fixtures = "fixtures/apks"
 
 val test_temp_dir_name = "temp_dir_for_tests"
 
+val appguard_apis_txt = "appguard_apis.txt"
+
 fun executeCommand(commandName: String, commandContent: String): Int {
 
   val cmd = if (OS.isWindows) "cmd /c " else ""
@@ -86,7 +88,7 @@ fun executeCommand(commandName: String, commandContent: String): Int {
     .readOutput(true)
     .redirectOutput(out)
     .redirectError(err)
-    .timeout(10, TimeUnit.SECONDS)
+    .timeout(120, TimeUnit.SECONDS)
   
   print("executing...")
   val result = process.commandSplit(commandString).execute()
