@@ -209,10 +209,9 @@ If you run into problems, please see the [troubleshooting section](#troubleshoot
 
 ### Troubleshooting IntelliJ setup
 
-* In case you run into `Java development kit not set` error or similar after clicking `Refresh all Gradle projects`, just manually point to your local installation of it. Relevant tool window for that will be available from the error message. 
+* In case you run into `Java development kit not set` error or similar after clicking `Refresh all Gradle projects`, just manually point to your local installation of it. Relevant tool window for that will be linked to from the error message. 
 
-
-* If IntelliJ builds fail erratically, close it, do full clean and build from Gradle and reopen IntelliJ.
+* If IntelliJ builds fail erratically, close it, do `./gradlew clean build` and reopen IntelliJ.
 
 * When opening `repo/dev/droidmate` in IntelliJ, it is expected to have the following error:
 > Unsupported Modules Detected: Compilation is not supported for following modules: DummyAndroidApp. Unfortunately you can't have non-Gradle Java modules and Android-Gradle modules in one project.
