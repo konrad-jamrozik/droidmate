@@ -19,9 +19,6 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
-// KJA 
-//sourceSets.main.resources.srcDir(project(":projects").file("resources"))
-
 dependencies {
 
   compile project(":projects:lib-common")
