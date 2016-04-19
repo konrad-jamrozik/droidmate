@@ -1,0 +1,5 @@
+# These IntelliJ files are to be automatically generated with following steps:
+# 1. open the project dir in Intellij
+# 2. click "Refresh all Gradle projects"
+**/.idea/modules.xml
+*.iml
