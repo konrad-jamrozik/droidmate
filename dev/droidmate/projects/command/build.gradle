@@ -103,8 +103,7 @@ dependencies {
 
 //endregion Dependencies
 
-// WISH use test.configure instead. Do it everywhere.
-test {
+test.configure {
 
  /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
 
@@ -141,31 +140,6 @@ task testDevice(type: Test, dependsOn: testClasses) {
 
   includes = ['**/RequiresDeviceTestSuite.class']
 
-}
-
-// For interactive, quick testing from cmd line.
-task testi(type: Test, dependsOn: testClasses) {
-
-  outputs.upToDateWhen {false}
-
-  //workingDir rootDir
-  testLogging {events 'failed', 'passed'}
-
-  // show standard out and standard error of the test JVM(s) on the console
-  testLogging.showStandardStreams = true
-
-  // The only thing I managed to get to work.
-  //include 'org/droidmate/frontend/MyTestClass.class'
-
-  // DOES NOT WORK :/
-//  /* Reference: http://www.gradle.org/docs/current/userguide/java_plugin.html#testfiltering
-//
-//    If not using filter (comment it out), you could run like:
-//    gradle :projects:core:testi --tests *Configures
-//  */
-//  filter {
-//    includeTestsMatching 'MyTest'
-//  }
 }
 
 //region Publishing to local maven repo (use "install" task)

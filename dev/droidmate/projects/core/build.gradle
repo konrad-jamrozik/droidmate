@@ -254,7 +254,7 @@ task prepareInlinedApks(dependsOn: ":projects:apk-inliner:run") {
 
 //region Testing tasks
 
-tasks.test {
+test.configure {
 
   inputs.dir apkFixturesDir.absolutePath
 

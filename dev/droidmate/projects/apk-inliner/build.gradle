@@ -51,6 +51,6 @@ clean << {
   inlinedApksDir.listFiles().each { if (it.name.endsWith(".apk")) assert it.delete() }
 }
 
-test {
+test.configure {
   // includes = [''] // Turn off all tests
 }

@@ -51,7 +51,7 @@ dependencies {
   compile project(":projects:core")
 }
 
-test {
+test.configure {
 
   /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
 

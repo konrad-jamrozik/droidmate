@@ -156,8 +156,7 @@ task cleanRun(type: Delete) {
 clean.dependsOn cleanRun, cleanMonitorApk
 build.dependsOn buildMonitorApk
 
-tasks.test {
-
+test.configure {
 
   // Workaround for GRADLE-1682. See http://stackoverflow.com/a/14947906/986533
   // includes = ['**/MonitorGeneratorFrontendTest.class']
