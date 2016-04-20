@@ -253,7 +253,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       // its parent's parent, which does not possess a resource-id.
       // The options are either to iterate through the layouts,
       // of to click on a screen position and let Android OS handle the rest
-      // WISH Find a more elegant way of doing this
+      // WISH Borges Find a more elegant way of doing this
       if (!hasWifiSwitch)
       {
         Log.i(uiaDaemon_logcatTag, "Wifi switch not found, looking for button.");
