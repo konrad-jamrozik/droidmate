@@ -167,3 +167,20 @@ task testi(type: Test, dependsOn: testClasses) {
 //    includeTestsMatching 'MyTest'
 //  }
 }
+
+//region Publishing to local maven repo (use "install" task)
+apply plugin: "maven"
+project.group = rootProject.group
+project.version = rootProject.version
+jar.baseName = rootProject.name
+
+task sourcesJar(type: Jar, dependsOn: tasks.classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+  from sourceSets.test.allSource
+}
+
+artifacts {
+  archives sourcesJar
+}
+//endregion Publishing to local maven repo (use "install" task)
