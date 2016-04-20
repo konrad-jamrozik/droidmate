@@ -26,7 +26,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../../projects/uiautomator2-daemon/build/intermediates/classes/debug" />
     <output-test url="file://$MODULE_DIR$/../../../../projects/uiautomator2-daemon/build/intermediates/classes/androidTest/debug" />
     <exclude-output />
@@ -86,7 +86,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../../projects/uiautomator2-daemon/build/test-results" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../projects/uiautomator2-daemon/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" scope="TEST" name="uiautomator-v18-2.1.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="guava-18.0" level="project" />
@@ -94,8 +94,8 @@
     <orderEntry type="library" exported="" scope="TEST" name="runner-0.4.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="exposed-instrumentation-api-publish-0.4.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-library-1.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-library-1.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-integration-1.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="rules-0.4.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="support-annotations-23.0.1" level="project" />
