@@ -54,7 +54,7 @@ public class InitConstants
 
   /** This string makes an assumption that the apk inliner adds the "-inlined" suffix. */
   public static
-  final String monitored_inlined_apk_fixture_name = "InstrumentedApkFixtureArtHook-debug-inlined.apk"
+  final String monitored_inlined_apk_fixture_name = "MonitoredApkFixture-debug-inlined.apk"
 
   public static
   final Path monitor_generator_proj_dir = Paths.get(LocalInitConstants.droidmate_project_dir_path, "projects/monitor-generator")
