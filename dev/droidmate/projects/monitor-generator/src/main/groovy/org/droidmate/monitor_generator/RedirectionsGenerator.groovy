@@ -50,25 +50,10 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
       ams.with {
 
-        // --- The generation of Instrumentation.redirectMethod call ---
-
-        /*String fromId = $/"${ams.objectClassJni}-><init>(${ams.paramsJni})V"/$
-
+        // --- Redirecting constructor calls ---
 
         String objectClassAsMethodName = getObjectClassAsMethodName(objectClass)
         ctorRedirNames[id] = "${id}_${objectClassAsMethodName}_ctor${paramClasses.size()}"
-        /* We use Object here instead of the proper name because sometimes the class is hidden from public Android API
-        and so the generated file couldn't be compiled. The instrumentation still works with Object, though.
-        * <CLOSE COMMENT HERE> /
-        String objectClassJni = "Ljava/lang/Object;" // ams.objectClassJni
-        String toId = $/"$redirMethodDefPrefix${ctorRedirNames[id]}($objectClassJni${ams.paramsJni})V"/$
-
-        calls << ind6 + "ctorHandles.add(Instrumentation.redirectMethod(" + nl
-        calls << ind6 + ind4 + "Signature.fromIdentifier($fromId, classLoaders)," + nl
-        calls << ind6 + ind4 + "Signature.fromIdentifier($toId, classLoaders)));" + nl
-        calls << ind6 + nl*/
-
-        // --- The generation of redirected method (target of the .redirectMethod call) ---
 
         // Items for method signature.
 
@@ -77,7 +62,6 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         String formalParams = buildFormalParams(it, paramVarNames)
 
         // Items for logcat message payload.
-
         String stackTraceVarName = "stackTrace"
         String threadIdVarName = "threadId"
         String apiLogcatMessagePayload = buildApiLogcatMessagePayload(it, paramVarNames, threadIdVarName, stackTraceVarName)
@@ -86,13 +70,13 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
         String commaSeparatedParamVars = buildCommaSeparatedParamVarNames(ams, paramVarNames)
 
+        targets << ind4 + "@Hook(\"$objectClass->$methodName\") " + nl
         targets << ind4 + "public static void $redirMethodNamePrefix${ctorRedirNames[id]}($objectClassWithDots _this$formalParams)" + nl
         targets << ind4 + "{" + nl
         targets << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
         targets << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
         targets << ind4 + ind4 + "Log.${MonitorJavaTemplate.loglevel}(\"${MonitorJavaTemplate.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         targets << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
-        //targets << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
         targets << ind4 + ind4 + "OriginalMethod.by(new \$() {}).invoke(_this$commaSeparatedParamVars);" + nl
         targets << ind4 + "}" + nl
         targets << ind4 + nl
@@ -143,8 +127,6 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
         //String returnStatement = returnClass != "void" ? "return (${degenerify(returnClass)}) " : ""
         String returnStatement = returnClass != "void" ? "return " : ""
-        String instrCallStatic = isStatic ? "Static" : ""
-        String instrCallType = returnClass in instrCallMethodTypeMap.keySet() ? instrCallMethodTypeMap[returnClass] : "Object"
         String thisVarOrClass = isStatic ? "${objectClassWithDots}.class" : "_this"
         String commaSeparatedParamVars = buildCommaSeparatedParamVarNames(ams, paramVarNames)
 
