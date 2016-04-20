@@ -160,11 +160,12 @@ public class InstrumentedActivity extends Activity
     i(LOG_TAG, "====== DONE calling instrumented Android APIs ======");
   }
 
-  private AppInstrumentationTargets appInstrTargets = new AppInstrumentationTargets();
-
   public void callAppMethods(View view)
   {
     i(LOG_TAG, "====== Calling instrumented app methods ======");
+
+    i(LOG_TAG, "Calling constructor");
+    AppInstrumentationTargets appInstrTargets = new AppInstrumentationTargets();
 
     i(LOG_TAG, "Calling publicVoidMethod");
     appInstrTargets.publicVoidMethod();

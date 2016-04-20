@@ -9,9 +9,7 @@
 
 package org.droidmate.fixtures.apks.instrumented;
 
-import android.app.Activity;
 import android.content.SyncInfo;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -22,12 +20,7 @@ import de.larma.arthook.*;
 
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.pm.PackageManager.GET_PERMISSIONS;
-import static android.util.Log.i;
-import static org.droidmate.fixtures.apks.instrumented.InstrumentedActivity.LOG_TAG;
 
 /**
  * Class the add the instrumentation to default methods for testing
@@ -41,68 +34,14 @@ import static org.droidmate.fixtures.apks.instrumented.InstrumentedActivity.LOG_
  */
 public class InstrumentationClass
 {
-  public static final String API = "Monitor_API_method_call";
-
-  /*
-   * Context for the activity that will request the permissions
-   *
-  private static Activity activity;
-
-  /**
-   * Request runtime permission for "Dangerous permissions" (introduced in Android 6.0).
-   * More information about the new runtime permission are available in
-   * http://developer.android.com/guide/topics/security/permissions.html
-   *
-   * @param permission Requested permission (Ex: Manifest.permission.CAMERA)
-   *
-   * @return If the application currently have desired permission
-   *
-  private static void requestMissingRuntimePermissions()
-  {
-    i(LOG_TAG, "Checking for missing runtime permissions");
-    String packageName = activity.getApplicationContext().getPackageName();
-    try
-    {
-      List<String> missingPermissions = new ArrayList<String>();
-      String[] requestedPermissions = activity.getApplicationContext().getPackageManager().getPackageInfo(packageName, GET_PERMISSIONS).requestedPermissions;
-      for (String permission : requestedPermissions)
-      {
-        i(LOG_TAG, "Application requested permission " + permission);
-        int hasPermission = activity.checkSelfPermission(permission);
-        if (hasPermission != PackageManager.PERMISSION_GRANTED)
-        {
-          i(LOG_TAG, "Missing runtime permission " + permission);
-          missingPermissions.add(permission);
-        }
-      }
-
-      if (missingPermissions.size() > 0)
-      {
-        i(LOG_TAG, "Requesting missing permissions (" + missingPermissions + ")");
-        activity.requestPermissions(missingPermissions.toArray(new String[missingPermissions.size()]), 1);
-      }
-      else
-        i(LOG_TAG, "All necessary runtime permissions already granted");
-    } catch(PackageManager.NameNotFoundException e)
-    {
-      Log.e(LOG_TAG, "Error reading permissions", e);
-    }
-  }*/
+  public static final String API = "Monitored_API_method_call";
 
   /**
    * Start the API instrumentation (by linking (ArtHook)
    *
-   * @param instrumentationActivity ContextWrapper used to request runtime permissions (needed on Android 6.0)
    */
-  public static void instrument(/*Activity a*/)
+  public static void instrument()
   {
-    // Hack to request all runtime permissions in the start of
-    // the application, this can be used to "simulate" the behaviour
-    // of previous Android versions, which required permissions only
-    // during installation
-    //activity = a;
-    //requestMissingRuntimePermissions();
-
     ArtHook.hook(InstrumentationClass.class);
   }
 
@@ -115,7 +54,7 @@ public class InstrumentationClass
    */
   @Hook("android.hardware.Camera->open")
   public static Camera Camera_open(int cameraId) {
-    i(API, "Camera_open_redirection() called statically. cameraId = " + cameraId);
+    Log.i(API, "Camera_open_redirection() called statically. cameraId = " + cameraId);
 
     return OriginalMethod.by(new $() {}).invokeStatic(cameraId);
   }
@@ -136,11 +75,11 @@ public class InstrumentationClass
     AppInstrumentationTargets _this, int param1, String param2, AppInstrumentationTargets.ParamObject param3)
   {
     final String msg = String.format("advancedMethod() called. _this = %s, param1=%d, param2=%s, param3=%s", _this, param1, param2, param3);
-    i(API, msg);
+    Log.i(API, msg);
 
     AppInstrumentationTargets.ReturnObject retObj =
       OriginalMethod.by(new $() {}).invoke(_this, param1, param2, param3);
-    i(API, "advancedMethod() returning. retObj = " + retObj);
+    Log.i(API, "advancedMethod() returning. retObj = " + retObj);
     return retObj;
   }
 
@@ -153,7 +92,7 @@ public class InstrumentationClass
   @Hook("org.droidmate.fixtures.apks.instrumented.AppInstrumentationTargets->publicVoidMethod")
   public static void publicVoidMethod_redirection(AppInstrumentationTargets _this)
   {
-    i(API, "AppInstrumentationTargets_publicVoidMethod_redirection() called. _this = " + _this);
+    Log.i(API, "AppInstrumentationTargets_publicVoidMethod_redirection() called. _this = " + _this);
   }
 
   /**
@@ -165,8 +104,16 @@ public class InstrumentationClass
   @Hook("org.droidmate.fixtures.apks.instrumented.AppInstrumentationTargets->nonpublicVoidMethod")
   public static void nonpublicVoidMethod_redirection(AppInstrumentationTargets _this)
   {
-    i(API, "AppInstrumentationTargets_nonpublicVoidMethod_redirection() called. _this = " + _this);
+    Log.i(API, "AppInstrumentationTargets_nonpublicVoidMethod_redirection() called. _this = " + _this);
     // 12-03 14:15:55.135  21476-21476/org.droidmate.fixtures.apks.instrumented W/Instrumentation﹕ Failed to redirect method (...)
+  }
+
+  @Hook("org.droidmate.fixtures.apks.instrumented.AppInstrumentationTargets-><init>")
+  public static AppInstrumentationTargets constructor_redir(AppInstrumentationTargets _this)
+  {
+    Log.i(API, "constructor_redir() called.");
+
+    return (AppInstrumentationTargets) OriginalMethod.by(new $() {}).invoke(_this);
   }
 
   /**
@@ -179,7 +126,7 @@ public class InstrumentationClass
   @Hook("java.net.URL->openConnection")
   public static URLConnection URL_openConnection_redirection(URL _this)
   {
-    i(API, "URL_openConnection_redirection() called. _this = " + _this);
+    Log.i(API, "URL_openConnection_redirection() called. _this = " + _this);
 
     return (URLConnection) OriginalMethod.by(new $() {}).invoke(_this);
   }
@@ -195,7 +142,7 @@ public class InstrumentationClass
   @Hook("android.net.ConnectivityManager->getActiveNetworkInfo")
   public static NetworkInfo ConnectivityManager_getActiveNetworkInfo_redirection(ConnectivityManager _this)
   {
-    i(API, "ConnectivityManager_getActiveNetworkInfo_redirection() called. _this = " + _this);
+    Log.i(API, "ConnectivityManager_getActiveNetworkInfo_redirection() called. _this = " + _this);
 
     return (NetworkInfo) OriginalMethod.by(new $() {}).invoke(_this);
   }
@@ -211,7 +158,7 @@ public class InstrumentationClass
   @Hook("android.net.ConnectivityManager->isActiveNetworkMetered")
   public static boolean ConnectivityManager_isActiveNetworkMetered_redirection(ConnectivityManager _this)
   {
-    i(API, "ConnectivityManager_isActiveNetworkMetered_redirection() called. _this = " + _this);
+    Log.i(API, "ConnectivityManager_isActiveNetworkMetered_redirection() called. _this = " + _this);
 
     return OriginalMethod.by(new $() {}).invoke(_this);
   }
@@ -226,7 +173,7 @@ public class InstrumentationClass
   @Hook("android.content.ContentResolver->getCurrentSyncs")
   public static List<SyncInfo> ContentResolver_getCurrentSyncs_redirection()
   {
-    i(API, "ContentResolver_getCurrentSyncs_redirection() called statically.");
+    Log.i(API, "ContentResolver_getCurrentSyncs_redirection() called statically.");
 
     return (List<SyncInfo>) OriginalMethod.by(new $() {}).invokeStatic();
     //Instrumentation.callStaticObjectMethod($.class, ContentResolver.class, 0);
@@ -242,7 +189,7 @@ public class InstrumentationClass
   @Hook("android.telephony.TelephonyManager->getCellLocation")
   public static CellLocation TelephonyManager_getCellLocation_redirection(TelephonyManager _this)
   {
-    i(API, "TelephonyManager_getCellLocation_redirection() called. _this = " + _this);
+    Log.i(API, "TelephonyManager_getCellLocation_redirection() called. _this = " + _this);
 
     return (CellLocation) OriginalMethod.by(new $() {}).invoke(_this);
   }
