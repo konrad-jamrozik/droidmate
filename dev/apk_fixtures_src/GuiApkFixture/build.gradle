@@ -27,7 +27,7 @@ android {
 
     defaultConfig {
         applicationId "org.droidmate.fixtures.apks.gui"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
