@@ -59,7 +59,6 @@ subprojects {
         if (td.name.contains("Test Run") && tr.successfulTestCount == tr.testCount)
           println "==> All ${tr.successfulTestCount} tests passed."
       }
-
     }
   }
 }
