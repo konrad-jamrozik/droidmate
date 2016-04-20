@@ -130,7 +130,7 @@ class TerminationCriterion implements ITerminationCriterion
       // When shown a new runtime permission, add 2 extra available actions,
       // one to click the runtime permission dialog "allow" button
       // and another to re-execute the last action
-      if (performedAction.isRuntimePermission())
+      if (performedAction.isEndorseRuntimePermission())
         actionsLeft += 2
 
       assert met() || actionsLeft > 0

@@ -26,7 +26,7 @@ abstract class ExplorationAction implements Serializable
     }
   }
 
-  Boolean isRuntimePermission()
+  Boolean isEndorseRuntimePermission()
   {
     return runtimePermission;
   }
