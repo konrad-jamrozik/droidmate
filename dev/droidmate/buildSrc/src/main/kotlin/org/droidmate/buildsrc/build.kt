@@ -106,7 +106,13 @@ fun executeCommand(commandName: String, commandContent: String): Int {
     println("stderr is empty")
 
   if (stdoutContent != "") {
-    println("stdout is ${stdoutContent.length} chars long")
+    if (result.exitValue == 0)
+      println("stdout is ${stdoutContent.length} chars long")
+    else {
+      println("----------------- stdout:")
+      println(stdoutContent)
+      println("----------------- /stderr")
+    }
   } else
     println("stdout is empty")
   
