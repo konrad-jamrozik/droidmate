@@ -9,7 +9,7 @@
 
 package org.droidmate.test_base
 
-import com.github.konrad_jamrozik.ResourcePath
+import com.konradjamrozik.ResourcePath
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.IAaptWrapper
 import org.droidmate.init.InitConstants
