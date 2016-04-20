@@ -8,7 +8,7 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import com.github.konrad_jamrozik.FileSystemsOperations
+import com.konradjamrozik.FileSystemsOperations
 import com.google.common.collect.Table
 import org.codehaus.groovy.runtime.NioGroovyMethods
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2

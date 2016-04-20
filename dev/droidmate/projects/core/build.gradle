@@ -55,7 +55,7 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 
 dependencies {
 
-  compile 'com.github.konrad-jamrozik:utilities:master-SNAPSHOT'
+  compile 'com.github.konrad-jamrozik:utilities:c52a5ef326'
 
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
@@ -194,8 +194,8 @@ assert apkFixturesProjectDir.directory
 File apkFixturesDroidmateStagingDir = new File("${apkFixturesProjectDir.path}/build")
 String apkFixturesBuildTask = "stageForDroidmate"
 File libApkFixturesJar = file("${apkFixturesProjectDir.path}/lib-apk_fixtures/build/libs/lib-apk_fixtures.jar")
-//String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
-String monitoredApkFixtureName = "InstrumentedApkFixtureArtHook-debug.apk"
+String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
+//String monitoredApkFixtureName = "InstrumentedApkFixtureArtHook-debug.apk"
 // end of DUPLICATION WARNING
 
 task pullApkFixturesLibJar(dependsOn: "buildApkFixtures") {
