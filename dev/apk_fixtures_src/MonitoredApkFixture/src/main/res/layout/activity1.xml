@@ -21,14 +21,27 @@
   <Button
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Launch Activity 2"
-    android:id="@+id/button_activity2"
+    android:text="API: Camera.open()"
+    android:id="@+id/button_camera"
     android:layout_below="@+id/button_api"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
-    android:onClick="launchActivity2"
+    android:onClick="openCamera"
     android:layout_alignRight="@+id/button_api"
     android:layout_alignEnd="@+id/button_api"/>
+
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Launch Activity 2"
+    android:id="@+id/button_activity2"
+    android:layout_below="@+id/button_camera"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:onClick="launchActivity2"
+    android:layout_alignRight="@+id/button_camera"
+    android:layout_alignEnd="@+id/button_camera"/>
 
   <Button
     android:layout_width="wrap_content"

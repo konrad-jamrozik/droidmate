@@ -8,10 +8,15 @@
 // www.droidmate.org
 package org.droidmate.fixtures.apks.monitored;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import static android.util.Log.i;
 
 
 public class Activity1 extends ActivityWithHelper
@@ -28,6 +33,38 @@ public class Activity1 extends ActivityWithHelper
   public void callAPIURLOpenConnection(View view)
   {
     callAPI_URL_openConnection(TAG);
+  }
+
+  private boolean hasPermission(String permission)
+  {
+    // The call below requires permission: android.permission.CAMERA
+    i(TAG, "Application requested permission " + permission);
+    int hasPermission = this.checkSelfPermission(permission);
+    if (hasPermission != PackageManager.PERMISSION_GRANTED)
+    {
+      i(TAG, "Missing runtime permission " + permission + ", requesting and finishing method");
+      this.requestPermissions(new String[] {permission}, 1);
+      return false;
+    }
+
+    return true;
+  }
+
+  public void openCamera(View view)
+  {
+    if (!hasPermission(Manifest.permission.CAMERA))
+      return;
+
+    try
+    {
+      android.hardware.Camera cam = android.hardware.Camera.open(0);
+
+      if (cam != null)
+        cam.release();
+    }
+    catch(Exception e){
+      // Do nothing
+    }
   }
 
   // Based on: http://developer.android.com/training/basics/firstapp/starting-activity.html
