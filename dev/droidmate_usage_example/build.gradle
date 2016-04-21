@@ -16,12 +16,19 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
+  // mavenLocal(), i.e. your local maven repository, has to contain droidmate. 
+  // To install it there, run:
+  //   
+  //   cd <repo_clone_root>/dev/droidmate
+  //   ./gradlew install
+  //
   mavenLocal()
   maven { url "https://jitpack.io" }
   mavenCentral()
 }
 
 dependencies {
+  // This dependency is supposed to come from mavenLocal() (see above).
   compile "org.droidmate:droidmate:dev"
   testCompile 'junit:junit:4.12'
 }
