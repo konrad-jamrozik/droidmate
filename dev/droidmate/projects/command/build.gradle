@@ -142,19 +142,7 @@ task testDevice(type: Test, dependsOn: testClasses) {
 
 }
 
-//region Publishing to local maven repo (use "install" task)
-apply plugin: "maven"
-project.group = rootProject.group
-project.version = rootProject.version
+apply from: project(":projects").file("maven.gradle")
+// So the published jar to local maven repo with task "install" won't be called command.jar but droidmate.jar
 jar.baseName = rootProject.name
 
-task sourcesJar(type: Jar, dependsOn: tasks.classes) {
-  classifier = 'sources'
-  from sourceSets.main.allSource
-  from sourceSets.test.allSource
-}
-
-artifacts {
-  archives sourcesJar
-}
-//endregion Publishing to local maven repo (use "install" task)

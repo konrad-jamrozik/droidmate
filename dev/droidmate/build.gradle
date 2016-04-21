@@ -7,8 +7,10 @@
 //
 // www.droidmate.org
 
-project.group = "org.droidmate"
-project.version = "dev"
+allprojects {
+  group = "org.droidmate"
+  version = "dev"
+}
 
 /* java plugin uses "build" for outputs by default, but the underlying ant script uses "bin".
    This is setup in root project, not in the target project, as this way we guarantee the property
@@ -43,6 +45,8 @@ subprojects {
     maven {url "https://jitpack.io"}
   }
 
+
+  
   it.afterEvaluate {
     tasks.withType(Test) {
 

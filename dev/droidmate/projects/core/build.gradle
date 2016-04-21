@@ -271,3 +271,4 @@ test.configure {
 }
 //endregion Testing tasks
 
+apply from: project(":projects").file("maven.gradle")

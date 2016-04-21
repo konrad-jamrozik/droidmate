@@ -34,3 +34,5 @@ apply plugin: 'java'
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 compileJava.options.bootClasspath = BuildKt.jdk7_rt_jar
+
+apply from: project(":projects").file("maven.gradle")

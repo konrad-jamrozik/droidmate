@@ -30,3 +30,5 @@ dependencies {
 
   compile project(":projects:lib-common")
 }
+
+apply from: project(":projects").file("maven.gradle")

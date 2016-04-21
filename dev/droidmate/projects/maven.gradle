@@ -1,0 +1,24 @@
+apply plugin: "maven"
+
+/*
+Add to the local maven repo dependency on remote repo.
+
+Note: all of this code is not necessary, at all. Instead, one has to write in the build script of the resolving project:
+repositories {
+  maven { url "https://jitpack.io" }
+}
+
+OMG this is so obvious. I should get some sleep!
+ */
+MavenPom pom = (tasks.install as Upload).repositories.mavenInstaller.pom
+pom.project { repositories { repository(id: "jitpack.io", url: "https://jitpack.io") } }
+
+task sourcesJar(type: Jar, dependsOn: "classes") {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+  from sourceSets.test.allSource
+}
+
+artifacts {
+  archives sourcesJar
+}

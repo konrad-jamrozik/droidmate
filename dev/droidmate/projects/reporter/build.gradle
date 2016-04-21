@@ -65,3 +65,5 @@ test.configure {
   includes = ['**/ReporterTestSuite.class']
 
 }
+
+apply from: project(":projects").file("maven.gradle")

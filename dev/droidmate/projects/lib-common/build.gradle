@@ -51,3 +51,5 @@ dependencies {
 
   testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+apply from: project(":projects").file("maven.gradle")
