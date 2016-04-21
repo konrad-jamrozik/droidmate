@@ -98,8 +98,8 @@ class ExceptionHandler implements IExceptionHandler
 
   private static void logThrowable(Throwable e)
   {
-    String message = "An unidentified ${e.class.simpleName} was thrown during DroidMate run. If you cannot diagnose and fix the " +
-      "problem yourself by inspecting the logs, this might a bug in the code. Sorry!\n" +
+    String message = "An unhandled exception of ${e.class.simpleName} was thrown during DroidMate run. If you cannot diagnose " +
+      "and fix the problem yourself by inspecting the logs, this might a bug in the code. Sorry!\n" +
       "In such case, please contact the DroidMate developer, Konrad Jamrozik, at jamrozik@st.cs.uni-saarland.de.\n" +
       "Please include the output dir (by default set to ${Configuration.defaultDroidmateOutputDir}).\n" +
       "A cookie for you, brave human.\n"
