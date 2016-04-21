@@ -1,0 +1,27 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+
+group 'org.droidmate'
+version 'dev'
+
+apply plugin: 'java'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+  mavenLocal()
+  maven { url "https://jitpack.io" }
+  mavenCentral()
+}
+
+dependencies {
+  compile "org.droidmate:droidmate:dev"
+  testCompile 'junit:junit:4.12'
+}
