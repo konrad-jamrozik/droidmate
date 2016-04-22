@@ -13,6 +13,7 @@ import com.konradjamrozik.ResourcePath
 import groovy.util.logging.Slf4j
 import joptsimple.OptionParser
 import joptsimple.OptionSet
+import joptsimple.ValueConverter
 import org.droidmate.buildsrc.BuildKt
 import org.droidmate.common.BuildConstants
 import org.droidmate.common.Dex
@@ -52,11 +53,12 @@ public class ApkInlinerFrontend
 
     String inputParam = BuildConstants.apk_inliner_param_input.drop(1)
     String outputParam = BuildConstants.apk_inliner_param_output_dir.drop(1)
-    parser.accepts(inputParam).withOptionalArg().defaultsTo(BuildKt.apk_inliner_param_input_default).withValuesConvertedBy(pathIn(FileSystems.default))
-    parser.accepts(outputParam).withRequiredArg().defaultsTo(BuildKt.apk_inliner_param_output_dir_default).withValuesConvertedBy(pathIn(FileSystems.default))
+
+    ValueConverter<Path> path = pathIn(FileSystems.default)
+    parser.accepts(inputParam).withOptionalArg().defaultsTo(path.convert(BuildConstants.apk_inliner_param_input_default)).withValuesConvertedBy(path)
+    parser.accepts(outputParam).withRequiredArg().defaultsTo(path.convert(BuildConstants.apk_inliner_param_output_dir_default)).withValuesConvertedBy(path)
 
     OptionSet options = parser.parse(args)
-
 
     Path inputPath = (Path) options.valueOf(inputParam)
     Path outputPath = (Path) options.valueOf(outputParam)

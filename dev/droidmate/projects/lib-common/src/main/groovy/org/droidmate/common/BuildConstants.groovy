@@ -14,8 +14,10 @@ class BuildConstants
 {
   static Properties properties = loadProperties("buildConstants.properties")
 
-  static String apk_inliner_param_input      = safeGetProperty(properties, "apk_inliner_param_input")
-  static String apk_inliner_param_output_dir = safeGetProperty(properties, "apk_inliner_param_output_dir")
+  static String apk_inliner_param_input              = safeGetProperty(properties, "apk_inliner_param_input")
+  static String apk_inliner_param_output_dir         = safeGetProperty(properties, "apk_inliner_param_output_dir")
+  static String apk_inliner_param_input_default      = safeGetProperty(properties, "apk_inliner_param_input_default")
+  static String apk_inliner_param_output_dir_default = safeGetProperty(properties, "apk_inliner_param_output_dir_default")
 
   private static Properties loadProperties(String fileName)
   {
