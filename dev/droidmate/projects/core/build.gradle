@@ -180,8 +180,8 @@ task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
   outputs.file new File(apkFixturesDir, BuildKt.monitored_inlined_apk_fixture_name)
 }
 
-// KJA looks like all the pull- tasks should be of type Copy: http://www.gradle.org/docs/current/userguide/working_with_files.html#sec:copying_files
-// KJA where possible, refer to tasks themselves as input/output files of various tasks. See http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html#org.gradle.api.Project:files%28java.lang.Object[]%29
+// WISH looks like all the pull- tasks should be of type Copy: http://www.gradle.org/docs/current/userguide/working_with_files.html#sec:copying_files
+// WISH where possible, refer to tasks themselves as input/output files of various tasks. See http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html#org.gradle.api.Project:files%28java.lang.Object[]%29
 task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
 
   from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: monitoredApkFixtureName)

@@ -8,7 +8,7 @@
 // www.droidmate.org
 package org.droidmate.test_helpers.configuration
 
-import org.droidmate.buildsrc.BuildKt
+import org.droidmate.common.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.filesystem.MockFileSystem
@@ -44,9 +44,9 @@ class ConfigurationForTests
   ConfigurationForTests()
   {
     this.argsList = zeroedTestConfig + [
-      Configuration.pn_droidmateOutputDir, Paths.get(".", BuildKt.test_temp_dir_name).toString(),
-      Configuration.pn_reportInputDir, Paths.get(".", BuildKt.test_temp_dir_name).toString(),
-      Configuration.pn_reportOutputDir, Paths.get(".", BuildKt.test_temp_dir_name).toString()
+      Configuration.pn_droidmateOutputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString(),
+      Configuration.pn_reportInputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString(),
+      Configuration.pn_reportOutputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString()
     ]
   }
 

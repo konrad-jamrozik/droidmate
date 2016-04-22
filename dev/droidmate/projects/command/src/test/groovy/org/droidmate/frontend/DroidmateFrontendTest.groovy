@@ -10,8 +10,8 @@ package org.droidmate.frontend
 
 import com.google.common.base.Throwables
 import org.droidmate.android_sdk.AaptWrapperStub
-import org.droidmate.buildsrc.BuildKt
 import org.droidmate.command.ExploreCommand
+import org.droidmate.common.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device_simulation.AndroidDeviceSimulator
@@ -206,7 +206,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
   public void "Explores monitored apk on a real device"()
   {
     String[] args = new ConfigurationForTests().forDevice().setArgs([
-      Configuration.pn_apksNames, "[$BuildKt.monitored_inlined_apk_fixture_name]",
+      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_name]",
       Configuration.pn_widgetIndexes, "[0, 1]",
     ]).get().args
 
@@ -223,7 +223,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    * then the second one, then terminate the exploration.
    *
    * </p><p>
-   * The test will make DroidMate output results to {@code BuildKt.test_temp_dir_name}.
+   * The test will make DroidMate output results to {@code BuildConstants.test_temp_dir_name}.
    * To ensure logs are also output there, run this test with VM arg of {@code -DlogsDir="temp_dir_for_tests/logs"}.
    * Note that {@code logsDir} is defined in {@code org.droidmate.common.logging.LogbackConstants.getLogsDirPath}.
    *

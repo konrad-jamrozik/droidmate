@@ -10,7 +10,7 @@ package org.droidmate.configuration
 
 import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
-import org.droidmate.buildsrc.BuildKt
+import org.droidmate.common.BuildConstants
 import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
 
@@ -149,7 +149,7 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_apksDir],
     description = "Directory containing the apks to be processed by DroidMate.")
-  public String apksDirName = BuildKt.apks_dir
+  public String apksDirName = BuildConstants.apks_dir
 
   @Parameter(names = [Configuration.pn_appGuardOnlyApis], arity = 1)
   public boolean appGuardOnlyApis = true
@@ -348,9 +348,9 @@ public class Configuration implements IConfiguration
 
   public Path monitorApk
 
-  public String aaptCommand = BuildKt.aapt_command.toString()
+  public String aaptCommand = BuildConstants.aapt_command
 
-  public String adbCommand = BuildKt.adb_command.toString()
+  public String adbCommand = BuildConstants.adb_command
 
   public Path appGuardApisList
 

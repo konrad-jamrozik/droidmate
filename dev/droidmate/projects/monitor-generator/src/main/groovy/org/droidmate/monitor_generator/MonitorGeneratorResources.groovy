@@ -10,10 +10,11 @@
 package org.droidmate.monitor_generator
 
 import com.konradjamrozik.ResourcePath
-import org.droidmate.buildsrc.BuildKt
+import org.droidmate.common.BuildConstants
 import org.droidmate.common.IConfiguration
 
 import java.nio.file.Path
+import java.nio.file.Paths
 
 import static java.nio.file.Files.isWritable
 import static java.nio.file.Files.notExists
@@ -32,12 +33,12 @@ class MonitorGeneratorResources implements IConfiguration
 
   MonitorGeneratorResources()
   {
-    Path monitorSrcOut = BuildKt.monitor_generator_output_relative_path
+    Path monitorSrcOut = Paths.get(BuildConstants.monitor_generator_output_relative_path)
     assert monitorSrcOut != null
     assert notExists(monitorSrcOut) || isWritable(monitorSrcOut)
     this.monitorSrcOutPath = monitorSrcOut
 
-    Path monitorSrcTemplatePath = new ResourcePath(BuildKt.monitor_generator_res_name_monitor_template).path
+    Path monitorSrcTemplatePath = new ResourcePath(BuildConstants.monitor_generator_res_name_monitor_template).path
     this.monitorSrcTemplatePath = monitorSrcTemplatePath
 
     Path appguardApis = new ResourcePath("appguard_apis.txt").path

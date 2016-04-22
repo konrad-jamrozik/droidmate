@@ -12,7 +12,7 @@ import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
 import org.droidmate.android_sdk.ApkTestHelper
 import org.droidmate.android_sdk.IApk
-import org.droidmate.buildsrc.BuildKt
+import org.droidmate.common.BuildConstants
 
 import java.nio.file.FileSystem
 import java.nio.file.Files
@@ -42,7 +42,7 @@ class MockFileSystem
   {
     FileSystem fs = Jimfs.newFileSystem(Configuration.unix())
 
-    Path apksDir = fs.getPath(BuildKt.apks_dir)
+    Path apksDir = fs.getPath(BuildConstants.apks_dir)
 
     Files.createDirectories(apksDir)
 

@@ -61,16 +61,23 @@ task writeBuildConstantsProperties() { Task it ->
   it.outputs.file(propertiesFile)
   
   doLast {
-    // KJA populate with all BuildKt props that are used inside the built/compiled classes. Then: rewire code.
     propertiesFile.withWriter {BufferedWriter wr ->
       ([
-        "apk_inliner_param_input"             : BuildKt.apk_inliner_param_input,
-        "apk_inliner_param_output_dir"        : BuildKt.apk_inliner_param_output_dir,
-        "apk_inliner_param_input_default"     : BuildKt.apk_inliner_param_input_default.toString(),
-        "apk_inliner_param_output_dir_default": BuildKt.apk_inliner_param_output_dir_default.toString(),
-        "AVD_dir_for_temp_files"              : BuildKt.AVD_dir_for_temp_files,
-        "jarsigner"                           : BuildKt.jarsigner.toString(),
-        "apk_fixtures"                        : BuildKt.apk_fixtures
+        "apk_inliner_param_input"                    : BuildKt.apk_inliner_param_input,
+        "apk_inliner_param_output_dir"               : BuildKt.apk_inliner_param_output_dir,
+        "apk_inliner_param_input_default"            : BuildKt.apk_inliner_param_input_default.toString(),
+        "apk_inliner_param_output_dir_default"       : BuildKt.apk_inliner_param_output_dir_default.toString(),
+        "AVD_dir_for_temp_files"                     : BuildKt.AVD_dir_for_temp_files,
+        "jarsigner"                                  : BuildKt.jarsigner.toString(),
+        "apk_fixtures"                               : BuildKt.apk_fixtures,
+        "monitored_inlined_apk_fixture_name"         : BuildKt.monitored_inlined_apk_fixture_name,
+        "monitor_generator_output_relative_path"     : BuildKt.monitor_generator_output_relative_path,
+        "test_temp_dir_name"                         : BuildKt.test_temp_dir_name,
+        "apks_dir"                                   : BuildKt.apks_dir,
+        "appguard_apis_txt"                          : BuildKt.appguard_apis_txt,
+        "monitor_generator_res_name_monitor_template": BuildKt.monitor_generator_res_name_monitor_template,
+        "aapt_command"                               : BuildKt.aapt_command,
+        "adb_command"                                : BuildKt.adb_command
       ]).each {key, value ->
         wr.writeLine(key + "=" + value)
       }

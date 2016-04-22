@@ -13,7 +13,7 @@ import com.konradjamrozik.ResourcePath
 import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.IAaptWrapper
-import org.droidmate.buildsrc.BuildKt
+import org.droidmate.common.BuildConstants
 import org.droidmate.common.SysCmdExecutor
 import org.droidmate.configuration.Configuration
 
@@ -67,10 +67,10 @@ class FilesystemTestFixtures
     ApkFixtures(IAaptWrapper aapt)
     {
       gui = Apk.build(aapt,
-        new ResourcePath("${BuildKt.apk_fixtures}/GuiApkFixture-debug.apk").path)
+        new ResourcePath("${BuildConstants.apk_fixtures}/GuiApkFixture-debug.apk").path)
 
       monitoredInlined = Apk.build(aapt,
-        new ResourcePath("${BuildKt.apk_fixtures}/${BuildKt.monitored_inlined_apk_fixture_name}").path)
+        new ResourcePath("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_name}").path)
     }
   }
 
