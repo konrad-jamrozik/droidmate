@@ -8,7 +8,7 @@
 // www.droidmate.org
 package org.droidmate.common
 
-import com.konradjamrozik.ResourcePath
+import com.konradjamrozik.Resource
 
 /**
  * This class contains fields whose values are necessary both by the compiled classes and by gradle build scripts compiling the 
@@ -41,7 +41,7 @@ class BuildConstants
 
   private static Map<String, String> loadProperties(String fileName)
   {
-    String text = new ResourcePath(fileName).path.text
+    String text = new Resource(fileName, /* allowAmbiguity */ true).text
     Map<String, String> out = [:]
     text.splitEachLine("=") {assert it.size() == 2; out.put(it[0], it[1])}
     return out
