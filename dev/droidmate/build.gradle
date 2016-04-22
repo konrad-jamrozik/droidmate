@@ -44,25 +44,6 @@ subprojects {
     mavenCentral()
     maven {url "https://jitpack.io"}
   }
-
-
-  
-  it.afterEvaluate {
-    tasks.withType(Test) {
-
-      /* N00b Reference:
-        http://mrhaki.blogspot.de/2013/05/gradle-goodness-running-single-test.html
-        http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.testing.logging.TestLoggingContainer.html
-      */
-      testLogging {
-        events 'failed'
-      }
-
-      afterSuite {TestDescriptor td, TestResult tr ->
-
-        if (td.name.contains("Test Run") && tr.successfulTestCount == tr.testCount)
-          println "==> All ${tr.successfulTestCount} tests passed."
-      }
-    }
-  }
 }
+
+apply from: file("log.gradle")
