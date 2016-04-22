@@ -14,6 +14,7 @@ import groovy.util.logging.Slf4j
 import joptsimple.OptionParser
 import joptsimple.OptionSet
 import org.droidmate.buildsrc.BuildKt
+import org.droidmate.common.BuildConstants
 import org.droidmate.common.Dex
 import org.droidmate.common.Jar
 import org.droidmate.common.SysCmdExecutor
@@ -49,8 +50,8 @@ public class ApkInlinerFrontend
 
     OptionParser parser = new OptionParser()
 
-    String inputParam = BuildKt.apk_inliner_param_input.drop(1)
-    String outputParam = BuildKt.apk_inliner_param_output_dir.drop(1)
+    String inputParam = BuildConstants.apk_inliner_param_input.drop(1)
+    String outputParam = BuildConstants.apk_inliner_param_output_dir.drop(1)
     parser.accepts(inputParam).withOptionalArg().defaultsTo(BuildKt.apk_inliner_param_input_default).withValuesConvertedBy(pathIn(FileSystems.default))
     parser.accepts(outputParam).withRequiredArg().defaultsTo(BuildKt.apk_inliner_param_output_dir_default).withValuesConvertedBy(pathIn(FileSystems.default))
 

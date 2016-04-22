@@ -21,6 +21,10 @@ public class Main
     // This is a fundamental problem of this kind that the projects should not directly depend
     // on buildsrc. Only gradle scripts should do it. I will have to proxy the references through
     // resources or something. Ungh!
+    //
+    // KJA one idea I have is to copy all constants to resource dir of lib-common project and then read them into 
+    // a SharedConstants class, which then will be used by all the projects, instead of BuildKt. 
+    
     DroidmateFrontend.main("aa");
   }
 }

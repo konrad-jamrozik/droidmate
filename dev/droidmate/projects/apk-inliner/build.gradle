@@ -46,9 +46,11 @@ run {
   outputs.dir inlinedApksDir
 }
 
-clean << {
-  File inlinedApksDir = run.outputs.files.getSingleFile()
-  inlinedApksDir.listFiles().each { if (it.name.endsWith(".apk")) assert it.delete() }
+clean.configure {
+  doLast {
+    File inlinedApksDir = run.outputs.files.getSingleFile()
+    inlinedApksDir.listFiles().each {if (it.name.endsWith(".apk")) assert it.delete()}
+  }
 }
 
 test.configure {
