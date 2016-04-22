@@ -24,7 +24,7 @@ ext.buildSrcJars = fileTree("$rootDir/buildSrc/build/libs") { include("*.jar") e
 
 buildscript {
 
-  ext.utilities_version = 'c52a5ef326'
+  ext.utilities_version = 'b30ae57897'
 
   repositories {
     mavenLocal()

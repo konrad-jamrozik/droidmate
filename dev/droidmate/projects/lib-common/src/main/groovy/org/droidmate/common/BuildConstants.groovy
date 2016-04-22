@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.common
 
+import com.konradjamrozik.Resource
 import com.konradjamrozik.ResourcePath
 
 /**
@@ -41,7 +42,7 @@ class BuildConstants
 
   private static Map<String, String> loadProperties(String fileName)
   {
-    String text = new ResourcePath(fileName).path.text
+    String text = new Resource(fileName, /* allowAmbiguity */ true).text
     Map<String, String> out = [:]
     text.splitEachLine("=") {assert it.size() == 2; out.put(it[0], it[1])}
     return out
