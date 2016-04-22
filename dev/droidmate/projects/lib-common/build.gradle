@@ -61,13 +61,20 @@ task writeBuildConstantsProperties() { Task it ->
   it.outputs.file(propertiesFile)
   
   doLast {
-    Properties properties = new Properties()
     // KJA populate with all BuildKt props that are used inside the built/compiled classes. Then: rewire code.
-    properties.setProperty("apk_inliner_param_input", BuildKt.apk_inliner_param_input)
-    properties.setProperty("apk_inliner_param_output_dir", BuildKt.apk_inliner_param_output_dir)
-    properties.setProperty("apk_inliner_param_input_default", BuildKt.apk_inliner_param_input_default.toString())
-    properties.setProperty("apk_inliner_param_output_dir_default", BuildKt.apk_inliner_param_output_dir_default.toString())
-    properties.store(new FileOutputStream(propertiesFile), null)
+    propertiesFile.withWriter {BufferedWriter wr ->
+      ([
+        "apk_inliner_param_input"             : BuildKt.apk_inliner_param_input,
+        "apk_inliner_param_output_dir"        : BuildKt.apk_inliner_param_output_dir,
+        "apk_inliner_param_input_default"     : BuildKt.apk_inliner_param_input_default.toString(),
+        "apk_inliner_param_output_dir_default": BuildKt.apk_inliner_param_output_dir_default.toString(),
+        "AVD_dir_for_temp_files"              : BuildKt.AVD_dir_for_temp_files,
+        "jarsigner"                           : BuildKt.jarsigner.toString(),
+        "apk_fixtures"                        : BuildKt.apk_fixtures
+      ]).each {key, value ->
+        wr.writeLine(key + "=" + value)
+      }
+    }
   }
 }
 

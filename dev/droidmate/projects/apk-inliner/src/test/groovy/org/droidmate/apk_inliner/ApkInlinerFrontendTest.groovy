@@ -11,7 +11,7 @@ package org.droidmate.apk_inliner
 
 import com.konradjamrozik.ResourcePath
 import groovy.transform.TypeChecked
-import org.droidmate.buildsrc.BuildKt
+import org.droidmate.common.BuildConstants
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,7 +40,7 @@ public class ApkInlinerFrontendTest
   @Test
   public void "Inlines apk"()
   {
-    Path inputApkFixturesDir = new ResourcePath(BuildKt.apk_fixtures).path
+    Path inputApkFixturesDir = new ResourcePath(BuildConstants.apk_fixtures).path
     assert Files.isDirectory(inputApkFixturesDir)
     assert Files.list(inputApkFixturesDir).count() == 1
     Path inputApkFixture = new ApkPath(Files.list(inputApkFixturesDir).find() as Path).path
@@ -58,8 +58,8 @@ public class ApkInlinerFrontendTest
     ApkInlinerFrontend.handleException = {Exception e -> throw e}
     // Act
     ApkInlinerFrontend.main([
-      BuildKt.apk_inliner_param_input, inputDir.toAbsolutePath().toString(),
-      BuildKt.apk_inliner_param_output_dir, outputDir.toAbsolutePath().toString()
+      BuildConstants.apk_inliner_param_input, inputDir.toAbsolutePath().toString(),
+      BuildConstants.apk_inliner_param_output_dir, outputDir.toAbsolutePath().toString()
     ] as String[])
 
     assert Files.list(outputDir).count() == 1
