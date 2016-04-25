@@ -82,7 +82,7 @@ public class AndroidDevice implements IAndroidDevice
   @Override
   void pushJar(Path jar) throws DeviceException
   {
-    log.debug("pushJar(${jar.path})")
+    log.debug("pushJar(${jar.toString()})")
     adbWrapper.pushJar(serialNumber, jar)
   }
 
