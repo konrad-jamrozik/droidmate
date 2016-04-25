@@ -27,16 +27,21 @@ val apks_dir = "apks"
 private val exeExt = if (OS.isWindows) ".exe" else ""
 
 //region Values directly based on system environment variables
-val jarsigner = "JAVA8_HOME".asEnvDir.resolveRegularFile("bin/jarsigner$exeExt")
+val java8Home = "JAVA8_HOME".asEnvDir
 val jdk7_rt_jar = "JAVA7_HOME".asEnvDir.resolveRegularFile("jre/lib/rt.jar")
 val jdk6_rt_jar = "JAVA6_HOME".asEnvDir.resolveRegularFile("jre/lib/rt.jar")
 private val android_sdk_dir = "ANDROID_HOME".asEnvDir
 //endregion
 
+val jarsigner_relative = "bin/jarsigner$exeExt"
+val jarsigner = "JAVA8_HOME".asEnvDir.resolveRegularFile(jarsigner_relative)
+
 //region Android SDK components
 private val build_tools_version = "19.1.0"
-val aapt_command = android_sdk_dir.resolveRegularFile("build-tools/$build_tools_version/aapt$exeExt")
-val adb_command = android_sdk_dir.resolveRegularFile("platform-tools/adb$exeExt")
+val aapt_command_relative = "build-tools/$build_tools_version/aapt$exeExt"
+val adb_command_relative = "platform-tools/adb$exeExt"
+val aapt_command = android_sdk_dir.resolveRegularFile(aapt_command_relative)
+val adb_command = android_sdk_dir.resolveRegularFile(adb_command_relative)
 private val android_platform_version = "19"
 private val android_platform_dir = android_sdk_dir.resolveDir("platforms/android-$android_platform_version")
 val uiautomator_jar = android_platform_dir.resolveRegularFile("uiautomator.jar")

@@ -24,6 +24,7 @@ dependencies {
 
   testCompile group: 'junit', name: 'junit', version: '4.12'
 
+  // KJA this is broken. See comment in "core" build.gradle
   Set<File> resourcesDirs = project.sourceSets.main.resources.srcDirs
   assert resourcesDirs.size() == 1
   runtime files(new File(resourcesDirs[0], "logback"));

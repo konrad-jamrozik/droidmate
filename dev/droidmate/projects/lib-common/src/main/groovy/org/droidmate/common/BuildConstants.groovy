@@ -10,6 +10,8 @@ package org.droidmate.common
 
 import com.konradjamrozik.Resource
 
+import java.nio.file.Path
+
 /**
  * This class contains fields whose values are necessary both by the compiled classes and by gradle build scripts compiling the 
  * classes.
@@ -20,13 +22,12 @@ import com.konradjamrozik.Resource
  */
 class BuildConstants
 {
-
   static Map<String, String> properties = loadProperties("buildConstants.properties")
 
-  // KJA currently the path is absolute, so on binary deployment it will have a hardcoded path instead of one that is envvar based. Fix!
-  static String aapt_command                                = safeGetProperty(properties, "aapt_command")
-  // KJA as above. Fix!
-  static String adb_command                                 = safeGetProperty(properties, "adb_command")
+  static String aapt_command = safeGetProperty(properties, "ANDROID_HOME", "aapt_command_relative")
+  static String adb_command  = safeGetProperty(properties, "ANDROID_HOME", "adb_command_relative")
+  static String jarsigner    = safeGetProperty(properties, "JAVA8_HOME", "jarsigner_relative")
+
   static String apk_fixtures                                = safeGetProperty(properties, "apk_fixtures")
   static String apk_inliner_param_input                     = safeGetProperty(properties, "apk_inliner_param_input")
   static String apk_inliner_param_output_dir                = safeGetProperty(properties, "apk_inliner_param_output_dir")
@@ -35,8 +36,6 @@ class BuildConstants
   static String apks_dir                                    = safeGetProperty(properties, "apks_dir")
   static String appguard_apis_txt                           = safeGetProperty(properties, "appguard_apis_txt")
   static String AVD_dir_for_temp_files                      = safeGetProperty(properties, "AVD_dir_for_temp_files")
-  // KJA as above. Fix!  
-  static String jarsigner                                   = safeGetProperty(properties, "jarsigner")
   static String monitor_generator_res_name_monitor_template = safeGetProperty(properties, "monitor_generator_res_name_monitor_template")
   static String monitor_generator_output_relative_path      = safeGetProperty(properties, "monitor_generator_output_relative_path")
   static String monitored_inlined_apk_fixture_name          = safeGetProperty(properties, "monitored_inlined_apk_fixture_name")
@@ -49,6 +48,18 @@ class BuildConstants
     text.splitEachLine("=") {assert it.size() == 2; out.put(it[0], it[1])}
     return out
   }
+
+  private static String safeGetProperty(Map<String, String> properties, String envVarName, String key)
+  {
+    assert properties.containsKey(key)
+    String value = properties[key]
+    assert value?.size() > 0
+
+    Path dir = envVarName.asEnvDir
+
+    return dir.resolveRegularFile(value)
+  }
+
 
   private static String safeGetProperty(Map<String, String> properties, String key)
   {
