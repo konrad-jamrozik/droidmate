@@ -48,33 +48,11 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
-// Without this line, the following test fails while running :projects:command:test
-// org.droidmate.tests.configuration.ConfigurationBuilderTest.Builds configuration
-//
-// Without this line, the ResourcePath-s required by ConfigurationBuilder resolve only to files within jar, e.g. this line:
-// new ResourcePath(BuildKt.appGuardApisList.fileName.toString()).toFile()
-// fails, as the only available URL of the file is:
-//
-//   jar:file:(...)droidmate/dev/droidmate/projects/core/build/libs/core.jar!/appguard_apis.txt
-//
-// With this line added, the URL ultimately used will be:
-//
-//   file:(...)droidmate/dev/droidmate/projects/core/build/resources/main/appguard_apis.txt
-// KJA curr work
-//sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
-
-// Without this line, the following error happens when running :projects:command:run
-//
-// java.io.IOException: No URL found for path appguard_apis.txt that starts with 'file' protocol. The found URLs:
-// jar:file:/C:/my/local/repos/github/droidmate/dev/droidmate/projects/core/build/libs/core.jar!/appguard_apis.txt
-// KJA curr work
-//sourceSets.main.runtimeClasspath += project(":projects:core").sourceSets.main.runtimeClasspath
-
-// This command has to happen after modifying main runtimeClasspath, otherwise the classpath won't be setup correctly,
-// as enforced by the assert below.
 apply plugin: 'application'
 mainClassName = "org.droidmate.frontend.DroidmateFrontend"
+
 (tasks.run as JavaExec).configure {
+  
   assert sourceSets.main.runtimeClasspath == classpath
 
   workingDir rootDir

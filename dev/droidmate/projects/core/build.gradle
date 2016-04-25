@@ -62,7 +62,7 @@ dependencies {
   // Filesystem stubbing
   compile 'com.google.jimfs:jimfs:1.0'
 
-  // KJA this is broken. Runtime class path should NOT depend on source dir, even if it is resources dir! Instead, the 
+  // KJA2 this is broken. Runtime class path should NOT depend on source dir, even if it is resources dir! Instead, the 
   // processResources Copy task has to be modified so the logback file is correctly copied to build/resoruces dir.
   // ---
   // This ensures the files will be properly copied out if ever "application" plugin and "installDist" task will be used.

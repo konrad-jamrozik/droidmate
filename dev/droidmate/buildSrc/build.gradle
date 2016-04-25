@@ -4,7 +4,7 @@ import org.gradle.api.tasks.testing.logging.TestLoggingContainer
 
 apply plugin: 'kotlin'
 
-ext.utilities_version = 'c99db38409'
+ext.utilities_version = '801d5a3531'
 
 buildscript {
 
