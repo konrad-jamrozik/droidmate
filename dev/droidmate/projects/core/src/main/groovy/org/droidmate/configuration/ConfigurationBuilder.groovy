@@ -12,6 +12,7 @@ package org.droidmate.configuration
 import ch.qos.logback.classic.Level
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.ParameterException
+import com.konradjamrozik.Resource
 import com.konradjamrozik.ResourcePath
 import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
@@ -189,8 +190,11 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
   private static void bindDirsAndResources(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
-    cfg.appGuardApisList = new ResourcePath(BuildConstants.appguard_apis_txt)
+    cfg.appGuardApisList = new Resource(BuildConstants.appguard_apis_txt).text
     
+    // KJA it is here: jar:file:/C:/my/local/repos/github/droidmate/dev/droidmate/projects/core/build/libs/core-dev.jar!/uiautomator-daemon.jar
+    // Extract it to  jar:file:/C:/my/local/repos/github/droidmate/dev/droidmate/projects/core/build/libs/uiautomator-daemon.jar
+    // Reuse existing Resource method and see this: http://stackoverflow.com/questions/11472408/extracting-a-file-from-the-currently-running-jar-through-code
     cfg.uiautomatorDaemonJar = new ResourcePath("uiautomator-daemon.jar")
 
     cfg.monitorApk = new ResourcePath("monitor.apk")

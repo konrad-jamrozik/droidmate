@@ -352,7 +352,7 @@ public class Configuration implements IConfiguration
 
   public String adbCommand = BuildConstants.adb_command
 
-  public Path appGuardApisList
+  public String appGuardApisList
 
   /**
    * Jar with uiautomator-daemon location on the file system. The jar is to be deployed on the android (virtual) device

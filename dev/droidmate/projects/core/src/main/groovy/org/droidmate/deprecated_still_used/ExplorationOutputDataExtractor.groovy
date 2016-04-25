@@ -23,8 +23,6 @@ import org.droidmate.exploration.actions.*
 import org.droidmate.exploration.output.FilteredApis
 import org.droidmate.logcat.IApiLogcatMessage
 
-import java.nio.file.Path
-import java.nio.file.Paths
 import java.time.Duration
 import java.time.LocalDateTime
 
@@ -54,10 +52,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
   {
     this.compareRuns = compareRuns
     this.config = config
-    // A new path must be created, otherwise this will result in a ProviderMismatchException
-    // More information here: http://stackoverflow.com/questions/22611919/why-do-i-get-providermismatchexception-when-i-try-to-relativize-a-path-agains
-    Path path = Paths.get(this.config.appGuardApisList.toUri())
-    this.appGuardApis = ApiMapping.parseAppguardLegacyApis(path.readLines())
+    this.appGuardApis = ApiMapping.parseAppguardLegacyApis(config.appGuardApisList.readLines())
   }
 
   @Override
