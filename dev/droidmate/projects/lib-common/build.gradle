@@ -19,13 +19,7 @@ apply plugin: 'project-report'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-File resDir = IterableExtensions.findSingle(sourceSets.main.resources.srcDirs)
-
 dependencies {
-
-  // "gradlew build" works without this line, but IntelliJ "make" is unhappy without it. Looks like IntelliJ needs it to pick-up
-  // the META-INF/services/org.codehaus.groovy.runtime.ExtensionModule file.
-  runtime files(new File(resDir, "."))
 
   compile "com.github.konrad-jamrozik:utilities:$utilities_version"
 
@@ -54,14 +48,15 @@ dependencies {
   testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-File propertiesFile = new File(resDir, "buildConstants.properties")
+File resDir = IterableExtensions.findSingle(sourceSets.main.resources.srcDirs)
+File buildConstantsFile = new File(resDir, "buildConstants.properties")
 
 task writeBuildConstantsProperties() { Task it ->
   
-  it.outputs.file(propertiesFile)
+  it.outputs.file(buildConstantsFile)
   
   doLast {
-    propertiesFile.withWriter {BufferedWriter wr ->
+    buildConstantsFile.withWriter {BufferedWriter wr ->
       ([
         "apk_inliner_param_input"                    : BuildKt.apk_inliner_param_input,
         "apk_inliner_param_output_dir"               : BuildKt.apk_inliner_param_output_dir,
@@ -85,8 +80,24 @@ task writeBuildConstantsProperties() { Task it ->
   }
 }
 
-clean.configure { doLast { file(propertiesFile).delete() } }
+clean.configure { doLast { file(buildConstantsFile).delete() } }
 
 processResources.dependsOn("writeBuildConstantsProperties")
 
 apply from: project(":projects").file("maven.gradle")
+
+task testi(type: Test, dependsOn: "testClasses") { Test it ->
+  it.group = "verification"
+  it.description = "Interactive test"
+  it.filter.includeTest "*BuildConstantsTest", "*"
+}
+
+task debug { Task it ->
+  it.group = "help"
+  doLast {
+    println "sourceSets.main.compileClasspath"
+    sourceSets.main.compileClasspath.each { println it}
+    println "sourceSets.main.runtimeClasspath"
+    sourceSets.main.runtimeClasspath.each { println it}
+  }
+}

@@ -1,5 +1,6 @@
 // Author: Konrad Jamrozik, github.com/konrad-jamrozik
 
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 allprojects {
@@ -9,6 +10,7 @@ allprojects {
     tasks.withType(Test) {Test testTask ->
 
       testTask.testLogging.events.add(TestLogEvent.FAILED)
+      testTask.testLogging.exceptionFormat = TestExceptionFormat.FULL
 
       testTask.afterSuite {TestDescriptor td, TestResult tr ->
 

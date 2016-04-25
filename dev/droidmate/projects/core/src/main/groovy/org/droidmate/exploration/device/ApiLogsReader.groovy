@@ -31,7 +31,6 @@ import java.time.format.DateTimeFormatter
  * See {@link DeviceMessagesReader}
  */
 
-@TypeChecked
 @Slf4j
 class ApiLogsReader implements IApiLogsReader
 {
