@@ -13,11 +13,9 @@ public class Main
   public static void main(String[] args)
   {
     // KJA current work:
-    /*
-    java.io.IOException: No URL found for path appguard_apis.txt that starts with 'file' protocol. The found URLs:
-jar:file:/C:/Users/Konrad%20Jamrozik/.m2/repository/org/droidmate/core/dev/core-dev.jar!/appguard_apis.txt
-	@ org.droidmate.configuration.ConfigurationBuilder.bindDirsAndResources
-     */
+    // org.droidmate.common.DroidmateException: Directory apks doesn't exist or is not a directory.
+    // KJA current work:
+    // logback is broken. Prints messages twice, shows thread id, shows debug. Hm. Fix logback runtime deployment.
     DroidmateFrontend.main();
   }
 }
