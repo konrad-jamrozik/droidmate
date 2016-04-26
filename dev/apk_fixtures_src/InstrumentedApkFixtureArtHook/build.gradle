@@ -55,7 +55,5 @@ preBuild {
 }
 
 dependencies {
-  //compile fileTree(include: ['*.aar'], dir: 'libs')
   compile(name:'arthook', ext:'aar')
-  compile project(':lib-apk_fixtures')
 }

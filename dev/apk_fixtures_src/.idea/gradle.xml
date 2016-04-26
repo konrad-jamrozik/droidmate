@@ -12,7 +12,6 @@
             <option value="$PROJECT_DIR$/GuiApkFixture" />
             <option value="$PROJECT_DIR$/InstrumentedApkFixtureArtHook" />
             <option value="$PROJECT_DIR$/MonitoredApkFixture" />
-            <option value="$PROJECT_DIR$/lib-apk_fixtures" />
           </set>
         </option>
       </GradleProjectSettings>
