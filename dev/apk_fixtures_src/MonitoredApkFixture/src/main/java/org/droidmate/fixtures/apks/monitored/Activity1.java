@@ -40,20 +40,22 @@ public class Activity1 extends ActivityWithHelper
     // The call below requires permission: android.permission.CAMERA
     i(TAG, "Application requested permission " + permission);
     int hasPermission = this.checkSelfPermission(permission);
-    if (hasPermission != PackageManager.PERMISSION_GRANTED)
-    {
-      i(TAG, "Missing runtime permission " + permission + ", requesting and finishing method");
-      this.requestPermissions(new String[] {permission}, 1);
-      return false;
-    }
+    return hasPermission == PackageManager.PERMISSION_GRANTED;
+  }
 
-    return true;
+  private void requestPermission(String permission)
+  {
+    i(TAG, "Requesting runtime permission " + permission);
+    this.requestPermissions(new String[] {permission}, 1);
   }
 
   public void openCamera(View view)
   {
     if (!hasPermission(Manifest.permission.CAMERA))
+    {
+      requestPermission(Manifest.permission.CAMERA);
       return;
+    }
 
     try
     {
