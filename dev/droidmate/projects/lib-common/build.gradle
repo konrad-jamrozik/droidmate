@@ -94,13 +94,3 @@ task testi(type: Test, dependsOn: "testClasses") { Test it ->
   it.description = "Interactive test"
   it.filter.includeTest "*BuildConstantsTest", "*"
 }
-
-task debug { Task it ->
-  it.group = "help"
-  doLast {
-    println "sourceSets.main.compileClasspath"
-    sourceSets.main.compileClasspath.each { println it}
-    println "sourceSets.main.runtimeClasspath"
-    sourceSets.main.runtimeClasspath.each { println it}
-  }
-}
