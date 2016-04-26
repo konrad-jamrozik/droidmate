@@ -28,12 +28,6 @@ dependencies {
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
 
-  // KJA2 this is broken. Runtime class path should NOT depend on source dir, even if it is resources dir! Instead, the 
-  // processResources Copy task has to be modified so the logback file is correctly copied to build/resoruces dir.
-  Set<File> resourcesDirs = project.sourceSets.main.resources.srcDirs
-  assert resourcesDirs.size() == 1
-  runtime files(new File(resourcesDirs[0], "logback"))
-
   compile project(":projects:lib-android")
 }
 
