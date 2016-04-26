@@ -127,32 +127,18 @@ processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 //region Preparation of resources for the 'compileGroovy' task
 
 Project uiaDaemon = findProject(":projects:uiautomator2-daemon");
-task pullUiaDaemon(dependsOn: ":projects:uiautomator2-daemon:assembleAndroidTest") {
+task pullUiaDaemon(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
 
   File coreResDir = getCoreResDir()
 
-  def copyFrom = file("${uiaDaemon.buildDir}/outputs/apk/${uiaDaemon.name}-debug-androidTest-unaligned.apk")
-  //def copyFrom = file("${uiaDaemon.buildDir}/${uiaDaemon.name}.jar")
+  def copyFrom = "${uiaDaemon.buildDir}/outputs/apk/"
   def copyTo = coreResDir
 
-  inputs.file copyFrom
-  outputs.dir copyTo
-
-  doLast {
-
-    assert copyFrom.isFile()
-
-    def copyResult = copy {
-      from copyFrom
-      into copyTo
-      rename { String fileName ->
-        fileName.replace("-debug-androidTest-unaligned", "")
-      }
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file(s).\n" +
-        "Path of file(s) to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
+  from copyFrom
+  into copyTo
+  include '**/*-unaligned.apk'
+  rename { String fileName ->
+    fileName.replace("-debug-androidTest-unaligned", "-test").replace("-debug-unaligned", "")
   }
 }
 
@@ -195,7 +181,6 @@ File apkFixturesDroidmateStagingDir = new File("${apkFixturesProjectDir.path}/bu
 String apkFixturesBuildTask = "stageForDroidmate"
 File libApkFixturesJar = file("${apkFixturesProjectDir.path}/lib-apk_fixtures/build/libs/lib-apk_fixtures.jar")
 String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
-//String monitoredApkFixtureName = "InstrumentedApkFixtureArtHook-debug.apk"
 // end of DUPLICATION WARNING
 
 task pullApkFixturesLibJar(dependsOn: "buildApkFixtures") {
@@ -235,12 +220,10 @@ task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
   ["main", "classpath", "standardOutput"].each {delegate."$it" = inlinerExec."$it"}
 
   File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
-  println inputApk.toString()
   args = [
     InitConstants.apk_inliner_param_input, inputApk.canonicalPath,
     InitConstants.apk_inliner_param_output_dir, apkFixturesDir
   ]
-  println args
 
   inputs.file inputApk
   outputs.file new File(apkFixturesDir, InitConstants.monitored_inlined_apk_fixture_name)
@@ -278,8 +261,7 @@ processResources.dependsOn "pullAppGuardApisList"
 //region Preparation of resources: common code
 private File getCoreResDir()
 {
-  Set<File> coreResDirs = sourceSets.test.resources.srcDirs.findAll {it.path.contains(project.name)}
-  //Set<File> coreResDirs = sourceSets.main.resources.srcDirs.findAll {it.path.contains(project.name)}
+  Set<File> coreResDirs = sourceSets.main.resources.srcDirs.findAll {it.path.contains(project.name)}
   assert coreResDirs.size() == 1
   return coreResDirs.find()
 }

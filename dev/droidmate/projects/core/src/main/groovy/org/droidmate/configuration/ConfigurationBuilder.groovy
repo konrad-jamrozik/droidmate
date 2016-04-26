@@ -195,7 +195,8 @@ class ConfigurationBuilder implements IConfigurationBuilder
     cfg.appGuardApisList = new ResourcePath(InitConstants.appGuardApisList.fileName.toString())
 
     cfg.uiautomatorDaemon = new ResourcePath("uiautomator2-daemon.apk")
-    //cfg.uiautomatorDaemon = new ResourcePath("uiautomator-daemon.jar")
+
+    cfg.uiautomatorDaemonTest = new ResourcePath("uiautomator2-daemon-test.apk")
 
     cfg.monitorApk = new ResourcePath("monitor.apk")
 

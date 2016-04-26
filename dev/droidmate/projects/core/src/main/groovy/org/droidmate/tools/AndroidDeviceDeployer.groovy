@@ -77,6 +77,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     // differently from uiautomador-daemon,
     // uiautomator2-daemon is an APK and must be installed
     device.installApk(this.cfg.uiautomatorDaemon)
+    device.installApk(this.cfg.uiautomatorDaemonTest)
     device.pushJar(this.cfg.monitorApk)
     device.setupConnection()
     device.initModel()
@@ -106,7 +107,6 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       // differently from uiautomator-daemon,
       // uiautomator2-daemon is an APK and must be uninstalled
       device.uninstallApk(Constants.uiaDaemon_testPackageName, true)
-      //device.removeJar(cfg.uiautomatorDaemon)
       device.removeJar(cfg.monitorApk)
     }
     else

@@ -71,8 +71,13 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 // With this line added, the URL ultimately used will be:
 //
 //   file:/(...)droidmate/dev/droidmate/projects/core/build/resources/main/appguard_apis.txt
-sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath.add(project(":projects:core").sourceSets.main.output)
-sourceSets.main.runtimeClasspath = sourceSets.main.runtimeClasspath.add(project(":projects:core").sourceSets.main.output)
+sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath + project(":projects:core").sourceSets.test.runtimeClasspath
+
+// Without this line, the following error happens when running :projects:command:run
+//
+// java.io.IOException: No URL found for path appguard_apis.txt that starts with 'file' protocol. The found URLs:
+// jar:file:/C:/my/local/repos/github/droidmate/dev/droidmate/projects/core/build/libs/core.jar!/appguard_apis.txt
+sourceSets.main.runtimeClasspath += project(":projects:core").sourceSets.main.runtimeClasspath
 
 dependencies {
 

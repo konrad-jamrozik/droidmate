@@ -360,10 +360,16 @@ public class Configuration implements IConfiguration
   public Path appGuardApisList
 
   /**
-   * Jar with uiautomator-daemon location on the file system. The jar is to be deployed on the android (virtual) device
+   * Jar with uiautomator-daemon location on the file system. The apk is to be deployed on the android (virtual) device
    * to enable GUI actions execution.
    */
   public Path uiautomatorDaemon
+
+  /**
+   * Jar with uiautomator-daemon-test location on the file system. The apk is to be deployed on the android (virtual) device
+   * to enable GUI actions execution.
+   */
+  public Path uiautomatorDaemonTest
 
   //endregion
 }

@@ -373,6 +373,7 @@ public class AndroidDevice implements IAndroidDevice
   {
     log.debug("removeJar($jar)")
     adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemon)
+    adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemonTest)
   }
 
   @Override
