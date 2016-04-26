@@ -152,8 +152,6 @@ task cleanRun(type: Delete) {
   delete project.ext.runOutput.parent
   delete monitorJava
 }
-clean.dependsOn cleanRun, cleanMonitorApk
-build.dependsOn buildMonitorApk
 
 test.configure {
 
@@ -170,7 +168,17 @@ processResources.configure { Copy copy -> copy.from(project(":projects").file("r
 apply from: project(":projects").file("debug.gradle")
 
 def projectLibCommon = findProject(":projects:lib-common")
+
+task cleanLibCommonJar(type: Delete) {
+  group = "build"
+  // KJA todo
+  delete new File(monitorApkScaffoldingDir, "libs/"+projectLibCommon.jar.archiveName)
+}
+
 task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy copy ->
 
   copy.from(projectLibCommon.jar.archivePath).into(new File(monitorApkScaffoldingDir, "libs"))
 }
+
+clean.dependsOn cleanRun, cleanMonitorApk, cleanLibCommonJar
+build.dependsOn buildMonitorApk
