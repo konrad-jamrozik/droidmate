@@ -18,6 +18,7 @@ import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'java'
 
+// KJA next: check if lib-android really has to be build with java 6.
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
 compileJava.options.bootClasspath = BuildKt.jdk6_rt_jar
