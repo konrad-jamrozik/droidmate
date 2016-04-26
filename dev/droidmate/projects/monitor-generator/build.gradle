@@ -162,19 +162,11 @@ test.configure {
 
 }
 
-// Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
-processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
-
-apply from: project(":projects").file("debug.gradle")
-
 def projectLibCommon = findProject(":projects:lib-common")
-
 task cleanLibCommonJar(type: Delete) {
   group = "build"
-  // KJA todo
   delete new File(monitorApkScaffoldingDir, "libs/"+projectLibCommon.jar.archiveName)
 }
-
 task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy copy ->
 
   copy.from(projectLibCommon.jar.archivePath).into(new File(monitorApkScaffoldingDir, "libs"))
@@ -182,3 +174,8 @@ task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy c
 
 clean.dependsOn cleanRun, cleanMonitorApk, cleanLibCommonJar
 build.dependsOn buildMonitorApk
+
+// Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
+processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
+
+apply from: project(":projects").file("debug.gradle")
