@@ -10,10 +10,9 @@ package org.droidmate.configuration
 
 import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
+import org.droidmate.common.BuildConstants
 import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
-import org.droidmate.init.InitConstants
-import org.droidmate.init.LocalInitConstants
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -150,7 +149,7 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_apksDir],
     description = "Directory containing the apks to be processed by DroidMate.")
-  public String apksDirName = InitConstants.apks_dir
+  public String apksDirName = BuildConstants.apks_dir
 
   @Parameter(names = [Configuration.pn_appGuardOnlyApis], arity = 1)
   public boolean appGuardOnlyApis = true
@@ -349,15 +348,11 @@ public class Configuration implements IConfiguration
 
   public Path monitorApk
 
-  /** The command of the aapt tool from the Android SDK. Configured by {@link ConfigurationBuilder}. */
-  public String aaptCommand
+  public String aaptCommand = BuildConstants.aapt_command
 
-  /** The command of the adb tool from the Android SDK. Configured by {@link ConfigurationBuilder}. */
-  public String adbCommand
+  public String adbCommand = BuildConstants.adb_command
 
-  public Path androidSdkDir = LocalInitConstants.android_sdk_dir
-
-  public Path appGuardApisList
+  public String appGuardApisList
 
   /**
    * Jar with uiautomator-daemon location on the file system. The apk is to be deployed on the android (virtual) device

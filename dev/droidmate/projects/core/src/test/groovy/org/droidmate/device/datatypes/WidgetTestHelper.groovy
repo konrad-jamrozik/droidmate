@@ -210,7 +210,7 @@ class WidgetTestHelper
       password      : args.password      ?: false,
       selected      : args.selected      ?: false,
       bounds        : new Rectangle(lowX, lowY, highX - lowX, highY - lowY),
-      deviceDisplayBounds: new Rectangle(DeviceModelHelper.build(Constants.DEVICE_DEFAULT).getDeviceVerticalDimensionsForTesting())
+      deviceDisplayBounds: new Rectangle(DeviceModelHelper.build(Constants.DEVICE_DEFAULT).getDeviceDisplayDimensionsForTesting())
       // @formatter:on
     )
   }

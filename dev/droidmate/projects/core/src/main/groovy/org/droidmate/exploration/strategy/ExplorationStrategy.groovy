@@ -12,6 +12,7 @@ package org.droidmate.exploration.strategy
 import com.google.common.base.Ticker
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.droidmate.common.logging.Markers
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
@@ -48,6 +49,11 @@ class ExplorationStrategy implements IExplorationStrategy
   // org.droidmate.exploration.strategy.ExplorationStrategy.explorationCanMoveForwardOn,
   // which also takes WidgetStrategy as input, and then is asked.
   private boolean allWidgetsBlackListed = false
+
+  //SE TEAM Hook 1
+  ///Holds all guiStates seen so far ehile exploring
+  private List<IGuiState> guiStatesSeen = new LinkedList<>();
+  //--------------
 
   @Deprecated
   ExplorationStrategy(IWidgetStrategy widgetStrategy,
@@ -100,6 +106,7 @@ class ExplorationStrategy implements IExplorationStrategy
     assert guiState != null
     terminationCriterion.initDecideCall(!firstCallToDecideFinished)
 
+
     ExplorationAction outExplAction
 
     allWidgetsBlackListed = widgetStrategy.updateState(guiState)
@@ -149,6 +156,8 @@ class ExplorationStrategy implements IExplorationStrategy
 
         String text = w.text // For other properties, see org.droidmate.common.exploration.datatypes.Widget
 
+        log.trace(Markers.gui,"<widget_explored>" + text + "</widget_explored>")
+
         // Otherwise the widget is not interesting (DroidMate will never do anything with it)
         boolean canBeActedUpon = w.canBeActedUpon()
 
@@ -170,12 +179,27 @@ class ExplorationStrategy implements IExplorationStrategy
     log.debug("decide($result)")
     assert result?.successful
 
+    //SE Team Hook 1
+    def lastGuiScreen = guiStatesSeen.find({
+      it == result.guiSnapshot.guiState
+    })
+    if (lastGuiScreen == null) {
+      lastGuiScreen = result.guiSnapshot.guiState
+      guiStatesSeen.add(lastGuiScreen)
+      log.trace(Markers.gui,"<elements_seen>" + lastGuiScreen.widgets.size() + "</elements_seen>")
+      log.trace(Markers.gui,"<gui_screens_seen>1</gui_screens_seen>")
+    }
+    //--------------
+
     return this.decide(result.guiSnapshot.guiState)
   }
 
   private logExplorationProgress(ExplorationAction outExplAction)
   {
-    log.info(terminationCriterion.getLogMessage() + " " + outExplAction.toString())
+    if (outExplAction instanceof TerminateExplorationAction)
+      log.info(outExplAction.toString())
+    else
+      log.info(terminationCriterion.getLogMessage() + " " + outExplAction.toString())
   }
 
 

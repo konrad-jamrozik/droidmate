@@ -7,23 +7,24 @@
 //
 // www.droidmate.org
 
-import org.droidmate.init.InitConstants
+import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'groovy'
 
-compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
-compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
 
-  compile 'com.github.konrad-jamrozik:utilities:c52a5ef326'
+  compile buildSrcJars
 
   compile project(":projects:lib-common")
 
-  compile 'org.codehaus.groovy:groovy-all:2.4.5'
+  compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
   testCompile group: 'junit', name: 'junit', version: '4.12'
 
+  // KJA2 this is broken. See comment in "core" build.gradle
   Set<File> resourcesDirs = project.sourceSets.main.resources.srcDirs
   assert resourcesDirs.size() == 1
   runtime files(new File(resourcesDirs[0], "logback"));
@@ -36,8 +37,8 @@ run {
 
   standardOutput = new ByteArrayOutputStream() // Mute the task stdout
 
-  ext.targetApksDir = file(InitConstants.apk_inliner_param_input_default.toFile())
-  ext.inlinedApksDir = file(InitConstants.apk_inliner_param_output_dir_default.toFile())
+  ext.targetApksDir = file(BuildKt.apk_inliner_param_input_default.toFile())
+  ext.inlinedApksDir = file(BuildKt.apk_inliner_param_output_dir_default.toFile())
 
   if (!targetApksDir.isDirectory())
     targetApksDir.mkdir()
@@ -46,11 +47,13 @@ run {
   outputs.dir inlinedApksDir
 }
 
-clean << {
-  File inlinedApksDir = run.outputs.files.getSingleFile()
-  inlinedApksDir.listFiles().each { if (it.name.endsWith(".apk")) assert it.delete() }
+clean.configure {
+  doLast {
+    File inlinedApksDir = run.outputs.files.getSingleFile()
+    inlinedApksDir.listFiles().each {if (it.name.endsWith(".apk")) assert it.delete()}
+  }
 }
 
-test {
+test.configure {
   // includes = [''] // Turn off all tests
 }

@@ -20,7 +20,7 @@ import java.awt.Dimension
 class Nexus7Model extends NexusModel
 {
   @Override
-  Dimension getDeviceVerticalDimensionsForTesting()
+  Dimension getDeviceDisplayDimensionsForTesting()
   {
     return new Dimension(800, 1205)
   }

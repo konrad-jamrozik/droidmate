@@ -71,6 +71,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   {
     this.adbWrapper.startAdbServer()
 
+    // KNOWN BUG on emulator, device offline when trying to remove logcat log file. Possible quickfix: on emulators, add a wait. 
     device.removeLogcatLogFile()
     device.clearLogcat()
 

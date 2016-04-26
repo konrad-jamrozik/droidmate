@@ -12,20 +12,19 @@
 */
 
 buildscript {
+
   repositories {
     mavenCentral()
-    maven {url "https://dl.bintray.com/kotlin/kotlin-eap/"}
-    'https://dl.bintray.com/kotlin/kotlin-eap/'
   }
   dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0-rc-1017'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
 
 apply plugin: "kotlin"
 
-compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
-compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 // Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
@@ -44,15 +43,15 @@ dependencies {
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
   testCompile 'org.hamcrest:hamcrest-core:1.3'
-  testCompile 'org.jetbrains.kotlin:kotlin-test:1.0.0-rc-1017'
-  testCompile 'org.jetbrains.kotlin:kotlin-test-junit:1.0.0-rc-1017'
+  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
   testCompile project(":projects:core").sourceSets.test.output
 
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
   compile project(":projects:core")
-  compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0-rc-1017'
 }
 
-test {
+test.configure {
 
   /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
 
@@ -66,3 +65,5 @@ test {
   includes = ['**/ReporterTestSuite.class']
 
 }
+
+apply from: project(":projects").file("maven.gradle")

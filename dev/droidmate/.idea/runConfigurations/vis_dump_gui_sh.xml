@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="vis_dump_gui.sh" type="BashConfigurationType" factoryName="Bash" folderName="Bash configs" singleton="true">
+  <configuration default="false" name="vis_dump_gui.sh" type="BashConfigurationType" factoryName="Bash" singleton="true">
     <option name="INTERPRETER_OPTIONS" value="" />
-    <option name="INTERPRETER_PATH" value="C:\Program Files (x86)\Git\bin\sh.exe" />
+    <option name="INTERPRETER_PATH" value="C:\Program Files\Git\bin\sh.exe " />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
     <option name="PARENT_ENVS" value="true" />
-    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/vis_dump_gui.sh" />
+    <option name="SCRIPT_NAME" value="vis_dump_gui.sh" />
     <option name="PARAMETERS" value="" />
     <module name="droidmate" />
     <envs />

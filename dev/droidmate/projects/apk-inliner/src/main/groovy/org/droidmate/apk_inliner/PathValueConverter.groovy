@@ -24,7 +24,7 @@ class PathValueConverter implements ValueConverter<Path>
     this.fs = fs
   }
 
-  static pathIn(FileSystem fs)
+  static ValueConverter<Path> pathIn(FileSystem fs)
   {
     return new PathValueConverter(fs)
   }

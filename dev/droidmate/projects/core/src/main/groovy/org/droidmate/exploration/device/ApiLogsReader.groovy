@@ -31,7 +31,6 @@ import java.time.format.DateTimeFormatter
  * See {@link DeviceMessagesReader}
  */
 
-@TypeChecked
 @Slf4j
 class ApiLogsReader implements IApiLogsReader
 {
@@ -83,7 +82,7 @@ class ApiLogsReader implements IApiLogsReader
     List<IApiLogcatMessage> apiLogs
     try
     {
-      apiLogs = messages.collect {ApiLogcatMessage.from(it)} as List<IApiLogcatMessage>
+      apiLogs = messages.collect {ApiLogcatMessage.from(it) as IApiLogcatMessage }
     } catch (DroidmateException e)
     {
       throw new DeviceException("Failed to parse API call logs from one of the messages obtained from logcat.", e)

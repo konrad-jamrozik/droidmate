@@ -7,67 +7,38 @@
 //
 // www.droidmate.org
 
-import org.droidmate.init.InitConstants
-
-import java.nio.file.Files
-import java.nio.file.Paths
+import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'groovy'
-apply plugin: 'project-report' // http://www.gradle.org/docs/current/userguide/project_reports_plugin.html
-apply plugin: 'application'
 
-mainClassName = "org.droidmate.frontend.DroidmateFrontend"
-
-run {
-  workingDir rootDir
-
-  java.nio.file.Path argsFile = Paths.get("$rootDir/args.txt")
-  if (Files.exists(argsFile))
-  {
-    List<String> appArgs = argsFile.text.readLines().first().split(" ") as List<String>
-    args appArgs
-  }
-
-
-}
-
-compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
-compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 //region Dependencies
 
 String libsDirPath = "libs"
-File testLibsDir = file("${projectDir.path}/testLibs")
 
-// Returns the path to directory of OS-dependent library required to interact with a robot through serial port.
-ext.robotLibDir = {
-  if (utils.osIsWindows())
-  // not sure if the libraries in this dir will work on windows versions different than Windows 7 x64
-    return "$projectDir/$libsDirPath/robot/Windows_7"
-  else
-    return "$projectDir/$libsDirPath/robot/Mac_OS"
-}
-
-// Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
+// See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
 dependencies {
 
-  compile 'com.github.konrad-jamrozik:utilities:c52a5ef326'
+  compile buildSrcJars
+
+  // Force refresh:
+  // Reference: https://jitpack.io/docs/#snapshots
+  compile "com.github.konrad-jamrozik:utilities:$utilities_version"
 
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
   testCompile 'org.hamcrest:hamcrest-core:1.3'
 
-  compile files("$rootDir/../init/build/libs/init.jar")
-
   compile project(":projects:lib-common")
   compile project(":projects:lib-common-android")
   compile project(":projects:lib-android")
 
-  compile fileTree(dir: robotLibDir(), include: '*.jar')
   def libsDirFileTree = fileTree(dir: "$projectDir/$libsDirPath", include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
   /* Making this additional setter call instead of supplying a value in constructor is a workaround for an issue I discovered
      on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */
@@ -79,7 +50,7 @@ dependencies {
   compile 'org.apache.commons:commons-lang3:3.3'
   compile 'commons-io:commons-io:2.4'
   compile 'org.apache.commons:commons-exec:1.2'
-  compile 'org.codehaus.groovy:groovy-all:2.4.5'
+  compile 'org.codehaus.groovy:groovy-all:2.4.6'
   compile 'org.slf4j:slf4j-api:1.7.6'
   compile 'ch.qos.logback:logback-classic:1.0.13'
   compile 'ch.qos.logback:logback-core:1.0.13'
@@ -91,14 +62,12 @@ dependencies {
   // Filesystem stubbing
   compile 'com.google.jimfs:jimfs:1.0'
 
-  def testLibsDirFileTree = fileTree(dir: testLibsDir, include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
-  testLibsDirFileTree.setBuiltBy(['pullApkFixturesLibJar'])
-  testCompile testLibsDirFileTree
-
+  // KJA2 this is broken. Runtime class path should NOT depend on source dir, even if it is resources dir! Instead, the
+  // processResources Copy task has to be modified so the logback file is correctly copied to build/resoruces dir.
+  // ---
   // This ensures the files will be properly copied out if ever "application" plugin and "installDist" task will be used.
   // In particular, this will ensure $APP_DIR$/lib/logback/logback.groovy is present.
   //runtime files(new File(sourceSets.main.resources.srcDirs.find(), "."))
-
   runtime files(new File(sourceSets.main.resources.srcDirs.find(), "logback"))
 }
 
@@ -120,7 +89,6 @@ processResources.dependsOn "pullMonitorApk"
  */
 clean.dependsOn "cleanTest"
 
-compileTestGroovy.dependsOn "pullApkFixturesLibJar"
 processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 //endregion Dependencies
 
@@ -179,33 +147,8 @@ File apkFixturesProjectDir = file("${project.rootDir}/../apk_fixtures_src")
 assert apkFixturesProjectDir.directory
 File apkFixturesDroidmateStagingDir = new File("${apkFixturesProjectDir.path}/build")
 String apkFixturesBuildTask = "stageForDroidmate"
-File libApkFixturesJar = file("${apkFixturesProjectDir.path}/lib-apk_fixtures/build/libs/lib-apk_fixtures.jar")
 String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
 // end of DUPLICATION WARNING
-
-task pullApkFixturesLibJar(dependsOn: "buildApkFixtures") {
-
-  def copyFrom = libApkFixturesJar
-  def copyTo = testLibsDir
-
-  inputs.file copyFrom
-  outputs.dir copyTo
-
-  doLast {
-
-    assert copyFrom.file
-    assert copyTo.directory
-
-    def copyResult = copy {
-      from copyFrom
-      into copyTo
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file(s).\n" +
-        "Path of file(s) to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-  }
-}
 
 JavaExec inlinerExec = project(":projects:apk-inliner").tasks.run as JavaExec
 
@@ -213,7 +156,7 @@ SourceDirectorySet testResDirs = sourceSets.test.resources
 assert testResDirs.srcDirs.size() == 1
 File testResDir = testResDirs.srcDirs[0]
 assert testResDir.path.endsWith("test" + File.separator + "resources")
-File apkFixturesDir = new File(testResDir, InitConstants.apk_fixtures)
+File apkFixturesDir = new File(testResDir, BuildKt.apk_fixtures)
 assert apkFixturesDir.directory
 
 task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
@@ -221,12 +164,12 @@ task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
 
   File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
   args = [
-    InitConstants.apk_inliner_param_input, inputApk.canonicalPath,
-    InitConstants.apk_inliner_param_output_dir, apkFixturesDir
+    BuildKt.apk_inliner_param_input, inputApk.canonicalPath,
+    BuildKt.apk_inliner_param_output_dir, apkFixturesDir
   ]
 
   inputs.file inputApk
-  outputs.file new File(apkFixturesDir, InitConstants.monitored_inlined_apk_fixture_name)
+  outputs.file new File(apkFixturesDir, BuildKt.monitored_inlined_apk_fixture_name)
 }
 
 // WISH looks like all the pull- tasks should be of type Copy: http://www.gradle.org/docs/current/userguide/working_with_files.html#sec:copying_files
@@ -245,18 +188,8 @@ task buildApkFixtures(type: GradleBuild) {
 
 //endregion Preparation of apk fixtures for testing
 
-//region Preparation of resources: API list stats
-task pullAppGuardApisList(type: Copy) {
-
-  File appGuardApisList = file(InitConstants.appGuardApisList.toFile())
-  assert appGuardApisList.file
-
-  from appGuardApisList
-  into getCoreResDir()
-}
-
-processResources.dependsOn "pullAppGuardApisList"
-//endregion
+// Ensure BuildKt.appguard_apis_txt is available at runtime as a resource.
+processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
 
 //region Preparation of resources: common code
 private File getCoreResDir()
@@ -281,7 +214,7 @@ task cleanTest(type: GradleBuild) {
 
 task prepareInlinedApks(dependsOn: ":projects:apk-inliner:run") {
 
-  File inlinedApksDir = new File(InitConstants.absolute_apks_dir, "inlined")
+  File inlinedApksDir = file("$rootDir/${BuildKt.apks_dir}/inlined")
   if (!inlinedApksDir.isDirectory())
     inlinedApksDir.mkdir()
 
@@ -311,7 +244,7 @@ task prepareInlinedApks(dependsOn: ":projects:apk-inliner:run") {
 
 //region Testing tasks
 
-test {
+test.configure {
 
   inputs.dir apkFixturesDir.absolutePath
 
@@ -328,3 +261,4 @@ test {
 }
 //endregion Testing tasks
 
+apply from: project(":projects").file("maven.gradle")

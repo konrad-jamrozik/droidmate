@@ -2,8 +2,6 @@
 .gradle/
 build/
 local.gradle
-droidmate.ini
-droidmate.test.ini
 **/\.idea/libraries/Gradle__*
 **/\.idea/libraries/*
 
@@ -51,9 +49,9 @@ logs
 droidmate_output
 
 # resources build by DroidMate sub-projects on each build
-lib-common.jar
-lib-common-android.jar
-lib-android.jar
+lib-common-dev.jar
+lib-common-android-dev.jar
+lib-android-dev.jar
 autAddonBytecode.dex
 uiautomator-daemon.jar
 lib-apk_fixtures.jar

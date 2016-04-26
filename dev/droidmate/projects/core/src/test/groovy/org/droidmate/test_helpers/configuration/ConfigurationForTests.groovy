@@ -8,10 +8,10 @@
 // www.droidmate.org
 package org.droidmate.test_helpers.configuration
 
+import org.droidmate.common.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.filesystem.MockFileSystem
-import org.droidmate.init.InitConstants
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -31,6 +31,7 @@ class ConfigurationForTests
     Configuration.pn_monitorServerStartQueryDelay, "0",
     Configuration.pn_checkAppIsRunningRetryDelay, "0",
     // Commented out, as there are no tests simulating rebooting. However, sometimes I am manually testing real-world rebooting.
+    // Such real-world rebooting require the delays to be present, not zeroed.
 //    Configuration.pn_checkDeviceAvailableAfterRebootFirstDelay, "0",
 //    Configuration.pn_checkDeviceAvailableAfterRebootLaterDelays, "0",
 //    Configuration.pn_waitForCanRebootDelay, "0",
@@ -43,9 +44,9 @@ class ConfigurationForTests
   ConfigurationForTests()
   {
     this.argsList = zeroedTestConfig + [
-      Configuration.pn_droidmateOutputDir, Paths.get(".", InitConstants.test_temp_dir_name).toString(),
-      Configuration.pn_reportInputDir, Paths.get(".", InitConstants.test_temp_dir_name).toString(),
-      Configuration.pn_reportOutputDir, Paths.get(".", InitConstants.test_temp_dir_name).toString()
+      Configuration.pn_droidmateOutputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString(),
+      Configuration.pn_reportInputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString(),
+      Configuration.pn_reportOutputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString()
     ]
   }
 

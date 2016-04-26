@@ -1,0 +1,54 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.api.tasks.testing.logging.TestLoggingContainer
+
+apply plugin: 'kotlin'
+
+ext.utilities_version = '801d5a3531'
+
+buildscript {
+
+  ext.kotlin_version = '1.0.1-2'
+  
+  repositories {
+    mavenCentral()
+  }
+  
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
+
+repositories {
+  mavenCentral()
+  maven { url "https://jitpack.io" }
+}
+
+dependencies {
+
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+  compile "com.github.konrad-jamrozik:utilities:$utilities_version"
+  compile 'org.zeroturnaround:zt-exec:1.8'
+
+  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+  testCompile "junit:junit:4.12"
+
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+artifacts {
+  archives sourcesJar
+}
+
+test.configure {
+  it.testLogging {TestLoggingContainer tl ->
+    tl.exceptionFormat = TestExceptionFormat.FULL
+    tl.events(TestLogEvent.FAILED, TestLogEvent.SKIPPED)
+    tl.showStandardStreams = true
+  }
+}

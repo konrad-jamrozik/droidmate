@@ -633,7 +633,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     // a user bringing up the All Apps screen.
     // If you use the uiautomatorviewer tool to capture a snapshot
     // of the Home screen, notice that the All Apps button’s
-    // content-description property has the value “Apps”.  We can
+    // content-description property has the value "Apps".  We can
     // use this property to create a UiSelector to find the button.
     UiObject allAppsButton = new UiObject(new UiSelector().description("Apps"));
 
@@ -644,7 +644,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     // In the All Apps screen, the app launch icon is located in
     // the Apps tab. To simulate the user bringing up the Apps tab,
     // we create a UiSelector to find a tab with the text
-    // label “Apps”.
+    // label "Apps".
     UiObject appsTab = new UiObject(new UiSelector().text("Apps"));
 
     // Simulate a click to enter the Apps tab.

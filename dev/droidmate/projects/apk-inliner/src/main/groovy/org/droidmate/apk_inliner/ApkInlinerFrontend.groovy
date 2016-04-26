@@ -13,18 +13,16 @@ import com.konradjamrozik.ResourcePath
 import groovy.util.logging.Slf4j
 import joptsimple.OptionParser
 import joptsimple.OptionSet
-import org.apache.commons.lang3.SystemUtils
+import joptsimple.ValueConverter
+import org.droidmate.common.BuildConstants
 import org.droidmate.common.Dex
 import org.droidmate.common.Jar
 import org.droidmate.common.SysCmdExecutor
-import org.droidmate.init.InitConstants
-import org.droidmate.init.LocalInitConstants
 
-import java.nio.file.FileSystem
+import java.nio.file.FileSystems
 import java.nio.file.Path
 import java.nio.file.Paths
 
-import static java.nio.file.Files.isRegularFile
 import static org.droidmate.apk_inliner.PathValueConverter.pathIn
 
 @Slf4j
@@ -51,17 +49,16 @@ public class ApkInlinerFrontend
   {
     assert args?.length == 0 || args[0][0] == "-"
 
-    FileSystem fileSystem = InitConstants.apk_inliner_proj_dir.fileSystem
-
     OptionParser parser = new OptionParser()
 
-    String inputParam = InitConstants.apk_inliner_param_input.drop(1)
-    String outputParam = InitConstants.apk_inliner_param_output_dir.drop(1)
-    parser.accepts(inputParam).withOptionalArg().defaultsTo(InitConstants.apk_inliner_param_input_default).withValuesConvertedBy(pathIn(fileSystem))
-    parser.accepts(outputParam).withRequiredArg().defaultsTo(InitConstants.apk_inliner_param_output_dir_default).withValuesConvertedBy(pathIn(fileSystem))
+    String inputParam = BuildConstants.apk_inliner_param_input.drop(1)
+    String outputParam = BuildConstants.apk_inliner_param_output_dir.drop(1)
+
+    ValueConverter<Path> path = pathIn(FileSystems.default)
+    parser.accepts(inputParam).withOptionalArg().defaultsTo(path.convert(BuildConstants.apk_inliner_param_input_default)).withValuesConvertedBy(path)
+    parser.accepts(outputParam).withRequiredArg().defaultsTo(path.convert(BuildConstants.apk_inliner_param_output_dir_default)).withValuesConvertedBy(path)
 
     OptionSet options = parser.parse(args)
-
 
     Path inputPath = (Path) options.valueOf(inputParam)
     Path outputPath = (Path) options.valueOf(outputParam)
@@ -76,12 +73,11 @@ public class ApkInlinerFrontend
     Jar inlinerJar = new Jar(new ResourcePath("appguard-inliner.jar").path)
     Dex appGuardLoader = new Dex(new ResourcePath("appguard-loader.dex").path)
     String monitorClassName = "org.droidmate.monitor_generator.generated.Monitor"
-    String pathToMonitorApkOnAndroidDevice = InitConstants.AVD_dir_for_temp_files + "monitor.apk"
+    
+    String pathToMonitorApkOnAndroidDevice = BuildConstants.AVD_dir_for_temp_files + "monitor.apk"
 
-    String fileExt = SystemUtils.IS_OS_WINDOWS ? ".exe" : ""
-    def jarsignerPath = Paths.get(LocalInitConstants.jdk8_path, "bin/jarsigner$fileExt")
-    assert isRegularFile(jarsignerPath)
-
+    def jarsignerPath = Paths.get(BuildConstants.jarsigner)
+    assert jarsignerPath.isRegularFile()
     def debugKeystorePath = new ResourcePath("debug.keystore").path
 
     return new ApkInliner(

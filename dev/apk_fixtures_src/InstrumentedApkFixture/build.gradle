@@ -7,6 +7,8 @@
 //
 // www.droidmate.org
 buildscript {
+    // Reference: http://stackoverflow.com/a/35186295/986533
+    System.properties['com.android.build.gradle.overrideVersionCheck'] = 'true'
     repositories {
         jcenter()
     }
@@ -61,5 +63,4 @@ preBuild {
 
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
-  compile project(':lib-apk_fixtures')
 }

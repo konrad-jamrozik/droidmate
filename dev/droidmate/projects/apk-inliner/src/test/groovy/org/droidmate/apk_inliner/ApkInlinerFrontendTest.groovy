@@ -11,7 +11,7 @@ package org.droidmate.apk_inliner
 
 import com.konradjamrozik.ResourcePath
 import groovy.transform.TypeChecked
-import org.droidmate.init.InitConstants
+import org.droidmate.common.BuildConstants
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,6 +20,7 @@ import org.junit.runners.MethodSorters
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 import static groovy.transform.TypeCheckingMode.SKIP
 
@@ -39,14 +40,14 @@ public class ApkInlinerFrontendTest
   @Test
   public void "Inlines apk"()
   {
-    Path inputApkFixturesDir = new ResourcePath(InitConstants.apk_fixtures).path
+    Path inputApkFixturesDir = new ResourcePath(BuildConstants.apk_fixtures).path
     assert Files.isDirectory(inputApkFixturesDir)
     assert Files.list(inputApkFixturesDir).count() == 1
     Path inputApkFixture = new ApkPath(Files.list(inputApkFixturesDir).find() as Path).path
     assert inputApkFixture.fileName.toString() == "com.estrongs.android.taskmanager.apk"
 
-    Path inputDir = InitConstants.apk_inliner_proj_dir.resolve("tmp-test-toremove_input-apks")
-    Path outputDir = InitConstants.apk_inliner_proj_dir.resolve("tmp-test-toremove_output-apks")
+    Path inputDir = Paths.get("tmp-test-toremove_input-apks")
+    Path outputDir = Paths.get("tmp-test-toremove_output-apks")
     inputDir.deleteDir()
     outputDir.deleteDir()
     Files.createDirectory(inputDir)
@@ -57,8 +58,8 @@ public class ApkInlinerFrontendTest
     ApkInlinerFrontend.handleException = {Exception e -> throw e}
     // Act
     ApkInlinerFrontend.main([
-      InitConstants.apk_inliner_param_input, inputDir.toAbsolutePath().toString(),
-      InitConstants.apk_inliner_param_output_dir, outputDir.toAbsolutePath().toString()
+      BuildConstants.apk_inliner_param_input, inputDir.toAbsolutePath().toString(),
+      BuildConstants.apk_inliner_param_output_dir, outputDir.toAbsolutePath().toString()
     ] as String[])
 
     assert Files.list(outputDir).count() == 1

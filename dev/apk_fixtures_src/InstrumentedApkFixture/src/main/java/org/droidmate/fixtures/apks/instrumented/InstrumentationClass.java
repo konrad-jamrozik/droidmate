@@ -23,10 +23,11 @@ import de.uds.infsec.instrumentation.util.Signature;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
+import java.util.Locale;
 
 public class InstrumentationClass
 {
-  public static final String API = "Monitored_API_method_call";
+  public static final String API = "Monitored_API";
 
   public static void instrument()
   {
@@ -136,7 +137,7 @@ public class InstrumentationClass
   public static AppInstrumentationTargets.ReturnObject internalMethod_redirection(
     AppInstrumentationTargets _this, int param1, String param2, AppInstrumentationTargets.ParamObject param3)
   {
-    final String msg = String.format("advancedMethod() called. _this = %s, param1=%d, param2=%s, param3=%s", _this, param1, param2, param3);
+    final String msg = String.format(Locale.US, "advancedMethod() called. _this = %s, param1=%d, param2=%s, param3=%s", _this, param1, param2, param3);
     Log.i(API, msg);
 
     class $ {}

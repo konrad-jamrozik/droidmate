@@ -9,7 +9,7 @@
 
 def libsDir = file("$projectDir/libs")
 
-/* --- MAKE IntelliJ IDEA HAPPY ZONE ---
+/* --- MAKE INTELLIJ IDEA HAPPY ZONE ---
 
   The code below is here to make sure that when "Refresh all Gradle projects" is hit in IntelliJ IDEA, the source folders
   and dependencies will be properly configured in the IDE.
@@ -17,9 +17,25 @@ def libsDir = file("$projectDir/libs")
   This is necessary because this project isn't actually a java project, but it is a wrapper over an ant script:
   see the 'build' task.
 */
-import org.droidmate.init.InitConstants
+import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'java'
+
+/* The tasks below are pruned and/or disabled as they come from Gradle's java plugin which is applied
+  only to make IntelliJ happy and is not fully configured.
+
+  There are more tasks like that that should be disabled, but I hope you know what you are doing.
+
+  Use only "build" and "clean" tasks. */
+tasks.build.dependsOn.remove("check")
+tasks.build.dependsOn.remove("assemble")
+tasks.check.enabled = false
+tasks.assemble.enabled = false
+tasks.jar.enabled = false
+
+/* "antBuild" and "antClean" tasks are defined below */
+tasks.build.dependsOn("antBuild")
+tasks.clean.dependsOn("antClean")
 
 sourceSets {
   main.java.srcDirs = ["src"]
@@ -37,34 +53,16 @@ dependencies {
     on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */
   libsDirFileTree.setBuiltBy(['pullLibCommonAndroidJar'])
   compile libsDirFileTree
+
   // Required by IntelliJ; when building with Gradle, the underlying ant script knows this dependency.
-  File uiautomatorFile = new File(InitConstants.android_platform_dir.toString(), "uiautomator.jar")
-  assert uiautomatorFile.file
-  compile files(uiautomatorFile)
+  compile files(BuildKt.uiautomator_jar.toString())
 
-  File androidJarFile = new File(InitConstants.android_platform_dir.toString(), "android.jar")
-  assert androidJarFile.file
-  compile files(androidJarFile)
-}
-
-task classes (overwrite: true) {
-  /* This task definition is overwritten with "do nothing" here. This is task coming from Gradle's java plugin which is applied
-  only to make IntelliJ happy and is not fully configured. */
+  compile files(BuildKt.android_jar.toString())
 }
 
 
-task test (overwrite: true, type: Test) {
-  /* This task definition is overwritten with "do nothing" here. This is task coming from Gradle's java plugin which is applied
-  only to make IntelliJ happy and is not fully configured. */
 
-  // Workaround for GRADLE-1682. See http://stackoverflow.com/a/14947906/986533
-  // includes = ['**/MonitorGeneratorFrontendTest.class']
-  // Test not included because the test shouldn't be run as part of a test suite.
-  includes = ['']
-
-}
-
-/* --- end of MAKE IntelliJ IDEA HAPPY ZONE --- */
+/* --- end of MAKE INTELLIJ IDEA HAPPY ZONE --- */
 
 def projectLibCommon = findProject(":projects:lib-common-android");
 def antBuildFileName = "build-customized.xml"
@@ -91,22 +89,21 @@ task pullLibCommonAndroidJar(dependsOn: ":projects:lib-common-android:jar") {
   }
 }
 
-/*
-  Note: The 'dependsOn' clause is redundant with 'builtBy' property in the 'dependencies' closure,
-  but it is left here for documentation purposes.
 
+/*
   Note: the underlying ant script inputs all files in libs dir, so if some additional .jar files will be
   found in it (e.g. with sources), the 'antBuild' task will fail to produce output due to classpath clashes.
  */
 task antBuild(dependsOn: [pullLibCommonAndroidJar]) {
   group = "build"
-  description = "Runs the underlying customized ant build file, generated with Android SDK."
+  description = "Runs the underlying customized ant build file with 'ant build'. The ant file was originally " +
+    "generated with Android SDK."
 
   inputs.files configurations.compile
   outputs.dir buildDir
 
   doLast {
-    int exitValue = utils.executeCommand(
+    int exitValue = BuildKt.executeCommand(
       "${project.name} ant build",
       "ant -f $projectDir/$antBuildFileName build"
     )
@@ -115,16 +112,12 @@ task antBuild(dependsOn: [pullLibCommonAndroidJar]) {
   }
 }
 
-task build(overwrite: true, dependsOn: antBuild) {
-  group = "build"
-  description = "Runs the underlying customized ant build file, generated with Android SDK."
-}
-
-task clean(overwrite: true) {
+task antClean {
   group = "build"
   description = "Runs 'ant clean'."
+
   doLast {
-    utils.executeCommand(
+    BuildKt.executeCommand(
       "${project.name} ant clean",
       "ant -f $projectDir/$antBuildFileName clean"
     )

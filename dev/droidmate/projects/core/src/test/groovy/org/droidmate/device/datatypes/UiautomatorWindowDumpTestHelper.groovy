@@ -30,45 +30,45 @@ class UiautomatorWindowDumpTestHelper
 
   public static UiautomatorWindowDump newNullWindowDump()
   {
-    return new UiautomatorWindowDump(null, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
+    return new UiautomatorWindowDump(null, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel)
   }
 
   public static UiautomatorWindowDump newEmptyWindowDump()
   {
-    return new UiautomatorWindowDump("", deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
+    return new UiautomatorWindowDump("", deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel)
   }
 
   public static UiautomatorWindowDump newEmptyActivityWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_tsa_emptyAct, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_tsa_emptyAct, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel)
   }
 
   public static UiautomatorWindowDump newAppHasStoppedDialogWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_dialogbox, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_dialogbox, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel)
   }
 
   public static UiautomatorWindowDump newAppHasStoppedDialogOKDisabledWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_OK_disabled, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_OK_disabled, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel)
   }
 
 
   public static UiautomatorWindowDump newCompleteActionUsingWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_complActUsing_dialogbox, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_complActUsing_dialogbox, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel)
   }
 
 
   public static UiautomatorWindowDump newHomeScreenWindowDump(String id = null)
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_nexus7_home_screen, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel, id)
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_nexus7_home_screen, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel, id)
   }
 
 
   public static UiautomatorWindowDump newAppOutOfScopeWindowDump(String id = null)
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_chrome_offline, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel, id)
+    return new UiautomatorWindowDump(fixtures.windowDumps.f_chrome_offline, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel, id)
   }
 
   //endregion Fixture dumps
@@ -76,7 +76,7 @@ class UiautomatorWindowDumpTestHelper
 
   public static UiautomatorWindowDump newWindowDump(String windowHierarchyDump)
   {
-    return new UiautomatorWindowDump(windowHierarchyDump, deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel)
+    return new UiautomatorWindowDump(windowHierarchyDump, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel)
   }
 
 
@@ -95,7 +95,7 @@ class UiautomatorWindowDumpTestHelper
 
   private static UiautomatorWindowDump skeletonWithPayload(String payload, String id = null)
   {
-    new UiautomatorWindowDump(createDumpSkeleton(payload), deviceModel.getDeviceVerticalDimensionsForTesting(), deviceModel, id)
+    new UiautomatorWindowDump(createDumpSkeleton(payload), deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel, id)
   }
 
   static String createDumpSkeleton(String payload)

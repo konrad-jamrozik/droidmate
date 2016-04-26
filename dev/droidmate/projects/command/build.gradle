@@ -7,30 +7,16 @@
 //
 // www.droidmate.org
 
-import org.droidmate.init.InitConstants
+import org.droidmate.buildsrc.BuildKt
 
 import java.nio.file.Files
 import java.nio.file.Paths
 
 apply plugin: 'groovy'
 apply plugin: 'project-report' // http://www.gradle.org/docs/current/userguide/project_reports_plugin.html
-apply plugin: 'application'
 
-mainClassName = "org.droidmate.frontend.DroidmateFrontend"
-
-run {
-  workingDir rootDir
-
-  java.nio.file.Path argsFile = Paths.get("$rootDir/args.txt")
-  if (Files.exists(argsFile))
-  {
-    List<String> appArgs = argsFile.text.readLines().first().split(" ") as List<String>
-    args appArgs
-  }
-}
-
-compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
-compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 //region Dependencies
 
@@ -62,22 +48,21 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
-// Without this line, the ResourcePaths required by ConfigurationBuilder resolve only to files within jar, e.g. this line:
-// new ResourcePath(InitConstants.appGuardApisList.fileName.toString()).toFile()
-// fails, as the only available URL of the file is:
-//
-//   jar:file:(...)droidmate/dev/droidmate/projects/core/build/libs/core.jar!/appguard_apis.txt
-//
-// With this line added, the URL ultimately used will be:
-//
-//   file:/(...)droidmate/dev/droidmate/projects/core/build/resources/main/appguard_apis.txt
-sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath + project(":projects:core").sourceSets.test.runtimeClasspath
+apply plugin: 'application'
+mainClassName = "org.droidmate.frontend.DroidmateFrontend"
 
-// Without this line, the following error happens when running :projects:command:run
-//
-// java.io.IOException: No URL found for path appguard_apis.txt that starts with 'file' protocol. The found URLs:
-// jar:file:/C:/my/local/repos/github/droidmate/dev/droidmate/projects/core/build/libs/core.jar!/appguard_apis.txt
-sourceSets.main.runtimeClasspath += project(":projects:core").sourceSets.main.runtimeClasspath
+(tasks.run as JavaExec).configure {
+
+  assert sourceSets.main.runtimeClasspath == classpath
+
+  workingDir rootDir
+  java.nio.file.Path argsFile = Paths.get("$rootDir/args.txt")
+  if (Files.exists(argsFile))
+  {
+    List<String> appArgs = argsFile.text.readLines().first().split(" ") as List<String>
+    args appArgs
+  }
+}
 
 dependencies {
 
@@ -87,10 +72,9 @@ dependencies {
   testCompile project(":projects:core").sourceSets.test.output
   testCompile project(":projects:reporter").sourceSets.test.output
 
-  // Workaround for: 'gradlew :p:command:test' fails when reporter tests are run from command.
+  // Workaround for: 'gradlew :p:command:test' fails when reporter tests are run from command line.
   // It works when run from IntelliJ or when run with 'gradlew :p:reporter:test'
-  // This is possibly fixed by https://github.com/JetBrains/kotlin/commit/dbc2299cf20686aa6e747241030ac2047e5735fb
-  testCompile 'org.jetbrains.kotlin:kotlin-test:1.0.0-rc-1017'
+  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
 
   compile project(":projects:core")
   compile project(":projects:reporter")
@@ -99,7 +83,7 @@ dependencies {
 
 //endregion Dependencies
 
-test {
+test.configure {
 
  /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
 
@@ -126,7 +110,7 @@ SourceDirectorySet testResDirs = project(":projects:core").sourceSets.test.resou
 assert testResDirs.srcDirs.size() == 1
 File testResDir = testResDirs.srcDirs[0]
 assert testResDir.path.endsWith("test" + File.separator + "resources")
-File apkFixturesDir = new File(testResDir, InitConstants.apk_fixtures)
+File apkFixturesDir = new File(testResDir, BuildKt.apk_fixtures)
 assert apkFixturesDir.directory
 task testDevice(type: Test, dependsOn: testClasses) {
 
@@ -138,27 +122,7 @@ task testDevice(type: Test, dependsOn: testClasses) {
 
 }
 
-// For interactive, quick testing from cmd line.
-task testi(type: Test, dependsOn: testClasses) {
+apply from: project(":projects").file("maven.gradle")
+// So the published jar to local maven repo with task "install" won't be called command.jar but droidmate.jar
+jar.baseName = rootProject.name
 
-  outputs.upToDateWhen {false}
-
-  //workingDir rootDir
-  testLogging {events 'failed', 'passed'}
-
-  // show standard out and standard error of the test JVM(s) on the console
-  testLogging.showStandardStreams = true
-
-  // The only thing I managed to get to work.
-  //include 'org/droidmate/frontend/MyTestClass.class'
-
-  // DOES NOT WORK :/
-//  /* Reference: http://www.gradle.org/docs/current/userguide/java_plugin.html#testfiltering
-//
-//    If not using filter (comment it out), you could run like:
-//    gradle :projects:core:testi --tests *Configures
-//  */
-//  filter {
-//    includeTestsMatching 'MyTest'
-//  }
-}

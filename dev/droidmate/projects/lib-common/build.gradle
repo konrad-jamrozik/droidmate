@@ -13,22 +13,15 @@
 
 apply plugin: 'groovy'
 apply plugin: 'project-report'
-compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
-compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
 
-  // "gradlew build" works without this line, but IntelliJ "make" is unhappy without it. Looks like IntelliJ needs it to pick-up
-  // the META-INF/services/org.codehaus.groovy.runtime.ExtensionModule file.
-  runtime files(new File(sourceSets.main.resources.srcDirs.find(), "."))
-
-  compile 'com.github.konrad-jamrozik:utilities:c52a5ef326'
-
-  // Constants shared between most of DroidMate's build scripts and sources
-  compile files("$rootDir/../init/build/libs/init.jar")
+  compile "com.github.konrad-jamrozik:utilities:$utilities_version"
 
   // Groovy lang
-  compile 'org.codehaus.groovy:groovy-all:2.4.5'
+  compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
   // General utils
   compile 'org.apache.commons:commons-exec:1.2'
@@ -50,4 +43,58 @@ dependencies {
   compile 'com.google.jimfs:jimfs:1.0'
 
   testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+File resDir = IterableExtensions.findSingle(sourceSets.main.resources.srcDirs)
+File buildConstantsFile = new File(resDir, "buildConstants.properties")
+
+task writeBuildConstantsProperties() { Task it ->
+
+  it.outputs.file(buildConstantsFile)
+
+  doLast {
+    buildConstantsFile.withWriter {BufferedWriter wr ->
+      ([
+        "apk_inliner_param_input"                    : BuildKt.apk_inliner_param_input,
+        "apk_inliner_param_output_dir"               : BuildKt.apk_inliner_param_output_dir,
+        "apk_inliner_param_input_default"            : BuildKt.apk_inliner_param_input_default.toString(),
+        "apk_inliner_param_output_dir_default"       : BuildKt.apk_inliner_param_output_dir_default.toString(),
+        "AVD_dir_for_temp_files"                     : BuildKt.AVD_dir_for_temp_files,
+        "jarsigner_relative"                         : BuildKt.jarsigner_relative,
+        "apk_fixtures"                               : BuildKt.apk_fixtures,
+        "monitored_inlined_apk_fixture_name"         : BuildKt.monitored_inlined_apk_fixture_name,
+        "monitor_generator_output_relative_path"     : BuildKt.monitor_generator_output_relative_path,
+        "test_temp_dir_name"                         : BuildKt.test_temp_dir_name,
+        "apks_dir"                                   : BuildKt.apks_dir,
+        "appguard_apis_txt"                          : BuildKt.appguard_apis_txt,
+        "monitor_generator_res_name_monitor_template": BuildKt.monitor_generator_res_name_monitor_template,
+        "aapt_command_relative"                      : BuildKt.aapt_command_relative,
+        "adb_command_relative"                       : BuildKt.adb_command_relative
+      ]).each {key, value ->
+        wr.writeLine(key + "=" + value)
+      }
+    }
+  }
+}
+
+clean.configure { doLast { file(buildConstantsFile).delete() } }
+
+processResources.dependsOn("writeBuildConstantsProperties")
+
+apply from: project(":projects").file("maven.gradle")
+
+task testi(type: Test, dependsOn: "testClasses") { Test it ->
+  it.group = "verification"
+  it.description = "Interactive test"
+  it.filter.includeTest "*BuildConstantsTest", "*"
+}
+
+task debug { Task it ->
+  it.group = "help"
+  doLast {
+    println "sourceSets.main.compileClasspath"
+    sourceSets.main.compileClasspath.each { println it}
+    println "sourceSets.main.runtimeClasspath"
+    sourceSets.main.runtimeClasspath.each { println it}
+  }
 }

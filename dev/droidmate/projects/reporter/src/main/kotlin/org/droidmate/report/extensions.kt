@@ -8,8 +8,8 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import com.konradjamrozik.FileSystemsOperations
 import com.google.common.collect.Table
+import com.konradjamrozik.FileSystemsOperations
 import org.codehaus.groovy.runtime.NioGroovyMethods
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
@@ -24,8 +24,8 @@ fun Path.text(): String {
   return NioGroovyMethods.getText(this)
 }
 
-fun Path.copyDirContentsRecursivelyToDirInDifferentFileSystem(destDir: Path): Unit {
-  FileSystemsOperations().copyDirContentsRecursivelyToDirInDifferentFileSystem(this, destDir)
+fun List<Path>.copyFilesToDirInDifferentFileSystem(destDir: Path): Unit {
+  FileSystemsOperations().copyFilesToDirInDifferentFileSystem(this, destDir)
 }
 
 fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {

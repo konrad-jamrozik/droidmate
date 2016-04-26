@@ -24,4 +24,5 @@ include "projects:core",
   "projects:monitor-generator",
   "projects:apk-inliner",
   "projects:reporter",
-  "projects:command"
+  "projects:command",
+  "DummyAndroidApp"

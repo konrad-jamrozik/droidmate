@@ -10,15 +10,10 @@
 package org.droidmate.test_base
 
 import ch.qos.logback.classic.Level
-import groovy.transform.TypeChecked
-import org.droidmate.android_sdk.AaptWrapper
-import org.droidmate.common.SysCmdExecutor
-import org.droidmate.configuration.Configuration
 import org.droidmate.logging.LogbackAppenders
 import org.droidmate.logging.LogbackUtilsRequiringLogbackLog
 import org.junit.Before
 
-@TypeChecked
 class DroidmateGroovyTestCase extends GroovyTestCase
 {
   /*
@@ -39,7 +34,7 @@ class DroidmateGroovyTestCase extends GroovyTestCase
   static {
     // WISH maybe better solution is to use @Rule: https://edgblog.wordpress.com/2013/10/21/a-junit-rule-to-turn-test-logging-onoff/
     LogbackAppenders.setThresholdLevelOfStdStreamsAppenders(stdoutAppendersLogLevelForTesting)
-    fixtures = new FilesystemTestFixtures(new AaptWrapper(Configuration.default, new SysCmdExecutor()))
+    fixtures = FilesystemTestFixtures.build()
   }
 
   @Before

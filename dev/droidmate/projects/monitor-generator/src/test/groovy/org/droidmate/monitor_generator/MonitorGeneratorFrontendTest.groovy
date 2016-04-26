@@ -10,7 +10,7 @@
 package org.droidmate.monitor_generator
 
 import groovy.transform.TypeChecked
-import org.droidmate.init.InitConstants
+import org.droidmate.common.BuildConstants
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,6 +19,7 @@ import org.junit.runners.MethodSorters
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 import static groovy.transform.TypeCheckingMode.SKIP
 
@@ -35,7 +36,7 @@ public class MonitorGeneratorFrontendTest
   @Test
   public void "Generates DroidMate monitor"()
   {
-    Path actualMonitorJava = InitConstants.monitor_generator_generated_monitor
+    Path actualMonitorJava = Paths.get(BuildConstants.monitor_generator_output_relative_path)
     assert Files.notExists(actualMonitorJava) || Files.isWritable(actualMonitorJava)
 
     MonitorGeneratorFrontend.handleException = { Exception e -> throw e }

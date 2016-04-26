@@ -11,7 +11,6 @@ package org.droidmate.fixtures.apks.instrumented;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SyncInfo;
 import android.hardware.Camera;
 import android.net.ConnectivityManager;
@@ -22,7 +21,6 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import org.droidmate.fixtures.apks.lib.ApkFixturesConstants;
 
 import java.io.IOException;
 import java.net.URL;
