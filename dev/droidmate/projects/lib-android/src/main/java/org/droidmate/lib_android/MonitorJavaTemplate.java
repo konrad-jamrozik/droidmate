@@ -16,9 +16,7 @@ package org.droidmate.lib_android;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
 import org.droidmate.common.logcat.Api;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -83,12 +81,7 @@ public class MonitorJavaTemplate
   public static final String msg_ctor_success = "Monitor constructed successfully.";
   public static final String msg_ctor_failure = "Monitor constructed, but failed to start TCP server.";
 
-  // org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
   private static final String stack_trace_frame_delimiter = Api.stack_trace_frame_delimiter;
-  // !!! DUPLICATION WARNING !!! org.droidmate.common.logcat.Api.stack_trace_frame_delimiter
-  // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-  // private static final String stack_trace_frame_delimiter = "->";
-  // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
   /**
    * <p>
@@ -99,6 +92,8 @@ public class MonitorJavaTemplate
    */
   public static final String msgPrefix_init_success = "Monitor initialized for package ";
 
+  // KJA next: this and other constants are to be moved to new class MonitorConstants living in lib-common.
+  // KJA next: check if lib-common-android really has to be build with java 6.
   // WISH known limitation: if running droidmate with multiple devices, each will have the same set of server ports.
   // Suggested fix: make monitor.java read the port number from a .txt file; deploy different .txt file to each device.
   public static final List<Integer> serverPorts = Arrays.asList(59701,59702,59703,59704);

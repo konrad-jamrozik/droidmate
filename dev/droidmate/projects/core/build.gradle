@@ -16,8 +16,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 //region Dependencies
 
-String libsDirPath = "libs"
-
 // See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
@@ -36,12 +34,6 @@ dependencies {
   compile project(":projects:lib-common")
   compile project(":projects:lib-common-android")
   compile project(":projects:lib-android")
-
-  def libsDirFileTree = fileTree(dir: "$projectDir/$libsDirPath", include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
-  /* Making this additional setter call instead of supplying a value in constructor is a workaround for an issue I discovered
-     on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */
-  libsDirFileTree.setBuiltBy(['pullUiaDaemonJar'])
-  compile libsDirFileTree
 
   compile 'com.beust:jcommander:1.35'
   compile 'com.google.guava:guava:19.0'

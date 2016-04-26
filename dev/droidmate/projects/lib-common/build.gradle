@@ -16,8 +16,9 @@ import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'groovy'
 apply plugin: 'project-report'
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+compileGroovy.options.bootClasspath = BuildKt.jdk7_rt_jar
 
 dependencies {
 

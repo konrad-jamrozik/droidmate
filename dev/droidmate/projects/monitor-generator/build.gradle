@@ -80,6 +80,7 @@ File monitorJava = new File(monitorApkScaffoldingDir, "src/org/droidmate/monitor
 assert monitorJava.parentFile.isDirectory()
 
 task copyGeneratedMonitorToScaffolding(type: Copy, dependsOn: "run") { Copy copy ->
+  group = "build"
   
   copy.from project.ext.runOutput
   copy.into monitorJava.parent
@@ -96,7 +97,8 @@ task copyGeneratedMonitorToScaffolding(type: Copy, dependsOn: "run") { Copy copy
   }
 }
 
-task buildMonitorApk(dependsOn: "copyGeneratedMonitorToScaffolding") {
+task buildMonitorApk(dependsOn: ["copyGeneratedMonitorToScaffolding", "pullLibCommonJar"]) {
+  group = "build"
 
   File monitorApkOutputByAnt = file("${monitorApkScaffoldingDir.path}/bin/monitor-apk-debug.apk")
   def copyFrom = monitorApkOutputByAnt
@@ -134,6 +136,7 @@ task buildMonitorApk(dependsOn: "copyGeneratedMonitorToScaffolding") {
 }
 
 task cleanMonitorApk() {
+  group = "build"
   doLast {
     int exitValue = BuildKt.executeCommand(
       "${monitorApkScaffoldingDir.name} ant clean",
@@ -145,6 +148,7 @@ task cleanMonitorApk() {
   }
 }
 task cleanRun(type: Delete) {
+  group = "build"
   delete project.ext.runOutput.parent
   delete monitorJava
 }
@@ -164,3 +168,9 @@ test.configure {
 processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
 
 apply from: project(":projects").file("debug.gradle")
+
+def projectLibCommon = findProject(":projects:lib-common")
+task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy copy ->
+
+  copy.from(projectLibCommon.jar.archivePath).into(new File(monitorApkScaffoldingDir, "libs"))
+}

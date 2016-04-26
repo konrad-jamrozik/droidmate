@@ -64,7 +64,7 @@ dependencies {
 
 /* --- end of MAKE INTELLIJ IDEA HAPPY ZONE --- */
 
-def projectLibCommon = findProject(":projects:lib-common-android");
+def projectLibCommon = findProject(":projects:lib-common-android")
 def antBuildFileName = "build-customized.xml"
 
 task pullLibCommonAndroidJar(dependsOn: ":projects:lib-common-android:jar") {
