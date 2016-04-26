@@ -10,8 +10,11 @@ import org.droidmate.buildsrc.BuildKt
 //
 // www.droidmate.org
 /*
-  This project contains classes reused by multiple projects, none of which are run on an Android device.
-  Because none of them are run on an Android Device, the classes in this project can and are compiled with Groovy and Java 8.
+  This project contains classes reused by multiple projects, some of which are run on an Android device.
+  Because some of them are run on an Android Device, the classes in this project have to be compiled with Java 7, not Java 8.
+  
+  Even though this project uses Groovy, it can still run on Android Device. Not sure why, maybe because at runtime there are no
+  direct calls to methods from Groovy SDK, which presumably is not present on the device.
 */
 
 apply plugin: 'groovy'
