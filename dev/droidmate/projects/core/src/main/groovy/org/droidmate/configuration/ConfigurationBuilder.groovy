@@ -19,7 +19,6 @@ import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder
 import org.apache.commons.lang3.builder.StandardToStringStyle
 import org.droidmate.common.BuildConstants
-import org.droidmate.common.FileUtils
 import org.droidmate.exceptions.ConfigurationException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -129,8 +128,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
     try
     {
       setLogbackRootLoggerLoggingLevel(config)
-      bindDirsAndResources(config, fs)
-      createAndValidateDirs(config)
+      setupResourcesAndPaths(config, fs)
       validateExplorationSettings(config)
 
       // This increment is done so each connected device will have its uiautomator-daemon reachable on a separate port.
@@ -188,34 +186,21 @@ class ConfigurationBuilder implements IConfigurationBuilder
   }
 
 
-  private static void bindDirsAndResources(Configuration cfg, FileSystem fs) throws ConfigurationException
+  private static void setupResourcesAndPaths(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
     cfg.appGuardApisList = new Resource(BuildConstants.appguard_apis_txt).text
+    cfg.uiautomatorDaemonJar = new Resource("uiautomator-daemon.jar").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
+    cfg.monitorApk = new Resource("monitor.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
     
-    cfg.uiautomatorDaemonJar = new Resource("uiautomator-daemon.jar").extractTo(fs.getPath("./temp_extracted_resources"))
-
-    cfg.monitorApk = new Resource("monitor.apk").extractTo(fs.getPath("./temp_extracted_resources"))
-
     cfg.droidmateOutputDirPath = fs.getPath(cfg.droidmateOutputDir)
-
     cfg.reportInputDirPath = fs.getPath(cfg.reportInputDir)
-
     cfg.reportOutputDirPath = fs.getPath(cfg.reportOutputDir)
+    cfg.apksDirPath = cfg.useApkFixturesDir ? new ResourcePath(BuildConstants.apk_fixtures).path : fs.getPath(cfg.apksDirName.toString())
 
-    if (cfg.useApkFixturesDir)
-      cfg.apksDirPath = new ResourcePath(BuildConstants.apk_fixtures).path
-    else
-      cfg.apksDirPath = fs.getPath(cfg.apksDirName.toString())
+    cfg.droidmateOutputDirPath.createDirIfNotExists()
+    cfg.apksDirPath.createDirIfNotExists()
   }
 
-  private static void createAndValidateDirs(Configuration cfg)
-  {
-    if (!Files.exists(cfg.droidmateOutputDirPath))
-      Files.createDirectory(cfg.droidmateOutputDirPath)
-
-    FileUtils.validateDirectory(cfg.apksDirPath)
-    FileUtils.validateDirectory(cfg.droidmateOutputDirPath)
-  }
 
   private static void setLogbackRootLoggerLoggingLevel(Configuration config) throws ConfigurationException
   {

@@ -36,6 +36,7 @@ class BuildConstants
   static String apks_dir                                    = safeGetProperty(properties, "apks_dir")
   static String appguard_apis_txt                           = safeGetProperty(properties, "appguard_apis_txt")
   static String AVD_dir_for_temp_files                      = safeGetProperty(properties, "AVD_dir_for_temp_files")
+  static String dir_name_temp_extracted_resources           = safeGetProperty(properties, "dir_name_temp_extracted_resources") 
   static String monitor_generator_res_name_monitor_template = safeGetProperty(properties, "monitor_generator_res_name_monitor_template")
   static String monitor_generator_output_relative_path      = safeGetProperty(properties, "monitor_generator_output_relative_path")
   static String monitored_inlined_apk_fixture_name          = safeGetProperty(properties, "monitored_inlined_apk_fixture_name")

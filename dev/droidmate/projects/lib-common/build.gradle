@@ -70,6 +70,7 @@ task writeBuildConstantsProperties() { Task it ->
         "test_temp_dir_name"                         : BuildKt.test_temp_dir_name,
         "apks_dir"                                   : BuildKt.apks_dir,
         "appguard_apis_txt"                          : BuildKt.appguard_apis_txt,
+        "dir_name_temp_extracted_resources"          : BuildKt.dir_name_temp_extracted_resources,
         "monitor_generator_res_name_monitor_template": BuildKt.monitor_generator_res_name_monitor_template,
         "aapt_command_relative"                      : BuildKt.aapt_command_relative,
         "adb_command_relative"                       : BuildKt.adb_command_relative

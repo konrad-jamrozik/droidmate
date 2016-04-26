@@ -77,6 +77,14 @@ val test_temp_dir_name = "temp_dir_for_tests"
 
 val appguard_apis_txt = "appguard_apis.txt"
 
+/**
+ * Directory for resources extracted from jars in the classpath. 
+ * 
+ * Some resources have to be extracted to a directory. For example, an .apk file that is inside a .jar needs to be pushed 
+ * to a device.
+ */
+val dir_name_temp_extracted_resources = "temp_extracted_resources"
+
 fun executeCommand(commandName: String, commandContent: String): Int {
 
   val cmd = if (OS.isWindows) "cmd /c " else ""
