@@ -14,8 +14,6 @@ public class Main
 {
   public static void main(String[] args)
   {
-    // KJA current work:
-    // logback is broken. Prints messages twice, shows thread id, shows debug. Hm. Fix logback runtime deployment.
     DroidmateFrontend.main();
   }
 }

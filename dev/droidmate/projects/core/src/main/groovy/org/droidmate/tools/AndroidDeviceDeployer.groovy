@@ -186,7 +186,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
     } catch (Throwable setupDeviceThrowable)
     {
-      log.warn("! Caught ${setupDeviceThrowable.class.simpleName} in setupDevice($deviceIndex). " +
+      log.warn("! Caught ${setupDeviceThrowable.class.simpleName} in setupDevice(deviceIndex: $deviceIndex). " +
         "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
 
       return [null, null, setupDeviceThrowable]

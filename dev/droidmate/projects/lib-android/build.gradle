@@ -10,7 +10,7 @@
   This project contains classes that:
   - require access to Android API: they depend on Android.jar;
   - will be compiled with legacy android ant script, requiring compatibility with Java 5
-  (this file uses jdk 6, hoping it will be equivalent to 5).
+  (this file uses jdk 6, which works with jdk 5).
 
 */
 
