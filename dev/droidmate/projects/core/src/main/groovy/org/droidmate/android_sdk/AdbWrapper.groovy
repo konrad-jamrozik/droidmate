@@ -576,28 +576,6 @@ public class AdbWrapper implements IAdbWrapper
     }
   }
 
-  /*@Override
-  public void stopUiautomatorDaemon(String deviceSerialNumber) throws AdbWrapperException
-  {
-    try
-    {
-      String commandDescription = String
-        .format(
-        "Executing adb to stop UiAutomatorDaemon service on Android Device with " +
-          "s/n %s.",
-        deviceSerialNumber)
-
-      this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "shell am force-stop",
-        "adb shell am force-stop org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException("Executing 'adb shell am force-stop org.droidmate.uiautomator2daemon.UiAutomator2Daemon' failed. Oh my.", e)
-    }
-  }*/
-
   @Override
   public void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
   {
@@ -627,35 +605,6 @@ public class AdbWrapper implements IAdbWrapper
       throw new AdbWrapperException("Executing 'adb shell instrument --user 0 -w org.droidmate.uiautomator2daemon ...' failed. Oh my.", e)
     }
   }
-
-  /*@Override
-  public void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
-  {
-    try
-    {
-      String commandDescription = String
-        .format(
-        "Executing adb to start UiAutomatorDaemon.init() method on Android Device with " +
-          "s/n %s.",
-        deviceSerialNumber)
-
-      String uiaDaemonCmdLine = String.format("-c %s -e %s %s -e %s %s -e %s %s",
-        Constants.uiaDaemon_initMethodName,
-        Constants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
-        Constants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
-        Constants.uiaDaemonParam_tcpPort, port)
-
-      this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "shell uiautomator runtest",
-        cfg.uiautomatorDaemon.fileName.toString(),
-        uiaDaemonCmdLine)
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException("Executing 'adb shell uiautomator runtest ...' failed. Oh my.", e)
-    }
-  }*/
 
   @Override
   void removeFile(String deviceSerialNumber, String fileName, String runAsPackage) throws AdbWrapperException

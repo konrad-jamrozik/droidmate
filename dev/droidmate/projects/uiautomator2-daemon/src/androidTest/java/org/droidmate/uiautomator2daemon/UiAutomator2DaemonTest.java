@@ -11,10 +11,8 @@ package org.droidmate.uiautomator2daemon;
 import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.SdkSuppress;
-//import android.support.test.rule.ServiceTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
-//import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -105,34 +103,4 @@ public class UiAutomator2DaemonTest
       Log.wtf(uiaDaemon_logcatTag, e);
     }
   }
-
-  /*
-  @Test
-  public void testWithStartedService() throws TimeoutException, InterruptedException {
-    Log.v(uiaDaemon_logcatTag, "----------------------------");
-    Log.v(uiaDaemon_logcatTag, "uiautomador2-daemon test start");
-    Log.v(uiaDaemon_logcatTag, "----------------------------");
-
-    Instrumentation instr = InstrumentationRegistry.getInstrumentation();
-    assert instr != null;
-    UiDevice device = UiDevice.getInstance(instr);
-    assert device != null;
-
-    Intent intent = new Intent(InstrumentationRegistry.getTargetContext(), UiAutomatorDaemonService.class);
-    intent.putExtra(uiaDaemonParam_waitForGuiToStabilize, "true");
-    intent.putExtra(uiaDaemonParam_waitForWindowUpdateTimeout, "50");
-    intent.putExtra(uiaDaemonParam_tcpPort, "59800");
-    mServiceRule.startService(intent);
-    //InstrumentationRegistry.getTargetContext().startService(intent);
-    //InstrumentationRegistry.getTargetContext().bindService(intent);
-
-    Log.v(uiaDaemon_logcatTag, "----------------------------");
-    Log.v(uiaDaemon_logcatTag, "uiautomador2-daemon test end");
-    Log.v(uiaDaemon_logcatTag, "----------------------------");
-
-    Log.v(uiaDaemon_logcatTag, "locking test to keep the service running");
-    synchronized (intent){
-      intent.wait();
-    }
-  }*/
 }
