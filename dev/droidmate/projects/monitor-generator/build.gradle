@@ -22,7 +22,6 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 dependencies {
 
   compile project(":projects:lib-common")
-  compile buildSrcJars
 
   compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
@@ -169,3 +168,5 @@ test.configure {
 
 // Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
 processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
+
+apply from: project(":projects").file("debug.gradle")

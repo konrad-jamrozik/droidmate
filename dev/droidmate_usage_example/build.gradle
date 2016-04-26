@@ -28,7 +28,17 @@ repositories {
 }
 
 dependencies {
-  // This dependency is supposed to come from mavenLocal() (see above).
+  // This dependency is supposed to come from mavenLocal(). See comment on "mavenLocal()" above.
   compile "org.droidmate:droidmate:dev"
   testCompile 'junit:junit:4.12'
+}
+
+task debug {Task it ->
+  it.group = "help"
+  doLast {
+    println "sourceSets.test.compileClasspath"
+    sourceSets.test.compileClasspath.each {println it}
+    println "sourceSets.test.runtimeClasspath"
+    sourceSets.test.runtimeClasspath.each {println it}
+  }
 }

@@ -52,7 +52,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
   {
     this.compareRuns = compareRuns
     this.config = config
-    this.appGuardApis = ApiMapping.parseAppguardLegacyApis(config.appGuardApisList.readLines())
+    this.appGuardApis = ApiMapping.parseAppguardLegacyApis(config.appGuardApisList)
   }
 
   @Override

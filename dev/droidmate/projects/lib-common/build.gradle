@@ -21,7 +21,9 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
 
-  compile "com.github.konrad-jamrozik:utilities:$utilities_version"
+  compile("com.github.konrad-jamrozik:utilities:$utilities_version") {
+    exclude module: "slf4j-simple"
+  }
 
   // Groovy lang
   compile 'org.codehaus.groovy:groovy-all:2.4.6'

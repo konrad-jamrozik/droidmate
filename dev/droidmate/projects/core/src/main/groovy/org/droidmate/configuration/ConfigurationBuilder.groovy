@@ -188,7 +188,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
   private static void setupResourcesAndPaths(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
-    cfg.appGuardApisList = new Resource(BuildConstants.appguard_apis_txt).text
+    cfg.appGuardApisList = new Resource(BuildConstants.appguard_apis_txt).text.readLines().findAll {it.size() > 0 && !it.startsWith("#")}
     cfg.uiautomatorDaemonJar = new Resource("uiautomator-daemon.jar").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
     cfg.monitorApk = new Resource("monitor.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
     
@@ -232,7 +232,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
     displayStyle.setContentStart("")
     displayStyle.setContentEnd("")
     displayStyle.setFieldSeparator("\n")
-
+    
     String configurationDump = new ReflectionToStringBuilder(config, displayStyle).toString()
     configurationDump = configurationDump.tokenize('\n').sort().join("\n")
 

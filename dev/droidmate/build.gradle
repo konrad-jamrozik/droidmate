@@ -20,8 +20,6 @@ project(":projects:uiautomator-daemon").buildDir = "bin"
 
 ext.kotlin_version = '1.0.1-2'
 
-ext.buildSrcJars = fileTree("$rootDir/buildSrc/build/libs") { include("*.jar") exclude("*javadoc.jar", "*sources.jar")}
-
 buildscript {
 
   ext.utilities_version = 'f5c0d67d2d'
