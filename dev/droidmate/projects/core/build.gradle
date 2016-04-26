@@ -26,7 +26,7 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 dependencies {
 
   compile("com.github.konrad-jamrozik:utilities:$utilities_version") {
-    exclude module: "slf4j-simple"
+    exclude group: "org.slf4j", module: "slf4j-simple"
   }
 
   forceJunitPriority 'junit:junit:4.12'
