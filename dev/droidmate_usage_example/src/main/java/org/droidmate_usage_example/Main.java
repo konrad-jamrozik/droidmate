@@ -6,6 +6,8 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
+package org.droidmate_usage_example;
+
 import org.droidmate.frontend.DroidmateFrontend;
 
 public class Main
