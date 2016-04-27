@@ -11,11 +11,11 @@ package org.droidmate.exploration.device
 
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.droidmate.MonitorConstants
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.common_android.Constants
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -64,7 +64,7 @@ class InitMsgsReader implements IInitMsgsReader
 
     // This is because this call waits for minimum number of messages.
     List<ITimeFormattedLogcatMessage> messages = device.waitForLogcatMessages(
-      MonitorJavaTemplate.tag_init, 2, monitorServerStartTimeout, monitorServerStartQueryDelay)
+      MonitorConstants.tag_init, 2, monitorServerStartTimeout, monitorServerStartQueryDelay)
     log.debug("readMonitorMessages(): obtained messages")
 
     checkCount(messages)
@@ -88,19 +88,19 @@ class InitMsgsReader implements IInitMsgsReader
   {
     assert messages.size() in [2,4]
 
-    assert [MonitorJavaTemplate.msg_ctor_success, MonitorJavaTemplate.msg_ctor_failure].any {
+    assert [MonitorConstants.msg_ctor_success, MonitorConstants.msg_ctor_failure].any {
       messages[0].messagePayload.contains(it)
     }
 
-    assert messages[1].messagePayload.contains(MonitorJavaTemplate.msgPrefix_init_success)
+    assert messages[1].messagePayload.contains(MonitorConstants.msgPrefix_init_success)
 
     if (messages.size() == 4)
     {
-      assert [MonitorJavaTemplate.msg_ctor_success, MonitorJavaTemplate.msg_ctor_failure].any {
+      assert [MonitorConstants.msg_ctor_success, MonitorConstants.msg_ctor_failure].any {
         messages[2].messagePayload.contains(it)
       }
 
-      assert messages[3].messagePayload.contains(MonitorJavaTemplate.msgPrefix_init_success)
+      assert messages[3].messagePayload.contains(MonitorConstants.msgPrefix_init_success)
     }
   }
 
@@ -108,14 +108,14 @@ class InitMsgsReader implements IInitMsgsReader
   {
     assert messages.size() in [2,4]
 
-    if (!messages[0].messagePayload.contains(MonitorJavaTemplate.msg_ctor_success))
+    if (!messages[0].messagePayload.contains(MonitorConstants.msg_ctor_success))
       throw new DeviceException(
         "Monitor failed to construct without exception. " +
           "Logcat message: ${messages[0].messagePayload}")
 
     if (messages.size() == 4)
     {
-      if (!messages[2].messagePayload.contains(MonitorJavaTemplate.msg_ctor_success))
+      if (!messages[2].messagePayload.contains(MonitorConstants.msg_ctor_success))
         throw new DeviceException(
           "Second monitor failed to construct without exception. " +
             "Logcat message: ${messages[2].messagePayload}")
@@ -139,9 +139,9 @@ class InitMsgsReader implements IInitMsgsReader
           "Such situation is unsupported. To diagnose the issue, please inspect logcat. " +
           "If there are more than two processes started, " +
           "logs like 'I/ActivityManager: Start proc' will be present 3 or more times. " +
-          "Also, see the logs with tags from ${MonitorJavaTemplate.simpleName}"
+          "Also, see the logs with tags from ${MonitorConstants.simpleName}"
 
-      throw new DeviceException("Expected to read from logcat 2 or 4 messages tagged '${MonitorJavaTemplate.tag_init}'. " +
+      throw new DeviceException("Expected to read from logcat 2 or 4 messages tagged '${MonitorConstants.tag_init}'. " +
         "First (and possibly third) message denoting monitor .ctor() finished. " +
         "Second (and possibly fourth) message denoting monitor .init() finished. " +
         "However, the number of messages is instead: ${messages.size()}. " + msgHint)

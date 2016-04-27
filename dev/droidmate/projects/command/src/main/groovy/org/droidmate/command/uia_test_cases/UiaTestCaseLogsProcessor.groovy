@@ -11,6 +11,7 @@ package org.droidmate.command.uia_test_cases
 
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.droidmate.MonitorConstants
 import org.droidmate.common.logcat.ApiLogcatMessage
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.common_android.Constants
@@ -19,7 +20,6 @@ import org.droidmate.deprecated_still_used.IExplorationOutputCollectorFactory
 import org.droidmate.deprecated_still_used.TimestampedExplorationAction
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.ExplorationAction
-import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.logcat.IUiaTestActionLogcatMessage
@@ -87,18 +87,18 @@ class UiaTestCaseLogsProcessor implements IUiaTestCaseLogsProcessor
     firstMsg = logcatMessages.first()
 
     String backwardCompatibleMonitorTag = "Monitor "
-    assert firstMsg.tag == MonitorJavaTemplate.tag_init || firstMsg.tag == backwardCompatibleMonitorTag
-    assert firstMsg.messagePayload == MonitorJavaTemplate.msg_ctor_success
+    assert firstMsg.tag == MonitorConstants.tag_init || firstMsg.tag == backwardCompatibleMonitorTag
+    assert firstMsg.messagePayload == MonitorConstants.msg_ctor_success
 
     // Drop the instrumentation redirection status messages.
     logcatMessages = logcatMessages.drop(1).dropWhile {it.tag == Constants.instrumentation_redirectionTag}
     firstMsg = logcatMessages.first()
-    assert firstMsg.tag == MonitorJavaTemplate.tag_init || firstMsg.tag == backwardCompatibleMonitorTag
-    assert firstMsg.messagePayload.startsWith(MonitorJavaTemplate.msgPrefix_init_success)
+    assert firstMsg.tag == MonitorConstants.tag_init || firstMsg.tag == backwardCompatibleMonitorTag
+    assert firstMsg.messagePayload.startsWith(MonitorConstants.msgPrefix_init_success)
 
     // Extract monitor init time and app package name from message announcing monitor finished initializing.
     LocalDateTime monitorInitTime = firstMsg.time
-    String appPackageName = firstMsg.messagePayload - MonitorJavaTemplate.msgPrefix_init_success - " "
+    String appPackageName = firstMsg.messagePayload - MonitorConstants.msgPrefix_init_success - " "
     assert appPackageName == appPackageName.trim()
 
     logcatMessages = logcatMessages.drop(1)
@@ -119,7 +119,7 @@ class UiaTestCaseLogsProcessor implements IUiaTestCaseLogsProcessor
   @SuppressWarnings("GroovyAssignmentToMethodParameter")
   private IApkExplorationOutput collectExplorationOutput(String testCaseName, String appPackageName, LocalDateTime firstExplActionTime, LocalDateTime monitorInitTime, List<ITimeFormattedLogcatMessage> logcatMessages)
   {
-    assert logcatMessages.each {assert it.tag in [MonitorJavaTemplate.tag_api, Constants.uiaTestCaseTag]}
+    assert logcatMessages.each {assert it.tag in [MonitorConstants.tag_api, Constants.uiaTestCaseTag]}
     // the reset app action is assumed to be done by the user manually before she starts the uia run.
     TimestampedExplorationAction firstAction = TimestampedExplorationAction.from(newResetAppExplorationAction(), firstExplActionTime)
     def collector = explorationOutputCollectorFactory.create(appPackageName)
@@ -133,7 +133,7 @@ class UiaTestCaseLogsProcessor implements IUiaTestCaseLogsProcessor
 
       while (!logcatMessages.isEmpty())
       {
-        if (logcatMessages[0].tag == MonitorJavaTemplate.tag_api)
+        if (logcatMessages[0].tag == MonitorConstants.tag_api)
         {
           consumeApiLogs(apkExplOut, logcatMessages)
           lastLogWasEvent = false
@@ -169,9 +169,9 @@ class UiaTestCaseLogsProcessor implements IUiaTestCaseLogsProcessor
     assert msgs?.size() > 0
 
     output.apiLogs.add(
-      msgs.takeWhile {it.tag == MonitorJavaTemplate.tag_api}.collect {ApiLogcatMessage.from(it)} as List<IApiLogcatMessage>)
+      msgs.takeWhile {it.tag == MonitorConstants.tag_api}.collect {ApiLogcatMessage.from(it)} as List<IApiLogcatMessage>)
 
-    while (!msgs.isEmpty() && msgs[0].tag == MonitorJavaTemplate.tag_api)
+    while (!msgs.isEmpty() && msgs[0].tag == MonitorConstants.tag_api)
       msgs.remove(0)
   }
 

@@ -8,16 +8,28 @@
 // www.droidmate.org
 /*
   This project contains classes that:
-  - require access to Android API: they depend on Android.jar;
-  - will be compiled with legacy android ant script, requiring compatibility with Java 5
-  (this file uses jdk 6, which works with jdk 5).
-
+  
+  1. Require access to Android API: they depend on Android.jar;
+  2. will be compiled with legacy android ant script, requiring compatibility with Java 5
+    
+  The used ant script is in 
+  
+    repo/dev/droidmate/projects/monitor-generator/monitor-apk-scaffolding/monitor-generator/monitor-apk-scaffolding/build.xml
+   
+  and it uses
+  
+    android-sdk/tools/ant/build.xml
+  
+  which requires Java version 5.
 */
 
 import org.droidmate.buildsrc.BuildKt
 
+// KJA rename project to "monitor-template"
+
 apply plugin: 'java'
 
+// KJA change to V5 and silence bootClasspath warning (provided on Android)
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 compileJava.options.bootClasspath = BuildKt.jdk7_rt_jar

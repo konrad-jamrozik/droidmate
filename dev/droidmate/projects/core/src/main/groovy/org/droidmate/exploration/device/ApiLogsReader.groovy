@@ -9,8 +9,8 @@
 
 package org.droidmate.exploration.device
 
-import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.droidmate.MonitorConstants
 import org.droidmate.common.DroidmateException
 import org.droidmate.common.logcat.ApiLogcatMessage
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
@@ -18,7 +18,6 @@ import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
-import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.slf4j.Logger
@@ -97,7 +96,7 @@ class ApiLogsReader implements IApiLogsReader
   @Deprecated
   List<ITimeFormattedLogcatMessage> getMessagesFromLogcat(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
   {
-    def messages = device.readLogcatMessages(MonitorJavaTemplate.tag_api)
+    def messages = device.readLogcatMessages(MonitorConstants.tag_api)
 
     return deviceTimeDiff.syncMessages(messages)
   }
@@ -117,15 +116,15 @@ class ApiLogsReader implements IApiLogsReader
 
       LocalDateTime deviceTime = LocalDateTime.parse(msg[1],
         DateTimeFormatter.ofPattern(
-          MonitorJavaTemplate.monitor_time_formatter_pattern,
-          MonitorJavaTemplate.monitor_time_formatter_locale))
+          MonitorConstants.monitor_time_formatter_pattern,
+          MonitorConstants.monitor_time_formatter_locale))
 
       String payload = msg[2]
 
       return TimeFormattedLogcatMessage.from(
         deviceTime,
-        MonitorJavaTemplate.loglevel.toUpperCase(),
-        "[Adapted]" + MonitorJavaTemplate.tag_api,
+        MonitorConstants.loglevel.toUpperCase(),
+        "[Adapted]" + MonitorConstants.tag_api,
         pid,
         payload)
     })

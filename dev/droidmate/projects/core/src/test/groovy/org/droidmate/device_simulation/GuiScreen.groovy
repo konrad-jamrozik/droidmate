@@ -9,6 +9,7 @@
 package org.droidmate.device_simulation
 
 import com.google.common.base.MoreObjects
+import org.droidmate.MonitorConstants
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.common_android.Constants
@@ -17,7 +18,6 @@ import org.droidmate.configuration.model.NexusModel
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exceptions.UnsupportedMultimethodDispatch
-import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
 
@@ -247,16 +247,16 @@ class GuiScreen implements IGuiScreen
     return [
       TimeFormattedLogcatMessage.from(
         this.timeGenerator.shiftAndGet(milliseconds: 1500), // Milliseconds amount based on empirical evidence.
-        MonitorJavaTemplate.loglevel.toUpperCase(),
-        MonitorJavaTemplate.tag_init,
+        MonitorConstants.loglevel.toUpperCase(),
+        MonitorConstants.tag_init,
         "4224", // arbitrary process ID
-        MonitorJavaTemplate.msg_ctor_success),
+        MonitorConstants.msg_ctor_success),
       TimeFormattedLogcatMessage.from(
         this.timeGenerator.shiftAndGet(milliseconds: 1810), // Milliseconds amount based on empirical evidence.
-        MonitorJavaTemplate.loglevel.toUpperCase(),
-        MonitorJavaTemplate.tag_init,
+        MonitorConstants.loglevel.toUpperCase(),
+        MonitorConstants.tag_init,
         "4224", // arbitrary process ID
-        MonitorJavaTemplate.msgPrefix_init_success + this.packageName)
+        MonitorConstants.msgPrefix_init_success + this.packageName)
     ]
   }
 

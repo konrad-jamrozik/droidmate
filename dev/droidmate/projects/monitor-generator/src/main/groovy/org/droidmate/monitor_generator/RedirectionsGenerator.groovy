@@ -9,10 +9,10 @@
 
 package org.droidmate.monitor_generator
 
+import org.droidmate.MonitorConstants
 import org.droidmate.apis.ApiMethodSignature
 import org.droidmate.common.logcat.Api
 import org.droidmate.common.logcat.ApiLogcatMessage
-import org.droidmate.lib_android.MonitorJavaTemplate
 
 class RedirectionsGenerator implements IRedirectionsGenerator
 {
@@ -75,7 +75,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         targets << ind4 + "{" + nl
         targets << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
         targets << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
-        targets << ind4 + ind4 + "Log.${MonitorJavaTemplate.loglevel}(\"${MonitorJavaTemplate.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
+        targets << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         targets << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
         targets << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
         targets << ind4 + "}" + nl
@@ -136,7 +136,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         out << ind4 + "{" + nl
         out << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
         out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
-        out << ind4 + ind4 + "Log.${MonitorJavaTemplate.loglevel}(\"${MonitorJavaTemplate.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
+        out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
         out << ind4 + ind4 + "class \$ {} " + nl
         out << ind4 + ind4 + "${returnStatement}Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl

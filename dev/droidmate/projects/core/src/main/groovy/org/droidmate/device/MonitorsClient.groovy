@@ -9,11 +9,11 @@
 package org.droidmate.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.MonitorConstants
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
-import org.droidmate.lib_android.MonitorJavaTemplate
 
 @Slf4j
 class MonitorsClient implements IMonitorsClient
@@ -50,7 +50,7 @@ class MonitorsClient implements IMonitorsClient
     ArrayList<ArrayList<String>> out
     try
     {
-      out = this.monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_connCheck, port)
+      out = this.monitorTcpClient.queryServer(MonitorConstants.srvCmd_connCheck, port)
     } catch (TcpServerUnreachableException ignored)
     {
       return false
@@ -70,7 +70,7 @@ class MonitorsClient implements IMonitorsClient
     ArrayList<ArrayList<String>> out = ports.findResult {
       try
       {
-        return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_time, it)
+        return monitorTcpClient.queryServer(MonitorConstants.srvCmd_get_time, it)
 
       } catch (DeviceNeedsRebootException e)
       {
@@ -96,7 +96,7 @@ class MonitorsClient implements IMonitorsClient
     Collection<ArrayList<ArrayList<String>>> out = ports.findResults {
       try
       {
-        return monitorTcpClient.queryServer(MonitorJavaTemplate.srvCmd_get_logs, it)
+        return monitorTcpClient.queryServer(MonitorConstants.srvCmd_get_logs, it)
       } catch (TcpServerUnreachableException ignored)
       {
         log.trace("Did not reach monitor TCP server at port $it.")
@@ -118,7 +118,7 @@ class MonitorsClient implements IMonitorsClient
   @Override
   List<Integer> getPorts()
   {
-    return MonitorJavaTemplate.serverPorts.collect {it}
+    return MonitorConstants.serverPorts.collect {it}
   }
 
   @Override

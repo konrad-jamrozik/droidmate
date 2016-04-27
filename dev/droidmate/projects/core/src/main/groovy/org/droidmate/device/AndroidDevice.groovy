@@ -10,6 +10,7 @@
 package org.droidmate.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.MonitorConstants
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.android_sdk.IApk
 import org.droidmate.common.Boolean3
@@ -25,7 +26,6 @@ import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
-import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.logging.LogbackUtils
 
@@ -298,7 +298,7 @@ public class AndroidDevice implements IAndroidDevice
     assert msgs[0][2] == null
 
 
-    return LocalDateTime.parse(msgs[0][0], DateTimeFormatter.ofPattern(MonitorJavaTemplate.monitor_time_formatter_pattern, MonitorJavaTemplate.monitor_time_formatter_locale))
+    return LocalDateTime.parse(msgs[0][0], DateTimeFormatter.ofPattern(MonitorConstants.monitor_time_formatter_pattern, MonitorConstants.monitor_time_formatter_locale))
 
   }
 

@@ -33,7 +33,6 @@ dependencies {
 
   compile project(":projects:lib-common")
   compile project(":projects:lib-common-android")
-  compile project(":projects:lib-android")
 
   compile 'com.beust:jcommander:1.35'
   compile 'com.google.guava:guava:19.0'

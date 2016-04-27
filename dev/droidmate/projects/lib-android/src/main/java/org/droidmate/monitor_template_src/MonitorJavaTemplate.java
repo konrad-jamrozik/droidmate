@@ -8,7 +8,7 @@
 // www.droidmate.org
 
 // org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
-package org.droidmate.lib_android;
+package org.droidmate.monitor_template_src;
 // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
 // package org.droidmate.monitor_generator.generated;
 // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
@@ -16,6 +16,7 @@ package org.droidmate.lib_android;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
+import org.droidmate.MonitorConstants;
 import org.droidmate.common.logcat.Api;
 
 import java.io.IOException;
@@ -69,42 +70,6 @@ public class MonitorJavaTemplate
 // public class Monitor
 // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 {
-  //region Fields
-
-  public static final String tag_prefix = "Monitor";
-  public static final String tag_init = tag_prefix + "_init";
-  public static final String tag_srv  = tag_prefix + "_server";
-  public static final String tag_api  = tag_prefix + "_API_method_call";
-
-  public static final String loglevel = "i";
-
-  public static final String msg_ctor_success = "Monitor constructed successfully.";
-  public static final String msg_ctor_failure = "Monitor constructed, but failed to start TCP server.";
-
-  private static final String stack_trace_frame_delimiter = Api.stack_trace_frame_delimiter;
-
-  /**
-   * <p>
-   * Example full message:
-   * </p><p>
-   * {@code Monitor initialized for package org.droidmate.fixtures.apks.monitored}
-   * </p>
-   */
-  public static final String msgPrefix_init_success = "Monitor initialized for package ";
-
-  // KJA next: this and other constants are to be moved to new class MonitorConstants living in lib-common.
-  // WISH known limitation: if running droidmate with multiple devices, each will have the same set of server ports.
-  // Suggested fix: make monitor.java read the port number from a .txt file; deploy different .txt file to each device.
-  public static final List<Integer> serverPorts = Arrays.asList(59701,59702,59703,59704);
-
-  public static final String srvCmd_connCheck = "connCheck";
-  public static final String srvCmd_get_logs  = "getLogs";
-  public static final String srvCmd_get_time  = "getTime";
-  public static final String srvCmd_close     = "close";
-
-
-  //endregion
-
   //region Class init code
   // org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
   public MonitorJavaTemplate()
@@ -115,11 +80,11 @@ public class MonitorJavaTemplate
     try
     {
       server = startMonitorTCPServer();
-      Log.i(tag_init, msg_ctor_success);
+      Log.i(MonitorConstants.tag_init, MonitorConstants.msg_ctor_success);
 
     } catch (Throwable e)
     {
-      Log.i(tag_init, msg_ctor_failure);
+      Log.i(MonitorConstants.tag_init, MonitorConstants.msg_ctor_failure);
     }
   }
 
@@ -128,7 +93,7 @@ public class MonitorJavaTemplate
   public void init(android.content.Context context)
   {
     if (server == null)
-      Log.i(tag_srv, "Init: Didn't set context: MonitorTCPServer is null");
+      Log.i(MonitorConstants.tag_srv, "Init: Didn't set context: MonitorTCPServer is null");
     else
       server.context = context;
 
@@ -138,7 +103,7 @@ public class MonitorJavaTemplate
 
     redirectConstructors();
 
-    Log.i(tag_init, msgPrefix_init_success + context.getPackageName());
+    Log.i(MonitorConstants.tag_init, MonitorConstants.msgPrefix_init_success + context.getPackageName());
   }
   //endregion
 
@@ -147,14 +112,14 @@ public class MonitorJavaTemplate
   @SuppressWarnings("ConstantConditions")
   private static MonitorTCPServer startMonitorTCPServer() throws Throwable
   {
-    Log.d(tag_srv, "Starting monitor TCP server...");
+    Log.d(MonitorConstants.tag_srv, "Starting monitor TCP server...");
 
     MonitorTCPServer tcpServer = new MonitorTCPServer();
 
     Thread serverThread = null;
     Integer portUsed = null;
 
-    final Iterator<Integer> portsIterator = serverPorts.iterator();
+    final Iterator<Integer> portsIterator = MonitorConstants.serverPorts.iterator();
     try
     {
       while (portsIterator.hasNext() && serverThread == null)
@@ -172,7 +137,7 @@ public class MonitorJavaTemplate
 
     } catch (Throwable t)
     {
-      Log.e(tag_srv, "Starting monitor TCP server failed.", t);
+      Log.e(MonitorConstants.tag_srv, "Starting monitor TCP server failed.", t);
       throw t;
     }
 
@@ -180,7 +145,7 @@ public class MonitorJavaTemplate
     if (portUsed == null) throw new AssertionError();
     if (tcpServer.isClosed()) throw new AssertionError();
 
-    Log.d(tag_srv, "Starting monitor TCP server succeeded. Port used: " + portUsed + " PID: " + getPid());
+    Log.d(MonitorConstants.tag_srv, "Starting monitor TCP server succeeded. Port used: " + portUsed + " PID: " + getPid());
     return tcpServer;
   }
 
@@ -199,40 +164,40 @@ public class MonitorJavaTemplate
     {
       synchronized (currentLogs)
       {
-        Log.v(tag_srv, "OnServerRequest(" + input + ")");
+        Log.v(MonitorConstants.tag_srv, "OnServerRequest(" + input + ")");
 
         removeSocketInitLogFromMonitorTCPServer(currentLogs);
 
 
-        if (srvCmd_connCheck.equals(input))
+        if (MonitorConstants.srvCmd_connCheck.equals(input))
         {
           final ArrayList<String> payload = new ArrayList<String>(Arrays.asList(getPid(), getPackageName(), ""));
           return new ArrayList<ArrayList<String>>(Collections.singletonList(payload));
 
-        } else if (srvCmd_get_logs.equals(input))
+        } else if (MonitorConstants.srvCmd_get_logs.equals(input))
         {
           ArrayList<ArrayList<String>> logsToSend = new ArrayList<ArrayList<String>>(currentLogs);
           currentLogs.clear();
 
           return logsToSend;
 
-        } else if (srvCmd_get_time.equals(input))
+        } else if (MonitorConstants.srvCmd_get_time.equals(input))
         {
           final String time = getNowDate();
 
           final ArrayList<String> payload = new ArrayList<String>(Arrays.asList(time, null, null));
 
-          Log.d(tag_srv, "Sending time: " + time);
+          Log.d(MonitorConstants.tag_srv, "Sending time: " + time);
           return new ArrayList<ArrayList<String>>(Collections.singletonList(payload));
 
-        } else if (srvCmd_close.equals(input))
+        } else if (MonitorConstants.srvCmd_close.equals(input))
         {
-          // Do nothing here. The command will is handled in org.droidmate.lib_android.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
+          // Do nothing here. The command will is handled in org.droidmate.monitor_template_src.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
           return new ArrayList<ArrayList<String>>();
 
         } else
         {
-          Log.e(tag_srv, "Unexpected command from DroidMate TCP client. The command: " + input);
+          Log.e(MonitorConstants.tag_srv, "Unexpected command from DroidMate TCP client. The command: " + input);
           return new ArrayList<ArrayList<String>>();
         }
       }
@@ -274,7 +239,7 @@ public class MonitorJavaTemplate
 
         String stackTrace = msgPayload.substring(stacktraceIndex);
 
-        String[] frames = stackTrace.split(stack_trace_frame_delimiter);
+        String[] frames = stackTrace.split(Api.stack_trace_frame_delimiter);
         if (frames.length >= 2)
         {
           String secondLastFrame = frames[frames.length - 2];
@@ -311,7 +276,7 @@ public class MonitorJavaTemplate
     @Override
     protected boolean shouldCloseServerSocket(String serverInput)
     {
-      return srvCmd_close.equals(serverInput);
+      return MonitorConstants.srvCmd_close.equals(serverInput);
     }
   }
 
@@ -354,7 +319,7 @@ public class MonitorJavaTemplate
 
         if ("bind failed: EADDRINUSE (Address already in use)".equals(serverSocketException.getCause().getMessage()))
         {
-          Log.d(tag_srv, "Failed to start TCP server because 'bind failed: EADDRINUSE (Address already in use)'. " +
+          Log.d(MonitorConstants.tag_srv, "Failed to start TCP server because 'bind failed: EADDRINUSE (Address already in use)'. " +
             "Returning null Thread.");
 
           return null;
@@ -392,7 +357,7 @@ public class MonitorJavaTemplate
       public void run()
       {
 
-        Log.v(tag_srv, "MonitorServerRunnable.run() using "+port);
+        Log.v(MonitorConstants.tag_srv, "MonitorServerRunnable.run() using " + port);
         try
         {
 
@@ -400,7 +365,7 @@ public class MonitorJavaTemplate
           // serverSocket is initialized.
           synchronized (this)
           {
-            Log.d(tag_srv, String.format("Creating server socket bound to port %s...", port));
+            Log.d(MonitorConstants.tag_srv, String.format("Creating server socket bound to port %s...", port));
 
             try
             {
@@ -414,15 +379,15 @@ public class MonitorJavaTemplate
 
           if (serverSocketException != null)
           {
-            Log.e(tag_srv, String.format("! Failed during startup to bind server socket on port %s. Stopping thread.", port));
+            Log.e(MonitorConstants.tag_srv, String.format("! Failed during startup to bind server socket on port %s. Stopping thread.", port));
             return;
           }
 
           while (!serverSocket.isClosed())
           {
-            Log.v(tag_srv, String.format("Accepting socket from client on port %s...", port));
+            Log.v(MonitorConstants.tag_srv, String.format("Accepting socket from client on port %s...", port));
             Socket clientSocket = serverSocket.accept();
-            Log.v(tag_srv, "Socket accepted.");
+            Log.v(MonitorConstants.tag_srv, "Socket accepted.");
 
 //            Log.v(runnableClassName, "ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());");
             ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -449,7 +414,7 @@ public class MonitorJavaTemplate
 
             } catch (Exception e)
             {
-              Log.e(tag_srv, "Exception was thrown while reading input sent to monitor TCP server from " +
+              Log.e(MonitorConstants.tag_srv, "Exception was thrown while reading input sent to monitor TCP server from " +
                 "client through socket.", e);
               closeServerSocket();
               break;
@@ -466,15 +431,15 @@ public class MonitorJavaTemplate
               closeServerSocket();
           }
 
-          Log.d(tag_srv, "Closed monitor TCP server.");
+          Log.d(MonitorConstants.tag_srv, "Closed monitor TCP server.");
 
         } catch (SocketTimeoutException e)
         {
-          Log.e(tag_srv, "Closing monitor TCP server due to a timeout.", e);
+          Log.e(MonitorConstants.tag_srv, "Closing monitor TCP server due to a timeout.", e);
           closeServerSocket();
         } catch (IOException e)
         {
-          Log.e(tag_srv, "Exception was thrown while operating monitor TCP server.", e);
+          Log.e(MonitorConstants.tag_srv, "Exception was thrown while operating monitor TCP server.", e);
         }
       }
 
@@ -493,7 +458,7 @@ public class MonitorJavaTemplate
     {
       sb.append(stackTrace[i].toString());
       if (i < stackTrace.length - 1)
-        sb.append(stack_trace_frame_delimiter);
+        sb.append(Api.stack_trace_frame_delimiter);
     }
     return sb.toString();
   }
@@ -561,9 +526,7 @@ public class MonitorJavaTemplate
     return paramStr.replace(" ", "_");
   }
 
-  public static final  String           monitor_time_formatter_pattern = "yyyy-MM-dd HH:mm:ss.SSS";
-  public static final  Locale           monitor_time_formatter_locale  = Locale.ENGLISH;
-  private static final SimpleDateFormat monitor_time_formatter         = new SimpleDateFormat(monitor_time_formatter_pattern, monitor_time_formatter_locale);
+  private static final SimpleDateFormat monitor_time_formatter = new SimpleDateFormat(MonitorConstants.monitor_time_formatter_pattern, MonitorConstants.monitor_time_formatter_locale);
 
   /**
    * <p>
