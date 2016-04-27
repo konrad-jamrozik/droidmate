@@ -62,10 +62,11 @@ dependencies {
 
 /* --- end of MAKE INTELLIJ IDEA HAPPY ZONE --- */
 
-def projectLibCommon = findProject(":projects:lib-common-android")
+def projectLibCommon = findProject(":projects:uiautomator-daemon-lib")
 def antBuildFileName = "build-customized.xml"
 
-task pullLibCommonAndroidJar(type: Copy, dependsOn: ":projects:lib-common-android:jar") { Copy copy ->
+evaluationDependsOn(":projects:uiautomator-daemon-lib")
+task pullLibCommonAndroidJar(type: Copy, dependsOn: ":projects:uiautomator-daemon-lib:jar") { Copy copy ->
   
   copy.from(projectLibCommon.jar.archivePath as File).into(libsDir)
 }

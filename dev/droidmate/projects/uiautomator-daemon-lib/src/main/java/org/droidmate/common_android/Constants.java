@@ -9,7 +9,7 @@
 
 package org.droidmate.common_android;
 
-// KJA rename whole project to uiautomator-daemon-lib and rename package accordingly
+// KJA rename package to org.droidmate.uiautomatordaemon
 // KJA rename this class to "UiautomatorDaemonConstants"
 /** Holds constants used by at least two of projects being part of DroidMate.
  */
