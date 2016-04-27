@@ -7,10 +7,10 @@
 //
 // www.droidmate.org
 /*
-  This project contains classes that:
+  This project contains classes:
   
-  1. Require access to Android API: they depend on Android.jar;
-  2. will be compiled with legacy android ant script, requiring compatibility with Java 5
+  1. which require access to Android API: they depend on Android.jar;
+  2. whose source will be compiled with legacy android ant script, requiring compatibility with Java 5
     
   The used ant script is in 
   
@@ -38,8 +38,7 @@ dependencies {
 
   testCompile 'junit:junit:4.12'
 
-  // KJA compileOnly ?
-  compile files(BuildKt.android_jar.toString())
+  compileOnly files(BuildKt.android_jar.toString())
 
   compile project(":projects:lib-common")
 }

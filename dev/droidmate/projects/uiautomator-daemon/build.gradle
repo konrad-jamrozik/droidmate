@@ -35,7 +35,7 @@ tasks.jar.enabled = false
 
 /* "antBuild" and "antClean" tasks are defined below */
 tasks.build.dependsOn("antBuild")
-tasks.clean.dependsOn("antClean")
+tasks.clean.dependsOn("cleanLibCommonAndroidJar", "antClean")
 
 sourceSets {
   main.java.srcDirs = ["src"]
@@ -55,47 +55,30 @@ dependencies {
   compile libsDirFileTree
 
   // Required by IntelliJ; when building with Gradle, the underlying ant script knows this dependency.
-  compile files(BuildKt.uiautomator_jar.toString())
+  compileOnly files(BuildKt.uiautomator_jar.toString())
 
-  // KJA compileOnly?
-  compile files(BuildKt.android_jar.toString())
+  compileOnly files(BuildKt.android_jar.toString())
 }
-
-
 
 /* --- end of MAKE INTELLIJ IDEA HAPPY ZONE --- */
 
 def projectLibCommon = findProject(":projects:lib-common-android")
 def antBuildFileName = "build-customized.xml"
 
-task pullLibCommonAndroidJar(dependsOn: ":projects:lib-common-android:jar") {
-
-  def copyFrom = projectLibCommon.jar.archivePath
-  def copyTo = libsDir
-
-  inputs.file copyFrom
-  outputs.file "${copyTo.path}/${projectLibCommon.jar.archiveName}"
-
-  doLast {
-    //noinspection GroovyAssignabilityCheck
-    def copyResult = copy {
-      from copyFrom
-      into copyTo
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file.\n" +
-        "Path of file to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-
-  }
+task pullLibCommonAndroidJar(type: Copy, dependsOn: ":projects:lib-common-android:jar") { Copy copy ->
+  group = "build"
+  copy.from(projectLibCommon.jar.archivePath as File).into(libsDir)
 }
 
-
+task cleanLibCommonAndroidJar(type: Delete) {
+  group = "build"
+  delete new File(libsDir, projectLibCommon.jar.archiveName as String)
+}
 /*
   Note: the underlying ant script inputs all files in libs dir, so if some additional .jar files will be
   found in it (e.g. with sources), the 'antBuild' task will fail to produce output due to classpath clashes.
  */
-task antBuild(dependsOn: [pullLibCommonAndroidJar]) {
+task antBuild(dependsOn: "pullLibCommonAndroidJar") {
   group = "build"
   description = "Runs the underlying customized ant build file with 'ant build'. The ant file was originally " +
     "generated with Android SDK."

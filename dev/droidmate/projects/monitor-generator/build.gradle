@@ -165,7 +165,7 @@ test.configure {
 def projectLibCommon = findProject(":projects:lib-common")
 task cleanLibCommonJar(type: Delete) {
   group = "build"
-  delete new File(monitorApkScaffoldingDir, "libs/"+projectLibCommon.jar.archiveName)
+  delete new File(monitorApkScaffoldingDir, "libs/" + projectLibCommon.jar.archiveName)
 }
 task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy copy ->
 
