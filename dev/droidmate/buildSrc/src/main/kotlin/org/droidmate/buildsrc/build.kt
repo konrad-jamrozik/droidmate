@@ -29,7 +29,6 @@ private val exeExt = if (OS.isWindows) ".exe" else ""
 //region Values directly based on system environment variables
 val java8Home = "JAVA8_HOME".asEnvDir
 val jdk7_rt_jar = "JAVA7_HOME".asEnvDir.resolveRegularFile("jre/lib/rt.jar")
-val jdk6_rt_jar = "JAVA6_HOME".asEnvDir.resolveRegularFile("jre/lib/rt.jar")
 private val android_sdk_dir = "ANDROID_HOME".asEnvDir
 //endregion
 

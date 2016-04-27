@@ -46,8 +46,8 @@ DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userg
 
 To be able to build DroidMate on your local machine, do the following:
 
-* Install Java Development Kit (JDK) 8, 7 and 6.
-  * Set `JAVA8_HOME` environment variable to point to JDK 8 location. Analogously for `JAVA7_HOME` and `JAVA6_HOME`.
+* Install Java Development Kit (JDK) 8 and 7.
+  * Set `JAVA8_HOME` environment variable to point to JDK 8 location. Analogously for `JAVA7_HOME`.
 * Install Android SDK. Set `ANDROID_HOME` environment variable to point to its location.
 * Run SDK Manager of Android SDK with admin rights. Download the following:
   * Android SDK Build-tools 19.1
@@ -109,9 +109,7 @@ Most likely, the input apks will be taken from `repo/dev/droidmate/apks` (as det
 ## Compatibility ##
 ### OS compatibility ###
 
-DroidMate works on Ubuntu (see Travis CI build) and Windows 10. 
-
-DroidMate also works on Mac OS X, but please see the [troubleshooting Mac OS problems section](#troubleshooting-mac-os-problems).
+DroidMate works on Ubuntu (see Travis CI build) Windows 10 and Mac OS X.
  
 ### Android device compatibility ###
 
@@ -144,8 +142,6 @@ Following local setup is proven to work with DroidMate:
 | IntelliJ | 2016.1 #IU-145.258 |
 | JDK 8    | 77-b03 x64 |
 | JDK 7    | 79-b15 x64 |
-| JDK 6    | 45-b06 x64 |
-
 
 ## DroidMate input ##
 ### Preparing apks for DroidMate ####
@@ -176,22 +172,6 @@ $ adb pull /data/app/com.frank_weber.forex2-1.apk
 3674 KB/s (2361399 bytes in 0.627s)
 // The file is now in the current dir
 </pre>
-
-## Troubleshooting Mac OS problems
-
-##### Problem: Missing rt.jar from JDK 1.6 (credit: Mark Schuegraf)
-
-###### Description
-
-In Mac OS The structure of Java JDK 1.6 is different to the later versions in that it doesn't have a directory `jre/lib` that contains `rt.jar` - instead `rt.jar` is called `classes.jar` and is found within the directory `1.6.0.jdk/Contents/Classes`.
-
-This is due to the fact that the only way to use SE 6 on Mac OS is to use an Apple variant of the SDK i.e. https://support.apple.com/kb/DL1572?locale=en_US
-
-There is no Mac OS download available on the Oracle site, due to SE 6 being a core component of OS X Mavericks.
-
-###### Workaround
-
-Simply make a `jre/lib` directory within java home and symlink `rt.jar` within it to `classes.jar.`
 
 # Working with DroidMate code base
 
