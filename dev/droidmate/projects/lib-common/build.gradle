@@ -14,7 +14,7 @@ import org.droidmate.buildsrc.BuildKt
   Because some of them are run on an Android Device, the classes in this project have to be compiled with Java 7, not Java 8.
   
   Even though this project uses Groovy, it can still run on Android Device. Not sure why, maybe because at runtime there are no
-  direct calls to methods from Groovy SDK, which presumably is not present on the device.
+  direct calls to methods from Groovy SDK.
 */
 
 apply plugin: 'groovy'
@@ -22,7 +22,10 @@ apply plugin: 'project-report'
 // KJA double check that java v8 fails
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
-compileGroovy.options.bootClasspath = BuildKt.jdk7_rt_jar
+compileGroovy.configure { GroovyCompile gc ->
+  // See explanation of this in build.gradle of 'monitor-template' project.
+  gc.options.compilerArgs += "-Xlint:-options"
+}
 
 dependencies {
 

@@ -25,14 +25,22 @@
 
 import org.droidmate.buildsrc.BuildKt
 
-// KJA rename project to "monitor-template"
-
 apply plugin: 'java'
 
-// KJA change to V5 and silence bootClasspath warning (provided on Android)
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
-compileJava.options.bootClasspath = BuildKt.jdk7_rt_jar
+sourceCompatibility = JavaVersion.VERSION_1_5
+targetCompatibility = JavaVersion.VERSION_1_5
+compileJava.configure { JavaCompile jc ->
+  /*
+    Suppressed, the following warning:
+      warning: [options] bootstrap class path not set in conjunction with -source 1.5
+      warning: [options] source value 1.5 is obsolete and will be removed in a future release
+      warning: [options] target value 1.5 is obsolete and will be removed in a future release
+      warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+      
+    We do not worry about this as the code will be deployed to Android device which should provide appropriate boostrap class.
+   */
+  jc.options.compilerArgs += "-Xlint:-options"
+}
 
 dependencies {
 
