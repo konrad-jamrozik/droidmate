@@ -64,9 +64,9 @@ tasks.run { JavaExec javaExec ->
   // /Temp debug code.
 }
 
-processResources.dependsOn "buildMonitorJavaTemplateFromSource"
+processResources.dependsOn "pullMonitorJavaTemplateSource"
 
-task buildMonitorJavaTemplateFromSource(type: Copy) {
+task pullMonitorJavaTemplateSource(type: Copy) {
 
   from monitorJavaTemplateSource
   into resDir
@@ -87,27 +87,19 @@ task copyGeneratedMonitorToScaffolding(type: Copy, dependsOn: "run") { Copy copy
   copy.rename new File(BuildKt.monitor_generator_output_relative_path).name, monitorJava.name
 
   copy.outputs.file monitorJava
-  
-  doFirst {
-    assert project.ext.runOutput.isFile()
-  }
-  doLast {
-    assert copy.didWork
-    assert monitorJava.isFile()
-  }
+
+  doFirst {assert project.ext.runOutput.isFile()}
+  doLast {assert monitorJava.isFile()}
 }
 
+File monitorApkOutputByAnt = file("${monitorApkScaffoldingDir.path}/bin/monitor-apk-debug.apk")
 task buildMonitorApk(dependsOn: ["copyGeneratedMonitorToScaffolding", "pullLibCommonJar"]) {
   group = "build"
-
-  File monitorApkOutputByAnt = file("${monitorApkScaffoldingDir.path}/bin/monitor-apk-debug.apk")
-  def copyFrom = monitorApkOutputByAnt
-  def copyTo = buildDir
 
   inputs.files monitorJava
   inputs.files fileTree(dir: "${monitorApkScaffoldingDir.path}/libs", include: '**')
   outputs.files monitorApkOutputByAnt
-  outputs.dir copyTo
+  outputs.dir buildDir
 
   doLast {
 
@@ -119,20 +111,12 @@ task buildMonitorApk(dependsOn: ["copyGeneratedMonitorToScaffolding", "pullLibCo
     )
     if (exitValue != 0)
       throw new GradleException("Failed to build ${monitorApkScaffoldingDir.name}.")
-
-    assert copyFrom.isFile()
-
-    def copyResult = copy {
-      from copyFrom
-      into copyTo
-      rename {"monitor.apk"}
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file(s).\n" +
-        "Path of file(s) to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-
   }
+}
+
+task deployMonitorApk(type: Copy, dependsOn: "buildMonitorApk") {Copy copy ->
+  group = "build"
+  copy.from(monitorApkOutputByAnt).into(buildDir).rename {"monitor.apk"}
 }
 
 task cleanMonitorApk() {
@@ -173,7 +157,7 @@ task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy c
 }
 
 clean.dependsOn cleanRun, cleanMonitorApk, cleanLibCommonJar
-build.dependsOn buildMonitorApk
+build.dependsOn deployMonitorApk
 
 // Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
 processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }

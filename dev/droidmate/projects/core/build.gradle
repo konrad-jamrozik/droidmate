@@ -77,56 +77,17 @@ processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 //region Preparation of resources for the 'compileGroovy' task
 
 Project uiaDaemon = findProject(":projects:uiautomator-daemon");
-task pullUiaDaemonJar(dependsOn: ":projects:uiautomator-daemon:build") {
+task pullUiaDaemonJar(type: Copy, dependsOn: ":projects:uiautomator-daemon:build") { Copy copy ->
 
-  File coreResDir = getCoreResDir()
-
-  def copyFrom = file("${uiaDaemon.buildDir}/${uiaDaemon.name}.jar")
-  def copyTo = coreResDir
-
-  inputs.file copyFrom
-  outputs.dir copyTo
-
-  doLast {
-
-    assert copyFrom.isFile()
-
-    def copyResult = copy {
-      from copyFrom
-      into copyTo
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file(s).\n" +
-        "Path of file(s) to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-  }
+  def uiaDaemonJar = file("${uiaDaemon.buildDir}/${uiaDaemon.name}.jar")
+  copy.from(uiaDaemonJar).into(coreResDir)
 }
 
 Project monitorGenerator = findProject(":projects:monitor-generator")
-task pullMonitorApk(dependsOn: ":projects:monitor-generator:buildMonitorApk") {
+task pullMonitorApk(type: Copy, dependsOn: ":projects:monitor-generator:build") {Copy copy ->
 
-  File coreResDir = getCoreResDir()
-
-  def copyFrom = file("${monitorGenerator.buildDir}/monitor.apk")
-  def copyTo = coreResDir
-
-  inputs.file copyFrom
-  outputs.dir copyTo
-
-  doLast {
-
-    assert copyFrom.isFile()
-
-    def copyResult = copy {
-      from copyFrom
-      into copyTo
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file(s).\n" +
-        "Path of file(s) to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-  }
-
+  def monitorApk = file("${monitorGenerator.buildDir}/monitor.apk")
+  copy.from(monitorApk).into(coreResDir)
 }
 
 // endregion Preparation of resources for the 'compileGroovy' task
@@ -164,8 +125,6 @@ task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
   outputs.file new File(apkFixturesDir, BuildKt.monitored_inlined_apk_fixture_name)
 }
 
-// WISH looks like all the pull- tasks should be of type Copy: http://www.gradle.org/docs/current/userguide/working_with_files.html#sec:copying_files
-// WISH where possible, refer to tasks themselves as input/output files of various tasks. See http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html#org.gradle.api.Project:files%28java.lang.Object[]%29
 task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
 
   from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: monitoredApkFixtureName)
@@ -204,32 +163,13 @@ task cleanTest(type: GradleBuild) {
 
 //region Tasks for preparing inlined input apks. These tasks are to be run manually.
 
-task prepareInlinedApks(dependsOn: ":projects:apk-inliner:run") {
+task prepareInlinedApks(type: Copy, dependsOn: ":projects:apk-inliner:run") { Copy copy ->
 
-  File inlinedApksDir = file("$rootDir/${BuildKt.apks_dir}/inlined")
-  if (!inlinedApksDir.isDirectory())
-    inlinedApksDir.mkdir()
+  File targetInlinedApksDir = file("$rootDir/${BuildKt.apks_dir}/inlined")
+  if (!targetInlinedApksDir.isDirectory())
+    targetInlinedApksDir.mkdir()
 
-  def copyFrom = inlinerExec.inlinedApksDir
-  def copyTo = inlinedApksDir
-
-  inputs.dir copyFrom
-  outputs.dir copyTo
-
-  doLast {
-
-    assert copyFrom.isDirectory()
-
-    def copyResult = copy {
-      from copyFrom
-      include '*.apk'
-      into copyTo
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file(s).\n" +
-        "Path of file(s) to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-  }
+  copy.from(inlinerExec.inlinedApksDir).include("*.apk").into(targetInlinedApksDir)
 }
 
 //endregion
