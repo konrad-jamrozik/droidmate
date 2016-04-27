@@ -12,14 +12,14 @@ import com.google.common.base.MoreObjects
 import org.droidmate.MonitorConstants
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
-import org.droidmate.common_android.Constants
-import org.droidmate.common_android.guimodel.GuiAction
 import org.droidmate.configuration.model.NexusModel
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exceptions.UnsupportedMultimethodDispatch
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
+import org.droidmate.uiautomator_daemon.Constants
+import org.droidmate.uiautomator_daemon.guimodel.GuiAction
 
 class GuiScreen implements IGuiScreen
 {

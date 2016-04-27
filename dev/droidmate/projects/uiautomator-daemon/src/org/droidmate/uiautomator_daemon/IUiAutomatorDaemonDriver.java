@@ -7,11 +7,7 @@
 //
 // www.droidmate.org
 
-package org.droidmate.uiautomatordaemon;
-
-import org.droidmate.common_android.DeviceCommand;
-import org.droidmate.common_android.DeviceResponse;
-import org.droidmate.common_android.UiAutomatorDaemonException;
+package org.droidmate.uiautomator_daemon;
 
 public interface IUiAutomatorDaemonDriver  {
 

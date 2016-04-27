@@ -15,9 +15,6 @@ import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.android_sdk.IApk
 import org.droidmate.common.Boolean3
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
-import org.droidmate.common_android.DeviceCommand
-import org.droidmate.common_android.DeviceResponse
-import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.model.DeviceModelHelper
 import org.droidmate.configuration.model.IDeviceModel
@@ -28,6 +25,9 @@ import org.droidmate.exceptions.NoAndroidDevicesAvailableException
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.logging.LogbackUtils
+import org.droidmate.uiautomator_daemon.DeviceCommand
+import org.droidmate.uiautomator_daemon.DeviceResponse
+import org.droidmate.uiautomator_daemon.UiautomatorWindowHierarchyDumpDeviceResponse
 
 import java.awt.*
 import java.nio.file.Path
@@ -35,8 +35,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.List
 
-import static org.droidmate.common_android.Constants.*
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchAppDeviceAction
+import static org.droidmate.uiautomator_daemon.Constants.*
 
 /**
  * <p>

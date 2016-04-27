@@ -11,8 +11,8 @@ package org.droidmate.configuration
 import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
 import org.droidmate.common.BuildConstants
-import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
+import org.droidmate.uiautomator_daemon.Constants
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -299,7 +299,7 @@ public class Configuration implements IConfiguration
 
   /* Empirical evaluation shows that setting this to 600 will sometimes cause DroidMate to consider GUI stable while it
      actually isn't, yet.
-     For more, see: org.droidmate.uiautomatordaemon.UiAutomatorDaemonDriver.waitForGuiToStabilize
+     For more, see: org.droidmate.uiautomator_daemon.UiAutomatorDaemonDriver.waitForGuiToStabilize
    */
   @Parameter(names = [Configuration.pn_uiautomatorDaemonWaitForWindowUpdateTimeout], arity = 1)
   public int uiautomatorDaemonWaitForWindowUpdateTimeout = 1200 // ms

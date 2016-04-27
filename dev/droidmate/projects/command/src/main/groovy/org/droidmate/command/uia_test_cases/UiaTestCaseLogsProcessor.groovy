@@ -14,7 +14,6 @@ import groovy.util.logging.Slf4j
 import org.droidmate.MonitorConstants
 import org.droidmate.common.logcat.ApiLogcatMessage
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
-import org.droidmate.common_android.Constants
 import org.droidmate.deprecated_still_used.IApkExplorationOutput
 import org.droidmate.deprecated_still_used.IExplorationOutputCollectorFactory
 import org.droidmate.deprecated_still_used.TimestampedExplorationAction
@@ -24,6 +23,7 @@ import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.logcat.IUiaTestActionLogcatMessage
 import org.droidmate.logcat.UiaTestActionLogcatMessage
+import org.droidmate.uiautomator_daemon.Constants
 
 import java.time.LocalDateTime
 import java.util.regex.Matcher

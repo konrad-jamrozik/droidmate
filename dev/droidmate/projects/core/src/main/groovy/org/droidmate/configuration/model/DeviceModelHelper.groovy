@@ -8,8 +8,8 @@
 // www.droidmate.org
 package org.droidmate.configuration.model
 
-import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.UnknownDeviceException
+import org.droidmate.uiautomator_daemon.Constants
 
 /**
  * Provides a class to acquire device specific objects using Factory Method Pattern
@@ -23,10 +23,10 @@ public class DeviceModelHelper
 
   /**
    * Create an #IDeviceModel based on the device. <br/>
-   * To create a default device use {@link org.droidmate.common_android.Constants#DEVICE_DEFAULT}.
+   * To create a default device use {@link Constants#DEVICE_DEFAULT}.
    * The default device is a Google Nexus 7.
    *
-   * @param deviceModel Device manufacturer + model as returned by {@link org.droidmate.uiautomatordaemon.UiAutomatorDaemonDriver#getDeviceModel()}
+   * @param deviceModel Device manufacturer + model as returned by {@link org.droidmate.uiautomator_daemon.UiAutomatorDaemonDriver#getDeviceModel()}
    * *
    * @return Device specific issues handler
    * @throws UnknownDeviceException If the device model is not mapped to any device

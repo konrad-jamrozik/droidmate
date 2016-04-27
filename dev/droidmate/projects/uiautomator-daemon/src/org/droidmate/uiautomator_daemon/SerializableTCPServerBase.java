@@ -7,12 +7,11 @@
 //
 // www.droidmate.org
 
-package org.droidmate.uiautomatordaemon;
+package org.droidmate.uiautomator_daemon;
 
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
-import org.droidmate.common_android.Constants;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -76,7 +75,7 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
     }
   }
 
-  // Used in org.droidmate.uiautomatordaemon.UiAutomatorDaemon.init()
+  // Used in org.droidmate.uiautomator_daemon.UiAutomatorDaemon.init()
   public boolean isClosed()
   {
     return serverSocket.isClosed();

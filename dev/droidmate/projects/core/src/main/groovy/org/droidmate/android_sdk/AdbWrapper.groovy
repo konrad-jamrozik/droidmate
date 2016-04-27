@@ -15,10 +15,10 @@ import groovy.util.logging.Slf4j
 import org.droidmate.common.BuildConstants
 import org.droidmate.common.ISysCmdExecutor
 import org.droidmate.common.SysCmdExecutorException
-import org.droidmate.common_android.Constants
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.AdbWrapperException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
+import org.droidmate.uiautomator_daemon.Constants
 
 import java.nio.file.Files
 import java.nio.file.Path

@@ -597,7 +597,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
    * - (if a flag is set) are in {@link org.droidmate.apis.ExcludedApis}.<br/>
    * </p><p>
    * In addition, this method ensures there are no calls to {@code Socket.&lt;init>} made by monitor TCP server (source of the server:
-   * {@code org.droidmate.common_android.MonitorJavaTemplate.MonitorTCPServer});
+   * {@code org.droidmate.uiautomator_daemon.MonitorJavaTemplate.MonitorTCPServer});
    *
    * </p><p>
    * All such logs are expected to be removed from monitor logs by monitor, before being transferred to the host machine.

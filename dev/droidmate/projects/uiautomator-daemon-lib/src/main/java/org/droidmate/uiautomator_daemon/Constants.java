@@ -7,9 +7,9 @@
 //
 // www.droidmate.org
 
-package org.droidmate.common_android;
+package org.droidmate.uiautomator_daemon;
 
-// KJA rename package to org.droidmate.uiautomatordaemon
+// KJA rename package to org.droidmate.uiautomator_daemon
 // KJA rename this class to "UiautomatorDaemonConstants"
 /** Holds constants used by at least two of projects being part of DroidMate.
  */
@@ -47,7 +47,7 @@ public class Constants
    * <br/>
    * Name format according to help obtained by issuing {@code adb shell uiautomator runtest} in terminal.
    */
-  public static final String uiaDaemon_initMethodName = "org.droidmate.uiautomatordaemon.UiAutomatorDaemon#init";
+  public static final String uiaDaemon_initMethodName = "org.droidmate.uiautomator_daemon.UiAutomatorDaemon#init";
 
   public static final String guiActionCommand_pressBack  = "press_back";
   public static final String guiActionCommand_pressHome  = "press_home";

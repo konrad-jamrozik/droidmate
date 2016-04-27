@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 
-package org.droidmate.uiautomatordaemon;
+package org.droidmate.uiautomator_daemon;
 
 import android.annotation.TargetApi;
 import android.os.Build;
@@ -19,16 +19,12 @@ import com.android.uiautomator.core.UiScrollable;
 import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 import org.apache.commons.io.FileUtils;
-import org.droidmate.common_android.DeviceCommand;
-import org.droidmate.common_android.DeviceResponse;
-import org.droidmate.common_android.UiAutomatorDaemonException;
-import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse;
-import org.droidmate.common_android.guimodel.GuiAction;
+import org.droidmate.uiautomator_daemon.guimodel.GuiAction;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.droidmate.common_android.Constants.*;
+import static org.droidmate.uiautomator_daemon.Constants.*;
 
 public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 {
@@ -445,7 +441,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
    * There is a bug in com.android.uiautomator.core.UiDevice#dumpWindowHierarchy(java.lang.String)
    * that sometimes manifest itself with an Exception. This method  protects against it, making a couple of
    * attempts at getting the dump and if all of them fail, throwing an
-   * {@link org.droidmate.common_android.UiAutomatorDaemonException}.
+   * {@link org.droidmate.uiautomator_daemon.UiAutomatorDaemonException}.
    *
    * </p><p>
    * Example stack trace of possible NPE:<br/>
@@ -473,7 +469,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
    * (...)<br/>
    * at com.android.uiautomator.core.AccessibilityNodeInfoDumper.dumpWindowToFile(AccessibilityNodeInfoDumper.java:89) ~[na:na]<br/>
    * at com.android.uiautomator.core.UiDevice.dumpWindowHierarchy(UiDevice.java:768) ~[na:na]<br/>
-   * at org.droidmate.uiautomatordaemon.UiAutomatorDaemonDriver.tryDumpWindowHierarchy(UiAutomatorDaemonDriver.java:420) ~[na:na]<br/>
+   * at org.droidmate.uiautomator_daemon.UiAutomatorDaemonDriver.tryDumpWindowHierarchy(UiAutomatorDaemonDriver.java:420) ~[na:na]<br/>
    * (...)<br/>
    * </code>
    * </p><p>

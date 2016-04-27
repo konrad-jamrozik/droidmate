@@ -280,7 +280,7 @@ public class MonitorJavaTemplate
     }
   }
 
-  // !!! DUPLICATION WARNING !!! with org.droidmate.uiautomatordaemon.SerializableTCPServerBase
+  // !!! DUPLICATION WARNING !!! with org.droidmate.uiautomator_daemon.SerializableTCPServerBase
   static abstract class SerializableTCPServerBase<ServerInputT extends Serializable, ServerOutputT extends Serializable>
   {
     private int port;

@@ -62,33 +62,36 @@ evaluationDependsOn(":projects:apk-inliner")
 /* Note: The 'compile[Test]Java.dependsOn' clauses are redundant with 'builtBy' property in the 'dependencies' closure,
    but they are left here for documentation purposes.
  */
-compileGroovy.dependsOn "pullUiaDaemonJar"
-processResources.dependsOn "pullMonitorApk"
+processResources.dependsOn "pullMonitorApk", "pullUiaDaemonJar"
 
 /*
   This dependency ensures that on "gradlew clean build" all the apk fixtures will be rebuilt as well as the library .jar they
   depend on.
  */
-clean.dependsOn "cleanTest"
+clean.dependsOn "cleanTest", "cleanResources"
 
 processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 //endregion Dependencies
 
-//region Preparation of resources for the 'compileGroovy' task
+//region Preparation of resources
 
-Project uiaDaemon = findProject(":projects:uiautomator-daemon");
+Project uiaDaemon = findProject(":projects:uiautomator-daemon")
+String uiaDaemonJarName = "${uiaDaemon.name}.jar"
+String monitorApkName = "monitor.apk"
+
 task pullUiaDaemonJar(type: Copy, dependsOn: ":projects:uiautomator-daemon:build") { Copy copy ->
 
-  def uiaDaemonJar = file("${uiaDaemon.buildDir}/${uiaDaemon.name}.jar")
+  def uiaDaemonJar = file(new File(uiaDaemon.buildDir, uiaDaemonJarName))
   copy.from(uiaDaemonJar).into(coreResDir)
 }
 
 Project monitorGenerator = findProject(":projects:monitor-generator")
 task pullMonitorApk(type: Copy, dependsOn: ":projects:monitor-generator:build") {Copy copy ->
 
-  def monitorApk = file("${monitorGenerator.buildDir}/monitor.apk")
+  def monitorApk = file(new File(monitorGenerator.buildDir, monitorApkName))
   copy.from(monitorApk).into(coreResDir)
 }
+
 
 // endregion Preparation of resources for the 'compileGroovy' task
 
@@ -152,6 +155,11 @@ private File getCoreResDir()
 //endregion
 
 //region cleaning resources
+
+task cleanResources(type: Delete) {
+  delete file(new File(coreResDir, uiaDaemonJarName))
+  delete file(new File(coreResDir, monitorApkName))
+}
 
 task cleanTest(type: GradleBuild) {
 

@@ -7,17 +7,14 @@
 //
 // www.droidmate.org
 
-package org.droidmate.uiautomatordaemon;
+package org.droidmate.uiautomator_daemon;
 
 
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
-import org.droidmate.common_android.DeviceCommand;
-import org.droidmate.common_android.DeviceResponse;
-import org.droidmate.common_android.UiAutomatorDaemonException;
 
-import static org.droidmate.common_android.Constants.*;
+import static org.droidmate.uiautomator_daemon.Constants.*;
 
 public class UiAutomatorDaemonServer extends SerializableTCPServerBase<DeviceCommand, DeviceResponse>
 {

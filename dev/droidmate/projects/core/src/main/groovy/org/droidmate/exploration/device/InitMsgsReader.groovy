@@ -13,10 +13,10 @@ import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.MonitorConstants
 import org.droidmate.common.logging.LogbackConstants
-import org.droidmate.common_android.Constants
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
+import org.droidmate.uiautomator_daemon.Constants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

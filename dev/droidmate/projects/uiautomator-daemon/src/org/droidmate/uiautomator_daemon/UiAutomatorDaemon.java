@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 
-package org.droidmate.uiautomatordaemon;
+package org.droidmate.uiautomator_daemon;
 
 import android.annotation.TargetApi;
 import android.os.Build;
@@ -18,7 +18,7 @@ import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 import java.io.File;
 import java.io.IOException;
 
-import static org.droidmate.common_android.Constants.*;
+import static org.droidmate.uiautomator_daemon.Constants.*;
 
 @TargetApi(Build.VERSION_CODES.FROYO)
 public class UiAutomatorDaemon extends UiAutomatorTestCase
@@ -27,7 +27,7 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
   @SuppressWarnings("UnusedDeclaration")
   /* Will be launched by org.droidmate.android_sdk.AdbWrapper.startUiaDaemon().
      See also:
-     org.droidmate.common_android.Constants.uiaDaemon_initMethodName
+     org.droidmate.uiautomator_daemon.Constants.uiaDaemon_initMethodName
   */
   public void init()
   {

@@ -7,9 +7,9 @@
 //
 // www.droidmate.org
 
-package org.droidmate.common_android;
+package org.droidmate.uiautomator_daemon;
 
-import org.droidmate.common_android.guimodel.GuiAction;
+import org.droidmate.uiautomator_daemon.guimodel.GuiAction;
 
 import java.io.Serializable;
 

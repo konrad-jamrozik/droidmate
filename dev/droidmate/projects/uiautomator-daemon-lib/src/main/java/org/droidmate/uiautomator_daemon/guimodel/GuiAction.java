@@ -7,9 +7,9 @@
 //
 // www.droidmate.org
 
-package org.droidmate.common_android.guimodel;
+package org.droidmate.uiautomator_daemon.guimodel;
 
-import org.droidmate.common_android.Constants;
+import org.droidmate.uiautomator_daemon.Constants;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;
