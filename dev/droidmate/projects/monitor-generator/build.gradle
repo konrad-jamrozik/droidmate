@@ -84,7 +84,7 @@ task copyGeneratedMonitorToScaffolding(type: Copy, dependsOn: "run") { Copy copy
   
   copy.from project.ext.runOutput
   copy.into monitorJava.parent
-  copy.rename BuildKt.monitor_generator_output_relative_path.toFile().name, monitorJava.name
+  copy.rename new File(BuildKt.monitor_generator_output_relative_path).name, monitorJava.name
 
   copy.outputs.file monitorJava
   

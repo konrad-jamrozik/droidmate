@@ -48,7 +48,7 @@ val android_jar = android_platform_dir.resolveRegularFile("android.jar")
 //endregion
 
 val monitor_generator_res_name_monitor_template = "monitorTemplate.txt"
-val monitor_generator_output_relative_path = Paths.get("temp/generated_Monitor.java")
+val monitor_generator_output_relative_path = "temp/generated_Monitor.java"
 
 val apk_inliner_param_input_default = Paths.get("input-apks")
 val apk_inliner_param_output_dir_default = Paths.get("output-apks")

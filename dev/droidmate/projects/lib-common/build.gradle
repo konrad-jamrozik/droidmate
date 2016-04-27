@@ -63,25 +63,33 @@ task writeBuildConstantsProperties() { Task it ->
   it.outputs.file(buildConstantsFile)
   
   doLast {
+
+    // Map constants used in both Gradle build scripts and in the compiled classes to a resource file. This way the constants will
+    // be available to the compiled classes in a stand-alone deployment, without the gradle build scripts.
+    //
+    // Do not use Groovy map initializer syntax to define the map due to a known issue: 
+    // https://youtrack.jetbrains.com/issue/IDEA-155257
+    //
+    Map<String, String> map = [:]
+    map["apk_inliner_param_input"] = BuildKt.apk_inliner_param_input
+    map["apk_inliner_param_output_dir"] = BuildKt.apk_inliner_param_output_dir
+    map["apk_inliner_param_input_default"] = BuildKt.apk_inliner_param_input_default.toString()
+    map["apk_inliner_param_output_dir_default"] = BuildKt.apk_inliner_param_output_dir_default.toString()
+    map["AVD_dir_for_temp_files"] = BuildKt.AVD_dir_for_temp_files
+    map["jarsigner_relative"] = BuildKt.jarsigner_relative
+    map["apk_fixtures"] = BuildKt.apk_fixtures
+    map["monitored_inlined_apk_fixture_name"] = BuildKt.monitored_inlined_apk_fixture_name
+    map["monitor_generator_output_relative_path"] = BuildKt.monitor_generator_output_relative_path
+    map["test_temp_dir_name"] = BuildKt.test_temp_dir_name
+    map["apks_dir"] = BuildKt.apks_dir
+    map["appguard_apis_txt"] = BuildKt.appguard_apis_txt
+    map["dir_name_temp_extracted_resources"] = BuildKt.dir_name_temp_extracted_resources
+    map["monitor_generator_res_name_monitor_template"] = BuildKt.monitor_generator_res_name_monitor_template
+    map["aapt_command_relative"] = BuildKt.aapt_command_relative
+    map["adb_command_relative"] = BuildKt.adb_command_relative
+
     buildConstantsFile.withWriter {BufferedWriter wr ->
-      ([
-        "apk_inliner_param_input"                    : BuildKt.apk_inliner_param_input,
-        "apk_inliner_param_output_dir"               : BuildKt.apk_inliner_param_output_dir,
-        "apk_inliner_param_input_default"            : BuildKt.apk_inliner_param_input_default.toString(),
-        "apk_inliner_param_output_dir_default"       : BuildKt.apk_inliner_param_output_dir_default.toString(),
-        "AVD_dir_for_temp_files"                     : BuildKt.AVD_dir_for_temp_files,
-        "jarsigner_relative"                         : BuildKt.jarsigner_relative,
-        "apk_fixtures"                               : BuildKt.apk_fixtures,
-        "monitored_inlined_apk_fixture_name"         : BuildKt.monitored_inlined_apk_fixture_name,
-        "monitor_generator_output_relative_path"     : BuildKt.monitor_generator_output_relative_path,
-        "test_temp_dir_name"                         : BuildKt.test_temp_dir_name,
-        "apks_dir"                                   : BuildKt.apks_dir,
-        "appguard_apis_txt"                          : BuildKt.appguard_apis_txt,
-        "dir_name_temp_extracted_resources"          : BuildKt.dir_name_temp_extracted_resources,
-        "monitor_generator_res_name_monitor_template": BuildKt.monitor_generator_res_name_monitor_template,
-        "aapt_command_relative"                      : BuildKt.aapt_command_relative,
-        "adb_command_relative"                       : BuildKt.adb_command_relative
-      ]).each {key, value ->
+      map.each {key, value ->
         wr.writeLine(key + "=" + value)
       }
     }
