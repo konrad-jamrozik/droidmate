@@ -1,6 +1,3 @@
-import com.konradjamrozik.IterableExtensions
-import org.droidmate.buildsrc.BuildKt
-
 // Copyright (c) 2012-2016 Saarland University
 // All rights reserved.
 //
@@ -16,6 +13,9 @@ import org.droidmate.buildsrc.BuildKt
   Even though this project uses Groovy, it can still run on Android Device. Not sure why, maybe because at runtime there are no
   direct calls to methods from Groovy SDK.
 */
+
+import com.konradjamrozik.IterableExtensions
+import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'groovy'
 apply plugin: 'project-report'
