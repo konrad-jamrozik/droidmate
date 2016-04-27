@@ -32,7 +32,7 @@ dependencies {
 }
 
 evaluationDependsOn(":projects:monitor-template")
-// !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.lib_android.MonitorJavaTemplate
+// !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.monitor_template_src.MonitorJavaTemplate
 File monitorJavaTemplateSource = findProject(":projects:monitor-template").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
 assert monitorJavaTemplateSource.file
 
@@ -43,10 +43,8 @@ File resDir = resDirs.srcDirs[0]
 apply plugin: 'application'
 mainClassName = "org.droidmate.monitor_generator.MonitorGeneratorFrontend"
 
-
 tasks.run { JavaExec javaExec ->
 
-    
   standardOutput = new ByteArrayOutputStream() // Mute the task stdout
 
   project.ext.runOutput = (javaExec.workingDir as File).toPath().resolve(BuildKt.monitor_generator_output_relative_path).toFile()
@@ -56,13 +54,6 @@ tasks.run { JavaExec javaExec ->
   doLast {
     assert runOutput.isFile()
   }
-  // Temp debug code for replacing generated monitor with a manually-edited one.
-//  doLast {
-//    File tempDebugMonitorJava = new File("${monitorApkScaffoldingDir.path}/temp_debug/Monitor_tempdebug.java")
-//    monitorJava.delete()
-//    Files.copy(tempDebugMonitorJava.toPath(), monitorJava.toPath())
-//  }
-  // /Temp debug code.
 }
 
 processResources.dependsOn "pullMonitorJavaTemplateSource"
