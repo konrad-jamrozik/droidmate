@@ -12,7 +12,7 @@ import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
 import org.droidmate.common.BuildConstants
 import org.droidmate.exceptions.ConfigurationException
-import org.droidmate.uiautomator_daemon.Constants
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -306,7 +306,7 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_uiautomatorDaemonTcpPort], description =
     "TCP port used by DroidMate to communicate with the android (virtual) device.")
-  public int uiautomatorDaemonTcpPort = Constants.UIADAEMON_SERVER_PORT
+  public int uiautomatorDaemonTcpPort = UiautomatorDaemonConstants.UIADAEMON_SERVER_PORT
 
   @Parameter(names = [Configuration.pn_useApkFixturesDir], arity = 1)
   public boolean useApkFixturesDir = false

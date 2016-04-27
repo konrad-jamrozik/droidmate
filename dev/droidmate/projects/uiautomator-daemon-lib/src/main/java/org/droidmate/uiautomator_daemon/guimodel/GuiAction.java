@@ -9,7 +9,7 @@
 
 package org.droidmate.uiautomator_daemon.guimodel;
 
-import org.droidmate.uiautomator_daemon.Constants;
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;
@@ -90,11 +90,11 @@ public class GuiAction implements Serializable
       String[] splitStr = sourceStr.split(" ");
       return new GuiAction(Integer.parseInt(splitStr[0]), Integer.parseInt(splitStr[1]), /* long click */ false);
     }
-    else if (sourceStr.equals(Constants.guiActionCommand_pressBack))
+    else if (sourceStr.equals(UiautomatorDaemonConstants.guiActionCommand_pressBack))
       return new GuiAction(sourceStr);
-    else if (sourceStr.equals(Constants.guiActionCommand_pressHome))
+    else if (sourceStr.equals(UiautomatorDaemonConstants.guiActionCommand_pressHome))
       return new GuiAction(sourceStr);
-    else if (sourceStr.equals(Constants.guiActionCommand_turnWifiOn))
+    else if (sourceStr.equals(UiautomatorDaemonConstants.guiActionCommand_turnWifiOn))
       return new GuiAction(sourceStr);
     else
       return null;
@@ -103,7 +103,7 @@ public class GuiAction implements Serializable
 
   public static GuiAction createPressBackGuiAction()
   {
-    return new GuiAction(Constants.guiActionCommand_pressBack);
+    return new GuiAction(UiautomatorDaemonConstants.guiActionCommand_pressBack);
   }
 
   public static GuiAction createEnterTextGuiAction(String resourceId, String textToEnter)
@@ -113,17 +113,17 @@ public class GuiAction implements Serializable
 
   public static GuiAction createPressHomeGuiAction()
   {
-    return new GuiAction(Constants.guiActionCommand_pressHome);
+    return new GuiAction(UiautomatorDaemonConstants.guiActionCommand_pressHome);
   }
 
   public static GuiAction createTurnWifiOnGuiAction()
   {
-    return new GuiAction(Constants.guiActionCommand_turnWifiOn);
+    return new GuiAction(UiautomatorDaemonConstants.guiActionCommand_turnWifiOn);
   }
 
   public static GuiAction createLaunchAppGuiAction(String iconLabel)
   {
-    return new GuiAction(Constants.guiActionCommand_launchApp, iconLabel, null);
+    return new GuiAction(UiautomatorDaemonConstants.guiActionCommand_launchApp, iconLabel, null);
   }
 
 

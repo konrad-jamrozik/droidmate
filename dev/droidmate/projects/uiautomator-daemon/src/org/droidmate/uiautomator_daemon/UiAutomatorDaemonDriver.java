@@ -24,7 +24,7 @@ import org.droidmate.uiautomator_daemon.guimodel.GuiAction;
 import java.io.File;
 import java.io.IOException;
 
-import static org.droidmate.uiautomator_daemon.Constants.*;
+import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*;
 
 public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 {

@@ -14,7 +14,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
 
-import static org.droidmate.uiautomator_daemon.Constants.*;
+import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*;
 
 public class UiAutomatorDaemonServer extends SerializableTCPServerBase<DeviceCommand, DeviceResponse>
 {

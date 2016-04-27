@@ -18,7 +18,7 @@ import org.droidmate.common.SysCmdExecutorException
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.AdbWrapperException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
-import org.droidmate.uiautomator_daemon.Constants
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -582,10 +582,10 @@ public class AdbWrapper implements IAdbWrapper
         deviceSerialNumber)
 
       String uiaDaemonCmdLine = String.format("-c %s -e %s %s -e %s %s -e %s %s",
-        Constants.uiaDaemon_initMethodName,
-        Constants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
-        Constants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
-        Constants.uiaDaemonParam_tcpPort, port)
+        UiautomatorDaemonConstants.uiaDaemon_initMethodName,
+        UiautomatorDaemonConstants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
+        UiautomatorDaemonConstants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
+        UiautomatorDaemonConstants.uiaDaemonParam_tcpPort, port)
 
       this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,

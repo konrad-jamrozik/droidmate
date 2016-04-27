@@ -9,11 +9,7 @@
 
 package org.droidmate.uiautomator_daemon;
 
-// KJA rename package to org.droidmate.uiautomator_daemon
-// KJA rename this class to "UiautomatorDaemonConstants"
-/** Holds constants used by at least two of projects being part of DroidMate.
- */
-public class Constants
+public class UiautomatorDaemonConstants
 {
 
   // To understand why this is constant and not a cmd line parameter, see comment in
@@ -27,7 +23,6 @@ public class Constants
 
   // End of DUPLICATION WARNING
   
-  // KJA move these constants closer to usage ("core" project) and all other constants that can be moved like that.
   public static final String DEVICE_SAMSUNG_GALAXY_S3_GT_I9300 = "samsung-GT-I9300";
   public static final String DEVICE_GOOGLE_NEXUS_7             = "asus-Nexus 7";
   public static final String DEVICE_GOOGLE_NEXUS_10            = "samsung-Nexus 10";
@@ -75,6 +70,5 @@ public class Constants
   // org.droidmate.uia_manual_test_cases.TestCases#tag
   public static final String uiaTestCaseTag = "UiaTestCase";
   // end of DUPLICATION WARNING
-
-
+  
 }

@@ -30,7 +30,7 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
   private String serverStartMessageTag;
   private String serverStartMessage;
 
-  public static final String tag = Constants.deviceLogcatTagPrefix + "server";
+  public static final String tag = UiautomatorDaemonConstants.deviceLogcatTagPrefix + "server";
 
   protected SerializableTCPServerBase(String serverStartMessageTag, String serverStartMessage)
   {

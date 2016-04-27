@@ -23,7 +23,7 @@ import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.logcat.IUiaTestActionLogcatMessage
 import org.droidmate.logcat.UiaTestActionLogcatMessage
-import org.droidmate.uiautomator_daemon.Constants
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.time.LocalDateTime
 import java.util.regex.Matcher
@@ -65,14 +65,14 @@ class UiaTestCaseLogsProcessor implements IUiaTestCaseLogsProcessor
     ITimeFormattedLogcatMessage lastMsg = logcatMessages.last()
 
     // Assert the first message denotes test case start and extract test case name from it.
-    assert firstMsg.tag == Constants.uiaTestCaseTag
+    assert firstMsg.tag == UiautomatorDaemonConstants.uiaTestCaseTag
     assertTestCaseStartPrefix(logcatMessages)
     String testCaseName = firstMsg.messagePayload - testCaseStartedPrefix
     assert testCaseName.size() > 0
 
     // Assert the last message denotes test case end.
 
-    assert lastMsg.tag == Constants.uiaTestCaseTag
+    assert lastMsg.tag == UiautomatorDaemonConstants.uiaTestCaseTag
     assert lastMsg.messagePayload == testCaseFinished
 
     // String test case start & end messages.
@@ -81,7 +81,7 @@ class UiaTestCaseLogsProcessor implements IUiaTestCaseLogsProcessor
     firstMsg = logcatMessages.first()
 
     // The click done by human that launched the app from apps screen. DroidMate instead issues "reset" exploration action.
-    assert firstMsg.tag == Constants.uiaTestCaseTag
+    assert firstMsg.tag == UiautomatorDaemonConstants.uiaTestCaseTag
     LocalDateTime firstExplActionTime = firstMsg.time
     logcatMessages = logcatMessages.drop(1)
     firstMsg = logcatMessages.first()
@@ -91,7 +91,7 @@ class UiaTestCaseLogsProcessor implements IUiaTestCaseLogsProcessor
     assert firstMsg.messagePayload == MonitorConstants.msg_ctor_success
 
     // Drop the instrumentation redirection status messages.
-    logcatMessages = logcatMessages.drop(1).dropWhile {it.tag == Constants.instrumentation_redirectionTag}
+    logcatMessages = logcatMessages.drop(1).dropWhile {it.tag == UiautomatorDaemonConstants.instrumentation_redirectionTag}
     firstMsg = logcatMessages.first()
     assert firstMsg.tag == MonitorConstants.tag_init || firstMsg.tag == backwardCompatibleMonitorTag
     assert firstMsg.messagePayload.startsWith(MonitorConstants.msgPrefix_init_success)
@@ -119,7 +119,7 @@ class UiaTestCaseLogsProcessor implements IUiaTestCaseLogsProcessor
   @SuppressWarnings("GroovyAssignmentToMethodParameter")
   private IApkExplorationOutput collectExplorationOutput(String testCaseName, String appPackageName, LocalDateTime firstExplActionTime, LocalDateTime monitorInitTime, List<ITimeFormattedLogcatMessage> logcatMessages)
   {
-    assert logcatMessages.each {assert it.tag in [MonitorConstants.tag_api, Constants.uiaTestCaseTag]}
+    assert logcatMessages.each {assert it.tag in [MonitorConstants.tag_api, UiautomatorDaemonConstants.uiaTestCaseTag]}
     // the reset app action is assumed to be done by the user manually before she starts the uia run.
     TimestampedExplorationAction firstAction = TimestampedExplorationAction.from(newResetAppExplorationAction(), firstExplActionTime)
     def collector = explorationOutputCollectorFactory.create(appPackageName)
@@ -137,7 +137,7 @@ class UiaTestCaseLogsProcessor implements IUiaTestCaseLogsProcessor
         {
           consumeApiLogs(apkExplOut, logcatMessages)
           lastLogWasEvent = false
-        } else if (logcatMessages[0].tag == Constants.uiaTestCaseTag)
+        } else if (logcatMessages[0].tag == UiautomatorDaemonConstants.uiaTestCaseTag)
         {
           if (lastLogWasEvent)
             apkExplOut.apiLogs << []

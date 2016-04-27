@@ -16,7 +16,7 @@ import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
-import org.droidmate.uiautomator_daemon.Constants
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -157,7 +157,7 @@ class InitMsgsReader implements IInitMsgsReader
     log.debug("readInstrumentationMessages(deviceTimeDiff)")
     assert deviceTimeDiff != null
 
-    List<ITimeFormattedLogcatMessage> messages = device.readLogcatMessages(Constants.instrumentation_redirectionTag)
+    List<ITimeFormattedLogcatMessage> messages = device.readLogcatMessages(UiautomatorDaemonConstants.instrumentation_redirectionTag)
 
     messages = deviceTimeDiff.syncMessages(messages)
 

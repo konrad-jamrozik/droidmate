@@ -52,6 +52,7 @@ dependencies {
   /* Making this additional setter call instead of supplying a value in constructor is a workaround for an issue I discovered
     on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */
   libsDirFileTree.setBuiltBy(['pullLibCommonAndroidJar'])
+  // KJA probably this can instead depend directly on the project of uia-d-lib and the file tree above can exclude the jar
   compile libsDirFileTree
 
   // Required by IntelliJ; when building with Gradle, the underlying ant script knows this dependency.

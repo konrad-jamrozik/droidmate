@@ -22,7 +22,7 @@ import org.droidmate.exploration.actions.ResetAppExplorationAction
 import org.droidmate.exploration.actions.TerminateExplorationAction
 import org.droidmate.exploration.device.IDeviceMessagesReader
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
-import org.droidmate.uiautomator_daemon.Constants
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -153,7 +153,7 @@ class DeviceExplorationDriver implements IDeviceExplorationDriver
     else
       explorationOutput.apiLogs << []
 
-    List<ITimeFormattedLogcatMessage> uiaDaemonLogs = device.readLogcatMessages(Constants.uiaDaemon_logcatTag)
+    List<ITimeFormattedLogcatMessage> uiaDaemonLogs = device.readLogcatMessages(UiautomatorDaemonConstants.uiaDaemon_logcatTag)
 
     device.clearLogcat()
 

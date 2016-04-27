@@ -18,12 +18,12 @@ import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exceptions.UnsupportedMultimethodDispatch
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
-import org.droidmate.uiautomator_daemon.Constants
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import org.droidmate.uiautomator_daemon.guimodel.GuiAction
 
 class GuiScreen implements IGuiScreen
 {
-  //private static final String packageAndroidLancher = new DeviceConfigurationFactory(Constants.DEVICE_DEFAULT).getConfiguration().getPackageAndroidLauncher()
+  //private static final String packageAndroidLancher = new DeviceConfigurationFactory(UiautomatorDaemonConstants.DEVICE_DEFAULT).getConfiguration().getPackageAndroidLauncher()
 
   public static final String              idHome                  = "home"
   public static final String              idChrome                = "chrome"
@@ -118,14 +118,14 @@ class GuiScreen implements IGuiScreen
     {
       switch (guiAction.guiActionCommand)
       {
-        case Constants.guiActionCommand_pressHome:
+        case UiautomatorDaemonConstants.guiActionCommand_pressHome:
           out = new ScreenTransitionResult(home, [])
           break
-        case Constants.guiActionCommand_turnWifiOn:
+        case UiautomatorDaemonConstants.guiActionCommand_turnWifiOn:
           assert this.is(home)
           out = new ScreenTransitionResult(this, [])
           break
-        case Constants.guiActionCommand_pressBack:
+        case UiautomatorDaemonConstants.guiActionCommand_pressBack:
           assert false: "Not yet implemented!"
           break
         default:

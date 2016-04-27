@@ -12,9 +12,9 @@ import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
-import org.droidmate.uiautomator_daemon.Constants
 import org.droidmate.uiautomator_daemon.DeviceCommand
 import org.droidmate.uiautomator_daemon.DeviceResponse
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 class UiautomatorDaemonClient implements IUiautomatorDaemonClient
 {
@@ -67,16 +67,16 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
   {
     List<String> msgs = this.adbWrapper.waitForMessagesOnLogcat(
       this.deviceSerialNumber,
-      Constants.UIADAEMON_SERVER_START_TAG,
+      UiautomatorDaemonConstants.UIADAEMON_SERVER_START_TAG,
       1,
       this.serverStartTimeout,
       this.serverStartQueryDelay)
 
     assert !msgs?.empty
     assert (msgs.size() == 1):
-      "Expected exactly one message on logcat (with tag $Constants.UIADAEMON_SERVER_START_MSG) " +
+      "Expected exactly one message on logcat (with tag $UiautomatorDaemonConstants.UIADAEMON_SERVER_START_MSG) " +
         "confirming that uia-daemon server has started. Instead, got ${msgs.size()} messages. Msgs:\n${msgs.join("\n")}"
-    assert msgs[0].contains(Constants.UIADAEMON_SERVER_START_MSG)
+    assert msgs[0].contains(UiautomatorDaemonConstants.UIADAEMON_SERVER_START_MSG)
   }
 
   @Override

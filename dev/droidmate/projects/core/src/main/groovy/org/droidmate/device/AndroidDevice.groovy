@@ -36,7 +36,7 @@ import java.time.format.DateTimeFormatter
 import java.util.List
 
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchAppDeviceAction
-import static org.droidmate.uiautomator_daemon.Constants.*
+import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
 
 /**
  * <p>
