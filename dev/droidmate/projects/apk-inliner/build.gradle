@@ -13,6 +13,8 @@ apply plugin: 'groovy'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
+apply plugin: 'application'
+mainClassName = "org.droidmate.apk_inliner.ApkInlinerFrontend"
 
 dependencies {
 
@@ -20,12 +22,9 @@ dependencies {
 
   compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
-  testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile 'junit:junit:4.12'
 
 }
-
-apply plugin: 'application'
-mainClassName = "org.droidmate.apk_inliner.ApkInlinerFrontend"
 
 run {
 

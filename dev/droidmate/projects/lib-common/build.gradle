@@ -19,7 +19,17 @@ import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'groovy'
 apply plugin: 'project-report'
-// KJA double check that java v8 fails
+
+/* 
+   This project has to be built with Java 7. Otherwise the ant call from :projects:monitor-generator:buildMonitorApk task:
+   
+     ant -f repo/dev/droidmate/projects/monitor-generator/monitor-apk-scaffolding/build.xml debug
+     
+   fails with:
+
+       [dx] UNEXPECTED TOP-LEVEL EXCEPTION:
+       [dx] com.android.dx.cf.iface.ParseException: bad class file magic (cafebabe) or version (0034.0000)
+*/
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 compileGroovy.configure { GroovyCompile gc ->
@@ -33,29 +43,23 @@ dependencies {
     exclude group: "org.slf4j", module: "slf4j-simple"
   }
 
-  // Groovy lang
   compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
-  // General utils
   compile 'org.apache.commons:commons-exec:1.2'
   compile 'org.apache.commons:commons-lang3:3.3'
   compile 'commons-io:commons-io:2.4'
 
-  // Command line parsing
   compile 'net.sf.jopt-simple:jopt-simple:4.9'
 
-  // Logging
   compile 'ch.qos.logback:logback-classic:1.0.13'
   compile 'ch.qos.logback:logback-core:1.0.13'
   compile 'org.slf4j:slf4j-api:1.7.6'
 
-  // Override guava 16 used by jimfs (added below)
   compile 'com.google.guava:guava:19.0'
 
-  // Filesystem stubbing
   compile 'com.google.jimfs:jimfs:1.0'
 
-  testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile 'junit:junit:4.12'
 }
 
 File resDir = IterableExtensions.findSingle(sourceSets.main.resources.srcDirs)
