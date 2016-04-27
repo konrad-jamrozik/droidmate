@@ -24,9 +24,6 @@ env:
     # Required for rt.jar, to build projects deployed to Android, which supports Java 7 but not 8.
     - JAVA7_HOME=/usr/lib/jvm/java-7-oracle
     
-    # Required for rt.jar, to build projects building .apk files with the legacy Android ant scripts, which do not support Java >=7.
-    - JAVA6_HOME=/usr/lib/jvm/java-6-openjdk-amd64
-    
     # Required to obtain handles to aapt and adb.
     - ANDROID_HOME=/usr/local/android-sdk
     
