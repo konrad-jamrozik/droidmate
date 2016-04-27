@@ -34,7 +34,7 @@ evaluationDependsOn(":projects:reporter")
   Workaround for a bug causing tests run from Gradle to fail. Source of the workaround: [1]
 
   Suspected cause of the bug:
-    Because project(":projects:lib-android") has android.jar as a transitive dependency, running tests
+    Because project(":projects:monitor-template") has android.jar as a transitive dependency, running tests
     from Gradle caused JUnit to throw "Stub!" from Assert method.
 
   [1] http://stackoverflow.com/a/7253941/986533

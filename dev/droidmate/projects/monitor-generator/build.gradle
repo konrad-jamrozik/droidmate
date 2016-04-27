@@ -28,11 +28,12 @@ dependencies {
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
 
-  compile project(":projects:lib-android")
+  compile project(":projects:monitor-template")
 }
 
+evaluationDependsOn(":projects:monitor-template")
 // !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.lib_android.MonitorJavaTemplate
-File monitorJavaTemplateSource = findProject(":projects:lib-android").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
+File monitorJavaTemplateSource = findProject(":projects:monitor-template").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
 assert monitorJavaTemplateSource.file
 
 SourceDirectorySet resDirs = sourceSets.main.resources
