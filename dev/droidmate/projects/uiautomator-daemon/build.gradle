@@ -57,6 +57,7 @@ dependencies {
   // Required by IntelliJ; when building with Gradle, the underlying ant script knows this dependency.
   compile files(BuildKt.uiautomator_jar.toString())
 
+  // KJA compileOnly?
   compile files(BuildKt.android_jar.toString())
 }
 
