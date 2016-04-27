@@ -27,13 +27,12 @@ val apks_dir = "apks"
 private val exeExt = if (OS.isWindows) ".exe" else ""
 
 //region Values directly based on system environment variables
-val java8Home = "JAVA8_HOME".asEnvDir
-val jdk7_rt_jar = "JAVA7_HOME".asEnvDir.resolveRegularFile("jre/lib/rt.jar")
+val java_8_home = "JAVA8_HOME".asEnvDir
 private val android_sdk_dir = "ANDROID_HOME".asEnvDir
 //endregion
 
 val jarsigner_relative = "bin/jarsigner$exeExt"
-val jarsigner = "JAVA8_HOME".asEnvDir.resolveRegularFile(jarsigner_relative)
+val jarsigner = java_8_home.resolveRegularFile(jarsigner_relative)
 
 //region Android SDK components
 private val build_tools_version = "19.1.0"

@@ -46,9 +46,10 @@ DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userg
 
 To be able to build DroidMate on your local machine, do the following:
 
-* Install Java Development Kit (JDK) 8 and 7.
-  * Set `JAVA8_HOME` environment variable to point to JDK 8 location. Analogously for `JAVA7_HOME`.
-* Install Android SDK. Set `ANDROID_HOME` environment variable to point to its location.
+* Install Java Development Kit (JDK) 8.
+  * Set `JAVA8_HOME` environment variable to point to JDK 8 location.
+* Install Android SDK. 
+  * Set `ANDROID_HOME` environment variable to point to its location.
 * Run SDK Manager of Android SDK with admin rights. Download the following:
   * Android SDK Build-tools 19.1
   * Android 4.4.2 SDK Platform
@@ -141,7 +142,6 @@ Following local setup is proven to work with DroidMate:
 | Windows  | 10 |
 | IntelliJ | 2016.1 #IU-145.258 |
 | JDK 8    | 77-b03 x64 |
-| JDK 7    | 79-b15 x64 |
 
 ## DroidMate input ##
 ### Preparing apks for DroidMate ####

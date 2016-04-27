@@ -16,9 +16,6 @@
   Because some of the classes are deployed on an Android Device, the classes in this project are compiled with Java 7.
 */
 
-
-import org.droidmate.buildsrc.BuildKt
-
 apply plugin: 'java'
 
 /* 
@@ -36,6 +33,9 @@ apply plugin: 'java'
 */
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
-compileJava.options.bootClasspath = BuildKt.jdk7_rt_jar
+compileJava.configure { JavaCompile jc ->
+  // See explanation of this in build.gradle of 'monitor-template' project.
+  jc.options.compilerArgs += "-Xlint:-options"
+}
 
 apply from: project(":projects").file("maven.gradle")
