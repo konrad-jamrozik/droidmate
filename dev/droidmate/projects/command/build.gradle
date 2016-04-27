@@ -123,6 +123,4 @@ task testDevice(type: Test, dependsOn: testClasses) {
 }
 
 apply from: project(":projects").file("maven.gradle")
-// So the published jar to local maven repo with task "install" won't be called command.jar but droidmate.jar
-jar.baseName = rootProject.name
 
