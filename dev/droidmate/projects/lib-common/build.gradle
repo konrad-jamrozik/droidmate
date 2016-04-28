@@ -83,7 +83,7 @@ task writeBuildConstantsProperties() { Task it ->
     map["apk_inliner_param_input_default"] = BuildKt.apk_inliner_param_input_default.toString()
     map["apk_inliner_param_output_dir_default"] = BuildKt.apk_inliner_param_output_dir_default.toString()
     map["AVD_dir_for_temp_files"] = BuildKt.AVD_dir_for_temp_files
-    map["jarsigner_relative"] = BuildKt.jarsigner_relative
+    map["jarsigner_relative_path"] = BuildKt.jarsigner_relative_path
     map["apk_fixtures"] = BuildKt.apk_fixtures
     map["monitored_inlined_apk_fixture_name"] = BuildKt.monitored_inlined_apk_fixture_name
     map["monitor_generator_output_relative_path"] = BuildKt.monitor_generator_output_relative_path

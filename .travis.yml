@@ -19,7 +19,7 @@ env:
   global:
     
     # Required to obtain reference to jarsigner.
-    - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+    - JAVA_HOME=/usr/lib/jvm/java-8-oracle
     
     # Required to obtain handles to aapt and adb.
     - ANDROID_HOME=/usr/local/android-sdk

@@ -47,7 +47,7 @@ DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userg
 To be able to build DroidMate on your local machine, do the following:
 
 * Install Java Development Kit (JDK) 8.
-  * Set `JAVA8_HOME` environment variable to point to JDK 8 location.
+  * Set `JAVA_HOME` environment variable to point to its location.
 * Install Android SDK. 
   * Set `ANDROID_HOME` environment variable to point to its location.
 * Run SDK Manager of Android SDK with admin rights. Download the following:
@@ -176,7 +176,7 @@ $ adb pull /data/app/com.frank_weber.forex2-1.apk
 
 ## Setting up IntelliJ
 
-DroidMate is developed with IntelliJ IDEA  using the directory-based project format (`.idea`  directory). To work with DroidMate, IntelliJ has to be configured with all the dependencies used for daily building (e.g. JDKs) plus it has to have the following:
+DroidMate is developed with IntelliJ IDEA  using the directory-based project format (`.idea`  directory). To work with DroidMate, IntelliJ has to be configured with all the dependencies used for daily building (e.g. JDK) plus it has to have the following:
 
 * Gradle plugin.
 * Android Support plugin.

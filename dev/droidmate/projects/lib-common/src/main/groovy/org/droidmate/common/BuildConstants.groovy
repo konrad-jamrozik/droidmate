@@ -26,7 +26,7 @@ class BuildConstants
 
   static String aapt_command = safeGetProperty(properties, "ANDROID_HOME", "aapt_command_relative")
   static String adb_command  = safeGetProperty(properties, "ANDROID_HOME", "adb_command_relative")
-  static String jarsigner    = safeGetProperty(properties, "JAVA8_HOME", "jarsigner_relative")
+  static String jarsigner    = safeGetProperty(properties, "JAVA_HOME", "jarsigner_relative_path")
 
   static String apk_fixtures                                = safeGetProperty(properties, "apk_fixtures")
   static String apk_inliner_param_input                     = safeGetProperty(properties, "apk_inliner_param_input")

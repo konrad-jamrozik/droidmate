@@ -25,12 +25,12 @@ import java.util.concurrent.TimeUnit
 private val exeExt = if (OS.isWindows) ".exe" else ""
 
 //region Values directly based on system environment variables
-val java_8_home = "JAVA8_HOME".asEnvDir
+val java_home = "JAVA_HOME".asEnvDir
 private val android_sdk_dir = "ANDROID_HOME".asEnvDir
 //endregion
 
-val jarsigner_relative = "bin/jarsigner$exeExt"
-val jarsigner = java_8_home.resolveRegularFile(jarsigner_relative)
+val jarsigner_relative_path = "bin/jarsigner$exeExt"
+val jarsigner = java_home.resolveRegularFile(jarsigner_relative_path)
 
 //region Android SDK components
 private val build_tools_version = "19.1.0"
