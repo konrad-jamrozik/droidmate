@@ -8,13 +8,13 @@
 // www.droidmate.org
 package org.droidmate_usage_example;
 
-import org.droidmate.configuration.Configuration;
 import org.droidmate.frontend.DroidmateFrontend;
 
 public class Main
 {
   public static void main(String[] args)
   {
-    DroidmateFrontend.main(Configuration.pn_inline);
+    DroidmateFrontend.main("-help");
+    // For more examples, see: org.droidmate_usage_example.MainTest
   }
 }
