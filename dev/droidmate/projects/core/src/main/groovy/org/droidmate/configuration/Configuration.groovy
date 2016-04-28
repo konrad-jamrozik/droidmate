@@ -98,6 +98,7 @@ public class Configuration implements IConfiguration
   public static final String pn_exploreInteractively                         = "-exploreInteractively"
   public static final String pn_getValidGuiSnapshotRetryAttempts             = "-getValidGuiSnapshotRetryAttempts"
   public static final String pn_getValidGuiSnapshotRetryDelay                = "-getValidGuiSnapshotRetryDelay"
+  public static final String pn_inline                                       = "-inline"
   public static final String pn_launchActivityDelay                          = "-launchActivityDelay"
   public static final String pn_launchActivityTimeout                        = "-launchActivityTimeout"
   public static final String pn_logWidgets                                   = "-logWidgets"
@@ -107,6 +108,7 @@ public class Configuration implements IConfiguration
   public static final String pn_reportInputDir                               = "-reportInputDir"
   public static final String pn_reportOutputDir                              = "-reportOutputDir"
   public static final String pn_resetEveryNthExplorationForward              = "-resetEvery"
+  public static final String pn_runOnNotInlined                              = "-runOnNotInlined"
   public static final String pn_splitCharts                                  = "-splitCharts"
   public static final String pn_socketTimeout                                = "-socketTimeout"
   public static final String pn_softReset                                    = "-softReset"
@@ -118,6 +120,7 @@ public class Configuration implements IConfiguration
   public static final String pn_uiautomatorDaemonWaitForWindowUpdateTimeout  = "-waitForWindowUpdateTimeout"
   public static final String pn_uninstallApk                                 = "-uninstallApk"
   public static final String pn_useApkFixturesDir                            = "-useApkFixturesDir"
+  public static final String pn_report                                       = "-report"
   public static final String pn_stopAppRetryAttempts                         = "-stopAppRetryAttempts"
   public static final String pn_stopAppSuccessCheckDelay                     = "-stopAppSuccessCheckDelay"
   public static final String pn_waitForCanRebootDelay                        = "-waitForCanRebootDelay"
@@ -126,7 +129,7 @@ public class Configuration implements IConfiguration
   //endregion
 
   public static final String defaultDroidmateOutputDir              = "." + File.separator + "dev1"
-  public static final int    defaultActionsLimit                    = 10
+  public static final int    defaultActionsLimit                    = 5
   public static final int    defaultResetEveryNthExplorationForward = 0
 
   //region Cmd line parameters
@@ -223,6 +226,10 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_getValidGuiSnapshotRetryDelay])
   public int getValidGuiSnapshotRetryDelay = 2000
 
+  @Parameter(names = [Configuration.pn_inline], description =
+    "If present, instead of normal run, DroidMate will inline all non-inlined apks. Before inlining backup copies of the apks will be created and put into a sub-directory of the directory containing the apks.")
+  public Boolean inline = false
+
   @Parameter(names = [Configuration.pn_launchActivityDelay])
   public int launchActivityDelay = 5000
 
@@ -271,6 +278,10 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_resetEveryNthExplorationForward])
   public int resetEveryNthExplorationForward = defaultResetEveryNthExplorationForward
 
+  @Parameter(names = [Configuration.pn_runOnNotInlined], description =
+    "Allow DroidMate to run on not inlined apks.")
+  public Boolean runOnNotInlined = false
+  
   @Parameter(names = ["-saturationChartsHours"], description = "The time span covered by the saturation charts data, in hours.")
   public Double saturationChartsHours = 2.0
 
@@ -311,7 +322,7 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_useApkFixturesDir], arity = 1)
   public boolean useApkFixturesDir = false
 
-  @Parameter(names = ["-report"], description =
+  @Parameter(names = [Configuration.pn_report], description =
     "If present, instead of normal run, DroidMate will generate reports from previously serialized data.")
   public Boolean report = false
 

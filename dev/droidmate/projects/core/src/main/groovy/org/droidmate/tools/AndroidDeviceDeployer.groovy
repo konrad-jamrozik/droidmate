@@ -120,7 +120,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   @Override
   public List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> computation)
   {
-    log.info("withSetupDevice(deviceIndex: $deviceIndex, computation)")
+    log.info("Setup device with deviceIndex of $deviceIndex")
     Assert.checkClosureFirstParameterSignature(computation, IRobustDevice)
 
     List<ExplorationException> explorationExceptions = []

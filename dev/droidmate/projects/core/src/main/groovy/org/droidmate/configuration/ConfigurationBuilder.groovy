@@ -197,8 +197,12 @@ class ConfigurationBuilder implements IConfigurationBuilder
     cfg.reportOutputDirPath = fs.getPath(cfg.reportOutputDir)
     cfg.apksDirPath = cfg.useApkFixturesDir ? new ResourcePath(BuildConstants.apk_fixtures).path : fs.getPath(cfg.apksDirName.toString())
 
-    cfg.droidmateOutputDirPath.createDirIfNotExists()
-    cfg.apksDirPath.createDirIfNotExists()
+    if (cfg.apksDirPath.createDirIfNotExists())
+      log.info("Created directory from which DroidMate will read input apks: "+cfg.apksDirPath.toAbsolutePath().toString())
+    
+    if (cfg.droidmateOutputDirPath.createDirIfNotExists())
+      log.info("Created directory to which DroidMate will output: "+cfg.droidmateOutputDirPath.toAbsolutePath().toString())
+
   }
 
 

@@ -22,4 +22,6 @@ public interface IApk
   String getLaunchableActivityComponentName()
 
   String getApplicationLabel()
+
+  Boolean getInlined()
 }

@@ -76,6 +76,12 @@ class Apk implements IApk, Serializable
     this.launchableActivityComponentName = launchableActivityComponentName
     this.applicationLabel = applicationLabel
   }
+
+  @Override
+  Boolean getInlined()
+  {
+    this.fileName.endsWith("-inlined.apk")
+  }
 }
 
 

@@ -58,6 +58,7 @@ public class DroidmateFrontend
       validateStdoutLoglevel()
       LogbackUtilsRequiringLogbackLog.cleanLogsDir()
       log.info("Bootstrapping DroidMate: configuring from command line & injecting dependencies.")
+      log.info("IMPORTANT: for help on how to configure DroidMate, run it with -help")
       log.info("IMPORTANT: for detailed logs from DroidMate run, please see ${LogbackConstants.LOGS_DIR_PATH}.")
 
       Configuration cfg = new ConfigurationBuilder().build(args, fs)

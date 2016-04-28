@@ -46,7 +46,8 @@ class ConfigurationForTests
     this.argsList = zeroedTestConfig + [
       Configuration.pn_droidmateOutputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString(),
       Configuration.pn_reportInputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString(),
-      Configuration.pn_reportOutputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString()
+      Configuration.pn_reportOutputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString(),
+      Configuration.pn_runOnNotInlined
     ]
   }
 
