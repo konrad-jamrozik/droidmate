@@ -19,7 +19,6 @@ import org.droidmate.tools.ApksProvider
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 
 @Slf4j
 class InlineCommand extends DroidmateCommand
@@ -45,7 +44,7 @@ class InlineCommand extends DroidmateCommand
     
     if (apks.every { it.inlined } )
     {
-      log.warn("No not inlined apks found. Aborting.")
+      log.warn("No non-inlined apks found. Aborting.")
       return
     }
 
@@ -55,24 +54,23 @@ class InlineCommand extends DroidmateCommand
 
     apks.findAll { !it.inlined }.each { Apk apk ->
 
-      makeOriginalCopy(apk, originalsDir)
-      // KJA instead of making original copy, move the original to originals dir after inlining is done.
-      
       inliner.inline(apk.path, apk.path.parent)
+      log.info("Inlined ${apk.fileName}")
+      moveOriginal(apk, originalsDir)
     }
   }
 
-  private void makeOriginalCopy(Apk apk, Path originalsDir)
+  private void moveOriginal(Apk apk, Path originalsDir)
   {
     Path original = originalsDir.resolve(apk.fileName)
 
     if (!Files.exists(original))
     {
-      Files.copy(apk.path, original, StandardCopyOption.REPLACE_EXISTING)
-      log.info("Created copy of $original.fileName in '${originalsDir.fileName}' subdir.")
+      Files.move(apk.path, original)
+      log.info("Moved $original.fileName to '${originalsDir.fileName}' subdir.")
     } else
     {
-      log.info("Skipping creating copy of $original.fileName in '${originalsDir.fileName}' subdir: it already exists.")
+      log.info("Skipped moving $original.fileName to '${originalsDir.fileName}' subdir: it already exists there.")
     }
   }
 }

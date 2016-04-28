@@ -30,8 +30,6 @@ dependencies {
 // fix it both for running :command and for stand-alone distro. i.e. logback should not be packaged in jar.
 // one of the things to check is apk-inliner:jar which ends up in C:\my\local\repos\github\droidmate\dev\droidmate\projects\apk-inliner\build\libs
 // another is the distribution. which should pick up logback.groovy from standalone logback.groovy, not one in jar.
-// http://stackoverflow.com/a/18275945/986533
-// http://stackoverflow.com/a/26452714/986533
 // Things that have to work:
 // stand-alone run of apk inliner both in gradle and intellij
 // stand-alone run of command both in gradle and intellij
@@ -62,3 +60,5 @@ clean.configure {
 test.configure {
   // includes = [''] // Turn off all tests
 }
+
+apply from: project(":projects").file("maven.gradle")

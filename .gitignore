@@ -56,3 +56,4 @@ uiautomator-daemon.jar
 # Temporary stuff
 out.txt
 **/test_artifacts/temp/
+temp_extracted_resources

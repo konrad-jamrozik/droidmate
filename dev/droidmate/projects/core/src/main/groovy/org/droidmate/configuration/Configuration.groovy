@@ -279,7 +279,7 @@ public class Configuration implements IConfiguration
   public int resetEveryNthExplorationForward = defaultResetEveryNthExplorationForward
 
   @Parameter(names = [Configuration.pn_runOnNotInlined], description =
-    "Allow DroidMate to run on not inlined apks.")
+    "Allow DroidMate to run on non-inlined apks.")
   public Boolean runOnNotInlined = false
   
   @Parameter(names = ["-saturationChartsHours"], description = "The time span covered by the saturation charts data, in hours.")

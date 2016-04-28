@@ -99,7 +99,7 @@ To run DroidMate regression tests requiring a device:
 ## Running DroidMate ##
 
 To run DroidMate:  
-`cd repo/dev/droimate`  
+`cd repo/dev/droidmate`  
 `./gradlew :projects:command:run` or `./gradlew :p:com:run` for short.
 
 DroidMate will read command line arguments from the first line of
@@ -144,18 +144,17 @@ Following local setup is proven to work with DroidMate:
 | JDK 8    | 77-b03 x64 |
 
 ## DroidMate input ##
+
+DroidMate reads as input all `.apk` files located in `repo/dev/droidmate/apks` 
+
 ### Preparing apks for DroidMate ####
 
-DroidMate cannot run on normal apks, they first have to be `inlined`. To inline a set of apks, do the following:
+DroidMate can run on normal apks, but it is intended to run on `inlined` apks. When run on inlined apks, DroidMate is able to 
+monitor which methods of Android SDK these apks access.
 
-* Copy the apks to `repo/dev/droidmate/projects/apk-inliner/input-apks`
-* Run:  
-`cd repo/dev/droidmate`  
-`./gradlew :projects:core:prepareInlinedApks` or `./gradlew :p:cor:pIA` for short.  
-The apks will be placed in `repo/dev/droidmate/apks/inlined`
-* Run DroidMate with cmd line arg of `-apksDir=apks/inlined` to use these apks.
+To inline apks, run DroidMate with `-inline` argument. The original apks will be retained.
 
-Inlined apks can be distinguished by an `-inlined.apk` suffix in their name.
+Inlined apks can be distinguished by an `-inlined` suffix in their name.
 
 ### Obtaining apks ###
 

@@ -9,7 +9,7 @@
 
 package org.droidmate.apk_inliner
 
-import com.konradjamrozik.ResourcePath
+import com.konradjamrozik.Resource
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.common.*
@@ -51,15 +51,17 @@ class ApkInliner implements IApkInliner
   static ApkInliner build()
   {
     def sysCmdExecutor = new SysCmdExecutor()
+
+    def resDir = Paths.get(BuildConstants.dir_name_temp_extracted_resources)
     return new ApkInliner(
       sysCmdExecutor,
       new JarsignerWrapper(
         sysCmdExecutor,
         Paths.get(BuildConstants.jarsigner),
-        new ResourcePath("debug.keystore").path
+        new Resource("debug.keystore").extractTo(resDir)
       ),
-      new Jar(new ResourcePath("appguard-inliner.jar").path),
-      new Dex(new ResourcePath("appguard-loader.dex").path),
+      new Jar(new Resource("appguard-inliner.jar").extractTo(resDir)),
+      new Dex(new Resource("appguard-loader.dex").extractTo(resDir)),
       "org.droidmate.monitor_generator.generated.Monitor",
       BuildConstants.AVD_dir_for_temp_files + "monitor.apk")
   }

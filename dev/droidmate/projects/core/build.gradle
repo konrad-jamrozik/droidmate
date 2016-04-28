@@ -21,6 +21,14 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
+// WISH right now logback.groovy is in the built jar, thus making it hard to replace:
+// http://stackoverflow.com/a/18275945/986533
+// http://stackoverflow.com/a/26452714/986533
+// 
+// More precisely, because it is in resources dir of main sourceSet, it gets deployed to the jar with :jar task. Ideally it
+// should not be in the jar at all, nor in the distribution ('application' plugin / 'installDist' task). See the links above
+// on the better setup.
+
 dependencies {
 
   compile("com.github.konrad-jamrozik:utilities:$utilities_version") {
