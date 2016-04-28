@@ -113,14 +113,19 @@ File testResDir = testResDirs.srcDirs[0]
 assert testResDir.path.endsWith("test" + File.separator + "resources")
 File apkFixturesDir = new File(testResDir, BuildKt.apk_fixtures)
 assert apkFixturesDir.directory
-task testDevice(type: Test, dependsOn: testClasses) {
 
-  inputs.dir apkFixturesDir.absolutePath
+task testDevice(type: Test, dependsOn: testClasses) { Test task ->
+  task.group = "verification"
+  
+  task.inputs.dir apkFixturesDir.absolutePath
 
-  workingDir rootDir
+  // This task is to be run manually, so it should never be up-to-date.
+  task.outputs.upToDateWhen { false }
+  
+  task.workingDir rootDir
 
-  includes = ['**/RequiresDeviceTestSuite.class']
-
+  task.include("**/DroidmateFrontendTest.class")
+  task.filter.includeTestsMatching("*Explores monitored apk on a real device")
 }
 
 apply from: project(":projects").file("maven.gradle")
