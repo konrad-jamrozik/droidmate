@@ -7,6 +7,7 @@
 //
 // www.droidmate.org
 
+import com.konradjamrozik.IterableExtensions
 import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'groovy'
@@ -61,10 +62,12 @@ dependencies {
 
 }
 
+// KJA apks-dir: can be dried?
 /*
  This project sometimes has to fire apk-inliner:run. For that, this project needs to know input and output dirs of apk-inliner,
  which is the reason for evaluation dependence.
  */
+// KJA toremove?
 evaluationDependsOn(":projects:apk-inliner")
 
 /* Note: The 'compile[Test]Java.dependsOn' clauses are redundant with 'builtBy' property in the 'dependencies' closure,
@@ -100,7 +103,6 @@ task pullMonitorApk(type: Copy, dependsOn: ":projects:monitor-generator:build") 
   copy.from(monitorApk).into(coreResDir)
 }
 
-
 // endregion Preparation of resources for the 'compileGroovy' task
 
 //region Preparation of resources for the 'test' task: apk fixtures
@@ -116,24 +118,22 @@ String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
 
 JavaExec inlinerExec = project(":projects:apk-inliner").tasks.run as JavaExec
 
-SourceDirectorySet testResDirs = sourceSets.test.resources
-assert testResDirs.srcDirs.size() == 1
-File testResDir = testResDirs.srcDirs[0]
-assert testResDir.path.endsWith("test" + File.separator + "resources")
-File apkFixturesDir = new File(testResDir, BuildKt.apk_fixtures)
+File apkFixturesDir = new File(
+  IterableExtensions.findSingle(sourceSets.test.resources.srcDirs as Set<File>),
+  BuildKt.apk_fixtures)
 assert apkFixturesDir.directory
 
-task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
+task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
   ["main", "classpath", "standardOutput"].each {delegate."$it" = inlinerExec."$it"}
 
   File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
-  args = [
+  je.args = [
     BuildKt.apk_inliner_param_input, inputApk.canonicalPath,
     BuildKt.apk_inliner_param_output_dir, apkFixturesDir
   ]
 
-  inputs.file inputApk
-  outputs.file new File(apkFixturesDir, BuildKt.monitored_inlined_apk_fixture_name)
+  je.inputs.file inputApk
+  je.outputs.file new File(apkFixturesDir, BuildKt.monitored_inlined_apk_fixture_name)
 }
 
 task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
@@ -173,19 +173,6 @@ task cleanTest(type: GradleBuild) {
 
   buildFile = apkFixturesProjectDir.path + "/build.gradle"
   tasks = ["clean"]
-}
-
-//endregion
-
-//region Tasks for preparing inlined input apks. These tasks are to be run manually.
-
-task prepareInlinedApks(type: Copy, dependsOn: ":projects:apk-inliner:run") { Copy copy ->
-
-  File targetInlinedApksDir = file("$rootDir/${BuildKt.apks_dir}/inlined")
-  if (!targetInlinedApksDir.isDirectory())
-    targetInlinedApksDir.mkdir()
-
-  copy.from(inlinerExec.inlinedApksDir).include("*.apk").into(targetInlinedApksDir)
 }
 
 //endregion

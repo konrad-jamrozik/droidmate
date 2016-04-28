@@ -22,8 +22,6 @@ import java.io.ByteArrayOutputStream
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
-val apks_dir = "apks"
-
 private val exeExt = if (OS.isWindows) ".exe" else ""
 
 //region Values directly based on system environment variables

@@ -128,8 +128,9 @@ public class Configuration implements IConfiguration
   // @formatter:on
   //endregion
 
-  public static final String defaultDroidmateOutputDir              = "dev1"
   public static final int    defaultActionsLimit                    = 5
+  public static final String defaultApksDir                         = "apks"
+  public static final String defaultDroidmateOutputDir              = "dev1"
   public static final int    defaultResetEveryNthExplorationForward = 0
 
   //region Cmd line parameters
@@ -152,7 +153,7 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_apksDir],
     description = "Directory containing the apks to be processed by DroidMate.")
-  public String apksDirName = BuildConstants.apks_dir
+  public String apksDirName = defaultApksDir
 
   @Parameter(names = [Configuration.pn_appGuardOnlyApis], arity = 1)
   public boolean appGuardOnlyApis = true
