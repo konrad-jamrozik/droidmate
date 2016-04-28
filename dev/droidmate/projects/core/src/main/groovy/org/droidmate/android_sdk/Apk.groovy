@@ -24,6 +24,7 @@ class Apk implements IApk, Serializable
 
   private static final long serialVersionUID = 1
 
+  transient final Path path
   final String fileName
   final String absolutePath
   final String packageName
@@ -60,6 +61,7 @@ class Apk implements IApk, Serializable
 
   Apk(Path path, String packageName, String launchableActivityName, String launchableActivityComponentName, String applicationLabel)
   {
+    assert path != null
     String fileName = path.fileName.toString()
     String absolutePath = path.toAbsolutePath().toString()
 
@@ -69,6 +71,7 @@ class Apk implements IApk, Serializable
     assert packageName?.size() > 0
     assert applicationLabel?.size() > 0
 
+    this.path = path
     this.fileName = fileName
     this.absolutePath = absolutePath
     this.packageName = packageName

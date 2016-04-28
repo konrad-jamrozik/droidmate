@@ -10,8 +10,16 @@
 task debugClasspaths {Task it ->
   it.group = "help"
   doLast {
+    println ""
+    println "sourceSets.main.compileClasspath"
+    sourceSets.main.compileClasspath.each {println it}
+    println ""
+    println "sourceSets.main.runtimeClasspath"
+    sourceSets.main.runtimeClasspath.each {println it}
+    println ""
     println "sourceSets.test.compileClasspath"
     sourceSets.test.compileClasspath.each {println it}
+    println ""
     println "sourceSets.test.runtimeClasspath"
     sourceSets.test.runtimeClasspath.each {println it}
   }

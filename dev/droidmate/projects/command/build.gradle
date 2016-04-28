@@ -76,6 +76,7 @@ dependencies {
   // It works when run from IntelliJ or when run with 'gradlew :p:reporter:test'
   testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
 
+  compile project(":projects:apk-inliner")
   compile project(":projects:core")
   compile project(":projects:reporter")
 }
@@ -125,3 +126,5 @@ task testDevice(type: Test, dependsOn: testClasses) {
 apply from: project(":projects").file("maven.gradle")
 // So the published jar to local maven repo with task "install" won't be called command.jar but droidmate.jar
 jar.baseName = rootProject.name
+
+apply from: project(":projects").file("debug.gradle")

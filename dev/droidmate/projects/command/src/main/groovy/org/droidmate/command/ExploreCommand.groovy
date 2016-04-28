@@ -80,16 +80,6 @@ class ExploreCommand extends DroidmateCommand
   {
     cleanOutputDir(cfg.droidmateOutputDirPath)
 
-    /* KJA the list of returned apks has to be inlined.
-       If the start dir contained apks with -inlined.apk in their name, all works well. 
-       
-       If none of the apks were -inlined, they have to
-       be moved to apk_dir/originals and the inlined apks are to be generated to apk_sir
-       
-       If some of the apks were -inlined and some not, warning should be issued and execution should abort.
-       
-       If at least one apk has been inlined, droidmate should terminate after inlining and prompt user to run droidmate again.
-     */
     List<Apk> apks = this.apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames)
     if (!validateApks(apks, cfg.runOnNotInlined)) return
 
@@ -112,7 +102,6 @@ class ExploreCommand extends DroidmateCommand
         log.info("Not inlined input apks have been detected, but DroidMate was instructed to run anyway. Continuing with execution.")
       } else
       {
-        // KJA implemented -inline
         log.warn("At least one input apk is not inlined. DroidMate will not be able to monitor any calls to Android SDK methods done by such apps.")
         log.warn("If you want to inline apks, run DroidMate with $Configuration.pn_inline")
         log.warn("If you want to run DroidMate on non-inlined apks, run it with $Configuration.pn_runOnNotInlined")

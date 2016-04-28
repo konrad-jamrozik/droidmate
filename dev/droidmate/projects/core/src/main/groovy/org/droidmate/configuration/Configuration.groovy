@@ -128,7 +128,7 @@ public class Configuration implements IConfiguration
   // @formatter:on
   //endregion
 
-  public static final String defaultDroidmateOutputDir              = "." + File.separator + "dev1"
+  public static final String defaultDroidmateOutputDir              = "dev1"
   public static final int    defaultActionsLimit                    = 5
   public static final int    defaultResetEveryNthExplorationForward = 0
 
