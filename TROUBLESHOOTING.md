@@ -40,7 +40,7 @@ java.lang.IllegalStateException: UiAutomationService android.accessibilityservic
 </pre>
 
 #### Diagnosis:
-Last run didn't finish properly and uiautomator-daemon service wasn't killed properly.
+Last run didn't finish properly and uiautomator-daemon service wasn't killed properly. Most likely `org.droidmate.uiautomator_daemon.UiAutomatorDaemon.init` threw an exception.
 
 #### Manual fix:
 Open bash or cmd shell and do:

@@ -40,10 +40,6 @@ public class AdbWrapper implements IAdbWrapper
   private final Configuration   cfg
   private       ISysCmdExecutor sysCmdExecutor
 
-  // This should be set to the value of android.os.Environment.getDataDirectory()
-  private final String deviceEnvironmentDataDirectory = "data/local/tmp/"
-
-
   AdbWrapper(
     Configuration cfg,
     ISysCmdExecutor sysCmdExecutor)
@@ -606,7 +602,7 @@ public class AdbWrapper implements IAdbWrapper
     assert fileName != null
     assert fileName.size() > 0
 
-    String filePath = deviceEnvironmentDataDirectory + fileName
+    String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir + fileName
     String commandDescription = String
       .format(
       "Executing adb to delete file %s from Android Device with s/n %s.",
@@ -635,7 +631,7 @@ public class AdbWrapper implements IAdbWrapper
     // configuration, but they do not as of 15 Jan 2016
     assert Files.notExists(Paths.get(destinationFilePath))
 
-    String pulledFilePath = deviceEnvironmentDataDirectory + pulledFileName
+    String pulledFilePath = UiautomatorDaemonConstants.deviceLogcatLogDir + pulledFileName
     String commandDescription = String
       .format(
       "Executing adb to pull file %s from Android Device with s/n %s.",

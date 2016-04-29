@@ -74,8 +74,7 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
   private void saveLogcatToFile() throws UiAutomatorDaemonException
   {
     String fileName = logcatLogFileName;
-    File dataDir = getDataDir();
-
+    File dataDir = getLogcatDir();
     File outputFile = new File(dataDir, fileName);
 
     if (outputFile.exists())
@@ -90,7 +89,8 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
     {
       // - For explanation of the exec string, see org.droidmate.android_sdk.AdbWrapper.readMessagesFromLogcat()
       // - Manual tests with "adb shell ps" show that the executed process will be automatically killed when the uiad process dies.
-      Runtime.getRuntime().exec(String.format("logcat -v time -f %s *:D %s:W %s:D %s:D dalvikvm:I ActivityManager:V AccessibilityNodeInfoDumper:S View:E ResourceType:E HSAd-HSAdBannerView:I" ,
+      Runtime.getRuntime().exec(String.format("logcat -v time -f %s *:D %s:W %s:D %s:D dalvikvm:I ActivityManager:V " +
+        "AccessibilityNodeInfoDumper:S View:E ResourceType:E HSAd-HSAdBannerView:I" ,
         outputFile.getAbsolutePath(), instrumentation_redirectionTag, uiaDaemon_logcatTag, SerializableTCPServerBase.tag));
     } catch (IOException e)
     {
@@ -98,15 +98,20 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
     }
   }
 
-  private File getDataDir() throws UiAutomatorDaemonException
+  private File getLogcatDir() throws UiAutomatorDaemonException
   {
     File dataDir = Environment.getDataDirectory();
-    if (dataDir.toString().equals("data"))
-      dataDir = new File(dataDir, "tmp");
-
-    if (!dataDir.isDirectory())
-      if (!dataDir.mkdirs())
-        throw new UiAutomatorDaemonException("!dataDir.isDirectory() && !dataDir.mkdirs(). dataDir: "+dataDir.toString());
-    return dataDir;
+    
+    if (!deviceLogcatLogDir.startsWith(dataDir.toString().substring(1)))
+      throw new UiAutomatorDaemonException(
+        "The device logcat log dir should point to a subdirectory of device data dir. It doesn't. " +
+          "The device data dir: "+dataDir.toString()+ " The device logcat log dir: "+ deviceLogcatLogDir);
+    
+    File logcatDir = new File(deviceLogcatLogDir);
+      
+    if (!logcatDir.isDirectory())
+      if (!logcatDir.mkdirs())
+        throw new UiAutomatorDaemonException("!logcatDir.isDirectory() && !logcatDir.mkdirs(). logcatDir: "+logcatDir.toString());
+    return logcatDir;
   }
 }

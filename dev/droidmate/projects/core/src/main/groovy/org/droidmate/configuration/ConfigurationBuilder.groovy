@@ -189,8 +189,12 @@ class ConfigurationBuilder implements IConfigurationBuilder
   private static void setupResourcesAndPaths(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
     cfg.appGuardApisList = new Resource(BuildConstants.appguard_apis_txt).text.readLines().findAll {it.size() > 0 && !it.startsWith("#")}
+    
     cfg.uiautomatorDaemonJar = new Resource("uiautomator-daemon.jar").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
+    log.info("Using uiautomator-daemon.jar located at "+cfg.uiautomatorDaemonJar.toAbsolutePath().toString())
+    
     cfg.monitorApk = new Resource("monitor.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
+    log.info("Using monitor.apk located at "+cfg.monitorApk.toAbsolutePath().toString())
     
     cfg.droidmateOutputDirPath = fs.getPath(cfg.droidmateOutputDir)
     cfg.reportInputDirPath = fs.getPath(cfg.reportInputDir)
