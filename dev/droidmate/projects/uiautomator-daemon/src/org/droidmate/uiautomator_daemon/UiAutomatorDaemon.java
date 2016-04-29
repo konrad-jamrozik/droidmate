@@ -31,8 +31,14 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
   */
   public void init()
   {
-    saveLogcatToFile();
-
+    try
+    {
+      saveLogcatToFile();
+    } catch (Throwable t)
+    {
+      Log.e(uiaDaemon_logcatTag, "init.saveLogcatToFile() / FAILURE", t);
+    }
+    
     boolean waitForGuiToStabilize = Boolean.valueOf((String) getParams().get(uiaDaemonParam_waitForGuiToStabilize));
     int waitForWindowUpdateTimeout = Integer.valueOf((String) getParams().get(uiaDaemonParam_waitForWindowUpdateTimeout));
     int tcpPort = Integer.valueOf((String) getParams().get(uiaDaemonParam_tcpPort));
@@ -65,11 +71,12 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
     Log.i(uiaDaemon_logcatTag, "init: Shutting down UiAutomatorDaemon.");
   }
 
-  public void saveLogcatToFile() {
-
+  private void saveLogcatToFile() throws UiAutomatorDaemonException
+  {
     String fileName = logcatLogFileName;
+    File dataDir = getDataDir();
 
-    File outputFile = new File(Environment.getDataDirectory(), fileName);
+    File outputFile = new File(dataDir, fileName);
 
     if (outputFile.exists())
     {
@@ -89,5 +96,17 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
     {
       Log.wtf(uiaDaemon_logcatTag, e);
     }
+  }
+
+  private File getDataDir() throws UiAutomatorDaemonException
+  {
+    File dataDir = Environment.getDataDirectory();
+    if (dataDir.toString().equals("data"))
+      dataDir = new File(dataDir, "tmp");
+
+    if (!dataDir.isDirectory())
+      if (!dataDir.mkdirs())
+        throw new UiAutomatorDaemonException("!dataDir.isDirectory() && !dataDir.mkdirs(). dataDir: "+dataDir.toString());
+    return dataDir;
   }
 }

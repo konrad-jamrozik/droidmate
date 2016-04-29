@@ -29,19 +29,21 @@ org.droidmate.exceptions.AdbWrapperException: Failed waiting for at least 1 mess
 // ...
 </pre>
 
-`logcat` shows:
+logcat shows:
 <pre>
+// ...
 04-29 18:06:40.416 2267-2267/? E/UiAutomatorTestRunner: uncaught exception
 java.lang.IllegalStateException: UiAutomationService android.accessibilityservice.IAccessibilityServiceClient$Stub$Proxy@acfd8658already registered!
   at android.os.Parcel.readException(Parcel.java:1480)
   // ...
+// ...
 </pre>
 
 #### Diagnosis:
 Last run didn't finish properly and uiautomator-daemon service wasn't killed properly.
 
 #### Manual fix:
-Open bash or cmd shell and then:
+Open bash or cmd shell and do:
 <pre>
 $ adb shell
 
@@ -51,5 +53,4 @@ root      2024  2022  302468 33076 ffffffff b773a179 S uiautomator
 
 root@generic_x86:/ # kill 2024
 kill 2024
-
 </pre>
