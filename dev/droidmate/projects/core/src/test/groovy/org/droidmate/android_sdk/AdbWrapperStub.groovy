@@ -132,11 +132,6 @@ class AdbWrapperStub implements IAdbWrapper
   {
   }
 
-  /*@Override
-  void stopUiautomatorDaemon(String deviceSerialNumber) throws AdbWrapperException
-  {
-  }*/
-
   @Override
   void removeFile(String deviceSerialNumber, String fileName, String runAsPackage) throws AdbWrapperException
   {

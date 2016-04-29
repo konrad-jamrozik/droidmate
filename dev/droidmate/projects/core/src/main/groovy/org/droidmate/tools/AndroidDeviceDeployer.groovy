@@ -71,7 +71,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   {
     this.adbWrapper.startAdbServer()
 
-    // KNOWN BUG on emulator, device offline when trying to remove logcat log file. Possible quickfix: on emulators, add a wait. 
+    // KNOWN BUG on emulator, device offline when trying to remove logcat log file. Possible quickfix: on emulators, add a wait.
     device.removeLogcatLogFile()
     device.clearLogcat()
 
@@ -108,6 +108,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       // differently from uiautomator-daemon,
       // uiautomator2-daemon is an APK and must be uninstalled
       device.uninstallApk(Constants.uiaDaemon_testPackageName, true)
+      device.uninstallApk(Constants.uiaDaemon_packageName, true)
       device.removeJar(cfg.monitorApk)
     }
     else

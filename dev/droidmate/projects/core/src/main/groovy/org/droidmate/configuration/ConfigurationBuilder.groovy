@@ -191,10 +191,10 @@ class ConfigurationBuilder implements IConfigurationBuilder
   private static void bindDirsAndResources(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
     cfg.appGuardApisList = new Resource(BuildConstants.appguard_apis_txt).text
+    
+    cfg.uiautomatorDaemon = new Resource("uiautomator2-daemon.apk").extractTo(fs.getPath("./temp_extracted_resources"))
 
-    cfg.uiautomatorDaemon = new ResourcePath("uiautomator2-daemon.apk")
-
-    cfg.uiautomatorDaemonTest = new ResourcePath("uiautomator2-daemon-test.apk")
+    cfg.uiautomatorDaemonTest = new Resource("uiautomator2-daemon-test.apk").extractTo(fs.getPath("./temp_extracted_resources"))
 
     cfg.monitorApk = new Resource("monitor.apk").extractTo(fs.getPath("./temp_extracted_resources"))
 

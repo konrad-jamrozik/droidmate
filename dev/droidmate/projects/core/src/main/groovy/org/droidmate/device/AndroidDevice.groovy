@@ -197,7 +197,6 @@ public class AndroidDevice implements IAndroidDevice
   {
     log.trace("stopUiaDaemon()")
     this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
-    //this.adbWrapper.stopUiautomatorDaemon(this.serialNumber);
     this.tcpClients.waitForUiaDaemonToClose()
     log.trace("DONE stopUiaDaemon()")
 
