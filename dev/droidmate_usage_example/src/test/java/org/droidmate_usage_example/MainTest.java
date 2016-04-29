@@ -16,6 +16,12 @@ import org.junit.Test;
 
 import java.nio.file.FileSystems;
 
+/**
+ * This class contains tests showing example use cases of DroidMate API. To understand better how to work with DroidMate API, 
+ * please explore the source code of the DroidMate classes called by the examples here. For where to find the sources and how to 
+ * navigate them, please read the <tt>README.md</tt> located in the repository of:
+ * <pre>https://github.com/konrad-jamrozik/droidmate</pre>
+ */
 public class MainTest
 {
   @Test
@@ -34,7 +40,7 @@ public class MainTest
   public void CommonSettings()
   {
     // KJA current work
-    //final String[] args = new ArgsBuilder().randomSeed(2).resetEvery(30).timeLimitInSeconds(60).apksDir("apks/inlined").build();
+    //final String[] args = new ArgsBuilder().apksDir("apks/inlined")..timeLimitInSeconds(20).resetEvery(5).randomSeed(2).build();
     final String[] args = {};
     mainWithArgs(args);
   }
