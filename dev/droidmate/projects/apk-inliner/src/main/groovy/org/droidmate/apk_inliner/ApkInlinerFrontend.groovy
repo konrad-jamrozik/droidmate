@@ -9,19 +9,14 @@
 
 package org.droidmate.apk_inliner
 
-import com.konradjamrozik.ResourcePath
 import groovy.util.logging.Slf4j
 import joptsimple.OptionParser
 import joptsimple.OptionSet
 import joptsimple.ValueConverter
 import org.droidmate.common.BuildConstants
-import org.droidmate.common.Dex
-import org.droidmate.common.Jar
-import org.droidmate.common.SysCmdExecutor
 
 import java.nio.file.FileSystems
 import java.nio.file.Path
-import java.nio.file.Paths
 
 import static org.droidmate.apk_inliner.PathValueConverter.pathIn
 
@@ -33,9 +28,8 @@ public class ApkInlinerFrontend
   {
     try
     {
-      def (Path inputPath, Path outputPath) =
-      parseArgs(args)
-      IApkInliner apkInliner = buildApkInliner()
+      def (Path inputPath, Path outputPath) = parseArgs(args)
+      IApkInliner apkInliner = ApkInliner.build()
       apkInliner.inline(inputPath, outputPath)
 
     } catch (Exception e)
@@ -65,34 +59,6 @@ public class ApkInlinerFrontend
 
     return [inputPath, outputPath]
   }
-
-  private static IApkInliner buildApkInliner()
-  {
-    def sysCmdExecutor = new SysCmdExecutor()
-
-    Jar inlinerJar = new Jar(new ResourcePath("appguard-inliner.jar").path)
-    Dex appGuardLoader = new Dex(new ResourcePath("appguard-loader.dex").path)
-    String monitorClassName = "org.droidmate.monitor_generator.generated.Monitor"
-    
-    String pathToMonitorApkOnAndroidDevice = BuildConstants.AVD_dir_for_temp_files + "monitor.apk"
-
-    def jarsignerPath = Paths.get(BuildConstants.jarsigner)
-    assert jarsignerPath.isRegularFile()
-    def debugKeystorePath = new ResourcePath("debug.keystore").path
-
-    return new ApkInliner(
-      sysCmdExecutor,
-      new JarsignerWrapper(
-        sysCmdExecutor,
-        jarsignerPath,
-        debugKeystorePath
-      ),
-      inlinerJar,
-      appGuardLoader,
-      monitorClassName,
-      pathToMonitorApkOnAndroidDevice)
-  }
-
 
   static handleException = {Exception e ->
     log.error("Exception was thrown and propagated to the frontend.", e)

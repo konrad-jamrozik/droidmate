@@ -61,7 +61,7 @@ class FilteredApis implements IFilteredApis
   /**
    * <p>
    * Checks if given stack trace was obtained from a log to a call to socket &lt;init> made by Monitor TCP server
-   * ({@code org.droidmate.common_android.MonitorJavaTemplate.MonitorTCPServer}).
+   * ({@code org.droidmate.uiautomator_daemon.MonitorJavaTemplate.MonitorTCPServer}).
    *
    * </p><p>
    * Here is an example of a log of monitored API call to such method (with line breaks added for clarity):

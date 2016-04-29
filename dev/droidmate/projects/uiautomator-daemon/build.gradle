@@ -7,7 +7,16 @@
 //
 // www.droidmate.org
 
+import org.droidmate.buildsrc.BuildKt
+
 def libsDir = file("$projectDir/libs")
+evaluationDependsOn(":projects:uiautomator-daemon-lib")
+def projectUiautomatorDaemonLib = findProject(":projects:uiautomator-daemon-lib")
+Jar uiautomatorDaemonLibJar = projectUiautomatorDaemonLib.jar
+ConfigurableFileTree libsDirFileTree = fileTree(dir: libsDir, include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar', uiautomatorDaemonLibJar.archiveName])
+/* Making this additional setter call instead of supplying a value in constructor is a workaround for an issue I discovered
+  on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */
+libsDirFileTree.setBuiltBy(['pullLibCommonAndroidJar'])
 
 /* --- MAKE INTELLIJ IDEA HAPPY ZONE ---
 
@@ -17,7 +26,6 @@ def libsDir = file("$projectDir/libs")
   This is necessary because this project isn't actually a java project, but it is a wrapper over an ant script:
   see the 'build' task.
 */
-import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'java'
 
@@ -35,7 +43,7 @@ tasks.jar.enabled = false
 
 /* "antBuild" and "antClean" tasks are defined below */
 tasks.build.dependsOn("antBuild")
-tasks.clean.dependsOn("antClean")
+tasks.clean.dependsOn("cleanLibCommonAndroidJar", "antClean")
 
 sourceSets {
   main.java.srcDirs = ["src"]
@@ -48,58 +56,40 @@ sourceSets {
 
 dependencies {
   compile fileTree(dir: "src")
-  ConfigurableFileTree libsDirFileTree = fileTree(dir: libsDir, include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
-  /* Making this additional setter call instead of supplying a value in constructor is a workaround for an issue I discovered
-    on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */
-  libsDirFileTree.setBuiltBy(['pullLibCommonAndroidJar'])
+
   compile libsDirFileTree
+  compile projectUiautomatorDaemonLib
 
   // Required by IntelliJ; when building with Gradle, the underlying ant script knows this dependency.
-  compile files(BuildKt.uiautomator_jar.toString())
+  compileOnly files(BuildKt.uiautomator_jar.toString())
 
-  compile files(BuildKt.android_jar.toString())
+  compileOnly files(BuildKt.android_jar.toString())
 }
-
-
 
 /* --- end of MAKE INTELLIJ IDEA HAPPY ZONE --- */
 
-def projectLibCommon = findProject(":projects:lib-common-android");
-def antBuildFileName = "build-customized.xml"
-
-task pullLibCommonAndroidJar(dependsOn: ":projects:lib-common-android:jar") {
-
-  def copyFrom = projectLibCommon.jar.archivePath
-  def copyTo = libsDir
-
-  inputs.file copyFrom
-  outputs.file "${copyTo.path}/${projectLibCommon.jar.archiveName}"
-
-  doLast {
-    //noinspection GroovyAssignabilityCheck
-    def copyResult = copy {
-      from copyFrom
-      into copyTo
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file.\n" +
-        "Path of file to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-
-  }
+task pullLibCommonAndroidJar(type: Copy, dependsOn: ":projects:uiautomator-daemon-lib:jar") { Copy copy ->
+  
+  copy.from(uiautomatorDaemonLibJar.archivePath).into(libsDir)
 }
 
+task cleanLibCommonAndroidJar(type: Delete) {
+  group = "build"
+  delete new File(libsDir, uiautomatorDaemonLibJar.archiveName)
+}
+
+def antBuildFileName = "build-customized.xml"
 
 /*
   Note: the underlying ant script inputs all files in libs dir, so if some additional .jar files will be
   found in it (e.g. with sources), the 'antBuild' task will fail to produce output due to classpath clashes.
  */
-task antBuild(dependsOn: [pullLibCommonAndroidJar]) {
+task antBuild(dependsOn: "pullLibCommonAndroidJar") {
   group = "build"
   description = "Runs the underlying customized ant build file with 'ant build'. The ant file was originally " +
     "generated with Android SDK."
 
-  inputs.files configurations.compile
+  inputs.files configurations.compile, new File(libsDirFileTree.dir, uiautomatorDaemonLibJar.archiveName)
   outputs.dir buildDir
 
   doLast {

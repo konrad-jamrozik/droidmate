@@ -46,9 +46,10 @@ DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userg
 
 To be able to build DroidMate on your local machine, do the following:
 
-* Install Java Development Kit (JDK) 8, 7 and 6.
-  * Set `JAVA8_HOME` environment variable to point to JDK 8 location. Analogously for `JAVA7_HOME` and `JAVA6_HOME`.
-* Install Android SDK. Set `ANDROID_HOME` environment variable to point to its location.
+* Install Java Development Kit (JDK) 8.
+  * Set `JAVA_HOME` environment variable to point to its location.
+* Install Android SDK. 
+  * Set `ANDROID_HOME` environment variable to point to its location.
 * Run SDK Manager of Android SDK with admin rights. Download the following:
   * Android SDK Build-tools 19.1
   * Android 4.4.2 SDK Platform
@@ -98,7 +99,7 @@ To run DroidMate regression tests requiring a device:
 ## Running DroidMate ##
 
 To run DroidMate:  
-`cd repo/dev/droimate`  
+`cd repo/dev/droidmate`  
 `./gradlew :projects:command:run` or `./gradlew :p:com:run` for short.
 
 DroidMate will read command line arguments from the first line of
@@ -109,9 +110,7 @@ Most likely, the input apks will be taken from `repo/dev/droidmate/apks` (as det
 ## Compatibility ##
 ### OS compatibility ###
 
-DroidMate works on Ubuntu (see Travis CI build) and Windows 10. 
-
-DroidMate also works on Mac OS X, but please see the [troubleshooting Mac OS problems section](#troubleshooting-mac-os-problems).
+DroidMate works on Ubuntu (see Travis CI build) Windows 10 and Mac OS X.
  
 ### Android device compatibility ###
 
@@ -143,23 +142,19 @@ Following local setup is proven to work with DroidMate:
 | Windows  | 10 |
 | IntelliJ | 2016.1 #IU-145.258 |
 | JDK 8    | 77-b03 x64 |
-| JDK 7    | 79-b15 x64 |
-| JDK 6    | 45-b06 x64 |
-
 
 ## DroidMate input ##
+
+DroidMate reads as input all `.apk` files located in `repo/dev/droidmate/apks` 
+
 ### Preparing apks for DroidMate ####
 
-DroidMate cannot run on normal apks, they first have to be `inlined`. To inline a set of apks, do the following:
+DroidMate can run on normal apks, but it is intended to run on `inlined` apks. When run on inlined apks, DroidMate is able to 
+monitor which methods of Android SDK these apks access.
 
-* Copy the apks to `repo/dev/droidmate/projects/apk-inliner/input-apks`
-* Run:  
-`cd repo/dev/droidmate`  
-`./gradlew :projects:core:prepareInlinedApks` or `./gradlew :p:cor:pIA` for short.  
-The apks will be placed in `repo/dev/droidmate/apks/inlined`
-* Run DroidMate with cmd line arg of `-apksDir=apks/inlined` to use these apks.
+To inline apks, run DroidMate with `-inline` argument. The original apks will be retained.
 
-Inlined apks can be distinguished by an `-inlined.apk` suffix in their name.
+Inlined apks can be distinguished by an `-inlined` suffix in their name.
 
 ### Obtaining apks ###
 
@@ -177,27 +172,11 @@ $ adb pull /data/app/com.frank_weber.forex2-1.apk
 // The file is now in the current dir
 </pre>
 
-## Troubleshooting Mac OS problems
-
-##### Problem: Missing rt.jar from JDK 1.6 (credit: Mark Schuegraf)
-
-###### Description
-
-In Mac OS The structure of Java JDK 1.6 is different to the later versions in that it doesn't have a directory `jre/lib` that contains `rt.jar` - instead `rt.jar` is called `classes.jar` and is found within the directory `1.6.0.jdk/Contents/Classes`.
-
-This is due to the fact that the only way to use SE 6 on Mac OS is to use an Apple variant of the SDK i.e. https://support.apple.com/kb/DL1572?locale=en_US
-
-There is no Mac OS download available on the Oracle site, due to SE 6 being a core component of OS X Mavericks.
-
-###### Workaround
-
-Simply make a `jre/lib` directory within java home and symlink `rt.jar` within it to `classes.jar.`
-
 # Working with DroidMate code base
 
 ## Setting up IntelliJ
 
-DroidMate is developed with IntelliJ IDEA  using the directory-based project format (`.idea`  directory). To work with DroidMate, IntelliJ has to be configured with all the dependencies used for daily building (e.g. JDKs) plus it has to have the following:
+DroidMate is developed with IntelliJ IDEA  using the directory-based project format (`.idea`  directory). To work with DroidMate, IntelliJ has to be configured with all the dependencies used for daily building (e.g. JDK) plus it has to have the following:
 
 * Gradle plugin.
 * Android Support plugin.

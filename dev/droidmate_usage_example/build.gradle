@@ -10,16 +10,20 @@
 group 'org.droidmate'
 version 'dev'
 
-apply plugin: 'java'
+apply plugin: 'application'
+mainClassName = "org.droidmate_usage_example.Main"
 
+apply plugin: 'java'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
+  
   // mavenLocal(), i.e. your local maven repository, has to contain droidmate. 
   // To install it there, run:
-  //   
-  //   cd <repo_clone_root>/dev/droidmate
+  //
+  //   git clone https://github.com/konrad-jamrozik/droidmate.git
+  //   cd droidmate/dev/droidmate
   //   ./gradlew install
   //
   mavenLocal()
@@ -28,7 +32,17 @@ repositories {
 }
 
 dependencies {
-  // This dependency is supposed to come from mavenLocal() (see above).
+  // This dependency is supposed to come from mavenLocal(). See comment on "mavenLocal()" above.
   compile "org.droidmate:droidmate:dev"
   testCompile 'junit:junit:4.12'
+}
+
+task debug {Task it ->
+  it.group = "help"
+  doLast {
+    println "sourceSets.test.compileClasspath"
+    sourceSets.test.compileClasspath.each {println it}
+    println "sourceSets.test.runtimeClasspath"
+    sourceSets.test.runtimeClasspath.each {println it}
+  }
 }

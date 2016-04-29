@@ -127,7 +127,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   @Override
   public List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> computation)
   {
-    log.info("withSetupDevice(deviceIndex: $deviceIndex, computation)")
+    log.info("Setup device with deviceIndex of $deviceIndex")
     Assert.checkClosureFirstParameterSignature(computation, IRobustDevice)
 
     List<ExplorationException> explorationExceptions = []
@@ -193,7 +193,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 
     } catch (Throwable setupDeviceThrowable)
     {
-      log.warn("! Caught ${setupDeviceThrowable.class.simpleName} in setupDevice($deviceIndex). " +
+      log.warn("! Caught ${setupDeviceThrowable.class.simpleName} in setupDevice(deviceIndex: $deviceIndex). " +
         "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
 
       return [null, null, setupDeviceThrowable]

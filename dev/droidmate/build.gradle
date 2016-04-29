@@ -25,11 +25,9 @@ allprojects {
 
 ext.kotlin_version = '1.0.1-2'
 
-ext.buildSrcJars = fileTree("$rootDir/buildSrc/build/libs") { include("*.jar") exclude("*javadoc.jar", "*sources.jar")}
-
 buildscript {
 
-  ext.utilities_version = '801d5a3531'
+  ext.utilities_version = '353e7be6ac'
 
   repositories {
     mavenLocal()

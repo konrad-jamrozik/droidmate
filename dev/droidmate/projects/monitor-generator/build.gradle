@@ -22,24 +22,18 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 dependencies {
 
   compile project(":projects:lib-common")
-  compile buildSrcJars
 
   compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
 
-  // KJA2 this is broken. Runtime class path should NOT depend on source dir, even if it is resources dir! Instead, the 
-  // processResources Copy task has to be modified so the logback file is correctly copied to build/resoruces dir.
-  Set<File> resourcesDirs = project.sourceSets.main.resources.srcDirs
-  assert resourcesDirs.size() == 1
-  runtime files(new File(resourcesDirs[0], "logback"))
-
-  compile project(":projects:lib-android")
+  compile project(":projects:monitor-template")
 }
 
-// !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.lib_android.MonitorJavaTemplate
-File monitorJavaTemplateSource = findProject(":projects:lib-android").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
+evaluationDependsOn(":projects:monitor-template")
+// !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.monitor_template_src.MonitorJavaTemplate
+File monitorJavaTemplateSource = findProject(":projects:monitor-template").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
 assert monitorJavaTemplateSource.file
 
 SourceDirectorySet resDirs = sourceSets.main.resources
@@ -49,10 +43,8 @@ File resDir = resDirs.srcDirs[0]
 apply plugin: 'application'
 mainClassName = "org.droidmate.monitor_generator.MonitorGeneratorFrontend"
 
-
 tasks.run { JavaExec javaExec ->
 
-    
   standardOutput = new ByteArrayOutputStream() // Mute the task stdout
 
   project.ext.runOutput = (javaExec.workingDir as File).toPath().resolve(BuildKt.monitor_generator_output_relative_path).toFile()
@@ -62,18 +54,11 @@ tasks.run { JavaExec javaExec ->
   doLast {
     assert runOutput.isFile()
   }
-  // Temp debug code for replacing generated monitor with a manually-edited one.
-//  doLast {
-//    File tempDebugMonitorJava = new File("${monitorApkScaffoldingDir.path}/temp_debug/Monitor_tempdebug.java")
-//    monitorJava.delete()
-//    Files.copy(tempDebugMonitorJava.toPath(), monitorJava.toPath())
-//  }
-  // /Temp debug code.
 }
 
-processResources.dependsOn "buildMonitorJavaTemplateFromSource"
+processResources.dependsOn "pullMonitorJavaTemplateSource"
 
-task buildMonitorJavaTemplateFromSource(type: Copy) {
+task pullMonitorJavaTemplateSource(type: Copy) {
 
   from monitorJavaTemplateSource
   into resDir
@@ -87,32 +72,26 @@ File monitorJava = new File(monitorApkScaffoldingDir, "src/org/droidmate/monitor
 assert monitorJava.parentFile.isDirectory()
 
 task copyGeneratedMonitorToScaffolding(type: Copy, dependsOn: "run") { Copy copy ->
+  group = "build"
   
   copy.from project.ext.runOutput
   copy.into monitorJava.parent
-  copy.rename BuildKt.monitor_generator_output_relative_path.toFile().name, monitorJava.name
+  copy.rename new File(BuildKt.monitor_generator_output_relative_path).name, monitorJava.name
 
   copy.outputs.file monitorJava
-  
-  doFirst {
-    assert project.ext.runOutput.isFile()
-  }
-  doLast {
-    assert copy.didWork
-    assert monitorJava.isFile()
-  }
+
+  doFirst {assert project.ext.runOutput.isFile()}
+  doLast {assert monitorJava.isFile()}
 }
 
-task buildMonitorApk(dependsOn: "copyGeneratedMonitorToScaffolding") {
-
-  File monitorApkOutputByAnt = file("${monitorApkScaffoldingDir.path}/bin/monitor-apk-debug.apk")
-  def copyFrom = monitorApkOutputByAnt
-  def copyTo = buildDir
+File monitorApkOutputByAnt = file("${monitorApkScaffoldingDir.path}/bin/monitor-apk-debug.apk")
+task buildMonitorApk(dependsOn: ["copyGeneratedMonitorToScaffolding", "pullLibCommonJar"]) {
+  group = "build"
 
   inputs.files monitorJava
   inputs.files fileTree(dir: "${monitorApkScaffoldingDir.path}/libs", include: '**')
   outputs.files monitorApkOutputByAnt
-  outputs.dir copyTo
+  outputs.dir buildDir
 
   doLast {
 
@@ -124,23 +103,16 @@ task buildMonitorApk(dependsOn: "copyGeneratedMonitorToScaffolding") {
     )
     if (exitValue != 0)
       throw new GradleException("Failed to build ${monitorApkScaffoldingDir.name}.")
-
-    assert copyFrom.isFile()
-
-    def copyResult = copy {
-      from copyFrom
-      into copyTo
-      rename {"monitor.apk"}
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file(s).\n" +
-        "Path of file(s) to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-
   }
 }
 
+task deployMonitorApk(type: Copy, dependsOn: "buildMonitorApk") {Copy copy ->
+  group = "build"
+  copy.from(monitorApkOutputByAnt).into(buildDir).rename {"monitor.apk"}
+}
+
 task cleanMonitorApk() {
+  group = "build"
   doLast {
     int exitValue = BuildKt.executeCommand(
       "${monitorApkScaffoldingDir.name} ant clean",
@@ -152,11 +124,10 @@ task cleanMonitorApk() {
   }
 }
 task cleanRun(type: Delete) {
+  group = "build"
   delete project.ext.runOutput.parent
   delete monitorJava
 }
-clean.dependsOn cleanRun, cleanMonitorApk
-build.dependsOn buildMonitorApk
 
 test.configure {
 
@@ -167,5 +138,20 @@ test.configure {
 
 }
 
+def projectLibCommon = findProject(":projects:lib-common")
+task cleanLibCommonJar(type: Delete) {
+  group = "build"
+  delete new File(monitorApkScaffoldingDir, "libs/" + projectLibCommon.jar.archiveName)
+}
+task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy copy ->
+
+  copy.from(projectLibCommon.jar.archivePath).into(new File(monitorApkScaffoldingDir, "libs"))
+}
+
+clean.dependsOn cleanRun, cleanMonitorApk, cleanLibCommonJar
+build.dependsOn deployMonitorApk
+
 // Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
 processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
+
+apply from: project(":projects").file("debug.gradle")

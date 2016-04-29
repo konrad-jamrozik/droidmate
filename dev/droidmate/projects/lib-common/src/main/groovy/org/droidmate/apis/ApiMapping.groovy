@@ -109,11 +109,7 @@ class ApiMapping
    */
   public static List<ApiMethodSignature> parseAppguardLegacyApis(List<String> legacyApiMapping)
   {
-    List<String> processedApiMapping
-    processedApiMapping = legacyApiMapping.findAll {it.size() > 0 && !it.startsWith("#")}
-
-    def out = processedApiMapping.collect { ApiMethodSignature.fromDescriptor(it) }
-    return out
+    return legacyApiMapping.collect { ApiMethodSignature.fromDescriptor(it) }
   }
 
 }

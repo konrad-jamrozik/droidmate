@@ -9,21 +9,21 @@
 package org.droidmate.device_simulation
 
 import com.google.common.base.MoreObjects
+import org.droidmate.MonitorConstants
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
-import org.droidmate.common_android.Constants
-import org.droidmate.common_android.guimodel.GuiAction
 import org.droidmate.configuration.model.NexusModel
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exceptions.UnsupportedMultimethodDispatch
-import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
+import org.droidmate.uiautomator_daemon.guimodel.GuiAction
 
 class GuiScreen implements IGuiScreen
 {
-  //private static final String packageAndroidLancher = new DeviceConfigurationFactory(Constants.DEVICE_DEFAULT).getConfiguration().getPackageAndroidLauncher()
+  //private static final String packageAndroidLancher = new DeviceConfigurationFactory(UiautomatorDaemonConstants.DEVICE_DEFAULT).getConfiguration().getPackageAndroidLauncher()
 
   public static final String              idHome                  = "home"
   public static final String              idChrome                = "chrome"
@@ -118,14 +118,14 @@ class GuiScreen implements IGuiScreen
     {
       switch (guiAction.guiActionCommand)
       {
-        case Constants.guiActionCommand_pressHome:
+        case UiautomatorDaemonConstants.guiActionCommand_pressHome:
           out = new ScreenTransitionResult(home, [])
           break
-        case Constants.guiActionCommand_turnWifiOn:
+        case UiautomatorDaemonConstants.guiActionCommand_turnWifiOn:
           assert this.is(home)
           out = new ScreenTransitionResult(this, [])
           break
-        case Constants.guiActionCommand_pressBack:
+        case UiautomatorDaemonConstants.guiActionCommand_pressBack:
           assert false: "Not yet implemented!"
           break
         default:
@@ -247,16 +247,16 @@ class GuiScreen implements IGuiScreen
     return [
       TimeFormattedLogcatMessage.from(
         this.timeGenerator.shiftAndGet(milliseconds: 1500), // Milliseconds amount based on empirical evidence.
-        MonitorJavaTemplate.loglevel.toUpperCase(),
-        MonitorJavaTemplate.tag_init,
+        MonitorConstants.loglevel.toUpperCase(),
+        MonitorConstants.tag_init,
         "4224", // arbitrary process ID
-        MonitorJavaTemplate.msg_ctor_success),
+        MonitorConstants.msg_ctor_success),
       TimeFormattedLogcatMessage.from(
         this.timeGenerator.shiftAndGet(milliseconds: 1810), // Milliseconds amount based on empirical evidence.
-        MonitorJavaTemplate.loglevel.toUpperCase(),
-        MonitorJavaTemplate.tag_init,
+        MonitorConstants.loglevel.toUpperCase(),
+        MonitorConstants.tag_init,
         "4224", // arbitrary process ID
-        MonitorJavaTemplate.msgPrefix_init_success + this.packageName)
+        MonitorConstants.msgPrefix_init_success + this.packageName)
     ]
   }
 

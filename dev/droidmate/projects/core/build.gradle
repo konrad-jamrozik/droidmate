@@ -7,6 +7,7 @@
 //
 // www.droidmate.org
 
+import com.konradjamrozik.IterableExtensions
 import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'groovy'
@@ -16,34 +17,31 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 //region Dependencies
 
-String libsDirPath = "libs"
-
 // See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
+// WISH right now logback.groovy is in the built jar, thus making it hard to replace:
+// http://stackoverflow.com/a/18275945/986533
+// http://stackoverflow.com/a/26452714/986533
+//
+// More precisely, because it is in resources dir of main sourceSet, it gets deployed to the jar with :jar task. Ideally it
+// should not be in the jar at all, nor in the distribution ('application' plugin / 'installDist' task). See the links above
+// on the better setup.
+
 dependencies {
 
-  compile buildSrcJars
-
-  // Force refresh:
-  // Reference: https://jitpack.io/docs/#snapshots
-  compile "com.github.konrad-jamrozik:utilities:$utilities_version"
+  compile("com.github.konrad-jamrozik:utilities:$utilities_version") {
+    exclude group: "org.slf4j", module: "slf4j-simple"
+  }
 
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
   testCompile 'org.hamcrest:hamcrest-core:1.3'
 
   compile project(":projects:lib-common")
-  compile project(":projects:lib-common-android")
-  compile project(":projects:lib-android")
-
-  def libsDirFileTree = fileTree(dir: "$projectDir/$libsDirPath", include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
-  /* Making this additional setter call instead of supplying a value in constructor is a workaround for an issue I discovered
-     on Nov 23, 2014 in Gradle 2.1. See OneNote "Gradle bugs". */
-  libsDirFileTree.setBuiltBy(['pullUiaDaemon'])
-  compile libsDirFileTree
+  compile project(":projects:uiautomator-daemon-lib")
 
   compile 'com.beust:jcommander:1.35'
   compile 'com.google.guava:guava:19.0'
@@ -62,37 +60,31 @@ dependencies {
   // Filesystem stubbing
   compile 'com.google.jimfs:jimfs:1.0'
 
-  // KJA2 this is broken. Runtime class path should NOT depend on source dir, even if it is resources dir! Instead, the
-  // processResources Copy task has to be modified so the logback file is correctly copied to build/resoruces dir.
-  // ---
-  // This ensures the files will be properly copied out if ever "application" plugin and "installDist" task will be used.
-  // In particular, this will ensure $APP_DIR$/lib/logback/logback.groovy is present.
-  //runtime files(new File(sourceSets.main.resources.srcDirs.find(), "."))
-  runtime files(new File(sourceSets.main.resources.srcDirs.find(), "logback"))
 }
 
+// KJA apks-dir: can be dried?
 /*
  This project sometimes has to fire apk-inliner:run. For that, this project needs to know input and output dirs of apk-inliner,
  which is the reason for evaluation dependence.
  */
+// KJA toremove?
 evaluationDependsOn(":projects:apk-inliner")
 
 /* Note: The 'compile[Test]Java.dependsOn' clauses are redundant with 'builtBy' property in the 'dependencies' closure,
    but they are left here for documentation purposes.
  */
-compileGroovy.dependsOn "pullUiaDaemon"
-processResources.dependsOn "pullMonitorApk"
+processResources.dependsOn "pullMonitorApk", "pullUiaDaemonJar"
 
 /*
   This dependency ensures that on "gradlew clean build" all the apk fixtures will be rebuilt as well as the library .jar they
   depend on.
  */
-clean.dependsOn "cleanTest"
+clean.dependsOn "cleanTest", "cleanResources"
 
 processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 //endregion Dependencies
 
-//region Preparation of resources for the 'compileGroovy' task
+//region Preparation of resources
 
 Project uiaDaemon = findProject(":projects:uiautomator2-daemon");
 task pullUiaDaemon(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
@@ -111,30 +103,10 @@ task pullUiaDaemon(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemb
 }
 
 Project monitorGenerator = findProject(":projects:monitor-generator")
-task pullMonitorApk(dependsOn: ":projects:monitor-generator:buildMonitorApk") {
+task pullMonitorApk(type: Copy, dependsOn: ":projects:monitor-generator:build") {Copy copy ->
 
-  File coreResDir = getCoreResDir()
-
-  def copyFrom = file("${monitorGenerator.buildDir}/monitor.apk")
-  def copyTo = coreResDir
-
-  inputs.file copyFrom
-  outputs.dir copyTo
-
-  doLast {
-
-    assert copyFrom.isFile()
-
-    def copyResult = copy {
-      from copyFrom
-      into copyTo
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file(s).\n" +
-        "Path of file(s) to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-  }
-
+  def monitorApk = file(new File(monitorGenerator.buildDir, monitorApkName))
+  copy.from(monitorApk).into(coreResDir)
 }
 
 // endregion Preparation of resources for the 'compileGroovy' task
@@ -152,28 +124,24 @@ String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
 
 JavaExec inlinerExec = project(":projects:apk-inliner").tasks.run as JavaExec
 
-SourceDirectorySet testResDirs = sourceSets.test.resources
-assert testResDirs.srcDirs.size() == 1
-File testResDir = testResDirs.srcDirs[0]
-assert testResDir.path.endsWith("test" + File.separator + "resources")
-File apkFixturesDir = new File(testResDir, BuildKt.apk_fixtures)
+File apkFixturesDir = new File(
+  IterableExtensions.findSingle(sourceSets.test.resources.srcDirs as Set<File>),
+  BuildKt.apk_fixtures)
 assert apkFixturesDir.directory
 
-task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {
+task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
   ["main", "classpath", "standardOutput"].each {delegate."$it" = inlinerExec."$it"}
 
   File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
-  args = [
+  je.args = [
     BuildKt.apk_inliner_param_input, inputApk.canonicalPath,
     BuildKt.apk_inliner_param_output_dir, apkFixturesDir
   ]
 
-  inputs.file inputApk
-  outputs.file new File(apkFixturesDir, BuildKt.monitored_inlined_apk_fixture_name)
+  je.inputs.file inputApk
+  je.outputs.file new File(apkFixturesDir, BuildKt.monitored_inlined_apk_fixture_name)
 }
 
-// WISH looks like all the pull- tasks should be of type Copy: http://www.gradle.org/docs/current/userguide/working_with_files.html#sec:copying_files
-// WISH where possible, refer to tasks themselves as input/output files of various tasks. See http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html#org.gradle.api.Project:files%28java.lang.Object[]%29
 task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
 
   from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: monitoredApkFixtureName)
@@ -202,42 +170,15 @@ private File getCoreResDir()
 
 //region cleaning resources
 
+task cleanResources(type: Delete) {
+  delete file(new File(coreResDir, uiaDaemonJarName))
+  delete file(new File(coreResDir, monitorApkName))
+}
+
 task cleanTest(type: GradleBuild) {
 
   buildFile = apkFixturesProjectDir.path + "/build.gradle"
   tasks = ["clean"]
-}
-
-//endregion
-
-//region Tasks for preparing inlined input apks. These tasks are to be run manually.
-
-task prepareInlinedApks(dependsOn: ":projects:apk-inliner:run") {
-
-  File inlinedApksDir = file("$rootDir/${BuildKt.apks_dir}/inlined")
-  if (!inlinedApksDir.isDirectory())
-    inlinedApksDir.mkdir()
-
-  def copyFrom = inlinerExec.inlinedApksDir
-  def copyTo = inlinedApksDir
-
-  inputs.dir copyFrom
-  outputs.dir copyTo
-
-  doLast {
-
-    assert copyFrom.isDirectory()
-
-    def copyResult = copy {
-      from copyFrom
-      include '*.apk'
-      into copyTo
-    }
-    if (!copyResult.didWork)
-      throw new GradleException("Failed to copy file(s).\n" +
-        "Path of file(s) to be copied: $copyFrom\n" +
-        "Path of destination dir: $copyTo")
-  }
 }
 
 //endregion
@@ -262,3 +203,4 @@ test.configure {
 //endregion Testing tasks
 
 apply from: project(":projects").file("maven.gradle")
+apply from: project(":projects").file("debug.gradle")

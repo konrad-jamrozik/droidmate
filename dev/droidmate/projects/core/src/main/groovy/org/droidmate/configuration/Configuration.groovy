@@ -11,8 +11,8 @@ package org.droidmate.configuration
 import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
 import org.droidmate.common.BuildConstants
-import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.ConfigurationException
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -98,6 +98,7 @@ public class Configuration implements IConfiguration
   public static final String pn_exploreInteractively                         = "-exploreInteractively"
   public static final String pn_getValidGuiSnapshotRetryAttempts             = "-getValidGuiSnapshotRetryAttempts"
   public static final String pn_getValidGuiSnapshotRetryDelay                = "-getValidGuiSnapshotRetryDelay"
+  public static final String pn_inline                                       = "-inline"
   public static final String pn_launchActivityDelay                          = "-launchActivityDelay"
   public static final String pn_launchActivityTimeout                        = "-launchActivityTimeout"
   public static final String pn_logWidgets                                   = "-logWidgets"
@@ -107,6 +108,7 @@ public class Configuration implements IConfiguration
   public static final String pn_reportInputDir                               = "-reportInputDir"
   public static final String pn_reportOutputDir                              = "-reportOutputDir"
   public static final String pn_resetEveryNthExplorationForward              = "-resetEvery"
+  public static final String pn_runOnNotInlined                              = "-runOnNotInlined"
   public static final String pn_splitCharts                                  = "-splitCharts"
   public static final String pn_socketTimeout                                = "-socketTimeout"
   public static final String pn_softReset                                    = "-softReset"
@@ -118,6 +120,7 @@ public class Configuration implements IConfiguration
   public static final String pn_uiautomatorDaemonWaitForWindowUpdateTimeout  = "-waitForWindowUpdateTimeout"
   public static final String pn_uninstallApk                                 = "-uninstallApk"
   public static final String pn_useApkFixturesDir                            = "-useApkFixturesDir"
+  public static final String pn_report                                       = "-report"
   public static final String pn_stopAppRetryAttempts                         = "-stopAppRetryAttempts"
   public static final String pn_stopAppSuccessCheckDelay                     = "-stopAppSuccessCheckDelay"
   public static final String pn_waitForCanRebootDelay                        = "-waitForCanRebootDelay"
@@ -125,8 +128,9 @@ public class Configuration implements IConfiguration
   // @formatter:on
   //endregion
 
-  public static final String defaultDroidmateOutputDir              = "." + File.separator + "dev1"
-  public static final int    defaultActionsLimit                    = 10
+  public static final int    defaultActionsLimit                    = 5
+  public static final String defaultApksDir                         = "apks"
+  public static final String defaultDroidmateOutputDir              = "dev1"
   public static final int    defaultResetEveryNthExplorationForward = 0
 
   //region Cmd line parameters
@@ -149,7 +153,7 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_apksDir],
     description = "Directory containing the apks to be processed by DroidMate.")
-  public String apksDirName = BuildConstants.apks_dir
+  public String apksDirName = defaultApksDir
 
   @Parameter(names = [Configuration.pn_appGuardOnlyApis], arity = 1)
   public boolean appGuardOnlyApis = true
@@ -223,6 +227,10 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_getValidGuiSnapshotRetryDelay])
   public int getValidGuiSnapshotRetryDelay = 2000
 
+  @Parameter(names = [Configuration.pn_inline], description =
+    "If present, instead of normal run, DroidMate will inline all non-inlined apks. Before inlining backup copies of the apks will be created and put into a sub-directory of the directory containing the apks.")
+  public Boolean inline = false
+
   @Parameter(names = [Configuration.pn_launchActivityDelay])
   public int launchActivityDelay = 5000
 
@@ -271,6 +279,10 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_resetEveryNthExplorationForward])
   public int resetEveryNthExplorationForward = defaultResetEveryNthExplorationForward
 
+  @Parameter(names = [Configuration.pn_runOnNotInlined], description =
+    "Allow DroidMate to run on non-inlined apks.")
+  public Boolean runOnNotInlined = false
+  
   @Parameter(names = ["-saturationChartsHours"], description = "The time span covered by the saturation charts data, in hours.")
   public Double saturationChartsHours = 2.0
 
@@ -299,19 +311,19 @@ public class Configuration implements IConfiguration
 
   /* Empirical evaluation shows that setting this to 600 will sometimes cause DroidMate to consider GUI stable while it
      actually isn't, yet.
-     For more, see: org.droidmate.uiautomatordaemon.UiAutomatorDaemonDriver.waitForGuiToStabilize
+     For more, see: org.droidmate.uiautomator_daemon.UiAutomatorDaemonDriver.waitForGuiToStabilize
    */
   @Parameter(names = [Configuration.pn_uiautomatorDaemonWaitForWindowUpdateTimeout], arity = 1)
   public int uiautomatorDaemonWaitForWindowUpdateTimeout = 1200 // ms
 
   @Parameter(names = [Configuration.pn_uiautomatorDaemonTcpPort], description =
     "TCP port used by DroidMate to communicate with the android (virtual) device.")
-  public int uiautomatorDaemonTcpPort = Constants.UIADAEMON_SERVER_PORT
+  public int uiautomatorDaemonTcpPort = UiautomatorDaemonConstants.UIADAEMON_SERVER_PORT
 
   @Parameter(names = [Configuration.pn_useApkFixturesDir], arity = 1)
   public boolean useApkFixturesDir = false
 
-  @Parameter(names = ["-report"], description =
+  @Parameter(names = [Configuration.pn_report], description =
     "If present, instead of normal run, DroidMate will generate reports from previously serialized data.")
   public Boolean report = false
 
@@ -352,7 +364,7 @@ public class Configuration implements IConfiguration
 
   public String adbCommand = BuildConstants.adb_command
 
-  public String appGuardApisList
+  public List<String> appGuardApisList
 
   /**
    * Jar with uiautomator-daemon location on the file system. The apk is to be deployed on the android (virtual) device

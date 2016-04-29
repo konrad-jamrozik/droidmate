@@ -1,0 +1,54 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+/*
+  This project contains classes:
+  
+  1. which require access to Android API: they depend on Android.jar;
+  2. whose source will be compiled with legacy android ant script, requiring compatibility with Java 5
+    
+  The used ant script is in 
+  
+    repo/dev/droidmate/projects/monitor-generator/monitor-apk-scaffolding/monitor-generator/monitor-apk-scaffolding/build.xml
+   
+  and it uses
+  
+    android-sdk/tools/ant/build.xml
+  
+  which requires Java version 5.
+*/
+
+import org.droidmate.buildsrc.BuildKt
+
+apply plugin: 'java'
+
+sourceCompatibility = JavaVersion.VERSION_1_5
+targetCompatibility = JavaVersion.VERSION_1_5
+compileJava.configure { JavaCompile jc ->
+  /*
+    Suppressed, the following warning:
+      warning: [options] bootstrap class path not set in conjunction with -source 1.5
+      warning: [options] source value 1.5 is obsolete and will be removed in a future release
+      warning: [options] target value 1.5 is obsolete and will be removed in a future release
+      warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+      
+    We do not worry about this as the code will be deployed to Android device which should provide appropriate boostrap class.
+   */
+  jc.options.compilerArgs += "-Xlint:-options"
+}
+
+dependencies {
+
+  testCompile 'junit:junit:4.12'
+
+  compileOnly files(BuildKt.android_jar.toString())
+
+  compile project(":projects:lib-common")
+}
+
+apply from: project(":projects").file("maven.gradle")

@@ -15,10 +15,10 @@ import groovy.util.logging.Slf4j
 import org.droidmate.common.BuildConstants
 import org.droidmate.common.ISysCmdExecutor
 import org.droidmate.common.SysCmdExecutorException
-import org.droidmate.common_android.Constants
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.AdbWrapperException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -41,7 +41,7 @@ public class AdbWrapper implements IAdbWrapper
   private       ISysCmdExecutor sysCmdExecutor
 
   // This should be set to the value of android.os.Environment.getDataDirectory()
-  private final String deviceEnvironmentDataDirectory = "/data/user/0/" + Constants.uiaDaemon_packageName + "/files/"
+  private final String deviceEnvironmentDataDirectory = "/data/user/0/" + UiautomatorDaemonConstants.uiaDaemon_packageName + "/files/"
 
   AdbWrapper(
     Configuration cfg,
@@ -113,7 +113,8 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  void installApk(String deviceSerialNumber, Path apkToInstall) throws AdbWrapperException
+  public void installApk(String deviceSerialNumber, Path apkToInstall)
+    throws AdbWrapperException
   {
     try
     {
@@ -123,7 +124,7 @@ public class AdbWrapper implements IAdbWrapper
         .format("Executing adb (Android Debug Bridge) to install %s on Android (Virtual) Device.",
         apkToInstall.fileName)
 
-      String[] stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "install -r",
+      def stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "install -r",
         apkToInstall.toAbsolutePath().toString())
 
       if (stdStreams[0].contains("[INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES]"))
@@ -588,9 +589,9 @@ public class AdbWrapper implements IAdbWrapper
         deviceSerialNumber)
 
       String uiaDaemonCmdLine = String.format("-e %s %s -e %s %s -e %s %s",
-        Constants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
-        Constants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
-        Constants.uiaDaemonParam_tcpPort, port)
+        UiautomatorDaemonConstants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
+        UiautomatorDaemonConstants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
+        UiautomatorDaemonConstants.uiaDaemonParam_tcpPort, port)
 
       this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
@@ -598,7 +599,7 @@ public class AdbWrapper implements IAdbWrapper
         "--user 0",
         uiaDaemonCmdLine,
         "-w",
-        Constants.uiaDaemon_testPackageName + "/" + Constants.uiaDaemon_testRunner)
+        UiautomatorDaemonConstants.uiaDaemon_testPackageName + "/" + Constants.uiaDaemon_testRunner)
 
     } catch (SysCmdExecutorException e)
     {

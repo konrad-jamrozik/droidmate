@@ -9,13 +9,13 @@
 
 package org.droidmate.apk_inliner
 
+import com.konradjamrozik.Resource
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
-import org.droidmate.common.Dex
-import org.droidmate.common.ISysCmdExecutor
-import org.droidmate.common.Jar
+import org.droidmate.common.*
 
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
 import static java.nio.file.Files.*
@@ -48,6 +48,23 @@ class ApkInliner implements IApkInliner
     this.pathToMonitorApkOnAndroidDevice = pathToMonitorApkOnAndroidDevice
   }
 
+  static ApkInliner build()
+  {
+    def sysCmdExecutor = new SysCmdExecutor()
+
+    def resDir = Paths.get(BuildConstants.dir_name_temp_extracted_resources)
+    return new ApkInliner(
+      sysCmdExecutor,
+      new JarsignerWrapper(
+        sysCmdExecutor,
+        Paths.get(BuildConstants.jarsigner),
+        new Resource("debug.keystore").extractTo(resDir)
+      ),
+      new Jar(new Resource("appguard-inliner.jar").extractTo(resDir)),
+      new Dex(new Resource("appguard-loader.dex").extractTo(resDir)),
+      "org.droidmate.monitor_generator.generated.Monitor",
+      BuildConstants.AVD_dir_for_temp_files + "monitor.apk")
+  }
 
   @Override
   void inline(Path inputPath, Path outputDir)

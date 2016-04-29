@@ -32,6 +32,8 @@ class ApksProvider implements IApksProvider
   {
     assert Files.isDirectory(apksDir)
     assert apksLimit >= 0
+    
+    log.info("Reading input apks from ${apksDir.toAbsolutePath().toString()}")
 
     List<Path> apks = Files.list(apksDir)
       .findAll {it.toString().endsWith(".apk")}
@@ -52,6 +54,8 @@ class ApksProvider implements IApksProvider
 
     Collection<IApk> builtApks = apks.findResults {Apk.build(aapt, it)}
     logApksUsedIntoRunData(builtApks)
+    
+    builtApks.findAll { !it.inlined }.each { log.info("Following input apk is not inlined: $it.fileName")}
 
     return builtApks
   }

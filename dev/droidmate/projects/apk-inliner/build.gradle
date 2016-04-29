@@ -13,26 +13,29 @@ apply plugin: 'groovy'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
+apply plugin: 'application'
+mainClassName = "org.droidmate.apk_inliner.ApkInlinerFrontend"
 
 dependencies {
-
-  compile buildSrcJars
 
   compile project(":projects:lib-common")
 
   compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
-  testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile 'junit:junit:4.12'
 
-  // KJA2 this is broken. See comment in "core" build.gradle
-  Set<File> resourcesDirs = project.sourceSets.main.resources.srcDirs
-  assert resourcesDirs.size() == 1
-  runtime files(new File(resourcesDirs[0], "logback"));
 }
 
-apply plugin: 'application'
-mainClassName = "org.droidmate.apk_inliner.ApkInlinerFrontend"
-
+// KJA fix double logback.groovy on classpath 
+// fix it both for running :command and for stand-alone distro. i.e. logback should not be packaged in jar.
+// one of the things to check is apk-inliner:jar which ends up in C:\my\local\repos\github\droidmate\dev\droidmate\projects\apk-inliner\build\libs
+// another is the distribution. which should pick up logback.groovy from standalone logback.groovy, not one in jar.
+// Things that have to work:
+// stand-alone run of apk inliner both in gradle and intellij
+// stand-alone run of command both in gradle and intellij
+// usage of droidmate from usage example
+// usage of droidmate from distro
+// KJA apk inliner distro fails with wrong resources (change ResourcePath to Resource)
 run {
 
   standardOutput = new ByteArrayOutputStream() // Mute the task stdout
@@ -57,3 +60,5 @@ clean.configure {
 test.configure {
   // includes = [''] // Turn off all tests
 }
+
+apply from: project(":projects").file("maven.gradle")

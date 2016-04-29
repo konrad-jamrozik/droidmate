@@ -81,15 +81,35 @@ class ExploreCommand extends DroidmateCommand
     cleanOutputDir(cfg.droidmateOutputDirPath)
 
     List<Apk> apks = this.apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames)
-    if (apks.size() == 0)
-    {
-      log.warn("No input apks found. Terminating.")
-      return
-    }
+    if (!validateApks(apks, cfg.runOnNotInlined)) return
 
     List<ExplorationException> explorationExceptions = execute(cfg, apks)
     if (!explorationExceptions.empty)
       throw new ThrowablesCollection(explorationExceptions)
+  }
+
+  private boolean validateApks(List<Apk> apks, boolean runOnNotInlined)
+  {
+    if (apks.size() == 0)
+    {
+      log.warn("No input apks found. Terminating.")
+      return false
+    }
+    if (apks.any {!it.inlined})
+    {
+      if (runOnNotInlined)
+      {
+        log.info("Not inlined input apks have been detected, but DroidMate was instructed to run anyway. Continuing with execution.")
+      } else
+      {
+        log.warn("At least one input apk is not inlined. DroidMate will not be able to monitor any calls to Android SDK methods done by such apps.")
+        log.warn("If you want to inline apks, run DroidMate with $Configuration.pn_inline")
+        log.warn("If you want to run DroidMate on non-inlined apks, run it with $Configuration.pn_runOnNotInlined")
+        log.warn("DroidMate will now abort.")
+        return false
+      }
+    }
+    return true
   }
 
   private void cleanOutputDir(Path path)

@@ -15,6 +15,6 @@ class BuildKtTest {
   
   @Test fun initializes() {
     @Suppress("UNUSED_VARIABLE")
-    val init = jdk6_rt_jar
+    val init = java_home
   }
 }

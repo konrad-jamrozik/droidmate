@@ -9,11 +9,11 @@
 package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.MonitorConstants
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
-import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.Duration
@@ -65,7 +65,7 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
     Duration diff = Duration.between(now, deviceTime)
 
     def formatter = DateTimeFormatter.ofPattern(
-      MonitorJavaTemplate.monitor_time_formatter_pattern, MonitorJavaTemplate.monitor_time_formatter_locale)
+      MonitorConstants.monitor_time_formatter_pattern, MonitorConstants.monitor_time_formatter_locale)
     String msg = "computeDiff(device) result:\n" +
       "Current time   : ${now.format(formatter)}\n" +
       "Device time    : ${deviceTime.format(formatter)}\n" +

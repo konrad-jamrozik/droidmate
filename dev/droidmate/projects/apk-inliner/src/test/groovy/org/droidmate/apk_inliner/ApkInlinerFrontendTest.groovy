@@ -43,6 +43,7 @@ public class ApkInlinerFrontendTest
     Path inputApkFixturesDir = new ResourcePath(BuildConstants.apk_fixtures).path
     assert Files.isDirectory(inputApkFixturesDir)
     assert Files.list(inputApkFixturesDir).count() == 1
+    
     Path inputApkFixture = new ApkPath(Files.list(inputApkFixturesDir).find() as Path).path
     assert inputApkFixture.fileName.toString() == "com.estrongs.android.taskmanager.apk"
 

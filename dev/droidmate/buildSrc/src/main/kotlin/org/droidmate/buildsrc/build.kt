@@ -22,19 +22,15 @@ import java.io.ByteArrayOutputStream
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
-val apks_dir = "apks"
-
 private val exeExt = if (OS.isWindows) ".exe" else ""
 
 //region Values directly based on system environment variables
-val java8Home = "JAVA8_HOME".asEnvDir
-val jdk7_rt_jar = "JAVA7_HOME".asEnvDir.resolveRegularFile("jre/lib/rt.jar")
-val jdk6_rt_jar = "JAVA6_HOME".asEnvDir.resolveRegularFile("jre/lib/rt.jar")
+val java_home = "JAVA_HOME".asEnvDir
 private val android_sdk_dir = "ANDROID_HOME".asEnvDir
 //endregion
 
-val jarsigner_relative = "bin/jarsigner$exeExt"
-val jarsigner = "JAVA8_HOME".asEnvDir.resolveRegularFile(jarsigner_relative)
+val jarsigner_relative_path = "bin/jarsigner$exeExt"
+val jarsigner = java_home.resolveRegularFile(jarsigner_relative_path)
 
 //region Android SDK components
 private val build_tools_version = "19.1.0"
@@ -49,7 +45,7 @@ val android_jar = android_platform_dir.resolveRegularFile("android.jar")
 //endregion
 
 val monitor_generator_res_name_monitor_template = "monitorTemplate.txt"
-val monitor_generator_output_relative_path = Paths.get("temp/generated_Monitor.java")
+val monitor_generator_output_relative_path = "temp/generated_Monitor.java"
 
 val apk_inliner_param_input_default = Paths.get("input-apks")
 val apk_inliner_param_output_dir_default = Paths.get("output-apks")
@@ -76,6 +72,14 @@ val apk_fixtures = "fixtures/apks"
 val test_temp_dir_name = "temp_dir_for_tests"
 
 val appguard_apis_txt = "appguard_apis.txt"
+
+/**
+ * Directory for resources extracted from jars in the classpath. 
+ * 
+ * Some resources have to be extracted to a directory. For example, an .apk file that is inside a .jar needs to be pushed 
+ * to a device.
+ */
+val dir_name_temp_extracted_resources = "temp_extracted_resources"
 
 fun executeCommand(commandName: String, commandContent: String): Int {
 

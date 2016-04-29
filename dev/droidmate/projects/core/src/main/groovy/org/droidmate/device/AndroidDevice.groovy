@@ -10,14 +10,11 @@
 package org.droidmate.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.MonitorConstants
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.android_sdk.IApk
 import org.droidmate.common.Boolean3
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
-import org.droidmate.common_android.Constants
-import org.droidmate.common_android.DeviceCommand
-import org.droidmate.common_android.DeviceResponse
-import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.model.DeviceModelHelper
 import org.droidmate.configuration.model.IDeviceModel
@@ -26,9 +23,11 @@ import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
-import org.droidmate.lib_android.MonitorJavaTemplate
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.logging.LogbackUtils
+import org.droidmate.uiautomator_daemon.DeviceCommand
+import org.droidmate.uiautomator_daemon.DeviceResponse
+import org.droidmate.uiautomator_daemon.UiautomatorWindowHierarchyDumpDeviceResponse
 
 import java.awt.*
 import java.nio.file.Path
@@ -36,8 +35,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.List
 
-import static org.droidmate.common_android.Constants.*
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newLaunchAppDeviceAction
+import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
 
 /**
  * <p>
@@ -243,14 +242,14 @@ public class AndroidDevice implements IAndroidDevice
   void removeLogcatLogFile() throws DeviceException
   {
     log.debug("removeLogcatLogFile()")
-    this.adbWrapper.removeFile(this.serialNumber, logcatLogFileName, Constants.uiaDaemon_packageName)
+    this.adbWrapper.removeFile(this.serialNumber, logcatLogFileName, UiautomatorDaemonConstants.uiaDaemon_packageName)
   }
 
   @Override
   void pullLogcatLogFile() throws DeviceException
   {
     log.debug("pullLogcatLogFile()")
-    this.adbWrapper.pullFile(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"), Constants.uiaDaemon_packageName)
+    this.adbWrapper.pullFile(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"), UiautomatorDaemonConstants.uiaDaemon_packageName)
   }
 
   @Override
@@ -299,7 +298,7 @@ public class AndroidDevice implements IAndroidDevice
     assert msgs[0][2] == null
 
 
-    return LocalDateTime.parse(msgs[0][0], DateTimeFormatter.ofPattern(MonitorJavaTemplate.monitor_time_formatter_pattern, MonitorJavaTemplate.monitor_time_formatter_locale))
+    return LocalDateTime.parse(msgs[0][0], DateTimeFormatter.ofPattern(MonitorConstants.monitor_time_formatter_pattern, MonitorConstants.monitor_time_formatter_locale))
 
   }
 

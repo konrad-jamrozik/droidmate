@@ -9,7 +9,7 @@
 
 package org.droidmate.common.logcat
 
-import org.droidmate.lib_android.MonitorJavaTemplate
+import org.droidmate.MonitorConstants
 import org.droidmate.logcat.IApiLogcatMessage
 
 import java.time.LocalDateTime
@@ -27,7 +27,7 @@ class ApiLogcatMessageTestHelper
     def logcatMessage = TimeFormattedLogcatMessage.from(
       time ?: TimeFormattedLogcatMessage.assumedDate,
       log_level_for_testing,
-      MonitorJavaTemplate.tag_api,
+      MonitorConstants.tag_api,
       "3993", // arbitrary process ID
       ApiLogcatMessage.toLogcatMessagePayload(new Api(apiAttributes))
     )

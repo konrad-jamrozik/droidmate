@@ -8,8 +8,8 @@
 // www.droidmate.org
 package org.droidmate.configuration.model
 
-import org.droidmate.common_android.Constants
 import org.droidmate.exceptions.UnknownDeviceException
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 /**
  * Provides a class to acquire device specific objects using Factory Method Pattern
@@ -23,10 +23,10 @@ public class DeviceModelHelper
 
   /**
    * Create an #IDeviceModel based on the device. <br/>
-   * To create a default device use {@link org.droidmate.common_android.Constants#DEVICE_DEFAULT}.
+   * To create a default device use {@link org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants#DEVICE_DEFAULT}.
    * The default device is a Google Nexus 7.
    *
-   * @param deviceModel Device manufacturer + model as returned by {@link org.droidmate.uiautomator2daemon.UiAutomatorDaemonDriver#getDeviceModel()}
+   * @param deviceModel Device manufacturer + model as returned by {@link org.droidmate.uiautomator_daemon.UiAutomatorDaemonDriver#getDeviceModel()}
    * *
    * @return Device specific issues handler
    * @throws UnknownDeviceException If the device model is not mapped to any device
@@ -37,16 +37,16 @@ public class DeviceModelHelper
 
     switch (deviceModel)
     {
-      case Constants.DEVICE_GOOGLE_NEXUS_7:
+      case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_7:
         result = new Nexus7Model()
         break
-      case Constants.DEVICE_GOOGLE_NEXUS_10:
+      case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_10:
         result = new Nexus10Model()
         break
-      case Constants.DEVICE_SAMSUNG_GALAXY_S3_GT_I9300:
+      case UiautomatorDaemonConstants.DEVICE_SAMSUNG_GALAXY_S3_GT_I9300:
         result = new GalaxyS3Model()
         break
-      case Constants.DEVICE_DEFAULT:
+      case UiautomatorDaemonConstants.DEVICE_DEFAULT:
         result = new Nexus7Model()
         break
       default:

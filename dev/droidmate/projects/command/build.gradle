@@ -34,7 +34,7 @@ evaluationDependsOn(":projects:reporter")
   Workaround for a bug causing tests run from Gradle to fail. Source of the workaround: [1]
 
   Suspected cause of the bug:
-    Because project(":projects:lib-android") has android.jar as a transitive dependency, running tests
+    Because project(":projects:monitor-template") has android.jar as a transitive dependency, running tests
     from Gradle caused JUnit to throw "Stub!" from Assert method.
 
   [1] http://stackoverflow.com/a/7253941/986533
@@ -76,6 +76,7 @@ dependencies {
   // It works when run from IntelliJ or when run with 'gradlew :p:reporter:test'
   testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
 
+  compile project(":projects:apk-inliner")
   compile project(":projects:core")
   compile project(":projects:reporter")
 }
@@ -112,17 +113,23 @@ File testResDir = testResDirs.srcDirs[0]
 assert testResDir.path.endsWith("test" + File.separator + "resources")
 File apkFixturesDir = new File(testResDir, BuildKt.apk_fixtures)
 assert apkFixturesDir.directory
-task testDevice(type: Test, dependsOn: testClasses) {
 
-  inputs.dir apkFixturesDir.absolutePath
+task testDevice(type: Test, dependsOn: testClasses) { Test task ->
+  task.group = "verification"
+  
+  task.inputs.dir apkFixturesDir.absolutePath
 
-  workingDir rootDir
+  // This task is to be run manually, so it should never be up-to-date.
+  task.outputs.upToDateWhen { false }
+  
+  task.workingDir rootDir
 
-  includes = ['**/RequiresDeviceTestSuite.class']
-
+  task.include("**/DroidmateFrontendTest.class")
+  task.filter.includeTestsMatching("*Explores monitored apk on a real device")
 }
 
 apply from: project(":projects").file("maven.gradle")
 // So the published jar to local maven repo with task "install" won't be called command.jar but droidmate.jar
 jar.baseName = rootProject.name
 
+apply from: project(":projects").file("debug.gradle")

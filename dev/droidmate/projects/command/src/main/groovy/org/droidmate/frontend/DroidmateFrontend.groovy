@@ -58,6 +58,7 @@ public class DroidmateFrontend
       validateStdoutLoglevel()
       LogbackUtilsRequiringLogbackLog.cleanLogsDir()
       log.info("Bootstrapping DroidMate: configuring from command line & injecting dependencies.")
+      log.info("IMPORTANT: for help on how to configure DroidMate, run it with -help")
       log.info("IMPORTANT: for detailed logs from DroidMate run, please see ${LogbackConstants.LOGS_DIR_PATH}.")
 
       Configuration cfg = new ConfigurationBuilder().build(args, fs)
@@ -65,7 +66,7 @@ public class DroidmateFrontend
       if (cmd == null)
       {
         //noinspection GroovyAssignmentToMethodParameter
-        cmd = DroidmateCommand.build(cfg.processUiaTestCasesLogs, cfg.extractData, cfg.report, cfg)
+        cmd = DroidmateCommand.build(cfg.processUiaTestCasesLogs, cfg.extractData, cfg.report, cfg.inline, cfg)
       }
 
       log.info("Welcome to DroidMate. Lie back, relax and enjoy.")
