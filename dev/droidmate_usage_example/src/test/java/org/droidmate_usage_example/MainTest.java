@@ -55,8 +55,16 @@ public class MainTest
 
   }
 
+  // KJA add tests showing how to access output dir and serialized data, i.e. something like:
+  // droidmateFrontend.main()
+  // outDir = new OutputDir(droidmateFrontend.defaultOutputDirPath)
+  // ExplOut2 output = outDir.getOutput
+  // Add test for that in droidmate main, not usage example (as it requires fixtures)
+  // For usage example just empty output will suffice (probably should be generated? Or warning + empty data structure returned?)
+  
   private void mainWithArgs(String[] args)
   {
+    // KJA check in tests if exitStatus == 0
     DroidmateFrontend.main(args, FileSystems.getDefault(), new ExceptionHandler());
   }
 
