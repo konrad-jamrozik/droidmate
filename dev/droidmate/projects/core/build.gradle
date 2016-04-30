@@ -62,12 +62,11 @@ dependencies {
 
 }
 
-// KJA apks-dir: can be dried?
 /*
  This project sometimes has to fire apk-inliner:run. For that, this project needs to know input and output dirs of apk-inliner,
  which is the reason for evaluation dependence.
  */
-// KJA toremove?
+// KJA2-clean toremove?
 evaluationDependsOn(":projects:apk-inliner")
 
 /* Note: The 'compile[Test]Java.dependsOn' clauses are redundant with 'builtBy' property in the 'dependencies' closure,

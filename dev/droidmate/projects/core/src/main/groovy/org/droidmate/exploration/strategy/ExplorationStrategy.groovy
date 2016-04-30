@@ -12,8 +12,8 @@ package org.droidmate.exploration.strategy
 import com.google.common.base.Ticker
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
-import org.droidmate.common.logging.Markers
 import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.common.logging.Markers
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device.datatypes.IGuiState
@@ -100,6 +100,7 @@ class ExplorationStrategy implements IExplorationStrategy
     assert settingsCount <= 1
   }
 
+  // KJA make it private. Fix/delete callers as necessary.
   @Override
   ExplorationAction decide(IGuiState guiState)
   {
@@ -179,6 +180,7 @@ class ExplorationStrategy implements IExplorationStrategy
     log.debug("decide($result)")
     assert result?.successful
 
+    //KJA2-clean to remove
     //SE Team Hook 1
     def lastGuiScreen = guiStatesSeen.find({
       it == result.guiSnapshot.guiState

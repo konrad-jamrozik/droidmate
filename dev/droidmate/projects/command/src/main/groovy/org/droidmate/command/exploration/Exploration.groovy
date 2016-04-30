@@ -105,6 +105,7 @@ class Exploration implements IExploration
     // Write the initial action and its execution result to the output holder.
     output.add(action, result)
 
+    // KJA exploration strategy has to be passed as constructor param, but it depends on app.packageName. Instead, the app.packageName should be provided from IExplorationActionRunResult, i.e. "the explored app package name". Then it can be passed to .decide(run result)
     // Construct the strategy making decisions in the exploration loop.
     IExplorationStrategy strategy = ExplorationStrategy.build(app.packageName, cfg)
 
@@ -116,6 +117,7 @@ class Exploration implements IExploration
       output.add(action, result)
     }
 
+    // KJA2-clean to remove
     //SE Team 2. Hook
     def successful = result.successful;
     log.trace(Markers.gui,"<success>" + successful.toString() + "</success>")
