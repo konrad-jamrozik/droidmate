@@ -14,7 +14,7 @@ import org.droidmate.exploration.strategy.IExplorationStrategy;
 import org.droidmate.exploration.strategy.ITerminationCriterion;
 
 /**
-  @see ExampleExplorationStrategy#ExampleExplorationStrategy(ITerminationCriterion) 
+  @see ExampleExplorationStrategy#ExampleExplorationStrategy(ITerminationCriterion)
  */
 class ExampleExplorationStrategy implements IExplorationStrategy
 {
@@ -22,9 +22,9 @@ class ExampleExplorationStrategy implements IExplorationStrategy
 
   /**
    * <p>
-   * Constructs {@link ExampleExplorationStrategy}. This is a very minimalistic custom exploration strategy used to show you 
+   * Constructs {@link ExampleExplorationStrategy}. This is a very minimalistic custom exploration strategy used to show you
    * how to inject into DroidMate your own custom strategy.
-   * 
+   *
    * </p><p>
    * For an example of how to actually write an exploration strategy, see:
    * <a href="https://github.com/konrad-jamrozik/droidmate/blob/master/dev/droidmate/projects/core/src/main/groovy/org/droidmate/exploration/strategy/ExplorationStrategy.groovy">
@@ -33,7 +33,7 @@ class ExampleExplorationStrategy implements IExplorationStrategy
    * </p><p>
    * Note you do not have to use {@link ITerminationCriterion} interface.
    * Just provide yourself your custom logic instead.
-   * 
+   *
    * </p>
    */
   ExampleExplorationStrategy(ITerminationCriterion terminationCriterion)
@@ -44,11 +44,15 @@ class ExampleExplorationStrategy implements IExplorationStrategy
   @Override
   public ExplorationAction decide(IExplorationActionRunResult result)
   {
-    terminationCriterion.updateState();
-    
+    ExplorationAction performedAction;
+
     if (terminationCriterion.met())
-      return ExplorationAction.newTerminateExplorationAction();
+      performedAction = ExplorationAction.newTerminateExplorationAction();
     else
-      return ExplorationAction.newResetAppExplorationAction();
+      performedAction = ExplorationAction.newResetAppExplorationAction();
+
+    terminationCriterion.updateState(performedAction);
+
+    return performedAction;
   }
 }
