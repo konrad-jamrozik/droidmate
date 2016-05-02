@@ -39,7 +39,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
 
-import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -244,7 +243,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     outputDir.clearContents()
 
     // Act
-    DroidmateFrontend.main(args, FileSystems.getDefault(), new ExceptionHandler())
+    DroidmateFrontend.main(args)
 
     IApkExplorationOutput2 apkOut = outputDir.readOutput().findSingle()
 

@@ -28,8 +28,6 @@ import java.nio.file.Path
 @RunWith(JUnit4)
 class WritableExplorationOutput2AnalysisTest extends DroidmateGroovyTestCase
 {
-
-  // KJA2 fix localization bug
   @Test
   void "Writes exploration output 2 analysis"()
   {
@@ -54,6 +52,7 @@ class WritableExplorationOutput2AnalysisTest extends DroidmateGroovyTestCase
 
     writtenFiles.eachWithIndex {Path file, int i ->
       assert Files.size(file) > 0
+      // KJA fix localization problem
       assert file.text == fixture.expectedChartFileContents[i]
     }
   }

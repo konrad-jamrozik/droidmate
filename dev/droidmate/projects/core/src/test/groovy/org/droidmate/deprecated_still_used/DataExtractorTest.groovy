@@ -31,7 +31,6 @@ import static ExplorationOutputBuilder.build
 @RunWith(JUnit4)
 public class DataExtractorTest extends DroidmateGroovyTestCase
 {
-  // KJA2 fix localization bug
   @Test
   void "Extracts input file for pgfplots 'APIs seen saturation' chart"()
   {
@@ -119,6 +118,7 @@ public class DataExtractorTest extends DroidmateGroovyTestCase
       "            0.9 nan nan\n"
 
 
+    // KJA fix localization problem
     assert actualTransformedOutput.toString() == expectedTransformedOutput
   }
 
