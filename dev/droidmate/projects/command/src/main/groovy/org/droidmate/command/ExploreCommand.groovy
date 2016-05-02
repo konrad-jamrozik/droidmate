@@ -16,7 +16,6 @@ import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.command.exploration.Exploration
 import org.droidmate.command.exploration.IExploration
-import org.droidmate.common.logging.Markers
 import org.droidmate.configuration.Configuration
 import org.droidmate.deprecated_still_used.*
 import org.droidmate.exceptions.DeviceException
@@ -168,8 +167,6 @@ class ExploreCommand extends DroidmateCommand
       List<ApkExplorationException> allApksExplorationExceptions = []
 
       boolean encounteredApkExplorationsStoppingException = false
-      log.trace(Markers.gui,"<!-- GUI States -->")
-      log.trace(Markers.gui,"<exploration>")
 
       apks.eachWithIndex {Apk apk, int i ->
 
@@ -177,15 +174,10 @@ class ExploreCommand extends DroidmateCommand
         {
           log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
-        log.trace(Markers.gui,"<apk>")
-        log.trace(Markers.gui,"<name>"+apk.fileName+"</name>")
-          log.trace(Markers.gui,"<events>")
           allApksExplorationExceptions +=
             this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
               tryExploreOnDeviceAndSerialize(deployedApk, device, out)
             }
-          log.trace(Markers.gui,"</events>")
-	    log.trace(Markers.gui,"</apk>")
 
           if (allApksExplorationExceptions.any {it.shouldStopFurtherApkExplorations()})
           {
@@ -194,7 +186,6 @@ class ExploreCommand extends DroidmateCommand
           }
         }
       }
-      log.trace(Markers.gui,"</exploration>")
       return allApksExplorationExceptions
     }
   }

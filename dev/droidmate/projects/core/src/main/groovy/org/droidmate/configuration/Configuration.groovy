@@ -23,7 +23,7 @@ import java.nio.file.Paths
  * <p>
  *
  * This class holds all the configuration data of DroidMate. The configuration is obtained from command line arguments by 
- * a call to {@code new ConfigurationBuilder().build(args)}. This happens in {@code DroidmateFrontend}, 
+ * a call to {@code n ew ConfigurationBuilder().build(args)}. This happens in {@code DroidmateFrontend}, 
  * just before DroidMate constructs a {@code DroidmateCommand} and thus, its object graph of dependencies. 
  *
  * </p><p>

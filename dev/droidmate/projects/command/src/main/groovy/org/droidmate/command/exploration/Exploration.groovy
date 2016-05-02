@@ -12,7 +12,6 @@ package org.droidmate.command.exploration
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
-import org.droidmate.common.logging.Markers
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
@@ -118,13 +117,7 @@ class Exploration implements IExploration
       result = action.run(app, device)
       output.add(action, result)
     }
-
-    // KJA-clean to remove
-    //SE Team 2. Hook
-    def successful = result.successful;
-    log.trace(Markers.gui,"<success>" + successful.toString() + "</success>")
-    //---------------
-
+    
     assert !result.successful || action instanceof RunnableTerminateExplorationAction
 
     output.explorationEndTime = timeProvider.now

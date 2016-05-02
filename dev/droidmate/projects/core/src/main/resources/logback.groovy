@@ -33,9 +33,6 @@ final Level STDERR_LOG_LEVEL = ERROR
 
 final String appender_file_osCmd = "os_cmd.txt"
 
-//appender for the web frontend
-final String appender_file_gui = "gui.xml"
-
 // format modifiers explained: http://logback.qos.ch/manual/layouts.html#formatModifiers
 // %rEx modifier explained: http://logback.qos.ch/manual/layouts.html#rootException
 final String pat_bare = "%msg%rEx%n"
@@ -166,19 +163,6 @@ appender(appender_file_osCmd, LazyFileAppender) {
   encoder(PatternLayoutEncoder) {pattern = pat_bare}
 }
 
-//Appender for the web frontend
-appender(appender_file_gui, LazyFileAppender) {
-  file = getLogFilePath(appender_file_gui)
-  append = false
-  lazy = true
-
-  filter(MarkerFilter) {
-    marker = Markers.gui
-    onMismatch = DENY; onMatch = NEUTRAL
-  }
-  encoder(PatternLayoutEncoder) {pattern = pat_bare}
-}
-
 appender(appender_name_runData, LazyFileAppender) {
   file = getLogFilePath(appender_name_runData)
   append = false
@@ -249,7 +233,6 @@ root(TRACE, mainAppenders + [
   appender_name_runData,
   appender_file_osCmd,
   appender_name_monitor,
-  appender_file_gui
 ])
 
 // N00b reference for additivity: http://logback.qos.ch/manual/architecture.html#additivity

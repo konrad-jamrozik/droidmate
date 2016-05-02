@@ -13,7 +13,6 @@ import com.google.common.base.Ticker
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.common.logging.Markers
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device.datatypes.IGuiState
@@ -93,8 +92,6 @@ class ExplorationStrategy implements IExplorationStrategy
     log.debug("decide($result)")
     assert result?.successful
 
-    seTeamHookInDecide(result)
-    
     def guiState = result.guiSnapshot.guiState
     def exploredAppPackageName = result.exploredAppPackageName
     
@@ -149,8 +146,6 @@ class ExplorationStrategy implements IExplorationStrategy
 
         String text = w.text // For other properties, see org.droidmate.common.exploration.datatypes.Widget
 
-        log.trace(Markers.gui,"<widget_explored>" + text + "</widget_explored>")
-
         // Otherwise the widget is not interesting (DroidMate will never do anything with it)
         boolean canBeActedUpon = w.canBeActedUpon()
 
@@ -166,23 +161,6 @@ class ExplorationStrategy implements IExplorationStrategy
     }
   }
 
-
-  private void seTeamHookInDecide(IExplorationActionRunResult result)
-  {
-    //KJA-clean to remove
-    //SE Team Hook 1
-    def lastGuiScreen = guiStatesSeen.find({
-      it == result.guiSnapshot.guiState
-    })
-    if (lastGuiScreen == null)
-    {
-      lastGuiScreen = result.guiSnapshot.guiState
-      guiStatesSeen.add(lastGuiScreen)
-      log.trace(Markers.gui, "<elements_seen>" + lastGuiScreen.widgets.size() + "</elements_seen>")
-      log.trace(Markers.gui, "<gui_screens_seen>1</gui_screens_seen>")
-    }
-    //--------------
-  }
 
   private logExplorationProgress(ExplorationAction outExplAction)
   {
