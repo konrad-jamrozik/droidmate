@@ -30,13 +30,13 @@ targetCompatibility = JavaVersion.VERSION_1_8
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
-sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
 
 /*
  This project uses test artifacts of core project.
  WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
  */
 evaluationDependsOn(":projects:core")
+sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
 
 dependencies {
 
