@@ -8,21 +8,12 @@
 // www.droidmate.org
 package org.droidmate_usage_example;
 
-import org.droidmate.device.datatypes.IGuiState;
 import org.droidmate.exploration.actions.ExplorationAction;
 import org.droidmate.exploration.actions.IExplorationActionRunResult;
 import org.droidmate.exploration.strategy.IExplorationStrategy;
 
 class ExampleExplorationStrategy implements IExplorationStrategy
 {
-  @Override
-  public ExplorationAction decide(IGuiState guiState)
-  {
-    // KJA current work
-    assert false : "Not yet implemented!";
-    return null;
-  }
-
   @Override
   public ExplorationAction decide(IExplorationActionRunResult result)
   {
