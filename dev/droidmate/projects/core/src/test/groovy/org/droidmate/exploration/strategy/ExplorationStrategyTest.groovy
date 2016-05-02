@@ -159,7 +159,6 @@ class ExplorationStrategyTest extends DroidmateGroovyTestCase
 
   static IExplorationActionRunResult newResultFromGuiState(GuiState guiState)
   {
-    // KJA check if it works
     def builder = new ExplorationOutput2Builder()
     return builder.buildActionResult([guiSnapshot: UiautomatorWindowDumpTestHelper.fromGuiState(guiState), packageName: FilesystemTestFixtures.apkFixture_simple_packageName])
   }

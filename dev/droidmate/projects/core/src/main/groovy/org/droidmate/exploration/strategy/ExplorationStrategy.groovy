@@ -358,7 +358,6 @@ class ExplorationStrategy implements IExplorationStrategy
 
   public static ExplorationStrategy build(Configuration cfg)
   {
-    // KJA what happens here should also happen during reset. Or maybe, instead of building strat immediately, provide a factory-closure? Like { cfg -> strat.build(cfg) }  
     IWidgetStrategy widgetStrategy = new WidgetStrategy(cfg.randomSeed, cfg.alwaysClickFirstWidget, cfg.widgetIndexes)
     ITerminationCriterion terminationCriterion = new TerminationCriterion(cfg, cfg.timeLimit, Ticker.systemTicker())
     IForwardExplorationSpecialCases specialCases = new ForwardExplorationSpecialCases()

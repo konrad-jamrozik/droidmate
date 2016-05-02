@@ -89,7 +89,6 @@ class ExplorationOutput2Builder
   public ExplorationActionRunResult buildActionResult(Map attributes)
   {
     def deviceLogs = buildDeviceLogs(attributes)
-    // KJA check if it didn't broke the test
     def guiSnapshot = attributes.guiSnapshot ?: UiautomatorWindowDumpTestHelper.newHomeScreenWindowDump() 
 
     def successful = attributes.containsKey("successful") ? attributes.successful : true

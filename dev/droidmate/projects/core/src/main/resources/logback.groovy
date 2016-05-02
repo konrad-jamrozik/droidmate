@@ -220,8 +220,6 @@ List loggersWithLazyFileAppenders = [
 //  [loggerName: "org.droidmate.common.SysCmdExecutor",                         additivity: false, pattern: pat_date_level],
   [loggerName: "org.droidmate.android_sdk.AaptWrapper",                       additivity: true,  pattern: pat_date_level],
   [loggerName: "org.droidmate.exploration.strategy.WidgetStrategy",           additivity: false, pattern: pat_date_level, additionalAppenders: warnAppenders],
-  [loggerName: "org.droidmate.deprecated.ValidUiautomatorWindowDumpProvider", additivity: true,  pattern: pat_date_level],
-  [loggerName: "org.droidmate.deprecated.VerifiableDeviceActionsExecutor",    additivity: true,  pattern: pat_date_level],
   [loggerName: "org.droidmate.exploration",                                   additivity: true,  pattern: pat_date_level_logger],//, additionalAppenders: warnAppenders],
   //[loggerName: "org.droidmate.device",                                      additivity: true,  pattern: pat_date_level_logger]//, additionalAppenders: warnAppenders],
   //@formatter:on
