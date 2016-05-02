@@ -64,7 +64,7 @@ public class MainTest
   // outDir = new OutputDir(droidmateFrontend.defaultOutputDirPath)
   // ExplOut2 output = outDir.getOutput
   // Add test for that in droidmate main, not usage example (as it requires fixtures)
-  // For usage example just empty output will suffice (probably should be generated? Or warning + empty data structure returned?)
+  // For usage example just empty output will suffice (probably should be generated? Or warning + empty data structure returned?) 
 
   private void callMain_then_assertExitStatusIs0(String[] args)
   {
