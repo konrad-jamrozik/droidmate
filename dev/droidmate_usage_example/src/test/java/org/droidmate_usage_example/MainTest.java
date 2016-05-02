@@ -16,6 +16,10 @@ import org.droidmate.frontend.ICommandProvider;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * This class contains tests showing example use cases of DroidMate API. To understand better how to work with DroidMate API, 
  * please explore the source code of the DroidMate classes called by the examples here. For where to find the sources and how to 
@@ -36,14 +40,15 @@ public class MainTest
     callMain_then_assertExitStatusIs0(new String[]{Configuration.pn_inline});
   }
 
-  
   @Test
   public void CommonSettings()
   {
-    // KJA current work
-    //final String[] args = new ArgsBuilder().apksDir("apks/inlined")..timeLimitInSeconds(20).resetEvery(5).randomSeed(2).build();
-    final String[] args = {};
-    callMain_then_assertExitStatusIs0(args);
+    List<String> args = new ArrayList<>();
+    Collections.addAll(args, Configuration.pn_apksDir, "apks/inlined");
+    Collections.addAll(args, Configuration.pn_timeLimit, "20");
+    Collections.addAll(args, Configuration.pn_resetEveryNthExplorationForward, "5");
+    Collections.addAll(args, Configuration.pn_randomSeed, "43");
+    callMain_then_assertExitStatusIs0(args.toArray(new String[args.size()]));
   }
 
   @Test
@@ -59,7 +64,7 @@ public class MainTest
   // outDir = new OutputDir(droidmateFrontend.defaultOutputDirPath)
   // ExplOut2 output = outDir.getOutput
   // Add test for that in droidmate main, not usage example (as it requires fixtures)
-  // For usage example just empty output will suffice (probably should be generated? Or warning + empty data structure returned?)
+  // For usage example just empty output will suffice (probably should be generated? Or warning + empty data structure returned?) 
 
   private void callMain_then_assertExitStatusIs0(String[] args)
   {
