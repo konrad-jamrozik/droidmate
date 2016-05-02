@@ -16,10 +16,11 @@ interface IExplorationActionRunResult extends Serializable
 {
   boolean getSuccessful()
 
+  String getExploredAppPackageName()
+
   IDeviceLogs getDeviceLogs()
 
   IDeviceGuiSnapshot getGuiSnapshot()
 
   DeviceException getException()
-
 }

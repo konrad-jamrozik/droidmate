@@ -6,15 +6,9 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.deprecated
+package org.droidmate.exploration.strategy
 
-import org.droidmate.deprecated_still_used.IApkExplorationOutput
-
-@Deprecated
-interface IIntermediateOutputSaver
+public interface IExplorationStrategyProvider
 {
-
-  boolean save(IApkExplorationOutput output)
-
-  void init()
+  IExplorationStrategy provideNewInstance()
 }

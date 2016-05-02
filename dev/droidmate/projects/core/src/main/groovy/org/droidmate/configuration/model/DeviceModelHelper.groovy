@@ -11,7 +11,7 @@ package org.droidmate.configuration.model
 import org.droidmate.exceptions.UnknownDeviceException
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
-// KJA "helper" is a smell. Refactor
+// KJA2-clean "helper" is a smell. Refactor
 /**
  * Provides a class to acquire device specific objects using Factory Method Pattern
  * {@link http://www.dofactory.com/net/factory-method-design-pattern}. <br/>

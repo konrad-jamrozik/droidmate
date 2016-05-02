@@ -16,5 +16,5 @@ public interface IWidgetStrategy
 {
   ExplorationAction decide(IGuiState guiState)
 
-  boolean updateState(IGuiState guiState)
+  boolean updateState(IGuiState guiState, String exploredAppPackageName)
 }

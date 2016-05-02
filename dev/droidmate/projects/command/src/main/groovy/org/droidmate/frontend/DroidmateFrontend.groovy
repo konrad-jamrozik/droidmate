@@ -40,11 +40,11 @@ public class DroidmateFrontend
    */
   public static void main(String[] args)
   {
-    int exitStatus = main(args, FileSystems.getDefault(), new ExceptionHandler())
+    int exitStatus = main(args, null)
     System.exit(exitStatus)
   }
 
-  public static int main(String[] args, FileSystem fs, IExceptionHandler exceptionHandler, DroidmateCommand cmd = null)
+  public static int main(String[] args, ICommandProvider provider, FileSystem fs = FileSystems.getDefault(), IExceptionHandler exceptionHandler = new ExceptionHandler())
   {
     println "DroidMate"
     println "Copyright (c) 2012 - ${LocalDate.now().year} Saarland University"
@@ -57,30 +57,36 @@ public class DroidmateFrontend
     {
       validateStdoutLoglevel()
       LogbackUtilsRequiringLogbackLog.cleanLogsDir()
-      log.info("Bootstrapping DroidMate: configuring from command line & injecting dependencies.")
+      log.info("Bootstrapping DroidMate: building ${Configuration.simpleName} from args " +
+        "and instantiating objects for ${DroidmateCommand.simpleName}.")
       log.info("IMPORTANT: for help on how to configure DroidMate, run it with -help")
       log.info("IMPORTANT: for detailed logs from DroidMate run, please see ${LogbackConstants.LOGS_DIR_PATH}.")
 
       Configuration cfg = new ConfigurationBuilder().build(args, fs)
 
-      if (cmd == null)
-      {
-        //noinspection GroovyAssignmentToMethodParameter
-        cmd = DroidmateCommand.build(cfg.processUiaTestCasesLogs, cfg.extractData, cfg.report, cfg.inline, cfg)
-      }
+      DroidmateCommand command
+      if (provider != null)
+        command = provider.provide(cfg)
+      else 
+        command = determineAndBuildCommand(cfg)
 
-      log.info("Welcome to DroidMate. Lie back, relax and enjoy.")
+      log.info("Successfully instantiatied ${command.class.simpleName}. Welcome to DroidMate. Lie back, relax and enjoy.")
       log.info("Run start timestamp: " + runStart)
 
-      cmd.execute(cfg)
+      command.execute(cfg)
 
     } catch (Throwable e)
     {
       exitStatus = exceptionHandler.handle(e)
     }
 
-    logDroidmateRunEnd(runStart, /* encounteredExceptionsDuringTheRun */ exitStatus > 0)
+    logDroidmateRunEnd(runStart, /* boolean encounteredExceptionsDuringTheRun = */ exitStatus > 0)
     return exitStatus
+  }
+
+  private static DroidmateCommand determineAndBuildCommand(Configuration cfg)
+  {
+    return DroidmateCommand.build(cfg.processUiaTestCasesLogs, cfg.extractData, cfg.report, cfg.inline, cfg)
   }
 
   private static void validateStdoutLoglevel()

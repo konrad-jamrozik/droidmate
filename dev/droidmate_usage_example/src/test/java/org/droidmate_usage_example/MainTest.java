@@ -8,13 +8,13 @@
 // www.droidmate.org
 package org.droidmate_usage_example;
 
+import org.droidmate.command.ExploreCommand;
 import org.droidmate.configuration.Configuration;
-import org.droidmate.exploration.strategy.IExplorationStrategy;
+import org.droidmate.exploration.strategy.IExplorationStrategyProvider;
 import org.droidmate.frontend.DroidmateFrontend;
-import org.droidmate.frontend.ExceptionHandler;
+import org.droidmate.frontend.ICommandProvider;
+import org.junit.Assert;
 import org.junit.Test;
-
-import java.nio.file.FileSystems;
 
 /**
  * This class contains tests showing example use cases of DroidMate API. To understand better how to work with DroidMate API, 
@@ -27,37 +27,49 @@ public class MainTest
   @Test
   public void DefaultRun()
   {
-    mainWithArgs(new String[]{});
+    callMain_then_assertExitStatusIs0(new String[]{});
   }
 
   @Test
   public void InlineApks()
   {
-    mainWithArgs(new String[]{Configuration.pn_inline});
+    callMain_then_assertExitStatusIs0(new String[]{Configuration.pn_inline});
   }
 
+  
   @Test
   public void CommonSettings()
   {
     // KJA current work
     //final String[] args = new ArgsBuilder().apksDir("apks/inlined")..timeLimitInSeconds(20).resetEvery(5).randomSeed(2).build();
     final String[] args = {};
-    mainWithArgs(args);
+    callMain_then_assertExitStatusIs0(args);
   }
 
   @Test
   public void CustomExplorationStrategyAndTerminationCriterion()
   {
-    IExplorationStrategy strategy = new ExampleExplorationStrategy();
-
-    // KJA current work
-//    DroidmateFrontend.main(new String[]{},  FileSystems.getDefault(), new ExceptionHandler(), strategy);
-
+    final IExplorationStrategyProvider strategyProvider = () -> new ExampleExplorationStrategy(new ExampleTerminationCriterion());
+    final ICommandProvider commandProvider = cfg -> ExploreCommand.build(cfg, strategyProvider);
+    callMain_then_assertExitStatusIs0(new String[]{}, commandProvider);
   }
 
-  private void mainWithArgs(String[] args)
+  // KJA add tests showing how to access output dir and serialized data, i.e. something like:
+  // droidmateFrontend.main()
+  // outDir = new OutputDir(droidmateFrontend.defaultOutputDirPath)
+  // ExplOut2 output = outDir.getOutput
+  // Add test for that in droidmate main, not usage example (as it requires fixtures)
+  // For usage example just empty output will suffice (probably should be generated? Or warning + empty data structure returned?)
+
+  private void callMain_then_assertExitStatusIs0(String[] args)
   {
-    DroidmateFrontend.main(args, FileSystems.getDefault(), new ExceptionHandler());
+    callMain_then_assertExitStatusIs0(args, null);
+  }
+
+  private void callMain_then_assertExitStatusIs0(String[] args, ICommandProvider commandProvider)
+  {
+    int exitStatus = DroidmateFrontend.main(args, commandProvider);
+    Assert.assertEquals(0, exitStatus);
   }
 
 

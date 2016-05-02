@@ -11,7 +11,6 @@ package org.droidmate.command
 import groovy.util.logging.Slf4j
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.ThrowablesCollection
-import org.droidmate.misc.TimeProvider
 
 @Slf4j
 abstract class DroidmateCommand
@@ -33,6 +32,6 @@ abstract class DroidmateCommand
     else if (inline)
       return InlineCommand.build()
     else
-      return ExploreCommand.build(new TimeProvider(), cfg)
+      return ExploreCommand.build(cfg)
   }
 }

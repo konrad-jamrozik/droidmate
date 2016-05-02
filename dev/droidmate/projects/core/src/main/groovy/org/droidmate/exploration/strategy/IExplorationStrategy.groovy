@@ -9,13 +9,12 @@
 
 package org.droidmate.exploration.strategy
 
-import org.droidmate.device.datatypes.IGuiState
 import org.droidmate.exploration.actions.ExplorationAction
 import org.droidmate.exploration.actions.IExplorationActionRunResult
 
 public interface IExplorationStrategy
 {
-  ExplorationAction decide(IGuiState guiState)
 
   ExplorationAction decide(IExplorationActionRunResult result)
 }
+

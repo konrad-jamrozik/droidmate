@@ -89,14 +89,17 @@ class ExplorationOutput2Builder
   public ExplorationActionRunResult buildActionResult(Map attributes)
   {
     def deviceLogs = buildDeviceLogs(attributes)
-    def guiSnapshot = UiautomatorWindowDumpTestHelper.newHomeScreenWindowDump()
+    def guiSnapshot = attributes.guiSnapshot ?: UiautomatorWindowDumpTestHelper.newHomeScreenWindowDump() 
 
     def successful = attributes.containsKey("successful") ? attributes.successful : true
 
     def exception = successful ? new DeviceExceptionMissing() :
       new DeviceException("Exception created in ${ExplorationOutput2Builder.simpleName}.buildActionResult()")
 
-    def result = new ExplorationActionRunResult(successful, deviceLogs, guiSnapshot, exception)
+    def packageName = attributes.packageName ?: currentlyBuiltApkOut2.packageName
+    assert packageName?.size() >= 1
+    
+    def result = new ExplorationActionRunResult(successful, packageName, deviceLogs, guiSnapshot, exception)
     return result
   }
 

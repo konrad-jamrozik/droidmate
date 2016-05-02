@@ -27,7 +27,6 @@ class WidgetStrategy implements IWidgetStrategy
 {
   private final Long          randomSeed
   private final Random        random
-  private final String        exploredAppPackageName
   private final Boolean       alwaysClickFirstWidget
   private       List<Integer> widgetIndexes
 
@@ -37,12 +36,10 @@ class WidgetStrategy implements IWidgetStrategy
   private Boolean             repeatLastAction     = false
 
   WidgetStrategy(
-    String exploredAppPackageName,
     long randomSeed,
     boolean alwaysClickFirstWidget,
     List<Integer> widgetIndexes)
   {
-    this.exploredAppPackageName = exploredAppPackageName
     this.randomSeed = randomSeed
     this.random = new Random(randomSeed)
     this.alwaysClickFirstWidget = alwaysClickFirstWidget
@@ -55,7 +52,7 @@ class WidgetStrategy implements IWidgetStrategy
   private boolean alreadyUpdatedAfterLastDecide = false
 
   @Override
-  boolean updateState(IGuiState guiState)
+  boolean updateState(IGuiState guiState, String exploredAppPackageName)
   {
     currentWidgetContext = updateWidgetContexts(guiState)
 

@@ -13,8 +13,11 @@ import groovy.transform.TypeChecked
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.datatypes.GuiState
+import org.droidmate.device.datatypes.UiautomatorWindowDumpTestHelper
 import org.droidmate.exploration.actions.ExplorationAction
+import org.droidmate.exploration.actions.IExplorationActionRunResult
 import org.droidmate.exploration.actions.WidgetExplorationAction
+import org.droidmate.exploration.data_aggregators.ExplorationOutput2Builder
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.test_base.FilesystemTestFixtures
 import org.junit.FixMethodOrder
@@ -40,14 +43,14 @@ class ExplorationStrategyTest extends DroidmateGroovyTestCase
   private static IExplorationStrategy getStrategy(Integer actionsLimit = Configuration.defaultActionsLimit,
                                                   Integer resetEveryNthExplorationForward = Configuration.defaultResetEveryNthExplorationForward)
   {
-    return ExplorationStrategyTestHelper.buildStrategy(FilesystemTestFixtures.apkFixture_simple_packageName, actionsLimit, resetEveryNthExplorationForward)
+    return ExplorationStrategyTestHelper.buildStrategy(actionsLimit, resetEveryNthExplorationForward)
   }
 
   @Test
   void "Given no clickable widgets after app was initialized or reset, requests termination"()
   {
     // Act 1 & Assert
-    verifyProcessOnGuiStateReturnsTerminateExplorationAction(getStrategy(), newEmptyGuiState())
+    verifyProcessOnGuiStateReturnsTerminateExplorationAction(getStrategy(), newGuiStateWithTopLevelNodeOnly())
 
     // Act 2 & Assert
     verifyProcessOnGuiStateReturnsTerminateExplorationAction(getStrategy(), newGuiStateWithDisabledWidgets(1))
@@ -58,7 +61,7 @@ class ExplorationStrategyTest extends DroidmateGroovyTestCase
   {
     def strategy = getStrategy()
     makeIntoNormalExplorationMode(strategy)
-    verifyProcessOnGuiStateReturnsResetExplorationAction(strategy, newEmptyGuiState())
+    verifyProcessOnGuiStateReturnsResetExplorationAction(strategy, newGuiStateWithTopLevelNodeOnly())
   }
 
   @Test
@@ -107,7 +110,7 @@ class ExplorationStrategyTest extends DroidmateGroovyTestCase
     makeIntoNormalExplorationMode(strategy)
 
     verifyProcessOnGuiStateReturnsResetExplorationAction(strategy, newAppHasStoppedGuiState())
-    verifyProcessOnGuiStateReturnsTerminateExplorationAction(strategy, newEmptyGuiState())
+    verifyProcessOnGuiStateReturnsTerminateExplorationAction(strategy, newGuiStateWithTopLevelNodeOnly())
   }
 
   @Test
@@ -129,7 +132,7 @@ class ExplorationStrategyTest extends DroidmateGroovyTestCase
     def strategy = getStrategy(/* actionsLimit */ 8, /* resetEveryNthExplorationForward */ 3
     )
     def gs = newGuiStateWithWidgets(3, FilesystemTestFixtures.apkFixture_simple_packageName)
-    def egs = newEmptyGuiState()
+    def egs = newGuiStateWithTopLevelNodeOnly()
 
     verifyProcessOnGuiStateReturnsWidgetExplorationAction(strategy, gs) // 1st exploration forward: widget click
     verifyProcessOnGuiStateReturnsWidgetExplorationAction(strategy, gs) // 2nd exploration forward: widget click
@@ -151,34 +154,38 @@ class ExplorationStrategyTest extends DroidmateGroovyTestCase
    * */
   private static ExplorationAction makeIntoNormalExplorationMode(IExplorationStrategy strategy)
   {
-    return strategy.decide(newGuiStateWithWidgets(1))
+    return strategy.decide(newResultFromGuiState(newGuiStateWithWidgets(1)))
   }
 
-
+  static IExplorationActionRunResult newResultFromGuiState(GuiState guiState)
+  {
+    def builder = new ExplorationOutput2Builder()
+    return builder.buildActionResult([guiSnapshot: UiautomatorWindowDumpTestHelper.fromGuiState(guiState), packageName: FilesystemTestFixtures.apkFixture_simple_packageName])
+  }
 
   private static void verifyProcessOnGuiStateReturnsWidgetExplorationAction(
     IExplorationStrategy strategy, GuiState gs, Widget w = null)
   {
     if (w == null)
-      assert strategy.decide(gs) instanceof WidgetExplorationAction
+      assert strategy.decide(newResultFromGuiState(gs)) instanceof WidgetExplorationAction
     else
-      assert strategy.decide(gs) == newWidgetExplorationAction(w)
+      assert strategy.decide(newResultFromGuiState(gs)) == newWidgetExplorationAction(w)
   }
 
   private static void verifyProcessOnGuiStateReturnsTerminateExplorationAction(IExplorationStrategy strategy, GuiState gs)
   {
-    assert strategy.decide(gs) == newTerminateExplorationAction()
+    assert strategy.decide(newResultFromGuiState(gs)) == newTerminateExplorationAction()
   }
 
   private static void verifyProcessOnGuiStateReturnsResetExplorationAction(IExplorationStrategy strategy, GuiState gs)
   {
-    assert strategy.decide(gs) == newResetAppExplorationAction()
+    assert strategy.decide(newResultFromGuiState(gs)) == newResetAppExplorationAction()
   }
 
   @SuppressWarnings("GroovyUnusedDeclaration")
   private static void verifyProcessOnGuiStateReturnsPressBackExplorationAction(IExplorationStrategy strategy, GuiState gs)
   {
-    assert strategy.decide(gs) == newPressBackExplorationAction()
+    assert strategy.decide(newResultFromGuiState(gs)) == newPressBackExplorationAction()
   }
 
 

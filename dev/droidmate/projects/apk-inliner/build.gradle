@@ -26,16 +26,6 @@ dependencies {
 
 }
 
-// KJA fix double logback.groovy on classpath 
-// fix it both for running :command and for stand-alone distro. i.e. logback should not be packaged in jar.
-// one of the things to check is apk-inliner:jar which ends up in C:\my\local\repos\github\droidmate\dev\droidmate\projects\apk-inliner\build\libs
-// another is the distribution. which should pick up logback.groovy from standalone logback.groovy, not one in jar.
-// Things that have to work:
-// stand-alone run of apk inliner both in gradle and intellij
-// stand-alone run of command both in gradle and intellij
-// usage of droidmate from usage example
-// usage of droidmate from distro
-// KJA apk inliner distro fails with wrong resources (change ResourcePath to Resource)
 run {
 
   standardOutput = new ByteArrayOutputStream() // Mute the task stdout

@@ -22,6 +22,7 @@ import org.droidmate.exceptions.ITestException
 import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.output.DroidmateOutputDir
+import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.filesystem.MockFileSystem
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.misc.TimeGenerator
@@ -154,7 +155,11 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     def spy = new ExceptionHandlerSpy()
 
     // Act
-    int exitStatus = DroidmateFrontend.main(cfg.args, mockedFs.fs, spy, ExploreCommand.build(timeGenerator, cfg, deviceToolsMock))
+    int exitStatus = DroidmateFrontend.main(
+      cfg.args, {ExploreCommand.build(cfg, {ExplorationStrategy.build(cfg)}, timeGenerator, deviceToolsMock)},
+      mockedFs.fs,
+      spy
+    )
 
     assert exitStatus != 0
 
@@ -191,7 +196,11 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     def deviceToolsMock = new DeviceToolsMock(cfg, new AaptWrapperStub(apks), simulator)
 
     // Act
-    int exitStatus = DroidmateFrontend.main(cfg.args, mockedFs.fs, new ExceptionHandler(), ExploreCommand.build(timeGenerator, cfg, deviceToolsMock))
+    int exitStatus = DroidmateFrontend.main(
+      cfg.args, {ExploreCommand.build(cfg, {ExplorationStrategy.build(cfg)}, timeGenerator, deviceToolsMock)},
+      mockedFs.fs,
+      new ExceptionHandler()
+    )
 
     assert exitStatus == 0
 
@@ -258,15 +267,6 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     def cameraApiLogs = apiLogs[4]
     def launchActivity2Logs = apiLogs[5]
     def terminateAppApiLogs = apiLogs[6]
-
-    // In the legacy API set using PScout APIs the
-    // <java.net.URLConnection: void <init>(java.net.URL)>
-    // was monitored, now it isn't.  Also, no "onResume" method was not monitored.
-    // The commented out asserts are from the pscout APIs
-//    assert resetAppApiLogs*.empty
-//    assert clickApiLogs*.methodName == ["openConnection", "<init>"]
-//    assert launchActivity2Logs*.methodName == ["startActivityForResult"]
-//    assert terminateAppApiLogs.empty
 
     assert resetAppApiLogs*.methodName == ["onResume"]
     assert clickApiLogs*.methodName == ["openConnection"]

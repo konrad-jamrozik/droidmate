@@ -21,20 +21,13 @@ import java.nio.file.Paths
 
 /**
  * <p>
- * <i> --- This doc was last reviewed on 22 May 2014.</i>
- * </p><p>
  *
- * Holds all the configuration data of DroidMate. The configuration is obtained from command line arguments with help
- * of {@link ConfigurationBuilder}. This happens just before DroidMate injects dependencies with Guice,
- * at DroidMate bootstrap in DroidmateFrontend.
- * </p><p>
- * The configuration is required to setup most (if not all) classes (components) of Droidmate.
+ * This class holds all the configuration data of DroidMate. The configuration is obtained from command line arguments by 
+ * a call to {@code n ew ConfigurationBuilder().build(args)}. This happens in {@code DroidmateFrontend}, 
+ * just before DroidMate constructs a {@code DroidmateCommand} and thus, its object graph of dependencies. 
  *
  * </p><p>
- * The <it>@Parameter</it> annotations are dictated by the underlying {@code jCommander} library [1].
- *
- * </p><p>
- * [1]: http://jcommander.org/
+ * This class relies heavily on the {@code jCommander} library, http://jcommander.org
  *
  * </p>
  *

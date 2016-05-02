@@ -38,7 +38,6 @@ class InlineCommand extends DroidmateCommand
   @Override
   void execute(Configuration cfg) throws ThrowablesCollection
   {
-    log.info("DroidMate was instructed to inline apks.")
     def apksProvider = new ApksProvider(new AaptWrapper(cfg, new SysCmdExecutor()))
     List<Apk> apks = apksProvider.getApks(cfg.apksDirPath)
     

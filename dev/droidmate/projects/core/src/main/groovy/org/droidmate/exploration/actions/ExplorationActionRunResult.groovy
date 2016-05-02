@@ -23,18 +23,21 @@ class ExplorationActionRunResult implements IExplorationActionRunResult
   private static final long serialVersionUID = 1
 
   final boolean            successful
+  final String             exploredAppPackageName
   final IDeviceLogs        deviceLogs
   final IDeviceGuiSnapshot guiSnapshot
   final DeviceException    exception
 
 
-  ExplorationActionRunResult(boolean successful, IDeviceLogs deviceLogs, IDeviceGuiSnapshot guiSnapshot, DeviceException exception)
+  ExplorationActionRunResult(boolean successful, String exploredAppPackageName, IDeviceLogs deviceLogs, IDeviceGuiSnapshot guiSnapshot, DeviceException exception)
   {
     this.successful = successful
+    this.exploredAppPackageName = exploredAppPackageName
     this.deviceLogs = deviceLogs
     this.guiSnapshot = guiSnapshot
     this.exception = exception
 
+    assert exploredAppPackageName?.size() >= 1
     assert deviceLogs != null
     assert guiSnapshot != null
     assert exception != null
@@ -43,7 +46,6 @@ class ExplorationActionRunResult implements IExplorationActionRunResult
     assert successful.implies(!(this.guiSnapshot instanceof MissingGuiSnapshot))
     assert successful == (this.exception instanceof DeviceExceptionMissing)
   }
-
 
   @Override
   DeviceException getException() throws ForbiddenOperationError

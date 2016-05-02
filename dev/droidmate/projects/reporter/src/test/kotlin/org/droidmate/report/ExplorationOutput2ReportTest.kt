@@ -9,7 +9,7 @@ import org.junit.experimental.categories.Category
 class ExplorationOutput2ReportTest {
  
   @Test
-  // KJA refactor, review. If test is done, remove tag and add to test suite.
+  // KJA2-report refactor, review. If test is done, remove tag and add to test suite.
   @Category(UnderConstruction::class)
   fun reports() {
 

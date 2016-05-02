@@ -29,6 +29,7 @@ import java.nio.file.Path
 class WritableExplorationOutput2AnalysisTest extends DroidmateGroovyTestCase
 {
 
+  // KJA2 fix localization bug
   @Test
   void "Writes exploration output 2 analysis"()
   {
