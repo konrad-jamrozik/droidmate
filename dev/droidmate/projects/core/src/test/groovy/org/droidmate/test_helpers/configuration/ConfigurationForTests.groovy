@@ -44,6 +44,7 @@ class ConfigurationForTests
   ConfigurationForTests()
   {
     this.argsList = zeroedTestConfig + [
+      // KJA are these "." necessary?
       Configuration.pn_droidmateOutputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString(),
       Configuration.pn_reportInputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString(),
       Configuration.pn_reportOutputDir, Paths.get(".", BuildConstants.test_temp_dir_name).toString(),

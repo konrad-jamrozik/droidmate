@@ -112,7 +112,7 @@ Most likely, the input apks will be taken from `repo/dev/droidmate/apks` (as det
 
 DroidMate works on Ubuntu (see Travis CI build) Windows 10 and Mac OS X.
  
-### Android device compatibility ###
+### Android devices and emulators compatibility ###
 
 DroidMate works with Android 4.4.2 on following devices: 
 
@@ -122,7 +122,7 @@ DroidMate works with Android 4.4.2 on following devices:
 
 Currently, other devices will not work.
 
-Emulators might work, but no guarantees here.
+DroidMate is confirmed to work on emulators emulating Nexus 7 (2012) API 19 on x86 CPU/ABI.
 
 ### Library compatibility ###
 

@@ -14,6 +14,7 @@ import org.droidmate.common.TextUtilsCategory
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.configuration.model.IDeviceModel
 
+// KJA untangle cycle between GuiState and IDeviceModel
 @Canonical(excludes = "id")
 class GuiState implements Serializable, IGuiState
 {

@@ -7,16 +7,20 @@
 //
 // www.droidmate.org
 
-task droidmateBuild(type: GradleBuild) { GradleBuild task ->
+task droidmateBuild(type: GradleBuild) { 
+  group = "build"
 
-  task.buildFile = file "dev/droidmate/build.gradle"
-  tasks = ["clean","build","install"]
+  buildFile = file "dev/droidmate/build.gradle"
+  tasks = ["clean", "build", "install"]
 }
 
-task droidmateUsageExampleBuild(type: GradleBuild) { GradleBuild task ->
-
-  task.buildFile = file "dev/droidmate_usage_example/build.gradle"
-  tasks = ["clean","build"]
+task droidmateUsageExampleBuild(type: GradleBuild) {
+  group = "build"
+  
+  buildFile = file "dev/droidmate_usage_example/build.gradle"
+  tasks = ["clean", "build"]
 }
 
-task integrationBuild(dependsOn: ["droidmateBuild", "droidmateUsageExampleBuild"])
+task integrationBuild(dependsOn: ["droidmateBuild", "droidmateUsageExampleBuild"]) {
+  group = "build"
+}

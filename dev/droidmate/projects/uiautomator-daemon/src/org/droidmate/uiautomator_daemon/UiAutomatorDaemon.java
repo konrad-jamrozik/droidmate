@@ -31,8 +31,14 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
   */
   public void init()
   {
-    saveLogcatToFile();
-
+    try
+    {
+      saveLogcatToFile();
+    } catch (Throwable t)
+    {
+      Log.e(uiaDaemon_logcatTag, "init.saveLogcatToFile() / FAILURE", t);
+    }
+    
     boolean waitForGuiToStabilize = Boolean.valueOf((String) getParams().get(uiaDaemonParam_waitForGuiToStabilize));
     int waitForWindowUpdateTimeout = Integer.valueOf((String) getParams().get(uiaDaemonParam_waitForWindowUpdateTimeout));
     int tcpPort = Integer.valueOf((String) getParams().get(uiaDaemonParam_tcpPort));
@@ -65,11 +71,11 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
     Log.i(uiaDaemon_logcatTag, "init: Shutting down UiAutomatorDaemon.");
   }
 
-  public void saveLogcatToFile() {
-
+  private void saveLogcatToFile() throws UiAutomatorDaemonException
+  {
     String fileName = logcatLogFileName;
-
-    File outputFile = new File(Environment.getDataDirectory(), fileName);
+    File dataDir = getLogcatDir();
+    File outputFile = new File(dataDir, fileName);
 
     if (outputFile.exists())
     {
@@ -83,11 +89,29 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
     {
       // - For explanation of the exec string, see org.droidmate.android_sdk.AdbWrapper.readMessagesFromLogcat()
       // - Manual tests with "adb shell ps" show that the executed process will be automatically killed when the uiad process dies.
-      Runtime.getRuntime().exec(String.format("logcat -v time -f %s *:D %s:W %s:D %s:D dalvikvm:I ActivityManager:V AccessibilityNodeInfoDumper:S View:E ResourceType:E HSAd-HSAdBannerView:I" ,
+      Runtime.getRuntime().exec(String.format("logcat -v time -f %s *:D %s:W %s:D %s:D dalvikvm:I ActivityManager:V " +
+        "AccessibilityNodeInfoDumper:S View:E ResourceType:E HSAd-HSAdBannerView:I" ,
         outputFile.getAbsolutePath(), instrumentation_redirectionTag, uiaDaemon_logcatTag, SerializableTCPServerBase.tag));
     } catch (IOException e)
     {
       Log.wtf(uiaDaemon_logcatTag, e);
     }
+  }
+
+  private File getLogcatDir() throws UiAutomatorDaemonException
+  {
+    File dataDir = Environment.getDataDirectory();
+    
+    if (!deviceLogcatLogDir.startsWith(dataDir.toString().substring(1)))
+      throw new UiAutomatorDaemonException(
+        "The device logcat log dir should point to a subdirectory of device data dir. It doesn't. " +
+          "The device data dir: "+dataDir.toString()+ " The device logcat log dir: "+ deviceLogcatLogDir);
+    
+    File logcatDir = new File(deviceLogcatLogDir);
+      
+    if (!logcatDir.isDirectory())
+      if (!logcatDir.mkdirs())
+        throw new UiAutomatorDaemonException("!logcatDir.isDirectory() && !logcatDir.mkdirs(). logcatDir: "+logcatDir.toString());
+    return logcatDir;
   }
 }
