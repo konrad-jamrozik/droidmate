@@ -15,6 +15,7 @@ android:
     # Tools package is requires by Travis-CI, more information: https://github.com/travis-ci/travis-ci/issues/5036
     - tools
     - build-tools-23.0.2
+    - extra-android-support
 
     # DroidMate currently supports Android 4.4.2 (API 19).
     #- android-19
