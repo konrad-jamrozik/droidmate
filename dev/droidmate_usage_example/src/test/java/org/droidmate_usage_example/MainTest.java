@@ -11,10 +11,9 @@ package org.droidmate_usage_example;
 import org.droidmate.configuration.Configuration;
 import org.droidmate.exploration.strategy.IExplorationStrategy;
 import org.droidmate.frontend.DroidmateFrontend;
-import org.droidmate.frontend.ExceptionHandler;
+import org.junit.Assert;
 import org.junit.Test;
 
-import java.nio.file.FileSystems;
 
 /**
  * This class contains tests showing example use cases of DroidMate API. To understand better how to work with DroidMate API, 
@@ -27,22 +26,23 @@ public class MainTest
   @Test
   public void DefaultRun()
   {
-    mainWithArgs(new String[]{});
+    callMainWithArgsAndVerifyExitStatusIs0(new String[]{});
   }
 
   @Test
   public void InlineApks()
   {
-    mainWithArgs(new String[]{Configuration.pn_inline});
+    callMainWithArgsAndVerifyExitStatusIs0(new String[]{Configuration.pn_inline});
   }
 
+  
   @Test
   public void CommonSettings()
   {
     // KJA current work
     //final String[] args = new ArgsBuilder().apksDir("apks/inlined")..timeLimitInSeconds(20).resetEvery(5).randomSeed(2).build();
     final String[] args = {};
-    mainWithArgs(args);
+    callMainWithArgsAndVerifyExitStatusIs0(args);
   }
 
   @Test
@@ -51,7 +51,7 @@ public class MainTest
     IExplorationStrategy strategy = new ExampleExplorationStrategy();
 
     // KJA current work
-//    DroidmateFrontend.main(new String[]{},  FileSystems.getDefault(), new ExceptionHandler(), strategy);
+//    DroidmateFrontend.main(new String[]{},  FileSystems.getDefault(), new ExceptionHandler(), new ExploreCommand(new ExplStrategoy()));
 
   }
 
@@ -62,10 +62,10 @@ public class MainTest
   // Add test for that in droidmate main, not usage example (as it requires fixtures)
   // For usage example just empty output will suffice (probably should be generated? Or warning + empty data structure returned?)
   
-  private void mainWithArgs(String[] args)
+  private void callMainWithArgsAndVerifyExitStatusIs0(String[] args)
   {
-    // KJA check in tests if exitStatus == 0
-    DroidmateFrontend.main(args, FileSystems.getDefault(), new ExceptionHandler());
+    int exitStatus = DroidmateFrontend.main(args, /* command */ null);
+    Assert.assertEquals(0, exitStatus);
   }
 
 
