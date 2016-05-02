@@ -12,6 +12,8 @@ android:
     # Build tools compatible with DroidMate (API 19).
     #- build-tools-19.1.0
     # Build tools compatible with DroidMate (API 23).
+    # Tools package is requires by Travis-CI, more information: https://github.com/travis-ci/travis-ci/issues/5036
+    - tools
     - build-tools-23.0.2
 
     # DroidMate currently supports Android 4.4.2 (API 19).
