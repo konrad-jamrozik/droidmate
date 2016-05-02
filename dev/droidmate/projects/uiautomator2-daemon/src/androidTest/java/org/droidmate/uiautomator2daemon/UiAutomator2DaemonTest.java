@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 import java.io.File;
 import java.io.IOException;
 
-import static org.droidmate.common_android.Constants.*;
+import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*;
 
 @RunWith(AndroidJUnit4.class)
 @SdkSuppress(minSdkVersion = 18)

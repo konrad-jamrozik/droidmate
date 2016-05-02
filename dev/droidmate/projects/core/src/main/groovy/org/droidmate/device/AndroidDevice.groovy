@@ -27,6 +27,7 @@ import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.logging.LogbackUtils
 import org.droidmate.uiautomator_daemon.DeviceCommand
 import org.droidmate.uiautomator_daemon.DeviceResponse
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import org.droidmate.uiautomator_daemon.UiautomatorWindowHierarchyDumpDeviceResponse
 
 import java.awt.*

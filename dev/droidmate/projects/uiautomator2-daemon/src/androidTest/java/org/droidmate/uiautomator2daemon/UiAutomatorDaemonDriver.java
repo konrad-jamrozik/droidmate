@@ -15,16 +15,16 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.uiautomator.*;
 import android.util.Log;
 import org.apache.commons.io.FileUtils;
-import org.droidmate.common_android.DeviceCommand;
-import org.droidmate.common_android.DeviceResponse;
-import org.droidmate.common_android.UiAutomatorDaemonException;
-import org.droidmate.common_android.UiautomatorWindowHierarchyDumpDeviceResponse;
-import org.droidmate.common_android.guimodel.GuiAction;
+import org.droidmate.uiautomator_daemon.DeviceCommand;
+import org.droidmate.uiautomator_daemon.DeviceResponse;
+import org.droidmate.uiautomator_daemon.UiAutomatorDaemonException;
+import org.droidmate.uiautomator_daemon.UiautomatorWindowHierarchyDumpDeviceResponse;
+import org.droidmate.uiautomator_daemon.guimodel.GuiAction;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.droidmate.common_android.Constants.*;
+import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*;
 
 class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 {

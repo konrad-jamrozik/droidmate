@@ -599,7 +599,7 @@ public class AdbWrapper implements IAdbWrapper
         "--user 0",
         uiaDaemonCmdLine,
         "-w",
-        UiautomatorDaemonConstants.uiaDaemon_testPackageName + "/" + Constants.uiaDaemon_testRunner)
+        UiautomatorDaemonConstants.uiaDaemon_testPackageName + "/" + UiautomatorDaemonConstants.uiaDaemon_testRunner)
 
     } catch (SysCmdExecutorException e)
     {

@@ -8,9 +8,9 @@
 // www.droidmate.org
 package org.droidmate.uiautomator2daemon;
 
-import org.droidmate.common_android.DeviceCommand;
-import org.droidmate.common_android.DeviceResponse;
-import org.droidmate.common_android.UiAutomatorDaemonException;
+import org.droidmate.uiautomator_daemon.DeviceCommand;
+import org.droidmate.uiautomator_daemon.DeviceResponse;
+import org.droidmate.uiautomator_daemon.UiAutomatorDaemonException;
 
 public interface IUiAutomatorDaemonDriver  {
 

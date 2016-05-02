@@ -16,13 +16,13 @@ import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.common.Assert
 import org.droidmate.common.DroidmateException
-import org.droidmate.common_android.Constants
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.IDeployableAndroidDevice
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 @Slf4j
 public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
@@ -107,8 +107,8 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       device.closeConnection()
       // differently from uiautomator-daemon,
       // uiautomator2-daemon is an APK and must be uninstalled
-      device.uninstallApk(Constants.uiaDaemon_testPackageName, true)
-      device.uninstallApk(Constants.uiaDaemon_packageName, true)
+      device.uninstallApk(UiautomatorDaemonConstants.uiaDaemon_testPackageName, true)
+      device.uninstallApk(UiautomatorDaemonConstants.uiaDaemon_packageName, true)
       device.removeJar(cfg.monitorApk)
     }
     else

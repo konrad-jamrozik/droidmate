@@ -73,7 +73,7 @@ evaluationDependsOn(":projects:apk-inliner")
 /* Note: The 'compile[Test]Java.dependsOn' clauses are redundant with 'builtBy' property in the 'dependencies' closure,
    but they are left here for documentation purposes.
  */
-processResources.dependsOn "pullMonitorApk", "pullUiaDaemonJar"
+processResources.dependsOn "pullMonitorApk", "pullUiaDaemon"
 
 /*
   This dependency ensures that on "gradlew clean build" all the apk fixtures will be rebuilt as well as the library .jar they
@@ -85,8 +85,11 @@ processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 //endregion Dependencies
 
 //region Preparation of resources
+Project uiaDaemon = findProject(":projects:uiautomator2-daemon")
+String uiaDaemonName = "${uiaDaemon.name}.apk"
+String uiaDaemonTestName = "${uiaDaemon.name}-test.apk"
+String monitorApkName = "monitor.apk"
 
-Project uiaDaemon = findProject(":projects:uiautomator2-daemon");
 task pullUiaDaemon(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
 
   File coreResDir = getCoreResDir()
@@ -171,7 +174,8 @@ private File getCoreResDir()
 //region cleaning resources
 
 task cleanResources(type: Delete) {
-  delete file(new File(coreResDir, uiaDaemonJarName))
+  delete file(new File(coreResDir, uiaDaemonName))
+  delete file(new File(coreResDir, uiaDaemonTestName))
   delete file(new File(coreResDir, monitorApkName))
 }
 

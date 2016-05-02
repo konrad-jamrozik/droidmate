@@ -9,7 +9,7 @@
 package org.droidmate.uiautomator2daemon;import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
-import org.droidmate.common_android.Constants;
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,7 +28,7 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
   private String serverStartMessageTag;
   private String serverStartMessage;
 
-  public static final String tag = Constants.deviceLogcatTagPrefix + "server";
+  public static final String tag = UiautomatorDaemonConstants.deviceLogcatTagPrefix + "server";
 
   protected SerializableTCPServerBase(String serverStartMessageTag, String serverStartMessage)
   {
