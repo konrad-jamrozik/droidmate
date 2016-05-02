@@ -33,12 +33,12 @@ val jarsigner_relative_path = "bin/jarsigner$exeExt"
 val jarsigner = java_home.resolveRegularFile(jarsigner_relative_path)
 
 //region Android SDK components
-private val build_tools_version = "19.1.0"
+private val build_tools_version = "23.0.2"
 val aapt_command_relative = "build-tools/$build_tools_version/aapt$exeExt"
 val adb_command_relative = "platform-tools/adb$exeExt"
 val aapt_command = android_sdk_dir.resolveRegularFile(aapt_command_relative)
 val adb_command = android_sdk_dir.resolveRegularFile(adb_command_relative)
-private val android_platform_version = "19"
+private val android_platform_version = "23"
 private val android_platform_dir = android_sdk_dir.resolveDir("platforms/android-$android_platform_version")
 val uiautomator_jar = android_platform_dir.resolveRegularFile("uiautomator.jar")
 val android_jar = android_platform_dir.resolveRegularFile("android.jar")
@@ -74,9 +74,9 @@ val test_temp_dir_name = "temp_dir_for_tests"
 val appguard_apis_txt = "appguard_apis.txt"
 
 /**
- * Directory for resources extracted from jars in the classpath. 
- * 
- * Some resources have to be extracted to a directory. For example, an .apk file that is inside a .jar needs to be pushed 
+ * Directory for resources extracted from jars in the classpath.
+ *
+ * Some resources have to be extracted to a directory. For example, an .apk file that is inside a .jar needs to be pushed
  * to a device.
  */
 val dir_name_temp_extracted_resources = "temp_extracted_resources"
@@ -85,7 +85,7 @@ fun executeCommand(commandName: String, commandContent: String): Int {
 
   val cmd = if (OS.isWindows) "cmd /c " else ""
   val commandString = cmd + commandContent
-  
+
   println("=========================")
   println("Executing command named: $commandName")
   println("Command string:")
@@ -98,7 +98,7 @@ fun executeCommand(commandName: String, commandContent: String): Int {
     .redirectOutput(out)
     .redirectError(err)
     .timeout(120, TimeUnit.SECONDS)
-  
+
   print("executing...")
   val result = process.commandSplit(commandString).execute()
   println(" DONE")
@@ -124,7 +124,7 @@ fun executeCommand(commandName: String, commandContent: String): Int {
     }
   } else
     println("stdout is empty")
-  
+
   println("=========================")
   return result.exitValue
 }
