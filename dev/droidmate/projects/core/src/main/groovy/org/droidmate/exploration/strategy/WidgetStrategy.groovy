@@ -62,7 +62,6 @@ class WidgetStrategy implements IWidgetStrategy
         // widget strategy.
       } else
       {
-        // KJA KNOWN BUG this is not set if widgetIndexes.size() > 0 in decide()
         assert lastWidgetInfo != null
         assert !lastWidgetInfo.blackListed
         lastWidgetInfo.blackListed = true
@@ -99,7 +98,8 @@ class WidgetStrategy implements IWidgetStrategy
     widgetIndexes = widgetIndexes.drop(1)
 
     assert currentWidgetContext.size() >= widgetIndex + 1
-    return newWidgetExplorationAction(currentWidgetContext[widgetIndex].widget)
+    lastWidgetInfo = currentWidgetContext[widgetIndex]
+    return newWidgetExplorationAction(lastWidgetInfo.widget)
   }
 
   ExplorationAction biasedRandomAction()
