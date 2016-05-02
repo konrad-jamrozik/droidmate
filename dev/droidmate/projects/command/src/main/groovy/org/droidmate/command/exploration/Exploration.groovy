@@ -52,7 +52,6 @@ class Exploration implements IExploration
 
   public static Exploration build(Configuration cfg,
                                   ITimeProvider timeProvider = new TimeProvider(),
-    // KJA pull up building strategy
                                   IExplorationStrategyProvider strategyProvider = {ExplorationStrategy.build(cfg)})
   {
     return new Exploration(cfg, timeProvider, strategyProvider)
@@ -120,7 +119,7 @@ class Exploration implements IExploration
       output.add(action, result)
     }
 
-    // KJA2-clean to remove
+    // KJA-clean to remove
     //SE Team 2. Hook
     def successful = result.successful;
     log.trace(Markers.gui,"<success>" + successful.toString() + "</success>")

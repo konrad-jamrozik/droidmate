@@ -44,12 +44,7 @@ public class DroidmateFrontend
     System.exit(exitStatus)
   }
 
-  public static int main(String[] args, DroidmateCommand providedCommand)
-  {
-    return main(args, FileSystems.getDefault(), new ExceptionHandler(), providedCommand)
-  }
-
-  public static int main(String[] args, FileSystem fs, IExceptionHandler exceptionHandler, DroidmateCommand providedCommand = null)
+  public static int main(String[] args, ICommandProvider provider, FileSystem fs = FileSystems.getDefault(), IExceptionHandler exceptionHandler = new ExceptionHandler())
   {
     println "DroidMate"
     println "Copyright (c) 2012 - ${LocalDate.now().year} Saarland University"
@@ -62,19 +57,20 @@ public class DroidmateFrontend
     {
       validateStdoutLoglevel()
       LogbackUtilsRequiringLogbackLog.cleanLogsDir()
-      log.info("Bootstrapping DroidMate: configuring from command line & injecting dependencies.")
+      log.info("Bootstrapping DroidMate: building ${Configuration.simpleName} from args " +
+        "and instantiating objects for ${DroidmateCommand.simpleName}.")
       log.info("IMPORTANT: for help on how to configure DroidMate, run it with -help")
       log.info("IMPORTANT: for detailed logs from DroidMate run, please see ${LogbackConstants.LOGS_DIR_PATH}.")
 
       Configuration cfg = new ConfigurationBuilder().build(args, fs)
 
       DroidmateCommand command
-      if (commandIsProvided(providedCommand)) 
-        command = providedCommand 
+      if (provider != null)
+        command = provider.provide(cfg)
       else 
         command = determineAndBuildCommand(cfg)
 
-      log.info("Welcome to DroidMate. Lie back, relax and enjoy.")
+      log.info("Successfully instantiatied ${command.class.simpleName}. Welcome to DroidMate. Lie back, relax and enjoy.")
       log.info("Run start timestamp: " + runStart)
 
       command.execute(cfg)
@@ -86,11 +82,6 @@ public class DroidmateFrontend
 
     logDroidmateRunEnd(runStart, /* boolean encounteredExceptionsDuringTheRun = */ exitStatus > 0)
     return exitStatus
-  }
-
-  private static boolean commandIsProvided(DroidmateCommand cmd)
-  {
-    return cmd != null
   }
 
   private static DroidmateCommand determineAndBuildCommand(Configuration cfg)

@@ -169,7 +169,7 @@ class ExplorationStrategy implements IExplorationStrategy
 
   private void seTeamHookInDecide(IExplorationActionRunResult result)
   {
-    //KJA2-clean to remove
+    //KJA-clean to remove
     //SE Team Hook 1
     def lastGuiScreen = guiStatesSeen.find({
       it == result.guiSnapshot.guiState

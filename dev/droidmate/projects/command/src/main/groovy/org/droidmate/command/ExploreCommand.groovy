@@ -24,6 +24,8 @@ import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IRobustDevice
+import org.droidmate.exploration.strategy.ExplorationStrategy
+import org.droidmate.exploration.strategy.IExplorationStrategyProvider
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.TimeProvider
@@ -63,7 +65,10 @@ class ExploreCommand extends DroidmateCommand
   }
 
   public
-  static ExploreCommand build(ITimeProvider timeProvider = new TimeProvider(), Configuration cfg, IDeviceTools deviceTools = new DeviceTools(cfg))
+  static ExploreCommand build(Configuration cfg, 
+                              IExplorationStrategyProvider strategyProvider = {ExplorationStrategy.build(cfg)}, 
+                              ITimeProvider timeProvider = new TimeProvider(), 
+                              IDeviceTools deviceTools = new DeviceTools(cfg))
   {
     def storage = new Storage(cfg.droidmateOutputDirPath)
     IApksProvider apksProvider = new ApksProvider(deviceTools.aapt)
@@ -71,7 +76,7 @@ class ExploreCommand extends DroidmateCommand
     IExplorationOutputAnalysisPersister analysisPersister = new ExplorationOutputAnalysisPersister(cfg, extractor, storage)
 
     def storage2 = new Storage2(cfg.droidmateOutputDirPath)
-    IExploration exploration = Exploration.build(cfg, timeProvider)
+    IExploration exploration = Exploration.build(cfg, timeProvider, strategyProvider)
     return new ExploreCommand(apksProvider, deviceTools.deviceDeployer, deviceTools.apkDeployer, analysisPersister, exploration, storage2)
   }
 
