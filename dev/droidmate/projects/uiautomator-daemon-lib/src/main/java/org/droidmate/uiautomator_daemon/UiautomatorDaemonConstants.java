@@ -7,6 +7,7 @@
 //
 // www.droidmate.org
 
+// WISH Borges: Check if the package should be kept with the previous name or updated to org.droidmate.uiautomator2daemon
 package org.droidmate.uiautomator_daemon;
 
 public class UiautomatorDaemonConstants
@@ -41,7 +42,7 @@ public class UiautomatorDaemonConstants
    </pre>
    */
   public static final String DEVICE_GOOGLE_NEXUS_7_EMU_x86     = "unknown-Android SDK built for x86";
-  
+
   public static final String DEVICE_GOOGLE_NEXUS_10            = "samsung-Nexus 10";
   public static final String DEVICE_DEFAULT                    = "default";
 
