@@ -51,7 +51,7 @@ public class MainTest
   {
     final IExplorationStrategyProvider strategyProvider = () -> new ExampleExplorationStrategy(new ExampleTerminationCriterion());
     final ICommandProvider commandProvider = cfg -> ExploreCommand.build(cfg, strategyProvider);
-    DroidmateFrontend.main(new String[]{}, commandProvider);
+    callMain_then_assertExitStatusIs0(new String[]{}, commandProvider);
   }
 
   // KJA add tests showing how to access output dir and serialized data, i.e. something like:
@@ -63,7 +63,12 @@ public class MainTest
 
   private void callMain_then_assertExitStatusIs0(String[] args)
   {
-    int exitStatus = DroidmateFrontend.main(args, /* command */ null);
+    callMain_then_assertExitStatusIs0(args, null);
+  }
+
+  private void callMain_then_assertExitStatusIs0(String[] args, ICommandProvider commandProvider)
+  {
+    int exitStatus = DroidmateFrontend.main(args, commandProvider);
     Assert.assertEquals(0, exitStatus);
   }
 

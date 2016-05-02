@@ -62,6 +62,7 @@ class WidgetStrategy implements IWidgetStrategy
         // widget strategy.
       } else
       {
+        // KJA KNOWN BUG this is not set if widgetIndexes.size() > 0 in decide()
         assert lastWidgetInfo != null
         assert !lastWidgetInfo.blackListed
         lastWidgetInfo.blackListed = true

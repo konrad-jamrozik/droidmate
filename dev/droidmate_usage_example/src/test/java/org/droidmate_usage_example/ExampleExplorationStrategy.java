@@ -27,7 +27,7 @@ class ExampleExplorationStrategy implements IExplorationStrategy
    * 
    * </p><p>
    * For an example of how to actually write an exploration strategy, see:
-   * <a href="https://github.com/konrad-jamrozik/droidmate/blob/master/dev/droidmate/projects/core/src/main/groovy/org/droidmate/exploration/strategy/ExplorationStrategy.groovy#L104">
+   * <a href="https://github.com/konrad-jamrozik/droidmate/blob/master/dev/droidmate/projects/core/src/main/groovy/org/droidmate/exploration/strategy/ExplorationStrategy.groovy">
    *   ExplorationStrategy in master branch on GitHub</a>
    *
    * </p><p>
