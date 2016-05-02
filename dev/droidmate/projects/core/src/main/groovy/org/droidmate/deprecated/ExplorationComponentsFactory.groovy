@@ -52,13 +52,13 @@ class ExplorationComponentsFactory implements IExplorationComponentsFactory
   IExplorationStrategy createStrategy(String appPackageName)
   {
     TerminationCriterion criterion = new TerminationCriterion(cfg, cfg.timeLimit, Ticker.systemTicker())
-    return new ExplorationStrategy(this.createWidgetStrategy(appPackageName), appPackageName, this.cfg, criterion, this.forwardExplorationSpecialCases)
+    return new ExplorationStrategy(this.createWidgetStrategy(appPackageName), this.cfg, criterion, this.forwardExplorationSpecialCases)
   }
 
   @Override
   IWidgetStrategy createWidgetStrategy(String appPackageName)
   {
-    return new WidgetStrategy(appPackageName, cfg.randomSeed, cfg.alwaysClickFirstWidget, cfg.widgetIndexes)
+    return new WidgetStrategy(cfg.randomSeed, cfg.alwaysClickFirstWidget, cfg.widgetIndexes)
   }
 
   @Override

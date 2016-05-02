@@ -248,15 +248,6 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     def launchActivity2Logs = apiLogs[2]
     def terminateAppApiLogs = apiLogs[3]
 
-    // In the legacy API set using PScout APIs the
-    // <java.net.URLConnection: void <init>(java.net.URL)>
-    // was monitored, now it isn't.  Also, no "onResume" method was not monitored.
-    // The commented out asserts are from the pscout APIs
-//    assert resetAppApiLogs*.empty
-//    assert clickApiLogs*.methodName == ["openConnection", "<init>"]
-//    assert launchActivity2Logs*.methodName == ["startActivityForResult"]
-//    assert terminateAppApiLogs.empty
-
     assert resetAppApiLogs*.methodName == ["onResume"]
     assert clickApiLogs*.methodName == ["openConnection"]
     assert launchActivity2Logs*.methodName == ["startActivityForResult", "onResume"]

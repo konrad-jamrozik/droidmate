@@ -44,9 +44,9 @@ public class DroidmateFrontend
     System.exit(exitStatus)
   }
 
-  public static int main(String[] args, DroidmateCommand cmd)
+  public static int main(String[] args, DroidmateCommand providedCommand)
   {
-    return main(args, FileSystems.getDefault(), new ExceptionHandler(), cmd)
+    return main(args, FileSystems.getDefault(), new ExceptionHandler(), providedCommand)
   }
 
   public static int main(String[] args, FileSystem fs, IExceptionHandler exceptionHandler, DroidmateCommand providedCommand = null)

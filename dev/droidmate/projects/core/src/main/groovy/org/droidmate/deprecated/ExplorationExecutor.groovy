@@ -97,7 +97,8 @@ class ExplorationExecutor implements IExplorationExecutor
     {
       intermediateOutputSaver.save(output)
 
-      currentExplAct = strategy.decide(guiState)
+      // KJA to remove entire class. Had call to to strategy.decide(GuiState) which was since removed! 
+      currentExplAct = null
       output.actions << TimestampedExplorationAction.from(currentExplAct, timeProvider.now)
       guiState = driver.execute(currentExplAct)
     }

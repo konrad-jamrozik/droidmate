@@ -16,14 +16,14 @@ class ExplorationStrategyTestHelper
 {
 
   static IExplorationStrategy buildStrategy(
-    String pkgName, Integer actionsLimit, Integer resetEveryNthExplorationForward)
+    Integer actionsLimit, Integer resetEveryNthExplorationForward)
   {
     Configuration cfg = new ConfigurationForTests().setArgs([
       Configuration.pn_actionsLimit, "$actionsLimit",
       Configuration.pn_resetEveryNthExplorationForward, "$resetEveryNthExplorationForward",
     ]).get()
 
-    IExplorationStrategy strategy = ExplorationStrategy.build(pkgName, cfg)
+    IExplorationStrategy strategy = ExplorationStrategy.build(cfg)
     return strategy
 
   }

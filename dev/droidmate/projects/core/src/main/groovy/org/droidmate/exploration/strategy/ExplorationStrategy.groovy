@@ -32,8 +32,6 @@ class ExplorationStrategy implements IExplorationStrategy
   private final ITerminationCriterion           terminationCriterion
   private final IForwardExplorationSpecialCases specialCases
 
-  /** Package name of the explored app */
-  private final String packageName
   private final int    resetEveryNthExplorationForward
 
   /** Determines if last call to {@link #decide} returned {@link ResetAppExplorationAction}. */
@@ -56,18 +54,13 @@ class ExplorationStrategy implements IExplorationStrategy
   //--------------
 
   @Deprecated
-  ExplorationStrategy(IWidgetStrategy widgetStrategy,
-                      String packageName,
-                      Configuration config,
-                      ITerminationCriterion terminationCriterion,
-                      IForwardExplorationSpecialCases specialCases)
+  ExplorationStrategy(IWidgetStrategy widgetStrategy, Configuration config, ITerminationCriterion terminationCriterion, IForwardExplorationSpecialCases specialCases)
   {
 
     assertConfigurationDenotesNoMoreThanOneWidgetClickingMethod(config)
 
     this.widgetStrategy = widgetStrategy
     this.terminationCriterion = terminationCriterion
-    this.packageName = packageName
     this.specialCases = specialCases
 
     this.resetEveryNthExplorationForward = config.resetEveryNthExplorationForward
@@ -77,15 +70,10 @@ class ExplorationStrategy implements IExplorationStrategy
   }
 
   ExplorationStrategy(
-    String packageName,
-    int resetEveryNthExplorationForward,
-    IWidgetStrategy widgetStrategy,
-    ITerminationCriterion terminationCriterion,
-    IForwardExplorationSpecialCases specialCases)
+    int resetEveryNthExplorationForward, IWidgetStrategy widgetStrategy, ITerminationCriterion terminationCriterion, IForwardExplorationSpecialCases specialCases)
   {
     this.widgetStrategy = widgetStrategy
     this.terminationCriterion = terminationCriterion
-    this.packageName = packageName
     this.specialCases = specialCases
 
     this.resetEveryNthExplorationForward = resetEveryNthExplorationForward
@@ -100,28 +88,32 @@ class ExplorationStrategy implements IExplorationStrategy
     assert settingsCount <= 1
   }
 
-  // KJA make it private. Fix/delete callers as necessary.
-  @Override
-  ExplorationAction decide(IGuiState guiState)
+  ExplorationAction decide(IExplorationActionRunResult result)
   {
-    assert guiState != null
-    terminationCriterion.initDecideCall(!firstCallToDecideFinished)
+    log.debug("decide($result)")
+    assert result?.successful
 
+    seTeamHookInDecide(result)
+    
+    def guiState = result.guiSnapshot.guiState
+    def exploredAppPackageName = result.exploredAppPackageName
+    
+    terminationCriterion.initDecideCall(!firstCallToDecideFinished)
 
     ExplorationAction outExplAction
 
-    allWidgetsBlackListed = widgetStrategy.updateState(guiState)
+    allWidgetsBlackListed = widgetStrategy.updateState(guiState, exploredAppPackageName)
 
     boolean exploredForward = false
-    if (terminateExploration(guiState))
+    if (terminateExploration(guiState, exploredAppPackageName))
       outExplAction = newTerminateExplorationAction()
-    else if (resetExploration(guiState))
+    else if (resetExploration(guiState, exploredAppPackageName))
       outExplAction = newResetAppExplorationAction()
-    else if (backtrack(guiState))
+    else if (backtrack(guiState, exploredAppPackageName))
       outExplAction = newPressBackExplorationAction()
     else
     {
-      outExplAction = exploreForward(guiState)
+      outExplAction = exploreForward(guiState, exploredAppPackageName)
       exploredForward = true
     }
 
@@ -174,26 +166,22 @@ class ExplorationStrategy implements IExplorationStrategy
     }
   }
 
-  @Override
-  ExplorationAction decide(IExplorationActionRunResult result)
-  {
-    log.debug("decide($result)")
-    assert result?.successful
 
+  private void seTeamHookInDecide(IExplorationActionRunResult result)
+  {
     //KJA2-clean to remove
     //SE Team Hook 1
     def lastGuiScreen = guiStatesSeen.find({
       it == result.guiSnapshot.guiState
     })
-    if (lastGuiScreen == null) {
+    if (lastGuiScreen == null)
+    {
       lastGuiScreen = result.guiSnapshot.guiState
       guiStatesSeen.add(lastGuiScreen)
-      log.trace(Markers.gui,"<elements_seen>" + lastGuiScreen.widgets.size() + "</elements_seen>")
-      log.trace(Markers.gui,"<gui_screens_seen>1</gui_screens_seen>")
+      log.trace(Markers.gui, "<elements_seen>" + lastGuiScreen.widgets.size() + "</elements_seen>")
+      log.trace(Markers.gui, "<gui_screens_seen>1</gui_screens_seen>")
     }
     //--------------
-
-    return this.decide(result.guiSnapshot.guiState)
   }
 
   private logExplorationProgress(ExplorationAction outExplAction)
@@ -206,13 +194,13 @@ class ExplorationStrategy implements IExplorationStrategy
 
 
   @TypeChecked(SKIP)
-  private ExplorationAction exploreForward(IGuiState guiState)
+  private ExplorationAction exploreForward(IGuiState guiState, String exploredAppPackageName)
   {
     assert guiState != null
-    assert !terminateExploration(guiState)
-    assert !resetExploration(guiState)
-    assert !backtrack(guiState)
-    assert explorationCanMoveForwardOn(guiState)
+    assert !terminateExploration(guiState, exploredAppPackageName)
+    assert !resetExploration(guiState, exploredAppPackageName)
+    assert !backtrack(guiState, exploredAppPackageName)
+    assert explorationCanMoveForwardOn(guiState, exploredAppPackageName)
 
     ExplorationAction outExplAction
 
@@ -221,7 +209,7 @@ class ExplorationStrategy implements IExplorationStrategy
     else
     {
       boolean specialCaseApplied
-      (specialCaseApplied, outExplAction) = specialCases.process(guiState, packageName)
+      (specialCaseApplied, outExplAction) = specialCases.process(guiState, exploredAppPackageName)
       assert specialCaseApplied == (outExplAction != null)
 
       if (!specialCaseApplied)
@@ -249,7 +237,7 @@ class ExplorationStrategy implements IExplorationStrategy
     return false
   }
 
-  private boolean terminateExploration(IGuiState guiState)
+  private boolean terminateExploration(IGuiState guiState, String exploredAppPackageName)
   {
     assert guiState != null
     assert !(!firstCallToDecideFinished && lastActionWasToReset)
@@ -262,12 +250,12 @@ class ExplorationStrategy implements IExplorationStrategy
 
     // WISH if !explorationCanMoveForwardOn(guiState) after launch main activity, try again, but with longer wait delay.
 
-    if (!explorationCanMoveForwardOn(guiState) && (!firstCallToDecideFinished || lastActionWasToReset))
+    if (!explorationCanMoveForwardOn(guiState, exploredAppPackageName) && (!firstCallToDecideFinished || lastActionWasToReset))
     {
       String guiStateMsgPart = !firstCallToDecideFinished ? "Initial GUI state" : "GUI state after reset"
 
       // This case is observed when e.g. the app shows empty screen at startup.
-      if (!guiState.belongsToApp(packageName))
+      if (!guiState.belongsToApp(exploredAppPackageName))
         log.info("Terminating exploration: $guiStateMsgPart doesn't belong to the app. The GUI state: $guiState")
 
       // This case is observed when e.g. the app has nonstandard GUI, e.g. game native interface.
@@ -284,45 +272,47 @@ class ExplorationStrategy implements IExplorationStrategy
     return false
   }
 
-  private boolean resetExploration(IGuiState guiState)
+  private boolean resetExploration(IGuiState guiState, String exploredAppPackageName)
   {
     assert guiState != null
-    assert !terminateExploration(guiState)
-    assert (!firstCallToDecideFinished).implies(explorationCanMoveForwardOn(guiState))
-    assert lastActionWasToReset.implies(explorationCanMoveForwardOn(guiState))
+    assert !terminateExploration(guiState, exploredAppPackageName)
 
-    if (explorationCanMoveForwardOn(guiState))
+    assert (!firstCallToDecideFinished).implies(explorationCanMoveForwardOn(guiState, exploredAppPackageName))
+
+    assert lastActionWasToReset.implies(explorationCanMoveForwardOn(guiState, exploredAppPackageName))
+
+    if (explorationCanMoveForwardOn(guiState, exploredAppPackageName))
     {
       return false
     } else
     {
       assert firstCallToDecideFinished
       assert !lastActionWasToReset
-      assert !explorationCanMoveForwardOn(guiState)
+      assert !explorationCanMoveForwardOn(guiState, exploredAppPackageName)
       return true
     }
   }
 
-  private boolean backtrack(IGuiState guiState)
+  private boolean backtrack(IGuiState guiState, String exploredAppPackageName)
   {
     assert guiState != null
-    assert !terminateExploration(guiState)
-    assert !resetExploration(guiState)
+    assert !terminateExploration(guiState, exploredAppPackageName)
+    assert !resetExploration(guiState, exploredAppPackageName)
     /* As  right now we never backtrack and backtracking is the last possibility to do something if exploration cannot move
     forward, thus we have this precondition. If backtracking will have some implementation, then it will handle some cases which
     are right now handled by terminateExploration and resetExploration, and this precondition will no longer hold.
      */
-    assert explorationCanMoveForwardOn(guiState)
+    assert explorationCanMoveForwardOn(guiState, exploredAppPackageName)
 
     // Placeholder for possible future functionality.
 
-    assert explorationCanMoveForwardOn(guiState)
+    assert explorationCanMoveForwardOn(guiState, exploredAppPackageName)
     return false
   }
 
-  private boolean explorationCanMoveForwardOn(IGuiState guiState)
+  private boolean explorationCanMoveForwardOn(IGuiState guiState, String exploredAppPackageName)
   {
-    return guiState.belongsToApp(packageName) && hasActionableWidgets(guiState)
+    return guiState.belongsToApp(exploredAppPackageName) && hasActionableWidgets(guiState)
   }
 
   private boolean hasActionableWidgets(IGuiState guiState)
@@ -366,11 +356,12 @@ class ExplorationStrategy implements IExplorationStrategy
     lastActionWasToReset = currentActionIsToReset
   }
 
-  public static ExplorationStrategy build(String appPackageName, Configuration cfg)
+  public static ExplorationStrategy build(Configuration cfg)
   {
-    IWidgetStrategy widgetStrategy = new WidgetStrategy(appPackageName, cfg.randomSeed, cfg.alwaysClickFirstWidget, cfg.widgetIndexes)
+    // KJA what happens here should also happen during reset. Or maybe, instead of building strat immediately, provide a factory-closure? Like { cfg -> strat.build(cfg) }  
+    IWidgetStrategy widgetStrategy = new WidgetStrategy(cfg.randomSeed, cfg.alwaysClickFirstWidget, cfg.widgetIndexes)
     ITerminationCriterion terminationCriterion = new TerminationCriterion(cfg, cfg.timeLimit, Ticker.systemTicker())
     IForwardExplorationSpecialCases specialCases = new ForwardExplorationSpecialCases()
-    return new ExplorationStrategy(appPackageName, cfg.resetEveryNthExplorationForward, widgetStrategy, terminationCriterion, specialCases)
+    return new ExplorationStrategy(cfg.resetEveryNthExplorationForward, widgetStrategy, terminationCriterion, specialCases)
   }
 }

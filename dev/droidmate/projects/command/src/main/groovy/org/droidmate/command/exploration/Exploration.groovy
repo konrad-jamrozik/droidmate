@@ -26,6 +26,7 @@ import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.exploration.strategy.IExplorationStrategy
+import org.droidmate.exploration.strategy.IExplorationStrategyProvider
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.TimeProvider
@@ -37,18 +38,24 @@ import static org.droidmate.exploration.actions.ExplorationAction.newResetAppExp
 class Exploration implements IExploration
 {
 
-  private final Configuration cfg
-  private final ITimeProvider timeProvider
+  private final Configuration                cfg
+  private final ITimeProvider                timeProvider
+  private final IExplorationStrategyProvider strategyProvider
 
-  Exploration(Configuration cfg, ITimeProvider timeProvider)
+
+  Exploration(Configuration cfg, ITimeProvider timeProvider, IExplorationStrategyProvider strategyProvider)
   {
     this.timeProvider = timeProvider
     this.cfg = cfg
+    this.strategyProvider = strategyProvider
   }
 
-  public static Exploration build(Configuration cfg, ITimeProvider timeProvider = new TimeProvider())
+  public static Exploration build(Configuration cfg,
+                                  ITimeProvider timeProvider = new TimeProvider(),
+    // KJA pull up building strategy
+                                  IExplorationStrategyProvider strategyProvider = {ExplorationStrategy.build(cfg)})
   {
-    return new Exploration(cfg, timeProvider)
+    return new Exploration(cfg, timeProvider, strategyProvider)
   }
 
   @Override
@@ -89,12 +96,10 @@ class Exploration implements IExploration
     log.debug("explorationLoop(app=${app?.fileName}, device)")
     log.info("Initial action: ${action.base}")
 
-
     assert app != null
     assert device != null
 
-
-    // Construct the output holder.
+    // Construct the object that will hold the exploration output and that will be returned from this method.
     IApkExplorationOutput2 output = new ApkExplorationOutput2(app)
 
     output.explorationStartTime = timeProvider.now
@@ -105,9 +110,7 @@ class Exploration implements IExploration
     // Write the initial action and its execution result to the output holder.
     output.add(action, result)
 
-    // KJA exploration strategy has to be passed as constructor param, but it depends on app.packageName. Instead, the app.packageName should be provided from IExplorationActionRunResult, i.e. "the explored app package name". Then it can be passed to .decide(run result)
-    // Construct the strategy making decisions in the exploration loop.
-    IExplorationStrategy strategy = ExplorationStrategy.build(app.packageName, cfg)
+    IExplorationStrategy strategy = strategyProvider.provideNewInstance()
 
     // Execute the exploration loop proper, starting with the values of initial reset action and its result.
     while (result.successful && !(action instanceof RunnableTerminateExplorationAction))
