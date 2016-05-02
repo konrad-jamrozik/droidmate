@@ -243,7 +243,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     outputDir.clearContents()
 
     // Act
-    DroidmateFrontend.main(args)
+    DroidmateFrontend.main(args, null)
 
     IApkExplorationOutput2 apkOut = outputDir.readOutput().findSingle()
 
