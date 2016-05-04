@@ -29,35 +29,17 @@ import java.util.List;
 public class MainTest
 {
   @Test
-  public void DefaultRun()
+  public void explore_with_default_settings_then_access_output()
   {
-    callMain_then_assertExitStatusIs0(new String[]{});
+    call_main_then_assert_exit_status_is_0(new String[]{});
   }
 
   @Test
-  public void InlineApks()
+  public void inline_apks()
   {
-    callMain_then_assertExitStatusIs0(new String[]{Configuration.pn_inline});
+    call_main_then_assert_exit_status_is_0(new String[]{Configuration.pn_inline});
   }
 
-  @Test
-  public void CommonSettings()
-  {
-    List<String> args = new ArrayList<>();
-    Collections.addAll(args, Configuration.pn_apksDir, "apks/inlined");
-    Collections.addAll(args, Configuration.pn_timeLimit, "20");
-    Collections.addAll(args, Configuration.pn_resetEveryNthExplorationForward, "5");
-    Collections.addAll(args, Configuration.pn_randomSeed, "43");
-    callMain_then_assertExitStatusIs0(args.toArray(new String[args.size()]));
-  }
-
-  @Test
-  public void CustomExplorationStrategyAndTerminationCriterion()
-  {
-    final IExplorationStrategyProvider strategyProvider = () -> new ExampleExplorationStrategy(new ExampleTerminationCriterion());
-    final ICommandProvider commandProvider = cfg -> ExploreCommand.build(cfg, strategyProvider);
-    callMain_then_assertExitStatusIs0(new String[]{}, commandProvider);
-  }
 
   // KJA add tests showing how to access output dir and serialized data, i.e. something like:
   // droidmateFrontend.main()
@@ -66,12 +48,39 @@ public class MainTest
   // Add test for that in droidmate main, not usage example (as it requires fixtures)
   // For usage example just empty output will suffice (probably should be generated? Or warning + empty data structure returned?) 
 
-  private void callMain_then_assertExitStatusIs0(String[] args)
+  
+  @Test
+  public void explore_with_common_settings_changed()
   {
-    callMain_then_assertExitStatusIs0(args, null);
+    List<String> args = new ArrayList<>();
+    
+    // Notation explanation: "pn" means "parameter name"
+    
+    Collections.addAll(args, Configuration.pn_apksDir, "apks/inlined");
+    Collections.addAll(args, Configuration.pn_timeLimit, "20");
+    Collections.addAll(args, Configuration.pn_resetEveryNthExplorationForward, "5");
+    Collections.addAll(args, Configuration.pn_randomSeed, "43");
+    
+    // Look into Configuration class for more settings.
+    
+    call_main_then_assert_exit_status_is_0(args.toArray(new String[args.size()]));
   }
 
-  private void callMain_then_assertExitStatusIs0(String[] args, ICommandProvider commandProvider)
+  @Test
+  public void explore_with_custom_exploration_strategy_and_termination_criterion()
+  {
+    final IExplorationStrategyProvider strategyProvider = () -> new ExampleExplorationStrategy(new ExampleTerminationCriterion());
+    final ICommandProvider commandProvider = cfg -> ExploreCommand.build(cfg, strategyProvider);
+    call_main_then_assert_exit_status_is_0(new String[]{}, commandProvider);
+  }
+
+
+  private void call_main_then_assert_exit_status_is_0(String[] args)
+  {
+    call_main_then_assert_exit_status_is_0(args, null);
+  }
+
+  private void call_main_then_assert_exit_status_is_0(String[] args, ICommandProvider commandProvider)
   {
     int exitStatus = DroidmateFrontend.main(args, commandProvider);
     Assert.assertEquals(0, exitStatus);
