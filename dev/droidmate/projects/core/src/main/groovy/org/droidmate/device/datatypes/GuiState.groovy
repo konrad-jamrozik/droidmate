@@ -21,11 +21,10 @@ class GuiState implements Serializable, IGuiState
   final static String androidPackageName = "android"
 
   final String       topNodePackageName
+  final List<Widget> widgets
 
   /** Id is used only for tests, for easy determination by human which instance is which when looking at widget string
    * representation. */
-  final List<Widget> widgets
-
   final String id
 
   final String androidLauncherPackageName

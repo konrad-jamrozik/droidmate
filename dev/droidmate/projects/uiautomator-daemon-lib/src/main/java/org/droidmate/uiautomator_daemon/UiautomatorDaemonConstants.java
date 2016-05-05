@@ -72,6 +72,4 @@ public class UiautomatorDaemonConstants
   // org.droidmate.uia_manual_test_cases.TestCases#tag
   public static final String uiaTestCaseTag = "UiaTestCase";
   // end of DUPLICATION WARNING
-
-
 }
