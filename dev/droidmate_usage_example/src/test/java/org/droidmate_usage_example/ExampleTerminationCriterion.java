@@ -12,7 +12,7 @@ import org.droidmate.exploration.actions.ExplorationAction;
 import org.droidmate.exploration.strategy.ITerminationCriterion;
 
 /**
- * @see ExampleTerminationCriterion#ExampleTerminationCriterion() 
+ * @see ExampleTerminationCriterion#ExampleTerminationCriterion()
  */
 class ExampleTerminationCriterion implements ITerminationCriterion
 {

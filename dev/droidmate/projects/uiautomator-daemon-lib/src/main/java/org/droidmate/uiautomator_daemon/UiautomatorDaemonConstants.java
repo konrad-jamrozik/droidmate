@@ -7,6 +7,7 @@
 //
 // www.droidmate.org
 
+// WISH Borges: Check if the package should be kept with the previous name or updated to org.droidmate.uiautomator2daemon
 package org.droidmate.uiautomator_daemon;
 
 public class UiautomatorDaemonConstants
@@ -22,7 +23,7 @@ public class UiautomatorDaemonConstants
   public static final String uiaDaemon_logcatTag = deviceLogcatTagPrefix + "uiad";
 
   // End of DUPLICATION WARNING
-  
+
   public static final String DEVICE_SAMSUNG_GALAXY_S3_GT_I9300 = "samsung-GT-I9300";
   
   public static final String UIADAEMON_SERVER_START_TAG = "uiautomator-daemon_server_start_tag";
@@ -41,7 +42,11 @@ public class UiautomatorDaemonConstants
    * <br/>
    * Name format according to help obtained by issuing {@code adb shell uiautomator runtest} in terminal.
    */
+  // KJA to remove?
   public static final String uiaDaemon_initMethodName = "org.droidmate.uiautomator_daemon.UiAutomatorDaemon#init";
+  public static final String uiaDaemon_packageName       = "org.droidmate.uiautomator2daemon.UiAutomator2Daemon";
+  public static final String uiaDaemon_testPackageName   = uiaDaemon_packageName + ".test";
+  public static final String uiaDaemon_testRunner        = "android.support.test.runner.AndroidJUnitRunner";
 
   public static final String guiActionCommand_pressBack  = "press_back";
   public static final String guiActionCommand_pressHome  = "press_home";
@@ -69,5 +74,4 @@ public class UiautomatorDaemonConstants
   // org.droidmate.uia_manual_test_cases.TestCases#tag
   public static final String uiaTestCaseTag = "UiaTestCase";
   // end of DUPLICATION WARNING
-  
 }

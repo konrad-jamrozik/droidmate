@@ -189,13 +189,13 @@ class ConfigurationBuilder implements IConfigurationBuilder
   private static void setupResourcesAndPaths(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
     cfg.appGuardApisList = new Resource(BuildConstants.appguard_apis_txt).text.readLines().findAll {it.size() > 0 && !it.startsWith("#")}
-    
-    cfg.uiautomatorDaemonJar = new Resource("uiautomator-daemon.jar").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
-    log.info("Using uiautomator-daemon.jar located at "+cfg.uiautomatorDaemonJar.toAbsolutePath().toString())
-    
+    cfg.uiautomatorDaemonApk = new Resource("uiautomator2-daemon.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
+    log.info("Using uiautomator2-daemon.apk located at " + cfg.uiautomatorDaemonApk.toAbsolutePath().toString())
+    cfg.uiautomatorDaemonTestApk = new Resource("uiautomator2-daemon-test.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
+    log.info("Using uiautomator2-daemon-test.apk located at " + cfg.uiautomatorDaemonTestApk.toAbsolutePath().toString())
     cfg.monitorApk = new Resource("monitor.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
     log.info("Using monitor.apk located at "+cfg.monitorApk.toAbsolutePath().toString())
-    
+
     cfg.droidmateOutputDirPath = fs.getPath(cfg.droidmateOutputDir)
     cfg.reportInputDirPath = fs.getPath(cfg.reportInputDir)
     cfg.reportOutputDirPath = fs.getPath(cfg.reportOutputDir)
@@ -203,7 +203,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
     if (cfg.apksDirPath.createDirIfNotExists())
       log.info("Created directory from which DroidMate will read input apks: "+cfg.apksDirPath.toAbsolutePath().toString())
-    
+
     if (cfg.droidmateOutputDirPath.createDirIfNotExists())
       log.info("Created directory to which DroidMate will output: "+cfg.droidmateOutputDirPath.toAbsolutePath().toString())
 
@@ -240,7 +240,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
     displayStyle.setContentStart("")
     displayStyle.setContentEnd("")
     displayStyle.setFieldSeparator("\n")
-    
+
     String configurationDump = new ReflectionToStringBuilder(config, displayStyle).toString()
     configurationDump = configurationDump.tokenize('\n').sort().join("\n")
 

@@ -12,6 +12,9 @@ package org.droidmate.device.datatypes
 import groovy.transform.Canonical
 import org.droidmate.common.exploration.datatypes.Widget
 
+/**
+ * Specialized GuiState class that represents an application with an active "App has stopped" dialog box
+ */
 @Canonical
 class AppHasStoppedDialogBoxGuiState extends GuiState implements Serializable
 {

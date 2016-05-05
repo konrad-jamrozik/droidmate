@@ -14,10 +14,10 @@ import org.droidmate.device.model.IDeviceModel
 
 /**
  * Wrapper between the old GuiState class and its new version.
- * It is only used by {link org.droidmate.deprecated_still_used#DeprecatedClassesDeserializer} to open previous report versions
+ * It is only used by {@link org.droidmate.deprecated_still_used#DeprecatedClassesDeserializer} to open previous report versions
  *
  * @author Nataniel Borges Jr.
- * @deprecated This class is deprecated and should be using only when opening previous report versions trough {link org.droidmate.deprecated_still_used#DeprecatedClassesDeserializer}
+ * @deprecated This class is deprecated and should be using only when opening previous report versions trough {@link org.droidmate.deprecated_still_used#DeprecatedClassesDeserializer}
  */
 @Deprecated
 class GuiStateLegacy implements Serializable, IGuiState
@@ -56,6 +56,12 @@ class GuiStateLegacy implements Serializable, IGuiState
   boolean isAppHasStoppedDialogBox()
   {
     return this.createNewGuiState().isAppHasStoppedDialogBox()
+  }
+
+  @Override
+  boolean isRequestRuntimePermissionDialogBox()
+  {
+    return this.createNewGuiState().isRequestRuntimePermissionDialogBox()
   }
 
   @Override

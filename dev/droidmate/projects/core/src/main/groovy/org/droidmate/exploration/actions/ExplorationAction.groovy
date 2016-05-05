@@ -16,6 +16,7 @@ abstract class ExplorationAction implements Serializable
 {
 
   private static final long serialVersionUID = 1
+  protected Boolean runtimePermission = false;
 
   @Override
   String toString()
@@ -25,13 +26,17 @@ abstract class ExplorationAction implements Serializable
     }
   }
 
+  Boolean isEndorseRuntimePermission()
+  {
+    return runtimePermission;
+  }
+
   abstract String toShortString()
 
   String toTabulatedString()
   {
     return toShortString()
   }
-
 
   public static ResetAppExplorationAction newResetAppExplorationAction(boolean isFirst = false)
   {
@@ -55,7 +60,7 @@ abstract class ExplorationAction implements Serializable
 
   public static WidgetExplorationAction newWidgetExplorationAction(Widget widget, int delay)
   {
-    return new WidgetExplorationAction(widget: widget, delay: delay)
+    return new WidgetExplorationAction(widget: widget, runtimePermission: false, delay: delay)
   }
 
   public static WidgetExplorationAction newWidgetExplorationAction(Widget widget, boolean longClick = false)
@@ -63,6 +68,13 @@ abstract class ExplorationAction implements Serializable
     assert widget != null
 
     return new WidgetExplorationAction(widget: widget, longClick: longClick)
+  }
+
+  public static WidgetExplorationAction newIgnoreActionForTerminationWidgetExplorationAction(Widget widget, boolean longClick = false)
+  {
+    assert widget != null
+
+    return new WidgetExplorationAction(widget: widget, runtimePermission: true, longClick: longClick)
   }
 
   public static WidgetExplorationAction newWidgetExplorationAction(HashMap cfg)

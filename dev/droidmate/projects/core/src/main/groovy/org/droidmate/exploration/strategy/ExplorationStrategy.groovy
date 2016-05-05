@@ -94,7 +94,7 @@ class ExplorationStrategy implements IExplorationStrategy
 
     def guiState = result.guiSnapshot.guiState
     def exploredAppPackageName = result.exploredAppPackageName
-    
+
     terminationCriterion.initDecideCall(!firstCallToDecideFinished)
 
     ExplorationAction outExplAction
@@ -290,7 +290,7 @@ class ExplorationStrategy implements IExplorationStrategy
 
   private boolean explorationCanMoveForwardOn(IGuiState guiState, String exploredAppPackageName)
   {
-    return guiState.belongsToApp(exploredAppPackageName) && hasActionableWidgets(guiState)
+    return (guiState.belongsToApp(exploredAppPackageName) && hasActionableWidgets(guiState)) || guiState.isRequestRuntimePermissionDialogBox()
   }
 
   private boolean hasActionableWidgets(IGuiState guiState)

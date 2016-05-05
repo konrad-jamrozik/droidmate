@@ -14,9 +14,11 @@ import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.datatypes.IGuiState
+import org.droidmate.device.datatypes.RuntimePermissionDialogBoxGuiState
 import org.droidmate.exploration.actions.ExplorationAction
 import org.droidmate.exploration.actions.WidgetExplorationAction
 
+import static org.droidmate.exploration.actions.ExplorationAction.newIgnoreActionForTerminationWidgetExplorationAction
 import static org.droidmate.exploration.actions.ExplorationAction.newWidgetExplorationAction
 
 @Slf4j
@@ -31,11 +33,11 @@ class WidgetStrategy implements IWidgetStrategy
   private List<WidgetContext> widgetContexts       = []
   private WidgetContext       currentWidgetContext = null
   private WidgetInfo          lastWidgetInfo       = null
-
+  private Boolean             repeatLastAction     = false
 
   WidgetStrategy(
-    long randomSeed, 
-    boolean alwaysClickFirstWidget, 
+    long randomSeed,
+    boolean alwaysClickFirstWidget,
     List<Integer> widgetIndexes)
   {
     this.randomSeed = randomSeed
@@ -84,12 +86,48 @@ class WidgetStrategy implements IWidgetStrategy
   {
     alreadyUpdatedAfterLastDecide = false
 
-    if (alwaysClickFirstWidget)
-      return newWidgetExplorationAction(currentWidgetContext[0].widget)
-    else if (widgetIndexes.size() > 0)
-      return clickWidgetByIndex()
+    ExplorationAction action;
+
+    if (repeatLastAction)
+    {
+      assert lastWidgetInfo != null
+
+      repeatLastAction = false
+
+      action = chooseAction(lastWidgetInfo)
+    }
     else
-      return biasedRandomAction()
+    {
+      if (guiState.requestRuntimePermissionDialogBox)
+      {
+        action = clickRuntimePermissionAllowWidget(guiState)
+        repeatLastAction = true
+      }
+      else if (alwaysClickFirstWidget)
+      {
+        lastWidgetInfo = currentWidgetContext[0]
+        action = newWidgetExplorationAction(currentWidgetContext[0].widget)
+      }
+      else if (widgetIndexes.size() > 0)
+        action = clickWidgetByIndex()
+      else
+        action = biasedRandomAction()
+    }
+
+    return action
+  }
+
+  private WidgetExplorationAction clickRuntimePermissionAllowWidget(IGuiState guiState)
+  {
+    assert guiState instanceof RuntimePermissionDialogBoxGuiState
+
+    Widget allowButton = (guiState as RuntimePermissionDialogBoxGuiState).allowWidget
+    assert allowButton != null
+
+    // Remove blacklist restriction from previous action since it will need to be executed again
+    lastWidgetInfo.blackListed = false
+
+    return newIgnoreActionForTerminationWidgetExplorationAction(allowButton)
   }
 
   private WidgetExplorationAction clickWidgetByIndex()
@@ -98,8 +136,14 @@ class WidgetStrategy implements IWidgetStrategy
     widgetIndexes = widgetIndexes.drop(1)
 
     assert currentWidgetContext.size() >= widgetIndex + 1
-    lastWidgetInfo = currentWidgetContext[widgetIndex]
-    return newWidgetExplorationAction(lastWidgetInfo.widget)
+
+    Widget chosenWidget = currentWidgetContext[widgetIndex].widget
+    WidgetInfo chosenWidgetInfo = currentWidgetContext.find({it.index == widgetIndex})
+
+    assert chosenWidgetInfo != null
+
+    lastWidgetInfo = chosenWidgetInfo
+    return newWidgetExplorationAction(chosenWidget)
   }
 
   ExplorationAction biasedRandomAction()
@@ -147,10 +191,16 @@ class WidgetStrategy implements IWidgetStrategy
     Collection<WidgetInfo> candidates = widgetContext.findAll {(!it.blackListed && it.actedUponCount == minActedUponCount)}
 
     WidgetInfo chosenWidgetInfo = candidates[random.nextInt(candidates.size())]
-    Widget chosenWidget = chosenWidgetInfo.widget
 
     lastWidgetInfo = chosenWidgetInfo
     assert !lastWidgetInfo.blackListed
+
+    return chooseAction(chosenWidgetInfo)
+  }
+
+  ExplorationAction chooseAction(WidgetInfo chosenWidgetInfo)
+  {
+    Widget chosenWidget = chosenWidgetInfo.widget
 
     ExplorationAction action
     if (chosenWidget.longClickable && !chosenWidget.clickable && !chosenWidget.checkable)

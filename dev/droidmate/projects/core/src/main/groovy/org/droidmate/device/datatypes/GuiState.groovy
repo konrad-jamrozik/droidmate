@@ -58,6 +58,9 @@ class GuiState implements Serializable, IGuiState
       if (this instanceof AppHasStoppedDialogBoxGuiState)
         return "GUI state of \"App has stopped\" dialog box. OK widget enabled: ${(this as AppHasStoppedDialogBoxGuiState).OKWidget.enabled}".wrapWith("<>")
 
+      if (this instanceof RuntimePermissionDialogBoxGuiState)
+        return "GUI state of \"Runtime permission\" dialog box. Allow widget enabled: ${(this as RuntimePermissionDialogBoxGuiState).allowWidget.enabled}".wrapWith("<>")
+
       return "GuiState " + (id != null ? "id=$id " : "") + "pkg=$topNodePackageName Widgets count = ${widgets.size()}".wrapWith("<>")
     }
   }
@@ -93,9 +96,14 @@ class GuiState implements Serializable, IGuiState
   }
 
   @Override
+  boolean isRequestRuntimePermissionDialogBox()
+  {
+    return this.deviceModel.isRequestRuntimePermissionDialogBox(this)
+  }
+
+  @Override
   boolean belongsToApp(String appPackageName)
   {
     return this.topNodePackageName == appPackageName
   }
-
 }

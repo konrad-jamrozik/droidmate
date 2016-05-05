@@ -23,6 +23,11 @@ buildscript {
     }
 }
 
+// WISH Borges Merged
+//task wrapper(type: Wrapper) {
+//  gradleVersion = '2.12'
+//}
+
 allprojects {
     repositories {
         jcenter()

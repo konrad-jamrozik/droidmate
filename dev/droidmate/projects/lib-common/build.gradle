@@ -66,9 +66,9 @@ File resDir = IterableExtensions.findSingle(sourceSets.main.resources.srcDirs)
 File buildConstantsFile = new File(resDir, "buildConstants.properties")
 
 task writeBuildConstantsProperties() { Task it ->
-  
+
   it.outputs.file(buildConstantsFile)
-  
+
   doLast {
 
     // Map constants used in both Gradle build scripts and in the compiled classes to a resource file. This way the constants will

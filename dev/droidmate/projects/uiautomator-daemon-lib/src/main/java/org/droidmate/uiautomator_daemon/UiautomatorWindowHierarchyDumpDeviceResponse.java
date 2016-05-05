@@ -13,10 +13,10 @@ public class UiautomatorWindowHierarchyDumpDeviceResponse extends DeviceResponse
 {
   /**
    * This field contains string representing the contents of the file returned by
-   *  {@code com.android.uiautomator.testrunner.UiAutomatorTestCase.getUiDevice().dumpWindowHierarchy();}<br/>
+   *  {@code android.support.test.uiautomator.UiAutomatorTestCase.getUiDevice().dumpWindowHierarchy();}<br/>
    *  as well as <br/>
-   *  {@code com.android.uiautomator.testrunner.UiAutomatorTestCase.getUiDevice().dumpDisplayWidth();}<br/>
-   *  {@code com.android.uiautomator.testrunner.UiAutomatorTestCase.getUiDevice().dumpDisplayHeight();}
+   *  {@code android.support.test.uiautomator.UiAutomatorTestCase.getUiDevice().dumpDisplayWidth();}<br/>
+   *  {@code android.support.test.uiautomator.UiAutomatorTestCase.getUiDevice().dumpDisplayHeight();}
    */
   public final String windowHierarchyDump;
   public final int displayWidth;

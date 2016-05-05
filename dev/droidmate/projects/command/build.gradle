@@ -52,7 +52,7 @@ apply plugin: 'application'
 mainClassName = "org.droidmate.frontend.DroidmateFrontend"
 
 (tasks.run as JavaExec).configure {
-  
+
   assert sourceSets.main.runtimeClasspath == classpath
 
   workingDir rootDir

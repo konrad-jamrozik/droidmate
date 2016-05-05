@@ -25,6 +25,8 @@ interface IGuiState extends Serializable
 
   boolean isAppHasStoppedDialogBox()
 
+  boolean isRequestRuntimePermissionDialogBox()
+
   boolean isCompleteActionUsingDialogBox()
 
   boolean isSelectAHomeAppDialogBox()

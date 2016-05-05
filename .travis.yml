@@ -2,49 +2,62 @@
 language: android
 
 jdk:
-  
+
   # Most of DroidMate is compiled with Java 8.
   - oraclejdk8
 
 android:
   components:
-    
-    # Build tools compatible with DroidMate.
-    - build-tools-19.1.0
-    
+
+    # Build tools compatible with DroidMate (API 19).
+    #- build-tools-19.1.0
+    # Build tools compatible with DroidMate (API 23).
+    # Tools package is required by Travis-CI in order to locate "build-tools-23.0.2",
+    # Official bugtracker issue: https://github.com/travis-ci/travis-ci/issues/5036
+    - tools
+    - build-tools-23.0.2
+    # Packages required by UIAutomator2
+    - extra-android-support
+    - extra-android-m2repository
+
     # DroidMate currently supports Android 4.4.2 (API 19).
-    - android-19
+    #- android-19
+    # DroidMate currently supports Android 6.0.1 (API 23).
+    - android-23
 
 env:
   global:
-    
+
     # Required to obtain reference to jarsigner.
     - JAVA_HOME=/usr/lib/jvm/java-8-oracle
-    
+
     # Required to obtain handles to aapt and adb.
     - ANDROID_HOME=/usr/local/android-sdk
-    
+
 before_install:
-  
+
+  # Change to the directory containing the main build script of DroidMate.
+  # - cd dev/droidmate
+
   # Allow Gradle build script to execute.
   - chmod +x gradlew
-  
+
 before_cache:
-  
+
   # Allow Gradle to use cache.
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-  
+
 cache:
   directories:
-  
+
     # Cache gradle dirs.
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-    
+
     # Note: Android SDK should not be cached, according to https://docs.travis-ci.com/user/caching/#Things-not-to-cache
-    
+
 script:
-  
+
   # By default, 'android' language uses 'connectedCheck'. Here we replace it with appropriate task.
   - ./gradlew integrationBuild
- 
+

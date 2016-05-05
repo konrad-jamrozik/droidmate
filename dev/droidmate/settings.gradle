@@ -19,7 +19,7 @@ include(
   "projects:lib-common",
   "projects:apk-inliner",
   "projects:uiautomator-daemon-lib",
-  "projects:uiautomator-daemon",
+  "projects:uiautomator2-daemon",
   "projects:monitor-template",
   "projects:monitor-generator",
   "projects:core",

@@ -230,6 +230,12 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  void installApk(Path apk) throws DroidmateException
+  {
+    // Do nothing, used only to install UiAutomator2-daemon
+  }
+
+  @Override
   void uninstallApk(String apkPackageName, boolean ignoreFailure) throws DroidmateException
   {
     findMatchingExceptionSpecAndThrowIfApplies("uninstallApk", apkPackageName)

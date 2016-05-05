@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2013-2016 Saarland University Software Engineering Chair. -->
+<!-- All right reserved. -->
+<!-- -->
+<!-- Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de -->
+<!-- -->
+<!-- This file is part of the "DroidMate" project. -->
+<!-- -->
+<!-- www.droidmate.org -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.droidmate.fixtures.apks.instrumented" >
+
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+  <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
+  <uses-permission android:name="com.android.voicemail.permission.ADD_VOICEMAIL"/>
+  <uses-permission android:name="android.permission.USE_SIP"/>
+  <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+  <uses-permission android:name="android.permission.SEND_SMS"/>
+  <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+  <uses-permission android:name="android.permission.READ_SMS"/>
+  <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH"/>
+  <uses-permission android:name="android.permission.RECEIVE_MMS"/>
+
+
+  <application
+    android:allowBackup="true"
+    android:icon="@drawable/ic_launcher"
+    android:label="@string/app_name"
+    android:theme="@style/AppTheme" >
+
+    <activity
+      android:name="InstrumentedActivity"
+      android:label="@string/app_name">
+        <intent-filter>
+          <action android:name="android.intent.action.MAIN"/>
+          <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+    </activity>
+    <activity
+      android:name="org.droidmate.fixtures.apks.instrumented.LogcatActivity"
+      android:label="LogcatActivity" >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+      </intent-filter>
+    </activity>
+  </application>
+
+</manifest>

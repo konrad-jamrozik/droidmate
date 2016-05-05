@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is necessary because of gradle 'com.android.application' plugin.
+
+ Moreover, the main project's permissions are included in the generated test APK's
+ which is necessary to allow access to Sockets and to change the Wifi state
+-->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.droidmate.uiautomator2daemon" >
+  <application>
+    <service
+      android:name="uiautomator2daemon"
+      android:exported="true">
+    </service>
+  </application>
+
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+</manifest>

@@ -27,6 +27,7 @@ import org.droidmate.logcat.ITimeFormattedLogcatMessage
 import org.droidmate.logging.LogbackUtils
 import org.droidmate.uiautomator_daemon.DeviceCommand
 import org.droidmate.uiautomator_daemon.DeviceResponse
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import org.droidmate.uiautomator_daemon.UiautomatorWindowHierarchyDumpDeviceResponse
 
 import java.awt.*
@@ -242,14 +243,14 @@ public class AndroidDevice implements IAndroidDevice
   void removeLogcatLogFile() throws DeviceException
   {
     log.debug("removeLogcatLogFile()")
-    this.adbWrapper.removeFile(this.serialNumber, logcatLogFileName)
+    this.adbWrapper.removeFile(this.serialNumber, logcatLogFileName, UiautomatorDaemonConstants.uiaDaemon_packageName)
   }
 
   @Override
   void pullLogcatLogFile() throws DeviceException
   {
     log.debug("pullLogcatLogFile()")
-    this.adbWrapper.pullFile(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"))
+    this.adbWrapper.pullFile(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"), UiautomatorDaemonConstants.uiaDaemon_packageName)
   }
 
   @Override
@@ -370,7 +371,15 @@ public class AndroidDevice implements IAndroidDevice
   void removeJar(Path jar) throws DeviceException
   {
     log.debug("removeJar($jar)")
-    adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemonJar)
+    adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemonApk)
+    adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemonTestApk)
+  }
+
+  @Override
+  void installApk(Path apk) throws DeviceException
+  {
+    log.debug("installApk($apk.fileName)")
+    adbWrapper.installApk(serialNumber, apk)
   }
 
   private static boolean uiaDaemonHandlesCommand(DeviceCommand deviceCommand)

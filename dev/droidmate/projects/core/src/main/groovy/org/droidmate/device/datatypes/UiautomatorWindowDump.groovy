@@ -182,7 +182,9 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
     }.findAll {it != null}
 
     def gs = new GuiState(topNodePackage, id, widgets, this.androidLauncherPackageName)
-    if (gs.isAppHasStoppedDialogBox())
+    if (gs.isRequestRuntimePermissionDialogBox())
+      return new RuntimePermissionDialogBoxGuiState(topNodePackage, widgets, this.androidLauncherPackageName)
+    else if (gs.isAppHasStoppedDialogBox())
       return new AppHasStoppedDialogBoxGuiState(topNodePackage, widgets, this.androidLauncherPackageName)
     else
       return gs
@@ -205,6 +207,13 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
           return ValidationResult.app_has_stopped_dialog_box_with_OK_button_enabled
         else
           return ValidationResult.app_has_stopped_dialog_box_with_OK_button_disabled
+
+      } else if (gs instanceof RuntimePermissionDialogBoxGuiState)
+      {
+        if (gs.allowWidget.enabled)
+          return ValidationResult.request_runtime_permission_dialog_box_with_Allow_button_enabled
+        else
+          return ValidationResult.request_runtime_permission_dialog_box_with_Allow_button_disabled
 
       } else
       {
@@ -270,6 +279,9 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
 
     if (this.guiState.isHomeScreen())
       return "$cls{home screen}"
+
+    if (this.guiState.isRequestRuntimePermissionDialogBox())
+      return "$cls{\"Runtime permission\" dialog box. Allow widget enabled: ${(this.guiState as RuntimePermissionDialogBoxGuiState).allowWidget.enabled}}"
 
     if (this.guiState.isAppHasStoppedDialogBox())
       return "$cls{\"App has stopped\" dialog box. OK widget enabled: ${(this.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled}}"

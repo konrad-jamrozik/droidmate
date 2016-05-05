@@ -22,9 +22,9 @@ import java.nio.file.Paths
 /**
  * <p>
  *
- * This class holds all the configuration data of DroidMate. The configuration is obtained from command line arguments by 
- * a call to {@code n ew ConfigurationBuilder().build(args)}. This happens in {@code DroidmateFrontend}, 
- * just before DroidMate constructs a {@code DroidmateCommand} and thus, its object graph of dependencies. 
+ * This class holds all the configuration data of DroidMate. The configuration is obtained from command line arguments by
+ * a call to {@code n ew ConfigurationBuilder().build(args)}. This happens in {@code DroidmateFrontend},
+ * just before DroidMate constructs a {@code DroidmateCommand} and thus, its object graph of dependencies.
  *
  * </p><p>
  * This class relies heavily on the {@code jCommander} library, http://jcommander.org
@@ -121,7 +121,7 @@ public class Configuration implements IConfiguration
   // @formatter:on
   //endregion
 
-  public static final int    defaultActionsLimit                    = 5
+  public static final int    defaultActionsLimit                    = 7
   public static final String defaultApksDir                         = "apks"
   // !!! DUPLICATION WARNING !!! org.droidmate.common.logging.LogbackConstants.getLogsDirPath
   // !!! DUPLICATION WARNING !!! repo\dev\droidmate\.gitignore
@@ -277,7 +277,7 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_runOnNotInlined], description =
     "Allow DroidMate to run on non-inlined apks.")
   public Boolean runOnNotInlined = false
-  
+
   @Parameter(names = ["-saturationChartsHours"], description = "The time span covered by the saturation charts data, in hours.")
   public Double saturationChartsHours = 2.0
 
@@ -362,10 +362,16 @@ public class Configuration implements IConfiguration
   public List<String> appGuardApisList
 
   /**
-   * Jar with uiautomator-daemon location on the file system. The jar is to be deployed on the android (virtual) device
+   * Apk with uiautomator-daemon. This is a dummy package required only by instrumentation command (instrumentation target property)
+   * More information about th property in: http://developer.android.com/guide/topics/manifest/instrumentation-element.html
+   */
+  public Path uiautomatorDaemonApk
+
+  /**
+   * Apk with "real" uiautomator-daemon. This apk will be deployed be on the android (virtual) device
    * to enable GUI actions execution.
    */
-  public Path uiautomatorDaemonJar
+  public Path uiautomatorDaemonTestApk
 
   //endregion
 }
