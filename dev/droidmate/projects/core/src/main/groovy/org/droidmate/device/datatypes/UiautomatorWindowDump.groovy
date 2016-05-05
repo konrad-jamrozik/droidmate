@@ -16,7 +16,7 @@ import groovy.util.slurpersupport.GPathResult
 import org.droidmate.common.exceptions.InvalidWidgetBoundsException
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logging.LogbackConstants
-import org.droidmate.configuration.model.IDeviceModel
+import org.droidmate.device.model.IDeviceModel
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 
 import java.awt.*

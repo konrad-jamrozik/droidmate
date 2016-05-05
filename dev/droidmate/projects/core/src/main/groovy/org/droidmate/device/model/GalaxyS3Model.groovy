@@ -6,9 +6,9 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.configuration.model
+package org.droidmate.device.model
 
-import java.awt.Dimension
+import java.awt.*
 
 /**
  * Provides device specific methods for a Samsung Galaxy S3 GT-I9300 using Factory Method Pattern

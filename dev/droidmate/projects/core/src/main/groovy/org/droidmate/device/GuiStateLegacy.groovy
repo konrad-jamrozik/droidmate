@@ -9,8 +9,8 @@
 package org.droidmate.device.datatypes
 
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.configuration.model.DeviceModelHelper
-import org.droidmate.configuration.model.IDeviceModel
+import org.droidmate.device.model.DeviceModelHelper
+import org.droidmate.device.model.IDeviceModel
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 /**

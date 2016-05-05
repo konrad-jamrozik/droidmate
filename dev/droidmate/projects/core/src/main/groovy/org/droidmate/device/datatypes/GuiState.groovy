@@ -12,9 +12,9 @@ package org.droidmate.device.datatypes
 import groovy.transform.Canonical
 import org.droidmate.common.TextUtilsCategory
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.configuration.model.IDeviceModel
+import org.droidmate.device.model.IDeviceModel
 
-// KJA2-clean untangle cycle between GuiState and IDeviceModel
+// KJA2-clean untangle cycle between GuiState and IDeviceModel. GuiState is a primitive type and cannot have a reference to deviceModel
 @Canonical(excludes = "id")
 class GuiState implements Serializable, IGuiState
 {
@@ -45,6 +45,7 @@ class GuiState implements Serializable, IGuiState
     assert widgets != null
   }
 
+  // KJA to remove?
   GuiState(IGuiState guiState, String id, IDeviceModel deviceModel)
   {
     this(guiState.topNodePackageName, id, guiState.widgets, deviceModel)

@@ -11,7 +11,7 @@ package org.droidmate.device.datatypes
 
 import groovy.transform.Canonical
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.configuration.model.IDeviceModel
+import org.droidmate.device.model.IDeviceModel
 
 @Canonical
 class AppHasStoppedDialogBoxGuiState extends GuiState implements Serializable

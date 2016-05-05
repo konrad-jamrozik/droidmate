@@ -6,7 +6,7 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.configuration.model
+package org.droidmate.device.model
 
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.datatypes.GuiState

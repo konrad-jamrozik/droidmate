@@ -6,7 +6,7 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.configuration.model
+package org.droidmate.device.model
 
 /**
  * Provides device specific methods for a Google Nexus device using Factory Method Pattern

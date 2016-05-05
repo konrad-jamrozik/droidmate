@@ -16,9 +16,9 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.common.Boolean3
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.configuration.Configuration
-import org.droidmate.configuration.model.DeviceModelHelper
-import org.droidmate.configuration.model.IDeviceModel
 import org.droidmate.device.datatypes.*
+import org.droidmate.device.model.DeviceModelHelper
+import org.droidmate.device.model.IDeviceModel
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException

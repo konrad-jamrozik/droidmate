@@ -6,11 +6,11 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.configuration.model
+package org.droidmate.device.model
 
 import org.droidmate.device.datatypes.GuiState
 
-import java.awt.Dimension
+import java.awt.*
 
 /**
  * Provides an interface with device specific methods using Factory Method Pattern
@@ -26,14 +26,14 @@ public interface IDeviceModel extends Serializable
    *
    * @param guiState GUI State that will be evaluated
    *
-   * @return If the device is currently in it's home screen
+   * @return If the device is currently in its home screen
    */
   boolean isHomeScreen(GuiState guiState)
 
   /**
    * Get the name of the top level package on the device's home screen
    *
-   * @return If the device is currently in it's home screen
+   * @return If the device is currently in its home screen
    */
   String getPackageAndroidLauncher()
 

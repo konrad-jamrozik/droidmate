@@ -10,7 +10,7 @@
 package org.droidmate.device.datatypes
 
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.configuration.model.DeviceModelHelper
+import org.droidmate.device.model.DeviceModelHelper
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.awt.*
