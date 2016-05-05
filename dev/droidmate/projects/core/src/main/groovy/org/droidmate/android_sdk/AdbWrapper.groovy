@@ -605,42 +605,22 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  void removeFile(String deviceSerialNumber, String fileName, String runAsPackage) throws AdbWrapperException
-  {
-    assert deviceSerialNumber != null
-    assert fileName != null
-    assert fileName.size() > 0
-
-    String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir + fileName
-    String commandDescription = String
-      .format(
-      "Executing adb to delete file %s from Android Device with s/n %s.",
-      filePath, deviceSerialNumber)
-
-    try
-    {
-      if (runAsPackage == null)
-        sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-          "-s", deviceSerialNumber,
-          "shell rm", filePath)
-      else
-        sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-          "-s", deviceSerialNumber,
-          "shell run-as", runAsPackage,
-          "rm", filePath)
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
-    }
-  }
-
-  @Override
-  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String runAsPackage) throws AdbWrapperException
+  /**
+   * Pull file from the device
+   *
+   * Due to Android 6 enhanced security it is necessary to run the software as
+   * a specific package to extract a file
+   *
+   * The command to do that is: adb exec-out run-as <APPLICATION> cat <SOURCE> <DESTINATION>
+   * More information:
+   *   http://stackoverflow.com/questions/18471780/android-adb-retrieve-database-using-run-as
+   */
+  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String shellPackageName) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
     assert pulledFileName?.size() > 0
     assert destinationFilePath?.size() > 0
+    assert shellPackageName != null
 
     // WISH make it stubbable by taking filesystem from configuration. But then also logback logs should take filesystem from
     // configuration, but they do not as of 15 Jan 2016
@@ -655,22 +635,17 @@ public class AdbWrapper implements IAdbWrapper
     try
     {
 
-      if (runAsPackage == null)
+      if (shellPackageName == null)
         sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
           "-s", deviceSerialNumber,
           "pull", pulledFilePath, destinationFilePath)
       else
       {
-        // To solve a problem with permissions (enhanced security on Android 6)
-        // it is necessary to run the software as a specific package to get the file
-        // The command is: adb exec-out run-as <APPLICATION> cat <SOURCE> <DESTINATION>
-        // More information:
-        //   http://stackoverflow.com/questions/18471780/android-adb-retrieve-database-using-run-as
         String[] executionOutput = sysCmdExecutor.execute(
           commandDescription, cfg.adbCommand,
           "-s", deviceSerialNumber,
           "exec-out",
-          "run-as", runAsPackage,
+          "run-as", shellPackageName,
           "cat", pulledFilePath)
 
         // Output was acquired with CAT not with PULL,
@@ -683,6 +658,43 @@ public class AdbWrapper implements IAdbWrapper
     } catch (SysCmdExecutorException e)
     {
       throw new AdbWrapperException("Executing 'adb pull ...' failed. Oh my.", e)
+    }
+  }
+
+  @Override
+  /**
+   * Remove a file from the device
+   *
+   * See explanation about the shellPackageName parameter in {@link org.droidmate.android_sdk.AdbWrapper#pullFile}
+   */
+  void removeFile(String deviceSerialNumber, String fileName, String shellPackageName) throws AdbWrapperException
+  {
+    assert deviceSerialNumber != null
+    assert fileName != null
+    assert fileName.size() > 0
+    assert shellPackageName != null
+
+    String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir + fileName
+    String commandDescription = String
+      .format(
+      "Executing adb to delete file %s from Android Device with s/n %s.",
+      filePath, deviceSerialNumber)
+
+    try
+    {
+      if (shellPackageName == null)
+        sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+          "-s", deviceSerialNumber,
+          "shell rm", filePath)
+      else
+        sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+          "-s", deviceSerialNumber,
+          "shell run-as", shellPackageName,
+          "rm", filePath)
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
     }
   }
 }

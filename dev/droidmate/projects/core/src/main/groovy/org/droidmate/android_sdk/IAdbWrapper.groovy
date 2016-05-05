@@ -56,7 +56,7 @@ public interface IAdbWrapper {
 
   //void stopUiautomatorDaemon(String deviceSerialNumber) throws AdbWrapperException
 
-  void removeFile(String deviceSerialNumber, String fileName, String runAsPackage) throws AdbWrapperException
+  void removeFile(String deviceSerialNumber, String fileName, String shellPackageName) throws AdbWrapperException
 
-  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String runAsPackage) throws AdbWrapperException
+  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String shellPackageName) throws AdbWrapperException
 }
