@@ -17,8 +17,8 @@ class ExplorationOutput2ReportTest {
     val ser2 = FilesystemTestFixtures.build().f_monitoredSer2
     val fs = Jimfs.newFileSystem(Configuration.unix())
     val report = ExplorationOutput2Report(
-      OutputDir(DirWithFiles(fs, "droidmateOutputDir", ser2).path).notEmptyExplorationOutput2,
-      DirWithFiles(fs, "reportOutputDir").path
+      OutputDir(fs.dir("droidmateOutputDir").withFiles(ser2)).notEmptyExplorationOutput2,
+      fs.dir("reportOutputDir")
     )
 
     // Act
@@ -39,10 +39,10 @@ class ExplorationOutput2ReportTest {
     val ser2 = FilesystemTestFixtures.build().f_monitoredSer2
     val fs = Jimfs.newFileSystem(Configuration.unix())
     val report = ExplorationOutput2Report(
-      OutputDir(DirWithFiles(fs, "droidmateOutputDir", ser2).path).notEmptyExplorationOutput2,
-      DirWithFiles(fs, "reportOutputDir").path
+      OutputDir(fs.dir("droidmateOutputDir").withFiles(ser2)).notEmptyExplorationOutput2,
+      fs.dir("reportOutputDir")
     )
-
+    
     // Act
     report.writeOut()
 
@@ -54,13 +54,14 @@ class ExplorationOutput2ReportTest {
   }
 }
 
-class DirWithFiles(fs: FileSystem, dirPathString: String, vararg files: Path) {
-
-  val path: Path by lazy {
-    val dirPath = fs.getPath(dirPathString)
-    dirPath.createDirIfNotExists()
-    files.asList().copyFilesToDirInDifferentFileSystem(dirPath)
-    dirPath
-  }
-
+fun Path.withFiles(vararg files: Path): Path {
+  files.asList().copyFilesToDirInDifferentFileSystem(this)
+  return this
 }
+
+fun FileSystem.dir(dirName: String): Path {
+  val dir = this.getPath(dirName)
+  dir.createDirIfNotExists()
+  return dir
+}
+
