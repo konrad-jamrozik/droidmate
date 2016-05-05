@@ -123,7 +123,9 @@ public class Configuration implements IConfiguration
 
   public static final int    defaultActionsLimit                    = 5
   public static final String defaultApksDir                         = "apks"
-  public static final String defaultDroidmateOutputDir              = "dev1"
+  // !!! DUPLICATION WARNING !!! org.droidmate.common.logging.LogbackConstants.getLogsDirPath
+  // !!! DUPLICATION WARNING !!! repo\dev\droidmate\.gitignore
+  public static final String defaultDroidmateOutputDir              = "output_device1"
   public static final int    defaultResetEveryNthExplorationForward = 0
 
   //region Cmd line parameters

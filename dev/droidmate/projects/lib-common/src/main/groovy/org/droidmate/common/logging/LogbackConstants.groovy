@@ -21,7 +21,8 @@ public class LogbackConstants
     // the config as described here [1] would help. [1]: http://logback.qos.ch/manual/configuration.html#joranDirectly
     String logsDir = System.getProperty("logsDir")
     if (logsDir == null)
-      return "." + File.separator + "dev1" + File.separator + "logs"
+      // !!! DUPLICATION WARNING !!! org.droidmate.configuration.Configuration.defaultDroidmateOutputDir
+      return "." + File.separator + "output_device1" + File.separator + "logs"
     else
       return "." + File.separator + logsDir
   }

@@ -117,8 +117,6 @@ public class DataExtractorTest extends DroidmateGroovyTestCase
       "            0.8 nan nan\n" +
       "            0.9 nan nan\n"
 
-
-    // KJA fix localization problem
     assert actualTransformedOutput.toString() == expectedTransformedOutput
   }
 

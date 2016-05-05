@@ -52,7 +52,6 @@ class WritableExplorationOutput2AnalysisTest extends DroidmateGroovyTestCase
 
     writtenFiles.eachWithIndex {Path file, int i ->
       assert Files.size(file) > 0
-      // KJA fix localization problem
       assert file.text == fixture.expectedChartFileContents[i]
     }
   }

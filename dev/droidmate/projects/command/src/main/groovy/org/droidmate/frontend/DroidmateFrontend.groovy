@@ -99,7 +99,6 @@ public class DroidmateFrontend
         "DEBUG or INFO. Instead, it is set to ${System.getProperty(system_prop_stdout_loglevel)}.")
   }
 
-
   private static void logDroidmateRunEnd(Date runStart, boolean encounteredExceptionsDuringTheRun)
   {
     Date runEnd = new Date()
@@ -112,7 +111,7 @@ public class DroidmateFrontend
       log.info("DroidMate run finished successfully.")
 
     log.info("Run finish timestamp: ${runEnd.format(timestampFormat)}. DroidMate ran for ${runDuration}.")
-    log.info("By default, the results from the run can be found in ${Configuration.defaultDroidmateOutputDir}.")
+    log.info("By default, the results from the run can be found in .${File.separator}${Configuration.defaultDroidmateOutputDir} directory.")
     log.info("By default, for detailed diagnostics logs from the run, see $LogbackConstants.LOGS_DIR_PATH directory.")
 
     log.info(runData, "Run start  timestamp: ${runStart.format(timestampFormat)}")

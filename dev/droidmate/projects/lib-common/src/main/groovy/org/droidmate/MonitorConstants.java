@@ -39,5 +39,5 @@ public class MonitorConstants
   public static final String srvCmd_close                   = "close";
   
   public static final String monitor_time_formatter_pattern = "yyyy-MM-dd HH:mm:ss.SSS";
-  public static final Locale monitor_time_formatter_locale  = Locale.ENGLISH;
+  public static final Locale monitor_time_formatter_locale  = Locale.US;
 }
