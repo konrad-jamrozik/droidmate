@@ -253,6 +253,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     } catch (UiObjectNotFoundException e)
     {
       // WISH this might happen if some app requested settings -> factory reset. Then on clicking "settings" another subscreen of it is displayed. Proposed solution: swipe down the upper right drop-down menu instead.
+      // WISH look like this can also happen on Nexus 7 2012 android v4.4.2 emulator. Only Bluetooth available.
       Log.w(uiaDaemon_logcatTag, "No wifi switch found while in the process of ensuring that wifi is on!");
     }
 

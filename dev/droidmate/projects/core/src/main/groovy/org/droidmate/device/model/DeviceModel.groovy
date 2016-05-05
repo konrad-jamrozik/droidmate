@@ -14,7 +14,8 @@ import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 /**
  * Please see {@link DeviceModel#build(java.lang.String)}.
  * 
- * @author Nataniel Borges Jr.
+ * @author Nataniel Borges Jr. (inception)
+ * @author Konrad Jamrozik (refactoring)
  */
 public class DeviceModel
 {
@@ -23,9 +24,6 @@ public class DeviceModel
    * <p>
    * Create an {@link IDeviceModel} based on the string obtained from <pre>org.droidmate.uiautomator_daemon.UiAutomatorDaemonDriver#getDeviceModel()</pre>
    * 
-   * </p><p>
-   * To create a default device use {@link org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants#DEVICE_DEFAULT}.
-   *
    * </p><p>
    * @param deviceModel Device manufacturer + model as returned by {@link org.droidmate.uiautomator_daemon.UiAutomatorDaemonDriver#getDeviceModel()}
    * 
@@ -37,12 +35,24 @@ public class DeviceModel
 
     switch (deviceModel)
     {
-      case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_7:
-      case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_7_EMU_x86:
-      case UiautomatorDaemonConstants.DEVICE_DEFAULT:
+    /*
+     Obtained from emulator with following settings:
+        Name: Nexus_7_2012_API_19
+        CPU/ABI: Intel Atom (x86)
+        Target: Android 4.4.2 (API level 19)
+        Skin: nexus_7
+        hw.device.name: Nexus 7
+        hw.device.manufacturer: Google
+        AvdId: Nexus_7_2012_API_19
+        avd.ini.displayname: Nexus 7 (2012) API 19
+        hw.ramSize: 1024
+        hw.gpu.enabled: yes
+     */
+      case "unknown-Android SDK built for x86":
+      case "asus-Nexus 7":
         result = new Nexus7Model()
         break
-      case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_10:
+      case "samsung-Nexus 10":
         result = new Nexus10Model()
         break
       case UiautomatorDaemonConstants.DEVICE_SAMSUNG_GALAXY_S3_GT_I9300:
@@ -57,6 +67,6 @@ public class DeviceModel
   
   public static IDeviceModel buildDefault()
   {
-    return build(UiautomatorDaemonConstants.DEVICE_DEFAULT)
+    return new Nexus7Model()
   }
 }
