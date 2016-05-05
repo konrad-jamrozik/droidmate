@@ -13,7 +13,7 @@ import org.droidmate.MonitorConstants
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.device.datatypes.*
-import org.droidmate.device.model.DeviceModelHelper
+import org.droidmate.device.model.DeviceModel
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exceptions.UnsupportedMultimethodDispatch
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
@@ -29,7 +29,7 @@ class GuiScreen implements IGuiScreen
   public static final String              idChrome                = "chrome"
   public static final Set<String>         reservedIds             = [idHome, idChrome]
   public static final Map<String, String> reservedIdsPackageNames = [
-    (idHome)  : DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT).androidLauncherPackageName,
+    (idHome)  : DeviceModel.buildDefault().androidLauncherPackageName,
     (idChrome): "com.android.chrome"
   ]
 

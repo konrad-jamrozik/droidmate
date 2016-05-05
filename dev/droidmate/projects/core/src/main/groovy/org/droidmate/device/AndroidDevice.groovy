@@ -17,7 +17,7 @@ import org.droidmate.common.Boolean3
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.datatypes.*
-import org.droidmate.device.model.DeviceModelHelper
+import org.droidmate.device.model.DeviceModel
 import org.droidmate.device.model.IDeviceModel
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
@@ -402,7 +402,7 @@ public class AndroidDevice implements IAndroidDevice
     DeviceResponse response = this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
     assert response.model != null
 
-    this.deviceModel = DeviceModelHelper.build(response.model)
+    this.deviceModel = DeviceModel.build(response.model)
     assert this.deviceModel != null
   }
 

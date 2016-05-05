@@ -9,9 +9,8 @@
 package org.droidmate.device.datatypes
 
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.device.model.DeviceModelHelper
+import org.droidmate.device.model.DeviceModel
 import org.droidmate.device.model.IDeviceModel
-import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 /**
  * Wrapper between the old GuiState class and its new version.
@@ -32,7 +31,7 @@ class GuiStateLegacy implements Serializable, IGuiState
 
   private GuiState createNewGuiState()
   {
-    IDeviceModel deviceModel = DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT)
+    IDeviceModel deviceModel = DeviceModel.buildDefault()
     return new GuiState(this.topNodePackageName, this.id, this.widgets, deviceModel.androidLauncherPackageName)
   }
 

@@ -11,26 +11,25 @@ package org.droidmate.device.model
 import org.droidmate.exceptions.UnknownDeviceException
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
-// KJA  "helper" is a smell. Refactor
 /**
- * Provides a class to acquire device specific objects using Factory Method Pattern
- * {@link http://www.dofactory.com/net/factory-method-design-pattern}. <br/>
- * Role: ConcreteCreator
- *
+ * Please see {@link DeviceModel#build(java.lang.String)}.
+ * 
  * @author Nataniel Borges Jr.
  */
-public class DeviceModelHelper
+public class DeviceModel
 {
 
   /**
-   * Create an #IDeviceModel based on the device. <br/>
+   * <p>
+   * Create an {@link IDeviceModel} based on the string obtained from <pre>org.droidmate.uiautomator_daemon.UiAutomatorDaemonDriver#getDeviceModel()</pre>
+   * 
+   * </p><p>
    * To create a default device use {@link org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants#DEVICE_DEFAULT}.
-   * The default device is a Google Nexus 7.
    *
+   * </p><p>
    * @param deviceModel Device manufacturer + model as returned by {@link org.droidmate.uiautomator_daemon.UiAutomatorDaemonDriver#getDeviceModel()}
-   * *
-   * @return Device specific issues handler
-   * @throws UnknownDeviceException If the device model is not mapped to any device
+   * 
+   * </p>
    */
   public static IDeviceModel build(String deviceModel) throws UnknownDeviceException
   {
@@ -54,5 +53,10 @@ public class DeviceModelHelper
     }
 
     return result
+  }
+  
+  public static IDeviceModel buildDefault()
+  {
+    return build(UiautomatorDaemonConstants.DEVICE_DEFAULT)
   }
 }

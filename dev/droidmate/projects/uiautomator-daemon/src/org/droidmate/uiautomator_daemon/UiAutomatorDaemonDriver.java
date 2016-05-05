@@ -79,6 +79,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     String manufacturer = Build.MANUFACTURER;
     DeviceResponse deviceResponse = new DeviceResponse();
     deviceResponse.model = manufacturer + "-" + model;
+    Log.d(uiaDaemon_logcatTag, "Device model: " + deviceResponse.model);
     return deviceResponse;
   }
 

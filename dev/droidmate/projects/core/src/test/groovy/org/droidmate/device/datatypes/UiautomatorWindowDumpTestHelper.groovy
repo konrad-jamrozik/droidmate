@@ -11,9 +11,8 @@ package org.droidmate.device.datatypes
 
 import groovy.transform.TypeChecked
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.device.model.DeviceModelHelper
+import org.droidmate.device.model.DeviceModel
 import org.droidmate.device.model.IDeviceModel
-import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.awt.*
 
@@ -24,7 +23,7 @@ import static org.droidmate.test_base.FilesystemTestFixtures.apkFixture_simple_p
 @TypeChecked(SKIP)
 class UiautomatorWindowDumpTestHelper
 {
-  private static final IDeviceModel deviceModel = DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT)
+  private static final IDeviceModel deviceModel = DeviceModel.buildDefault()
 
   //region Fixture dumps
 
