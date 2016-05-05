@@ -51,6 +51,7 @@ droidmate_output
 # resources build by DroidMate sub-projects on each build
 lib-common-dev.jar
 lib-common-android-dev.jar
+uiautomator-daemon-lib-dev.jar
 lib-android-dev.jar
 autAddonBytecode.dex
 uiautomator-daemon.jar
