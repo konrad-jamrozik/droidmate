@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.report
 
+import com.konradjamrozik.isDirectory
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,6 +18,10 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
   private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
 
+  init {
+    check(dir.isDirectory)
+  }
+  
   val file: Path by lazy {
     this.dir.resolve("${data.apk.fileName}_GUIReportFile.txt")
   }

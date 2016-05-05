@@ -17,8 +17,9 @@ import org.junit.runners.Suite
 @Categories.ExcludeCategory(ExcludedFromFastRegressionTests::class)
 // The scratchpad test class is added to avoid org.junit.runner.manipulation.NoTestsRemainException
 @Suite.SuiteClasses(
-  ExplorationOutput2ReportTest::class,
   ExtensionsTests::class,
+  ExplorationOutput2ReportTest::class,
+  
   KotlinScratchpadTestClass::class
 )
 class ReporterTestSuite
