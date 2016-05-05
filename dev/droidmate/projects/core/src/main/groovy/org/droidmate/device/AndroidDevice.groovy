@@ -106,7 +106,7 @@ public class AndroidDevice implements IAndroidDevice
     def outSnapshot = new UiautomatorWindowDump(
       response.windowHierarchyDump,
       new Dimension(response.displayWidth, response.displayHeight),
-      this.deviceModel
+      this.deviceModel.androidLauncherPackageName
     )
 
     log.debug("getGuiSnapshot(): $outSnapshot")

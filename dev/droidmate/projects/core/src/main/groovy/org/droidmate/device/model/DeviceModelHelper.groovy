@@ -11,7 +11,7 @@ package org.droidmate.device.model
 import org.droidmate.exceptions.UnknownDeviceException
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
-// KJA2-clean "helper" is a smell. Refactor
+// KJA  "helper" is a smell. Refactor
 /**
  * Provides a class to acquire device specific objects using Factory Method Pattern
  * {@link http://www.dofactory.com/net/factory-method-design-pattern}. <br/>
@@ -40,6 +40,7 @@ public class DeviceModelHelper
     {
       case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_7:
       case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_7_EMU_x86:
+      case UiautomatorDaemonConstants.DEVICE_DEFAULT:
         result = new Nexus7Model()
         break
       case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_10:
@@ -47,9 +48,6 @@ public class DeviceModelHelper
         break
       case UiautomatorDaemonConstants.DEVICE_SAMSUNG_GALAXY_S3_GT_I9300:
         result = new GalaxyS3Model()
-        break
-      case UiautomatorDaemonConstants.DEVICE_DEFAULT:
-        result = new Nexus7Model()
         break
       default:
         throw new UnknownDeviceException(deviceModel)

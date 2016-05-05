@@ -22,12 +22,12 @@ class GuiStateTestHelper
 
   public static GuiState newEmptyGuiState(String appPackageName = apkFixture_simple_packageName, String id = null)
   {
-    return new GuiState(appPackageName, id, [] as List<Widget>, DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT))
+    return new GuiState(appPackageName, id, [] as List<Widget>, DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT).androidLauncherPackageName)
   }
 
   public static GuiState newGuiStateWithTopLevelNodeOnly(String appPackageName = apkFixture_simple_packageName, String id = null)
   {
-    return new GuiState(appPackageName, id, [newTopLevelWidget(appPackageName)] as List<Widget>, DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT))
+    return new GuiState(appPackageName, id, [newTopLevelWidget(appPackageName)] as List<Widget>, DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT).androidLauncherPackageName)
   }
 
 
@@ -55,7 +55,7 @@ class GuiStateTestHelper
         enabledList: [enabled] * widgetCount
       ],
       /* widgetIdPrefix */ guiStateId ?: getNextGuiStateName()),
-      DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT))
+      DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT).androidLauncherPackageName)
     assert gs.widgets.every {it.packageName == gs.topNodePackageName}
     return gs
   }

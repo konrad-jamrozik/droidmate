@@ -11,27 +11,14 @@ package org.droidmate.device.model
 import java.awt.*
 
 /**
- * Provides device specific methods for a Samsung Galaxy S3 GT-I9300 using Factory Method Pattern
- * {@link http://www.dofactory.com/net/factory-method-design-pattern}. <br/>
- * Role: ConcreteProduct
+ * Describes {@link IDeviceModel} of Samsung Galaxy S3 GT-I9300.
  *
- * @author Nataniel Borges Jr.
+ * @author Nataniel Borges Jr. (inception)
+ * @author Konrad Jamrozik (refactoring)
  */
-class GalaxyS3Model extends AbstractDeviceModel
+class GalaxyS3Model implements IDeviceModel
 {
-  public static final String package_android_launcher = "com.sec.android.app.launcher"
-
-  @Override
-  protected String getPackageAndroidLauncherName()
-  {
-    return package_android_launcher
-  }
-
-  @Override
-  String getPackageAndroidLauncher()
-  {
-    return packageAndroidLauncher;
-  }
+  final String androidLauncherPackageName = "com.sec.android.app.launcher"
 
   @Override
   Dimension getDeviceDisplayDimensionsForTesting()

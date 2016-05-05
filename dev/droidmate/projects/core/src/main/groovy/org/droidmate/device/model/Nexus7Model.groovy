@@ -11,14 +11,15 @@ package org.droidmate.device.model
 import java.awt.*
 
 /**
- * Provides device specific methods for a Google Nexus 7 device using Factory Method Pattern
- * {@link http://www.dofactory.com/net/factory-method-design-pattern}. <br/>
- * Role: ConcreteProduct <br/>
+ * Describes {@link IDeviceModel} of Google Nexus 7.
  *
- * @author Nataniel Borges Jr.
+ * @author Nataniel Borges Jr. (inception)
+ * @author Konrad Jamrozik (refactoring)
  */
-class Nexus7Model extends NexusModel
+class Nexus7Model implements IDeviceModel
 {
+  final String androidLauncherPackageName = "com.android.launcher"
+  
   @Override
   Dimension getDeviceDisplayDimensionsForTesting()
   {

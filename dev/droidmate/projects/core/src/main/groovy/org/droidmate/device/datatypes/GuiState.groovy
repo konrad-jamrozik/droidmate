@@ -12,43 +12,34 @@ package org.droidmate.device.datatypes
 import groovy.transform.Canonical
 import org.droidmate.common.TextUtilsCategory
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.device.model.IDeviceModel
 
-// KJA2-clean untangle cycle between GuiState and IDeviceModel. GuiState is a primitive type and cannot have a reference to deviceModel
 @Canonical(excludes = "id")
 class GuiState implements Serializable, IGuiState
 {
   private static final long serialVersionUID = 1
 
-  final IDeviceModel deviceModel
+  final static String androidPackageName = "android"
+
   final String       topNodePackageName
-  final List<Widget> widgets
 
   /** Id is used only for tests, for easy determination by human which instance is which when looking at widget string
    * representation. */
+  final List<Widget> widgets
+
   final String id
 
-  GuiState(String topNodePackageName, List<Widget> widgets, IDeviceModel deviceModel)
-  {
-    this(topNodePackageName, null, widgets, deviceModel)
-  }
+  final String androidLauncherPackageName
 
-  GuiState(String topNodePackageName, String id, List<Widget> widgets, IDeviceModel deviceModel)
+  GuiState(String topNodePackageName, String id, List<Widget> widgets, String androidLauncherPackageName)
   {
     this.topNodePackageName = topNodePackageName
     this.widgets = widgets
     this.id = id
-    this.deviceModel = deviceModel
+    this.androidLauncherPackageName = androidLauncherPackageName
 
-    assert this.deviceModel != null
     assert !this.topNodePackageName?.empty
+    assert !this.androidLauncherPackageName?.empty
     assert widgets != null
-  }
-
-  // KJA to remove?
-  GuiState(IGuiState guiState, String id, IDeviceModel deviceModel)
-  {
-    this(guiState.topNodePackageName, id, guiState.widgets, deviceModel)
   }
 
   @Override
@@ -74,25 +65,31 @@ class GuiState implements Serializable, IGuiState
   @Override
   boolean isHomeScreen()
   {
-    return this.deviceModel.isHomeScreen(this)
+    return topNodePackageName == androidLauncherPackageName && !widgets.any {it.text == "Widgets"}
   }
 
   @Override
   boolean isAppHasStoppedDialogBox()
   {
-    return this.deviceModel.isAppHasStoppedDialogBox(this)
+    return topNodePackageName == androidPackageName &&
+      widgets.any {it.text == "OK"} &&
+      !widgets.any {it.text == "Just once"}
   }
 
   @Override
   boolean isCompleteActionUsingDialogBox()
   {
-    return this.deviceModel.isCompleteActionUsingDialogBox(this)
+    return !isSelectAHomeAppDialogBox() &&
+      topNodePackageName == androidPackageName &&
+      widgets.any {it.text == "Just once"}
   }
 
   @Override
   boolean isSelectAHomeAppDialogBox()
   {
-    return this.deviceModel.isSelectAHomeAppDialogBox(this)
+    return topNodePackageName == androidPackageName &&
+      widgets.any {it.text == "Just once"} &&
+      widgets.any {it.text == "Select a home app"}
   }
 
   @Override

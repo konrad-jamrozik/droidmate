@@ -8,8 +8,6 @@
 // www.droidmate.org
 package org.droidmate.device.model
 
-import org.droidmate.device.datatypes.GuiState
-
 import java.awt.*
 
 /**
@@ -21,53 +19,15 @@ import java.awt.*
  */
 public interface IDeviceModel extends Serializable
 {
-  /**
-   * Determine if the {@link GuiState} is in the device home screen.
-   *
-   * @param guiState GUI State that will be evaluated
-   *
-   * @return If the device is currently in its home screen
-   */
-  boolean isHomeScreen(GuiState guiState)
 
   /**
    * Get the name of the top level package on the device's home screen
-   *
-   * @return If the device is currently in its home screen
    */
-  String getPackageAndroidLauncher()
+  String getAndroidLauncherPackageName()
+
 
   /**
-   * Determine if the {@link GuiState} possesses a stopped dialog box.
-   *
-   * @param guiState GUI State that will be evaluated
-   *
-   * @return If the device currently possess a stopped dialog box
-   */
-  boolean isAppHasStoppedDialogBox(GuiState guiState)
-
-  /**
-   * Determine if the {@link GuiState} has to complete and action using a dialog box
-   *
-   * @param guiState GUI State that will be evaluated
-   *
-   * @return If the device has to complete an action using a dialog box
-   */
-  boolean isCompleteActionUsingDialogBox(GuiState guiState)
-
-  /**
-   * Determine if the {@link GuiState} has a "Select a home app" dialog option
-   *
-   * @param guiState GUI State that will be evaluated
-   *
-   * @return If the device has a "Select a home app" dialog option
-   */
-  boolean isSelectAHomeAppDialogBox(GuiState guiState)
-
-  /**
-   * Determine the size of the device screen that can be used for testing
-   *
-   * @return The size of the device screen (device on vertical)
+   * Get the size of the device screen. Currently used only for testing purposes.
    */
   Dimension getDeviceDisplayDimensionsForTesting()
 }

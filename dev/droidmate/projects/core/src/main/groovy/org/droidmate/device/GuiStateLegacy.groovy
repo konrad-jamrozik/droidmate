@@ -33,7 +33,7 @@ class GuiStateLegacy implements Serializable, IGuiState
   private GuiState createNewGuiState()
   {
     IDeviceModel deviceModel = DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT)
-    return new GuiState(this.topNodePackageName, this.id, this.widgets, deviceModel)
+    return new GuiState(this.topNodePackageName, this.id, this.widgets, deviceModel.androidLauncherPackageName)
   }
 
   @Override
