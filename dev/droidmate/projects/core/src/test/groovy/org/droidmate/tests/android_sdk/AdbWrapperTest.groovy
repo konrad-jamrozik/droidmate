@@ -34,7 +34,7 @@ class AdbWrapperTest extends DroidmateGroovyTestCase
     String stderr = ""
     String[] stdStreams = [stdout, stderr]
 
-    // act
+    // Act
     AdbWrapper.removeAdbStartedMsgIfPresent(stdStreams)
 
     assert stdStreams[0] == "List of devices attached $sep$sep".toString()

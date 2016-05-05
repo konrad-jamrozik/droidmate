@@ -44,7 +44,7 @@ class LogbackAppendersTest
     appenders.each {Appender<ILoggingEvent> appender ->
       assertFirstFilterIsThresholdAndRepliesToTraceWith(appender, FilterReply.DENY)
 
-      // act
+      // Act
       changeThresholdLevelOfFirstFilter(appender, Level.TRACE)
     }
 
