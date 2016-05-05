@@ -36,15 +36,23 @@ import java.util.List;
 /**
  * This class contains tests showing example use cases of DroidMate API. To understand better how to work with DroidMate API, 
  * please explore the source code of the DroidMate classes called by the examples here. For where to find the sources and how to 
- * navigate them, please read <pre>https://github.com/konrad-jamrozik/droidmate/blob/master/README.md</pre>
+ * navigate them, please read <pre>https://github.com/konrad-jamrozik/droidmate/blob/master/README.md</pre>.
  */
 public class MainTest
 {
   /**
+   * <p>
    * This test shows how to access DroidMate API with default settings. If you run it right off the bat, DroidMate will inform 
    * you into which dir to put apks. If you put apks there, DroidMate will inform you why and how you should inline them.
    *
-   * In any case, please read the README.md mentioned in {@link MainTest}
+   * </p><p>
+   * DroidMate will also tell you where to look for its run output. Both the .txt files and serialized results. To see how
+   * to access serialized results, see {@link #deserialize_and_work_with_exploration_result()}
+   *
+   * </p><p>
+   * In any case, please read the README.md mentioned in {@link MainTest}.
+   *
+   * </p>
    */
   @Test
   public void explore_with_default_settings()
@@ -53,12 +61,16 @@ public class MainTest
   }
 
   /**
+   * <p>
    * This test shows how to access various part of the data structure serialized by DroidMate to file system, containing all the
-   * results from the exploration (minus the diagnostic logs). Note that the methods used are not exhaustive. Explore the sources
+   * results from the exploration. Note that the methods used are not exhaustive. Explore the sources
    * of the used types to find out more.
    *
+   * </p><p>
    * To get any meaningful output to stdout from this test, first run DroidMate on an inlined apk. Confused? Please read the doc 
-   * mentioned in {@link MainTest}
+   * mentioned in {@link MainTest}.
+   *
+   * </p>
    */
   @Test
   public void deserialize_and_work_with_exploration_result()
@@ -68,7 +80,7 @@ public class MainTest
   }
 
   /**
-   * Please see comment of {@link #deserialize_and_work_with_exploration_result}
+   * Please see the comment on {@link #deserialize_and_work_with_exploration_result}.
    */
   private void work_with_single_apk_exploration_output(IApkExplorationOutput2 apkOut)
   {
@@ -130,7 +142,7 @@ public class MainTest
 
   /**
    * This test shows some common settings you would wish to override when running DroidMate. In any case, you can always consult
-   *source of Configuration class for more settings.
+   * source of Configuration class for more settings.
    */
   @Test
   public void explore_with_common_settings_changed()
@@ -174,6 +186,4 @@ public class MainTest
     int exitStatus = DroidmateFrontend.main(args, commandProvider);
     Assert.assertEquals(0, exitStatus);
   }
-
-
 }
