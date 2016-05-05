@@ -189,10 +189,10 @@ class ConfigurationBuilder implements IConfigurationBuilder
   private static void setupResourcesAndPaths(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
     cfg.appGuardApisList = new Resource(BuildConstants.appguard_apis_txt).text.readLines().findAll {it.size() > 0 && !it.startsWith("#")}
-    cfg.uiautomatorDaemon = new Resource("uiautomator2-daemon.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
-    log.info("Using uiautomator2-daemon.apk located at " + cfg.uiautomatorDaemon.toAbsolutePath().toString())
-    cfg.uiautomatorDaemonTest = new Resource("uiautomator2-daemon-test.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
-    log.info("Using uiautomator2-daemon-test.apk located at " + cfg.uiautomatorDaemonTest.toAbsolutePath().toString())
+    cfg.uiautomatorDaemonApk = new Resource("uiautomator2-daemon.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
+    log.info("Using uiautomator2-daemon.apk located at " + cfg.uiautomatorDaemonApk.toAbsolutePath().toString())
+    cfg.uiautomatorDaemonTestApk = new Resource("uiautomator2-daemon-test.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
+    log.info("Using uiautomator2-daemon-test.apk located at " + cfg.uiautomatorDaemonTestApk.toAbsolutePath().toString())
     cfg.monitorApk = new Resource("monitor.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
     log.info("Using monitor.apk located at "+cfg.monitorApk.toAbsolutePath().toString())
 

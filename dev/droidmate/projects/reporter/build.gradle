@@ -26,16 +26,15 @@ apply plugin: "kotlin"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-// Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
-configurations {forceJunitPriority}
-sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
-sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
-
 /*
  This project uses test artifacts of core project.
  WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
  */
 evaluationDependsOn(":projects:core")
+// Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
+configurations {forceJunitPriority}
+sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
+sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
 
 dependencies {

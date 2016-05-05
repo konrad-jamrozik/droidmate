@@ -74,11 +74,8 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     // KNOWN BUG on emulator, device offline when trying to remove logcat log file. Possible quickfix: on emulators, add a wait.
     device.removeLogcatLogFile()
     device.clearLogcat()
-
-    // differently from uiautomador-daemon,
-    // uiautomator2-daemon is an APK and must be installed
-    device.installApk(this.cfg.uiautomatorDaemon)
-    device.installApk(this.cfg.uiautomatorDaemonTest)
+    device.installApk(this.cfg.uiautomatorDaemonApk)
+    device.installApk(this.cfg.uiautomatorDaemonTestApk)
     device.pushJar(this.cfg.monitorApk)
     device.setupConnection()
     device.initModel()
@@ -105,8 +102,6 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       log.trace("Tearing down.")
       device.pullLogcatLogFile()
       device.closeConnection()
-      // differently from uiautomator-daemon,
-      // uiautomator2-daemon is an APK and must be uninstalled
       device.uninstallApk(UiautomatorDaemonConstants.uiaDaemon_testPackageName, true)
       device.uninstallApk(UiautomatorDaemonConstants.uiaDaemon_packageName, true)
       device.removeJar(cfg.monitorApk)

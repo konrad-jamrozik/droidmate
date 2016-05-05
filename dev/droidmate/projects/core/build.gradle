@@ -66,7 +66,7 @@ dependencies {
 /* Note: The 'compile[Test]Java.dependsOn' clauses are redundant with 'builtBy' property in the 'dependencies' closure,
    but they are left here for documentation purposes.
  */
-processResources.dependsOn "pullMonitorApk", "pullUiaDaemon"
+processResources.dependsOn "pullMonitorApk", "pullUiaDaemonApk", "pullUiaDaemonTestApk"
 
 /*
   This dependency ensures that on "gradlew clean build" all the apk fixtures will be rebuilt as well as the library .jar they
@@ -79,23 +79,28 @@ processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 
 //region Preparation of resources
 Project uiaDaemon = findProject(":projects:uiautomator2-daemon")
-String uiaDaemonName = "${uiaDaemon.name}.apk"
-String uiaDaemonTestName = "${uiaDaemon.name}-test.apk"
+String uiaDaemonApkName = "${uiaDaemon.name}.apk"
+String uiaDaemonTestApkName = "${uiaDaemon.name}-test.apk"
+String uiaDaemonApkOriginalName = "${uiaDaemon.name}-debug-unaligned.apk"
+String uiaDaemonTestApkOriginalName = "${uiaDaemon.name}-debug-androidTest-unaligned.apk"
 String monitorApkName = "monitor.apk"
 
-task pullUiaDaemon(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
+task pullUiaDaemonApk(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
+  Copy copy ->
+    print "pullUiaDaemonApk" + "\n"
+    def uiaDaemonApk = file(new File(uiaDaemon.buildDir.absolutePath + "/outputs/apk/", uiaDaemonApkOriginalName))
+    print uiaDaemonApk.absolutePath + "\n"
+    print coreResDir.absolutePath + "\n"
+    copy.from(uiaDaemonApk).into(coreResDir).rename("-debug-unaligned.apk", ".apk")
+}
 
-  File coreResDir = getCoreResDir()
-
-  def copyFrom = "${uiaDaemon.buildDir}/outputs/apk/"
-  def copyTo = coreResDir
-
-  from copyFrom
-  into copyTo
-  include '**/*-unaligned.apk'
-  rename { String fileName ->
-    fileName.replace("-debug-androidTest-unaligned", "-test").replace("-debug-unaligned", "")
-  }
+task pullUiaDaemonTestApk(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
+  Copy copy ->
+    print "pullUiaDaemonTestApk\n"
+    def uiaDaemonTestApk = file(new File(uiaDaemon.buildDir.absolutePath + "/outputs/apk/", uiaDaemonTestApkOriginalName))
+    print uiaDaemonTestApk.absolutePath + "\n"
+    print coreResDir.absolutePath + "\n"
+    copy.from(uiaDaemonTestApk).into(coreResDir).rename("debug-androidTest-unaligned.apk", "test.apk")
 }
 
 Project monitorGenerator = findProject(":projects:monitor-generator")
@@ -172,8 +177,8 @@ private File getCoreResDir()
 //region cleaning resources
 
 task cleanResources(type: Delete) {
-  delete file(new File(coreResDir, uiaDaemonName))
-  delete file(new File(coreResDir, uiaDaemonTestName))
+  delete file(new File(coreResDir, uiaDaemonApkName))
+  delete file(new File(coreResDir, uiaDaemonTestApkName))
   delete file(new File(coreResDir, monitorApkName))
 }
 
