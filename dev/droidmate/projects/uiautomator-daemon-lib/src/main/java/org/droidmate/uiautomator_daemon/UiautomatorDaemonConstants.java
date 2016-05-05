@@ -25,26 +25,6 @@ public class UiautomatorDaemonConstants
   // End of DUPLICATION WARNING
 
   public static final String DEVICE_SAMSUNG_GALAXY_S3_GT_I9300 = "samsung-GT-I9300";
-  public static final String DEVICE_GOOGLE_NEXUS_7             = "asus-Nexus 7";
-  /**
-    Obtained from emulator with following settings:
-   <pre>
-   Name: Nexus_7_2012_API_19
-   CPU/ABI: Intel Atom (x86)
-   Target: Android 4.4.2 (API level 19)
-   Skin: nexus_7
-   hw.device.name: Nexus 7
-   hw.device.manufacturer: Google
-   AvdId: Nexus_7_2012_API_19
-   avd.ini.displayname: Nexus 7 (2012) API 19
-   hw.ramSize: 1024
-   hw.gpu.enabled: yes
-   </pre>
-   */
-  public static final String DEVICE_GOOGLE_NEXUS_7_EMU_x86     = "unknown-Android SDK built for x86";
-
-  public static final String DEVICE_GOOGLE_NEXUS_10            = "samsung-Nexus 10";
-  public static final String DEVICE_DEFAULT                    = "default";
 
   public static final String UIADAEMON_SERVER_START_TAG = "uiautomator-daemon_server_start_tag";
   public static final String UIADAEMON_SERVER_START_MSG = "UiAutomator Daemon server started successfully";

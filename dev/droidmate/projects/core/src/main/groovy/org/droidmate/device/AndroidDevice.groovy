@@ -16,9 +16,9 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.common.Boolean3
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.configuration.Configuration
-import org.droidmate.configuration.model.DeviceModelHelper
-import org.droidmate.configuration.model.IDeviceModel
 import org.droidmate.device.datatypes.*
+import org.droidmate.device.model.DeviceModel
+import org.droidmate.device.model.IDeviceModel
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
@@ -107,7 +107,7 @@ public class AndroidDevice implements IAndroidDevice
     def outSnapshot = new UiautomatorWindowDump(
       response.windowHierarchyDump,
       new Dimension(response.displayWidth, response.displayHeight),
-      this.deviceModel
+      this.deviceModel.androidLauncherPackageName
     )
 
     log.debug("getGuiSnapshot(): $outSnapshot")
@@ -411,7 +411,7 @@ public class AndroidDevice implements IAndroidDevice
     DeviceResponse response = this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
     assert response.model != null
 
-    this.deviceModel = DeviceModelHelper.build(response.model)
+    this.deviceModel = DeviceModel.build(response.model)
     assert this.deviceModel != null
   }
 

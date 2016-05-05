@@ -16,7 +16,6 @@ import groovy.util.slurpersupport.GPathResult
 import org.droidmate.common.exceptions.InvalidWidgetBoundsException
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logging.LogbackConstants
-import org.droidmate.configuration.model.IDeviceModel
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 
 import java.awt.*
@@ -70,7 +69,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
 
   private final IGuiState        guiState
   final         ValidationResult validationResult
-  private final IDeviceModel     deviceModel
+  private final String           androidLauncherPackageName
 
   /** Id is used only for tests, for:
    * - easy determination by human which widget is which when looking at widget string representation
@@ -79,7 +78,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   String id = null
 
 
-  UiautomatorWindowDump(String windowHierarchyDump, Dimension displayDimensions, IDeviceModel deviceModel, String id = null)
+  UiautomatorWindowDump(String windowHierarchyDump, Dimension displayDimensions, String androidLauncherPackageName, String id = null)
   {
     this.id = id
     this.windowHierarchyDump = windowHierarchyDump
@@ -87,7 +86,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
 
     this.wellFormedness = this.checkWellFormedness()
 
-    this.deviceModel = deviceModel
+    this.androidLauncherPackageName = androidLauncherPackageName
 
     if (this.wellFormedness == WellFormedness.OK)
       this.guiState = computeGuiState()
@@ -182,11 +181,11 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
       }
     }.findAll {it != null}
 
-    def gs = new GuiState(topNodePackage, id, widgets, this.deviceModel)
+    def gs = new GuiState(topNodePackage, id, widgets, this.androidLauncherPackageName)
     if (gs.isRequestRuntimePermissionDialogBox())
-      return new RuntimePermissionDialogBoxGuiState(topNodePackage, widgets, this.deviceModel)
+      return new RuntimePermissionDialogBoxGuiState(topNodePackage, widgets, this.androidLauncherPackageName)
     else if (gs.isAppHasStoppedDialogBox())
-      return new AppHasStoppedDialogBoxGuiState(topNodePackage, widgets, this.deviceModel)
+      return new AppHasStoppedDialogBoxGuiState(topNodePackage, widgets, this.androidLauncherPackageName)
     else
       return gs
   }

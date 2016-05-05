@@ -11,7 +11,7 @@ package org.droidmate.exceptions
 import org.droidmate.common.DroidmateException
 
 /**
- * Exception produced by {@link org.droidmate.configuration.model.IDeviceModelCreator}
+ * Exception produced by {@link org.droidmate.device.model.IDeviceModelCreator}
  * when attempting to create an unknown device.<br/>
  *
  * @author Nataniel Borges Jr.

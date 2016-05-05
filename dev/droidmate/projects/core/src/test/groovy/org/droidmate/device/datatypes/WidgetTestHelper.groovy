@@ -10,8 +10,7 @@
 package org.droidmate.device.datatypes
 
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.configuration.model.DeviceModelHelper
-import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
+import org.droidmate.device.model.DeviceModel
 
 import java.awt.*
 import java.util.List
@@ -210,7 +209,7 @@ class WidgetTestHelper
       password      : args.password      ?: false,
       selected      : args.selected      ?: false,
       bounds        : new Rectangle(lowX, lowY, highX - lowX, highY - lowY),
-      deviceDisplayBounds: new Rectangle(DeviceModelHelper.build(UiautomatorDaemonConstants.DEVICE_DEFAULT).getDeviceDisplayDimensionsForTesting())
+      deviceDisplayBounds: new Rectangle(DeviceModel.buildDefault().getDeviceDisplayDimensionsForTesting())
       // @formatter:on
     )
   }

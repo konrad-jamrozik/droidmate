@@ -12,8 +12,8 @@ import com.google.common.base.MoreObjects
 import org.droidmate.MonitorConstants
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
-import org.droidmate.configuration.model.NexusModel
 import org.droidmate.device.datatypes.*
+import org.droidmate.device.model.DeviceModel
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exceptions.UnsupportedMultimethodDispatch
 import org.droidmate.logcat.ITimeFormattedLogcatMessage
@@ -23,13 +23,13 @@ import org.droidmate.uiautomator_daemon.guimodel.GuiAction
 
 class GuiScreen implements IGuiScreen
 {
-  //private static final String packageAndroidLancher = new DeviceConfigurationFactory(UiautomatorDaemonConstants.DEVICE_DEFAULT).getConfiguration().getPackageAndroidLauncher()
+  //private static final String packageAndroidLauncher = new DeviceConfigurationFactory(UiautomatorDaemonConstants.DEVICE_DEFAULT).getConfiguration().getPackageAndroidLauncher()
 
   public static final String              idHome                  = "home"
   public static final String              idChrome                = "chrome"
   public static final Set<String>         reservedIds             = [idHome, idChrome]
   public static final Map<String, String> reservedIdsPackageNames = [
-    (idHome)  : NexusModel.package_android_launcher,
+    (idHome)  : DeviceModel.buildDefault().androidLauncherPackageName,
     (idChrome): "com.android.chrome"
   ]
 
