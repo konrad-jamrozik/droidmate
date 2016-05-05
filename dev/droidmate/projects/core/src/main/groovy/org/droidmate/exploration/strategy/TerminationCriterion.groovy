@@ -120,19 +120,13 @@ class TerminationCriterion implements ITerminationCriterion
   }
 
   @Override
-  void updateState(ExplorationAction performedAction)
+  void updateState()
   {
     if (timeLimited)
     {
       // Nothing to do here.
     } else
     {
-      // When shown a new runtime permission, add 2 extra available actions,
-      // one to click the runtime permission dialog "allow" button
-      // and another to re-execute the last action
-      if (performedAction.isEndorseRuntimePermission())
-        actionsLeft += 2
-
       assert met() || actionsLeft > 0
       actionsLeft--
     }

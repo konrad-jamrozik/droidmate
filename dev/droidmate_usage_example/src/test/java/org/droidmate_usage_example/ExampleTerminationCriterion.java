@@ -39,7 +39,7 @@ class ExampleTerminationCriterion implements ITerminationCriterion
   }
 
   @Override
-  public void updateState(ExplorationAction performedAction)
+  public void updateState()
   {
     this.callCounter--;
   }

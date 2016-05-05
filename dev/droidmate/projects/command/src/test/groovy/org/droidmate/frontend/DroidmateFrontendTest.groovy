@@ -215,7 +215,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
   {
     String[] args = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_name]",
-      Configuration.pn_widgetIndexes, "[0, 1, 2]",
+      Configuration.pn_widgetIndexes, "[0, 1, 2, 2, 2]",
     ]).get().args
 
     exploreOnRealDevice(args)

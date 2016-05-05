@@ -308,7 +308,7 @@ class ExplorationStrategy implements IExplorationStrategy
     if (!firstCallToDecideFinished)
       firstCallToDecideFinished = true
 
-    terminationCriterion.updateState(action)
+    terminationCriterion.updateState()
 
     boolean currentActionIsToReset = action instanceof ResetAppExplorationAction
 

@@ -44,15 +44,11 @@ class ExampleExplorationStrategy implements IExplorationStrategy
   @Override
   public ExplorationAction decide(IExplorationActionRunResult result)
   {
-    ExplorationAction performedAction;
+    terminationCriterion.updateState();
 
     if (terminationCriterion.met())
-      performedAction = ExplorationAction.newTerminateExplorationAction();
+      return ExplorationAction.newTerminateExplorationAction();
     else
-      performedAction = ExplorationAction.newResetAppExplorationAction();
-
-    terminationCriterion.updateState(performedAction);
-
-    return performedAction;
+      return ExplorationAction.newResetAppExplorationAction();
   }
 }

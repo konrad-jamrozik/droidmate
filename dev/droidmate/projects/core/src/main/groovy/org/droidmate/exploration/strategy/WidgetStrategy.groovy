@@ -88,19 +88,12 @@ class WidgetStrategy implements IWidgetStrategy
 
     ExplorationAction action;
 
-    // After closing a "runtime permission dialog"
-    // it is necessary to perform the last action again
     if (repeatLastAction)
     {
       assert lastWidgetInfo != null
 
       repeatLastAction = false
 
-      // Since this action was previously executed and decreased the
-      // remaining actions count, the second execution of this action
-      // should not be counted, otherwise the system will perform
-      // less actions than it should. This is done by incrementing the
-      // number of available actions
       action = chooseAction(lastWidgetInfo)
     }
     else
