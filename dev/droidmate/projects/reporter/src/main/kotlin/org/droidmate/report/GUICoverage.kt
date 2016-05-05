@@ -28,7 +28,7 @@ class GUICoverage(val data: IApkExplorationOutput2) {
     val timeRange = 0.rangeTo(data.explorationTimeInMs).step(stepSizeInMs)
 
     val rows: List<Triple<Int, Int, Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
-      Triple(tickIndex, timePassed/ stepSizeInMs, uniqueWidgetCountByTime[timePassed]!!)
+      Triple(tickIndex, timePassed / stepSizeInMs, uniqueWidgetCountByTime[timePassed]!!)
     }
 
     tableBuilder().apply {

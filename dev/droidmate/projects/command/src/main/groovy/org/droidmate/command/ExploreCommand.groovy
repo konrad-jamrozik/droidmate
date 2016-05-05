@@ -63,11 +63,10 @@ class ExploreCommand extends DroidmateCommand
     this.storage2 = storage2
   }
 
-  public
-  static ExploreCommand build(Configuration cfg, 
-                              IExplorationStrategyProvider strategyProvider = {ExplorationStrategy.build(cfg)}, 
-                              ITimeProvider timeProvider = new TimeProvider(), 
-                              IDeviceTools deviceTools = new DeviceTools(cfg))
+  public static ExploreCommand build(Configuration cfg,
+                                     IExplorationStrategyProvider strategyProvider = {ExplorationStrategy.build(cfg)},
+                                     ITimeProvider timeProvider = new TimeProvider(),
+                                     IDeviceTools deviceTools = new DeviceTools(cfg))
   {
     def storage = new Storage(cfg.droidmateOutputDirPath)
     IApksProvider apksProvider = new ApksProvider(deviceTools.aapt)
