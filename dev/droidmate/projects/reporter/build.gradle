@@ -30,7 +30,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
-sourceSets.test.runtimeClasspath += project(":projects:core").sourceSets.test.runtimeClasspath
 
 /*
  This project uses test artifacts of core project.

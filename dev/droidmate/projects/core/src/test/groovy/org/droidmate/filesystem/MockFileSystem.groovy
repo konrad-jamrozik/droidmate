@@ -17,6 +17,8 @@ import java.nio.file.FileSystem
 import java.nio.file.Files
 import java.nio.file.Path
 
+import static org.droidmate.configuration.Configuration.defaultApksDir
+
 class MockFileSystem
 {
 
@@ -41,7 +43,7 @@ class MockFileSystem
   {
     FileSystem fs = Jimfs.newFileSystem(Configuration.unix())
 
-    Path apksDir = fs.getPath(org.droidmate.configuration.Configuration.defaultApksDir)
+    Path apksDir = fs.getPath(defaultApksDir)
 
     Files.createDirectories(apksDir)
 
