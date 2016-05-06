@@ -12,7 +12,6 @@ import android.annotation.TargetApi;
 import android.app.Instrumentation;
 import android.os.Build;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.uiautomator.*;
 import android.util.Log;
 import org.apache.commons.io.FileUtils;
 import org.droidmate.uiautomator_daemon.DeviceCommand;
@@ -692,7 +691,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     // a user bringing up the All Apps screen.
     // If you use the uiautomatorviewer tool to capture a snapshot
     // of the Home screen, notice that the All Apps button’s
-    // content-description property has the value “Apps”.  We can
+    // content-description property has the value "Apps".  We can
     // use this property to create a UiSelector to find the button.
     UiObject allAppsButton = this.device.findObject(new UiSelector().description("Apps"));
 
@@ -703,7 +702,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     // In the All Apps screen, the app launch icon is located in
     // the Apps tab. To simulate the user bringing up the Apps tab,
     // we create a UiSelector to find a tab with the text
-    // label “Apps”.
+    // label "Apps".
     UiObject appsTab = this.device.findObject(new UiSelector().text("Apps"));
 
     // Simulate a click to enter the Apps tab.

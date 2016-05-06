@@ -78,9 +78,11 @@ processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 //endregion Dependencies
 
 //region Preparation of resources
-String uiaDaemonName = "uiautomator2-daemon"
-File uiaDaemonProjectDir = new File(rootDir,"projects/$uiaDaemonName")
+String uiaDaemonName = BuildKt.uia2_daemon_project_name
+File uiaDaemonProjectDir = new File(rootDir, BuildKt.uia2_daemon_relative_project_dir.path)
+assert uiaDaemonProjectDir.isDirectory()
 File uiaDaemonBuildDir = new File("$uiaDaemonProjectDir/build")
+
 String uiaDaemonApkName = "${uiaDaemonName}.apk"
 String uiaDaemonTestApkName = "${uiaDaemonName}-test.apk"
 String uiaDaemonApkOriginalName = "${uiaDaemonName}-debug-unaligned.apk"

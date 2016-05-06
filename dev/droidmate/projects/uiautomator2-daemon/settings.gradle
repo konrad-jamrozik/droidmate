@@ -8,12 +8,8 @@
 // www.droidmate.org
 
 /**
- * This settings.gradle exists because this project cannot be wired normally to the build due to: https://youtrack.jetbrains.com/issue/IDEA-122904
- * Instead, it is called as external Gradle script in 'core' project build.gradle, by virtue of being a dependency 
- * of task 'assembleUiautomator2Daemon'.
- * 
- * Because this project depends on :uiautomator-daemon-lib, which lives beside this project, some modifications had to be made 
- * in this file.
+ * Because uiautomator2-daemon project depends on :uiautomator-daemon-lib, which lives in a directory beside, 
+ * this settings.gradle pulls up parent dir one dir up.
  * 
  * See also: 
  *   https://docs.gradle.org/current/userguide/build_lifecycle.html#sub:modifying_element_of_the_project_tree
@@ -21,7 +17,7 @@
  */
 
 rootProject.projectDir = new File(settingsDir, "..");
-rootProject.name = "uiautomator2-daemon-parent"
+rootProject.name = "uiautomator2-daemon-standalone"
 
 include(":uiautomator2-daemon")
 include(":uiautomator-daemon-lib")
