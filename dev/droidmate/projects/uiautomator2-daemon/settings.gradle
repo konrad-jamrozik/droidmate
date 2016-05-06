@@ -21,7 +21,7 @@
  */
 
 rootProject.projectDir = new File(settingsDir, "..");
-rootProject.name = "projects"
+rootProject.name = "uiautomator2-daemon-parent"
 
 include(":uiautomator2-daemon")
 include(":uiautomator-daemon-lib")

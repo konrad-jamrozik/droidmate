@@ -21,11 +21,13 @@ include(
   "projects:uiautomator-daemon-lib",
   // Turned off because of https://youtrack.jetbrains.com/issue/IDEA-122904
   // See comments in settings.gradle in this project dir for more details.
-  // KJA add gradle-shell for recognizing this project in IJ.
+  // KJA add gradle-shell for recognizing this project in IJ
   // KJA remove all warnings from output of full rebuild 
   // KJA put properly configured uiautomator2-daemon.iml to repo
+  // KJA fix saveLogcatToFile() 
   // KJA fix README todos
 //  "projects:uiautomator2-daemon",
+//  "projects:uiautomator2-daemon-proxy",
   "projects:monitor-template",
   "projects:monitor-generator",
   "projects:core",

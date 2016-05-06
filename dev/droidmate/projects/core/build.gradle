@@ -87,6 +87,7 @@ String uiaDaemonApkOriginalName = "${uiaDaemonName}-debug-unaligned.apk"
 String uiaDaemonTestApkOriginalName = "${uiaDaemonName}-debug-androidTest-unaligned.apk"
 String monitorApkName = "monitor.apk"
 
+// KJA depend on  uiautomator2-daemon-proxy
 task assembleUiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
   task.buildFile = new File(uiaDaemonProjectDir, "build.gradle")
   task.tasks = ['assemble', 'assembleAndroidTest']
