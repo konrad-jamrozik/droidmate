@@ -25,6 +25,7 @@ public class UiautomatorDaemonConstants
   // End of DUPLICATION WARNING
 
   public static final String DEVICE_SAMSUNG_GALAXY_S3_GT_I9300 = "samsung-GT-I9300";
+  public static final String DEVICE_GOOGLE_NEXUS_7             = "asus-Nexus 7";
   
   public static final String UIADAEMON_SERVER_START_TAG = "uiautomator-daemon_server_start_tag";
   public static final String UIADAEMON_SERVER_START_MSG = "UiAutomator Daemon server started successfully";

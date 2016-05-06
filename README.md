@@ -120,7 +120,7 @@ DroidMate works on Ubuntu (see Travis CI build) Windows 10 and Mac OS X.
 DroidMate works with Android 6.0 (API 23) on following devices: 
 
 // KJA TODO: compatibility not confirmed as of May 6, 2013
-* Nexus 7, 2013 emulator using x86 CPU/ABI.
+* Nexus 7, 2013 emulator using x86 CPU/ABI
 * Nexus 7, 2013
 * Nexus 7, 2012 
 

@@ -51,7 +51,7 @@ public class DeviceModel
         hw.gpu.enabled: yes
      */
       case "unknown-Android SDK built for x86":
-      case "asus-Nexus 7":
+      case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_7:
         result = new Nexus7Model()
         break
       case "samsung-Nexus 10":
