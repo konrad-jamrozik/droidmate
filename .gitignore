@@ -3,7 +3,6 @@
 build/
 local.gradle
 **/\.idea/libraries/Gradle__*
-**/\.idea/libraries/*
 
 ### Java ####
 *.class
