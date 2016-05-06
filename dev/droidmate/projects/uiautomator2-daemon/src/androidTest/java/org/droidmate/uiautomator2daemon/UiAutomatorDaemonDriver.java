@@ -12,6 +12,7 @@ import android.annotation.TargetApi;
 import android.app.Instrumentation;
 import android.os.Build;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.uiautomator.*;
 import android.util.Log;
 import org.apache.commons.io.FileUtils;
 import org.droidmate.uiautomator_daemon.DeviceCommand;
