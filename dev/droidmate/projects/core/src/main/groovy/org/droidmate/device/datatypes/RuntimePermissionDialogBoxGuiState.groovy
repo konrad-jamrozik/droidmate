@@ -22,7 +22,7 @@ class RuntimePermissionDialogBoxGuiState extends GuiState implements Serializabl
 
   RuntimePermissionDialogBoxGuiState(String topNodePackageName, List<Widget> widgets, String androidLauncherPackageName)
   {
-    super(topNodePackageName, widgets, androidLauncherPackageName)
+    super(topNodePackageName, /* id = */ null, widgets, androidLauncherPackageName)
   }
 
   Widget getAllowWidget() {

@@ -23,6 +23,9 @@ include(
   // See comments in settings.gradle in this project dir for more details.
   // KJA add gradle-shell for recognizing this project in IJ.
   // KJA remove all warnings from output of full rebuild 
+  // KJA put properly configured DummyAndroidApp.iml to repo
+  // KJA put properly configured uiautomator2-daemon.iml to repo
+  // KJA fix README todos
 //  "projects:uiautomator2-daemon",
   "projects:monitor-template",
   "projects:monitor-generator",
