@@ -87,19 +87,13 @@ String monitorApkName = "monitor.apk"
 
 task pullUiaDaemonApk(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
   Copy copy ->
-    print "pullUiaDaemonApk" + "\n"
     def uiaDaemonApk = file(new File(uiaDaemon.buildDir.absolutePath + "/outputs/apk/", uiaDaemonApkOriginalName))
-    print uiaDaemonApk.absolutePath + "\n"
-    print coreResDir.absolutePath + "\n"
     copy.from(uiaDaemonApk).into(coreResDir).rename("-debug-unaligned.apk", ".apk")
 }
 
 task pullUiaDaemonTestApk(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
   Copy copy ->
-    print "pullUiaDaemonTestApk\n"
     def uiaDaemonTestApk = file(new File(uiaDaemon.buildDir.absolutePath + "/outputs/apk/", uiaDaemonTestApkOriginalName))
-    print uiaDaemonTestApk.absolutePath + "\n"
-    print coreResDir.absolutePath + "\n"
     copy.from(uiaDaemonTestApk).into(coreResDir).rename("debug-androidTest-unaligned.apk", "test.apk")
 }
 
