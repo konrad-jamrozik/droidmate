@@ -19,7 +19,7 @@ include(
   "projects:lib-common",
   "projects:apk-inliner",
   "projects:uiautomator-daemon-lib",
-  // KJA remove all warnings from output of full rebuild 
+  // KJA remove all (or at least most of) warnings from output of full rebuild 
   // KJA fix README todos
 //  "projects:uiautomator2-daemon",
   "projects:uiautomator2-daemon-proxy",
