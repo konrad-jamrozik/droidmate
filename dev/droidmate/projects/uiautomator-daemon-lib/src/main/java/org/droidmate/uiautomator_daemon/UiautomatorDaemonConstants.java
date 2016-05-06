@@ -56,9 +56,7 @@ public class UiautomatorDaemonConstants
   public static final String uiaDaemonParam_waitForWindowUpdateTimeout = "wait_for_window_update_timeout";
   public static final String uiaDaemonParam_tcpPort                    = "uiadaemon_server_tcp_port";
 
-  // KJA to exchange
-  public static final String deviceLogcatLogDir = "data/local/tmp/";
-  //public static final String deviceLogcatLogDir = "/data/user/0/" + uiaDaemon_packageName + "/files/";
+  public static final String deviceLogcatLogDir = "/data/user/0/" + uiaDaemon_packageName + "/files/";
 
   // !!! DUPLICATION WARNING !!!
   // These values are duplicated in Instrumentation library from Philipp.

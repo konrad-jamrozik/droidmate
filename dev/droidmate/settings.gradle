@@ -20,7 +20,6 @@ include(
   "projects:apk-inliner",
   "projects:uiautomator-daemon-lib",
   // KJA remove all warnings from output of full rebuild 
-  // KJA fix saveLogcatToFile() 
   // KJA fix README todos
 //  "projects:uiautomator2-daemon",
   "projects:uiautomator2-daemon-proxy",
