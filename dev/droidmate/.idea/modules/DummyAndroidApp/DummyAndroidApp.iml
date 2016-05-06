@@ -3,12 +3,14 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
+        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/../../../DummyAndroidApp/gen" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/../../../DummyAndroidApp/gen" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/../../../DummyAndroidApp/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/../../../DummyAndroidApp/res" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../../../DummyAndroidApp/assets" />
         <option name="LIBS_FOLDER_RELATIVE_PATH" value="/../../../DummyAndroidApp/libs" />
+        <option name="PROGUARD_LOGS_FOLDER_RELATIVE_PATH" value="/../../../DummyAndroidApp/proguard_logs" />
         <proGuardCfgFiles>
-          <file>file://C:/Program Files/Java/jdk1.8.0_77/tools/proguard/proguard-android.txt</file>
         </proGuardCfgFiles>
       </configuration>
     </facet>
@@ -16,6 +18,7 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../DummyAndroidApp">
+      <sourceFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/gen" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/build" />
     </content>

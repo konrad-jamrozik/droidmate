@@ -10,7 +10,7 @@
 /*
  * The settings.gradle file is used to specify which projects to include in your build.
  * In a single module build this file can be empty or even removed.
- *
+ * 
  * Detailed information about configuring a multiproject build in Gradle can be found at
  * http://www.gradle.org/docs/current/userguide/multi_project_builds.html
  */
@@ -23,7 +23,6 @@ include(
   // See comments in settings.gradle in this project dir for more details.
   // KJA add gradle-shell for recognizing this project in IJ.
   // KJA remove all warnings from output of full rebuild 
-  // KJA put properly configured DummyAndroidApp.iml to repo
   // KJA put properly configured uiautomator2-daemon.iml to repo
   // KJA fix README todos
 //  "projects:uiautomator2-daemon",
