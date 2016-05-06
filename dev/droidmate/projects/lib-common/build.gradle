@@ -111,5 +111,6 @@ apply from: project(":projects").file("maven.gradle")
 task testi(type: Test, dependsOn: "testClasses") { Test it ->
   it.group = "verification"
   it.description = "Interactive test"
+  it.outputs.upToDateWhen { false }
   it.filter.includeTest "*BuildConstantsTest", "*"
 }

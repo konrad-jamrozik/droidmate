@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 buildscript {
   repositories {
     jcenter()
@@ -35,8 +36,11 @@ android {
   }
 }
 
+repositories {
+  mavenCentral()
+}
 dependencies {
-  androidTestCompile project(':projects:uiautomator-daemon-lib')
+  androidTestCompile project(':uiautomator-daemon-lib')
 
   androidTestCompile group: 'commons-io', name: 'commons-io', version: '2.4'
   androidTestCompile 'com.google.guava:guava:18.0'

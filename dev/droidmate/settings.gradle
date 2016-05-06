@@ -19,7 +19,11 @@ include(
   "projects:lib-common",
   "projects:apk-inliner",
   "projects:uiautomator-daemon-lib",
-  "projects:uiautomator2-daemon",
+  // Turned off because of https://youtrack.jetbrains.com/issue/IDEA-122904
+  // See comments in settings.gradle in this project dir for more details.
+  // KJA add gradle-shell for recognizing this project in IJ.
+  // KJA remove all warnings from output of full rebuild 
+//  "projects:uiautomator2-daemon",
   "projects:monitor-template",
   "projects:monitor-generator",
   "projects:core",

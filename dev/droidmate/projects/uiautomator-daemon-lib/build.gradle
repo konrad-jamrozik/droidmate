@@ -38,4 +38,12 @@ compileJava.configure { JavaCompile jc ->
   jc.options.compilerArgs += "-Xlint:-options"
 }
 
-apply from: project(":projects").file("maven.gradle")
+/**
+ * This build.script is executed twice, once from normal build and once from uiautomator2-daemon build. The applied script
+ * allows to install to local maven repo and so can be applied only once. ":projects" doesn't exist when calling this script
+ * from uiautomator2-daemon, so the maven.gradle is applied only once, as it should. 
+ *
+ * For more details why such strange setup, see settings.gradle in uiautoamtor2-daemon.
+ */
+if (findProject(":projects"))
+  apply from: project(":projects").file("maven.gradle")

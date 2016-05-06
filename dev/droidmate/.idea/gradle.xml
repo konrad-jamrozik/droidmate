@@ -20,7 +20,6 @@
             <option value="$PROJECT_DIR$/projects/monitor-template" />
             <option value="$PROJECT_DIR$/projects/reporter" />
             <option value="$PROJECT_DIR$/projects/uiautomator-daemon-lib" />
-            <option value="$PROJECT_DIR$/projects/uiautomator2-daemon" />
           </set>
         </option>
       </GradleProjectSettings>

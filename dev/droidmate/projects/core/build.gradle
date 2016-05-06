@@ -78,22 +78,29 @@ processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
 //endregion Dependencies
 
 //region Preparation of resources
-Project uiaDaemon = findProject(":projects:uiautomator2-daemon")
-String uiaDaemonApkName = "${uiaDaemon.name}.apk"
-String uiaDaemonTestApkName = "${uiaDaemon.name}-test.apk"
-String uiaDaemonApkOriginalName = "${uiaDaemon.name}-debug-unaligned.apk"
-String uiaDaemonTestApkOriginalName = "${uiaDaemon.name}-debug-androidTest-unaligned.apk"
+String uiaDaemonName = "uiautomator2-daemon"
+File uiaDaemonProjectDir = new File(rootDir,"projects/$uiaDaemonName")
+File uiaDaemonBuildDir = new File("$uiaDaemonProjectDir/build")
+String uiaDaemonApkName = "${uiaDaemonName}.apk"
+String uiaDaemonTestApkName = "${uiaDaemonName}-test.apk"
+String uiaDaemonApkOriginalName = "${uiaDaemonName}-debug-unaligned.apk"
+String uiaDaemonTestApkOriginalName = "${uiaDaemonName}-debug-androidTest-unaligned.apk"
 String monitorApkName = "monitor.apk"
 
-task pullUiaDaemonApk(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
+task assembleUiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
+  task.buildFile = new File(uiaDaemonProjectDir, "build.gradle")
+  task.tasks = ['assemble', 'assembleAndroidTest']
+}
+
+task pullUiaDaemonApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
   Copy copy ->
-    def uiaDaemonApk = file(new File(uiaDaemon.buildDir.absolutePath + "/outputs/apk/", uiaDaemonApkOriginalName))
+    def uiaDaemonApk = file(new File(uiaDaemonBuildDir.absolutePath + "/outputs/apk/", uiaDaemonApkOriginalName))
     copy.from(uiaDaemonApk).into(coreResDir).rename("-debug-unaligned.apk", ".apk")
 }
 
-task pullUiaDaemonTestApk(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
+task pullUiaDaemonTestApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
   Copy copy ->
-    def uiaDaemonTestApk = file(new File(uiaDaemon.buildDir.absolutePath + "/outputs/apk/", uiaDaemonTestApkOriginalName))
+    def uiaDaemonTestApk = file(new File(uiaDaemonBuildDir.absolutePath + "/outputs/apk/", uiaDaemonTestApkOriginalName))
     copy.from(uiaDaemonTestApk).into(coreResDir).rename("debug-androidTest-unaligned.apk", "test.apk")
 }
 
