@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 
-
 buildscript {
   repositories {
     jcenter()
@@ -39,6 +38,7 @@ android {
 repositories {
   mavenCentral()
 }
+
 dependencies {
   androidTestCompile project(':uiautomator-daemon-lib')
 

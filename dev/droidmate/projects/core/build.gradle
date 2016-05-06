@@ -72,9 +72,9 @@ processResources.dependsOn "pullMonitorApk", "pullUiaDaemonApk", "pullUiaDaemonT
   This dependency ensures that on "gradlew clean build" all the apk fixtures will be rebuilt as well as the library .jar they
   depend on.
  */
-clean.dependsOn "cleanTest", "cleanResources"
+clean.dependsOn "cleanTest", "cleanResources", "cleanUiautomator2Daemon"
 
-processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
+processTestResources.dependsOn "pullApkFixtures", "inlineMonitoredApkFixture"
 //endregion Dependencies
 
 //region Preparation of resources
@@ -89,10 +89,14 @@ String uiaDaemonApkOriginalName = "${uiaDaemonName}-debug-unaligned.apk"
 String uiaDaemonTestApkOriginalName = "${uiaDaemonName}-debug-androidTest-unaligned.apk"
 String monitorApkName = "monitor.apk"
 
-// KJA depend on  uiautomator2-daemon-proxy
 task assembleUiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
   task.buildFile = new File(uiaDaemonProjectDir, "build.gradle")
   task.tasks = ['assemble', 'assembleAndroidTest']
+}
+
+task cleanUiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
+  task.buildFile = new File(uiaDaemonProjectDir, "build.gradle")
+  task.tasks = ['clean']
 }
 
 task pullUiaDaemonApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
