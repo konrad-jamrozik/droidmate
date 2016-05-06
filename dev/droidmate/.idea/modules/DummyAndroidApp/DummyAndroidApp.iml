@@ -10,15 +10,13 @@
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../../../DummyAndroidApp/assets" />
         <option name="LIBS_FOLDER_RELATIVE_PATH" value="/../../../DummyAndroidApp/libs" />
         <option name="PROGUARD_LOGS_FOLDER_RELATIVE_PATH" value="/../../../DummyAndroidApp/proguard_logs" />
-        <proGuardCfgFiles>
-        </proGuardCfgFiles>
+        <proGuardCfgFiles />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../DummyAndroidApp">
-      <sourceFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/gen" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/build" />
     </content>

@@ -36,8 +36,6 @@ public class UiautomatorDaemonConstants
   public static final String DEVICE_COMMAND_STOP_UIADAEMON                        = "stop_uiadaemon";
   public static final String DEVICE_COMMAND_GET_DEVICE_MODEL                      = "get_device_model";
 
-  public static final String deviceLogcatLogDir = "data/local/tmp/";
-
   /**
    * Method name to be called when initializing {@code UiAutomatorDaemon} through adb.<br/>
    * <br/>
@@ -57,6 +55,10 @@ public class UiautomatorDaemonConstants
   public static final String uiaDaemonParam_waitForGuiToStabilize      = "wait_for_gui_to_stabilize";
   public static final String uiaDaemonParam_waitForWindowUpdateTimeout = "wait_for_window_update_timeout";
   public static final String uiaDaemonParam_tcpPort                    = "uiadaemon_server_tcp_port";
+
+  // KJA to exchange
+  public static final String deviceLogcatLogDir = "data/local/tmp/";
+  //public static final String deviceLogcatLogDir = "/data/user/0/" + uiaDaemon_packageName + "/files/";
 
   // !!! DUPLICATION WARNING !!!
   // These values are duplicated in Instrumentation library from Philipp.

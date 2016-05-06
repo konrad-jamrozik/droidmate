@@ -6,7 +6,6 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-
 /*
   This project contains classes that:
   - are reused by multiple projects,
@@ -15,9 +14,7 @@
 
   Because some of the classes are deployed on an Android Device, the classes in this project are compiled with Java 7.
 */
-
 apply plugin: 'java'
-
 /* 
    This project has to be built with Java 7. Otherwise the "ant -f build-customized.xml build" of uiautomator-daemon
    fails with:
@@ -33,11 +30,10 @@ apply plugin: 'java'
 */
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
-compileJava.configure { JavaCompile jc ->
+compileJava.configure {JavaCompile jc ->
   // See explanation of this in build.gradle of 'monitor-template' project.
   jc.options.compilerArgs += "-Xlint:-options"
 }
-
 /**
  * This build.script is executed twice, once from normal build and once from uiautomator2-daemon build. The applied script
  * allows to install to local maven repo and so can be applied only once. ":projects" doesn't exist when calling this script
@@ -47,3 +43,5 @@ compileJava.configure { JavaCompile jc ->
  */
 if (findProject(":projects"))
   apply from: project(":projects").file("maven.gradle")
+dependencies {
+}
