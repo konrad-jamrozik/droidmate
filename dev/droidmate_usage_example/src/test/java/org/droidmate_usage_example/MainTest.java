@@ -75,7 +75,7 @@ public class MainTest
   @Test
   public void deserialize_and_work_with_exploration_result()
   {
-    final ExplorationOutput2 output = new OutputDir(Paths.get(Configuration.defaultDroidmateOutputDir)).read();
+    final ExplorationOutput2 output = new OutputDir(Paths.get(Configuration.defaultDroidmateOutputDir)).getExplorationOutput2();
     output.forEach(this::work_with_single_apk_exploration_output);
   }
 

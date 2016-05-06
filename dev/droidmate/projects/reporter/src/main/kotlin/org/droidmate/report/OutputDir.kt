@@ -6,8 +6,12 @@ import java.nio.file.Path
 
 class OutputDir(val dir: Path) {
 
-  fun read() : ExplorationOutput2
-  {
-    return ExplorationOutput2.from(Storage2(dir))
+  val explorationOutput2: ExplorationOutput2 by lazy {
+    ExplorationOutput2.from(Storage2(dir))
+  }
+
+  val notEmptyExplorationOutput2: ExplorationOutput2 by lazy {
+    check(explorationOutput2.isNotEmpty(), { "Check failed: explorationOutput2.isNotEmpty()" })
+    explorationOutput2
   }
 }

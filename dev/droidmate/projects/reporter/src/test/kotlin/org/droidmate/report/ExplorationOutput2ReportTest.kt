@@ -1,36 +1,36 @@
 package org.droidmate.report
 
+import org.droidmate.configuration.Configuration
 import org.droidmate.test_base.FilesystemTestFixtures
-import org.droidmate.test_helpers.configuration.ConfigurationForTests
-import org.droidmate.test_suite_categories.UnderConstruction
 import org.junit.Test
-import org.junit.experimental.categories.Category
+import java.nio.file.FileSystem
+import java.nio.file.Path
 
 class ExplorationOutput2ReportTest {
  
   @Test
-  // KJA2-report refactor, review. If test is done, remove tag and add to test suite.
-  @Category(UnderConstruction::class)
   fun reports() {
 
-    val mockFs = ConfigurationForTests().withMockFileSystem().get()
-    val reportInputDirMock = mockFs.reportInputDirPath
-    val reportOutputDirMock = mockFs.reportOutputDirPath
+    val mockFs: FileSystem = mockFs()
+    val cfg = Configuration.getDefault()
+    val serExplOutput: Path = FilesystemTestFixtures.build().f_monitoredSer2
 
-    val ser2 = FilesystemTestFixtures.build().f_monitoredSer2
-    listOf(ser2).copyFilesToDirInDifferentFileSystem(reportInputDirMock)
-
-    val explOutput2 = OutputDir(reportInputDirMock).read()
-    check(explOutput2.isNotEmpty(), { "Check failed: explOutput2.isNotEmpty()" })
-
-    val report = ExplorationOutput2Report(explOutput2, reportOutputDirMock)
+    // define sut
+    val report = ExplorationOutput2Report(
+      OutputDir(mockFs.dir(cfg.droidmateOutputDir).withFiles(serExplOutput)).notEmptyExplorationOutput2,
+      mockFs.dir(cfg.reportOutputDir)
+    )
 
     // Act
     report.writeOut()
 
+    // print out for manual assessment
     report.reportFiles.forEach {
       println(it.toAbsolutePath().toString())
       println(it.text())
     }
   }
 }
+
+
+

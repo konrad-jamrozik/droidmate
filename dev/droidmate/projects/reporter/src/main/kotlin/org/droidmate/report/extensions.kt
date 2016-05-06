@@ -10,18 +10,31 @@ package org.droidmate.report
 
 import com.google.common.collect.Table
 import com.konradjamrozik.FileSystemsOperations
+import com.konradjamrozik.createDirIfNotExists
 import org.codehaus.groovy.runtime.NioGroovyMethods
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
 import java.lang.Math.max
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.nio.file.FileSystem
 import java.nio.file.Files
 import java.nio.file.Path
 import java.time.Duration
 
 fun Path.text(): String {
   return NioGroovyMethods.getText(this)
+}
+
+fun Path.withFiles(vararg files: Path): Path {
+  files.asList().copyFilesToDirInDifferentFileSystem(this)
+  return this
+}
+
+fun FileSystem.dir(dirName: String): Path {
+  val dir = this.getPath(dirName)
+  dir.createDirIfNotExists()
+  return dir
 }
 
 fun List<Path>.copyFilesToDirInDifferentFileSystem(destDir: Path): Unit {
@@ -128,3 +141,4 @@ fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Int, Int> {
     .maxValueAtPartition(this.explorationTimeInMs.zeroDigits(3), 1000, { it.max() ?: 0 }).toMap()
 
 }
+

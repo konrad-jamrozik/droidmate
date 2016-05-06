@@ -265,11 +265,11 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_reportInputDir], description =
     "Path to the directory that will be expected to have DroidMate exploration output for reporting purposes.")
-  public String reportInputDir = "."+File.separator + "reportInput"
+  public String reportInputDir = "reportInput"
 
   @Parameter(names = [Configuration.pn_reportOutputDir], description =
     "Path to the directory that will contain DroidMate the report files generated from exploration output.")
-  public String reportOutputDir = "."+File.separator + "reportOutput"
+  public String reportOutputDir = "reportOutput"
 
   @Parameter(names = [Configuration.pn_resetEveryNthExplorationForward])
   public int resetEveryNthExplorationForward = defaultResetEveryNthExplorationForward

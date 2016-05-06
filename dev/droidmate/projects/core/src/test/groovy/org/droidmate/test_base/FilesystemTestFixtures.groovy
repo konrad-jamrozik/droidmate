@@ -39,6 +39,10 @@ class FilesystemTestFixtures
   public String f_aaptBadgingDump
   public Path   f_uiaTestCaseLog
   public Path   f_legacySer
+  /**
+   * The metadata to the run used for this fixture is located in directory located in the same dir as this fixture.
+   * In addition, the run configuration is codified in IntelliJ run config of "Explore fixture: f_monitoredSer2"
+   */
   public Path   f_monitoredSer2
 
   public final ApkFixtures        apks
@@ -55,7 +59,7 @@ class FilesystemTestFixtures
     f_aaptBadgingDump = new ResourcePath("fixtures/f_aaptBadgingDump.txt").path.text
     f_uiaTestCaseLog = new ResourcePath("fixtures/f_uia_test_case_log.txt").path
     f_legacySer = new ResourcePath("fixtures/serialized_results/2015 Oct 01 1723 com.antivirus.ser").path
-    f_monitoredSer2 = new ResourcePath("fixtures/serialized_results/2016 Mar 29 1650 org.droidmate.fixtures.apks.monitored.ser2").path
+    f_monitoredSer2 = new ResourcePath("fixtures/serialized_results/2016 May 05 2257 org.droidmate.fixtures.apks.monitored.ser2").path
   }
 
   public class ApkFixtures
