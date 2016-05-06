@@ -51,7 +51,7 @@ To be able to build DroidMate on your local machine, do the following:
 * Install Android SDK. 
   * Set `ANDROID_HOME` environment variable to point to its location.
 * Run SDK Manager of Android SDK with admin rights. Download the following:
-  * Android SDK Build-tools 19.1
+  * Android SDK Build-tools 23.0.3
   * Android 4.4.2 SDK Platform
 * Install Apache Ant (newest version should work) and add its `bin` directory to the `PATH` environment variable.
 * (optional) Set `GRADLE_USER_HOME` environment variable to a directory in which Gradle will locally cache the dependencies downloaded from maven repository ([Gradle doc about environment variables](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties)).
