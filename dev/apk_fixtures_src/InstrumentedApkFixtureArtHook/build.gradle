@@ -19,7 +19,7 @@ repositories {
 
 android {
   compileSdkVersion 23 //19
-  buildToolsVersion "23.0.2" //"19.1.0"
+  buildToolsVersion "23.0.3" //"19.1.0"
 
   defaultConfig {
     applicationId "org.droidmate.fixtures.apks.instrumented"
