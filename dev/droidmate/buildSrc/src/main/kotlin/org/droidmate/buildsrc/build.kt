@@ -34,11 +34,11 @@ val jarsigner = java_home.resolveRegularFile(jarsigner_relative_path)
 
 //region Android SDK components
 private val build_tools_version = "23.0.3"
+private val android_platform_version = "23"
 val aapt_command_relative = "build-tools/$build_tools_version/aapt$exeExt"
 val adb_command_relative = "platform-tools/adb$exeExt"
 val aapt_command = android_sdk_dir.resolveRegularFile(aapt_command_relative)
 val adb_command = android_sdk_dir.resolveRegularFile(adb_command_relative)
-private val android_platform_version = "23"
 private val android_platform_dir = android_sdk_dir.resolveDir("platforms/android-$android_platform_version")
 val uiautomator_jar = android_platform_dir.resolveRegularFile("uiautomator.jar")
 val android_jar = android_platform_dir.resolveRegularFile("android.jar")

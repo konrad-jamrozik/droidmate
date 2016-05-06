@@ -50,9 +50,12 @@ To be able to build DroidMate on your local machine, do the following:
   * Set `JAVA_HOME` environment variable to point to its location.
 * Install Android SDK. 
   * Set `ANDROID_HOME` environment variable to point to its location.
-* Run SDK Manager of Android SDK with admin rights. Download the following:
-  * Android SDK Build-tools 23.0.3
-  * Android 4.4.2 SDK Platform
+* Run SDK Manager of Android SDK with admin rights. Select and install the following pacakges:
+  * Tools / Android SDK Build-tools 23.0.3
+  * Android 6.0 (API 23) / SDK Platform
+  * Android 6.0 (API 23) / Documentation for Android SDK (optional, but recommended)
+  * Android 6.0 (API 23) / Sources for Android SDK (optional, but recommended)
+  * // KJA TODO: emulator?
 * Install Apache Ant (newest version should work) and add its `bin` directory to the `PATH` environment variable.
 * (optional) Set `GRADLE_USER_HOME` environment variable to a directory in which Gradle will locally cache the dependencies downloaded from maven repository ([Gradle doc about environment variables](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties)).
 
@@ -114,15 +117,20 @@ DroidMate works on Ubuntu (see Travis CI build) Windows 10 and Mac OS X.
  
 ### Android devices and emulators compatibility ###
 
-DroidMate works with Android 4.4.2 on following devices: 
+DroidMate works with Android 6.0 (API 23) on following devices: 
 
-* Nexus 7 (both 2012 and 2013) 
-* Nexus 10 
-* Samsung Galaxy S3
+// KJA TODO: compatibility not confirmed as of May 6, 2013
+* Nexus 7, 2013 emulator using x86 CPU/ABI.
+* Nexus 7, 2013
+* Nexus 7, 2012 
 
-Currently, other devices will not work.
+Other devices are not recognized by DroidMate, but may work, as long as the package name of the home screen is the same 
+as for Nexus 7, i.e. `com.android.launcher`. You can check the package name by doing the following:
 
-DroidMate is confirmed to work on emulators emulating Nexus 7 (2012) API 19 on x86 CPU/ABI.
+* launch Android Device Monitor, e.g. with `android-sdk/tools/monitor.bat`; 
+* select running device. If device is running, `adb devices` will show it;
+* click on `Dump View Hierarchy for UI Automator`;
+* click on the top level `FrameLayout` and look at `package`.
 
 ### Library compatibility ###
 
