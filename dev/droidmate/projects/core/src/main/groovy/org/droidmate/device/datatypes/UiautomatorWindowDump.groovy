@@ -292,9 +292,8 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
     if (this.guiState.isSelectAHomeAppDialogBox())
       return "$cls{\"Select a home app\" dialog box.}"
 
-
-
     String returnString = "$cls{${packageName}. Widgets# ${this.guiState.widgets.size()}}"
+    
     // Uncomment when necessary for debugging.
 //    List<Widget> widgets = this.guiState.widgets
 //    final int displayedWidgetsLimit = 50
