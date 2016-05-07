@@ -11,9 +11,21 @@ import com.konradjamrozik.IterableExtensions
 import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'groovy'
+apply plugin: 'kotlin'
+
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
+
+buildscript {
+
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
 
 //region Dependencies
 
@@ -21,14 +33,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
-
-// WISH right now logback.groovy is in the built jar, thus making it hard to replace:
-// http://stackoverflow.com/a/18275945/986533
-// http://stackoverflow.com/a/26452714/986533
-//
-// More precisely, because it is in resources dir of main sourceSet, it gets deployed to the jar with :jar task. Ideally it
-// should not be in the jar at all, nor in the distribution ('application' plugin / 'installDist' task). See the links above
-// on the better setup.
 
 dependencies {
 
@@ -39,7 +43,11 @@ dependencies {
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
   testCompile 'org.hamcrest:hamcrest-core:1.3'
+  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
 
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+  
   compile project(":projects:lib-common")
   compile project(":projects:uiautomator-daemon-lib")
 
@@ -219,3 +227,11 @@ test.configure {
 
 apply from: project(":projects").file("maven.gradle")
 apply from: project(":projects").file("debug.gradle")
+
+// WISH right now logback.groovy is in the built jar, thus making it hard to replace:
+// http://stackoverflow.com/a/18275945/986533
+// http://stackoverflow.com/a/26452714/986533
+//
+// More precisely, because it is in resources dir of main sourceSet, it gets deployed to the jar with :jar task. Ideally it
+// should not be in the jar at all, nor in the distribution ('application' plugin / 'installDist' task). See the links above
+// on the better setup.
