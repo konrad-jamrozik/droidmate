@@ -7,6 +7,6 @@
 //
 // www.droidmate.org
 
-fun example(param: String): String {
-  return param+"-mod"
+fun stripAVDframe(param: String): String {
+  return param.take(3)+" stripped frame!"
 }
