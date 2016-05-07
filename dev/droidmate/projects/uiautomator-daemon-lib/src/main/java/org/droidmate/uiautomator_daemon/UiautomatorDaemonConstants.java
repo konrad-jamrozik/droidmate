@@ -36,13 +36,6 @@ public class UiautomatorDaemonConstants
   public static final String DEVICE_COMMAND_STOP_UIADAEMON                        = "stop_uiadaemon";
   public static final String DEVICE_COMMAND_GET_DEVICE_MODEL                      = "get_device_model";
 
-  /**
-   * Method name to be called when initializing {@code UiAutomatorDaemon} through adb.<br/>
-   * <br/>
-   * Name format according to help obtained by issuing {@code adb shell uiautomator runtest} in terminal.
-   */
-  // KJA to remove?
-  public static final String uiaDaemon_initMethodName = "org.droidmate.uiautomator_daemon.UiAutomatorDaemon#init";
   public static final String uiaDaemon_packageName       = "org.droidmate.uiautomator2daemon.UiAutomator2Daemon";
   public static final String uiaDaemon_testPackageName   = uiaDaemon_packageName + ".test";
   public static final String uiaDaemon_testRunner        = "android.support.test.runner.AndroidJUnitRunner";
