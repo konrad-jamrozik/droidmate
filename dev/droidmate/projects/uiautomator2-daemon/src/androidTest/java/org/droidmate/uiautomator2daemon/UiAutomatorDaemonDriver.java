@@ -586,10 +586,10 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   {
     try
     {
-      Log.w(uiaDaemon_logcatTag, String.format("Trying to create dump file '%s'", windowDumpFile.toString()));
-      Log.w(uiaDaemon_logcatTag, "Executing dump");
+      Log.d(uiaDaemon_logcatTag, String.format("Trying to create dump file '%s'", windowDumpFile.toString()));
+      Log.d(uiaDaemon_logcatTag, "Executing dump");
       this.device.dumpWindowHierarchy(windowDumpFile);
-      Log.w(uiaDaemon_logcatTag, "Dump executed");
+      Log.d(uiaDaemon_logcatTag, "Dump executed");
 
       if (windowDumpFile.exists())
       {
@@ -625,8 +625,8 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     final File dir = InstrumentationRegistry.getTargetContext().getFilesDir();
     File file = new File(dir, fileName);
 
-    Log.w(uiaDaemon_logcatTag, String.format("Dump data directory: %s", dir.toString()));
-    Log.w(uiaDaemon_logcatTag, String.format("Dump data file: %s", file.toString()));
+    Log.d(uiaDaemon_logcatTag, String.format("Dump data directory: %s", dir.toString()));
+    Log.d(uiaDaemon_logcatTag, String.format("Dump data file: %s", file.toString()));
 
     // Here we ensure the directory of the target file exists.
     if (!dir.isDirectory())
