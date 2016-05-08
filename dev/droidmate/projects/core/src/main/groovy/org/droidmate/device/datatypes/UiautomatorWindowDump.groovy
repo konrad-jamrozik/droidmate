@@ -81,19 +81,21 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   UiautomatorWindowDump(String windowHierarchyDump, Dimension displayDimensions, String androidLauncherPackageName, String id = null)
   {
     this.id = id
-    this.windowHierarchyDump = windowHierarchyDump
     this.deviceDisplayBounds = new Rectangle(displayDimensions)
 
-    this.wellFormedness = this.checkWellFormedness()
+    this.wellFormedness = checkWellFormedness(windowHierarchyDump)
 
     this.androidLauncherPackageName = androidLauncherPackageName
 
     if (this.wellFormedness == WellFormedness.OK)
-      this.guiState = computeGuiState()
+    {
+      this.windowHierarchyDump = stripAVDframe(windowHierarchyDump)
+      this.guiState = computeGuiState(this.windowHierarchyDump)
+    }
     else
       this.guiState = null
 
-    this.validationResult = this.validate()
+    this.validationResult = validate()
   }
 
   @Override
@@ -105,7 +107,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   @Override
   String getPackageName()
   {
-    if (this.checkWellFormedness() != WellFormedness.OK)
+    if (this.wellFormedness != WellFormedness.OK)
       return "Package unknown: the snapshot is not well-formed"
 
     int startIndex = windowHierarchyDump.indexOf("package=\"");
@@ -126,7 +128,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   }
 
   @TypeChecked(SKIP)
-  private GuiState computeGuiState()
+  private GuiState computeGuiState(String windowHierarchyDump)
   {
     assert wellFormedness == WellFormedness.OK
 
@@ -224,7 +226,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   }
 
 
-  WellFormedness checkWellFormedness()
+  private WellFormedness checkWellFormedness(String windowHierarchyDump)
   {
     if (windowHierarchyDump == null)
       return WellFormedness.is_null
@@ -274,7 +276,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   public String toString()
   {
     String cls = UiautomatorWindowDump.simpleName
-    if (this.checkWellFormedness() != WellFormedness.OK)
+    if (this.wellFormedness != WellFormedness.OK)
       return "$cls{!not well-formed!: $windowHierarchyDump}"
 
     if (this.guiState.isHomeScreen())
@@ -292,9 +294,8 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
     if (this.guiState.isSelectAHomeAppDialogBox())
       return "$cls{\"Select a home app\" dialog box.}"
 
-
-
     String returnString = "$cls{${packageName}. Widgets# ${this.guiState.widgets.size()}}"
+    
     // Uncomment when necessary for debugging.
 //    List<Widget> widgets = this.guiState.widgets
 //    final int displayedWidgetsLimit = 50
@@ -305,5 +306,9 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
 
     return returnString
   }
+
+  private String stripAVDframe(String windowHierarchyDump){
+    return UiautomatorWindowDump_functionsKt.stripAVDframe(windowHierarchyDump)
+}
 }
 

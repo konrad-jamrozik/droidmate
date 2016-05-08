@@ -15,13 +15,15 @@ android:
     # Tools package is required by Travis-CI in order to locate "build-tools-23.0.2",
     # Official bugtracker issue: https://github.com/travis-ci/travis-ci/issues/5036
     - tools
-    - build-tools-23.0.2
+    - build-tools-23.0.3
     # Packages required by UIAutomator2
     - extra-android-support
     - extra-android-m2repository
 
     # DroidMate currently supports Android 4.4.2 (API 19).
     #- android-19
+    # DroidMate currently supports Android 5.1 (API 22).
+    - android-22
     # DroidMate currently supports Android 6.0.1 (API 23).
     - android-23
 

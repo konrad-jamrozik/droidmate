@@ -19,6 +19,7 @@ import com.konradjamrozik.resolveDir
 import com.konradjamrozik.resolveRegularFile
 import org.zeroturnaround.exec.ProcessExecutor
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
@@ -33,15 +34,20 @@ val jarsigner_relative_path = "bin/jarsigner$exeExt"
 val jarsigner = java_home.resolveRegularFile(jarsigner_relative_path)
 
 //region Android SDK components
-private val build_tools_version = "23.0.2"
+// WISH Borges: Requires API 23 (Android 6)
+// In order to make it compatible with API 22 (Android 5.1) uncomment the lines bellow
+// private val build_tools_version = "22.0.1"
+// private val android_platform_version = "22"
+private val build_tools_version = "23.0.3"
+private val android_platform_version = "23"
 val aapt_command_relative = "build-tools/$build_tools_version/aapt$exeExt"
 val adb_command_relative = "platform-tools/adb$exeExt"
 val aapt_command = android_sdk_dir.resolveRegularFile(aapt_command_relative)
 val adb_command = android_sdk_dir.resolveRegularFile(adb_command_relative)
-private val android_platform_version = "23"
 private val android_platform_dir = android_sdk_dir.resolveDir("platforms/android-$android_platform_version")
 val uiautomator_jar = android_platform_dir.resolveRegularFile("uiautomator.jar")
 val android_jar = android_platform_dir.resolveRegularFile("android.jar")
+val android_extras_m2repo = android_sdk_dir.resolveDir("extras/android/m2repository")
 //endregion
 
 val monitor_generator_res_name_monitor_template = "monitorTemplate.txt"
@@ -52,6 +58,9 @@ val apk_inliner_param_output_dir_default = Paths.get("output-apks")
 val apk_inliner_param_input = "-input"
 val apk_inliner_param_output_dir = "-outputDir"
 val AVD_dir_for_temp_files = "/data/local/tmp/"
+
+val uia2_daemon_project_name = "uiautomator2-daemon"
+val uia2_daemon_relative_project_dir = File("projects", uia2_daemon_project_name)
 
 /** This string makes an assumption that the apk inliner adds the "-inlined" suffix. */
 val monitored_inlined_apk_fixture_name = "MonitoredApkFixture-debug-inlined.apk"

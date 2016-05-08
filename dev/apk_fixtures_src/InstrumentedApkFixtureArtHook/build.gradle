@@ -18,13 +18,27 @@ repositories {
 
 
 android {
-  compileSdkVersion 23 //19
-  buildToolsVersion "23.0.2" //"19.1.0"
+  // WISH Borges: Requires API 23 (Android 6)
+  // In order to make it compatible with API 22 (Android 5.1) uncomment the lines bellow
+  //compileSdkVersion 22
+  //buildToolsVersion "22.0.1"
+  // In order to make it compatible with API 19 (Android 4.4) uncomment the lines bellow
+  //compileSdkVersion 19
+  //buildToolsVersion "19.1.0"
+  compileSdkVersion 23
+  buildToolsVersion "23.0.3"
 
   defaultConfig {
     applicationId "org.droidmate.fixtures.apks.instrumented"
-    minSdkVersion 23 //18
-    targetSdkVersion 23 //19
+    // WISH Borges: Requires API 23 (Android 6)
+    // In order to make it compatible with API 22 (Android 5.1) uncomment the lines bellow
+    //minSdkVersion 22
+    //targetSdkVersion 22
+    // In order to make it compatible with API 19 (Android 4.4) uncomment the lines bellow
+    //minSdkVersion 18
+    //targetSdkVersion 19
+    minSdkVersion 23
+    targetSdkVersion 23
     versionCode 1
     versionName "1.0"
   }

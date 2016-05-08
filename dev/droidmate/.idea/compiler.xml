@@ -33,6 +33,8 @@
       <module name="lib-android_test" target="1.7" />
       <module name="lib-common-android_main" target="1.7" />
       <module name="lib-common-android_test" target="1.7" />
+      <module name="lib-common-kotlin_main" target="1.8" />
+      <module name="lib-common-kotlin_test" target="1.8" />
       <module name="lib-common_main" target="1.7" />
       <module name="lib-common_test" target="1.7" />
       <module name="lib_android_main" target="1.6" />
@@ -49,14 +51,18 @@
       <module name="monitor_generator_test" target="1.8" />
       <module name="reporter_main" target="1.8" />
       <module name="reporter_test" target="1.8" />
-      <module name="uiautomator2_daemon_main" target="1.8" />
-      <module name="uiautomator2_daemon_test" target="1.8" />
       <module name="robot_main" target="1.8" />
       <module name="robot_test" target="1.8" />
       <module name="uiautomator-daemon-lib_main" target="1.7" />
       <module name="uiautomator-daemon-lib_test" target="1.7" />
       <module name="uiautomator-daemon_main" target="1.8" />
       <module name="uiautomator-daemon_test" target="1.8" />
+      <module name="uiautomator2-daemon-proxy_main" target="1.8" />
+      <module name="uiautomator2-daemon-proxy_test" target="1.8" />
+      <module name="uiautomator2-daemon_main" target="1.8" />
+      <module name="uiautomator2-daemon_test" target="1.8" />
+      <module name="uiautomator2_daemon_main" target="1.8" />
+      <module name="uiautomator2_daemon_test" target="1.8" />
       <module name="uiautomator_daemon_main" target="1.8" />
       <module name="uiautomator_daemon_test" target="1.8" />
     </bytecodeTargetLevel>

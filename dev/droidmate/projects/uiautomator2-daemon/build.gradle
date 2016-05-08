@@ -10,10 +10,18 @@ buildscript {
 }
 
 android {
+  // WISH Borges: Requires API 23 (Android 6)
+  // In order to make it compatible with API 22 (Android 5.1) uncomment the lines bellow
+  //compileSdkVersion 22
+  //buildToolsVersion "22.0.1"
   compileSdkVersion 23
-  buildToolsVersion "23.0.2"
+  buildToolsVersion "23.0.3"
   defaultConfig {
     applicationId "org.droidmate.uiautomator2daemon.UiAutomator2Daemon"
+    // WISH Borges: Requires API 23 (Android 6)
+    // In order to make it compatible with API 22 (Android 5.1) uncomment the lines bellow
+    //minSdkVersion 22
+    //targetSdkVersion 22
     minSdkVersion 23
     targetSdkVersion 23
     versionCode 1
@@ -35,17 +43,24 @@ android {
   }
 }
 
+repositories {
+  mavenCentral()
+}
+
 dependencies {
-  androidTestCompile project(':projects:uiautomator-daemon-lib')
+  androidTestCompile project(':uiautomator-daemon-lib')
 
   androidTestCompile group: 'commons-io', name: 'commons-io', version: '2.4'
   androidTestCompile 'com.google.guava:guava:18.0'
   // Testing-only dependencies
   // Force usage of support annotations in the test app, since it is internally used by the runner module.
+  // WISH Borges: Requires API 23 (Android 6)
+  // In order to make it compatible with API 22 (Android 5.1) uncomment the lines bellow
+  //androidTestCompile 'com.android.support:support-annotations:22.0.1'
   androidTestCompile 'com.android.support:support-annotations:23.0.1'
-  androidTestCompile 'com.android.support.test:runner:0.4.1'
-  androidTestCompile 'com.android.support.test:rules:0.4.1'
+  androidTestCompile 'com.android.support.test:runner:0.5'
+  androidTestCompile 'com.android.support.test:rules:0.5'
   // UiAutomator Testing
-  androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
+  androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
   androidTestCompile 'org.hamcrest:hamcrest-integration:1.3'
 }

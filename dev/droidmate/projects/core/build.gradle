@@ -15,20 +15,13 @@ apply plugin: 'groovy'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+
 //region Dependencies
 
 // See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
-
-// WISH right now logback.groovy is in the built jar, thus making it hard to replace:
-// http://stackoverflow.com/a/18275945/986533
-// http://stackoverflow.com/a/26452714/986533
-//
-// More precisely, because it is in resources dir of main sourceSet, it gets deployed to the jar with :jar task. Ideally it
-// should not be in the jar at all, nor in the distribution ('application' plugin / 'installDist' task). See the links above
-// on the better setup.
 
 dependencies {
 
@@ -41,6 +34,7 @@ dependencies {
   testCompile 'org.hamcrest:hamcrest-core:1.3'
 
   compile project(":projects:lib-common")
+  compile project(":projects:lib-common-kotlin")
   compile project(":projects:uiautomator-daemon-lib")
 
   compile 'com.beust:jcommander:1.35'
@@ -72,28 +66,42 @@ processResources.dependsOn "pullMonitorApk", "pullUiaDaemonApk", "pullUiaDaemonT
   This dependency ensures that on "gradlew clean build" all the apk fixtures will be rebuilt as well as the library .jar they
   depend on.
  */
-clean.dependsOn "cleanTest", "cleanResources"
+clean.dependsOn "cleanTest", "cleanResources", "cleanUiautomator2Daemon"
 
-processTestResources.dependsOn("pullApkFixtures", "inlineMonitoredApkFixture")
+processTestResources.dependsOn "pullApkFixtures", "inlineMonitoredApkFixture"
 //endregion Dependencies
 
 //region Preparation of resources
-Project uiaDaemon = findProject(":projects:uiautomator2-daemon")
-String uiaDaemonApkName = "${uiaDaemon.name}.apk"
-String uiaDaemonTestApkName = "${uiaDaemon.name}-test.apk"
-String uiaDaemonApkOriginalName = "${uiaDaemon.name}-debug-unaligned.apk"
-String uiaDaemonTestApkOriginalName = "${uiaDaemon.name}-debug-androidTest-unaligned.apk"
+String uiaDaemonName = BuildKt.uia2_daemon_project_name
+File uiaDaemonProjectDir = new File(rootDir, BuildKt.uia2_daemon_relative_project_dir.path)
+assert uiaDaemonProjectDir.isDirectory()
+File uiaDaemonBuildDir = new File("$uiaDaemonProjectDir/build")
+
+String uiaDaemonApkName = "${uiaDaemonName}.apk"
+String uiaDaemonTestApkName = "${uiaDaemonName}-test.apk"
+String uiaDaemonApkOriginalName = "${uiaDaemonName}-debug-unaligned.apk"
+String uiaDaemonTestApkOriginalName = "${uiaDaemonName}-debug-androidTest-unaligned.apk"
 String monitorApkName = "monitor.apk"
 
-task pullUiaDaemonApk(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
+task assembleUiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
+  task.buildFile = new File(uiaDaemonProjectDir, "build.gradle")
+  task.tasks = ['assemble', 'assembleAndroidTest']
+}
+
+task cleanUiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
+  task.buildFile = new File(uiaDaemonProjectDir, "build.gradle")
+  task.tasks = ['clean']
+}
+
+task pullUiaDaemonApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
   Copy copy ->
-    def uiaDaemonApk = file(new File(uiaDaemon.buildDir.absolutePath + "/outputs/apk/", uiaDaemonApkOriginalName))
+    def uiaDaemonApk = file(new File(uiaDaemonBuildDir.absolutePath + "/outputs/apk/", uiaDaemonApkOriginalName))
     copy.from(uiaDaemonApk).into(coreResDir).rename("-debug-unaligned.apk", ".apk")
 }
 
-task pullUiaDaemonTestApk(type: Copy, dependsOn: [":projects:uiautomator2-daemon:assemble", ":projects:uiautomator2-daemon:assembleAndroidTest"]) {
+task pullUiaDaemonTestApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
   Copy copy ->
-    def uiaDaemonTestApk = file(new File(uiaDaemon.buildDir.absolutePath + "/outputs/apk/", uiaDaemonTestApkOriginalName))
+    def uiaDaemonTestApk = file(new File(uiaDaemonBuildDir.absolutePath + "/outputs/apk/", uiaDaemonTestApkOriginalName))
     copy.from(uiaDaemonTestApk).into(coreResDir).rename("debug-androidTest-unaligned.apk", "test.apk")
 }
 
@@ -205,3 +213,11 @@ test.configure {
 
 apply from: project(":projects").file("maven.gradle")
 apply from: project(":projects").file("debug.gradle")
+
+// WISH right now logback.groovy is in the built jar, thus making it hard to replace:
+// http://stackoverflow.com/a/18275945/986533
+// http://stackoverflow.com/a/26452714/986533
+//
+// More precisely, because it is in resources dir of main sourceSet, it gets deployed to the jar with :jar task. Ideally it
+// should not be in the jar at all, nor in the distribution ('application' plugin / 'installDist' task). See the links above
+// on the better setup.

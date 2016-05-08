@@ -586,10 +586,10 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
   {
     try
     {
-      Log.w(uiaDaemon_logcatTag, String.format("Trying to create dump file '%s'", windowDumpFile.toString()));
-      Log.w(uiaDaemon_logcatTag, "Executing dump");
+      Log.d(uiaDaemon_logcatTag, String.format("Trying to create dump file '%s'", windowDumpFile.toString()));
+      Log.d(uiaDaemon_logcatTag, "Executing dump");
       this.device.dumpWindowHierarchy(windowDumpFile);
-      Log.w(uiaDaemon_logcatTag, "Dump executed");
+      Log.d(uiaDaemon_logcatTag, "Dump executed");
 
       if (windowDumpFile.exists())
       {
@@ -625,8 +625,8 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     final File dir = InstrumentationRegistry.getTargetContext().getFilesDir();
     File file = new File(dir, fileName);
 
-    Log.w(uiaDaemon_logcatTag, String.format("Dump data directory: %s", dir.toString()));
-    Log.w(uiaDaemon_logcatTag, String.format("Dump data file: %s", file.toString()));
+    Log.d(uiaDaemon_logcatTag, String.format("Dump data directory: %s", dir.toString()));
+    Log.d(uiaDaemon_logcatTag, String.format("Dump data file: %s", file.toString()));
 
     // Here we ensure the directory of the target file exists.
     if (!dir.isDirectory())
@@ -692,7 +692,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     // a user bringing up the All Apps screen.
     // If you use the uiautomatorviewer tool to capture a snapshot
     // of the Home screen, notice that the All Apps button’s
-    // content-description property has the value “Apps”.  We can
+    // content-description property has the value "Apps".  We can
     // use this property to create a UiSelector to find the button.
     UiObject allAppsButton = this.device.findObject(new UiSelector().description("Apps"));
 
@@ -703,7 +703,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     // In the All Apps screen, the app launch icon is located in
     // the Apps tab. To simulate the user bringing up the Apps tab,
     // we create a UiSelector to find a tab with the text
-    // label “Apps”.
+    // label "Apps".
     UiObject appsTab = this.device.findObject(new UiSelector().text("Apps"));
 
     // Simulate a click to enter the Apps tab.

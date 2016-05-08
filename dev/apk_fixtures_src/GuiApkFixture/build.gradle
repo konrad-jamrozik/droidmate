@@ -25,11 +25,19 @@ repositories {
 }
 
 android {
+    // WISH Borges: Requires API 23 (Android 6)
+    // In order to make it compatible with API 22 (Android 5.1) uncomment the lines bellow
+    //compileSdkVersion 22
+    //buildToolsVersion "22.0.1"
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "org.droidmate.fixtures.apks.gui"
+        // WISH Borges: Requires API 23 (Android 6)
+        // In order to make it compatible with API 22 (Android 5.1) uncomment the lines bellow
+        //minSdkVersion 22
+        //targetSdkVersion 22
         minSdkVersion 23
         targetSdkVersion 23
         versionCode 1

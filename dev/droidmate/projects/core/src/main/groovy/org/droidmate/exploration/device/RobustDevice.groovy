@@ -186,8 +186,12 @@ class RobustDevice implements IRobustDevice
     }, ensureHomeScreenIsDisplayedAttempts, /* delay */ 0)
 
     if (!guiSnapshot.guiState.isHomeScreen())
+    {
       throw new DeviceException("Failed to ensure home screen is displayed. " +
-        "Pressing 'home' button didn't help. Instead, ended with GUI state of: ${guiSnapshot.guiState}")
+        "Pressing 'home' button didn't help. Instead, ended with GUI state of: ${guiSnapshot.guiState}.\n" +
+        "Full window hierarchy dump:\n" +
+        guiSnapshot.windowHierarchyDump)
+    }
 
     return guiSnapshot
   }

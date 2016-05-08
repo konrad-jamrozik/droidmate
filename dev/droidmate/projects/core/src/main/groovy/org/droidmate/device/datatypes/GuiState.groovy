@@ -18,13 +18,15 @@ class GuiState implements Serializable, IGuiState
 {
   private static final long serialVersionUID = 1
 
-  final static String androidPackageName = "android"
+  final static String androidPackageName            = "android"
+  final static String resId_runtimePermissionDialog = "com.android.packageinstaller:id/dialog_container"
 
   final String       topNodePackageName
-  final List<Widget> widgets
 
   /** Id is used only for tests, for easy determination by human which instance is which when looking at widget string
    * representation. */
+  final List<Widget> widgets
+
   final String id
 
   final String androidLauncherPackageName
@@ -97,7 +99,9 @@ class GuiState implements Serializable, IGuiState
   @Override
   boolean isRequestRuntimePermissionDialogBox()
   {
-    return this.deviceModel.isRequestRuntimePermissionDialogBox(this)
+    boolean isRuntimeDialog = widgets.any {it.resourceId == resId_runtimePermissionDialog}
+
+    return isRuntimeDialog
   }
 
   @Override

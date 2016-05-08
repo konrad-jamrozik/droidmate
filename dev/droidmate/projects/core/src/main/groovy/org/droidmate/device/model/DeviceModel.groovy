@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.device.model
 
+import groovy.util.logging.Slf4j
 import org.droidmate.exceptions.UnknownDeviceException
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
@@ -17,6 +18,7 @@ import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
  * @author Nataniel Borges Jr. (inception)
  * @author Konrad Jamrozik (refactoring)
  */
+@Slf4j
 public class DeviceModel
 {
 
@@ -49,7 +51,9 @@ public class DeviceModel
         hw.gpu.enabled: yes
      */
       case "unknown-Android SDK built for x86":
-      case "asus-Nexus 7":
+        result = new Nexus7_2013_AVD_Model()
+        break
+      case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_7:
         result = new Nexus7Model()
         break
       case "samsung-Nexus 10":
@@ -59,7 +63,8 @@ public class DeviceModel
         result = new GalaxyS3Model()
         break
       default:
-        throw new UnknownDeviceException(deviceModel)
+        result = buildDefault()
+        log.warn("Unrecognized device model of $deviceModel. Using the default ${result.class.simpleName}.")
     }
 
     return result

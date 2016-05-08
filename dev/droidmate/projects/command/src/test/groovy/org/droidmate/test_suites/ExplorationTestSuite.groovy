@@ -13,6 +13,7 @@ import org.droidmate.common.logcat.TimeFormattedLogcatMessageTest
 import org.droidmate.deprecated_still_used.ApkExplorationOutputTest
 import org.droidmate.deprecated_still_used.DataExtractorTest
 import org.droidmate.deprecated_still_used.DeprecatedClassesDeserializerTest
+import org.droidmate.device.datatypes.UiautomatorWindowDumpFunctionsTest
 import org.droidmate.device.datatypes.UiautomatorWindowDumpTest
 import org.droidmate.exploration.output.WritableExplorationOutput2AnalysisTest
 import org.droidmate.exploration.strategy.ExplorationStrategyTest
@@ -22,6 +23,7 @@ import org.junit.runners.Suite
 @RunWith(Suite)
 @Suite.SuiteClasses([
   TimeFormattedLogcatMessageTest,
+  UiautomatorWindowDumpFunctionsTest,
   UiautomatorWindowDumpTest,
   ExplorationStrategyTest,
   DeprecatedClassesDeserializerTest,

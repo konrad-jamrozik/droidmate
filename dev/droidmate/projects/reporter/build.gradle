@@ -31,6 +31,12 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
+/*
+ This project uses test artifacts of core project.
+ WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
+ */
+evaluationDependsOn(":projects:core")
+
 dependencies {
 
   forceJunitPriority 'junit:junit:4.12'
@@ -41,9 +47,9 @@ dependencies {
 
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-
+  
   compile 'com.google.jimfs:jimfs:1.0'
-
+  
   compile project(":projects:core")
 }
 

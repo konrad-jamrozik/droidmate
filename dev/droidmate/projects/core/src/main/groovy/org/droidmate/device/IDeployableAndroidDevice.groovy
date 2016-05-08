@@ -9,10 +9,11 @@
 
 package org.droidmate.device
 
-import java.nio.file.Path
 import org.droidmate.android_sdk.IApk
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
+
+import java.nio.file.Path
 
 public interface IDeployableAndroidDevice
 {

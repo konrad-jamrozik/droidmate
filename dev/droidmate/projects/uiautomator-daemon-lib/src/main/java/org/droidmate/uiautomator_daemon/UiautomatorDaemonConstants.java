@@ -25,7 +25,8 @@ public class UiautomatorDaemonConstants
   // End of DUPLICATION WARNING
 
   public static final String DEVICE_SAMSUNG_GALAXY_S3_GT_I9300 = "samsung-GT-I9300";
-
+  public static final String DEVICE_GOOGLE_NEXUS_7             = "asus-Nexus 7";
+  
   public static final String UIADAEMON_SERVER_START_TAG = "uiautomator-daemon_server_start_tag";
   public static final String UIADAEMON_SERVER_START_MSG = "UiAutomator Daemon server started successfully";
 
@@ -35,13 +36,6 @@ public class UiautomatorDaemonConstants
   public static final String DEVICE_COMMAND_STOP_UIADAEMON                        = "stop_uiadaemon";
   public static final String DEVICE_COMMAND_GET_DEVICE_MODEL                      = "get_device_model";
 
-  public static final String deviceLogcatLogDir = "data/local/tmp/";
-
-  /**
-   * Method name to be called when initializing {@code UiAutomatorDaemon} through adb.<br/>
-   * <br/>
-   * Name format according to help obtained by issuing {@code adb shell uiautomator runtest} in terminal.
-   */
   public static final String uiaDaemon_packageName       = "org.droidmate.uiautomator2daemon.UiAutomator2Daemon";
   public static final String uiaDaemon_testPackageName   = uiaDaemon_packageName + ".test";
   public static final String uiaDaemon_testRunner        = "android.support.test.runner.AndroidJUnitRunner";
@@ -54,6 +48,8 @@ public class UiautomatorDaemonConstants
   public static final String uiaDaemonParam_waitForGuiToStabilize      = "wait_for_gui_to_stabilize";
   public static final String uiaDaemonParam_waitForWindowUpdateTimeout = "wait_for_window_update_timeout";
   public static final String uiaDaemonParam_tcpPort                    = "uiadaemon_server_tcp_port";
+
+  public static final String deviceLogcatLogDir = "/data/user/0/" + uiaDaemon_packageName + "/files/";
 
   // !!! DUPLICATION WARNING !!!
   // These values are duplicated in Instrumentation library from Philipp.

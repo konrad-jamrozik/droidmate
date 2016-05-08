@@ -11,7 +11,6 @@ package org.droidmate.device.datatypes
 
 import groovy.transform.Canonical
 import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.configuration.model.IDeviceModel
 
 /**
  * Specialized GuiState class that represents an application with an active "Runtime permission" dialog box
@@ -21,9 +20,9 @@ class RuntimePermissionDialogBoxGuiState extends GuiState implements Serializabl
 {
   private static final long serialVersionUID = 1
 
-  RuntimePermissionDialogBoxGuiState(String topNodePackageName, List<Widget> widgets, IDeviceModel deviceModel)
+  RuntimePermissionDialogBoxGuiState(String topNodePackageName, List<Widget> widgets, String androidLauncherPackageName)
   {
-    super(topNodePackageName, widgets, deviceModel)
+    super(topNodePackageName, /* id = */ null, widgets, androidLauncherPackageName)
   }
 
   Widget getAllowWidget() {

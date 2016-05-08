@@ -51,6 +51,8 @@ public class Activity1 extends ActivityWithHelper
 
   public void openCamera(View view)
   {
+    // WISH Borges: Requires API 23 (Android 6)
+    // In order to make it compatible with API 22 (Android 5.1) comment the lines bellow and the methods hasPermission and requestPermission
     if (!hasPermission(Manifest.permission.CAMERA))
     {
       requestPermission(Manifest.permission.CAMERA);
