@@ -34,7 +34,7 @@ class UiAutomatorDaemonThread implements Runnable
       this.adbWrapper.startUiautomatorDaemon(this.deviceSerialNumber, this.port)
     } catch (Throwable e)
     {
-      log.error("$UiAutomatorDaemonThread.simpleName threw ${e.class.simpleName}!", e)
+      log.error("$UiAutomatorDaemonThread.simpleName threw ${e.class.simpleName}. The exception:\n", e)
     }
   }
 

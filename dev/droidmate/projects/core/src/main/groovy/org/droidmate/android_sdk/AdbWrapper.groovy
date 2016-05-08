@@ -577,8 +577,6 @@ public class AdbWrapper implements IAdbWrapper
   @Override
   public void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
   {
-    try
-    {
       String commandDescription = String
         .format(
         "Executing adb to start UiAutomatorDaemon service on Android Device with " +
@@ -589,19 +587,31 @@ public class AdbWrapper implements IAdbWrapper
         UiautomatorDaemonConstants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
         UiautomatorDaemonConstants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
         UiautomatorDaemonConstants.uiaDaemonParam_tcpPort, port)
-      
-      // KJA next todo: read status code / output of it, crash on INSTRUMENTATION_FAILED  
-      this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
+
+    def testRunner = UiautomatorDaemonConstants.uiaDaemon_testPackageName + "/" + UiautomatorDaemonConstants.uiaDaemon_testRunner
+    def failureString = "'adb shell -s $deviceSerialNumber instrument --user 0 $uiaDaemonCmdLine -w $testRunner' failed. Oh my. "
+    String[] stdStreams
+    try
+    {
+      stdStreams = this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
         "shell am instrument",
         "--user 0",
         uiaDaemonCmdLine,
         "-w",
-        UiautomatorDaemonConstants.uiaDaemon_testPackageName + "/" + UiautomatorDaemonConstants.uiaDaemon_testRunner)
+        testRunner)
+
 
     } catch (SysCmdExecutorException e)
     {
-      throw new AdbWrapperException("Executing 'adb shell instrument --user 0 -w org.droidmate.uiautomator2daemon ...' failed. Oh my.", e)
+      throw new AdbWrapperException(failureString, e)
+    }
+
+    if (stdStreams[0].contains("INSTRUMENTATION_FAILED"))
+    {
+      throw new AdbWrapperException("Executing " +
+        failureString +
+        "Reason: stdout contains 'INSTRUMENTATION_FAILED' line. The full stdout:\n${stdStreams[0]}")
     }
   }
 
@@ -697,5 +707,19 @@ public class AdbWrapper implements IAdbWrapper
     {
       throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
     }
+  }
+
+  @SuppressWarnings("GroovyUnusedDeclaration")
+  private debugStdStreams(String[] stdStreams)
+  {
+    String stdout = stdStreams[0]
+    String stderr = stdStreams[1]
+    println "=========="
+    println "DEBUG STD STREAMS"
+    println "===== STD OUT ====="
+    println stdout
+    println "===== STD ERR ====="
+    println stderr
+    println "=========="
   }
 }
