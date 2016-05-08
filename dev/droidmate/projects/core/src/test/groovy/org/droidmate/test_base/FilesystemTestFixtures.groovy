@@ -91,8 +91,6 @@ class FilesystemTestFixtures
     public final String f_tsa_1button
     public final String f_chrome_offline
     public final String f_complActUsing_dialogbox
-    public final String f_nexus7_2013_avd_api_23_home_dm_no_frame
-    public final String f_nexus7_2013_avd_api_23_home_raw
 
     WindowDumpFixtures()
     {
@@ -105,9 +103,6 @@ class FilesystemTestFixtures
       f_tsa_1button             = new ResourcePath("fixtures/window_dumps/f_tsa_1button.xml").path.text
       f_chrome_offline          = new ResourcePath("fixtures/window_dumps/f_chrome_offline_nexus7vert.xml").path.text
       f_complActUsing_dialogbox = new ResourcePath("fixtures/window_dumps/f_complete_action_using.xml").path.text
-      
-      f_nexus7_2013_avd_api_23_home_dm_no_frame = new Resource("fixtures/window_dumps/home_screen_comparison/nexus7_2013_avd_api_23_home_dm_no_frame.xml").text
-      f_nexus7_2013_avd_api_23_home_raw = new Resource("fixtures/window_dumps/home_screen_comparison/nexus7_2013_avd_api_23_home_raw.xml").text
       // @formatter:on
     }
   }
