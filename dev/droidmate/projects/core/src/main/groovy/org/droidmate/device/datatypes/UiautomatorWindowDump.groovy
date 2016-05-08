@@ -90,7 +90,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
     if (this.wellFormedness == WellFormedness.OK)
     {
       this.windowHierarchyDump = stripAVDframe(windowHierarchyDump)
-      this.guiState = computeGuiState(windowHierarchyDump)
+      this.guiState = computeGuiState(this.windowHierarchyDump)
     }
     else
       this.guiState = null
