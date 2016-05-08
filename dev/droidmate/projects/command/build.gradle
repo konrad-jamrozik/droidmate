@@ -31,7 +31,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
  */
 evaluationDependsOn(":projects:core")
 evaluationDependsOn(":projects:reporter")
-// KJA rename to :projects:lib-kotlin"
 evaluationDependsOn(":projects:lib-kotlin")
 
 /*

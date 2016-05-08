@@ -44,7 +44,7 @@ public class DroidmateFrontend
     System.exit(exitStatus)
   }
 
-  public static int main(String[] args, ICommandProvider provider, FileSystem fs = FileSystems.getDefault(), IExceptionHandler exceptionHandler = new ExceptionHandler())
+  public static int main(String[] args, ICommandProvider commandProvider, FileSystem fs = FileSystems.getDefault(), IExceptionHandler exceptionHandler = new ExceptionHandler())
   {
     println "DroidMate"
     println "Copyright (c) 2012 - ${LocalDate.now().year} Saarland University"
@@ -65,8 +65,8 @@ public class DroidmateFrontend
       Configuration cfg = new ConfigurationBuilder().build(args, fs)
 
       DroidmateCommand command
-      if (provider != null)
-        command = provider.provide(cfg)
+      if (commandProvider != null)
+        command = commandProvider.provide(cfg)
       else 
         command = determineAndBuildCommand(cfg)
 

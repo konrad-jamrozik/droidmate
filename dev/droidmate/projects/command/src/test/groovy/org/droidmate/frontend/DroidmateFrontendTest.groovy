@@ -257,7 +257,9 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     outputDir.clearContents()
 
     // Act
-    DroidmateFrontend.main(args, null)
+    int exitStatus = DroidmateFrontend.main(args, /* commandProvider = */ null)
+    
+    assert exitStatus == 0, "Exit status != 0. Please inspect the run logs for details, including exception thrown."
 
     IApkExplorationOutput2 apkOut = outputDir.readOutput().findSingle()
 
