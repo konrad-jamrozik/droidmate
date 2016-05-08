@@ -1,0 +1,127 @@
+import com.konradjamrozik.IterableExtensions
+import org.droidmate.buildsrc.BuildKt
+
+//region Definitions
+// KJA switch to android v4 (uia-1, not uia-2).
+String uiaDaemonName = BuildKt.uia2_daemon_project_name
+File uiaDaemonProjectDir = new File(rootDir, BuildKt.uia2_daemon_relative_project_dir.path)
+assert uiaDaemonProjectDir.isDirectory()
+File uiaDaemonBuildDir = new File("$uiaDaemonProjectDir/build")
+
+String uiaDaemonApkName = "${uiaDaemonName}.apk"
+String uiaDaemonTestApkName = "${uiaDaemonName}-test.apk"
+String uiaDaemonApkOriginalName = "${uiaDaemonName}-debug-unaligned.apk"
+String uiaDaemonTestApkOriginalName = "${uiaDaemonName}-debug-androidTest-unaligned.apk"
+String monitorApkName = "monitor.apk"
+
+Project monitorGenerator = findProject(":projects:monitor-generator")
+
+private File getCoreResDir()
+{
+  Set<File> coreResDirs = sourceSets.main.resources.srcDirs.findAll {it.path.contains(project.name)}
+  assert coreResDirs.size() == 1
+  return coreResDirs.find()
+}
+
+// !!! DUPLICATION WARNING !!!
+// These values have to be the same as the ones used in the gradle scripts of the referenced "apk fixtures" project.
+File apkFixturesProjectDir = file("${project.rootDir}/../apk_fixtures_src")
+assert apkFixturesProjectDir.directory
+File apkFixturesDroidmateStagingDir = new File("${apkFixturesProjectDir.path}/build")
+String apkFixturesBuildTask = "stageForDroidmate"
+String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
+// end of DUPLICATION WARNING
+
+/*
+ This project sometimes has to fire apk-inliner:run. For that, this project needs to know input and output dirs of apk-inliner,
+ which is the reason for evaluation dependence.
+ */
+evaluationDependsOn(":projects:apk-inliner")
+JavaExec inlinerExec = project(":projects:apk-inliner").tasks.run as JavaExec
+
+ext.apkFixturesDir = new File(
+  IterableExtensions.findSingle(sourceSets.test.resources.srcDirs as Set<File>), BuildKt.apk_fixtures)
+assert apkFixturesDir.directory
+//endregion Definitions
+
+/* Note: The 'compile[Test]Java.dependsOn' clauses are redundant with 'builtBy' property in the 'dependencies' closure,
+   but they are left here for documentation purposes.
+ */
+processResources.dependsOn "pullMonitorApk", "pullUiaDaemonApk", "pullUiaDaemonTestApk"
+processTestResources.dependsOn "pullApkFixtures", "inlineMonitoredApkFixture"
+clean.dependsOn "cleanResources", "cleanUiautomator2Daemon", "cleanTest"
+// Ensure BuildKt.appguard_apis_txt is available at runtime as a resource.
+processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
+
+//region processResources dependencies
+task pullMonitorApk(type: Copy, dependsOn: ":projects:monitor-generator:build") {Copy copy ->
+
+  def monitorApk = file(new File(monitorGenerator.buildDir, monitorApkName))
+  copy.from(monitorApk).into(coreResDir)
+}
+
+task pullUiaDaemonApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
+  Copy copy ->
+    def uiaDaemonApk = file(new File(uiaDaemonBuildDir.absolutePath + "/outputs/apk/", uiaDaemonApkOriginalName))
+    copy.from(uiaDaemonApk).into(coreResDir).rename("-debug-unaligned.apk", ".apk")
+}
+
+task pullUiaDaemonTestApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
+  Copy copy ->
+    def uiaDaemonTestApk = file(new File(uiaDaemonBuildDir.absolutePath + "/outputs/apk/", uiaDaemonTestApkOriginalName))
+    copy.from(uiaDaemonTestApk).into(coreResDir).rename("debug-androidTest-unaligned.apk", "test.apk")
+}
+
+task assembleUiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
+  task.buildFile = new File(uiaDaemonProjectDir, "build.gradle")
+  task.tasks = ['assemble', 'assembleAndroidTest']
+}
+//endregion processResources dependencies
+
+//region processTestResources dependencies
+task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
+
+  from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: monitoredApkFixtureName)
+  into apkFixturesDir
+}
+
+task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
+  group = "build"
+  ["main", "classpath", "standardOutput"].each {delegate."$it" = inlinerExec."$it"}
+
+  File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
+  je.args = [
+    BuildKt.apk_inliner_param_input, inputApk.canonicalPath,
+    BuildKt.apk_inliner_param_output_dir, apkFixturesDir
+  ]
+
+  je.inputs.file inputApk
+  je.outputs.file new File(apkFixturesDir, BuildKt.monitored_inlined_apk_fixture_name)
+}
+
+task buildApkFixtures(type: GradleBuild) {
+  group = "build"
+  buildFile = apkFixturesProjectDir.path + "/build.gradle"
+  tasks = [apkFixturesBuildTask]
+}
+//endregion processTestResources dependencies
+
+//region clean dependencies
+task cleanResources(type: Delete) {
+  group = "build"
+  delete file(new File(coreResDir, uiaDaemonApkName))
+  delete file(new File(coreResDir, uiaDaemonTestApkName))
+  delete file(new File(coreResDir, monitorApkName))
+}
+
+task cleanUiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
+  task.buildFile = new File(uiaDaemonProjectDir, "build.gradle")
+  task.tasks = ['clean']
+}
+
+task cleanTest(type: GradleBuild) {
+
+  buildFile = apkFixturesProjectDir.path + "/build.gradle"
+  tasks = ["clean"]
+}
+//endregion clean dependencies
