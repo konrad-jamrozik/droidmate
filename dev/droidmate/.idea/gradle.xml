@@ -16,7 +16,7 @@
             <option value="$PROJECT_DIR$/projects/command" />
             <option value="$PROJECT_DIR$/projects/core" />
             <option value="$PROJECT_DIR$/projects/lib-common" />
-            <option value="$PROJECT_DIR$/projects/lib-common-kotlin" />
+            <option value="$PROJECT_DIR$/projects/lib-kotlin" />
             <option value="$PROJECT_DIR$/projects/monitor-generator" />
             <option value="$PROJECT_DIR$/projects/monitor-template" />
             <option value="$PROJECT_DIR$/projects/reporter" />

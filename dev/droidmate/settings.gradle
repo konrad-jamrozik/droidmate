@@ -17,7 +17,7 @@
 
 include(
   "projects:lib-common",
-  "projects:lib-common-kotlin",
+  "projects:lib-kotlin",
   "projects:apk-inliner",
   "projects:uiautomator-daemon-lib",
   "projects:uiautomator-daemon",

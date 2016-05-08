@@ -37,6 +37,8 @@
       <module name="lib-common-kotlin_test" target="1.8" />
       <module name="lib-common_main" target="1.7" />
       <module name="lib-common_test" target="1.7" />
+      <module name="lib-kotlin_main" target="1.8" />
+      <module name="lib-kotlin_test" target="1.8" />
       <module name="lib_android_main" target="1.6" />
       <module name="lib_android_test" target="1.6" />
       <module name="lib_common_android_main" target="1.7" />

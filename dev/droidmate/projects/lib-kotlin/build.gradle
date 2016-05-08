@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 /*
-  This project contains classes written in Kotlin that are used by the 'core' project.
+  This project contains classes written in Kotlin that are used by the 'core' and 'command' projects.
 */
 
 apply plugin: 'kotlin'
