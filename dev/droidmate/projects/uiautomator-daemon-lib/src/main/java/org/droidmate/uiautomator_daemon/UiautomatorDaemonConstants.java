@@ -49,6 +49,7 @@ public class UiautomatorDaemonConstants
   public static final String uiaDaemonParam_waitForWindowUpdateTimeout = "wait_for_window_update_timeout";
   public static final String uiaDaemonParam_tcpPort                    = "uiadaemon_server_tcp_port";
 
+  // KJA restore data/local/tmp for android 4
   public static final String deviceLogcatLogDir = "/data/user/0/" + uiaDaemon_packageName + "/files/";
 
   // !!! DUPLICATION WARNING !!!

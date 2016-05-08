@@ -71,6 +71,7 @@ clean.dependsOn "cleanTest", "cleanResources", "cleanUiautomator2Daemon"
 processTestResources.dependsOn "pullApkFixtures", "inlineMonitoredApkFixture"
 //endregion Dependencies
 
+// KJA modularize, switch to android v4 (uia-1, not uia-2).
 //region Preparation of resources
 String uiaDaemonName = BuildKt.uia2_daemon_project_name
 File uiaDaemonProjectDir = new File(rootDir, BuildKt.uia2_daemon_relative_project_dir.path)

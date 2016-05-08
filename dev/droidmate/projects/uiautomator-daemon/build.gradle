@@ -61,9 +61,9 @@ dependencies {
   compile projectUiautomatorDaemonLib
 
   // Required by IntelliJ; when building with Gradle, the underlying ant script knows this dependency.
-  compileOnly files(BuildKt.uiautomator_jar.toString())
+  compileOnly files(BuildKt.uiautomator_jar_api19.toString())
 
-  compileOnly files(BuildKt.android_jar.toString())
+  compileOnly files(BuildKt.android_jar_api19.toString())
 }
 
 /* --- end of MAKE INTELLIJ IDEA HAPPY ZONE --- */

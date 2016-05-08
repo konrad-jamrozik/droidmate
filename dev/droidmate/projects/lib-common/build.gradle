@@ -91,7 +91,8 @@ task writeBuildConstantsProperties() { Task it ->
     map["appguard_apis_txt"] = BuildKt.appguard_apis_txt
     map["dir_name_temp_extracted_resources"] = BuildKt.dir_name_temp_extracted_resources
     map["monitor_generator_res_name_monitor_template"] = BuildKt.monitor_generator_res_name_monitor_template
-    map["aapt_command_relative"] = BuildKt.aapt_command_relative
+    map["aapt_command_relative_api19"] = BuildKt.aapt_command_relative_api19
+    map["aapt_command_relative_api23"] = BuildKt.aapt_command_relative_api23
     map["adb_command_relative"] = BuildKt.adb_command_relative
 
     buildConstantsFile.withWriter {BufferedWriter wr ->

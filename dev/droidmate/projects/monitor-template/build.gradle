@@ -37,7 +37,7 @@ compileJava.configure { JavaCompile jc ->
       warning: [options] target value 1.5 is obsolete and will be removed in a future release
       warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
       
-    We do not worry about this as the code will be deployed to Android device which should provide appropriate boostrap class.
+    We do not worry about this as the code will be deployed to Android device which should provide appropriate bootsrap class.
    */
   jc.options.compilerArgs += "-Xlint:-options"
 }
@@ -46,7 +46,7 @@ dependencies {
 
   testCompile 'junit:junit:4.12'
 
-  compileOnly files(BuildKt.android_jar.toString())
+  compileOnly files(BuildKt.android_jar_api19.toString())
 
   compile project(":projects:lib-common")
 }

@@ -20,6 +20,7 @@ import org.droidmate.device_simulation.IDeviceSimulation
 import org.droidmate.exceptions.ExceptionSpec
 import org.droidmate.exceptions.ITestException
 import org.droidmate.exceptions.ThrowablesCollection
+import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.output.DroidmateOutputDir
 import org.droidmate.exploration.strategy.ExplorationStrategy
@@ -211,14 +212,27 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
-  public void "Explores monitored apk on a real device"()
+  public void "Explores monitored apk on a real device api 19"()
+  {
+    String[] args = new ConfigurationForTests().forDevice().setArgs([
+      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_name]",
+      Configuration.pn_widgetIndexes, "[0, 1]",
+    ]).get().args
+
+    exploreOnRealDevice(args, "api19")
+  }
+
+
+  @Category([RequiresDevice])
+  @Test
+  public void "Explores monitored apk on a real device api 23"()
   {
     String[] args = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_name]",
       Configuration.pn_widgetIndexes, "[0, 1, 2, 2, 2]",
     ]).get().args
 
-    exploreOnRealDevice(args)
+    exploreOnRealDevice(args, "api23")
   }
 
   /**
@@ -237,7 +251,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    *
    * </p>
    */
-  private void exploreOnRealDevice(String[] args)
+  private void exploreOnRealDevice(String[] args, String api)
   {
     DroidmateOutputDir outputDir = new DroidmateOutputDir(new ConfigurationBuilder().build(args).droidmateOutputDirPath)
     outputDir.clearContents()
@@ -248,32 +262,49 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     IApkExplorationOutput2 apkOut = outputDir.readOutput().findSingle()
 
     List<List<IApiLogcatMessage>> apiLogs = apkOut?.apiLogs
+    if (api == "api19")
+    {
+      assert apiLogs.size() == 4
 
-    // Api logs' structure (Android 6):
-    //  [0] Reset
-    //  [1] API: OpenURL
-    //  [2] API: CameraOpen (first time, open dialog)
-    //  [3] Runtime dialog close (resume app)
-    //  [4] API: CameraOpen
-    //  [5] Launch activity 2
-    //  [6] Terminate
-    assert apiLogs.size() == 7
+      def resetAppApiLogs = apiLogs[0]
+      def clickApiLogs = apiLogs[1]
+      def launchActivity2Logs = apiLogs[2]
+      def terminateAppApiLogs = apiLogs[3]
 
-    def resetAppApiLogs = apiLogs[0]
-    def clickApiLogs = apiLogs[1]
-    def openPermissionDialogApiLogs = apiLogs[2]
-    def onResumeApiLogs = apiLogs[3]
-    def cameraApiLogs = apiLogs[4]
-    def launchActivity2Logs = apiLogs[5]
-    def terminateAppApiLogs = apiLogs[6]
+      assert resetAppApiLogs*.methodName == ["onResume"]
+      assert clickApiLogs*.methodName == ["openConnection"]
+      assert launchActivity2Logs*.methodName == ["startActivityForResult", "onResume"]
+      assert terminateAppApiLogs.empty
+    }
+    else if (api == "api23")
+    {
+      // Api logs' structure (Android 6):
+      //  [0] Reset
+      //  [1] API: OpenURL
+      //  [2] API: CameraOpen (first time, open dialog)
+      //  [3] Runtime dialog close (resume app)
+      //  [4] API: CameraOpen
+      //  [5] Launch activity 2
+      //  [6] Terminate
+      assert apiLogs.size() == 7
 
-    assert resetAppApiLogs*.methodName == ["onResume"]
-    assert clickApiLogs*.methodName == ["openConnection"]
-    assert openPermissionDialogApiLogs.empty
-    assert onResumeApiLogs*.methodName == ["onResume"]
-    assert cameraApiLogs*.methodName == ["open"]
-    assert launchActivity2Logs*.methodName == ["startActivityForResult", "onResume"]
-    assert terminateAppApiLogs.empty
+      def resetAppApiLogs = apiLogs[0]
+      def clickApiLogs = apiLogs[1]
+      def openPermissionDialogApiLogs = apiLogs[2]
+      def onResumeApiLogs = apiLogs[3]
+      def cameraApiLogs = apiLogs[4]
+      def launchActivity2Logs = apiLogs[5]
+      def terminateAppApiLogs = apiLogs[6]
+
+      assert resetAppApiLogs*.methodName == ["onResume"]
+      assert clickApiLogs*.methodName == ["openConnection"]
+      assert openPermissionDialogApiLogs.empty
+      assert onResumeApiLogs*.methodName == ["onResume"]
+      assert cameraApiLogs*.methodName == ["open"]
+      assert launchActivity2Logs*.methodName == ["startActivityForResult", "onResume"]
+      assert terminateAppApiLogs.empty
+    }
+    else throw new UnexpectedIfElseFallthroughError()
   }
 
   private IDeviceSimulation getDeviceSimulation(Path outputDirPath)

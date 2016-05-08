@@ -29,6 +29,7 @@ import org.droidmate.common.logcat.ApiLogcatMessage
  *    (Not working, just for information) http://stackoverflow.com/questions/31653002/how-to-use-the-legacy-apache-http-client-on-android-marshmallow
  *
  */
+// KJA restore a4 redirections generation
 class RedirectionsGenerator implements IRedirectionsGenerator
 {
 

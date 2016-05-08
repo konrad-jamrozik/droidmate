@@ -59,7 +59,7 @@ dependencies {
   compile project(':projects:uiautomator-daemon-lib')
 
   // compile files(BuildKt.uiautomator_jar.toString())
-  compile files(BuildKt.android_jar.toString())
+  compile files(BuildKt.android_jar_api23.toString())
   
   compile 'commons-io:commons-io:2.4'
   compile 'com.google.guava:guava:18.0'

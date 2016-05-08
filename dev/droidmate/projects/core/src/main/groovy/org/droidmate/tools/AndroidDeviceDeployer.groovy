@@ -24,6 +24,7 @@ import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
+// KJA restore set of commands for Android 4
 @Slf4j
 public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 {

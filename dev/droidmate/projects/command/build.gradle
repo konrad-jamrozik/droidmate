@@ -31,6 +31,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
  */
 evaluationDependsOn(":projects:core")
 evaluationDependsOn(":projects:reporter")
+// KJA rename to :projects:lib-kotlin"
 evaluationDependsOn(":projects:lib-common-kotlin")
 
 /*
@@ -133,7 +134,7 @@ task testDevice(type: Test, dependsOn: testClasses) { Test task ->
   task.workingDir rootDir
 
   task.include("**/DroidmateFrontendTest.class")
-  task.filter.includeTestsMatching("*Explores monitored apk on a real device")
+  task.filter.includeTestsMatching("*Explores monitored apk on a real device api 19")
 }
 
 apply from: project(":projects").file("maven.gradle")

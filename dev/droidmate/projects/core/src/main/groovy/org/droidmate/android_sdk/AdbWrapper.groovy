@@ -589,7 +589,8 @@ public class AdbWrapper implements IAdbWrapper
         UiautomatorDaemonConstants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
         UiautomatorDaemonConstants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
         UiautomatorDaemonConstants.uiaDaemonParam_tcpPort, port)
-
+      
+      // KJA next todo: read status code / output of it, crash on INSTRUMENTATION_FAILED  
       this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
         "shell am instrument",
