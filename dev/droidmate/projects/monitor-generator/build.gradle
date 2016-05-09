@@ -52,7 +52,7 @@ tasks.run { JavaExec javaExec ->
   outputs.file runOutput
 
   doLast {
-    assert runOutput.isFile()
+    assert runOutput.file
   }
 }
 
@@ -66,7 +66,7 @@ task pullMonitorJavaTemplateSource(type: Copy) {
 }
 
 File monitorApkScaffoldingDir = file "monitor-apk-scaffolding"
-assert monitorApkScaffoldingDir.isDirectory()
+assert monitorApkScaffoldingDir.directory
 
 File libsDir = new File(monitorApkScaffoldingDir, "libs")
 File libs_api19_dir = new File(monitorApkScaffoldingDir, "libs_api19")
@@ -93,7 +93,7 @@ task make_libs_from_libs_api23(type: Copy, dependsOn: "cleanLibsDir") { Copy cop
 }
 
 File monitorJava = new File(monitorApkScaffoldingDir, "src/org/droidmate/monitor_generator/generated/Monitor.java")
-assert monitorJava.parentFile.isDirectory()
+assert monitorJava.parentFile.directory
 
 task copyGeneratedMonitorToScaffolding_api23(type: Copy, dependsOn: "run") { Copy copy ->
   group = "build"
@@ -104,8 +104,8 @@ task copyGeneratedMonitorToScaffolding_api23(type: Copy, dependsOn: "run") { Cop
 
   copy.outputs.file monitorJava
 
-  doFirst {assert project.ext.runOutput.isFile()}
-  doLast {assert monitorJava.isFile()}
+  doFirst {assert project.ext.runOutput.file}
+  doLast {assert monitorJava.file}
 }
 
 tasks.pullLibCommonJar.mustRunAfter(tasks.make_libs_from_libs_api19)
@@ -124,7 +124,7 @@ task antBuildMonitorApk(dependsOn: ["pullLibCommonJar"]) {
 
   doLast {
 
-    assert monitorJava.isFile()
+    assert monitorJava.file
 
     int exitValue = BuildKt.executeCommand(
       "${monitorApkScaffoldingDir.name} ant debug",
