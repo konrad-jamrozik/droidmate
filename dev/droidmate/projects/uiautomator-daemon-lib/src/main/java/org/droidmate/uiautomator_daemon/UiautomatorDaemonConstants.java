@@ -36,9 +36,15 @@ public class UiautomatorDaemonConstants
   public static final String DEVICE_COMMAND_STOP_UIADAEMON                        = "stop_uiadaemon";
   public static final String DEVICE_COMMAND_GET_DEVICE_MODEL                      = "get_device_model";
 
-  public static final String uiaDaemon_packageName       = "org.droidmate.uiautomator2daemon.UiAutomator2Daemon";
-  public static final String uiaDaemon_testPackageName   = uiaDaemon_packageName + ".test";
-  public static final String uiaDaemon_testRunner        = "android.support.test.runner.AndroidJUnitRunner";
+  /**
+   * Method name to be called when initializing {@code UiAutomatorDaemon} through adb.<br/>
+   * <br/>
+   * Name format according to help obtained by issuing {@code adb shell uiautomator runtest} in terminal.
+   */
+  public static final String uiaDaemon_initMethodName   = "org.droidmate.uiautomator_daemon.UiAutomatorDaemon#init";
+  public static final String uia2Daemon_packageName     = "org.droidmate.uiautomator2daemon.UiAutomator2Daemon";
+  public static final String uia2Daemon_testPackageName = uia2Daemon_packageName + ".test";
+  public static final String uia2Daemon_testRunner      = "android.support.test.runner.AndroidJUnitRunner";
 
   public static final String guiActionCommand_pressBack  = "press_back";
   public static final String guiActionCommand_pressHome  = "press_home";
@@ -49,8 +55,8 @@ public class UiautomatorDaemonConstants
   public static final String uiaDaemonParam_waitForWindowUpdateTimeout = "wait_for_window_update_timeout";
   public static final String uiaDaemonParam_tcpPort                    = "uiadaemon_server_tcp_port";
 
-  // KJA restore data/local/tmp for android 4
-  public static final String deviceLogcatLogDir = "/data/user/0/" + uiaDaemon_packageName + "/files/";
+  public static final String deviceLogcatLogDir_api19 = "data/local/tmp/";
+  public static final String deviceLogcatLogDir_api23 = "/data/user/0/" + uia2Daemon_packageName + "/files/";
 
   // !!! DUPLICATION WARNING !!!
   // These values are duplicated in Instrumentation library from Philipp.

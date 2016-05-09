@@ -243,14 +243,14 @@ public class AndroidDevice implements IAndroidDevice
   void removeLogcatLogFile() throws DeviceException
   {
     log.debug("removeLogcatLogFile()")
-    this.adbWrapper.removeFile(this.serialNumber, logcatLogFileName, UiautomatorDaemonConstants.uiaDaemon_packageName)
+    this.adbWrapper.removeFile(this.serialNumber, logcatLogFileName, uia2Daemon_packageName)
   }
 
   @Override
   void pullLogcatLogFile() throws DeviceException
   {
     log.debug("pullLogcatLogFile()")
-    this.adbWrapper.pullFile(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"), UiautomatorDaemonConstants.uiaDaemon_packageName)
+    this.adbWrapper.pullFile(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"), uia2Daemon_packageName)
   }
 
   @Override

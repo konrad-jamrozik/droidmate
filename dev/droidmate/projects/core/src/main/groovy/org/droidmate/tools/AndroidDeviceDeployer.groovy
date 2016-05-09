@@ -114,8 +114,8 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
         device.removeJar(cfg.uiautomatorDaemonJar)
       } else if (cfg.androidApi == "api23")
       {
-        device.uninstallApk(UiautomatorDaemonConstants.uiaDaemon_testPackageName, true)
-        device.uninstallApk(UiautomatorDaemonConstants.uiaDaemon_packageName, true)
+        device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_testPackageName, true)
+        device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_packageName, true)
       } else throw new UnexpectedIfElseFallthroughError()
       
       device.removeJar(cfg.monitorApk)

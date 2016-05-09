@@ -18,6 +18,7 @@ import org.droidmate.common.SysCmdExecutorException
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.AdbWrapperException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
+import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.nio.file.Files
@@ -577,18 +578,27 @@ public class AdbWrapper implements IAdbWrapper
   @Override
   public void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
   {
-      String commandDescription = String
-        .format(
-        "Executing adb to start UiAutomatorDaemon service on Android Device with " +
-          "s/n %s.",
-        deviceSerialNumber)
+    if (cfg.androidApi == "api19")
+      startUiautomatorDaemon_api19(deviceSerialNumber, port)
+    else if (cfg.androidApi == "api23")
+      startUiautomatorDaemon_api23(deviceSerialNumber, port)
+    else throw new UnexpectedIfElseFallthroughError()
+  }
 
-      String uiaDaemonCmdLine = String.format("-e %s %s -e %s %s -e %s %s",
-        UiautomatorDaemonConstants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
-        UiautomatorDaemonConstants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
-        UiautomatorDaemonConstants.uiaDaemonParam_tcpPort, port)
+  private void startUiautomatorDaemon_api23(String deviceSerialNumber, int port) throws AdbWrapperException
+  {
+    String commandDescription = String
+      .format(
+      "Executing adb to start UiAutomatorDaemon service on Android Device with " +
+        "s/n %s.",
+      deviceSerialNumber)
 
-    def testRunner = UiautomatorDaemonConstants.uiaDaemon_testPackageName + "/" + UiautomatorDaemonConstants.uiaDaemon_testRunner
+    String uiaDaemonCmdLine = String.format("-e %s %s -e %s %s -e %s %s",
+      UiautomatorDaemonConstants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
+      UiautomatorDaemonConstants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
+      UiautomatorDaemonConstants.uiaDaemonParam_tcpPort, port)
+
+    def testRunner = UiautomatorDaemonConstants.uia2Daemon_testPackageName + "/" + UiautomatorDaemonConstants.uia2Daemon_testRunner
     def failureString = "'adb shell -s $deviceSerialNumber instrument --user 0 $uiaDaemonCmdLine -w $testRunner' failed. Oh my. "
     String[] stdStreams
     try
@@ -601,12 +611,50 @@ public class AdbWrapper implements IAdbWrapper
         "-w",
         testRunner)
 
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException(failureString, e)
+    }
+
+    validateInstrumentation(stdStreams, failureString)
+  }
+
+  private void startUiautomatorDaemon_api19(String deviceSerialNumber, int port) throws AdbWrapperException
+  {
+
+    String commandDescription = String
+      .format(
+      "Executing adb to start UiAutomatorDaemon.init() method on Android Device with " +
+        "s/n %s.",
+      deviceSerialNumber)
+
+    String uiaDaemonCmdLine = String.format("-c %s -e %s %s -e %s %s -e %s %s",
+      UiautomatorDaemonConstants.uiaDaemon_initMethodName,
+      UiautomatorDaemonConstants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
+      UiautomatorDaemonConstants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
+      UiautomatorDaemonConstants.uiaDaemonParam_tcpPort, port)
+
+    def failureString = "Executing 'adb -s $deviceSerialNumber shell uiautomator runtest ${cfg.uiautomatorDaemonJar.fileName.toString()} $uiaDaemonCmdLine' failed. Oh my."
+    String[] stdStreams
+    try
+    {
+      stdStreams = this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell uiautomator runtest",
+        cfg.uiautomatorDaemonJar.fileName.toString(),
+        uiaDaemonCmdLine)
 
     } catch (SysCmdExecutorException e)
     {
       throw new AdbWrapperException(failureString, e)
     }
 
+    validateInstrumentation(stdStreams, failureString)
+  }
+
+
+  private void validateInstrumentation(String[] stdStreams, GString failureString)
+  {
     if (stdStreams[0].contains("INSTRUMENTATION_FAILED"))
     {
       throw new AdbWrapperException("Executing " +
@@ -626,6 +674,7 @@ public class AdbWrapper implements IAdbWrapper
    * More information:
    *   http://stackoverflow.com/questions/18471780/android-adb-retrieve-database-using-run-as
    */
+  // KJA NEXT: restore API 19
   void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String shellPackageName) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
@@ -637,7 +686,7 @@ public class AdbWrapper implements IAdbWrapper
     // configuration, but they do not as of 15 Jan 2016
     assert Files.notExists(Paths.get(destinationFilePath))
 
-    String pulledFilePath = UiautomatorDaemonConstants.deviceLogcatLogDir + pulledFileName
+    String pulledFilePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api23 + pulledFileName
     String commandDescription = String
       .format(
       "Executing adb to pull file %s from Android Device with s/n %s.",
@@ -685,7 +734,7 @@ public class AdbWrapper implements IAdbWrapper
     assert fileName.size() > 0
     assert shellPackageName != null
 
-    String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir + fileName
+    String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api23 + fileName
     String commandDescription = String
       .format(
       "Executing adb to delete file %s from Android Device with s/n %s.",
