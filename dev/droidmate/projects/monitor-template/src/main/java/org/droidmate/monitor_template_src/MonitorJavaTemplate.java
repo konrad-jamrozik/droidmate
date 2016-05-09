@@ -31,7 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-// import de.larma.arthook.*;
+// import de.larma.arthook.*; // KJA inject depending on API, generate both versions
 // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 /**<p>
@@ -96,7 +96,7 @@ public class MonitorJavaTemplate
       server.context = context;
 
     // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-    // ArtHook.hook(Monitor.class);
+    // ArtHook.hook(Monitor.class); // KJA inject depending on API, generate both versions
     // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
     redirectConstructors();

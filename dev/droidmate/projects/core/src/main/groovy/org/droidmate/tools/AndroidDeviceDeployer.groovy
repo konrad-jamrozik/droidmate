@@ -107,7 +107,6 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     if (device.available)
     {
       log.trace("Tearing down.")
-      // KJA current failure l1
       device.pullLogcatLogFile()
       device.closeConnection()
       if (cfg.androidApi == "api19")

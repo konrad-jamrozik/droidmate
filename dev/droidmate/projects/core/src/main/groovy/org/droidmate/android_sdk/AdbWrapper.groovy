@@ -71,7 +71,7 @@ public class AdbWrapper implements IAdbWrapper
 
     List<AndroidDeviceDescriptor> deviceDescriptors = parseDeviceInformation(stdStreams[0])
 
-    if (deviceDescriptors.isEmpty())
+    if (deviceDescriptors.empty)
       throw new NoAndroidDevicesAvailableException()
 
     assert deviceDescriptors.size() > 0
@@ -669,8 +669,35 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
+  void pullFile_api19(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
+  {
+    assert deviceSerialNumber != null
+    assert pulledFileName?.size() > 0
+    assert destinationFilePath?.size() > 0
+
+    assert Files.notExists(Paths.get(destinationFilePath))
+
+    String pulledFilePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api19 + pulledFileName
+    String commandDescription = String
+      .format(
+      "Executing adb to pull file %s from Android Device with s/n %s.",
+      pulledFilePath, deviceSerialNumber)
+
+    try
+    {
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "pull", pulledFilePath, destinationFilePath)
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb pull ...' failed. Oh my.", e)
+    }
+  }
+
+  @Override
   /**
-   * Pull file from the device
+   * Pull file from the device.
    *
    * Due to Android 6 enhanced security it is necessary to run the software as
    * a specific package to extract a file
@@ -679,16 +706,13 @@ public class AdbWrapper implements IAdbWrapper
    * More information:
    *   http://stackoverflow.com/questions/18471780/android-adb-retrieve-database-using-run-as
    */
-  
-  void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String shellPackageName) throws AdbWrapperException
+  void pullFile_api23(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String shellPackageName) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
     assert pulledFileName?.size() > 0
     assert destinationFilePath?.size() > 0
-    assert shellPackageName != null
+    assert !shellPackageName?.empty
 
-    // WISH make it stubbable by taking filesystem from configuration. But then also logback logs should take filesystem from
-    // configuration, but they do not as of 15 Jan 2016
     assert Files.notExists(Paths.get(destinationFilePath))
 
     String pulledFilePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api23 + pulledFileName
@@ -699,35 +723,16 @@ public class AdbWrapper implements IAdbWrapper
 
     try
     {
+      String[] stdStreams = sysCmdExecutor.execute(
+        commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "exec-out",
+        "run-as", shellPackageName,
+        "cat", pulledFilePath)
 
-      if (shellPackageName == null)
-        sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-          "-s", deviceSerialNumber,
-          "pull", pulledFilePath, destinationFilePath)
-      else
-      {
-        // KJA current failure: 'run-as' is for api23
-        /*
-        Command: [C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe, -s, emulator-5554, exec-out, run-as, org.droidmate.uiautomator2daemon.UiAutomator2Daemon, cat, /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/droidmate_logcat.txt]
-  Captured exit value: -1
-  Execution time: 0 seconds
-  Captured stdout: <stdout is empty>
-  Captured stderr: error: closed
-  
-         */
-        String[] executionOutput = sysCmdExecutor.execute(
-          commandDescription, cfg.adbCommand,
-          "-s", deviceSerialNumber,
-          "exec-out",
-          "run-as", shellPackageName,
-          "cat", pulledFilePath)
-
-        // Output was acquired with CAT not with PULL,
-        // create the output file and save file content
-        FileWriter writer = new FileWriter(destinationFilePath)
-        writer.write(executionOutput[0])
-        writer.close()
-      }
+      FileWriter writer = new FileWriter(destinationFilePath)
+      writer.write(stdStreams[0])
+      writer.close()
 
     } catch (SysCmdExecutorException e)
     {
@@ -735,18 +740,42 @@ public class AdbWrapper implements IAdbWrapper
     }
   }
 
-  @Override
-  /**
-   * Remove a file from the device
-   *
-   * See explanation about the shellPackageName parameter in {@link org.droidmate.android_sdk.AdbWrapper#pullFile}
-   */
-  void removeFile(String deviceSerialNumber, String fileName, String shellPackageName) throws AdbWrapperException
+  void removeFile_api19(String deviceSerialNumber, String fileName) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
     assert fileName != null
     assert fileName.size() > 0
-    assert shellPackageName != null
+
+    String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api19 + fileName
+    String commandDescription = String
+      .format(
+      "Executing adb to delete file %s from Android Device with s/n %s.",
+      filePath, deviceSerialNumber)
+
+    try
+    {
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell rm", filePath)
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
+    }
+  }
+
+  @Override
+  /**
+   * Remove a file from the device
+   *
+   * See explanation about the shellPackageName parameter in {@link org.droidmate.android_sdk.AdbWrapper#pullFile_api23}
+   */
+  void removeFile_api23(String deviceSerialNumber, String fileName, String shellPackageName) throws AdbWrapperException
+  {
+    assert deviceSerialNumber != null
+    assert fileName != null
+    assert fileName.size() > 0
+    assert !shellPackageName?.empty
 
     String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api23 + fileName
     String commandDescription = String
@@ -756,16 +785,10 @@ public class AdbWrapper implements IAdbWrapper
 
     try
     {
-      // KJA adapt to api19: do switch over config, not shellPackageName being null
-      if (shellPackageName == null)
-        sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-          "-s", deviceSerialNumber,
-          "shell rm", filePath)
-      else
-        sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-          "-s", deviceSerialNumber,
-          "shell run-as", shellPackageName,
-          "rm", filePath)
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell run-as", shellPackageName,
+        "rm", filePath)
 
     } catch (SysCmdExecutorException e)
     {
