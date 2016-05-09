@@ -371,8 +371,7 @@ public class AndroidDevice implements IAndroidDevice
   void removeJar(Path jar) throws DeviceException
   {
     log.debug("removeJar($jar)")
-    adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemonApk)
-    adbWrapper.removeJar(serialNumber, cfg.uiautomatorDaemonTestApk)
+    adbWrapper.removeJar(serialNumber, jar)
   }
 
   @Override

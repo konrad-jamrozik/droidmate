@@ -28,6 +28,8 @@ libsDirFileTree.setBuiltBy(['pullLibCommonAndroidJar'])
 */
 
 apply plugin: 'java'
+apply from: project(":projects").file("debug.gradle")
+
 
 /* The tasks below are pruned and/or disabled as they come from Gradle's java plugin which is applied
   only to make IntelliJ happy and is not fully configured.
@@ -44,6 +46,8 @@ tasks.jar.enabled = false
 /* "antBuild" and "antClean" tasks are defined below */
 tasks.build.dependsOn("antBuild")
 tasks.clean.dependsOn("cleanLibCommonAndroidJar", "antClean")
+
+buildDir = "bin"
 
 sourceSets {
   main.java.srcDirs = ["src"]

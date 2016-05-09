@@ -1,14 +1,14 @@
+evaluationDependsOn(":projects:uiautomator-daemon")
 Project uiaDaemon = findProject(":projects:uiautomator-daemon")
 String uiaDaemonJarName = "${uiaDaemon.name}.jar"
 
 task pullUiaDaemonJar(type: Copy, dependsOn: ":projects:uiautomator-daemon:build") { Copy copy ->
 
-  def uiaDaemonJar = file(new File(uiaDaemon.buildDir, uiaDaemonJarName))
+  def uiaDaemonJar = file(new File(uiaDaemon.buildDir as File, uiaDaemonJarName))
   copy.from(uiaDaemonJar).into(coreResDir)
 }
 
 task cleanUiaDaemon(type: Delete) {
-  group = "build"
   delete file(new File(coreResDir as File, uiaDaemonJarName))
 }
 

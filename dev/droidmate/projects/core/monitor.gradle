@@ -7,8 +7,6 @@ task pullMonitorApk(type: Copy, dependsOn: ":projects:monitor-generator:build") 
   copy.from(monitorApk).into(coreResDir)
 }
 
-
 task cleanMonitor(type: Delete) {
-  group = "build"
   delete file(new File(coreResDir as File, monitorApkName))
 }

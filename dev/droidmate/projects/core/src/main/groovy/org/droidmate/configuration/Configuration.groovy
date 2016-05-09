@@ -368,16 +368,22 @@ public class Configuration implements IConfiguration
   public List<String> appGuardApisList
 
   /**
+   * Jar with uiautomator-daemon location on the file system. The jar is to be deployed on the android (virtual) device
+   * to enable GUI actions execution.
+   */
+  public Path uiautomatorDaemonJar
+
+  /**
    * Apk with uiautomator-daemon. This is a dummy package required only by instrumentation command (instrumentation target property)
    * More information about th property in: http://developer.android.com/guide/topics/manifest/instrumentation-element.html
    */
-  public Path uiautomatorDaemonApk
+  public Path uiautomator2DaemonApk
 
   /**
    * Apk with "real" uiautomator-daemon. This apk will be deployed be on the android (virtual) device
    * to enable GUI actions execution.
    */
-  public Path uiautomatorDaemonTestApk
+  public Path uiautomator2DaemonTestApk
 
   //endregion
 }

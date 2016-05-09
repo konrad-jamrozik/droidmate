@@ -20,11 +20,11 @@ import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.IDeployableAndroidDevice
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
-// KJA restore set of commands for Android 4
 @Slf4j
 public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 {
@@ -75,8 +75,14 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     // KNOWN BUG on emulator, device offline when trying to remove logcat log file. Possible quickfix: on emulators, add a wait.
     device.removeLogcatLogFile()
     device.clearLogcat()
-    device.installApk(this.cfg.uiautomatorDaemonApk)
-    device.installApk(this.cfg.uiautomatorDaemonTestApk)
+    if (cfg.androidApi == "api19")
+      device.pushJar(this.cfg.uiautomatorDaemonJar)
+    else if (cfg.androidApi == "api23")
+    {
+      device.installApk(this.cfg.uiautomator2DaemonApk)
+      device.installApk(this.cfg.uiautomator2DaemonTestApk)
+    } else throw new UnexpectedIfElseFallthroughError()
+
     device.pushJar(this.cfg.monitorApk)
     device.setupConnection()
     device.initModel()
@@ -103,8 +109,15 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       log.trace("Tearing down.")
       device.pullLogcatLogFile()
       device.closeConnection()
-      device.uninstallApk(UiautomatorDaemonConstants.uiaDaemon_testPackageName, true)
-      device.uninstallApk(UiautomatorDaemonConstants.uiaDaemon_packageName, true)
+      if (cfg.androidApi == "api19")
+      {
+        device.removeJar(cfg.uiautomatorDaemonJar)
+      } else if (cfg.androidApi == "api23")
+      {
+        device.uninstallApk(UiautomatorDaemonConstants.uiaDaemon_testPackageName, true)
+        device.uninstallApk(UiautomatorDaemonConstants.uiaDaemon_packageName, true)
+      } else throw new UnexpectedIfElseFallthroughError()
+      
       device.removeJar(cfg.monitorApk)
     }
     else

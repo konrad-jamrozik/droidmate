@@ -42,7 +42,6 @@ task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {J
 }
 
 task buildApkFixtures(type: GradleBuild) {
-  group = "build"
   buildFile = apkFixturesProjectDir.path + "/build.gradle"
   tasks = [apkFixturesBuildTask]
 }
@@ -50,7 +49,6 @@ task buildApkFixtures(type: GradleBuild) {
 task cleanApkFixtures(dependsOn: "cleanExternalBuild_apkFixtures")
 
 task cleanExternalBuild_apkFixtures(type: GradleBuild) {
-
   buildFile = apkFixturesProjectDir.path + "/build.gradle"
   tasks = ["clean"]
 }

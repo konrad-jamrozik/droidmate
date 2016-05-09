@@ -24,3 +24,12 @@ task debugClasspaths {Task it ->
     sourceSets.test.runtimeClasspath.each {println it}
   }
 }
+
+task debug { group = "help"}
+
+ext.debugTaskIO = {Task it ->
+  println "Inputs of $it" 
+  it.inputs.files.each { println it }
+  println "Outputs of $it"
+  it.outputs.files.each { println it }
+}
