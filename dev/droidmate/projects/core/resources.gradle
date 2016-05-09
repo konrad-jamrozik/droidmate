@@ -4,8 +4,9 @@ import com.konradjamrozik.IterableExtensions
 processResources.configure { Copy copy -> copy.from(project(":projects").file("resources"))}
 
 processResources.dependsOn(
-  // KJA there will be two different monitor.apks, one with instrumentation, one with arthook
-  "pullMonitorApk", 
+  // KJA uncomment when ready
+//  "pullMonitorApk_api19",
+  "pullMonitorApk_api23", 
   "pullUiaDaemonJar", 
   "pullUia2DaemonApk", 
   "pullUia2DaemonTestApk"
@@ -18,7 +19,8 @@ processTestResources.dependsOn(
 )
 
 clean.dependsOn(
-  "cleanMonitor", 
+  "cleanMonitorApk_api19",
+  "cleanMonitorApk_api23",
   "cleanUiaDaemon", 
   "cleanUia2Daemon",
   "cleanApkFixtures"

@@ -358,7 +358,8 @@ public class Configuration implements IConfiguration
 
   public Path apksDirPath
 
-  public Path monitorApk
+  public Path monitorApkApi19
+  public Path monitorApkApi23
 
   public String aaptCommandApi19 = BuildConstants.aapt_command_api19
   public String aaptCommandApi23 = BuildConstants.aapt_command_api23

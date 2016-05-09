@@ -63,7 +63,7 @@ class ApkInliner implements IApkInliner
       new Jar(new Resource("appguard-inliner.jar").extractTo(resDir)),
       new Dex(new Resource("appguard-loader.dex").extractTo(resDir)),
       "org.droidmate.monitor_generator.generated.Monitor",
-      BuildConstants.AVD_dir_for_temp_files + "monitor.apk")
+      BuildConstants.AVD_dir_for_temp_files + BuildConstants.monitor_on_avd_apk_name)
   }
 
   @Override

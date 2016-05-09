@@ -95,6 +95,9 @@ task writeBuildConstantsProperties() { Task it ->
     map["aapt_command_relative_api19"] = BuildKt.aapt_command_relative_api19
     map["aapt_command_relative_api23"] = BuildKt.aapt_command_relative_api23
     map["adb_command_relative"] = BuildKt.adb_command_relative
+    map["monitor_on_avd_apk_name"] = BuildKt.monitor_on_avd_apk_name
+    map["monitor_api19_apk_name"] = BuildKt.monitor_api19_apk_name
+    map["monitor_api23_apk_name"] = BuildKt.monitor_api23_apk_name
 
     buildConstantsFile.withWriter {BufferedWriter wr ->
       map.each {key, value ->

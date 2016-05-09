@@ -156,8 +156,8 @@ class RedirectionsGenerator implements IRedirectionsGenerator
       return out.toString()
     }.join("")
     /*
-    [1]:
-    Redirection fails on classes from android.test.*
+    
+    Note: Redirection fails on classes from android.test.*
     Snippet of observed exception stack trace:
 
     (...)

@@ -69,6 +69,10 @@ val monitored_apk_fixture_api19_name = "MonitoredApkFixture_api19-debug.apk"
 val monitored_apk_fixture_api23_name = "MonitoredApkFixture_api23-debug.apk"
 val monitored_inlined_apk_fixture_api19_name = "${monitored_apk_fixture_api19_name.removeSuffix(".apk")}-inlined.apk"
 val monitored_inlined_apk_fixture_api23_name = "${monitored_apk_fixture_api23_name.removeSuffix(".apk")}-inlined.apk"
+
+val monitor_api19_apk_name = "monitor_api19.apk"
+val monitor_api23_apk_name = "monitor_api23.apk"
+val monitor_on_avd_apk_name = "monitor.apk"
 /**
  * Denotes name of directory containing apk fixtures for testing. The handle to this path is expected to be obtained
  * in following ways:

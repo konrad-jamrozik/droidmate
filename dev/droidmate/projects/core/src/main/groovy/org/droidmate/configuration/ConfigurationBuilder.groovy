@@ -199,9 +199,14 @@ class ConfigurationBuilder implements IConfigurationBuilder
     cfg.uiautomator2DaemonTestApk = new Resource("uiautomator2-daemon-test.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
     log.info("Using uiautomator2-daemon-test.apk located at " + cfg.uiautomator2DaemonTestApk.toAbsolutePath().toString())
 
-    cfg.monitorApk = new Resource("monitor.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
-    log.info("Using monitor.apk located at "+cfg.monitorApk.toAbsolutePath().toString())
+    // KJA to uncomment when ready
+//    cfg.monitorApkApi19 = new Resource(BuildConstants.monitor_api19_apk_name).extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
+//    log.info("Using $BuildConstants.monitor_api19_apk_name located at "+cfg.monitorApkApi19.toAbsolutePath().toString())
 
+    cfg.monitorApkApi23 = new Resource(BuildConstants.monitor_api23_apk_name).extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
+    log.info("Using $BuildConstants.monitor_api23_apk_name located at "+cfg.monitorApkApi23.toAbsolutePath().toString())
+
+    
     cfg.droidmateOutputDirPath = fs.getPath(cfg.droidmateOutputDir)
     cfg.reportInputDirPath = fs.getPath(cfg.reportInputDir)
     cfg.reportOutputDirPath = fs.getPath(cfg.reportOutputDir)

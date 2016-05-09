@@ -76,14 +76,17 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     device.removeLogcatLogFile()
     device.clearLogcat()
     if (cfg.androidApi == "api19")
+    {
       device.pushJar(this.cfg.uiautomatorDaemonJar)
+      device.pushJar(this.cfg.monitorApkApi19)
+    }
     else if (cfg.androidApi == "api23")
     {
       device.installApk(this.cfg.uiautomator2DaemonApk)
       device.installApk(this.cfg.uiautomator2DaemonTestApk)
+      device.pushJar(this.cfg.monitorApkApi23)
     } else throw new UnexpectedIfElseFallthroughError()
-
-    device.pushJar(this.cfg.monitorApk)
+    
     device.setupConnection()
     device.initModel()
 
@@ -112,13 +115,13 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       if (cfg.androidApi == "api19")
       {
         device.removeJar(cfg.uiautomatorDaemonJar)
+        device.removeJar(cfg.monitorApkApi19)
       } else if (cfg.androidApi == "api23")
       {
         device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_testPackageName, true)
         device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_packageName, true)
+        device.removeJar(cfg.monitorApkApi23)
       } else throw new UnexpectedIfElseFallthroughError()
-      
-      device.removeJar(cfg.monitorApk)
     }
     else
       log.trace("Device is not available. Skipping tear down.")

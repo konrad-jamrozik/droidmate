@@ -84,8 +84,35 @@ task copyGeneratedMonitorToScaffolding(type: Copy, dependsOn: "run") { Copy copy
   doLast {assert monitorJava.isFile()}
 }
 
+File libsDir = new File(monitorApkScaffoldingDir, "libs")
+File libs_api19_dir = new File(monitorApkScaffoldingDir, "libs_api19")
+File libs_api23_dir = new File(monitorApkScaffoldingDir, "libs_api23")
+
+def projectLibCommon = findProject(":projects:lib-common")
+task cleanLibsDir(type: Delete) {
+  group = "build"
+  delete libsDir
+}
+task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy copy ->
+
+  copy.from(projectLibCommon.jar.archivePath).into(libsDir)
+}
+
+task prepareLib_api19(type: Copy, dependsOn: "cleanLibsDir") { Copy copy ->
+  group = "build"
+  copy.from(libs_api19_dir).into(libsDir)
+}
+
+task prepareLib_api23(type: Copy, dependsOn: "cleanLibsDir") { Copy copy ->
+  group = "build"
+  copy.from(libs_api23_dir).into(libsDir)
+}
+
+tasks.pullLibCommonJar.mustRunAfter(tasks.prepareLib_api19)
+tasks.pullLibCommonJar.mustRunAfter(tasks.prepareLib_api23)
+
 File monitorApkOutputByAnt = file("${monitorApkScaffoldingDir.path}/bin/monitor-apk-debug.apk")
-task buildMonitorApk(dependsOn: ["copyGeneratedMonitorToScaffolding", "pullLibCommonJar"]) {
+task antBuildMonitorApk(dependsOn: ["copyGeneratedMonitorToScaffolding", "pullLibCommonJar"]) {
   group = "build"
 
   inputs.files monitorJava
@@ -106,9 +133,22 @@ task buildMonitorApk(dependsOn: ["copyGeneratedMonitorToScaffolding", "pullLibCo
   }
 }
 
-task deployMonitorApk(type: Copy, dependsOn: "buildMonitorApk") {Copy copy ->
+task buildMonitorApk_api19(dependsOn: ["prepareLib_api19", "antBuildMonitorApk"]) {
   group = "build"
-  copy.from(monitorApkOutputByAnt).into(buildDir).rename {"monitor.apk"}
+}
+
+task buildMonitorApk_api23(dependsOn: ["prepareLib_api23", "antBuildMonitorApk"]) {
+  group = "build"
+}
+
+task deployMonitorApk_api19(type: Copy, dependsOn: "buildMonitorApk_api19") {Copy copy ->
+  group = "build"
+  copy.from(monitorApkOutputByAnt).into(buildDir).rename {"monitor_api19.apk"}
+}
+
+task deployMonitorApk_api23(type: Copy, dependsOn: "buildMonitorApk_api23") {Copy copy ->
+  group = "build"
+  copy.from(monitorApkOutputByAnt).into(buildDir).rename {"monitor_api23.apk"}
 }
 
 task cleanMonitorApk() {
@@ -138,18 +178,8 @@ test.configure {
 
 }
 
-def projectLibCommon = findProject(":projects:lib-common")
-task cleanLibCommonJar(type: Delete) {
-  group = "build"
-  delete new File(monitorApkScaffoldingDir, "libs/" + projectLibCommon.jar.archiveName)
-}
-task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy copy ->
-
-  copy.from(projectLibCommon.jar.archivePath).into(new File(monitorApkScaffoldingDir, "libs"))
-}
-
-clean.dependsOn cleanRun, cleanMonitorApk, cleanLibCommonJar
-build.dependsOn deployMonitorApk
+clean.dependsOn "cleanRun", "cleanMonitorApk", "cleanLibsDir"
+build.dependsOn "deployMonitorApk_api23"
 
 // Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
 processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }

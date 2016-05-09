@@ -1,12 +1,23 @@
-String monitorApkName = "monitor.apk"
+import org.droidmate.buildsrc.BuildKt
 
-task pullMonitorApk(type: Copy, dependsOn: ":projects:monitor-generator:build") {Copy copy ->
+task pullMonitorApk_api19(type: Copy, dependsOn: ":projects:monitor-generator:build") {Copy copy ->
 
   Project monitorGenerator = findProject(":projects:monitor-generator")
-  def monitorApk = file(new File(monitorGenerator.buildDir, monitorApkName))
+  def monitorApk = file(new File(monitorGenerator.buildDir, BuildKt.monitor_api19_apk_name))
   copy.from(monitorApk).into(coreResDir)
 }
 
-task cleanMonitor(type: Delete) {
-  delete file(new File(coreResDir as File, monitorApkName))
+task pullMonitorApk_api23(type: Copy, dependsOn: ":projects:monitor-generator:build") {Copy copy ->
+
+  Project monitorGenerator = findProject(":projects:monitor-generator")
+  def monitorApk = file(new File(monitorGenerator.buildDir, BuildKt.monitor_api23_apk_name))
+  copy.from(monitorApk).into(coreResDir)
+}
+
+task cleanMonitorApk_api19(type: Delete) {
+  delete file(new File(coreResDir as File, BuildKt.monitor_api19_apk_name))
+}
+
+task cleanMonitorApk_api23(type: Delete) {
+  delete file(new File(coreResDir as File, BuildKt.monitor_api23_apk_name))
 }
