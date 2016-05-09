@@ -114,27 +114,32 @@ public class AdbWrapper implements IAdbWrapper
   public void installApk(String deviceSerialNumber, Path apkToInstall)
     throws AdbWrapperException
   {
+    assert cfg.adbCommand != null
+
+    String commandDescription = String
+      .format("Executing adb (Android Debug Bridge) to install %s on Android (Virtual) Device.",
+      apkToInstall.fileName)
+
+    String[] stdStreams
     try
     {
-      assert (cfg.adbCommand != null)
-
-      String commandDescription = String
-        .format("Executing adb (Android Debug Bridge) to install %s on Android (Virtual) Device.",
-        apkToInstall.fileName)
-
-      def stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "install -r",
+      stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand, "-s", deviceSerialNumber, "install -r",
         apkToInstall.toAbsolutePath().toString())
-
-      if (stdStreams[0].contains("[INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES]"))
-        throw new AdbWrapperException("Execution of 'adb -s $deviceSerialNumber install -r ${apkToInstall.toAbsolutePath().toString()}' " +
-          "resulted in [INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES] being output to stdout. Thus, no app was actually " +
-          "installed. Likely reason for the problem: you are trying to install a built in Google app that cannot be uninstalled" +
-          "or reinstalled. DroidMate doesn't support such apps.")
 
     } catch (SysCmdExecutorException e)
     {
       throw new AdbWrapperException("Executing 'adb install' failed. Oh my.", e)
     }
+
+    if (stdStreams[0].contains("[INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES]"))
+      throw new AdbWrapperException("Execution of 'adb -s $deviceSerialNumber install -r ${apkToInstall.toAbsolutePath().toString()}' " +
+        "resulted in [INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES] being output to stdout. Thus, no app was actually " +
+        "installed. Likely reason for the problem: you are trying to install a built in Google app that cannot be uninstalled" +
+        "or reinstalled. DroidMate doesn't support such apps.")
+
+    if (stdStreams[0].contains("Failure"))
+      throw new AdbWrapperException("Execution of 'adb -s $deviceSerialNumber install -r ${apkToInstall.toAbsolutePath().toString()}' " +
+        "resulted in stdout containing 'Failure'. The full stdout:\n$stdStreams[0]")
   }
 
   @Override
