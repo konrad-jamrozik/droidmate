@@ -259,7 +259,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     // Act
     int exitStatus = DroidmateFrontend.main(args, /* commandProvider = */ null)
     
-    assert exitStatus == 0, "Exit status != 0. Please inspect the run logs for details, including exception thrown."
+    assert exitStatus == 0, "Exit status != 0. Please inspect the run logs for details, including exception thrown"
 
     IApkExplorationOutput2 apkOut = outputDir.readOutput().findSingle()
 

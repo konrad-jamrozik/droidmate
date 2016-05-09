@@ -166,6 +166,7 @@ public class AdbWrapper implements IAdbWrapper
 
       // "Failure" is what the adb's "uninstall" command outputs when it fails.
       if (!ignoreFailure && stdout.contains("Failure"))
+        // KJA getting error no. 2 here
         throw new AdbWrapperException("Failed to uninstall the apk package $apkPackageName.")
 
     } catch (SysCmdExecutorException e)
@@ -674,7 +675,7 @@ public class AdbWrapper implements IAdbWrapper
    * More information:
    *   http://stackoverflow.com/questions/18471780/android-adb-retrieve-database-using-run-as
    */
-  // KJA NEXT: restore API 19
+  
   void pullFile(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String shellPackageName) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
@@ -701,6 +702,7 @@ public class AdbWrapper implements IAdbWrapper
           "pull", pulledFilePath, destinationFilePath)
       else
       {
+        // KJA error no. 3 stack trace
         String[] executionOutput = sysCmdExecutor.execute(
           commandDescription, cfg.adbCommand,
           "-s", deviceSerialNumber,

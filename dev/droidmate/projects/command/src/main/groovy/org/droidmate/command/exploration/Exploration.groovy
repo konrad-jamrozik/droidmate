@@ -130,6 +130,12 @@ class Exploration implements IExploration
   {
     log.trace("tryDeviceHasPackageInstalled(device, $packageName)")
 
+    // KJA getting error no. 1 here. Either monitored apk fixture problem or apk-scaffolding using arthook instead of instrumentation.jar
+    /*
+    5-08 21:41:53.250 2192-2192/? D/AndroidRuntime: Calling main entry com.android.commands.pm.Pm
+    05-08 21:41:53.250 1557-1580/? W/PackageManager: Package named 'org.droidmate.fixtures.apks.monitored' doesn't exist.
+    05-08 21:41:53.250 2192-2192/? D/AndroidRuntime: Shutting down VM
+     */
     if (!device.hasPackageInstalled(packageName))
       throw new DeviceException()
   }

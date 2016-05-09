@@ -106,6 +106,15 @@ public class SysCmdExecutor implements ISysCmdExecutor
     Integer exitValue = null
     try
     {
+      // KJA getting error no. 3 here:
+      /*
+      Command: [C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe, -s, emulator-5554, exec-out, run-as, org.droidmate.uiautomator2daemon.UiAutomator2Daemon, cat, /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/droidmate_logcat.txt]
+Captured exit value: -1
+Execution time: 0 seconds
+Captured stdout: <stdout is empty>
+Captured stderr: error: closed
+
+       */
       exitValue = executor.execute(command)
 
     } catch (ExecuteException e)
