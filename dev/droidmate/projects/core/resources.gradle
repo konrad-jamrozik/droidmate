@@ -13,7 +13,8 @@ processResources.dependsOn(
 
 processTestResources.dependsOn(
   "pullApkFixtures", 
-  "inlineMonitoredApkFixture"
+  "inlineMonitoredApkFixture_api19",
+  "inlineMonitoredApkFixture_api23"
 )
 
 clean.dependsOn(

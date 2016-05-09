@@ -6,7 +6,7 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-task stageForDroidmate(dependsOn: assembleDebug) {
+task stageForDroidmate(dependsOn: "assembleDebug") {
 
   File debugOutputFile
   afterEvaluate {

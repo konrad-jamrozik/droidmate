@@ -7,7 +7,6 @@ File apkFixturesProjectDir = file("${project.rootDir}/../apk_fixtures_src")
 assert apkFixturesProjectDir.directory
 File apkFixturesDroidmateStagingDir = new File("${apkFixturesProjectDir.path}/build")
 String apkFixturesBuildTask = "stageForDroidmate"
-String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
 // end of DUPLICATION WARNING
 
 ext.apkFixturesDir = new File(
@@ -17,7 +16,7 @@ assert apkFixturesDir.directory
 
 task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
 
-  from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: monitoredApkFixtureName)
+  from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: [BuildKt.monitored_apk_fixture_api19_name, BuildKt.monitored_apk_fixture_api23_name])
   into apkFixturesDir
 }
 
@@ -27,19 +26,34 @@ task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
  */
 evaluationDependsOn(":projects:apk-inliner")
 JavaExec inlinerExec = project(":projects:apk-inliner").tasks.run as JavaExec
-task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
+def inlineMonitoredApkFixture = { JavaExec je, String apkName, String inlinedApkName ->
   group = "build"
-  ["main", "classpath", "standardOutput"].each {delegate."$it" = inlinerExec."$it"}
+  ["main", "classpath", "standardOutput"].each {je."$it" = inlinerExec."$it"}
 
-  File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
+  File inputApk = new File(apkFixturesDroidmateStagingDir, apkName)
   je.args = [
     BuildKt.apk_inliner_param_input, inputApk.canonicalPath,
     BuildKt.apk_inliner_param_output_dir, apkFixturesDir
   ]
 
   je.inputs.file inputApk
-  je.outputs.file new File(apkFixturesDir as File, BuildKt.monitored_inlined_apk_fixture_name)
+  je.outputs.file new File(apkFixturesDir as File, inlinedApkName)
 }
+
+task inlineMonitoredApkFixture_api19(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
+  inlineMonitoredApkFixture(je, 
+    BuildKt.monitored_apk_fixture_api19_name, 
+    BuildKt.monitored_inlined_apk_fixture_api19_name
+  )
+}
+task inlineMonitoredApkFixture_api23(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
+  inlineMonitoredApkFixture(je, 
+    BuildKt.monitored_apk_fixture_api23_name,
+    BuildKt.monitored_inlined_apk_fixture_api23_name
+  )
+}
+
+
 
 task buildApkFixtures(type: GradleBuild) {
   buildFile = apkFixturesProjectDir.path + "/build.gradle"

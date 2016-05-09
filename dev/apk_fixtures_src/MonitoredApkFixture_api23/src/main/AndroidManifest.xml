@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="org.droidmate.fixtures.apks.monitored">
+
+  <!-- This permission is being added by com.srt.appguard.Inliner#addInternetPermission -->
+  <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
+
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+
+  <application
+    android:allowBackup="true"
+    android:icon="@drawable/ic_launcher"
+    android:label="@string/app_name"
+    android:theme="@style/AppTheme">
+    <activity
+      android:name=".Activity1"
+      android:label="@string/title_activity_activity1">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity
+      android:name=".Activity2"
+      android:label="@string/title_activity_activity2"/>
+    <activity
+      android:name=".Activity3"
+      android:label="@string/title_activity_activity3"/>
+    <activity
+      android:name=".Activity4"
+      android:label="@string/title_activity_activity4"/>
+  </application>
+
+</manifest>

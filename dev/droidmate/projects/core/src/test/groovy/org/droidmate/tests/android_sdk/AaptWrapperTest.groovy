@@ -50,7 +50,7 @@ public class AaptWrapperTest extends DroidmateGroovyTestCase
     AaptWrapper sut = new AaptWrapper(Configuration.default, new SysCmdExecutor())
     sut.metaClass.aaptDumpBadging = {Path _ -> aaptBadgingDump}
 
-    Apk ignoredApk = fixtures.apks.monitoredInlined
+    Apk ignoredApk = fixtures.apks.monitoredInlined_api19
 
     // Act
     String launchableActivityName = sut.getLaunchableActivityComponentName(Paths.get(ignoredApk.absolutePath))

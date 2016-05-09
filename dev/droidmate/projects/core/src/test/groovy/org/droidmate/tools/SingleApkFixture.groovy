@@ -24,7 +24,7 @@ class SingleApkFixture
     assert aapt != null
     assert cfg != null
     assert cfg.useApkFixturesDir
-    assert cfg.apksNames == [BuildConstants.monitored_inlined_apk_fixture_name]
+    assert cfg.apksNames == [BuildConstants.monitored_inlined_apk_fixture_api19_name]
 
     ApksProvider apksProvider = new ApksProvider(aapt)
 

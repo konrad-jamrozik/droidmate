@@ -95,7 +95,7 @@ class DeviceTest extends DroidmateGroovyTestCase
   private void withApkDeployedOnDevice(Closure computation)
   {
     Configuration cfg = new ConfigurationForTests().forDevice().setArgs([
-      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_name]" as String]
+      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api19_name]" as String]
     ).get()
 
     IDeviceTools deviceTools = new DeviceTools(cfg)

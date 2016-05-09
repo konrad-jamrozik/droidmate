@@ -65,8 +65,10 @@ val AVD_dir_for_temp_files = "/data/local/tmp/"
 val uia2_daemon_project_name = "uiautomator2-daemon"
 val uia2_daemon_relative_project_dir = File("projects", uia2_daemon_project_name)
 
-/** This string makes an assumption that the apk inliner adds the "-inlined" suffix. */
-val monitored_inlined_apk_fixture_name = "MonitoredApkFixture-debug-inlined.apk"
+val monitored_apk_fixture_api19_name = "MonitoredApkFixture_api19-debug.apk"
+val monitored_apk_fixture_api23_name = "MonitoredApkFixture_api23-debug.apk"
+val monitored_inlined_apk_fixture_api19_name = "${monitored_apk_fixture_api19_name.removeSuffix(".apk")}-inlined.apk"
+val monitored_inlined_apk_fixture_api23_name = "${monitored_apk_fixture_api23_name.removeSuffix(".apk")}-inlined.apk"
 /**
  * Denotes name of directory containing apk fixtures for testing. The handle to this path is expected to be obtained
  * in following ways:

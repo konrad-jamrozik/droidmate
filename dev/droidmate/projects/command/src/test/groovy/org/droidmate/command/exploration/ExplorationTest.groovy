@@ -77,7 +77,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
   void "Collects monitored API calls logs during device exploration"()
   {
     Configuration cfg = new ConfigurationForTests().forDevice().setArgs([
-      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_name]",
+      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api19_name]",
       Configuration.pn_widgetIndexes, "[0]",
     ]).get()
 
