@@ -102,12 +102,12 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
   {
     File dataDir = Environment.getDataDirectory();
     
-    if (!deviceLogcatLogDir_api23.startsWith(dataDir.toString().substring(1)))
+    if (!deviceLogcatLogDir_api19.startsWith(dataDir.toString().substring(1)))
       throw new UiAutomatorDaemonException(
         "The device logcat log dir should point to a subdirectory of device data dir. It doesn't. " +
-          "The device data dir: "+dataDir.toString()+ " The device logcat log dir: "+ deviceLogcatLogDir_api23);
+          "The device data dir: "+dataDir.toString()+ " The device logcat log dir: "+ deviceLogcatLogDir_api19);
     
-    File logcatDir = new File(deviceLogcatLogDir_api23);
+    File logcatDir = new File(deviceLogcatLogDir_api19);
       
     if (!logcatDir.isDirectory())
       if (!logcatDir.mkdirs())
