@@ -1,0 +1,56 @@
+import com.konradjamrozik.IterableExtensions
+import org.droidmate.buildsrc.BuildKt
+
+// !!! DUPLICATION WARNING !!!
+// These values have to be the same as the ones used in the gradle scripts of the referenced "apk fixtures" project.
+File apkFixturesProjectDir = file("${project.rootDir}/../apk_fixtures_src")
+assert apkFixturesProjectDir.directory
+File apkFixturesDroidmateStagingDir = new File("${apkFixturesProjectDir.path}/build")
+String apkFixturesBuildTask = "stageForDroidmate"
+String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
+// end of DUPLICATION WARNING
+
+ext.apkFixturesDir = new File(
+  IterableExtensions.findSingle(sourceSets.test.resources.srcDirs as Set<File>),
+  BuildKt.apk_fixtures)
+assert apkFixturesDir.directory
+
+task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
+
+  from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: monitoredApkFixtureName)
+  into apkFixturesDir
+}
+
+/*
+ This project sometimes has to fire apk-inliner:run. For that, this project needs to know input and output dirs of apk-inliner,
+ which is the reason for evaluation dependence.
+ */
+evaluationDependsOn(":projects:apk-inliner")
+JavaExec inlinerExec = project(":projects:apk-inliner").tasks.run as JavaExec
+task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
+  group = "build"
+  ["main", "classpath", "standardOutput"].each {delegate."$it" = inlinerExec."$it"}
+
+  File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
+  je.args = [
+    BuildKt.apk_inliner_param_input, inputApk.canonicalPath,
+    BuildKt.apk_inliner_param_output_dir, apkFixturesDir
+  ]
+
+  je.inputs.file inputApk
+  je.outputs.file new File(apkFixturesDir as File, BuildKt.monitored_inlined_apk_fixture_name)
+}
+
+task buildApkFixtures(type: GradleBuild) {
+  group = "build"
+  buildFile = apkFixturesProjectDir.path + "/build.gradle"
+  tasks = [apkFixturesBuildTask]
+}
+
+task cleanApkFixtures(dependsOn: "cleanExternalBuild_apkFixtures")
+
+task cleanExternalBuild_apkFixtures(type: GradleBuild) {
+
+  buildFile = apkFixturesProjectDir.path + "/build.gradle"
+  tasks = ["clean"]
+}

@@ -1,123 +1,32 @@
 import com.konradjamrozik.IterableExtensions
-import org.droidmate.buildsrc.BuildKt
 
-// KJA there will be two different monitor.apks, one with instrumentation, one with arthook
-// KJA restore pullUiaDaemonJar, add 2 to Uia when pulling Apk
-processResources.dependsOn "pullMonitorApk", "pullUiaDaemonApk", "pullUiaDaemonTestApk"
-processTestResources.dependsOn "pullApkFixtures", "inlineMonitoredApkFixture"
-// KJA add clean uiaDaemon
-clean.dependsOn "cleanResources", "cleanExternalBuild_uiautomator2Daemon", "cleanExternalBuild_apkFixtures"
 // Ensure BuildKt.appguard_apis_txt is available at runtime as a resource.
-processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
+processResources.configure { Copy copy -> copy.from(project(":projects").file("resources"))}
 
-//region Shared definitions
-String uia2DaemonName = BuildKt.uia2_daemon_project_name
-File uia2DaemonProjectDir = new File(rootDir, BuildKt.uia2_daemon_relative_project_dir.path)
-assert uia2DaemonProjectDir.isDirectory()
-String monitorApkName = "monitor.apk"
+processResources.dependsOn(
+  // KJA there will be two different monitor.apks, one with instrumentation, one with arthook
+  "pullMonitorApk", 
+  "pullUiaDaemonJar", 
+  "pullUia2DaemonApk", 
+  "pullUia2DaemonTestApk"
+)
 
-File coreResDir = IterableExtensions.findSingle(
+processTestResources.dependsOn(
+  "pullApkFixtures", 
+  "inlineMonitoredApkFixture"
+)
+
+clean.dependsOn(
+  "cleanMonitor", 
+  "cleanUiaDaemon", 
+  "cleanUia2Daemon",
+  "cleanApkFixtures"
+)
+
+ext.coreResDir = IterableExtensions.findSingle(
   sourceSets.main.resources.srcDirs.findAll {it.path.contains(project.name)} as Set<File>)
+apply from: file("monitor.gradle")
+apply from: file("uiaDaemon.gradle")
+apply from: file("uia2daemon.gradle")
+apply from: file("apkFixtures.gradle")
 
-// !!! DUPLICATION WARNING !!!
-// These values have to be the same as the ones used in the gradle scripts of the referenced "apk fixtures" project.
-File apkFixturesProjectDir = file("${project.rootDir}/../apk_fixtures_src")
-assert apkFixturesProjectDir.directory
-File apkFixturesDroidmateStagingDir = new File("${apkFixturesProjectDir.path}/build")
-String apkFixturesBuildTask = "stageForDroidmate"
-String monitoredApkFixtureName = "MonitoredApkFixture-debug.apk"
-// end of DUPLICATION WARNING
-
-ext.apkFixturesDir = new File(
-  IterableExtensions.findSingle(sourceSets.test.resources.srcDirs as Set<File>),
-  BuildKt.apk_fixtures)
-assert apkFixturesDir.directory
-//endregion Shared definitions
-
-//region processResources dependencies
-
-task pullMonitorApk(type: Copy, dependsOn: ":projects:monitor-generator:build") {Copy copy ->
-
-  Project monitorGenerator = findProject(":projects:monitor-generator")
-  def monitorApk = file(new File(monitorGenerator.buildDir, monitorApkName))
-  copy.from(monitorApk).into(coreResDir)
-}
-
-File uia2DaemonBuildDir = new File("$uia2DaemonProjectDir/build")
-
-String uia2DaemonApkOriginalName = "${uia2DaemonName}-debug-unaligned.apk"
-task pullUiaDaemonApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
-  Copy copy ->
-    def uiaDaemonApk = file(new File(uia2DaemonBuildDir.absolutePath + "/outputs/apk/", uia2DaemonApkOriginalName))
-    copy.from(uiaDaemonApk).into(coreResDir).rename("-debug-unaligned.apk", ".apk")
-}
-
-String uia2DaemonTestApkOriginalName = "${uia2DaemonName}-debug-androidTest-unaligned.apk"
-task pullUiaDaemonTestApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
-  Copy copy ->
-    def uiaDaemonTestApk = file(new File(uia2DaemonBuildDir.absolutePath + "/outputs/apk/", uia2DaemonTestApkOriginalName))
-    copy.from(uiaDaemonTestApk).into(coreResDir).rename("debug-androidTest-unaligned.apk", "test.apk")
-}
-
-task assembleUiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
-  task.buildFile = new File(uia2DaemonProjectDir, "build.gradle")
-  task.tasks = ['assemble', 'assembleAndroidTest']
-}
-//endregion processResources dependencies
-
-//region processTestResources dependencies
-task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
-
-  from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: monitoredApkFixtureName)
-  into apkFixturesDir
-}
-
-/*
- This project sometimes has to fire apk-inliner:run. For that, this project needs to know input and output dirs of apk-inliner,
- which is the reason for evaluation dependence.
- */
-evaluationDependsOn(":projects:apk-inliner")
-JavaExec inlinerExec = project(":projects:apk-inliner").tasks.run as JavaExec
-task inlineMonitoredApkFixture(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
-  group = "build"
-  ["main", "classpath", "standardOutput"].each {delegate."$it" = inlinerExec."$it"}
-
-  File inputApk = new File(apkFixturesDroidmateStagingDir, monitoredApkFixtureName)
-  je.args = [
-    BuildKt.apk_inliner_param_input, inputApk.canonicalPath,
-    BuildKt.apk_inliner_param_output_dir, apkFixturesDir
-  ]
-
-  je.inputs.file inputApk
-  je.outputs.file new File(apkFixturesDir, BuildKt.monitored_inlined_apk_fixture_name)
-}
-
-task buildApkFixtures(type: GradleBuild) {
-  group = "build"
-  buildFile = apkFixturesProjectDir.path + "/build.gradle"
-  tasks = [apkFixturesBuildTask]
-}
-//endregion processTestResources dependencies
-
-//region clean dependencies
-
-String uia2DaemonApkName = "${uia2DaemonName}.apk"
-String uia2DaemonTestApkName = "${uia2DaemonName}-test.apk"
-task cleanResources(type: Delete) {
-  group = "build"
-  delete file(new File(coreResDir, uia2DaemonApkName))
-  delete file(new File(coreResDir, uia2DaemonTestApkName))
-  delete file(new File(coreResDir, monitorApkName))
-}
-
-task cleanExternalBuild_uiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
-  task.buildFile = new File(uia2DaemonProjectDir, "build.gradle")
-  task.tasks = ['clean']
-}
-
-task cleanExternalBuild_apkFixtures(type: GradleBuild) {
-
-  buildFile = apkFixturesProjectDir.path + "/build.gradle"
-  tasks = ["clean"]
-}
-//endregion clean dependencies

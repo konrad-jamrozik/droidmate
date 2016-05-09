@@ -1,0 +1,14 @@
+String monitorApkName = "monitor.apk"
+
+task pullMonitorApk(type: Copy, dependsOn: ":projects:monitor-generator:build") {Copy copy ->
+
+  Project monitorGenerator = findProject(":projects:monitor-generator")
+  def monitorApk = file(new File(monitorGenerator.buildDir, monitorApkName))
+  copy.from(monitorApk).into(coreResDir)
+}
+
+
+task cleanMonitor(type: Delete) {
+  group = "build"
+  delete file(new File(coreResDir as File, monitorApkName))
+}
