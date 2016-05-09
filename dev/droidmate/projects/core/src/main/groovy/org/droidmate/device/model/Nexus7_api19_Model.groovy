@@ -16,7 +16,7 @@ import java.awt.*
  * @author Nataniel Borges Jr. (inception)
  * @author Konrad Jamrozik (refactoring)
  */
-class Nexus7Model implements IDeviceModel
+class Nexus7_API19_Model implements IDeviceModel
 {
   final String androidLauncherPackageName = "com.android.launcher"
   

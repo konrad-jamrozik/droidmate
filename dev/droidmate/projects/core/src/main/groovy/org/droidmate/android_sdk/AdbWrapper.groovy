@@ -171,7 +171,6 @@ public class AdbWrapper implements IAdbWrapper
 
       // "Failure" is what the adb's "uninstall" command outputs when it fails.
       if (!ignoreFailure && stdout.contains("Failure"))
-        // KJA getting error no. 2 here
         throw new AdbWrapperException("Failed to uninstall the apk package $apkPackageName.")
 
     } catch (SysCmdExecutorException e)
@@ -707,7 +706,15 @@ public class AdbWrapper implements IAdbWrapper
           "pull", pulledFilePath, destinationFilePath)
       else
       {
-        // KJA error no. 3 stack trace
+        // KJA current failure: 'run-as' is for api23
+        /*
+        Command: [C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe, -s, emulator-5554, exec-out, run-as, org.droidmate.uiautomator2daemon.UiAutomator2Daemon, cat, /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/droidmate_logcat.txt]
+  Captured exit value: -1
+  Execution time: 0 seconds
+  Captured stdout: <stdout is empty>
+  Captured stderr: error: closed
+  
+         */
         String[] executionOutput = sysCmdExecutor.execute(
           commandDescription, cfg.adbCommand,
           "-s", deviceSerialNumber,
@@ -749,6 +756,7 @@ public class AdbWrapper implements IAdbWrapper
 
     try
     {
+      // KJA adapt to api19: do switch over config, not shellPackageName being null
       if (shellPackageName == null)
         sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
           "-s", deviceSerialNumber,

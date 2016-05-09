@@ -10,7 +10,7 @@ package org.droidmate.device.model
 
 import java.awt.Dimension
 
-class Nexus7_2013_AVD_with_Google_APIs_Model implements IDeviceModel
+class Nexus7_2013_AVD_API19_with_Google_APIs_Model implements IDeviceModel
 {
 
   final String androidLauncherPackageName = "com.google.android.googlequicksearchbox"

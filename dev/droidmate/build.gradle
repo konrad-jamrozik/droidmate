@@ -8,7 +8,6 @@
 // www.droidmate.org
 
 // KJA two apk scaffoldings needed in monitor-generator: one for arthook, one for instrumentation.jar
-// KJA apk fixtures: restore "monitoredApk" fixture.
 
 allprojects {
   group = "org.droidmate"

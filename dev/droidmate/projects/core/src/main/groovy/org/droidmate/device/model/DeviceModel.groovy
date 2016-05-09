@@ -51,10 +51,10 @@ public class DeviceModel
         hw.gpu.enabled: yes
      */
       case "unknown-Android SDK built for x86":
-        result = new Nexus7_2013_AVD_with_Google_APIs_Model()
+        result = new Nexus7_API19_Model()
         break
       case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_7:
-        result = new Nexus7Model()
+        result = new Nexus7_API19_Model()
         break
       case "samsung-Nexus 10":
         result = new Nexus10Model()
@@ -72,6 +72,6 @@ public class DeviceModel
   
   public static IDeviceModel buildDefault()
   {
-    return new Nexus7Model()
+    return new Nexus7_API19_Model()
   }
 }
