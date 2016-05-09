@@ -68,22 +68,6 @@ task pullMonitorJavaTemplateSource(type: Copy) {
 File monitorApkScaffoldingDir = file "monitor-apk-scaffolding"
 assert monitorApkScaffoldingDir.isDirectory()
 
-File monitorJava = new File(monitorApkScaffoldingDir, "src/org/droidmate/monitor_generator/generated/Monitor.java")
-assert monitorJava.parentFile.isDirectory()
-
-task copyGeneratedMonitorToScaffolding(type: Copy, dependsOn: "run") { Copy copy ->
-  group = "build"
-  
-  copy.from project.ext.runOutput
-  copy.into monitorJava.parent
-  copy.rename new File(BuildKt.monitor_generator_output_relative_path).name, monitorJava.name
-
-  copy.outputs.file monitorJava
-
-  doFirst {assert project.ext.runOutput.isFile()}
-  doLast {assert monitorJava.isFile()}
-}
-
 File libsDir = new File(monitorApkScaffoldingDir, "libs")
 File libs_api19_dir = new File(monitorApkScaffoldingDir, "libs_api19")
 File libs_api23_dir = new File(monitorApkScaffoldingDir, "libs_api23")
@@ -98,21 +82,39 @@ task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy c
   copy.from(projectLibCommon.jar.archivePath).into(libsDir)
 }
 
-task prepareLib_api19(type: Copy, dependsOn: "cleanLibsDir") { Copy copy ->
+task make_libs_from_libs_api19(type: Copy, dependsOn: "cleanLibsDir") { Copy copy ->
   group = "build"
   copy.from(libs_api19_dir).into(libsDir)
 }
 
-task prepareLib_api23(type: Copy, dependsOn: "cleanLibsDir") { Copy copy ->
+task make_libs_from_libs_api23(type: Copy, dependsOn: "cleanLibsDir") { Copy copy ->
   group = "build"
   copy.from(libs_api23_dir).into(libsDir)
 }
 
-tasks.pullLibCommonJar.mustRunAfter(tasks.prepareLib_api19)
-tasks.pullLibCommonJar.mustRunAfter(tasks.prepareLib_api23)
+File monitorJava = new File(monitorApkScaffoldingDir, "src/org/droidmate/monitor_generator/generated/Monitor.java")
+assert monitorJava.parentFile.isDirectory()
+
+task copyGeneratedMonitorToScaffolding_api23(type: Copy, dependsOn: "run") { Copy copy ->
+  group = "build"
+
+  copy.from project.ext.runOutput
+  copy.into monitorJava.parent
+  copy.rename new File(BuildKt.monitor_generator_output_relative_path).name, monitorJava.name
+
+  copy.outputs.file monitorJava
+
+  doFirst {assert project.ext.runOutput.isFile()}
+  doLast {assert monitorJava.isFile()}
+}
+
+tasks.pullLibCommonJar.mustRunAfter(tasks.make_libs_from_libs_api19)
+tasks.pullLibCommonJar.mustRunAfter(tasks.make_libs_from_libs_api23)
+tasks.antBuildMonitorApk.mustRunAfter(tasks.copyGeneratedMonitorToScaffolding_api19)
+tasks.antBuildMonitorApk.mustRunAfter(tasks.copyGeneratedMonitorToScaffolding_api23)
 
 File monitorApkOutputByAnt = file("${monitorApkScaffoldingDir.path}/bin/monitor-apk-debug.apk")
-task antBuildMonitorApk(dependsOn: ["copyGeneratedMonitorToScaffolding", "pullLibCommonJar"]) {
+task antBuildMonitorApk(dependsOn: ["pullLibCommonJar"]) {
   group = "build"
 
   inputs.files monitorJava
@@ -133,11 +135,11 @@ task antBuildMonitorApk(dependsOn: ["copyGeneratedMonitorToScaffolding", "pullLi
   }
 }
 
-task buildMonitorApk_api19(dependsOn: ["prepareLib_api19", "antBuildMonitorApk"]) {
+task buildMonitorApk_api19(dependsOn: ["make_libs_from_libs_api19", "copyGeneratedMonitorToScaffolding_api19", "antBuildMonitorApk"]) {
   group = "build"
 }
 
-task buildMonitorApk_api23(dependsOn: ["prepareLib_api23", "antBuildMonitorApk"]) {
+task buildMonitorApk_api23(dependsOn: ["make_libs_from_libs_api23", "copyGeneratedMonitorToScaffolding_api23", "antBuildMonitorApk"]) {
   group = "build"
 }
 
