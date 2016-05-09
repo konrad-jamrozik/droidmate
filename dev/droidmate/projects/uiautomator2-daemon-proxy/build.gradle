@@ -1,0 +1,82 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+
+/**
+ * This project exists because uiautomator2-daemon project cannot be wired normally to the build due to: https://youtrack.jetbrains.com/issue/IDEA-122904
+ * Instead, it is called as external Gradle script in 'core' project build.gradle, by virtue of being a dependency
+ * of task 'assembleUiautomator2Daemon'.
+ *
+ * Because of uiautomator2-daemon-proxy, "Refresh all Gradle projects" will make uiautomator2-daemon visible and referable
+ * in IntelliJ.
+ *
+ */
+
+import org.droidmate.buildsrc.BuildKt
+
+
+apply plugin: 'java'
+
+/* The tasks below are pruned and/or disabled as they come from Gradle's java plugin which is applied
+  only to make IntelliJ happy and is not fully configured.
+
+  There are more tasks like that that should be disabled, but I hope you know what you are doing.
+
+  Use only "build" and "clean" tasks. */
+tasks.build.dependsOn.remove("check")
+tasks.build.dependsOn.remove("assemble")
+tasks.check.enabled = false
+tasks.assemble.enabled = false
+tasks.jar.enabled = false
+
+File uiaDaemonProjectDir = new File(rootDir, BuildKt.uia2_daemon_relative_project_dir.path)
+assert uiaDaemonProjectDir.isDirectory()
+File uiaDaemonSrcDir = new File(uiaDaemonProjectDir, "src/androidTest/java")
+assert uiaDaemonSrcDir.isDirectory()
+
+sourceSets {
+  main.java.srcDirs = []
+  // This is the magic that brings the proxied project sources into IJ.
+  main.java.srcDir file(uiaDaemonSrcDir)
+  test.java.srcDirs = []
+  main.resources.srcDirs = []
+  test.resources.srcDirs = []
+  main.output.classesDir = buildDir
+  test.output.classesDir = buildDir
+}
+
+repositories {
+  mavenCentral()
+  maven { url "file://" + BuildKt.android_extras_m2repo }
+}
+
+dependencies {
+  compile project(':projects:uiautomator-daemon-lib')
+
+  // compile files(BuildKt.uiautomator_jar.toString())
+  compile files(BuildKt.android_jar.toString())
+
+  compile 'commons-io:commons-io:2.4'
+  compile 'com.google.guava:guava:18.0'
+
+  /*
+      WISH for these dependencies to work (i.e. be visible in IJ), the aar in the Android SDK repo has to be exploded.
+     That is, the classes.jar and /res dir have to be extracted from the .aar file and added to classpath.
+     This is usually done by "apply plugin: 'com.android.application'", which we are trying to avoid in the first place!
+     To see how IJ interprets this correctly, import uiuatomator2-daemon to IJ and inspect the dependencies.
+  */
+
+  // WISH Borges: Requires API 23 (Android 6)
+  // In order to make it compatible with API 22 (Android 5.1) uncomment the lines bellow
+  //compile 'com.android.support:support-annotations:22.0.1'
+  compile 'com.android.support:support-annotations:23.0.1'
+  compile 'com.android.support.test:runner:0.5'
+  compile 'com.android.support.test:rules:0.5'
+  compile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+  compile 'org.hamcrest:hamcrest-integration:1.3'
+}

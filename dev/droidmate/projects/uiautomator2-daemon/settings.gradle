@@ -1,0 +1,23 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+
+/**
+ * Because uiautomator2-daemon project depends on :uiautomator-daemon-lib, which lives in a directory beside, 
+ * this settings.gradle pulls up parent dir one dir up.
+ * 
+ * See also: 
+ *   https://docs.gradle.org/current/userguide/build_lifecycle.html#sub:modifying_element_of_the_project_tree
+ *   http://stackoverflow.com/a/14730140/986533
+ */
+
+rootProject.projectDir = new File(settingsDir, "..");
+rootProject.name = "uiautomator2-daemon-standalone"
+
+include(":uiautomator2-daemon")
+include(":uiautomator-daemon-lib")

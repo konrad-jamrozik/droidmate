@@ -1,0 +1,2 @@
+# Ignore IJ metadata for standalone uiautomator2-daemon project
+/.idea
