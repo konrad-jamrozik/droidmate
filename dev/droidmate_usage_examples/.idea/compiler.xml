@@ -19,8 +19,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="droidmate_usage_example_main" target="1.8" />
-      <module name="droidmate_usage_example_test" target="1.8" />
+      <module name="droidmate_usage_examples_main" target="1.8" />
+      <module name="droidmate_usage_examples_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
