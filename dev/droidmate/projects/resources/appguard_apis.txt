@@ -1,15 +1,29 @@
-# Contents of this file contain current list of methods monitored by AppGuard monitor. For details, see:
-# C:\my\local\repos\chair\droidmate\resources\from_Philipp\appguard_apis_list_origin.txt
+# Copyright (c) 2012-2016 Saarland University
+# All rights reserved.
 #
-# The list has been manually modified by Konrad Jamrozik to instrument successfully on Android 4.4.4-r2.0.1 [1] running
-# on Nexus 7 2012
+# Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+#
+# This file is part of the "DroidMate" project.
+#
+# www.droidmate.org
+#
+# -----
+#
+# This file defines list of Android SDK APIs monitored during DroidMate run.
+#
+# The list was originally adapted from AppGuard. Details are explained in a private repository:
+# https://hg.st.cs.uni-saarland.de/projects/droidmate-private/repository/revisions/master/entry/resources/from_Philipp/appguard_apis_list_origin.txt
+#
+# The manual adaptations of this list were made to make it compatible with Android 4.4.4-r2.0.1 [1] and Android 6.
 # [1] https://github.com/android/platform_frameworks_base/tree/android-4.4.4_r2.0.1/core/java/android
 #
-# The modification was done by
+# The modification were done by
 # 1. deploying the instrumented monitored app on the device,
 # 2. observing the logcat messages with "Instrumentation" tag,
-# 3. diagnosing any failures and comparing the list definitions with the source,
-# 4. fixing the list and writing down the findings.
+# 3. diagnosing any failures and comparing the list definitions with the official source,
+# 4. fixing the list and writing down the findings in comments in this file.
+#
+# Entries starting with !API23 will be skipped when running on Android 6 (API 23) because they do not exist there.
 
 Landroid/app/ActivityThread;->installContentProviders(Landroid/content/Context;Ljava/util/List;)V
 Landroid/app/Activity;->onResume()V
