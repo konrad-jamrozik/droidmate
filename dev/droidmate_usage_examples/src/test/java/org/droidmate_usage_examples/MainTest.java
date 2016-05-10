@@ -155,6 +155,7 @@ public class MainTest
     Collections.addAll(args, Configuration.pn_timeLimit, "20");
     Collections.addAll(args, Configuration.pn_resetEveryNthExplorationForward, "5");
     Collections.addAll(args, Configuration.pn_randomSeed, "43");
+    Collections.addAll(args, Configuration.pn_androidApi, "api19"); // Set to api23 for Android 6
     
     call_main_then_assert_exit_status_is_0(args.toArray(new String[args.size()]));
   }

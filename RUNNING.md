@@ -64,3 +64,12 @@ $ adb pull /data/app/com.frank_weber.forex2-1.apk
 // The file is now in the current dir
 </pre>
 
+# Configuring emulators
+
+Ensure the emulator:
+ 
+* is a Nexus (e.g. Nexus 7),
+* runs Android 4.2.2 (API 19),
+* has no frame,
+* has VM heap of at least 256 MB,
+* has at least 1 GB ram.

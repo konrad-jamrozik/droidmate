@@ -81,7 +81,7 @@ To run DroidMate regression tests requiring a device:
 
 ## Deploying to local maven repository ##
 
-`cd repo/dev/droidmate`
+`cd repo/dev/droidmate`  
 `gradlew build install`
 
 This step is necessary to be able to run DroidMate usage examples tests, as described in `repo/RUNNING.md` 
