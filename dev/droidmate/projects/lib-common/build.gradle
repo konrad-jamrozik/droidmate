@@ -87,7 +87,8 @@ task writeBuildConstantsProperties() { Task it ->
     map["apk_fixtures"] = BuildKt.apk_fixtures
     map["monitored_inlined_apk_fixture_api19_name"] = BuildKt.monitored_inlined_apk_fixture_api19_name
     map["monitored_inlined_apk_fixture_api23_name"] = BuildKt.monitored_inlined_apk_fixture_api23_name
-    map["monitor_generator_output_relative_path"] = BuildKt.monitor_generator_output_relative_path
+    map["monitor_generator_output_relative_path_api19"] = BuildKt.monitor_generator_output_relative_path_api19
+    map["monitor_generator_output_relative_path_api23"] = BuildKt.monitor_generator_output_relative_path_api23
     map["test_temp_dir_name"] = BuildKt.test_temp_dir_name
     map["appguard_apis_txt"] = BuildKt.appguard_apis_txt
     map["dir_name_temp_extracted_resources"] = BuildKt.dir_name_temp_extracted_resources
@@ -107,7 +108,11 @@ task writeBuildConstantsProperties() { Task it ->
   }
 }
 
-clean.configure { doLast { file(buildConstantsFile).delete() } }
+task cleanConstantsFile(type: Delete) {
+  delete file(buildConstantsFile)
+}
+
+clean.dependsOn "cleanConstantsFile"
 
 processResources.dependsOn("writeBuildConstantsProperties")
 

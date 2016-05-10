@@ -36,7 +36,7 @@ public class MonitorGeneratorFrontendTest
   @Test
   public void "Generates DroidMate monitor"()
   {
-    Path actualMonitorJava = Paths.get(BuildConstants.monitor_generator_output_relative_path)
+    Path actualMonitorJava = Paths.get(BuildConstants.monitor_generator_output_relative_path_api23)
     assert Files.notExists(actualMonitorJava) || Files.isWritable(actualMonitorJava)
 
     MonitorGeneratorFrontend.handleException = { Exception e -> throw e }
