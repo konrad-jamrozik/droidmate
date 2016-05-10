@@ -30,7 +30,13 @@ import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-// org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+// org.droidmate.monitor_generator.MonitorSrcTemplate:API_19_UNCOMMENT_LINES
+// import de.uds.infsec.instrumentation.Instrumentation;
+// import de.uds.infsec.instrumentation.annotation.Redirect;
+// import de.uds.infsec.instrumentation.util.Signature;
+// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+
+// org.droidmate.monitor_generator.MonitorSrcTemplate:API_23_UNCOMMENT_LINES
 // import de.larma.arthook.*;
 // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
@@ -95,7 +101,11 @@ public class MonitorJavaTemplate
     else
       server.context = context;
 
-    // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+    // org.droidmate.monitor_generator.MonitorSrcTemplate:API_19_UNCOMMENT_LINES
+    // Instrumentation.processClass(Monitor.class);
+    // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+    
+    // org.droidmate.monitor_generator.MonitorSrcTemplate:API_23_UNCOMMENT_LINES
     // ArtHook.hook(Monitor.class);
     // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 

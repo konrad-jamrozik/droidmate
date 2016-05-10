@@ -27,7 +27,7 @@ public class MonitorGeneratorFrontend
   {
     try
     {
-      MonitorGeneratorResources res = new MonitorGeneratorResources()
+      MonitorGeneratorResources res = new MonitorGeneratorResources(args)
 
       if (!computeAndPrintApiListsStats(args, res))
         generateMonitorSrc(res)
@@ -67,8 +67,8 @@ public class MonitorGeneratorFrontend
   private static void generateMonitorSrc(MonitorGeneratorResources res)
   {
     def monitorGenerator = new MonitorGenerator(
-      new RedirectionsGenerator(),
-      new MonitorSrcTemplate(res.monitorSrcTemplatePath)
+      new RedirectionsGenerator(res.androidApi),
+      new MonitorSrcTemplate(res.monitorSrcTemplatePath, res.androidApi)
     )
 
 

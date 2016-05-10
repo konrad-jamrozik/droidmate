@@ -85,7 +85,7 @@ task make_libs_from_libs_api19(type: Copy, dependsOn: "cleanLibsDir_api19") { Co
   copy.from(libs_api19_dir).into(libsDir)
 }
 
-task make_libs_from_libs_api23(type: Copy, dependsOn: "cleanLibsDir_api19") { Copy copy ->
+task make_libs_from_libs_api23(type: Copy, dependsOn: "cleanLibsDir_api23") { Copy copy ->
   group = "build"
   copy.from(libs_api23_dir).into(libsDir)
 }
@@ -113,12 +113,12 @@ task copyGeneratedMonitorToScaffolding_api23(type: Copy, dependsOn: "generateMon
   copyGeneratedMonitorToScaffolding(copy, generatedMonitor_api23)
 }
 
-task pullLibCommonJar(type: Copy, dependsOn: ":projects:lib-common:jar") {Copy copy ->
+def pullLibCommonJar = {Copy copy ->
   group = "build"
   copy.from(findProject(":projects:lib-common").jar.archivePath).into(libsDir)
 }
-tasks.pullLibCommonJar.mustRunAfter(tasks.make_libs_from_libs_api19)
-tasks.pullLibCommonJar.mustRunAfter(tasks.make_libs_from_libs_api23)
+task pullLibCommonJar_api19(type: Copy, dependsOn: [":projects:lib-common:jar", "make_libs_from_libs_api19"]) {Copy copy -> pullLibCommonJar(copy) }
+task pullLibCommonJar_api23(type: Copy, dependsOn: [":projects:lib-common:jar", "make_libs_from_libs_api23"]) {Copy copy -> pullLibCommonJar(copy) }
 
 File antOutput = file("${monitorApkScaffoldingDir.path}/bin")
 File monitorApkOutputByAnt = file(new File(antOutput,"monitor-apk-debug.apk"))
@@ -143,8 +143,8 @@ def antBuildMonitorApk = { Task task ->
   }
 }
 
-task antBuildMonitorApk_api19(dependsOn: ["make_libs_from_libs_api19", "copyGeneratedMonitorToScaffolding_api19", "pullLibCommonJar"]) { Task task -> antBuildMonitorApk(task) }
-task antBuildMonitorApk_api23(dependsOn: ["make_libs_from_libs_api23", "copyGeneratedMonitorToScaffolding_api23", "pullLibCommonJar"]) { Task task -> antBuildMonitorApk(task) }
+task antBuildMonitorApk_api19(dependsOn: ["make_libs_from_libs_api19", "copyGeneratedMonitorToScaffolding_api19", "pullLibCommonJar_api19"]) { Task task -> antBuildMonitorApk(task) }
+task antBuildMonitorApk_api23(dependsOn: ["make_libs_from_libs_api23", "copyGeneratedMonitorToScaffolding_api23", "pullLibCommonJar_api23"]) { Task task -> antBuildMonitorApk(task) }
 
 task buildMonitorApk_api19(dependsOn: ["antBuildMonitorApk_api19"]) { group = "build" }
 tasks.cleanLibsDir_api23.mustRunAfter(tasks.buildMonitorApk_api19)
@@ -182,7 +182,7 @@ test.configure {
 }
 
 clean.dependsOn "cleanRun", "cleanAntOutput", "cleanLibsDir"
-build.dependsOn "deployMonitorApk_api23"
+build.dependsOn "deployMonitorApk_api19", "deployMonitorApk_api23"
 
 // Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
 processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }

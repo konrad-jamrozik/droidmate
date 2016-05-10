@@ -9,6 +9,7 @@
 
 package org.droidmate.monitor_generator
 
+import com.sun.org.apache.xpath.internal.operations.And
 import org.droidmate.MonitorConstants
 import org.droidmate.apis.ApiMethodSignature
 import org.droidmate.common.logcat.Api
@@ -17,7 +18,7 @@ import org.droidmate.common.logcat.ApiLogcatMessage
 /**
  * Class that add the instrumentation code to {@link MonitorJavaTemplate}
  *
- * <p> Informatino about update to Android 6.0: </p>
+ * <p> Informatin about update to Android 6.0: </p>
  *
  * Using AAR on ANT Script:
  *    http://community.openfl.org/t/integrating-aar-files/6837/2
@@ -29,7 +30,6 @@ import org.droidmate.common.logcat.ApiLogcatMessage
  *    (Not working, just for information) http://stackoverflow.com/questions/31653002/how-to-use-the-legacy-apache-http-client-on-android-marshmallow
  *
  */
-// KJA restore a4 redirections generation
 class RedirectionsGenerator implements IRedirectionsGenerator
 {
 
@@ -41,6 +41,12 @@ class RedirectionsGenerator implements IRedirectionsGenerator
   private static String redirMethodDefPrefix = "Lorg/droidmate/monitor_generator/generated/Monitor;->$redirMethodNamePrefix";
 
   private static Map<Integer, String> ctorRedirNames = [:]
+  private final  AndroidAPI           androidApi
+
+  RedirectionsGenerator(AndroidAPI androidApi)
+  {
+    this.androidApi = androidApi
+  }
 
   @Override
   List<String> generateCtorCallsAndTargets(List<ApiMethodSignature> signatures)
@@ -56,6 +62,23 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         String objectClassAsMethodName = getObjectClassAsMethodName(objectClass)
         ctorRedirNames[id] = "${id}_${objectClassAsMethodName}_ctor${paramClasses.size()}"
 
+        if (androidApi == AndroidAPI.API_19)
+        {
+          String fromId = $/"${ams.objectClassJni}-><init>(${ams.paramsJni})V"/$
+          /* We use Object here instead of the proper name because sometimes the class is hidden from public Android API
+             and so the generated file couldn't be compiled. The instrumentation still works with Object, though.
+          */
+          String objectClassJni = "Ljava/lang/Object;" // ams.objectClassJni
+          String toId = $/"$redirMethodDefPrefix${ctorRedirNames[id]}($objectClassJni${ams.paramsJni})V"/$
+
+          calls << ind6 + "ctorHandles.add(Instrumentation.redirectMethod(" + nl
+          calls << ind6 + ind4 + "Signature.fromIdentifier($fromId, classLoaders)," + nl
+          calls << ind6 + ind4 + "Signature.fromIdentifier($toId, classLoaders)));" + nl
+          calls << ind6 + nl
+        }
+
+        // --- The generation of redirected method (target of the .redirectMethod call) ---
+        
         // Items for method signature.
 
         String objectClassWithDots = getObjectClassWithDots(objectClass)
@@ -71,14 +94,23 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
         String commaSeparatedParamVars = buildCommaSeparatedParamVarNames(ams, paramVarNames)
 
-        targets << ind4 + "@Hook(\"$objectClass->$methodName\") " + nl
+        if (androidApi == AndroidAPI.API_23)
+        {
+          targets << ind4 + "@Hook(\"$objectClass->$methodName\") " + nl
+        }
         targets << ind4 + "public static void $redirMethodNamePrefix${ctorRedirNames[id]}($objectClassWithDots _this$formalParams)" + nl
         targets << ind4 + "{" + nl
         targets << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
         targets << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
         targets << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         targets << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
-        targets << ind4 + ind4 + "OriginalMethod.by(new \$() {}).invoke(_this$commaSeparatedParamVars);" + nl
+        if (androidApi == AndroidAPI.API_19)
+        {
+          targets << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
+        } else if (androidApi == AndroidAPI.API_23)
+        {
+          targets << ind4 + ind4 + "OriginalMethod.by(new \$() {}).invoke(_this$commaSeparatedParamVars);" + nl
+        } else throw new IllegalStateException()
         targets << ind4 + "}" + nl
         targets << ind4 + nl
       }
@@ -126,29 +158,50 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
         // Items for call to Instrumentation method returning value.
 
-        //String returnStatement = returnClass != "void" ? "return (${degenerify(returnClass)}) " : ""
-        String returnStatement = returnClass != "void" ? "return " : ""
+        String returnStatement
+        if (androidApi == AndroidAPI.API_19)
+        {
+          returnStatement = returnClass != "void" ? "return (${degenerify(returnClass)}) " : ""
+        } else if (androidApi == AndroidAPI.API_23)
+        {
+          returnStatement = returnClass != "void" ? "return " : ""
+        } else throw new IllegalStateException()
+        
         String thisVarOrClass = isStatic ? "${objectClassWithDots}.class" : "_this"
         String commaSeparatedParamVars = buildCommaSeparatedParamVarNames(ams, paramVarNames)
 
-        out << ind4 + "@Hook(\"$objectClass->$methodName\") " + nl
+        if (androidApi == AndroidAPI.API_19)
+        {
+          out << ind4 + "@Redirect(\"$objectClass->$methodName\") " + nl
+        } else if (androidApi == AndroidAPI.API_23)
+        {
+          out << ind4 + "@Hook(\"$objectClass->$methodName\") " + nl
+        } else throw new IllegalStateException()
+        
         out << ind4 + "public static $returnClass $redirMethodName($thisParam$formalParams)" + nl
         out << ind4 + "{" + nl
         out << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
         out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
         out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
-        //out << ind4 + ind4 + "class \$ {} " + nl
-        //out << ind4 + ind4 + "${returnStatement}Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
-        //
-        if (!isStatic)
-          out << ind4 + ind4 + "${returnStatement}OriginalMethod.by(new \$() {}).invoke(${thisVarOrClass}${commaSeparatedParamVars});" + nl
-        else
+        if (androidApi == AndroidAPI.API_19)
         {
-          // Remove , for static method
-          commaSeparatedParamVars = commaSeparatedParamVars.substring(2);
-          out << ind4 + ind4 + "${returnStatement}OriginalMethod.by(new \$() {}).invokeStatic(${commaSeparatedParamVars});" + nl
+          String instrCallStatic = isStatic ? "Static" : ""
+          String instrCallType = returnClass in instrCallMethodTypeMap.keySet() ? instrCallMethodTypeMap[returnClass] : "Object"
+          out << ind4 + ind4 + "class \$ {} " + nl
+          out << ind4 + ind4 + "${returnStatement}Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
         }
+        else if (androidApi == AndroidAPI.API_23)
+        {
+          if (!isStatic)
+            out << ind4 + ind4 + "${returnStatement}OriginalMethod.by(new \$() {}).invoke(${thisVarOrClass}${commaSeparatedParamVars});" + nl
+          else
+          {
+            // Remove , for static method
+            commaSeparatedParamVars = commaSeparatedParamVars.substring(2);
+            out << ind4 + ind4 + "${returnStatement}OriginalMethod.by(new \$() {}).invokeStatic(${commaSeparatedParamVars});" + nl
+          }
+        } else throw new IllegalStateException()
         out << ind4 + "}" + nl
         out << ind4 + nl
       }
