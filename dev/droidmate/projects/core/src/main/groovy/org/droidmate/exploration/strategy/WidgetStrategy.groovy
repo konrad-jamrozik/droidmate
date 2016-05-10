@@ -25,7 +25,6 @@ import static org.droidmate.exploration.actions.ExplorationAction.newWidgetExplo
 @TypeChecked
 class WidgetStrategy implements IWidgetStrategy
 {
-  private final Long          randomSeed
   private final Random        random
   private final Boolean       alwaysClickFirstWidget
   private       List<Integer> widgetIndexes
@@ -40,7 +39,6 @@ class WidgetStrategy implements IWidgetStrategy
     boolean alwaysClickFirstWidget,
     List<Integer> widgetIndexes)
   {
-    this.randomSeed = randomSeed
     this.random = new Random(randomSeed)
     this.alwaysClickFirstWidget = alwaysClickFirstWidget
     this.widgetIndexes = widgetIndexes

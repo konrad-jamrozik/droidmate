@@ -133,7 +133,7 @@ task testDevice(type: Test, dependsOn: testClasses) { Test task ->
   task.workingDir rootDir
 
   task.include("**/DroidmateFrontendTest.class")
-  task.filter.includeTestsMatching("*Explores monitored apk on a real device api 19")
+  task.filter.includeTestsMatching("*Explores monitored apk on a real device api19")
 }
 
 apply from: project(":projects").file("maven.gradle")

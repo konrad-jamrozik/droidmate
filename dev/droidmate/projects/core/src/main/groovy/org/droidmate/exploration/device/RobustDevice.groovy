@@ -256,6 +256,7 @@ class RobustDevice implements IRobustDevice
   {
     try
     {
+      // WISH when ANR immediately appears, waiting for full org.droidmate.common.SysCmdExecutor.sysCmdExecuteTimeout to pass here is wasteful.
       Boolean3 result = this.device.launchMainActivity(launchableActivityComponentName)
       def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
 

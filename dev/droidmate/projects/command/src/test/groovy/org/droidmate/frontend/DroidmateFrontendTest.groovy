@@ -212,7 +212,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
-  public void "Explores monitored apk on a real device api 19"()
+  public void "Explores monitored apk on a real device api19"()
   {
     String[] args = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api19_name]",
@@ -225,7 +225,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
-  public void "Explores monitored apk on a real device api 23"()
+  public void "Explores monitored apk on a real device api23"()
   {
     String[] args = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api23_name]",

@@ -70,7 +70,7 @@ public class DroidmateFrontend
       else 
         command = determineAndBuildCommand(cfg)
 
-      log.info("Successfully instantiatied ${command.class.simpleName}. Welcome to DroidMate. Lie back, relax and enjoy.")
+      log.info("Successfully instantiated ${command.class.simpleName}. Welcome to DroidMate. Lie back, relax and enjoy.")
       log.info("Run start timestamp: " + runStart)
 
       command.execute(cfg)

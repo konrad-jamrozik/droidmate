@@ -70,7 +70,6 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
   je.doLast { assert generatedMonitor.file }
 }
 
-// KJA not up to date for some reason
 task generateMonitor_api19(type: JavaExec) {JavaExec je -> generateMonitor(je, ["api19"], generatedMonitor_api19) }
 task generateMonitor_api23(type: JavaExec) {JavaExec je -> generateMonitor(je, ["api23"], generatedMonitor_api23) }
 

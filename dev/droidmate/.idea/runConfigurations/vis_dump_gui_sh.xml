@@ -2,7 +2,7 @@
   <configuration default="false" name="vis_dump_gui.sh" type="BashConfigurationType" factoryName="Bash" singleton="true">
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="INTERPRETER_PATH" value="C:\Program Files\Git\bin\sh.exe " />
-    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
+    <option name="WORKING_DIRECTORY" value="C:\my\local\repos\github\droidmate\dev\droidmate\scripts" />
     <option name="PARENT_ENVS" value="true" />
     <option name="SCRIPT_NAME" value="vis_dump_gui.sh" />
     <option name="PARAMETERS" value="" />
