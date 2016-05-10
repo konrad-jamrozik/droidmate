@@ -14,13 +14,13 @@ task droidmateBuild(type: GradleBuild) {
   tasks = ["clean", "build", "install"]
 }
 
-task droidmateUsageExampleBuild(type: GradleBuild) {
+task droidmateUsageExamplesBuild(type: GradleBuild) {
   group = "build"
   
-  buildFile = file "dev/droidmate_usage_example/build.gradle"
+  buildFile = file "dev/droidmate_usage_examples/build.gradle"
   tasks = ["clean", "build"]
 }
 
-task integrationBuild(dependsOn: ["droidmateBuild", "droidmateUsageExampleBuild"]) {
+task integrationBuild(dependsOn: ["droidmateBuild", "droidmateUsageExamplesBuild"]) {
   group = "build"
 }
