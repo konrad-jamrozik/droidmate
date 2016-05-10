@@ -6,7 +6,7 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate_usage_example;
+package org.droidmate_usage_examples;
 
 import org.droidmate.exploration.actions.ExplorationAction;
 import org.droidmate.exploration.actions.IExplorationActionRunResult;

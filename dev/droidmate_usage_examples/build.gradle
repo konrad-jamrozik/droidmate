@@ -11,7 +11,7 @@ group 'org.droidmate'
 version 'dev'
 
 apply plugin: 'application'
-mainClassName = "org.droidmate_usage_example.Main"
+mainClassName = "org.droidmate_usage_examples.Main"
 
 apply plugin: 'java'
 sourceCompatibility = JavaVersion.VERSION_1_8
