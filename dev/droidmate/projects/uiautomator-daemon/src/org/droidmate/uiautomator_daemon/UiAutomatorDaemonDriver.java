@@ -43,7 +43,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     this.waitForWindowUpdateTimeout = waitForWindowUpdateTimeout;
   }
 
-
+  @SuppressWarnings("Duplicates")
   @Override
   public DeviceResponse executeCommand(DeviceCommand deviceCommand) throws UiAutomatorDaemonException
   {
@@ -67,28 +67,37 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       return performAction(deviceCommand);
 
     if (deviceCommand.command.equals(DEVICE_COMMAND_GET_DEVICE_MODEL))
-      return getDeviceModel();
+    {
+      DeviceResponse deviceResponse = new DeviceResponse();
+      deviceResponse.model = getDeviceModel();
+      return deviceResponse;
+    }
 
     throw new UiAutomatorDaemonException(String.format("The command %s is not implemented yet!", deviceCommand.command));
   }
 
-  private DeviceResponse getDeviceModel()
+  private String _deviceModel = null; 
+  private String getDeviceModel()
   {
-    Log.d(uiaDaemon_logcatTag, "Getting 'DeviceModel'");
-    String model = android.os.Build.MODEL;
-    String manufacturer = Build.MANUFACTURER;
-    DeviceResponse deviceResponse = new DeviceResponse();
-    deviceResponse.model = manufacturer + "-" + model;
-    Log.d(uiaDaemon_logcatTag, "Device model: " + deviceResponse.model);
-    return deviceResponse;
+    if (_deviceModel == null)
+    {
+      String model = Build.MODEL;
+      String manufacturer = Build.MANUFACTURER;
+      _deviceModel = manufacturer + "-" + model;
+      Log.d(uiaDaemon_logcatTag, "Device model: " + _deviceModel);
+    }
+    return _deviceModel;
+  }
+  
+  private boolean deviceIsEmulator()
+  {
+    return getDeviceModel().contains("unknown");
   }
 
   private String getsWifiSwitchWidgetName()
   {
-    String deviceModel = this.getDeviceModel().model;
-
     String switchWidgetName;
-    if (deviceModel.equals(DEVICE_SAMSUNG_GALAXY_S3_GT_I9300))
+    if (getDeviceModel().equals(DEVICE_SAMSUNG_GALAXY_S3_GT_I9300))
       switchWidgetName = "android:id/switchWidget";
     else
       switchWidgetName = "com.android.settings:id/switchWidget";
@@ -213,6 +222,12 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
   private void turnWifiOnAndGoHome()
   {
+    if (deviceIsEmulator())
+    {
+      Log.d(uiaDaemon_logcatTag, "Checking wifi state: skipped, because running on emulator.");
+      return;
+    }
+    
     Log.d(uiaDaemon_logcatTag, "Checking wifi state.");
     try
     {
