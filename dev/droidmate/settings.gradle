@@ -16,8 +16,6 @@
  */
 
 // KJA remove all (or at least most of) warnings from output of full rebuild 
-// KJA fix README todos
-
 include(
   "projects:lib-common",
   "projects:lib-kotlin",

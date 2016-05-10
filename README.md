@@ -9,7 +9,7 @@
 
   www.droidmate.org
 
-  Date of last full review: 12 April 2016
+  Date of last full review: 10 May 2016
 
 # Introduction #
 

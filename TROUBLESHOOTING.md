@@ -1,10 +1,21 @@
+  Copyright (c) 2012-2016 Saarland University  
+  All rights reserved.
+
+  Author: Konrad Jamrozik, github.com/konrad-jamrozik
+  
+  This file is part of the "DroidMate" project.
+
+  www.droidmate.org
+
+  Date of last full review: 10 May 2016
+
 # Troubleshooting
 
-All the mentioned log `.txt` files by default are located under `repo/dev/droidmate/dev1/logs`.
+All the mentioned log `.txt` files by default are located under `repo/dev/droidmate/output_device1/logs`.
 
 ### Uiautomator-daemon service did not terminate ###
 
-Still occurring as of 30 Apr 2016.
+Still occurring as of 10 May 2016.
 
 #### Symptoms:
 `master_log.txt` shows:
