@@ -120,10 +120,10 @@ Landroid/media/MediaRecorder;->setVideoSource(I)V
 Landroid/net/ConnectivityManager;->requestRouteToHost(II)Z
 
 # Update 19 Apr 2016
-# This method no longer exists on Android 6. Source:
+# This method no longer exists on Android 6 / API 23. Source:
 # https://github.com/android/platform_frameworks_base/blob/android-6.0.1_r31/core/java/android/net/ConnectivityManager.java
 # Some discussion what might have replaced it: http://stackoverflow.com/questions/26539445/the-setmobiledataenabled-method-is-no-longer-callable-as-of-android-l-and-later
-#Landroid/net/ConnectivityManager;->setMobileDataEnabled(Z)V
+!API23 Landroid/net/ConnectivityManager;->setMobileDataEnabled(Z)V
 
 Landroid/net/ConnectivityManager;->setNetworkPreference(I)V
 
@@ -138,9 +138,9 @@ Landroid/net/ConnectivityManager;->setNetworkPreference(I)V
 # Note: this instruments successfully even though it has @hide annotation!
 #
 # Update 19 Apr 2016
-# This method no longer exists on Android 6. Source:
+# This method no longer exists on Android 6 / API 23. Source:
 # https://github.com/android/platform_frameworks_base/blob/android-6.0.1_r31/core/java/android/net/ConnectivityManager.java
-# Landroid/net/ConnectivityManager;->setRadio(IZ)Z
+!API23 Landroid/net/ConnectivityManager;->setRadio(IZ)Z
 
 # Instrumentation fails:
 # 10-09 17:46:19.396    7461-7461/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method android.net.ConnectivityManager->setRadios
@@ -153,9 +153,9 @@ Landroid/net/ConnectivityManager;->setNetworkPreference(I)V
 # Note: this instruments successfully even though it has @hide annotation!
 #
 # Update 19 Apr 2016
-# This method no longer exists on Android 6. Source:
+# This method no longer exists on Android 6 / API 23. Source:
 # https://github.com/android/platform_frameworks_base/blob/android-6.0.1_r31/core/java/android/net/ConnectivityManager.java
-# Landroid/net/ConnectivityManager;->setRadios(Z)Z
+!API23 Landroid/net/ConnectivityManager;->setRadios(Z)Z
 
 Landroid/net/ConnectivityManager;->startUsingNetworkFeature(ILjava/lang/String;)I
 Landroid/net/ConnectivityManager;->stopUsingNetworkFeature(ILjava/lang/String;)I

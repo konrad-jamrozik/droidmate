@@ -100,6 +100,7 @@ def copyGeneratedMonitorToScaffolding = {Copy copy, File copyInput  ->
   copy.into monitorJava.parent
   copy.rename copyInput.name, monitorJava.name
 
+  // KJA because both the tasks output to the same file, they can never be up to date!
   copy.outputs.file monitorJava
 
   copy.doLast {assert monitorJava.file}
@@ -128,7 +129,7 @@ def antBuildMonitorApk = { Task task ->
   task.inputs.files monitorJava
   task.inputs.files fileTree(dir: "${monitorApkScaffoldingDir.path}/libs", include: '**')
   task.outputs.files monitorApkOutputByAnt
-  task.outputs.dir buildDir
+  task.outputs.dir antOutput
 
   task.doLast {
 
@@ -143,8 +144,23 @@ def antBuildMonitorApk = { Task task ->
   }
 }
 
-task antBuildMonitorApk_api19(dependsOn: ["make_libs_from_libs_api19", "copyGeneratedMonitorToScaffolding_api19", "pullLibCommonJar_api19"]) { Task task -> antBuildMonitorApk(task) }
-task antBuildMonitorApk_api23(dependsOn: ["make_libs_from_libs_api23", "copyGeneratedMonitorToScaffolding_api23", "pullLibCommonJar_api23"]) { Task task -> antBuildMonitorApk(task) }
+
+File projectPropertiesFile = new File(monitorApkScaffoldingDir, "project.properties")
+
+task set_build_target_api19() { Task task ->
+  task.group = "build"
+  task.outputs.file(projectPropertiesFile)
+  task.doLast { projectPropertiesFile.text = "target=android-19" }
+}
+
+task set_build_target_api23() { Task task ->
+  task.group = "build"
+  task.outputs.file(projectPropertiesFile)
+  task.doLast { projectPropertiesFile.text = "target=android-23" }
+}
+
+task antBuildMonitorApk_api19(dependsOn: ["make_libs_from_libs_api19", "copyGeneratedMonitorToScaffolding_api19", "pullLibCommonJar_api19", "set_build_target_api19"]) { Task task -> antBuildMonitorApk(task) }
+task antBuildMonitorApk_api23(dependsOn: ["make_libs_from_libs_api23", "copyGeneratedMonitorToScaffolding_api23", "pullLibCommonJar_api23", "set_build_target_api23"]) { Task task -> antBuildMonitorApk(task) }
 
 task buildMonitorApk_api19(dependsOn: ["antBuildMonitorApk_api19"]) { group = "build" }
 tasks.cleanLibsDir_api23.mustRunAfter(tasks.buildMonitorApk_api19)

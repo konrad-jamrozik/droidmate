@@ -15,6 +15,7 @@ import org.droidmate.android_sdk.ApkExplorationException
 import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.common.Assert
+import org.droidmate.common.BuildConstants
 import org.droidmate.common.DroidmateException
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
@@ -24,6 +25,8 @@ import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
+
+import java.nio.file.Paths
 
 @Slf4j
 public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
@@ -78,13 +81,13 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     if (cfg.androidApi == "api19")
     {
       device.pushJar(this.cfg.uiautomatorDaemonJar)
-      device.pushJar(this.cfg.monitorApkApi19)
+      device.pushJar(this.cfg.monitorApkApi19, BuildConstants.monitor_on_avd_apk_name)
     }
     else if (cfg.androidApi == "api23")
     {
       device.installApk(this.cfg.uiautomator2DaemonApk)
       device.installApk(this.cfg.uiautomator2DaemonTestApk)
-      device.pushJar(this.cfg.monitorApkApi23)
+      device.pushJar(this.cfg.monitorApkApi23, BuildConstants.monitor_on_avd_apk_name)
     } else throw new UnexpectedIfElseFallthroughError()
     
     device.setupConnection()
@@ -115,13 +118,12 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       if (cfg.androidApi == "api19")
       {
         device.removeJar(cfg.uiautomatorDaemonJar)
-        device.removeJar(cfg.monitorApkApi19)
       } else if (cfg.androidApi == "api23")
       {
         device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_testPackageName, true)
         device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_packageName, true)
-        device.removeJar(cfg.monitorApkApi23)
       } else throw new UnexpectedIfElseFallthroughError()
+      device.removeJar(Paths.get(BuildConstants.monitor_on_avd_apk_name))
     }
     else
       log.trace("Device is not available. Skipping tear down.")

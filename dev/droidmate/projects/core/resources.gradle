@@ -4,8 +4,7 @@ import com.konradjamrozik.IterableExtensions
 processResources.configure { Copy copy -> copy.from(project(":projects").file("resources"))}
 
 processResources.dependsOn(
-  // KJA uncomment when ready
-//  "pullMonitorApk_api19",
+  "pullMonitorApk_api19",
   "pullMonitorApk_api23", 
   "pullUiaDaemonJar", 
   "pullUia2DaemonApk", 

@@ -19,6 +19,8 @@ public interface IDeployableAndroidDevice
 {
   void pushJar(Path jar) throws DeviceException
 
+  void pushJar(Path jar, String targetFileName) throws DeviceException
+
   void removeJar(Path jar) throws DeviceException
 
   void installApk(Path apk) throws DeviceException

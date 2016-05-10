@@ -7,8 +7,6 @@
 //
 // www.droidmate.org
 
-// KJA2 two apk scaffoldings needed in monitor-generator: one for arthook, one for instrumentation.jar
-
 allprojects {
   group = "org.droidmate"
   version = "dev"

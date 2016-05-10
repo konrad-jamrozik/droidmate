@@ -54,7 +54,7 @@ class AdbWrapperStub implements IAdbWrapper
   }
 
   @Override
-  void pushJar(String deviceSerialNumber, Path jarFile) throws AdbWrapperException
+  void pushJar(String deviceSerialNumber, Path jarFile, String targetFileName = null) throws AdbWrapperException
   {
     assert false: "Not yet implemented!"
   }

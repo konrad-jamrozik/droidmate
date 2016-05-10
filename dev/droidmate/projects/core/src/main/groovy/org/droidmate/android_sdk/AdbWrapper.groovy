@@ -452,7 +452,7 @@ public class AdbWrapper implements IAdbWrapper
 
 
   @Override
-  public void pushJar(String deviceSerialNumber, Path jarFile) throws AdbWrapperException
+  public void pushJar(String deviceSerialNumber, Path jarFile, String targetFileName = null) throws AdbWrapperException
   {
     assert cfg.adbCommand != null
     assert deviceSerialNumber != null
@@ -473,7 +473,7 @@ public class AdbWrapper implements IAdbWrapper
       // http://developer.android.com/tools/testing/testing_ui.html#builddeploy
       sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
-        "push", jarFile.toAbsolutePath().toString(), BuildConstants.AVD_dir_for_temp_files)
+        "push", jarFile.toAbsolutePath().toString(), BuildConstants.AVD_dir_for_temp_files + (targetFileName ?: "") )
 
     } catch (SysCmdExecutorException e)
     {
