@@ -79,7 +79,7 @@ Note that `apk_fixtures_src` is being built as part of the `droidmate` build.
 
 ## Running DroidMate from IntelliJ
 
-DroidMate has a set of predefined run configurations, summarized here. They exist to help you get started with running DroidMate
+DroidMate has a set of predefined run configurations, summarized here. They exist to help you get started with running DroidMate 
 from IDE while developing it. If you want to use DroidMate API from your Java program, without editing DroidMate sources, 
 please see `repo/RUNNING.md`.
 
@@ -102,9 +102,10 @@ The root of all test suites is `org.droidmate.test_suites.AllTestSuites`.
 
 # Technical documentation 
 
-Please refer to `repo/RUNNING.md` to understand how to use DroidMate API. 
+If you want to understand how to use DroidMate API, please refer to `repo/RUNNING.md`.
 
-The entry class of DroidMate is `DroidmateFrontend` and so it is recommended to start code base exploration from this class. You can find it in
+The entry class of DroidMate is `DroidmateFrontend` and so it is recommended to start code base exploration from this class.  
+You can find it in:
 
 `repo/dev/droidmate/projects/core/src/main/groovy/org/droidmate/frontend/DroidmateFrontend.groovy`
 

@@ -24,7 +24,7 @@ repositories {
   //
   //   git clone https://github.com/konrad-jamrozik/droidmate.git
   //   cd droidmate/dev/droidmate
-  //   ./gradlew install
+  //   gradlew build install
   //
   mavenLocal()
   maven { url "https://jitpack.io" }
