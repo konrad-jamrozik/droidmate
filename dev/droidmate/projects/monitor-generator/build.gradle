@@ -46,6 +46,9 @@ mainClassName = "org.droidmate.monitor_generator.MonitorGeneratorFrontend"
 
 processResources.dependsOn "pullMonitorJavaTemplateSource"
 
+// Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
+processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
+
 task pullMonitorJavaTemplateSource(type: Copy) { Copy copy ->
 
   copy.from monitorJavaTemplateSource 
@@ -68,8 +71,8 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
 }
 
 // KJA not up to date for some reason
-task generateMonitor_api19(type: JavaExec) {JavaExec je -> je.group = "build" ; generateMonitor(je, ["api19"], generatedMonitor_api19) }
-task generateMonitor_api23(type: JavaExec) {JavaExec je -> je.group = "build" ; generateMonitor(je, ["api23"], generatedMonitor_api23) }
+task generateMonitor_api19(type: JavaExec) {JavaExec je -> generateMonitor(je, ["api19"], generatedMonitor_api19) }
+task generateMonitor_api23(type: JavaExec) {JavaExec je -> generateMonitor(je, ["api23"], generatedMonitor_api23) }
 
 File monitorApkScaffoldingDir = file "monitor-apk-scaffolding"
 assert monitorApkScaffoldingDir.directory
@@ -83,12 +86,8 @@ assert monitorJava.parentFile.directory
 File antOutput = file("${monitorApkScaffoldingDir.path}/bin")
 File monitorApkOutputByAnt = file(new File(antOutput,"monitor-apk-debug.apk"))
 def antBuildMonitorApk = { Task task ->
-  task.group = "build"
-
   task.doLast {
-
     assert monitorJava.file
-
     int exitValue = BuildKt.executeCommand(
       "${monitorApkScaffoldingDir.name} ant debug",
       "ant -f ${monitorApkScaffoldingDir.path}/build.xml debug"
@@ -110,40 +109,31 @@ def prepareAntBuild = { int apiLevel, File apiLibsDir, File monitor ->
 
 File monitor_apk_api19 = new File(buildDir, "monitor_api19.apk")
 File monitor_apk_api23 = new File(buildDir, "monitor_api23.apk")
-task antBuildMonitorApk_api19(dependsOn: ["generateMonitor_api19", ":projects:lib-common:jar"]) {Task task ->
-
-  task.inputs.file libCommonJarTask
-  task.inputs.file generatedMonitor_api19
+task antBuildMonitorApk_api19(dependsOn: ["generateMonitor_api19", libCommonJarTask]) {Task task ->
+  task.group = "build"
+  
+  task.inputs.files libCommonJarTask
+  task.inputs.files tasks.generateMonitor_api19
   task.inputs.files fileTree(dir: libs_api19_dir, include: '**')
   task.outputs.file monitor_apk_api19
   
   task.doFirst { prepareAntBuild(19, libs_api19_dir, generatedMonitor_api19) }
   antBuildMonitorApk(task)
+  task.doLast { copy { it.from(monitorApkOutputByAnt).into(monitor_apk_api19.parent).rename { monitor_apk_api19.name }}}
 }
 
-task antBuildMonitorApk_api23(dependsOn: ["generateMonitor_api23", ":projects:lib-common:jar"]) {Task task ->
-
-  task.inputs.file libCommonJarTask
-  task.inputs.file generatedMonitor_api23
+task antBuildMonitorApk_api23(dependsOn: ["generateMonitor_api23", libCommonJarTask]) {Task task ->
+  task.group = "build"
+  
+  task.inputs.files libCommonJarTask
+  task.inputs.files tasks."generateMonitor_api23"
   task.inputs.files fileTree(dir: libs_api23_dir, include: '**')
   task.outputs.file monitor_apk_api23
   
   task.doFirst { prepareAntBuild(23, libs_api23_dir, generatedMonitor_api23) }
   antBuildMonitorApk(task)
+  task.doLast { copy { it.from(monitorApkOutputByAnt).into(monitor_apk_api23.parent).rename { monitor_apk_api23.name }}}
 }
-
-task deployMonitorApk_api19(type: Copy, dependsOn: "antBuildMonitorApk_api19") {Copy copy ->
-  group = "build"
-  copy.from(monitorApkOutputByAnt).into(monitor_apk_api19.parent).rename { monitor_apk_api19.name }
-}
-
-task deployMonitorApk_api23(type: Copy, dependsOn: "antBuildMonitorApk_api23") {Copy copy ->
-  group = "build"
-  copy.from(monitorApkOutputByAnt).into(monitor_apk_api23.parent).rename { monitor_apk_api23.name }
-}
-// KJA build is up to date even on full clean
-
-// KJA the build monitor 19 has actually arthook in it
 
 task cleanRun(type: Delete) {
   group = "build"
@@ -159,10 +149,7 @@ task cleanAntOutput(type: Delete) { group = "build"; delete antOutput }
 task cleanLibsDir(type: Delete) {group = "build"; delete libsDir }
 
 clean.dependsOn "cleanRun", "cleanAntOutput", "cleanLibsDir"
-build.dependsOn "deployMonitorApk_api19", "deployMonitorApk_api23"
-
-// Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
-processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
+build.dependsOn "antBuildMonitorApk_api19", "antBuildMonitorApk_api23"
 
 test.configure {
 
