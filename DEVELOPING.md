@@ -124,7 +124,7 @@ The list of monitored APIs is located in
 
 Lines starting with `#` and empty lines are discarded.
 
-After you make your changes, do a full rebuild (see `repo/BUILDING.md`).
+After you make your changes, do a build (see `repo/BUILDING.md`).
 
 To test if DroidMate successfully monitored your modified API list, observe the logcat output
 while the explored application is started. In case of Android 4.2.2, you will see 100+ messages
