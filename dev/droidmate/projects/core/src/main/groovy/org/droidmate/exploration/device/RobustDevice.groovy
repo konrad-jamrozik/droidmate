@@ -162,6 +162,7 @@ class RobustDevice implements IRobustDevice
         }
         
         if (appIsInstalled)
+          // KJA probably reboot necessary here. Search for "XXX" in logcat.txt in C:\my\local\repos\sechair\droidmate-private\resources\debug_logs\11_may_2016
           throw new DeviceException("Uninstallation of $apkPackageName threw an exception (given as cause of this exception) and the app is indeed still installed.", e)
         else
           log.debug("Uninstallation of $apkPackageName threw na exception, but the app is no longer installed. Discarding the exception '$e' and continuing.")
