@@ -15,7 +15,6 @@
  * http://www.gradle.org/docs/current/userguide/multi_project_builds.html
  */
 
-// KJA remove all (or at least most of) warnings from output of full rebuild 
 include(
   "projects:lib-common",
   "projects:lib-kotlin",

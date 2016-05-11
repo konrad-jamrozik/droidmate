@@ -118,10 +118,6 @@ public class ApkDeployer implements IApkDeployer
         log.info("Uninstalling $apk.fileName")
         // KNOWN BUG [clear package]/2 times out (120 sec) even though device.available returned true!
         device.clearPackage(apk.packageName)
-        // KJA // When set to 2 minutes, following command timed out: adb.exe -s emulator-5554 uninstall animaonline.android.wikiexplorer
-        // This seems to only happen when "TaoMix" was run before this app, using config: -apksDir=apks/inlined -randomSeed=0 -resetEvery=30 -timeLimit=200
-        // but not on -timeLimit=5
-        // "adb shell pm list packages -3" shows no apps at the beginning.
         device.uninstallApk(apk.packageName, /* ignoreFailure = */ false)
       }
       else
