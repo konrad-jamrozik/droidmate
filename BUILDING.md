@@ -67,7 +67,7 @@ To skip tests: `gradlew build -x test`
 
 To run tests only: `gradlew test`
 
-To do a clean build (a rebuild): `gradlew clean build`
+To do a clean build (a full rebuild): `gradlew clean build`
 
 ### Testing against a device ###
 

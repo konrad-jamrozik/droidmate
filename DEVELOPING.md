@@ -115,3 +115,17 @@ Tests of DroidMate serve also as example use cases. If given class has a corresp
 
 Run the tests from IntelliJ as described in section above to be able to navigate to them directly. If you run a Gradle build, you can see the test report in:
 `repo/dev/droidmate/projects/core/build/reports/tests/index.html`
+
+## Editing the list of monitored APIs
+
+The list of monitored APIs is located in
+
+`repo/dev/droidmate/projects/resources/appguard_apis.txt`
+
+Lines starting with `#` and empty lines are discarded.
+
+After you make your changes, do a full rebuild (see `repo/BUILDING.md`).
+
+To test if DroidMate successfully monitored your modified API list, observe the logcat output
+while the explored application is started. In case of Android 4.2.2, you will see 100+ messages
+tagged `Instrumentation`. If there were any failures, the messages will say so.
