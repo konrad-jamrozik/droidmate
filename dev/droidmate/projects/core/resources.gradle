@@ -6,9 +6,9 @@ processResources.configure { Copy copy -> copy.from(project(":projects").file("r
 processResources.dependsOn(
   "pullMonitorApk_api19",
   "pullMonitorApk_api23", 
-  "pullUiaDaemonJar", 
-  "pullUia2DaemonApk", 
-  "pullUia2DaemonTestApk"
+  "pullUiautomatorDaemonJar", 
+  "pullUiautomator2DaemonApk", 
+  "pullUiautomator2DaemonTestApk"
 )
 
 processTestResources.dependsOn(
@@ -20,8 +20,8 @@ processTestResources.dependsOn(
 clean.dependsOn(
   "cleanMonitorApk_api19",
   "cleanMonitorApk_api23",
-  "cleanUiaDaemon", 
-  "cleanUia2Daemon",
+  "cleanUiautomatorDaemon", 
+  "cleanUiautomator2Daemon",
   "cleanApkFixtures"
 )
 

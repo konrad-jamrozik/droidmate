@@ -7,7 +7,7 @@ File uia2DaemonBuildDir = new File("$uia2DaemonProjectDir/build")
 String uia2DaemonName = BuildKt.uia2_daemon_project_name
 
 String uia2DaemonApkOriginalName = "${uia2DaemonName}-debug-unaligned.apk"
-task pullUia2DaemonApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
+task pullUiautomator2DaemonApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
   Copy copy ->
     def uiaDaemonApk = file(new File(uia2DaemonBuildDir.absolutePath + "/outputs/apk/", uia2DaemonApkOriginalName))
     copy.from(uiaDaemonApk).into(coreResDir).rename("-debug-unaligned.apk", ".apk")
@@ -15,7 +15,7 @@ task pullUia2DaemonApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
 }
 
 String uia2DaemonTestApkOriginalName = "${uia2DaemonName}-debug-androidTest-unaligned.apk"
-task pullUia2DaemonTestApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
+task pullUiautomator2DaemonTestApk(type: Copy, dependsOn: "assembleUiautomator2Daemon") {
   Copy copy ->
     def uiaDaemonTestApk = file(new File(uia2DaemonBuildDir.absolutePath + "/outputs/apk/", uia2DaemonTestApkOriginalName))
     copy.from(uiaDaemonTestApk).into(coreResDir).rename("debug-androidTest-unaligned.apk", "test.apk")
@@ -29,7 +29,7 @@ task assembleUiautomator2Daemon(type: GradleBuild) { GradleBuild task ->
 String uia2DaemonApkName = "${uia2DaemonName}.apk"
 String uia2DaemonTestApkName = "${uia2DaemonName}-test.apk"
 
-task cleanUia2Daemon(type: Delete, dependsOn: "cleanExternalBuild_uiautomator2Daemon") {
+task cleanUiautomator2Daemon(type: Delete, dependsOn: "cleanExternalBuild_uiautomator2Daemon") {
   delete file(new File(coreResDir as File, uia2DaemonApkName))
   delete file(new File(coreResDir as File, uia2DaemonTestApkName))
 }
