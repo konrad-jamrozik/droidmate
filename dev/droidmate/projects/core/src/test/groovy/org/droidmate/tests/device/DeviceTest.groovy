@@ -83,6 +83,7 @@ class DeviceTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
+  // WISH better to do this through adb: http://stackoverflow.com/a/10038568/986533
   void "Turns wifi on"()
   {
     IDeviceTools deviceTools = new DeviceTools(new ConfigurationForTests().forDevice().get())

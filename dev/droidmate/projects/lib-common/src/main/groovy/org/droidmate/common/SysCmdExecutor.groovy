@@ -22,7 +22,7 @@ public class SysCmdExecutor implements ISysCmdExecutor
 {
   /** Timeout for executing system commands, in milliseconds. Zero or negative value means no timeout. */
   // App that often requires more than one minute for "adb start": net.zedge.android_v4.10.2-inlined.apk
-  public int sysCmdExecuteTimeout = 1000 * 60 * 2;
+  public int sysCmdExecuteTimeout = 1000 * 60 * 2
   private static final int TIMEOUT_REACHED_ZONE = 100
 
   /*

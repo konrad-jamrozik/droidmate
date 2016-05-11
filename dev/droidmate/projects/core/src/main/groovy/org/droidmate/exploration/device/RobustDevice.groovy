@@ -139,6 +139,37 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
+  void uninstallApk(String apkPackageName, boolean ignoreFailure) throws DeviceException
+  {
+    if (ignoreFailure)
+      device.uninstallApk(apkPackageName, ignoreFailure)
+    else
+    {
+      try
+      {
+        device.uninstallApk(apkPackageName, ignoreFailure)
+      } catch (DeviceException e)
+      {
+        boolean appIsInstalled
+        try 
+        {
+          appIsInstalled = device.hasPackageInstalled(apkPackageName)
+        } catch (DeviceException e2)
+        {
+          throw new DeviceException("Uninstallation of $apkPackageName failed with exception E1: '$e'. " +
+            "Tried to check if the app that was to be uninstalled is still installed, but that also resulted in exception, E2. " +
+            "Discarding E1 and throwing an exception having as a cause E2", e2)
+        }
+        
+        if (appIsInstalled)
+          throw new DeviceException("Uninstallation of $apkPackageName threw an exception (given as cause of this exception) and the app is indeed still installed.", e)
+        else
+          log.debug("Uninstallation of $apkPackageName threw na exception, but the app is no longer installed. Discarding the exception '$e' and continuing.")
+      }
+    }
+  }
+
+  @Override
   void clearPackage(String apkPackageName) throws DeviceException
   {
     // Clearing package has to happen more than once, because sometimes after cleaning suddenly the ActivityManager restarts

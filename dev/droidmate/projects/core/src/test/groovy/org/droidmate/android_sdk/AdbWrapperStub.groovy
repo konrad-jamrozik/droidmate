@@ -115,6 +115,12 @@ class AdbWrapperStub implements IAdbWrapper
   }
 
   @Override
+  String listPackage(String deviceSerialNumber, String packageName) throws AdbWrapperException
+  {
+    assert false: "Not yet implemented!"
+  }
+
+  @Override
   String ps(String deviceSerialNumber) throws AdbWrapperException
   {
     assert false: "Not yet implemented!"

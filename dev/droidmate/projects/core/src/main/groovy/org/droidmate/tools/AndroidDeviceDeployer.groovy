@@ -120,8 +120,9 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
         device.removeJar(cfg.uiautomatorDaemonJar)
       } else if (cfg.androidApi == "api23")
       {
-        device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_testPackageName, true)
-        device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_packageName, true)
+        // WISH why failure is ignored here? Ask Borges
+        device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_testPackageName, /* ignoreFailure = */ true)
+        device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_packageName, /* ignoreFailure = */ true)
       } else throw new UnexpectedIfElseFallthroughError()
       device.removeJar(Paths.get(BuildConstants.monitor_on_avd_apk_name))
     }

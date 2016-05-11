@@ -172,6 +172,9 @@ public class AdbWrapper implements IAdbWrapper
       // "Failure" is what the adb's "uninstall" command outputs when it fails.
       if (!ignoreFailure && stdout.contains("Failure"))
         throw new AdbWrapperException("Failed to uninstall the apk package $apkPackageName.")
+      
+      if (ignoreFailure && stdout.contains("Failure"))
+        log.trace("Ignored failure of uninstalling of $apkPackageName.")
 
     } catch (SysCmdExecutorException e)
     {
@@ -304,6 +307,27 @@ public class AdbWrapper implements IAdbWrapper
       String[] stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
         "shell pm list packages")
+
+      String stdout = stdStreams[0]
+      return stdout
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException(e)
+    }
+  }
+
+  @Override
+  String listPackage(String deviceSerialNumber, String packageName) throws AdbWrapperException
+  {
+    try
+    {
+      String commandDescription = String
+        .format("Executing adb (Android Debug Bridge) to list package $packageName.")
+
+      String[] stdStreams = sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell pm list packages $packageName")
 
       String stdout = stdStreams[0]
       return stdout

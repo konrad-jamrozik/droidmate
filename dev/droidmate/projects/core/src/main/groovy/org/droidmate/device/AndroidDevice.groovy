@@ -90,8 +90,7 @@ public class AndroidDevice implements IAndroidDevice
   boolean hasPackageInstalled(String packageName) throws DeviceException
   {
     log.debug("hasPackageInstalled($packageName)")
-    List<String> packageEntries = adbWrapper.listPackages(serialNumber).readLines().findAll {!it.empty}
-    return packageEntries.contains("package:" + packageName)
+    return adbWrapper.listPackage(serialNumber, packageName).contains(packageName)
   }
 
 

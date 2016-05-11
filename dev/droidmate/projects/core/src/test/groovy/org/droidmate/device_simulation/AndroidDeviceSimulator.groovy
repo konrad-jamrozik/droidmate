@@ -151,7 +151,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
     if (action instanceof WidgetExplorationAction)
       println "action widget id: ${(action as WidgetExplorationAction).widget.id}"
 
-    currentSimulation.updateState(action)
+    this.currentSimulation.updateState(action)
     this.logcatMessagesToBeReadNext.addAll(currentSimulation.currentLogs)
   }
 
