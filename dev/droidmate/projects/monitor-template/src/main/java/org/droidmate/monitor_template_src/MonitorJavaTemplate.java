@@ -391,6 +391,7 @@ public class MonitorJavaTemplate
             return;
           }
 
+          // KNOWN BUG undiagnosed. Got here a set of null pointer in a row on com.audible.application_v1.7.0.apk when running using default settings.
           while (!serverSocket.isClosed())
           {
             Log.v(MonitorConstants.tag_srv, String.format("Accepting socket from client on port %s...", port));

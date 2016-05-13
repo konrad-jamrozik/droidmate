@@ -122,12 +122,15 @@ public class Configuration implements IConfiguration
   // @formatter:on
   //endregion
 
-  public static final int    defaultActionsLimit                    = 7
+  public static final int    defaultActionsLimit                    = 10
   public static final String defaultApksDir                         = "apks"
   // !!! DUPLICATION WARNING !!! org.droidmate.common.logging.LogbackConstants.getLogsDirPath
   // !!! DUPLICATION WARNING !!! repo\dev\droidmate\.gitignore
   public static final String defaultDroidmateOutputDir              = "output_device1"
   public static final int    defaultResetEveryNthExplorationForward = 0
+  
+  public static final String api19 = "api19"
+  public static final String api23 = "api23"
 
   //region Cmd line parameters
 
@@ -141,7 +144,7 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_androidApi, "-api"],
     description = "Has to be set to the Android API version corresponding to the (virtual) devices on which DroidMate will run. Currently supported value: 'api19'")
-  public String androidApi = "api19"
+  public String androidApi = api19
   
   @Parameter(names = [Configuration.pn_apksLimit, "-limit"],
     description = "Limits the number of apks on which DroidMate will run. 0 means no limit.")
@@ -327,7 +330,7 @@ public class Configuration implements IConfiguration
     "If present, instead of normal run, DroidMate will generate reports from previously serialized data.")
   public Boolean report = false
 
-  @Parameter(names = [Configuration.pn_timeLimit])
+  @Parameter(names = [Configuration.pn_timeLimit], description = "How long the exploration of any given apk should take, in seconds. If set to 0, instead actionsLimit will be used.")
   public int timeLimit = 0
 
   @Parameter(names = [Configuration.pn_widgetIndexes], listConverter = ListOfIntegersConverter.class,
