@@ -32,9 +32,13 @@ repositories {
 }
 
 dependencies {
+  
   // This dependency is supposed to come from mavenLocal(). See comment on "mavenLocal()" above.
   compile "org.droidmate:droidmate:dev"
+  
+  compile 'com.google.guava:guava:19.0'
   testCompile 'junit:junit:4.12'
+  
 }
 
 task debug {Task it ->

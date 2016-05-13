@@ -1,3 +1,9 @@
 /temp_extracted_resources
-/dev1
-/apks
+/output_device1
+apks/*
+!apks/inlined
+!apks/originals
+apks/originals/*
+apks/inlined/*
+!apks/originals/ru.tubin.bp_v1.43.apk
+!apks/inlined/ru.tubin.bp_v1.43-inlined.apk
