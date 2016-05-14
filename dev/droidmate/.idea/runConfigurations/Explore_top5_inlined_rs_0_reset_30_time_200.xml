@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Explore top5_inlined rs=0 reset=30 time=200 " type="Application" factoryName="Application" singleton="true">
+  <configuration default="false" name="Explore top5_inlined rs=0 reset=30 time=200" type="Application" factoryName="Application" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="org.droidmate.frontend.DroidmateFrontend" />
     <option name="VM_PARAMETERS" value="-ea" />
-    <option name="PROGRAM_PARAMETERS" value="-apksDir=apks/top5_inlined -randomSeed=0 -resetEvery=30 -timeLimit=200 " />
+    <option name="PROGRAM_PARAMETERS" value="-apksDir=apks/top5_inlined -randomSeed=0 -resetEvery=30 -timeLimit=200" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />

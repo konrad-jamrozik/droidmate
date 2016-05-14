@@ -162,10 +162,15 @@ class RobustDevice implements IRobustDevice
         }
         
         if (appIsInstalled)
-          // KJA probably reboot necessary here. Search for "XXX" in logcat.txt in C:\my\local\repos\sechair\droidmate-private\resources\debug_logs\11_may_2016
           throw new DeviceException("Uninstallation of $apkPackageName threw an exception (given as cause of this exception) and the app is indeed still installed.", e)
         else
-          log.debug("Uninstallation of $apkPackageName threw na exception, but the app is no longer installed. Discarding the exception '$e' and continuing.")
+        {
+          // KJA KNOWN BUG: sometimes installation of app fails, not uninstallation, also resulting in uiautomator being unable to dump window hierarchy. The solution here is to detect that all 5 attempts at getting window dump failed and then close/setup connection to uiautomator-daemon.
+          log.debug("Uninstallation of $apkPackageName threw na exception, but the app is no longer installed. Note: this situation has proven to make the uiautomator be unable to dump window hierarchy. Discarding the exception '$e', resetting connection to the device and continuing.")
+          // Doing .rebootAndRestoreConnection() just hangs the emulator: http://stackoverflow.com/questions/9241667/how-to-reboot-emulator-to-test-action-boot-completed
+          this.closeConnection()
+          this.setupConnection()
+        }
       }
     }
   }

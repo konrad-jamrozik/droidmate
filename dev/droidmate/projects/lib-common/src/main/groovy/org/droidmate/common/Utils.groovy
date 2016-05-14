@@ -69,11 +69,11 @@ public class Utils
 
           if (attemptsLeft > 0)
           {
-            log.trace("Swallowed $e from \"$targetName\". Sleeping for $delay and retrying.")
+            log.trace("Discarded $e from \"$targetName\". Sleeping for $delay and retrying.")
             sleep(delay)
           }
           else
-            log.trace("Swallowed $e from \"$targetName\". Giving up.")
+            log.trace("Discarded $e from \"$targetName\". Giving up.")
         } else
           throw e
       }
