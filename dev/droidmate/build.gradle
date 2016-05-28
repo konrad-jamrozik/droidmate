@@ -23,7 +23,7 @@ allprojects {
    is set before it is read by any of the projects.
 */
 
-ext.kotlin_version = '1.0.1-2'
+ext.kotlin_version = '1.0.2'
 
 buildscript {
 
