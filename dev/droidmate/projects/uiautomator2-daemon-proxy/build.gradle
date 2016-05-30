@@ -51,7 +51,26 @@ sourceSets {
 
 repositories {
   mavenCentral()
-  maven { url "file://" + BuildKt.android_extras_m2repo }
+  /*
+    Why the line below is commented out and replaced with flatDir instead?
+    
+    It points to android extras repo. Instead of using it, I copied the necessary 
+    .jar files into libs dir. This is because the extras repo contains .aar files, 
+    not .jar files. The .aar files contain classes.jar files, which have to be unpacked
+    and renamed.
+    
+    This is a workaround, i.e. I did the unpacking, renaming and copying to libs dir by hand.
+     
+    Correct way would be to do the unpacking. This is normally done by the android gradle plugin, 
+    in tasks :uiautomator2-daemon:prepareComAndroidSupportTest*, which do the exploding of aars, 
+    and link to the exploded contents (uiautomator2-daemon\build\intermediates\exploded-aar).
+     
+    Not sure which code exactly does all of that, but I did some Android code exploring and found 
+    a good candidate for this:
+    https://android.googlesource.com/platform/tools/build/+/android-6.0.1_r43/gradle/src/main/groovy/com/android/build/gradle/internal/tasks/PrepareLibraryTask.groovy#31
+   */  
+//  maven { url "file://" + BuildKt.android_extras_m2repo }
+  flatDir { dirs "libs_copied_by_hand_from_android_extras" }
 }
 
 dependencies {
@@ -65,19 +84,20 @@ dependencies {
 
   compile 'org.hamcrest:hamcrest-integration:1.3'
   
-  /* 
-     WISH for these dependencies to work (i.e. be visible in IJ), the aar in the Android SDK repo has to be exploded. 
-     That is, the classes.jar and /res dir have to be extracted from the .aar file and added to classpath.
-     This is usually done by "apply plugin: 'com.android.application'", which we are trying to avoid in the first place!
-     To see how IJ interprets this correctly, import uiuatomator2-daemon to IJ and inspect the dependencies.
-     
-     One idea is to call the :uiautomator2-daemon:prepareComAndroidSupportTest* tasks to do the exploding of aars,
-     and link to the exploded contents (uiautomator2-daemon\build\intermediates\exploded-aar).
-     
-     I did some Android code exploring and found a good candidate for actually being the code doing the task:
-     https://android.googlesource.com/platform/tools/build/+/android-6.0.1_r43/gradle/src/main/groovy/com/android/build/gradle/internal/tasks/PrepareLibraryTask.groovy#31
+  compile 'junit:junit:4.12'
+
+  /*
+    The jar files for this dependency have been copied to the "flatDir" repo from
+    android-sdk/extras/android/m2repository/com/android/support/support-annotations
   */
-  compile 'com.android.support:support-annotations:23.0.1'
+  compile 'com.android.support:support-annotations:23.3.0'
+
+  /*
+    The jar files for these dependencies have been copied to the "flatDir" repo from
+    android-sdk/extras/android/m2repository/com/android/support/test
+    
+    They originally were in classes.jar within .aar files. See the "flatDir" repo comment for more.
+  */  
   compile 'com.android.support.test:runner:0.5'
   compile 'com.android.support.test:rules:0.5'
   compile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
