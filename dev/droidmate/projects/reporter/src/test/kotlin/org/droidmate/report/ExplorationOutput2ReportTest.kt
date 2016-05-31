@@ -14,10 +14,11 @@ class ExplorationOutput2ReportTest {
     val mockFs: FileSystem = mockFs()
     val cfg = Configuration.getDefault()
     val serExplOutput: Path = FilesystemTestFixtures.build().f_monitoredSer2
-
+    val mockFsDirWithOutput: Path = mockFs.dir(cfg.droidmateOutputDir).withFiles(serExplOutput)
+    
     val report = ExplorationOutput2Report(
-      OutputDir(mockFs.dir(cfg.droidmateOutputDir).withFiles(serExplOutput)).notEmptyExplorationOutput2,
-      mockFs.dir(cfg.reportOutputDir)
+      data = OutputDir(mockFsDirWithOutput).notEmptyExplorationOutput2,
+      dir = mockFs.dir(cfg.reportOutputDir)
     )
 
     // Act
