@@ -13,6 +13,7 @@ import com.konradjamrozik.FileSystemsOperations
 import com.konradjamrozik.createDirIfNotExists
 import com.konradjamrozik.isDirectory
 import org.codehaus.groovy.runtime.NioGroovyMethods
+import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
 import java.lang.Math.max
@@ -158,6 +159,36 @@ fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Int, Int> {
       partitionSize = 1000,
       extractMax = { it.max() ?: 0 })
     .toMap()
+}
+
+// KJA DRY-up with extension above
+fun IApkExplorationOutput2.uniqueClickedWidgetCountByTime(): Map<Int, Int> {
+
+  fun uniqueWidgetCountAtTime(): Map<Int, Int> {
+    return this.actRess.uniqueCountAtTime(
+      // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
+      // The currently applied workaround is to add 500 milliseconds.
+      extractTime = { Duration.between(this.explorationStartTime, it.action.timestamp).toMillis().toInt() + 500 },
+      extractItems = { 
+        val action = it.action.base;
+        when (action) {
+          is WidgetExplorationAction -> setOf(action.widget)
+          else -> emptySet()
+        }
+      },
+        //extractItems = { it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() } },
+        uniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString }
+    )
+  }
+
+  return uniqueWidgetCountAtTime()
+    .partition(1000)
+    .maxValueUntilPartition(
+      lastPartition = this.explorationTimeInMs.zeroDigits(3),
+      partitionSize = 1000,
+      extractMax = { it.max() ?: 0 })
+    .toMap()
 
 }
+
 

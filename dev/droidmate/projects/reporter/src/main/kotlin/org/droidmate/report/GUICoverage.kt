@@ -17,24 +17,30 @@ import kotlin.comparisons.naturalOrder
 
 class GUICoverage(val data: IApkExplorationOutput2) {
 
-  private val headerTime = "Time"
-  private val headerViewsSeen = "Actionable unique views seen"
+  companion object {
+    val headerTime = "Time_seconds"
+    val headerViewsSeen = "Actionable_unique_views_seen"
+    val headerViewsClicked = "Actionable_unique_views_clicked"
+  }
+  
   private val stepSizeInMs = 1000
 
   val table: Table<Int, String, Int> by lazy {
 
     val uniqueWidgetCountByTime: Map<Int, Int> = data.uniqueWidgetCountByTime()
+    val uniqueClickedWidgetCountByTime: Map<Int, Int> = data.uniqueClickedWidgetCountByTime()
 
     val timeRange = 0.rangeTo(data.explorationTimeInMs).step(stepSizeInMs)
 
-    val rows: List<Triple<Int, Int, Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
-      Triple(tickIndex, timePassed / stepSizeInMs, uniqueWidgetCountByTime[timePassed]!!)
+    val rows: List<List<Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
+      listOf(tickIndex, timePassed / stepSizeInMs, uniqueWidgetCountByTime[timePassed]!!, uniqueClickedWidgetCountByTime[timePassed]!!)
     }
 
     tableBuilder().apply {
       rows.forEach { row ->
-        put(row.first, headerTime, row.second)
-        put(row.first, headerViewsSeen, row.third)
+        put(row[0], headerTime, row[1])
+        put(row[0], headerViewsSeen, row[2])
+        put(row[0], headerViewsClicked, row[3])
       }
     }.build()
   }
@@ -47,9 +53,12 @@ class GUICoverage(val data: IApkExplorationOutput2) {
         when (it) {
           headerTime -> 0
           headerViewsSeen -> 1
+          headerViewsClicked -> 2
           else -> throw UnexpectedIfElseFallthroughError()
         }
       })
       .orderRowsBy(naturalOrder<Int>())
   }
+
+
 }
