@@ -15,6 +15,36 @@ import kotlin.test.assertEquals
 
 class ExtensionsTest {
 
+  private val startTime: LocalDateTime = LocalDateTime.of(2000, 1, 1, 0, 0)
+  private val inputDataFixture = listOf(
+    Pair(startTime.plusSeconds(3), listOf("a ", "b", "c")),
+    Pair(startTime.plusSeconds(7), listOf("a", "  c", "d")),
+    Pair(startTime.plusSeconds(15), listOf("  c")),
+    Pair(startTime.plusSeconds(23), listOf("b ", "e"))
+  )
+
+  private val itemsAtTimeFixture: Map<Long, List<String>> = mapOf(
+    Pair(3000L, listOf("a ", "b", "c")),
+    Pair(7000L, listOf("a", "  c", "d")),
+    Pair(15000L, listOf("  c")),
+    Pair(23000L, listOf("b ", "e"))
+  )
+
+  @Test
+  fun itemsAtTimeTest() {
+
+    // Act
+    val itemsAtTime: Map<Long, Iterable<String>> = inputDataFixture.itemsAtTime(
+      startTime = startTime,
+      extractTime = { it.first },
+      extractItems = { it.second }
+    )
+
+    assertEquals(expected = itemsAtTimeFixture, actual = itemsAtTime)
+  }
+  
+  // KJA continue reimplementing modular uniqueCountAtTime
+  
   @Test
   fun uniqueCountAtTimeTest() {
 

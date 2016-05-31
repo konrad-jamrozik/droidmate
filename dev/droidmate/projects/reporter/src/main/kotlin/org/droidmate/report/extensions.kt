@@ -23,6 +23,7 @@ import java.nio.file.FileSystem
 import java.nio.file.Files
 import java.nio.file.Path
 import java.time.Duration
+import java.time.LocalDateTime
 
 fun Path.text(): String {
   return NioGroovyMethods.getText(this)
@@ -66,6 +67,20 @@ fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
 
   Files.write(file, tableString.toByteArray())
 }
+
+fun <T, TItem> Iterable<T>.itemsAtTime(
+  startTime: LocalDateTime,
+  extractTime: (T) -> LocalDateTime,
+  extractItems: (T) -> Iterable<TItem>
+): Map<Long, Iterable<TItem>> {
+
+  fun computeDuration(time: LocalDateTime): Long {
+    return Duration.between(startTime, time).toMillis()
+  }
+
+  return this.associate { Pair(computeDuration(extractTime(it)), extractItems(it)) }
+}
+
 
 fun <T, TItem> Iterable<T>.uniqueCountAtTime(
   extractTime: (T) -> Int,
