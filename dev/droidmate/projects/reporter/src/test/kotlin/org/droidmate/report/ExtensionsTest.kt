@@ -13,7 +13,7 @@ import java.time.Duration
 import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
-class ExtensionsTests {
+class ExtensionsTest {
 
   @Test
   fun uniqueCountAtTimeTest() {
