@@ -81,6 +81,17 @@ fun <T, TItem> Iterable<T>.itemsAtTime(
   return this.associate { Pair(computeDuration(extractTime(it)), extractItems(it)) }
 }
 
+fun <TItem>  Map<Long, Iterable<TItem>>.accumulateUniqueStrings(
+  extractUniqueString: (TItem) -> String
+): Map<Long, Iterable<String>> {
+
+  val uniqueStringsAcc: MutableSet<String> = hashSetOf()
+  
+  return this.mapValues {
+    uniqueStringsAcc.addAll(it.value.map { extractUniqueString(it) })
+    uniqueStringsAcc.toList()
+  }
+}
 
 fun <T, TItem> Iterable<T>.uniqueCountAtTime(
   extractTime: (T) -> Int,
@@ -89,6 +100,7 @@ fun <T, TItem> Iterable<T>.uniqueCountAtTime(
 )
   : Map<Int, Int> {
 
+  // KJA rewire to use new modular methods
   val timedItems: Map<Int, Iterable<TItem>> = this.associate { Pair(extractTime(it), extractItems(it)) }
 
   val uniqueItemsAcc: MutableSet<String> = hashSetOf()
@@ -205,5 +217,4 @@ fun IApkExplorationOutput2.uniqueClickedWidgetCountByTime(): Map<Int, Int> {
     .toMap()
 
 }
-
 
