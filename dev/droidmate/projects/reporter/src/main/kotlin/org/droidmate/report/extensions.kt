@@ -26,6 +26,10 @@ fun Path.text(): String {
   return NioGroovyMethods.getText(this)
 }
 
+fun Path.deleteDir(): Boolean {
+  return NioGroovyMethods.deleteDir(this)
+}
+
 fun Path.withFiles(vararg files: Path): Path {
   files.asList().copyFilesToDirInDifferentFileSystem(this)
   return this
