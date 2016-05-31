@@ -11,6 +11,7 @@ package org.droidmate.report
 import com.google.common.collect.Table
 import com.konradjamrozik.FileSystemsOperations
 import com.konradjamrozik.createDirIfNotExists
+import com.konradjamrozik.isDirectory
 import org.codehaus.groovy.runtime.NioGroovyMethods
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
@@ -29,6 +30,12 @@ fun Path.text(): String {
 fun Path.deleteDir(): Boolean {
   return NioGroovyMethods.deleteDir(this)
 }
+
+val Path.fileNames: Iterable<String>
+  get() {
+    require(this.isDirectory)
+    return Files.newDirectoryStream(this).map { it.fileName.toString() }
+  }
 
 fun Path.withFiles(vararg files: Path): Path {
   files.asList().copyFilesToDirInDifferentFileSystem(this)

@@ -19,7 +19,6 @@ import org.junit.runners.Suite
 @Suite.SuiteClasses(
   ExtensionsTests::class,
   ExplorationOutput2ReportTest::class,
-  
   KotlinScratchpadTestClass::class
 )
 class ReporterTestSuite

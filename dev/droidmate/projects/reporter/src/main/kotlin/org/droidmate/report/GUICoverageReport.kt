@@ -16,14 +16,18 @@ import java.nio.file.Path
 
 class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
+  companion object {
+    val fileNameSuffix = "_GUIReportFile.txt"
+  }
+
   private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
 
   init {
     check(dir.isDirectory)
   }
-  
+
   val file: Path by lazy {
-    this.dir.resolve("${data.apk.fileName}_GUIReportFile.txt")
+    this.dir.resolve("${data.apk.fileName}${Companion.fileNameSuffix}")
   }
 
   val guiCoverage: GUICoverage by lazy {
@@ -35,4 +39,4 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
     log.info("Writing out GUI coverage report for ${data.apk.fileName} to $file")
     this.guiCoverage.table.writeOut(file)
   }
-  }
+}

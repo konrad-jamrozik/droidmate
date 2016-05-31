@@ -18,7 +18,7 @@ import kotlin.comparisons.naturalOrder
 class GUICoverage(val data: IApkExplorationOutput2) {
 
   private val headerTime = "Time"
-  private val headerViewsSeen = "Views seen"
+  private val headerViewsSeen = "Actionable unique views seen"
   private val stepSizeInMs = 1000
 
   val table: Table<Int, String, Int> by lazy {
