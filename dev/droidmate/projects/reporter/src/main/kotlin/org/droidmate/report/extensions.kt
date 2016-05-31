@@ -79,9 +79,9 @@ fun <T, TItem> Iterable<T>.uniqueCountAtTime(
   return timedUniqueItems.mapValues { it.value.count() }
 }
 
-fun <T> Map<Int, T>.multiPartition(partitionSize: Int): Collection<Pair<Int, List<T>>> {
+fun <T> Map<Int, T>.partition(partitionSize: Int): Collection<Pair<Int, List<T>>> {
 
-  tailrec fun <T> _multiPartition(
+  tailrec fun <T> _partition(
     acc: Collection<Pair<Int, List<T>>>,
     remainder: Collection<Pair<Int, T>>,
     partitionSize: Int,
@@ -93,33 +93,37 @@ fun <T> Map<Int, T>.multiPartition(partitionSize: Int): Collection<Pair<Int, Lis
       val current: List<Pair<Int, T>> = currentPartition.first
       val currentValues: List<T> = current.fold<Pair<Int, T>, MutableList<T>>(mutableListOf(), { out, pair -> out.add(pair.second); out })
 
-      return _multiPartition(acc.plus(Pair(currentPartitionValue, currentValues)), currentPartition.second, partitionSize, currentPartitionValue + partitionSize)
+      return _partition(acc.plus(Pair(currentPartitionValue, currentValues)), currentPartition.second, partitionSize, currentPartitionValue + partitionSize)
     }
   }
 
-  return _multiPartition(mutableListOf(Pair(0, emptyList<T>())), this.toList(), partitionSize, partitionSize)
+  return _partition(mutableListOf(Pair(0, emptyList<T>())), this.toList(), partitionSize, partitionSize)
 }
 
-fun <T> Collection<Pair<Int, T>>.maxValueAtPartition(
-  maxPartition: Int,
+/**
+  Assumes a receiver is a sequence of partitioned collections of values. 
+ */
+// KJA split extending to last partition and extracting max. 
+fun <T> Collection<Pair<Int, T>>.maxValueUntilPartition(
+  lastPartition: Int,
   partitionSize: Int,
   extractMax: (T) -> Int
 ): Collection<Pair<Int, Int>> {
 
-  require(maxPartition % partitionSize == 0, { "maxPartition: $maxPartition partitionSize: $partitionSize" })
+  require(lastPartition % partitionSize == 0, { "lastPartition: $lastPartition partitionSize: $partitionSize" })
   require(this.all { it.first % partitionSize == 0 })
 
   return if (this.isEmpty())
-    (0..maxPartition step partitionSize).map { Pair(it, -1) }
+    (0..lastPartition step partitionSize).map { Pair(it, -1) }
   else {
 
     var currMaxVal: Int = 0
-    var currMaxPartition: Int = this.last().first
+    var currLastPartition: Int = this.last().first
 
     this.toMap().mapValues {
         currMaxVal = max(extractMax(it.value), currMaxVal)
         currMaxVal
-    }.plus(((currMaxPartition + partitionSize)..maxPartition step partitionSize).map { Pair(it, -1) }).toList()
+    }.plus(((currLastPartition + partitionSize)..lastPartition step partitionSize).map { Pair(it, -1) }).toList()
   }
 }
 
@@ -133,7 +137,7 @@ fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Int, Int> {
   fun uniqueWidgetCountAtTime(): Map<Int, Int> {
     return this.actRess.uniqueCountAtTime(
       // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
-      // The workaround is to add 500 milliseconds.
+      // The currently applied workaround is to add 500 milliseconds.
       extractTime = { Duration.between(this.explorationStartTime, it.action.timestamp).toMillis().toInt() + 500 },
       extractItems = { it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() } },
       uniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString }
@@ -141,8 +145,12 @@ fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Int, Int> {
   }
 
   return uniqueWidgetCountAtTime()
-    .multiPartition(1000)
-    .maxValueAtPartition(this.explorationTimeInMs.zeroDigits(3), 1000, { it.max() ?: 0 }).toMap()
+    .partition(1000)
+    .maxValueUntilPartition(
+      lastPartition = this.explorationTimeInMs.zeroDigits(3),
+      partitionSize = 1000,
+      extractMax = { it.max() ?: 0 })
+    .toMap()
 
 }
 

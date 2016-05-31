@@ -45,7 +45,7 @@ class ExtensionsTests {
   }
 
   @Test
-  fun multiPartitionTest() {
+  fun partitionTest() {
 
     val map: Map<Int, Int> = mapOf(
       Pair(7, 1),
@@ -57,13 +57,12 @@ class ExtensionsTests {
     )
 
     // Act
-    val out: Collection<Pair<Int, List<Int>>> = map.multiPartition(10)
+    val out: Collection<Pair<Int, List<Int>>> = map.partition(10)
 
-    val multiPartitionFixture = multiPartitionFixture
-    assertEquals(multiPartitionFixture, out, "")
+    assertEquals(expected = partitionFixture, actual = out, message = "")
   }
 
-  private val multiPartitionFixture: List<Pair<Int, List<Int>>> = listOf(
+  private val partitionFixture: List<Pair<Int, List<Int>>> = listOf(
     Pair(0, listOf()),
     Pair(10, listOf(1, 2)),
     Pair(20, listOf(3, 4)),
@@ -76,12 +75,12 @@ class ExtensionsTests {
   fun maxCountAtPartitionTest() {
 
     // Act
-    val out: Collection<Pair<Int, Int>> = multiPartitionFixture.maxValueAtPartition(
-      maxPartition = 70,
+    val out: Collection<Pair<Int, Int>> = partitionFixture.maxValueUntilPartition(
+      lastPartition = 70,
       partitionSize = 10,
       extractMax = { it.max() ?: 0 }
     )
-
+    
     assertEquals(listOf(
       Pair(0, 0),
       Pair(10, 2),
