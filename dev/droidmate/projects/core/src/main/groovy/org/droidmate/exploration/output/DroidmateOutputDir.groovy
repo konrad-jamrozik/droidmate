@@ -15,6 +15,7 @@ import org.droidmate.storage.Storage2
 import java.nio.file.Files
 import java.nio.file.Path
 
+// KJA collapse into org.droidmate.report.OutputDir
 class DroidmateOutputDir
 {
 

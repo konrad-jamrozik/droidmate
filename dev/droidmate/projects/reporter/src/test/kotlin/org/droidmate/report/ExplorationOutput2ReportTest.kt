@@ -15,7 +15,6 @@ class ExplorationOutput2ReportTest {
     val cfg = Configuration.getDefault()
     val serExplOutput: Path = FilesystemTestFixtures.build().f_monitoredSer2
 
-    // define sut
     val report = ExplorationOutput2Report(
       OutputDir(mockFs.dir(cfg.droidmateOutputDir).withFiles(serExplOutput)).notEmptyExplorationOutput2,
       mockFs.dir(cfg.reportOutputDir)
