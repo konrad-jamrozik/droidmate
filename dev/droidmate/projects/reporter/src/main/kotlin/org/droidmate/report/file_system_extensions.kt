@@ -8,34 +8,38 @@
 // www.droidmate.org
 package org.droidmate.report
 
+import com.konradjamrozik.FileSystemsOperations
 import com.konradjamrozik.createDirIfNotExists
 import com.konradjamrozik.isDirectory
+import org.codehaus.groovy.runtime.NioGroovyMethods
+import java.nio.file.Files.newDirectoryStream
+import java.nio.file.Path
 
-fun java.nio.file.Path.text(): String {
-  return org.codehaus.groovy.runtime.NioGroovyMethods.getText(this)
+fun Path.text(): String {
+  return NioGroovyMethods.getText(this)
 }
 
-fun java.nio.file.Path.deleteDir(): Boolean {
-  return org.codehaus.groovy.runtime.NioGroovyMethods.deleteDir(this)
+fun Path.deleteDir(): Boolean {
+  return NioGroovyMethods.deleteDir(this)
 }
 
-val java.nio.file.Path.fileNames: Iterable<String>
+val Path.fileNames: Iterable<String>
   get() {
     require(this.isDirectory)
-    return java.nio.file.Files.newDirectoryStream(this).map { it.fileName.toString() }
+    return newDirectoryStream(this).map { it.fileName.toString() }
   }
 
-fun java.nio.file.Path.withFiles(vararg files: java.nio.file.Path): java.nio.file.Path {
+fun Path.withFiles(vararg files: Path): Path {
   files.asList().copyFilesToDirInDifferentFileSystem(this)
   return this
 }
 
-fun java.nio.file.FileSystem.dir(dirName: String): java.nio.file.Path {
+fun java.nio.file.FileSystem.dir(dirName: String): Path {
   val dir = this.getPath(dirName)
   dir.createDirIfNotExists()
   return dir
 }
 
-fun List<java.nio.file.Path>.copyFilesToDirInDifferentFileSystem(destDir: java.nio.file.Path): Unit {
-  com.konradjamrozik.FileSystemsOperations().copyFilesToDirInDifferentFileSystem(this, destDir)
+fun List<Path>.copyFilesToDirInDifferentFileSystem(destDir: Path): Unit {
+  FileSystemsOperations().copyFilesToDirInDifferentFileSystem(this, destDir)
 }

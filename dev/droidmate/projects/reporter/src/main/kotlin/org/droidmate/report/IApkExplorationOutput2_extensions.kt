@@ -8,8 +8,14 @@
 // www.droidmate.org
 package org.droidmate.report
 
-fun org.droidmate.exploration.data_aggregators.IApkExplorationOutput2.uniqueViewCountByPartitionedTime(
-  extractItems: (org.droidmate.exploration.actions.RunnableExplorationActionWithResult) -> Iterable<org.droidmate.common.exploration.datatypes.Widget>
+import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
+import org.droidmate.exploration.actions.WidgetExplorationAction
+import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
+import org.droidmate.exploration.strategy.WidgetStrategy.WidgetInfo
+
+fun IApkExplorationOutput2.uniqueViewCountByPartitionedTime(
+  extractItems: (RunnableExplorationActionWithResult) -> Iterable<Widget>
 ): Map<Long, Int> {
 
   return this
@@ -25,7 +31,7 @@ fun org.droidmate.exploration.data_aggregators.IApkExplorationOutput2.uniqueView
       it.key + 500L
     }
     .accumulateUniqueStrings(
-      extractUniqueString = { org.droidmate.exploration.strategy.WidgetStrategy.WidgetInfo(it).uniqueString }
+      extractUniqueString = { WidgetInfo(it).uniqueString }
     )
     .mapValues { it.value.count() }
     .partition(1000L)
@@ -36,20 +42,20 @@ fun org.droidmate.exploration.data_aggregators.IApkExplorationOutput2.uniqueView
     .toMap()
 }
 
-fun org.droidmate.exploration.data_aggregators.IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Long, Int> {
+fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Long, Int> {
 
   return this.uniqueViewCountByPartitionedTime(
     extractItems = { it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() } }
   )
 }
 
-fun org.droidmate.exploration.data_aggregators.IApkExplorationOutput2.uniqueClickedWidgetCountByTime(): Map<Long, Int> {
+fun IApkExplorationOutput2.uniqueClickedWidgetCountByTime(): Map<Long, Int> {
 
   return this.uniqueViewCountByPartitionedTime(
     extractItems = {
       val action = it.action.base;
       when (action) {
-        is org.droidmate.exploration.actions.WidgetExplorationAction -> setOf(action.widget)
+        is WidgetExplorationAction -> setOf(action.widget)
         else -> emptySet()
       }
     }
