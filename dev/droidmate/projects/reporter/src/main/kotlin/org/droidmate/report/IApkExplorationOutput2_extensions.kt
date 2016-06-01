@@ -42,14 +42,14 @@ fun IApkExplorationOutput2.uniqueViewCountByPartitionedTime(
     .toMap()
 }
 
-fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Long, Int> {
+fun IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime(): Map<Long, Int> {
 
   return this.uniqueViewCountByPartitionedTime(
     extractItems = { it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() } }
   )
 }
 
-fun IApkExplorationOutput2.uniqueClickedWidgetCountByTime(): Map<Long, Int> {
+fun IApkExplorationOutput2.uniqueClickedViewsCountByTime(): Map<Long, Int> {
 
   return this.uniqueViewCountByPartitionedTime(
     extractItems = {

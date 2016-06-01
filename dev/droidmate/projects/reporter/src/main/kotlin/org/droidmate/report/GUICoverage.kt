@@ -27,8 +27,8 @@ class GUICoverage(val data: IApkExplorationOutput2) {
 
   val table: Table<Int, String, Int> by lazy {
 
-    val uniqueWidgetCountByTime: Map<Long, Int> = data.uniqueWidgetCountByTime()
-    val uniqueClickedWidgetCountByTime: Map<Long, Int> = data.uniqueClickedWidgetCountByTime()
+    val uniqueWidgetCountByTime: Map<Long, Int> = data.uniqueSeenActionableViewsCountByTime()
+    val uniqueClickedWidgetCountByTime: Map<Long, Int> = data.uniqueClickedViewsCountByTime()
 
     val timeRange: LongProgression = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs)
 
