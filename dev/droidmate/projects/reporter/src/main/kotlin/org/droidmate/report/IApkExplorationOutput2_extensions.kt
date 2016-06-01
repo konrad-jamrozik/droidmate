@@ -40,17 +40,13 @@ fun IApkExplorationOutput2.uniqueViewCountByPartitionedTime(
     .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroDigits(3))
 }
 
-val IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime: Map<Long, Int> 
-get() {
-
+val IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime: Map<Long, Int> get() {
   return this.uniqueViewCountByPartitionedTime(
     extractItems = { it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() } }
   )
 }
 
-val IApkExplorationOutput2.uniqueClickedViewsCountByTime: Map<Long, Int> 
-  get() {
-
+val IApkExplorationOutput2.uniqueClickedViewsCountByTime: Map<Long, Int> get() {
   return this.uniqueViewCountByPartitionedTime(
     extractItems = {
       val action = it.action.base;

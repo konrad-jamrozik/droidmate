@@ -62,6 +62,4 @@ class GUICoverage(val data: IApkExplorationOutput2) {
       })
       .orderRowsBy(naturalOrder<Int>())
   }
-
-
 }
