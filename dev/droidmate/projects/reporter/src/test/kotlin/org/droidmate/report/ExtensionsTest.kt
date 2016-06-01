@@ -9,7 +9,6 @@
 package org.droidmate.report
 
 import org.junit.Test
-import java.time.Duration
 import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
@@ -78,17 +77,18 @@ class ExtensionsTest {
     )
 
     // Act
-    val out: Map<Int, Int> = list.uniqueCountAtTime(
-      extractTime = { Duration.between(startTime, it.first).toMillis().toInt() },
+    val out: Map<Long, Int> = list.uniqueCountAtShiftedTime(
+      startTime = startTimeFixture,
+      extractTime = { it.first },
       extractItems = { it.second },
-      uniqueString = { it.trim() }
+      extractUniqueString = { it.trim() }
     )
 
     assertEquals(mapOf(
-      Pair(3000, 3), // a b c
-      Pair(7000, 4), // a b c d
-      Pair(15000, 4), // a b c d
-      Pair(23000, 5)), // a b c d e
+      Pair(3000L, 3), // a b c
+      Pair(7000L, 4), // a b c d
+      Pair(15000L, 4), // a b c d
+      Pair(23000L, 5)), // a b c d e
       out,
       ""
     )
@@ -97,49 +97,49 @@ class ExtensionsTest {
   @Test
   fun partitionTest() {
 
-    val map: Map<Int, Int> = mapOf(
-      Pair(7, 1),
-      Pair(9, 2),
-      Pair(13, 3),
-      Pair(17, 4),
-      Pair(31, 5),
-      Pair(45, 6)
+    val map: Map<Long, Int> = mapOf(
+      Pair(7L, 1),
+      Pair(9L, 2),
+      Pair(13L, 3),
+      Pair(17L, 4),
+      Pair(31L, 5),
+      Pair(45L, 6)
     )
 
     // Act
-    val out: Collection<Pair<Int, List<Int>>> = map.partition(10)
+    val out: Collection<Pair<Long, List<Int>>> = map.partition(10)
 
     assertEquals(expected = partitionFixture, actual = out, message = "")
   }
 
-  private val partitionFixture: List<Pair<Int, List<Int>>> = listOf(
-    Pair(0, listOf()),
-    Pair(10, listOf(1, 2)),
-    Pair(20, listOf(3, 4)),
-    Pair(30, listOf()),
-    Pair(40, listOf(5)),
-    Pair(50, listOf(6))
+  private val partitionFixture: List<Pair<Long, List<Int>>> = listOf(
+    Pair(0L, listOf()),
+    Pair(10L, listOf(1, 2)),
+    Pair(20L, listOf(3, 4)),
+    Pair(30L, listOf()),
+    Pair(40L, listOf(5)),
+    Pair(50L, listOf(6))
   )
 
   @Test
   fun maxCountAtPartitionTest() {
 
     // Act
-    val out: Collection<Pair<Int, Int>> = partitionFixture.maxValueUntilPartition(
-      lastPartition = 70,
-      partitionSize = 10,
+    val out: Collection<Pair<Long, Int>> = partitionFixture.maxValueUntilPartition(
+      lastPartition = 70L,
+      partitionSize = 10L,
       extractMax = { it.max() ?: 0 }
     )
     
     assertEquals(listOf(
-      Pair(0, 0),
-      Pair(10, 2),
-      Pair(20, 4),
-      Pair(30, 4),
-      Pair(40, 5),
-      Pair(50, 6),
-      Pair(60, -1),
-      Pair(70, -1)
+      Pair(0L, 0),
+      Pair(10L, 2),
+      Pair(20L, 4),
+      Pair(30L, 4),
+      Pair(40L, 5),
+      Pair(50L, 6),
+      Pair(60L, -1),
+      Pair(70L, -1)
     ),
       out,
       ""

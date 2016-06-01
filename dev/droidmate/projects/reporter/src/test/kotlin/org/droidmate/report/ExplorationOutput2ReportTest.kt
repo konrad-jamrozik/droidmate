@@ -33,6 +33,9 @@ class ExplorationOutput2ReportTest {
 
     // Act
     report.writeOut()
+    
+    // KJA
+    report.data.forEach { println(it.explorationTimeInMs)}
 
     /* KJA now we have "views seen". We also need:
     - click distribution: amount of click per view. X axis: no of clicks. Y axis: no of views.
