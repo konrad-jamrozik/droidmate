@@ -38,12 +38,19 @@ class ExplorationOutput2ReportTest {
 
     // Asserts on the data structure
     report.guiCoverageReports.forEach {
-      assertThat(it.guiCoverage.tableViewsCounts.rowKeySet().size, greaterThan(0))
-      assertThat(it.guiCoverage.tableViewsCounts.columnKeySet(),
+      assertThat(it.tableViewsCounts.rowKeySet().size, greaterThan(0))
+      assertThat(it.tableViewsCounts.columnKeySet(),
         hasItems(
-          GUICoverage.headerTime,
-          GUICoverage.headerViewsSeen,
-          GUICoverage.headerViewsClicked
+          TableViewsCounts.headerTime,
+          TableViewsCounts.headerViewsSeen,
+          TableViewsCounts.headerViewsClicked
+        )
+      )
+      assertThat(it.tableClickFrequency.rowKeySet().size, greaterThan(0))
+      assertThat(it.tableClickFrequency.columnKeySet(),
+        hasItems(
+          TableClickFrequency.headerNoOfClicks,
+          TableClickFrequency.headerViewsCount
         )
       )
     }

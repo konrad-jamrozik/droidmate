@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.report
 
+import com.google.common.collect.Table
 import com.konradjamrozik.isDirectory
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.slf4j.Logger
@@ -24,26 +25,26 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
   private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
 
   init {
-    check(dir.isDirectory)
+    require(dir.isDirectory)
   }
 
   val file_viewsCountOverTime: Path by lazy {
-    this.dir.resolve("${data.apk.fileName}${Companion.fileNameSuffix_viewsCountsOverTime}")
+    this.dir.resolve("${data.apk.fileName}$fileNameSuffix_viewsCountsOverTime")
   }
 
   val file_clickFrequency: Path by lazy {
-    this.dir.resolve("${data.apk.fileName}${Companion.fileNameSuffix_clickFrequency}")
+    this.dir.resolve("${data.apk.fileName}$fileNameSuffix_clickFrequency")
   }
 
+  val tableViewsCounts: Table<Int, String, Int> by lazy { TableViewsCounts.build(data) }
 
-  val guiCoverage: GUICoverage by lazy {
-    GUICoverage(this.data)
-  }
+  val tableClickFrequency: Table<Int, String, Int> by lazy { TableClickFrequency.build(data) }
+
 
   fun writeOut() {
 
     log.info("Writing out GUI coverage report for ${data.apk.fileName} to $file_viewsCountOverTime and $fileNameSuffix_clickFrequency")
-    this.guiCoverage.tableViewsCounts.writeOut(file_viewsCountOverTime)
-    this.guiCoverage.tableClickFrequency.writeOut(file_clickFrequency)
+    this.tableViewsCounts.writeOut(file_viewsCountOverTime)
+    this.tableClickFrequency.writeOut(file_clickFrequency)
   }
 }
