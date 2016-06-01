@@ -27,17 +27,16 @@ class GUICoverage(val data: IApkExplorationOutput2) {
 
   val table: Table<Int, String, Int> by lazy {
 
-    val uniqueWidgetCountByTime: Map<Long, Int> = data.uniqueSeenActionableViewsCountByTime()
-    val uniqueClickedWidgetCountByTime: Map<Long, Int> = data.uniqueClickedViewsCountByTime()
-
     val timeRange: LongProgression = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs)
+    val uniqueSeenActionableViewsCountByTime: Map<Long, Int> = data.uniqueSeenActionableViewsCountByTime
+    val uniqueClickedViewsCountByTime: Map<Long, Int> = data.uniqueClickedViewsCountByTime
 
     val rows: List<List<Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
       listOf(
         tickIndex, 
         (timePassed / stepSizeInMs).toInt(), 
-        uniqueWidgetCountByTime[timePassed]!!, 
-        uniqueClickedWidgetCountByTime[timePassed]!!)
+        uniqueSeenActionableViewsCountByTime[timePassed]!!, 
+        uniqueClickedViewsCountByTime[timePassed]!!)
     }
 
     tableBuilder().apply {

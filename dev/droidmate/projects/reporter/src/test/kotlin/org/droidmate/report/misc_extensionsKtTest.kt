@@ -10,11 +10,11 @@ package org.droidmate.report
 
 import org.junit.Test
 
-class KotlinScratchpadTest {
+class misc_extensionsKtTest {
 
 
   @Test
-  fun KotlinScratchpadTest1() {
+  fun zeroDigitsTest() {
 
     println(1299.zeroDigits(2))
   }

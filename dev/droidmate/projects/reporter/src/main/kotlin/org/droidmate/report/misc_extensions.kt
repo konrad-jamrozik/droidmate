@@ -28,7 +28,9 @@ fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
   Files.write(file, tableString.toByteArray())
 }
 
-// KJA comment
+/**
+ * Zeroes digits before (i.e. left of) comma. E.g. if [digitsToZero] is 2, then 6789 will become 6700.
+ */
 // Reference: http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
 fun Int.zeroDigits(digitsToZero: Int): Long {
   return BigDecimal(this.toString()).setScale(-digitsToZero, RoundingMode.DOWN).toBigInteger().toLong()
