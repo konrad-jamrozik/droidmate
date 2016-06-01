@@ -9,9 +9,13 @@
 package org.droidmate.report
 
 import com.google.common.collect.Table
+import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
+import org.droidmate.exploration.strategy.WidgetStrategy
 
 class TableViewsCounts() {
+  
   companion object {
     
     val headerTime = "Time_seconds"
@@ -37,6 +41,43 @@ class TableViewsCounts() {
             uniqueClickedViewsCountByTime[timePassed]!!)
         })
     }
+
+    private val IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime: Map<Long, Int> get() {
+      return this.uniqueViewCountByPartitionedTime(
+        extractItems = { it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() } }
+      )
+    }
+
+    private val IApkExplorationOutput2.uniqueClickedViewsCountByTime: Map<Long, Int> get() {
+      return this.uniqueViewCountByPartitionedTime(extractItems = { it.clickedWidgets })
+    }
+
+    private fun IApkExplorationOutput2.uniqueViewCountByPartitionedTime(
+      extractItems: (RunnableExplorationActionWithResult) -> Iterable<Widget>
+    ): Map<Long, Int> {
+
+      val partitionSize = 1000L
+      return this
+        .actRess
+        .itemsAtTime(
+          startTime = this.explorationStartTime,
+          extractTime = { it.action.timestamp },
+          extractItems = extractItems
+        )
+        .mapKeys {
+          // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
+          // The currently applied workaround is to add 500 milliseconds.
+          it.key + 500L
+        }
+        .accumulateUniqueStrings(
+          extractUniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString }
+        )
+        .mapValues { it.value.count() }
+        .partition(partitionSize)
+        .accumulateMaxes(extractMax = { it.max() ?: 0 })
+        .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroLeastSignificantDigits(3))
+    }
+
   }
 }
 

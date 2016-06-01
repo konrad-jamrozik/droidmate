@@ -36,9 +36,9 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
     this.dir.resolve("${data.apk.fileName}$fileNameSuffix_clickFrequency")
   }
 
-  val tableViewsCounts: Table<Int, String, Int> by lazy { TableViewsCounts.build(data) }
+  val tableViewsCounts: Table<Int, String, Int> by lazy { data.tableOfViewsCounts }
 
-  val tableClickFrequency: Table<Int, String, Int> by lazy { TableClickFrequency.build(data) }
+  val tableClickFrequency: Table<Int, String, Int> by lazy { data.tableOfClickFrequencies }
 
 
   fun writeOut() {
