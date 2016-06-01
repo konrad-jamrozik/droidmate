@@ -37,7 +37,7 @@ fun <TItem>  Map<Long, Iterable<TItem>>.accumulateUniqueStrings(
   }
 }
 
-fun <T> Map<Long, T>.partition(partitionSize: Long): Collection<Pair<Long, List<T>>> {
+fun <T> Map<Long, T>.partition(partitionSize: Long): Map<Long, List<T>> {
 
   tailrec fun <T> _partition(
     acc: Collection<Pair<Long, List<T>>>,
@@ -55,33 +55,34 @@ fun <T> Map<Long, T>.partition(partitionSize: Long): Collection<Pair<Long, List<
     }
   }
 
-  return _partition(mutableListOf(Pair(0L, emptyList<T>())), this.toList(), partitionSize, partitionSize)
+  return _partition(mutableListOf(Pair(0L, emptyList<T>())), this.toList(), partitionSize, partitionSize).toMap()
 }
 
-/**
-  Assumes a receiver is a sequence of partitioned collections of values. 
- */
-// KJA split extending to last partition and extracting max. 
-fun <T> Collection<Pair<Long, T>>.maxValueUntilPartition(
-  lastPartition: Long,
-  partitionSize: Long,
+fun <T> Map<Long, T>.accumulateMaxes(
   extractMax: (T) -> Int
-): Collection<Pair<Long, Int>> {
+): Map<Long, Int>
+{
+  var currMaxVal: Int = 0
 
-  require(lastPartition % partitionSize == 0L, { "lastPartition: $lastPartition partitionSize: $partitionSize" })
-  require(this.all { it.first % partitionSize == 0L })
-
-  return if (this.isEmpty())
-    (0..lastPartition step partitionSize).map { Pair(it, -1) }
-  else {
-
-    var currMaxVal: Int = 0
-    val currLastPartition: Long = this.last().first
-
-    this.toMap().mapValues {
-        currMaxVal = max(extractMax(it.value), currMaxVal)
-        currMaxVal
-    }.plus(((currLastPartition + partitionSize)..lastPartition step partitionSize).map { Pair(it, -1) }).toList()
+  return this.mapValues {
+    currMaxVal = max(extractMax(it.value), currMaxVal)
+    currMaxVal
   }
 }
 
+fun Map<Long, Int>.padPartitions(
+  partitionSize: Long,
+  lastPartition: Long
+): Map<Long, Int> {
+
+  require(lastPartition % partitionSize == 0L, { "lastPartition: $lastPartition partitionSize: $partitionSize" })
+  require(this.all { it.key % partitionSize == 0L })
+
+  return if (this.isEmpty())
+    (0..lastPartition step partitionSize).associate { Pair(it, -1) }
+  else {
+    val maxKey = this.keys.max() ?: 0
+    val paddedPartitions: Map<Long, Int> = ((maxKey + partitionSize)..lastPartition step partitionSize).associate { Pair(it, -1) }
+    return this.plus(paddedPartitions)
+  }
+}

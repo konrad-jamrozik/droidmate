@@ -12,7 +12,7 @@ import org.junit.Test
 import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
-class ExtensionsTest {
+class time_series_extensions_Test {
 
   private val startTimeFixture: LocalDateTime = LocalDateTime.of(2000, 1, 1, 0, 0)
   private val inputDataFixture = listOf(
@@ -62,25 +62,16 @@ class ExtensionsTest {
   }
 
 
-  @Test
-  fun partitionTest() {
+  private val unpartitionedTimeSeriesFixture = mapOf(
+    Pair(7L, 1),
+    Pair(9L, 2),
+    Pair(13L, 3),
+    Pair(17L, 4),
+    Pair(31L, 5),
+    Pair(45L, 6)
+  )
 
-    val map: Map<Long, Int> = mapOf(
-      Pair(7L, 1),
-      Pair(9L, 2),
-      Pair(13L, 3),
-      Pair(17L, 4),
-      Pair(31L, 5),
-      Pair(45L, 6)
-    )
-
-    // Act
-    val out: Collection<Pair<Long, List<Int>>> = map.partition(10)
-
-    assertEquals(expected = partitionFixture, actual = out, message = "")
-  }
-
-  private val partitionFixture: List<Pair<Long, List<Int>>> = listOf(
+  private val partitionedTimeSeriesFixture: Map<Long, List<Int>> = mapOf(
     Pair(0L, listOf()),
     Pair(10L, listOf(1, 2)),
     Pair(20L, listOf(3, 4)),
@@ -89,29 +80,37 @@ class ExtensionsTest {
     Pair(50L, listOf(6))
   )
 
+  private val partitionedAccumulatedAndExtendedTimeSeriesFixture = mapOf(
+    Pair(0L, 0),
+    Pair(10L, 2),
+    Pair(20L, 4),
+    Pair(30L, 4),
+    Pair(40L, 5),
+    Pair(50L, 6),
+    Pair(60L, -1),
+    Pair(70L, -1)
+  )
+
   @Test
-  fun maxCountAtPartitionTest() {
+  fun partitionTest() {
+
+    val map: Map<Long, Int> = unpartitionedTimeSeriesFixture
 
     // Act
-    val out: Collection<Pair<Long, Int>> = partitionFixture.maxValueUntilPartition(
-      lastPartition = 70L,
-      partitionSize = 10L,
-      extractMax = { it.max() ?: 0 }
-    )
+    val partitionedTimeSeries: Map<Long, List<Int>> = map.partition(10)
+
+    assertEquals(expected = partitionedTimeSeriesFixture, actual = partitionedTimeSeries)
+  }
+
+  @Test
+  fun accumulateMaxesAndPadTest() {
+
+    // Act
+    val accumulatedAndPadded: Map<Long, Int> = partitionedTimeSeriesFixture
+      .accumulateMaxes(extractMax = { it.max() ?: 0 })
+      .padPartitions(partitionSize = 10L, lastPartition = 70L)
     
-    assertEquals(listOf(
-      Pair(0L, 0),
-      Pair(10L, 2),
-      Pair(20L, 4),
-      Pair(30L, 4),
-      Pair(40L, 5),
-      Pair(50L, 6),
-      Pair(60L, -1),
-      Pair(70L, -1)
-    ),
-      out,
-      ""
-    )
+    assertEquals(expected = partitionedAccumulatedAndExtendedTimeSeriesFixture, actual = accumulatedAndPadded)
   }
 }
 

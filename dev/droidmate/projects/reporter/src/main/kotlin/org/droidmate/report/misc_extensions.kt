@@ -28,7 +28,8 @@ fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
   Files.write(file, tableString.toByteArray())
 }
 
+// KJA comment
 // Reference: http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
 fun Int.zeroDigits(digitsToZero: Int): Long {
-  return BigDecimal(toString()).setScale(-digitsToZero, RoundingMode.DOWN).toBigInteger().toLong()
+  return BigDecimal(this.toString()).setScale(-digitsToZero, RoundingMode.DOWN).toBigInteger().toLong()
 }

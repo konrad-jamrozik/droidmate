@@ -18,6 +18,7 @@ fun IApkExplorationOutput2.uniqueViewCountByPartitionedTime(
   extractItems: (RunnableExplorationActionWithResult) -> Iterable<Widget>
 ): Map<Long, Int> {
 
+  val partitionSize = 1000L
   return this
     .actRess
     .itemsAtTime(
@@ -34,12 +35,9 @@ fun IApkExplorationOutput2.uniqueViewCountByPartitionedTime(
       extractUniqueString = { WidgetInfo(it).uniqueString }
     )
     .mapValues { it.value.count() }
-    .partition(1000L)
-    .maxValueUntilPartition(
-      lastPartition = this.explorationTimeInMs.zeroDigits(3),
-      partitionSize = 1000L,
-      extractMax = { it.max() ?: 0 })
-    .toMap()
+    .partition(partitionSize)
+    .accumulateMaxes(extractMax = { it.max() ?: 0 })
+    .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroDigits(3))
 }
 
 fun IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime(): Map<Long, Int> {
