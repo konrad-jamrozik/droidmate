@@ -20,6 +20,7 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
   companion object {
     val fileNameSuffix_viewsCountsOverTime = "_viewsCountsOverTime.txt"
     val fileNameSuffix_clickFrequency = "_clickFrequency.txt"
+    val fileNameSuffix_viewsCountsOverTimeChart = "_viewsCountsOverTimeChart.pdf"
   }
 
   private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
@@ -28,13 +29,18 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
     require(dir.isDirectory)
   }
 
-  val file_viewsCountOverTime: Path by lazy {
+  val file_viewsCountsOverTime: Path by lazy {
     this.dir.resolve("${data.apk.fileName}$fileNameSuffix_viewsCountsOverTime")
   }
 
   val file_clickFrequency: Path by lazy {
     this.dir.resolve("${data.apk.fileName}$fileNameSuffix_clickFrequency")
   }
+
+  val file_viewsCountsOverTimeChart: Path by lazy {
+    this.dir.resolve("${data.apk.fileName}$fileNameSuffix_viewsCountsOverTimeChart")
+  }
+
 
   val tableViewsCounts: Table<Int, String, Int> by lazy { data.tableOfViewsCounts }
 
@@ -43,8 +49,9 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
   fun writeOut() {
 
-    log.info("Writing out GUI coverage report for ${data.apk.fileName} to $file_viewsCountOverTime and $fileNameSuffix_clickFrequency")
-    this.tableViewsCounts.writeOut(file_viewsCountOverTime)
+    log.info("Writing out GUI coverage report for ${data.apk.fileName} to $file_viewsCountsOverTime, $file_viewsCountsOverTimeChart and $fileNameSuffix_clickFrequency")
+    this.tableViewsCounts.writeOut(file_viewsCountsOverTime)
+    this.tableViewsCounts.writeOutChart(file_viewsCountsOverTimeChart)
     this.tableClickFrequency.writeOut(file_clickFrequency)
   }
 }

@@ -28,6 +28,12 @@ fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
   Files.write(file, tableString.toByteArray())
 }
 
+fun <R, C, V> Table<R, C, V>.writeOutChart(file: Path) {
+
+  // KJA to implement
+  Files.write(file, "dummy!".toByteArray())
+}
+
 /**
  * Zeroes digits before (i.e. left of) comma. E.g. if [digitsToZero] is 2, then 6789 will become 6700.
  */

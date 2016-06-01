@@ -58,13 +58,14 @@ class ExplorationOutput2ReportTest {
     // Asserts on the reports written to (here - mocked) file system.
     assertThat(report.dir.fileNames, hasItems(
       containsString(GUICoverageReport.fileNameSuffix_viewsCountsOverTime), 
-      containsString(GUICoverageReport.fileNameSuffix_clickFrequency))
+      containsString(GUICoverageReport.fileNameSuffix_clickFrequency),
+      containsString(GUICoverageReport.fileNameSuffix_viewsCountsOverTimeChart))
     )
 
     val manualInspection = true
     if (manualInspection)
     {
-      report.reportFiles.forEach {
+      report.txtReportFiles.forEach {
         println(it.toAbsolutePath().toString())
         println(it.text())
       }
