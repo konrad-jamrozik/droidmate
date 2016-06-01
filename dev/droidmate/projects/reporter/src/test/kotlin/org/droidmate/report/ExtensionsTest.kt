@@ -62,38 +62,6 @@ class ExtensionsTest {
   }
 
 
-  // KJA continue reimplementing modular uniqueCountAtTime
-  
-  @Test
-  fun uniqueCountAtTimeTest() {
-
-    val startTime: LocalDateTime = LocalDateTime.of(2000, 1, 1, 0, 0)
-
-    val list: List<Pair<LocalDateTime, List<String>>> = listOf(
-      Pair(startTime.plusSeconds(3), listOf("a ", "b", "c")),
-      Pair(startTime.plusSeconds(7), listOf("a", "  c", "d")),
-      Pair(startTime.plusSeconds(15), listOf("  c")),
-      Pair(startTime.plusSeconds(23), listOf("b ", "e"))
-    )
-
-    // Act
-    val out: Map<Long, Int> = list.uniqueCountAtShiftedTime(
-      startTime = startTimeFixture,
-      extractTime = { it.first },
-      extractItems = { it.second },
-      extractUniqueString = { it.trim() }
-    )
-
-    assertEquals(mapOf(
-      Pair(3000L, 3), // a b c
-      Pair(7000L, 4), // a b c d
-      Pair(15000L, 4), // a b c d
-      Pair(23000L, 5)), // a b c d e
-      out,
-      ""
-    )
-  }
-
   @Test
   fun partitionTest() {
 

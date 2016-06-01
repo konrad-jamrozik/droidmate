@@ -13,6 +13,8 @@ import com.konradjamrozik.FileSystemsOperations
 import com.konradjamrozik.createDirIfNotExists
 import com.konradjamrozik.isDirectory
 import org.codehaus.groovy.runtime.NioGroovyMethods
+import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
@@ -93,21 +95,6 @@ fun <TItem>  Map<Long, Iterable<TItem>>.accumulateUniqueStrings(
   }
 }
 
-fun <T, TItem> Iterable<T>.uniqueCountAtShiftedTime(
-  startTime: LocalDateTime,
-  extractTime: (T) -> LocalDateTime,
-  extractItems: (T) -> Iterable<TItem>,
-  extractUniqueString: (TItem) -> String,
-  timeShift: Long = 0L
-)
-  : Map<Long, Int> {
-
-  return this
-    .itemsAtTime(startTime, extractTime, extractItems)
-    .mapKeys {it.key + timeShift
-    }.accumulateUniqueStrings(extractUniqueString).mapValues { it.value.count() }
-}
-
 fun <T> Map<Long, T>.partition(partitionSize: Long): Collection<Pair<Long, List<T>>> {
 
   tailrec fun <T> _partition(
@@ -161,22 +148,27 @@ fun Int.zeroDigits(digitsToZero: Int): Long {
   return BigDecimal(toString()).setScale(-digitsToZero, RoundingMode.DOWN).toBigInteger().toLong()
 }
 
-fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Long, Int> {
+fun IApkExplorationOutput2.uniqueViewCountByPartitionedTime(
+  extractItems: (RunnableExplorationActionWithResult) -> Iterable<Widget>
+): Map<Long, Int> {
 
-  fun uniqueWidgetCountAtTime(): Map<Long, Int> {
-    return this.actRess.uniqueCountAtShiftedTime(
+  return this
+    .actRess
+    .itemsAtTime(
       startTime = this.explorationStartTime,
       extractTime = { it.action.timestamp },
-      extractItems = { it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() } },
-      extractUniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString },
+      extractItems = extractItems
+    )
+    .mapKeys {
       // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
       // The currently applied workaround is to add 500 milliseconds.
-      timeShift = 500L
+      it.key + 500L
+    }
+    .accumulateUniqueStrings(
+      extractUniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString }
     )
-  }
-
-  return uniqueWidgetCountAtTime()
-    .partition(1000)
+    .mapValues { it.value.count() }
+    .partition(1000L)
     .maxValueUntilPartition(
       lastPartition = this.explorationTimeInMs.zeroDigits(3),
       partitionSize = 1000L,
@@ -184,36 +176,23 @@ fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Long, Int> {
     .toMap()
 }
 
-// KJA DRY-up with extension above
+fun IApkExplorationOutput2.uniqueWidgetCountByTime(): Map<Long, Int> {
+
+  return this.uniqueViewCountByPartitionedTime(
+    extractItems = { it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() } }
+  )
+}
+
 fun IApkExplorationOutput2.uniqueClickedWidgetCountByTime(): Map<Long, Int> {
 
-  fun uniqueWidgetCountAtTime(): Map<Long, Int> {
-    return this.actRess.uniqueCountAtShiftedTime(
-      startTime = this.explorationStartTime,
-      extractTime = { it.action.timestamp },
-      extractItems = { 
-        val action = it.action.base;
-        when (action) {
-          is WidgetExplorationAction -> setOf(action.widget)
-          else -> emptySet()
-        }
-      },
-      extractUniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString },
-      // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
-      // The currently applied workaround is to add 500 milliseconds.
-      timeShift = 500L
-
-
-    )
-  }
-
-  return uniqueWidgetCountAtTime()
-    .partition(1000L)
-    .maxValueUntilPartition(
-      lastPartition = this.explorationTimeInMs.zeroDigits(3),
-      partitionSize = 1000L,
-      extractMax = { it.max() ?: 0 })
-    .toMap()
-
+  return this.uniqueViewCountByPartitionedTime(
+    extractItems = {
+      val action = it.action.base;
+      when (action) {
+        is WidgetExplorationAction -> setOf(action.widget)
+        else -> emptySet()
+      }
+    }
+  )
 }
 
