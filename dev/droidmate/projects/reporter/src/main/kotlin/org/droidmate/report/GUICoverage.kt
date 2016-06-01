@@ -15,6 +15,8 @@ import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import kotlin.comparisons.compareBy
 import kotlin.comparisons.naturalOrder
 
+// KJA rename to "TimeSeriesTable" ?
+// KJA make it just implement Table interface? Or TimeSeriesTable interface, to be introduced?
 class GUICoverage(val data: IApkExplorationOutput2) {
 
   companion object {
