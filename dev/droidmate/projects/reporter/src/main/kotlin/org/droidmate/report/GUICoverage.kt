@@ -23,19 +23,24 @@ class GUICoverage(val data: IApkExplorationOutput2) {
     val headerTime = "Time_seconds"
     val headerViewsSeen = "Actionable_unique_views_seen"
     val headerViewsClicked = "Actionable_unique_views_clicked"
+    
+    // KJA separate from values above
+    val headerNoOfClicks = "No_of_clicks"
+    val headerViewsCount = "Views_count"
+    
   }
 
   private val stepSizeInMs = 1000L
 
-  val table: Table<Int, String, Int> by lazy {
+  val tableViewsCounts: Table<Int, String, Int> by lazy {
 
     val timeRange: LongProgression = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs)
     val uniqueSeenActionableViewsCountByTime: Map<Long, Int> = data.uniqueSeenActionableViewsCountByTime
     val uniqueClickedViewsCountByTime: Map<Long, Int> = data.uniqueClickedViewsCountByTime
 
-    val rows: List<List<Int>> = timeRange.mapIndexed { tickIndex, timePassed ->
+    val rows: List<List<Int>> = timeRange.mapIndexed { rowIndex, timePassed ->
       listOf(
-        tickIndex, 
+        rowIndex, 
         (timePassed / stepSizeInMs).toInt(), 
         uniqueSeenActionableViewsCountByTime[timePassed]!!, 
         uniqueClickedViewsCountByTime[timePassed]!!)
@@ -50,6 +55,27 @@ class GUICoverage(val data: IApkExplorationOutput2) {
     }.build()
   }
 
+  // KJA dry up with method above
+  val tableClickFrequency: Table<Int, String, Int> by lazy {
+
+    val countOfViewsHavingNoOfClicks: Map<Int, Int> = data.countOfViewsHavingNoOfClicks
+
+    val rows: List<List<Int>> = countOfViewsHavingNoOfClicks.keys.mapIndexed { rowIndex, noOfClicks ->
+      listOf(
+        rowIndex,
+        noOfClicks,
+        countOfViewsHavingNoOfClicks[noOfClicks]!!
+      )
+    }
+
+    tableBuilder().apply {
+      rows.forEach { row ->
+        put(row[0], headerNoOfClicks, row[1])
+        put(row[0], headerViewsCount, row[2])
+      }
+    }.build()
+  }
+
   private fun tableBuilder(): ImmutableTable.Builder<Int, String, Int> {
 
     return ImmutableTable
@@ -59,6 +85,9 @@ class GUICoverage(val data: IApkExplorationOutput2) {
           headerTime -> 0
           headerViewsSeen -> 1
           headerViewsClicked -> 2
+        // KJA separate from values above
+          headerNoOfClicks -> 0
+          headerViewsCount -> 1
           else -> throw UnexpectedIfElseFallthroughError()
         }
       })

@@ -34,36 +34,12 @@ class ExplorationOutput2ReportTest {
     // Act
     report.writeOut()
     
-    /* KJA next to implement: click distribution: amount of clicks per view. X axis: no of clicks. Y axis: no of views.
-    
-      This will require table with column oone having the number of clicks and column two number of widgets with this amount of 
-      clicks.
-      
-      To obtain this data we have to iterate the data structure counting the clicks. Each time a click is counted, increase a 
-      counter on the view being counted. So we will have a map View -> No of clicks, to which values will be inserted/increased 
-      as the data structure is iterated. The data structure iteration will look for view clicks, i.e. like in:
-      org.droidmate.report.uniqueClickedViewsCountByTime
-      
-      This means that most likely the relevant functionality will be extracted from org.droidmate.report.itemsAtTime,
-      as we just need the items, not time.
-      
-      This will give us the data to be transformed into the View -> No of clicks map, which then will have to be injected into
-      Table reusing some code from org.droidmate.report.GUICoverage.table. However, the logic will be a bit different, because
-      now we won't have any time series.
-      
-      Such Table would live in org.droidmate.report.GUICoverageReport, beside org.droidmate.report.GUICoverage, and would be
-      written out in org.droidmate.report.GUICoverageReport.writeOut
-    
-     */
-    
-    /* KJA implement automatic generation of .pdf with charts.
-      
-      */
+    // KJA implement automatic generation of .pdf with charts.
 
     // Asserts on the data structure
     report.guiCoverageReports.forEach {
-      assertThat(it.guiCoverage.table.rowKeySet().size, greaterThan(0))
-      assertThat(it.guiCoverage.table.columnKeySet(),
+      assertThat(it.guiCoverage.tableViewsCounts.rowKeySet().size, greaterThan(0))
+      assertThat(it.guiCoverage.tableViewsCounts.columnKeySet(),
         hasItems(
           GUICoverage.headerTime,
           GUICoverage.headerViewsSeen,
@@ -73,7 +49,10 @@ class ExplorationOutput2ReportTest {
     }
     
     // Asserts on the reports written to (here - mocked) file system.
-    assertThat(report.dir.fileNames, hasItem(containsString(GUICoverageReport.fileNameSuffix)))
+    assertThat(report.dir.fileNames, hasItems(
+      containsString(GUICoverageReport.fileNameSuffix_viewsCountsOverTime), 
+      containsString(GUICoverageReport.fileNameSuffix_clickFrequency))
+    )
 
     val manualInspection = true
     if (manualInspection)

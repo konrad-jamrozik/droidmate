@@ -17,7 +17,8 @@ import java.nio.file.Path
 class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
   companion object {
-    val fileNameSuffix = "_GUIReportFile.txt"
+    val fileNameSuffix_viewsCountsOverTime = "_viewsCountsOverTime.txt"
+    val fileNameSuffix_clickFrequency = "_clickFrequency.txt"
   }
 
   private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
@@ -26,9 +27,14 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
     check(dir.isDirectory)
   }
 
-  val file: Path by lazy {
-    this.dir.resolve("${data.apk.fileName}${Companion.fileNameSuffix}")
+  val file_viewsCountOverTime: Path by lazy {
+    this.dir.resolve("${data.apk.fileName}${Companion.fileNameSuffix_viewsCountsOverTime}")
   }
+
+  val file_clickFrequency: Path by lazy {
+    this.dir.resolve("${data.apk.fileName}${Companion.fileNameSuffix_clickFrequency}")
+  }
+
 
   val guiCoverage: GUICoverage by lazy {
     GUICoverage(this.data)
@@ -36,7 +42,8 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
   fun writeOut() {
 
-    log.info("Writing out GUI coverage report for ${data.apk.fileName} to $file")
-    this.guiCoverage.table.writeOut(file)
+    log.info("Writing out GUI coverage report for ${data.apk.fileName} to $file_viewsCountOverTime and $fileNameSuffix_clickFrequency")
+    this.guiCoverage.tableViewsCounts.writeOut(file_viewsCountOverTime)
+    this.guiCoverage.tableClickFrequency.writeOut(file_clickFrequency)
   }
 }

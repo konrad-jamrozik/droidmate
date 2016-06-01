@@ -37,7 +37,7 @@ fun IApkExplorationOutput2.uniqueViewCountByPartitionedTime(
     .mapValues { it.value.count() }
     .partition(partitionSize)
     .accumulateMaxes(extractMax = { it.max() ?: 0 })
-    .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroDigits(3))
+    .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroLeastSignificantDigits(3))
 }
 
 val IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime: Map<Long, Int> get() {
@@ -46,14 +46,26 @@ val IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime: Map<Long, Int> 
   )
 }
 
+private val RunnableExplorationActionWithResult.clickedWidgets: Set<Widget> get() {
+  val action = this.action.base;
+  return when (action) {
+    is WidgetExplorationAction -> setOf(action.widget)
+    else -> emptySet()
+  }
+}
+
 val IApkExplorationOutput2.uniqueClickedViewsCountByTime: Map<Long, Int> get() {
-  return this.uniqueViewCountByPartitionedTime(
-    extractItems = {
-      val action = it.action.base;
-      when (action) {
-        is WidgetExplorationAction -> setOf(action.widget)
-        else -> emptySet()
-      }
-    }
-  )
+  return this.uniqueViewCountByPartitionedTime(extractItems = { it.clickedWidgets })
+}
+
+val IApkExplorationOutput2.countOfViewsHavingNoOfClicks: Map<Int, Int> get() {
+  
+  val clickedWidgets: List<Widget> = this.actRess.flatMap { it.clickedWidgets }
+  val noOfClicksPerWidget: Map<Widget, Int> = clickedWidgets.frequencies
+  val widgetsHavingNoOfClicks: Map<Int, Set<Widget>> = noOfClicksPerWidget.inverse
+  val widgetsCountPerNoOfClicks: Map<Int, Int> = widgetsHavingNoOfClicks.mapValues { it.value.size }
+
+  val maxNoOfClicks = noOfClicksPerWidget.values.max() ?: 0
+  val noOfClicksProgression = 0..maxNoOfClicks step 1
+  return noOfClicksProgression.associate { Pair(it, 0) } + widgetsCountPerNoOfClicks
 }

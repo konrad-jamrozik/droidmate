@@ -32,6 +32,28 @@ fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
  * Zeroes digits before (i.e. left of) comma. E.g. if [digitsToZero] is 2, then 6789 will become 6700.
  */
 // Reference: http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
-fun Int.zeroDigits(digitsToZero: Int): Long {
+fun Int.zeroLeastSignificantDigits(digitsToZero: Int): Long {
   return BigDecimal(this.toString()).setScale(-digitsToZero, RoundingMode.DOWN).toBigInteger().toLong()
+}
+
+/**
+ * Map of counts of how many times given elements appears in this [Iterable].
+ */
+val <T> Iterable<T>.frequencies: Map<T, Int> get() {
+  val grouped: Map<T, List<T>> = this.groupBy { it }
+  val frequencies: Map<T, Int> = grouped.mapValues { it.value.size }
+  return frequencies
+}
+
+val <K, V> Map<K, V>.inverse: Map<V, Set<K>> get() {
+  val pairs: List<Pair<V, K>> = this.map { Pair(it.value, it.key) }
+  return pairs.fold(
+    initial = mutableMapOf(),
+    operation = { acc: MutableMap<V, MutableSet<K>>, pair: Pair<V, K> ->
+      if (!acc.containsKey(pair.first))
+        acc.put(pair.first, mutableSetOf())
+      acc[pair.first]!!.add(pair.second)
+      acc
+    }
+  )
 }
