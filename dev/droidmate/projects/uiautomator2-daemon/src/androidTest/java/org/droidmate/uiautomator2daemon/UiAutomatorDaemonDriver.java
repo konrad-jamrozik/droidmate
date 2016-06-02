@@ -216,6 +216,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     return deviceResponse;
   }
 
+  // KJA doesn't work as it should. Investigate.
   private void turnWifiOnAndGoHome()
   {
     Log.d(uiaDaemon_logcatTag, "Checking wifi state.");

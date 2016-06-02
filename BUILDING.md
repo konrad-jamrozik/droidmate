@@ -77,7 +77,8 @@ To run DroidMate regression tests requiring a device:
 * Ensure the device displays home screen (by just looking at it).
 * Run:  
 `cd repo/dev/droidmate`  
-`gradlew testDevice`
+`gradlew testDevice_api19` // If you are using device with Android 4.4.2  
+`gradlew testDevice_api23` // If you are using device with Android 6.0.0 
 
 ## Deploying to local maven repository ##
 

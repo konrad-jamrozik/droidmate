@@ -1,0 +1,61 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+import org.droidmate.buildsrc.BuildKt
+
+test.configure {
+
+  /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
+ 
+   API reference:
+   workingDir  http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.testing.Test.html
+   rootDir     http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html
+   */
+  workingDir rootDir
+
+  /* Lurking bug: GRADLE-1682.
+
+  Currently the bug doesn't manifest itself, but if you run into "superClassName is empty", you bumped into it.
+
+  Reference:
+  http://stackoverflow.com/questions/14814837/gradle-test-fails-with-error
+  http://stackoverflow.com/questions/11129401/debug-gradle-plugins-with-intellij/11129708#11129708
+  http://issues.gradle.org/browse/GRADLE-1682
+  */
+  includes = ['**/FastRegressionTestSuite.class']
+
+}
+SourceDirectorySet testResDirs = project(":projects:core").sourceSets.test.resources
+assert testResDirs.srcDirs.size() == 1
+File testResDir = testResDirs.srcDirs[0]
+assert testResDir.path.endsWith("test" + File.separator + "resources")
+File apkFixturesDir = new File(testResDir, BuildKt.apk_fixtures)
+assert apkFixturesDir.directory
+
+def configureTestTask = { Test task ->
+  task.group = "verification"
+
+  task.inputs.dir apkFixturesDir.absolutePath
+
+  // This task is to be run manually, so it should never be up-to-date.
+  task.outputs.upToDateWhen {false}
+
+  task.workingDir rootDir
+
+  task.include("**/DroidmateFrontendTest.class")
+}
+
+task testDevice_api19(type: Test, dependsOn: testClasses) { Test task ->
+  configureTestTask(task)
+  task.filter.includeTestsMatching("*Explores monitored apk on a real device api19")
+}
+
+task testDevice_api23(type: Test, dependsOn: testClasses) { Test task ->
+  configureTestTask(task)
+  task.filter.includeTestsMatching("*Explores monitored apk on a real device api23")
+}
