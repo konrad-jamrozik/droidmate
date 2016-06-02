@@ -24,6 +24,7 @@ class TableViewsCounts() {
     
     val stepSizeInMs = 1000L
 
+    // Design note: Instead of "build" one could implement the logic in constructor: http://stackoverflow.com/a/37598292/986533
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
 
       val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs).toList()

@@ -26,6 +26,7 @@ import java.io.IOException;
 
 import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*;
 
+// KJA dry up common code with uiad-1. Put the shared code in uiautomator-daemon-lib
 class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 {
   private final UiDevice device;
@@ -216,7 +217,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     return deviceResponse;
   }
 
-  // KJA doesn't work as it should. Investigate.
+  // KJA doesn't work as it should. Investigate. Scrolling might be necessary (uiautomator should be able to do it itself. Look how it searches for "apps" button).
   private void turnWifiOnAndGoHome()
   {
     Log.d(uiaDaemon_logcatTag, "Checking wifi state.");

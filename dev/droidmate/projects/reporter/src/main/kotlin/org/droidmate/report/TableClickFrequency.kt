@@ -18,6 +18,7 @@ class TableClickFrequency() {
     val headerNoOfClicks = "No_of_clicks"
     val headerViewsCount = "Views_count"
 
+    // Design note: Instead of "build" one could implement the logic in constructor: http://stackoverflow.com/a/37598292/986533
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
 
       val countOfViewsHavingNoOfClicks: Map<Int, Int> = data.countOfViewsHavingNoOfClicks
@@ -48,4 +49,3 @@ class TableClickFrequency() {
     }
   }
 }
-
