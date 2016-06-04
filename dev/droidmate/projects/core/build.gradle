@@ -6,10 +6,6 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-
-import com.konradjamrozik.IterableExtensions
-import org.droidmate.buildsrc.BuildKt
-
 apply plugin: 'groovy'
 apply from: project(":projects").file("debug.gradle")
 
@@ -51,6 +47,9 @@ dependencies {
 
   // Filesystem stubbing
   compile 'com.google.jimfs:jimfs:1.0'
+
+  // Only for org.droidmate.tests_misc.JavaReprosTest.BBoxError
+  testCompile 'de.erichseifert.vectorgraphics2d:VectorGraphics2D:0.10'
 
 }
 
