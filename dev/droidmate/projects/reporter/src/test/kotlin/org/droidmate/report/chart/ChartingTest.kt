@@ -17,6 +17,11 @@ import java.util.concurrent.TimeUnit
 
 class ChartingTest {
   
+  // KJA current work: 
+  // do not render -1: instead print - and make gnuplot handle it correctly. Now it has set datafile missing "-1"
+  // clean up
+  // ? wire in test suite 
+  
   @Test
   fun chartsWithGnuplot() {
     
