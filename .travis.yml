@@ -1,6 +1,12 @@
 # Android language used because it installs Android SDK required by DroidMate.
 language: android
 
+addons:
+  apt:
+    packages:
+      # Required by org.droidmate.report.plot()
+      - gnuplot
+
 git:
   # To speed up things. By default it is 50.
   depth: 1 
