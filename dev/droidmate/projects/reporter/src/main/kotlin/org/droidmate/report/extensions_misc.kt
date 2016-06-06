@@ -11,28 +11,7 @@ package org.droidmate.report
 import com.google.common.collect.Table
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.nio.file.Files
 import java.nio.file.Path
-
-fun <R, C, V> Table<R, C, V>.writeOut(file: Path) {
-
-  val headerRowString = this.columnKeySet().joinToString(separator = "\t")
-
-  val dataRowsStrings: List<String> = this.rowMap().map {
-    val rowValues = it.value.values
-    rowValues.joinToString(separator = "\t")
-  }
-
-  val tableString = headerRowString + "\n" + dataRowsStrings.joinToString(separator = "\n")
-
-  Files.write(file, tableString.toByteArray())
-}
-
-fun <R, C, V> Table<R, C, V>.writeOutChart(file: Path) {
-
-  // KJA to implement
-  Files.write(file, "dummy!".toByteArray())
-}
 
 /**
  * Zeroes digits before (i.e. left of) comma. E.g. if [digitsToZero] is 2, then 6789 will become 6700.
@@ -62,4 +41,8 @@ val <K, V> Map<K, V>.inverse: Map<V, Set<K>> get() {
       acc
     }
   )
+}
+
+fun <R, C, V> Table<R, C, V>.dataFile(file: Path): TableDataFile<R, C, V> {
+  return TableDataFile(this, file)
 }

@@ -20,7 +20,8 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
   companion object {
     val fileNameSuffix_viewsCountsOverTime = "_viewsCountsOverTime.txt"
     val fileNameSuffix_clickFrequency = "_clickFrequency.txt"
-    val fileNameSuffix_viewsCountsOverTimeChart = "_viewsCountsOverTimeChart.pdf"
+    // KJA dry up
+    val fileNameSuffix_viewsCountsOverTimePlot = "_viewsCountsOverTime.pdf"
   }
 
   private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
@@ -29,16 +30,18 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
     require(dir.isDirectory)
   }
 
+  private val fileNamePrefix by lazy { data.apk.fileName.replace(".", "_") }
+
   val file_viewsCountsOverTime: Path by lazy {
-    this.dir.resolve("${data.apk.fileName}$fileNameSuffix_viewsCountsOverTime")
+    this.dir.resolve("$fileNamePrefix$fileNameSuffix_viewsCountsOverTime")
   }
 
   val file_clickFrequency: Path by lazy {
-    this.dir.resolve("${data.apk.fileName}$fileNameSuffix_clickFrequency")
+    this.dir.resolve("$fileNamePrefix$fileNameSuffix_clickFrequency")
   }
 
-  val file_viewsCountsOverTimeChart: Path by lazy {
-    this.dir.resolve("${data.apk.fileName}$fileNameSuffix_viewsCountsOverTimeChart")
+  val file_viewsCountsOverTimePlot: Path by lazy {
+    this.dir.resolve("$fileNamePrefix$fileNameSuffix_viewsCountsOverTimePlot")
   }
 
 
@@ -46,12 +49,23 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
   val tableClickFrequency: Table<Int, String, Int> by lazy { data.tableOfClickFrequencies }
 
+  private val tableViewsCountDataFile = this.tableViewsCounts.dataFile(file_viewsCountsOverTime)
+  private val tableClickFrequencyDataFile = this.tableClickFrequency.dataFile(file_clickFrequency)
 
-  fun writeOut() {
+  fun writeOut(includePlots: Boolean = true) {
 
-    log.info("Writing out GUI coverage report for ${data.apk.fileName} to $file_viewsCountsOverTime, $file_viewsCountsOverTimeChart and $fileNameSuffix_clickFrequency")
-    this.tableViewsCounts.writeOut(file_viewsCountsOverTime)
-    this.tableViewsCounts.writeOutChart(file_viewsCountsOverTimeChart)
-    this.tableClickFrequency.writeOut(file_clickFrequency)
+    // KJA add here mention of plot file
+    log.info("Writing out GUI coverage report for ${data.apk.fileName}")
+
+    log.info("Writing out ${tableViewsCountDataFile.toString()}")
+    tableViewsCountDataFile.writeOut()
+    if (includePlots) {
+      log.info("Writing out ${tableViewsCountDataFile.plotFile.toString()}")
+      tableViewsCountDataFile.writeOutPlot()
+    }
+
+    log.info("Writing out ${tableClickFrequencyDataFile.toString()}")
+    tableClickFrequencyDataFile.writeOut()
+    
   }
 }

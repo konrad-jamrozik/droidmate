@@ -10,8 +10,31 @@ package org.droidmate.report
 
 import com.google.common.collect.ImmutableTable
 import com.google.common.collect.Table
+import com.konradjamrozik.Resource
+import org.droidmate.extractedPathString
+import org.zeroturnaround.exec.ProcessExecutor
+import java.util.concurrent.TimeUnit
 import kotlin.comparisons.compareBy
 import kotlin.comparisons.naturalOrder
+
+fun plot(dataFilePath: String, outputFilePath: String) {
+
+  val processExecutor = ProcessExecutor()
+    .exitValueNormal()
+    .readOutput(true)
+    .timeout(5, TimeUnit.SECONDS)
+    .destroyOnExit()
+
+  val plotTemplatePathString = Resource("plot_template.plt").extractedPathString
+
+  val variableBindings = listOf(
+    "var_interactive=0",
+    "var_data_file_path='$dataFilePath'",
+    "var_output_file_path='$outputFilePath'")
+    .joinToString(";")
+  val result = processExecutor.command("gnuplot", "-e", variableBindings, plotTemplatePathString).execute()
+  println(result.outputString())
+}
 
 fun <V> buildTable(headers: Iterable<String>, rowCount: Int, computeRow: (Int) -> Iterable<V>): Table<Int, String, V> {
 

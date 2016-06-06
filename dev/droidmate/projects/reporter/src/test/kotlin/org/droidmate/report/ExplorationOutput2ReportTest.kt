@@ -32,14 +32,18 @@ class ExplorationOutput2ReportTest {
     )
 
     // Act
-    report.writeOut()
+    // includePlots = false because plots require gnuplot, which does not work on mock file system using in this test.
+    report.writeOut(includePlots = false) 
     
-    // KJA implement automatic generation of .pdf with charts.
-
     // KJA produce table that can be readily imported to Excel that has columns:
     // apk_name	run_time_in_seconds	actions#	in_that_resets# actionable_views_seen# views_clicked_or_long_clicked_at_least_once# unique_apis# unique_event_apis# ANRs_seen# terminated_with_exception(give exception name: launch timeout, uninstall failure, other)
 
-      // Asserts on the data structure
+    assertOnDataStructure(report)
+    assertOnFiles(report)
+    manualInspection(report)
+  }
+
+  private fun assertOnDataStructure(report: ExplorationOutput2Report) {
     report.guiCoverageReports.forEach {
       assertThat(it.tableViewsCounts.rowKeySet().size, greaterThan(0))
       assertThat(it.tableViewsCounts.columnKeySet(),
@@ -57,17 +61,18 @@ class ExplorationOutput2ReportTest {
         )
       )
     }
-    
-    // Asserts on the reports written to (here - mocked) file system.
-    assertThat(report.dir.fileNames, hasItems(
-      containsString(GUICoverageReport.fileNameSuffix_viewsCountsOverTime), 
-      containsString(GUICoverageReport.fileNameSuffix_clickFrequency),
-      containsString(GUICoverageReport.fileNameSuffix_viewsCountsOverTimeChart))
-    )
+  }
 
+  private fun assertOnFiles(report: ExplorationOutput2Report) {
+    assertThat(report.dir.fileNames, hasItems(
+      containsString(GUICoverageReport.fileNameSuffix_viewsCountsOverTime),
+      containsString(GUICoverageReport.fileNameSuffix_clickFrequency))
+    )
+  }
+
+  private fun manualInspection(report: ExplorationOutput2Report) {
     val manualInspection = true
-    if (manualInspection)
-    {
+    if (manualInspection) {
       report.txtReportFiles.forEach {
         println(it.toAbsolutePath().toString())
         println(it.text())

@@ -12,7 +12,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.Test
 
-class misc_extensionsKtTest {
+class extensions_miscKtTest {
 
 
   @Test

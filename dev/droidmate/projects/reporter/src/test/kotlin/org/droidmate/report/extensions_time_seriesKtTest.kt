@@ -12,7 +12,7 @@ import org.junit.Test
 import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
-class time_series_extensionsKtTest {
+class extensions_time_seriesKtTest {
 
   private val startTimeFixture: LocalDateTime = LocalDateTime.of(2000, 1, 1, 0, 0)
   private val inputDataFixture = listOf(

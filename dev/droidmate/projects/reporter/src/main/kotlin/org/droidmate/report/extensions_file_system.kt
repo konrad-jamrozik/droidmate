@@ -12,6 +12,7 @@ import com.konradjamrozik.FileSystemsOperations
 import com.konradjamrozik.createDirIfNotExists
 import com.konradjamrozik.isDirectory
 import org.codehaus.groovy.runtime.NioGroovyMethods
+import java.io.File
 import java.nio.file.Files.newDirectoryStream
 import java.nio.file.Path
 
@@ -21,6 +22,11 @@ fun Path.text(): String {
 
 fun Path.deleteDir(): Boolean {
   return NioGroovyMethods.deleteDir(this)
+}
+
+fun Path.withExtension(extension: String): Path {
+  require(!this.isDirectory)
+  return this.resolveSibling(File(this.fileName.toString()).nameWithoutExtension + "." + extension)
 }
 
 val Path.fileNames: Iterable<String>
