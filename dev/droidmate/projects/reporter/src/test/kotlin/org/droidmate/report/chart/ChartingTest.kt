@@ -21,6 +21,7 @@ class ChartingTest {
   // do not render -1: instead print - and make gnuplot handle it correctly. Now it has set datafile missing "-1"
   // clean up
   // ? wire in test suite 
+  // rename: charting -> plotting
   
   @Test
   fun chartsWithGnuplot() {
