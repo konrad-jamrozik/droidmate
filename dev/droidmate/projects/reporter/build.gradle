@@ -45,12 +45,6 @@ dependencies {
   testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
   testCompile 'org.hamcrest:hamcrest-library:1.3'
 
-  // Charts experimentations
-  // http://mvnrepository.com/artifact/org.jfree/jfreechart
-  testCompile 'org.jfree:jfreechart:1.0.19'
-  testCompile 'org.knowm.xchart:xchart:3.0.4'
-  testCompile 'de.erichseifert.gral:gral-core:0.11'
-  testCompile 'de.erichseifert.vectorgraphics2d:VectorGraphics2D:0.10'
   compile 'org.zeroturnaround:zt-exec:1.9'
   
   testCompile project(":projects:core").sourceSets.test.output
