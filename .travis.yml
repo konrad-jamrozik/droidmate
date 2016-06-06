@@ -5,7 +5,7 @@ addons:
   apt:
     packages:
       # Required by org.droidmate.report.plot()
-      - gnuplot
+      - gnuplot5
 
 git:
   # To speed up things. By default it is 50.
