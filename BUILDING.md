@@ -37,6 +37,7 @@ To configure your local setup, do the following:
   * Extras / Google USB Driver (if your OS requires it)
   * Extras / Intel x86 Emulator Accelerator (HAXM Installer) (if you want to use emulator on Windows)
 * Install Apache Ant (newest version should work) and add its `bin` directory to the `PATH` environment variable.
+* Install gnuplot 5.0.3 or newer from [sourceforge](https://sourceforge.net/projects/gnuplot/files/gnuplot/5.0.3/).
 * Set `GRADLE_USER_HOME` environment variable to a directory in which Gradle will locally cache the dependencies downloaded from maven repository ([Gradle doc about environment variables](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties)). (optional)
 
 ## Build steps ##
