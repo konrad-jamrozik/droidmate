@@ -34,9 +34,12 @@ class TableDataFile<R, C, V>(val table: Table<R, C, V>, val file: Path) : IDataF
       outputFilePath = plotFile.toAbsolutePath().toString())
   }
 
-
   override fun writeOut() {
     Files.write(file, tableString.toByteArray())
+  }
+
+  override fun toString(): String{
+    return file.toString()
   }
 }
 

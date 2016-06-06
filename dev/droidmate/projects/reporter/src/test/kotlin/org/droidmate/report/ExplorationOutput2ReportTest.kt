@@ -32,7 +32,7 @@ class ExplorationOutput2ReportTest {
     )
 
     // Act
-    // includePlots = false because plots require gnuplot, which does not work on mock file system using in this test.
+    // includePlots = false because plots require gnuplot, which does not work on mock file system used in this test.
     report.writeOut(includePlots = false) 
     
     // KJA produce table that can be readily imported to Excel that has columns:
@@ -65,8 +65,8 @@ class ExplorationOutput2ReportTest {
 
   private fun assertOnFiles(report: ExplorationOutput2Report) {
     assertThat(report.dir.fileNames, hasItems(
-      containsString(GUICoverageReport.fileNameSuffix_viewsCountsOverTime),
-      containsString(GUICoverageReport.fileNameSuffix_clickFrequency))
+      containsString(GUICoverageReport.fileNameSuffixViewsCountsOverTime),
+      containsString(GUICoverageReport.fileNameSuffixClickFrequency))
     )
   }
 

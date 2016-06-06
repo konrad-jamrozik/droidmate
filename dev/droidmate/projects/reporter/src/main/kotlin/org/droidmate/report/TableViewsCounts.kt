@@ -10,6 +10,7 @@ package org.droidmate.report
 
 import com.google.common.collect.Table
 import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.device.datatypes.MissingGuiSnapshot
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
@@ -45,7 +46,12 @@ class TableViewsCounts() {
 
     private val IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime: Map<Long, Int> get() {
       return this.uniqueViewCountByPartitionedTime(
-        extractItems = { it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() } }
+        extractItems = {
+          when (it.result.guiSnapshot) {
+            is MissingGuiSnapshot -> emptyList()
+            else -> it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() }
+          }
+        }
       )
     }
 

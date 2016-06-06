@@ -18,7 +18,7 @@ class ExplorationOutput2Report(val data: ExplorationOutput2, val dir: Path) {
   }
 
   val txtReportFiles: List<Path> by lazy {
-    this.guiCoverageReports.flatMap { setOf(it.file_viewsCountsOverTime, it.file_clickFrequency) }
+    this.guiCoverageReports.flatMap { setOf(it.fileViewsCountsOverTime, it.fileClickFrequency) }
   }
 
   fun writeOut(includePlots : Boolean = true): Unit {

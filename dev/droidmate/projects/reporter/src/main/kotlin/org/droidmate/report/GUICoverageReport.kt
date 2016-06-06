@@ -15,13 +15,11 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
 
-class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
+data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
   companion object {
-    val fileNameSuffix_viewsCountsOverTime = "_viewsCountsOverTime.txt"
-    val fileNameSuffix_clickFrequency = "_clickFrequency.txt"
-    // KJA dry up
-    val fileNameSuffix_viewsCountsOverTimePlot = "_viewsCountsOverTime.pdf"
+    val fileNameSuffixViewsCountsOverTime = "_viewsCountsOverTime.txt"
+    val fileNameSuffixClickFrequency = "_clickFrequency.txt"
   }
 
   private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
@@ -32,39 +30,33 @@ class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
   private val fileNamePrefix by lazy { data.apk.fileName.replace(".", "_") }
 
-  val file_viewsCountsOverTime: Path by lazy {
-    this.dir.resolve("$fileNamePrefix$fileNameSuffix_viewsCountsOverTime")
+  val fileViewsCountsOverTime: Path by lazy {
+    this.dir.resolve("$fileNamePrefix$fileNameSuffixViewsCountsOverTime")
   }
 
-  val file_clickFrequency: Path by lazy {
-    this.dir.resolve("$fileNamePrefix$fileNameSuffix_clickFrequency")
+  val fileClickFrequency: Path by lazy {
+    this.dir.resolve("$fileNamePrefix$fileNameSuffixClickFrequency")
   }
-
-  val file_viewsCountsOverTimePlot: Path by lazy {
-    this.dir.resolve("$fileNamePrefix$fileNameSuffix_viewsCountsOverTimePlot")
-  }
-
 
   val tableViewsCounts: Table<Int, String, Int> by lazy { data.tableOfViewsCounts }
-
   val tableClickFrequency: Table<Int, String, Int> by lazy { data.tableOfClickFrequencies }
 
-  private val tableViewsCountDataFile = this.tableViewsCounts.dataFile(file_viewsCountsOverTime)
-  private val tableClickFrequencyDataFile = this.tableClickFrequency.dataFile(file_clickFrequency)
+  private val tableViewsCountDataFile = this.tableViewsCounts.dataFile(fileViewsCountsOverTime)
+  private val tableClickFrequencyDataFile = this.tableClickFrequency.dataFile(fileClickFrequency)
 
   fun writeOut(includePlots: Boolean = true) {
 
-    // KJA add here mention of plot file
     log.info("Writing out GUI coverage report for ${data.apk.fileName}")
 
-    log.info("Writing out ${tableViewsCountDataFile.toString()}")
+    log.info("Writing out $tableViewsCountDataFile")
     tableViewsCountDataFile.writeOut()
+    
     if (includePlots) {
-      log.info("Writing out ${tableViewsCountDataFile.plotFile.toString()}")
+      log.info("Writing out ${tableViewsCountDataFile.plotFile}")
       tableViewsCountDataFile.writeOutPlot()
     }
 
-    log.info("Writing out ${tableClickFrequencyDataFile.toString()}")
+    log.info("Writing out $tableClickFrequencyDataFile")
     tableClickFrequencyDataFile.writeOut()
     
   }
