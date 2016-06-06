@@ -21,7 +21,10 @@ public class JavaReprosTest
 
   /**
    * Repro for: https://github.com/eseifert/vectorgraphics2d/issues/41
+   * 
+   * See also: https://answers.acrobatusers.com/The-font-LucidaGrande-bad-BBox-Error-opening-OCR-documents-Acrobat-XI-Pro-Mac-q36986.aspx
    */
+  
   // Gradle dependency: testCompile 'de.erichseifert.vectorgraphics2d:VectorGraphics2D:0.10'
   @Test
   public void BBoxError() throws IOException
