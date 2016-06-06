@@ -606,7 +606,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
    *
    */
   @Deprecated
-  /// !!! DUPLICATION WARNING !!! FilteredApis
+  /// !!! DUPLICATION WARNING !!! org.droidmate.exploration.output.FilteredApis
   private List<List<IApiLogcatMessage>> filterApiLogs(List<List<IApiLogcatMessage>> apiLogs, String appPackageName, boolean appGuardApis = false)
   {
     List<List<IApiLogcatMessage>> out = []

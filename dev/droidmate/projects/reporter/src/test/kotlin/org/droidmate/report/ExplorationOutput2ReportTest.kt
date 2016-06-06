@@ -66,7 +66,9 @@ class ExplorationOutput2ReportTest {
   private fun assertOnFiles(report: ExplorationOutput2Report) {
     assertThat(report.dir.fileNames, hasItems(
       containsString(GUICoverageReport.fileNameSuffixViewsCountsOverTime),
-      containsString(GUICoverageReport.fileNameSuffixClickFrequency))
+      containsString(GUICoverageReport.fileNameSuffixClickFrequency)//, 
+      // KJA
+      /*equalTo(ExplorationOutput2Report.fileNameSummary)*/)
     )
   }
 

@@ -13,6 +13,11 @@ import java.nio.file.Path
 
 class ExplorationOutput2Report(val data: ExplorationOutput2, val dir: Path) {
 
+  companion object {
+    // KJA to roll into "this.summary"
+    val fileNameSummary = "summary.txt"
+  }
+  
   val guiCoverageReports: List<GUICoverageReport> by lazy {
     this.data.map { GUICoverageReport(it, dir) }
   }
@@ -21,8 +26,13 @@ class ExplorationOutput2Report(val data: ExplorationOutput2, val dir: Path) {
     this.guiCoverageReports.flatMap { setOf(it.fileViewsCountsOverTime, it.fileClickFrequency) }
   }
 
-  fun writeOut(includePlots : Boolean = true): Unit {
+  fun writeOut(includePlots : Boolean = true) {
+    // KJA this.summary.writeOut()
     this.guiCoverageReports.forEach { it.writeOut(includePlots) }
   }
+
+  
+
+
 }
 

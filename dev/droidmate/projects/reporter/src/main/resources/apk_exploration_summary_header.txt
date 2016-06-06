@@ -1,0 +1,15 @@
+Unique API calls table legend:
+
+          Time: first log time of unique API call.
+        Action: index of action that triggered the call. 
+        Thread: ID of the thread that made the API call. 1 is UI thread.
+ API signature: signature of the called Android framework API method.
+         
+Unique [API call, event] pairs table legend:
+
+          Time: first log time of unique pair of [API call, event]
+        Action: index of action that triggered the pair. 
+         Event: event paired with the API signature.    
+        Thread: ID of the thread that made the API call. 1 is UI thread.
+ API signature: signature of the called Android framework API method.
+              
