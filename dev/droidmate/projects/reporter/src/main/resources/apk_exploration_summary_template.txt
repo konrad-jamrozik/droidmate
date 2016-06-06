@@ -11,8 +11,6 @@ Unique API calls count observed in the run: $unique_apis_count
 
 Below follows a list of first calls to unique Android SDK API methods. It is to be read as follows:
  
-
-
      Time  Action  Thread  API signature
 $api_entries     
    0m 43s       1       1  android.app.Activity: void onResume()

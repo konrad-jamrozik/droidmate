@@ -10,11 +10,14 @@ package org.droidmate
 
 import com.konradjamrozik.Resource
 import org.droidmate.common.BuildConstants
+import java.nio.file.Path
 import java.nio.file.Paths
 
-val Resource.extractedPathString: String get() {
+val Resource.extractedPath: Path get() {
   val resDir = Paths.get(BuildConstants.getDir_name_temp_extracted_resources())
-  val resourcePath = this.extractTo(resDir)
-  val resourcePathString = resourcePath.toAbsolutePath().toString()
-  return resourcePathString
+  return this.extractTo(resDir).toAbsolutePath()
+}
+
+val Resource.extractedPathString: String get() {
+  return this.extractedPath.toString()
 }

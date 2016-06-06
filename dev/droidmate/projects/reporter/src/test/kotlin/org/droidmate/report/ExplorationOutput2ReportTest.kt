@@ -35,7 +35,7 @@ class ExplorationOutput2ReportTest {
     // includePlots = false because plots require gnuplot, which does not work on mock file system used in this test.
     report.writeOut(includePlots = false) 
     
-    // KJA produce table that can be readily imported to Excel that has columns:
+    // KJA2 produce table that can be readily imported to Excel that has columns:
     // apk_name	run_time_in_seconds	actions#	in_that_resets# actionable_views_seen# views_clicked_or_long_clicked_at_least_once# unique_apis# unique_event_apis# ANRs_seen# terminated_with_exception(give exception name: launch timeout, uninstall failure, other)
 
     assertOnDataStructure(report)
@@ -66,9 +66,8 @@ class ExplorationOutput2ReportTest {
   private fun assertOnFiles(report: ExplorationOutput2Report) {
     assertThat(report.dir.fileNames, hasItems(
       containsString(GUICoverageReport.fileNameSuffixViewsCountsOverTime),
-      containsString(GUICoverageReport.fileNameSuffixClickFrequency)//, 
-      // KJA
-      /*equalTo(ExplorationOutput2Report.fileNameSummary)*/)
+      containsString(GUICoverageReport.fileNameSuffixClickFrequency), 
+      equalTo(ExplorationOutput2Report.fileNameSummary))
     )
   }
 
@@ -77,7 +76,7 @@ class ExplorationOutput2ReportTest {
     if (manualInspection) {
       report.txtReportFiles.forEach {
         println(it.toAbsolutePath().toString())
-        println(it.text())
+        println(it.text)
       }
     }
   }

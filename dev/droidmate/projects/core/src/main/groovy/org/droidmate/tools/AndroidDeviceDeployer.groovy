@@ -75,7 +75,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   {
     this.adbWrapper.startAdbServer()
 
-    // KJA2 the known bugs on emulators might have been caused by the fact I was using broken appguard-loader.dex. See if they still happen with the correct loader.
+    // WISH the known bugs on emulators might have been caused by the fact I was using broken appguard-loader.dex. See if they still happen with the correct loader.
     // KNOWN BUG on emulator, device offline when trying to remove logcat log file. Possible quickfix: on emulators, add a wait.
     device.removeLogcatLogFile()
     device.clearLogcat()

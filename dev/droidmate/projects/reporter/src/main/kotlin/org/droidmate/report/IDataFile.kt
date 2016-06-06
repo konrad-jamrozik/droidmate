@@ -10,7 +10,14 @@ package org.droidmate.report
 
 import java.nio.file.Path
 
+abstract class DataFile(val file: Path) : IDataFile, Path by file {
+
+  override val path: Path get() = file
+}
 interface IDataFile : Path {
+  
   fun writeOut()
+
+  val path: Path
 }
 

@@ -14,25 +14,23 @@ import java.nio.file.Path
 class ExplorationOutput2Report(val data: ExplorationOutput2, val dir: Path) {
 
   companion object {
-    // KJA to roll into "this.summary"
     val fileNameSummary = "summary.txt"
   }
-  
+
+  val summaryFile: IDataFile by lazy { Summary(this.data, dir.resolve(fileNameSummary)) }
+
   val guiCoverageReports: List<GUICoverageReport> by lazy {
-    this.data.map { GUICoverageReport(it, dir) }
+    data.map { GUICoverageReport(it, dir) }
   }
 
   val txtReportFiles: List<Path> by lazy {
-    this.guiCoverageReports.flatMap { setOf(it.fileViewsCountsOverTime, it.fileClickFrequency) }
+    listOf(summaryFile.path) + guiCoverageReports.flatMap { setOf(it.fileViewsCountsOverTime, it.fileClickFrequency) }
   }
+
 
   fun writeOut(includePlots : Boolean = true) {
-    // KJA this.summary.writeOut()
-    this.guiCoverageReports.forEach { it.writeOut(includePlots) }
+    summaryFile.writeOut()
+    guiCoverageReports.forEach { it.writeOut(includePlots) }
   }
-
-  
-
-
 }
 

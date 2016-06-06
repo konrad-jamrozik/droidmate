@@ -16,7 +16,7 @@ import java.io.File
 import java.nio.file.Files.newDirectoryStream
 import java.nio.file.Path
 
-fun Path.text(): String {
+val Path.text: String get() {
   return NioGroovyMethods.getText(this)
 }
 
