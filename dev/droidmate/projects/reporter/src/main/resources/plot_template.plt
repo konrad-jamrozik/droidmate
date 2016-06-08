@@ -5,13 +5,13 @@ if (!exists("var_interactive")) var_interactive=1
 if (!exists("var_data_file_path")) var_data_file_path="plot_data.txt"
 if (!exists("var_output_file_path")) var_output_file_path="plot.pdf"
 
-if (var_interactive) {
-  set terminal wxt
-  set output
-} else {
-  set output var_output_file_path
+if (var_interactive) \
+  set terminal wxt; \
+  set output; \
+else \
+  set output var_output_file_path; \
   set terminal pdf size 3.5,2.62 color
-}
+
 
 # Data points equal to -1 denote "data point missing". 
 # This command stops missing data points from being plotted.
