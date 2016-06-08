@@ -79,11 +79,12 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 
   private DeviceResponse getDeviceModel()
   {
-    Log.d(uiaDaemon_logcatTag, "Getting 'DeviceModel'");
+    Log.d(uiaDaemon_logcatTag, "getDeviceModel()");
     String model = Build.MODEL;
     String manufacturer = Build.MANUFACTURER;
     DeviceResponse deviceResponse = new DeviceResponse();
     deviceResponse.model = manufacturer + "-" + model;
+    Log.d(uiaDaemon_logcatTag, "Device model: "+deviceResponse.model);
     return deviceResponse;
   }
 
@@ -94,7 +95,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     String switchWidgetName;
     if (deviceModel.equals(DEVICE_SAMSUNG_GALAXY_S3_GT_I9300))
       switchWidgetName = "android:id/switchWidget";
-    else if (deviceModel.equals(DEVICE_GOOGLE_NEXUS_7))
+    else if (deviceModel.equals(DEVICE_GOOGLE_NEXUS_7) || deviceModel.equals(DEVICE_GOOGLE_NEXUS_5X))
       switchWidgetName = "com.android.settings:id/switch_widget";
     else
       switchWidgetName = "com.android.settings:id/switchWidget";

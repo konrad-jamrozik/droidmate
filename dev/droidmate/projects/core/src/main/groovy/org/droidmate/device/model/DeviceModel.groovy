@@ -56,6 +56,9 @@ public class DeviceModel
       case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_7:
         result = new Nexus7_API19_Model()
         break
+      case UiautomatorDaemonConstants.DEVICE_GOOGLE_NEXUS_5X:
+        result = new Nexus5X_Model()
+        break
       case "samsung-Nexus 10":
         result = new Nexus10Model()
         break
