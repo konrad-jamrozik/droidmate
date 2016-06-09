@@ -12,5 +12,5 @@ public interface IHookPlugin
 {
   void hookBeforeApiCall(String apiLogcatMessagePayload);
   
-  Object hookAfterApiCall(Object returnValue); 
+  Object hookAfterApiCall(String apiLogcatMessagePayload, Object returnValue); 
 }

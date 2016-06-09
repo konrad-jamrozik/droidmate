@@ -27,7 +27,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
-public class ActivityWithHelper extends Activity
+public class HelperActivity extends Activity
 {
   public void crashActivity(String tag)
   {
@@ -60,6 +60,7 @@ public class ActivityWithHelper extends Activity
     Log.i(tag, "===== Camera.open() returned: " + camera);
   }
 
+  @SuppressWarnings("Duplicates")
   protected void callAPI_URL_openConnection(String tag)
   {
     try

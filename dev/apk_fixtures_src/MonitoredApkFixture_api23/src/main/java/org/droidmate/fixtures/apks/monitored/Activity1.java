@@ -9,17 +9,19 @@
 package org.droidmate.fixtures.apks.monitored;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 
 import static android.util.Log.i;
 
 
-public class Activity1 extends ActivityWithHelper
+public class Activity1 extends HelperActivity
 {
   public static final String TAG = Activity1.class.getSimpleName();
 
@@ -34,6 +36,25 @@ public class Activity1 extends ActivityWithHelper
   {
     callAPI_URL_openConnection(TAG);
   }
+
+  public void callAPIs_Android6_Sources_Sinks(View view)
+  {
+    TelephonyManager tmgr = (TelephonyManager)this.getSystemService(TELEPHONY_SERVICE);
+    if (!hasPermission(Manifest.permission.READ_PHONE_STATE))
+    {
+      requestPermission(Manifest.permission.READ_PHONE_STATE);
+      return;
+    }
+
+    @SuppressWarnings("UnusedAssignment") 
+    String leakedData = tmgr.getDeviceId();
+    leakedData = "DEV-ID765";
+    Log.i("A6SOSI", "leak dev. id: "+leakedData);
+    
+    SmsManager manager = SmsManager.getDefault();
+    manager.sendTextMessage("+0dummy_destAddr", "dummy_scAddr", "A6SOSI SMS msg dev id leak: "+leakedData, null, null);
+  }
+
 
   private boolean hasPermission(String permission)
   {

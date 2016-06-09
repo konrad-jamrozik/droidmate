@@ -14,7 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 
-public class Activity3 extends ActivityWithHelper
+public class Activity3 extends HelperActivity
 {
   public static final String TAG = Activity3.class.getSimpleName();
 

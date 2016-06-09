@@ -8,16 +8,13 @@
 // www.droidmate.org
 package org.droidmate.fixtures.apks.monitored;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 
-public class Activity4 extends ActivityWithHelper
+public class Activity4 extends HelperActivity
 {
   public static final String TAG = Activity4.class.getSimpleName();
 

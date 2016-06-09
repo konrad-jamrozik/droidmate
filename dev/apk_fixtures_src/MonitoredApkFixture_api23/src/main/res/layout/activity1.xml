@@ -54,4 +54,15 @@
     android:layout_alignRight="@+id/button_activity2"
     android:layout_alignEnd="@+id/button_activity2"
     android:onClick="launchHome"/>
+  
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="APIs: Andr 6 srcs, sinks"
+    android:id="@+id/button_A6"
+    android:onClick="callAPIs_Android6_Sources_Sinks"
+    android:layout_below="@+id/button_home"
+    android:layout_alignParentStart="true"
+    android:layout_alignEnd="@+id/button_home"
+    android:nestedScrollingEnabled="false" />
 </RelativeLayout>

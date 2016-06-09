@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class HookPluginTemplate implements IHookPlugin
 {
   // KJA add to apk fixtures sendTextMessage and debug logs
+  // KJA debug failure to hook Log.i2
   // KJA add support for Android. Might require upgrading to newest IJ to handle "provided" dependencies. 
   // https://developer.android.com/training/basics/data-storage/files.html
   // File file = new File(context.getFilesDir(), filename);
@@ -28,11 +29,11 @@ public class HookPluginTemplate implements IHookPlugin
     System.out.println("hookBeforeApiCall/apiLogcatMessagePayload: "+ apiLogcatMessagePayload);
   }
 
-  public Object hookAfterApiCall(Object returnValue)
+  public Object hookAfterApiCall(@NotNull String apiLogcatMessagePayload, Object returnValue)
   {
     System.out.println("hookAfterApiCall/returnValue: "+ returnValue);
-    if (returnValue instanceof String)
-      return "xxx";
+    if (apiLogcatMessagePayload.contains("mthd: getDeviceId"))
+      return "DEV-ID-MOCKED-BY-AFTER-HOOK";
     else
       return returnValue;
   }

@@ -23,6 +23,7 @@
 # 3. diagnosing any failures and comparing the list definitions with the official source,
 # 4. fixing the list and writing down the findings in comments in this file.
 #
+# Entries starting with !API19 will be skipped when running on Android 4 (API 19) because they do not exist there.
 # Entries starting with !API23 will be skipped when running on Android 6 (API 23) because they do not exist there.
 
 Landroid/app/ActivityThread;->installContentProviders(Landroid/content/Context;Ljava/util/List;)V
@@ -276,7 +277,7 @@ Landroid/speech/SpeechRecognizer;->stopListening()V
 # 10-09 18:21:55.656    8703-8703/? W/Instrumentation? Failed to generate trampoline for sendTextMessage VLLLLL
 # 10-09 18:21:55.656    8703-8703/? W/Instrumentation? Failed to redirect method android.telephony.SmsManager->sendTextMessage to org.droidmate.monitor_generator.generated.Monitor->redir_android_telephony_SmsManager_sendTextMessage5
 #
-#Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V
+# Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V
 
 Landroid/telephony/TelephonyManager;->getCellLocation()Landroid/telephony/CellLocation;
 Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;
@@ -377,3 +378,7 @@ Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
 # Workaround below:
 # Here is the method that actually needs to be monitored [2], as all the others delegate to it:
 Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
+
+# APIs added on 9 Jun 2016 to enable sensitive dataflow leaks. Obtained from Vitalii. Taken from "apis_art.txt" that should be located in the same dir as this file.
+!API19 Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V
+!API19 Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I

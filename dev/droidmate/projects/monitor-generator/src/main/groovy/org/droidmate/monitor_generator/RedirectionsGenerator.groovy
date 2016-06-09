@@ -111,11 +111,11 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         if (androidApi == AndroidAPI.API_19)
         {
           out << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
-          out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(null);" + nl
+          out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(\"$apiLogcatMessagePayload\", null);" + nl
         } else if (androidApi == AndroidAPI.API_23)
         {
           out << ind4 + ind4 + "OriginalMethod.by(new \$() {}).invoke(_this$commaSeparatedParamVars);" + nl
-          out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(null);" + nl
+          out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(\"$apiLogcatMessagePayload\", null);" + nl
         } else throw new IllegalStateException()
         out << ind4 + "}" + nl
         out << ind4 + nl
@@ -196,11 +196,11 @@ class RedirectionsGenerator implements IRedirectionsGenerator
           if (returnsVoid)
           {
             out << ind4 + ind4 + "Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
-            out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(null);" + nl
+            out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(\"$apiLogcatMessagePayload\", null);" + nl
           } else
           {
             out << ind4 + ind4 + "Object returnVal = Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
-            out << ind4 + ind4 + "${returnStatement}hookPlugin.hookAfterApiCall(${castType}returnVal);" + nl
+            out << ind4 + ind4 + "${returnStatement}hookPlugin.hookAfterApiCall(\"$apiLogcatMessagePayload\", ${castType}returnVal);" + nl
           }
         }
         else if (androidApi == AndroidAPI.API_23)
@@ -216,12 +216,12 @@ class RedirectionsGenerator implements IRedirectionsGenerator
           if (returnsVoid)
           {
             out << ind4 + ind4 + "$invocation;" + nl
-            out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(null);" + nl
+            out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(\"$apiLogcatMessagePayload\", null);" + nl
           }
           else
           {
             out << ind4 + ind4 + "Object returnVal = $invocation;" + nl
-            out << ind4 + ind4 + "${returnStatement}hookPlugin.hookAfterApiCall(${castType}returnVal);" + nl
+            out << ind4 + ind4 + "${returnStatement}hookPlugin.hookAfterApiCall(\"$apiLogcatMessagePayload\", ${castType}returnVal);" + nl
           }
         } else throw new IllegalStateException()
         out << ind4 + "}" + nl
