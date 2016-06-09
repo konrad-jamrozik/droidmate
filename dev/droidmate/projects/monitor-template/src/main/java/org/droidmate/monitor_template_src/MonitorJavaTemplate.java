@@ -98,13 +98,19 @@ public class MonitorJavaTemplate
   }
 
   private static MonitorTCPServer server;
+  private static Context context;
 
-  public void init(android.content.Context context)
+  public void init(android.content.Context initContext)
   {
+    context = initContext;
     if (server == null)
-      Log.i(MonitorConstants.tag_srv, "Init: Didn't set context: MonitorTCPServer is null");
+    {
+      Log.i(MonitorConstants.tag_srv, "Init: Didn't set context for MonitorTCPServer, as the server is null.");
+    }
     else
+    {
       server.context = context;
+    }
 
     // org.droidmate.monitor_generator.MonitorSrcTemplate:API_19_UNCOMMENT_LINES
     // Instrumentation.processClass(Monitor.class);

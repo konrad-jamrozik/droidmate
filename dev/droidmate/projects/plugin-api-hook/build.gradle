@@ -6,6 +6,8 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
+import org.droidmate.buildsrc.BuildKt
+
 /**
  *  This project contains sources to be edited by anyone who wants to provide custom API call hooking logic.
  *  For more documentation, please see org.droidmate.plugin_hook.HookPluginTemplate
@@ -21,6 +23,7 @@ compileJava.configure { JavaCompile jc ->
 
 dependencies {
   compile project(":projects:lib-common")
+  compileOnly files(BuildKt.android_jar_api19.toString())
 }
 
 task makeHookPluginFromTemplateIfNotPresent {

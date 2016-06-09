@@ -17,7 +17,6 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../DummyAndroidApp">
-      <sourceFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/gen" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/build" />
     </content>
