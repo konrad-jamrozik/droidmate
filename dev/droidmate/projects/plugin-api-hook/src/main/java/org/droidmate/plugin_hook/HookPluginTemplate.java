@@ -37,6 +37,7 @@ public class HookPluginTemplate implements IHookPlugin
     {
       // This file will be deleted at the end of DroidMate run unless org.droidmate.configuration.Configuration.uninstallApk 
       // is set to false.
+      // Pulling this file will be tricky. See: http://stackoverflow.com/q/18471780/986533
       hookOutputFile = new File(context.getFilesDir(), "hook_file.txt");
       
       System.out.println("Created hook plugin output file: "+ hookOutputFile.getAbsolutePath());
