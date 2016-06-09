@@ -182,6 +182,13 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         
         out << ind4 + "public static $returnClass $redirMethodName($thisParam$formalParams)" + nl
         out << ind4 + "{" + nl
+        
+        if (objectClass == "android.util.Log" && methodName == "i" && paramClasses.size() == 2)
+        {
+          out << ind4 + ind4 + "if (p0.startsWith(\"${MonitorConstants.tag_prefix}\"))"
+          out << ind4 + ind4 + "  return 0;"
+        }
+        
         out << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
         out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
         out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl

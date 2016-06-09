@@ -380,5 +380,7 @@ Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
 Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
 
 # APIs added on 9 Jun 2016 to enable sensitive dataflow leaks. Obtained from Vitalii. Taken from "apis_art.txt" that should be located in the same dir as this file.
+# Note that as of 9 Jun 2016 the methods from Vitalii are missing the " static" suffix.
 !API19 Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V
-!API19 Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+# If this method call is commented out, asserts for api23 in method org.droidmate.frontend.DroidmateFrontendTest#exploreOnRealDevice will have to be changed, by removing "i".
+!API19 Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I static

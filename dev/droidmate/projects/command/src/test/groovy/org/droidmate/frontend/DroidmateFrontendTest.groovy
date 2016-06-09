@@ -300,11 +300,11 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
       def terminateAppApiLogs = apiLogs[6]
 
       assert resetAppApiLogs*.methodName == ["onResume"]
-      assert clickApiLogs*.methodName == ["openConnection"]
-      assert openPermissionDialogApiLogs.empty
+      assert clickApiLogs*.methodName == ["i", "openConnection", "i"]
+      assert openPermissionDialogApiLogs.methodName == ["i", "i"]
       assert onResumeApiLogs*.methodName == ["onResume"]
-      assert cameraApiLogs*.methodName == ["open"]
-      assert launchActivity2Logs*.methodName == ["startActivityForResult", "onResume"]
+      assert cameraApiLogs*.methodName == ["i", "open"]
+      assert launchActivity2Logs*.methodName == ["i", "startActivityForResult", "onResume"]
       assert terminateAppApiLogs.empty
     }
     else throw new UnexpectedIfElseFallthroughError()

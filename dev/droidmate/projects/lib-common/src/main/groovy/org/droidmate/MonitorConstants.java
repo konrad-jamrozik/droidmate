@@ -17,7 +17,7 @@ public class MonitorConstants
   // WISH known limitation: if running droidmate with multiple devices, each will have the same set of server ports.
   // Suggested fix: make monitor.java read the port number from a .txt file; deploy different .txt file to each device.
   public static final  List<Integer> serverPorts      = Arrays.asList(59701,59702,59703,59704);
-  private static final String        tag_prefix       = "Monitor";
+  public static final  String        tag_prefix       = "Monitor";
   public static final  String        tag_api          = tag_prefix + "_API_method_call";
   public static final  String        tag_srv          = tag_prefix + "_server";
   public static final  String        tag_init         = tag_prefix + "_init";

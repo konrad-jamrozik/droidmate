@@ -8,12 +8,16 @@
 // www.droidmate.org
 /**
  *  This project contains sources to be edited by anyone who wants to provide custom API call hooking logic.
- *  For more documentation, please see the class doc of org.droidmate.plugin_hook.HookPluginTemplate
+ *  For more documentation, please see org.droidmate.plugin_hook.HookPluginTemplate
  */
 
 apply plugin: 'java'
 sourceCompatibility = JavaVersion.VERSION_1_5
 targetCompatibility = JavaVersion.VERSION_1_5
+compileJava.configure { JavaCompile jc ->
+  // See explanation of this in build.gradle of 'monitor-template' project.
+  jc.options.compilerArgs += "-Xlint:-options"
+}
 
 dependencies {
   compile project(":projects:lib-common")
