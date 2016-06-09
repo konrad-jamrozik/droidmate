@@ -120,7 +120,7 @@ def prepareAntBuild = { int apiLevel, File apiLibsDir, File monitor ->
 
 File monitor_apk_api19 = new File(buildDir, "monitor_api19.apk")
 File monitor_apk_api23 = new File(buildDir, "monitor_api23.apk")
-task antBuildMonitorApk_api19(dependsOn: ["generateMonitor_api19", libCommonJarTask]) {Task task ->
+task antBuildMonitorApk_api19(dependsOn: ["generateMonitor_api19", libCommonJarTask, pluginApiHookJarTask]) {Task task ->
   task.group = "build"
   
   task.inputs.files libCommonJarTask
@@ -134,7 +134,7 @@ task antBuildMonitorApk_api19(dependsOn: ["generateMonitor_api19", libCommonJarT
   task.doLast { copy { it.from(monitorApkOutputByAnt).into(monitor_apk_api19.parent).rename { monitor_apk_api19.name }}}
 }
 
-task antBuildMonitorApk_api23(dependsOn: ["generateMonitor_api23", libCommonJarTask]) {Task task ->
+task antBuildMonitorApk_api23(dependsOn: ["generateMonitor_api23", libCommonJarTask, pluginApiHookJarTask]) {Task task ->
   task.group = "build"
   
   task.inputs.files libCommonJarTask

@@ -163,13 +163,15 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         // Items for call to Instrumentation method returning value.
 
         String returnStatement
+        boolean returnsVoid = returnClass == "void"
         if (androidApi == AndroidAPI.API_19)
         {
-          returnStatement = returnClass != "void" ? "return (${degenerify(returnClass)}) " : ""
+          returnStatement = "return (${degenerify(returnClass)}) "
         } else if (androidApi == AndroidAPI.API_23)
         {
-          returnStatement = returnClass != "void" ? "return " : ""
-        } else throw new IllegalStateException()
+          returnStatement = "return "
+        } else
+          throw new IllegalStateException()
         
         String thisVarOrClass = isStatic ? "${objectClassWithDots}.class" : "_this"
         String commaSeparatedParamVars = buildCommaSeparatedParamVarNames(ams, paramVarNames)
@@ -195,17 +197,39 @@ class RedirectionsGenerator implements IRedirectionsGenerator
           String instrCallStatic = isStatic ? "Static" : ""
           String instrCallType = returnClass in instrCallMethodTypeMap.keySet() ? instrCallMethodTypeMap[returnClass] : "Object"
           out << ind4 + ind4 + "class \$ {} " + nl
-          out << ind4 + ind4 + "${returnStatement}Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
+          if (returnsVoid)
+          {
+            out << ind4 + ind4 + "Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
+            out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(null);" + nl
+          } else
+          {
+            out << ind4 + ind4 + "${returnStatement}Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
+            // hooking-after for Android 4 IS NOT CURRENTLY SUPPORTED. 
+            // It would require to have multiple hookAfterApiCalls, returning different type for each of the types org.droidmate.monitor_generator.RedirectionsGenerator.instrCallMethodTypeMap
+            // See related methods of king Instrumentation.calls* from the apk fixtures.
+//            out << ind4 + ind4 + "Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
+//            out << ind4 + ind4 + "${returnStatement}hookPlugin.hookAfterApiCall(returnVal);" + nl
+          }
         }
         else if (androidApi == AndroidAPI.API_23)
         {
+          String invocation
           if (!isStatic)
-            out << ind4 + ind4 + "${returnStatement}OriginalMethod.by(new \$() {}).invoke(${thisVarOrClass}${commaSeparatedParamVars});" + nl
+            invocation = "OriginalMethod.by(new \$() {}).invoke(${thisVarOrClass}${commaSeparatedParamVars})"
           else
           {
-            // Remove , for static method
             commaSeparatedParamVars = commaSeparatedParamVars.substring(2);
-            out << ind4 + ind4 + "${returnStatement}OriginalMethod.by(new \$() {}).invokeStatic(${commaSeparatedParamVars});" + nl
+            invocation = "OriginalMethod.by(new \$() {}).invokeStatic(${commaSeparatedParamVars})"
+          }
+          if (returnsVoid)
+          {
+            out << ind4 + ind4 + "$invocation;" + nl
+            out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(null);" + nl
+          }
+          else
+          {
+            out << ind4 + ind4 + "Object returnVal = $invocation;" + nl
+            out << ind4 + ind4 + "return (${degenerify(returnClass)}) "+"hookPlugin.hookAfterApiCall("+"(${degenerify(returnClass)})"+"returnVal);" + nl
           }
         } else throw new IllegalStateException()
         out << ind4 + "}" + nl
@@ -261,11 +285,18 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
   private static String degenerify(String returnClass)
   {
+    String degenerified
     // Generic types contain space in their name, e.g. "<T> T".
     if (returnClass.contains(" "))
-      return returnClass.dropWhile {it != " "}.drop(1) // Will return only "T" in the above-given example.
+      degenerified = returnClass.dropWhile {it != " "}.drop(1) // Will return only "T" in the above-given example.
     else
-      return returnClass // No generics, return type as-is.
+      degenerified = returnClass // No generics, return type as-is.
+    
+    if (degenerified == "boolean")
+      degenerified = "Boolean"
+    if (degenerified == "int")
+      degenerified = "Integer"
+    return degenerified
   }
   /*
     The generated source will be compiled with java 1.5 which requires this mapping.

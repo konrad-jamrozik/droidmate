@@ -18,6 +18,11 @@ import org.jetbrains.annotations.NotNull;
 // !!!!! !!!!! !!!!!
 public class HookPluginTemplate implements IHookPlugin
 {
+  // KJA current limitations:
+  // No constructors
+  // After-hook only on Android 6
+  // Only supported primitive return types: Int, Boolean
+  
   // KJA add to apk fixtures sendTextMessage and debug logs
   // KJA add support for Android. Might require upgrading to newest IJ to handle "provided" dependencies. 
   // https://developer.android.com/training/basics/data-storage/files.html
