@@ -45,6 +45,6 @@ task makeHookPluginFromTemplateIfNotPresent {
 
 }
 
-assemble.dependsOn tasks.makeHookPluginFromTemplateIfNotPresent
+compileJava.dependsOn tasks.makeHookPluginFromTemplateIfNotPresent
 
 apply from: project(":projects").file("maven.gradle")

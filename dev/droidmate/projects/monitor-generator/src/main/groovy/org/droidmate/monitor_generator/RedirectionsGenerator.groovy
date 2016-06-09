@@ -54,7 +54,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
   List<String> generateCtorCallsAndTargets(List<ApiMethodSignature> signatures)
   {
     StringBuilder calls = new StringBuilder()
-    StringBuilder targets = new StringBuilder()
+    StringBuilder out = new StringBuilder()
     signatures.findAll {it.isConstructor()}.eachWithIndex {ApiMethodSignature ams, int id ->
 
       ams.with {
@@ -99,27 +99,30 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
         if (androidApi == AndroidAPI.API_23)
         {
-          targets << ind4 + "@Hook(\"$objectClass->$methodName\") " + nl
+          out << ind4 + "@Hook(\"$objectClass->$methodName\") " + nl
         }
-        targets << ind4 + "public static void $redirMethodNamePrefix${ctorRedirNames[id]}($objectClassWithDots _this$formalParams)" + nl
-        targets << ind4 + "{" + nl
-        targets << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
-        targets << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
-        targets << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
-        targets << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
+        out << ind4 + "public static void $redirMethodNamePrefix${ctorRedirNames[id]}($objectClassWithDots _this$formalParams)" + nl
+        out << ind4 + "{" + nl
+        out << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
+        out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
+        out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
+        out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
+        out << ind4 + ind4 + "hookPlugin.hookBeforeApiCall(\"$apiLogcatMessagePayload\");" + nl
         if (androidApi == AndroidAPI.API_19)
         {
-          targets << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
+          out << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
+          out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(null);" + nl
         } else if (androidApi == AndroidAPI.API_23)
         {
-          targets << ind4 + ind4 + "OriginalMethod.by(new \$() {}).invoke(_this$commaSeparatedParamVars);" + nl
+          out << ind4 + ind4 + "OriginalMethod.by(new \$() {}).invoke(_this$commaSeparatedParamVars);" + nl
+          out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(null);" + nl
         } else throw new IllegalStateException()
-        targets << ind4 + "}" + nl
-        targets << ind4 + nl
+        out << ind4 + "}" + nl
+        out << ind4 + nl
       }
 
     }
-    return [calls.toString(), targets.toString()]
+    return [calls.toString(), out.toString()]
 
   }
 
@@ -160,18 +163,11 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         List<String> paramValues = paramVarNames.collect {"convert(${it})"}
         String apiLogcatMessagePayload = buildApiLogcatMessagePayload(it, paramValues, threadIdVarName, stackTraceVarName)
 
-        // Items for call to Instrumentation method returning value.
-
-        String returnStatement
+        // Items for handling return values from called API method.
+        
+        String castType = "(${degenerify(returnClass)})"
+        String returnStatement = "return $castType "
         boolean returnsVoid = returnClass == "void"
-        if (androidApi == AndroidAPI.API_19)
-        {
-          returnStatement = "return (${degenerify(returnClass)}) "
-        } else if (androidApi == AndroidAPI.API_23)
-        {
-          returnStatement = "return "
-        } else
-          throw new IllegalStateException()
         
         String thisVarOrClass = isStatic ? "${objectClassWithDots}.class" : "_this"
         String commaSeparatedParamVars = buildCommaSeparatedParamVarNames(ams, paramVarNames)
@@ -203,12 +199,8 @@ class RedirectionsGenerator implements IRedirectionsGenerator
             out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(null);" + nl
           } else
           {
-            out << ind4 + ind4 + "${returnStatement}Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
-            // hooking-after for Android 4 IS NOT CURRENTLY SUPPORTED. 
-            // It would require to have multiple hookAfterApiCalls, returning different type for each of the types org.droidmate.monitor_generator.RedirectionsGenerator.instrCallMethodTypeMap
-            // See related methods of king Instrumentation.calls* from the apk fixtures.
-//            out << ind4 + ind4 + "Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
-//            out << ind4 + ind4 + "${returnStatement}hookPlugin.hookAfterApiCall(returnVal);" + nl
+            out << ind4 + ind4 + "Object returnVal = Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
+            out << ind4 + ind4 + "${returnStatement}hookPlugin.hookAfterApiCall(${castType}returnVal);" + nl
           }
         }
         else if (androidApi == AndroidAPI.API_23)
@@ -229,7 +221,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
           else
           {
             out << ind4 + ind4 + "Object returnVal = $invocation;" + nl
-            out << ind4 + ind4 + "return (${degenerify(returnClass)}) "+"hookPlugin.hookAfterApiCall("+"(${degenerify(returnClass)})"+"returnVal);" + nl
+            out << ind4 + ind4 + "${returnStatement}hookPlugin.hookAfterApiCall(${castType}returnVal);" + nl
           }
         } else throw new IllegalStateException()
         out << ind4 + "}" + nl
@@ -292,10 +284,23 @@ class RedirectionsGenerator implements IRedirectionsGenerator
     else
       degenerified = returnClass // No generics, return type as-is.
     
+    // This conversion is necessary to avoid error of kind "error: incompatible types: Object cannot be converted to boolean"
     if (degenerified == "boolean")
       degenerified = "Boolean"
     if (degenerified == "int")
       degenerified = "Integer"
+    if (degenerified == "float")
+      degenerified = "Float"
+    if (degenerified == "double")
+      degenerified = "Double"
+    if (degenerified == "long")
+      degenerified = "Long"
+    if (degenerified == "byte")
+      degenerified = "Byte"
+    if (degenerified == "short")
+      degenerified = "Short"
+    if (degenerified == "char")
+      degenerified = "Character"    
     return degenerified
   }
   /*
