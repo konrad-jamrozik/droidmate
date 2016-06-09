@@ -9,11 +9,16 @@
 
 package org.droidmate.monitor_generator
 
-import com.sun.org.apache.xpath.internal.operations.And
+import groovy.util.logging.Slf4j
 import org.droidmate.MonitorConstants
 import org.droidmate.apis.ApiMethodSignature
+import org.droidmate.common.BuildConstants
 import org.droidmate.common.logcat.Api
 import org.droidmate.common.logcat.ApiLogcatMessage
+import org.droidmate.plugin_hook.IHookPlugin
+
+import java.nio.file.Path
+import java.nio.file.Paths
 
 /**
  * Class that add the instrumentation code to {@link MonitorJavaTemplate}
@@ -30,6 +35,7 @@ import org.droidmate.common.logcat.ApiLogcatMessage
  *    (Not working, just for information) http://stackoverflow.com/questions/31653002/how-to-use-the-legacy-apache-http-client-on-android-marshmallow
  *
  */
+@Slf4j
 class RedirectionsGenerator implements IRedirectionsGenerator
 {
 
@@ -42,10 +48,66 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
   private static Map<Integer, String> ctorRedirNames = [:]
   private final  AndroidAPI           androidApi
+  
+  private IHookPlugin hookPlugin = null
 
   RedirectionsGenerator(AndroidAPI androidApi)
   {
     this.androidApi = androidApi
+    this.hookPlugin = loadHookPluginIfAvailableElseNull()
+  }
+
+  // Code based on: http://www.mkyong.com/java/how-to-load-classes-which-are-not-in-your-classpath/
+  IHookPlugin loadHookPluginIfAvailableElseNull()
+  {
+    Path classesDir = Paths.get(BuildConstants.monitor_generator_plugin_hook_classes_dir_path)
+    
+    if (!classesDir.isDirectory())
+    {
+      log.debug("Did not found directory holding classes of org.droidmate.plugin_hook.HookPlugin. " +
+        "Searched in: ${classesDir.toAbsolutePath().toString()}. Skipping the plugin.")
+      return null
+    }
+    assert classesDir.isDirectory()
+    
+    ClassLoader cl = new URLClassLoader([classesDir.toUri().toURL()] as URL[])
+    
+    Class cls
+    try
+    {
+      cls = cl.loadClass("org.droidmate.plugin_hook.HookPlugin")
+    } catch (ClassNotFoundException ignored)
+    {
+      log.debug("No definition of org.droidmate.plugin_hook.HookPlugin found. Skipping the plugin.")
+      return null
+    }
+    assert cls != null
+
+    log.info("Loaded org.droidmate.plugin_hook.HookPlugin from file: " 
+      + cls.getProtectionDomain().getCodeSource().getLocation().getFile());
+
+    Object instance
+    try
+    {
+      instance = cls.newInstance()
+    } catch (Exception e)
+    {
+      log.error("Failed to create new instance of org.droidmate.plugin_hook.HookPlugin. Skipping the plugin.", e)
+      return null
+    }
+    assert instance != null
+    IHookPlugin hookPlugin
+    try
+    {
+      hookPlugin = instance as IHookPlugin
+    } catch (Exception e)
+    {
+      log.error("Failed to cast instance of org.droidmate.plugin_hook.HookPlugin to org.droidmate.plugin_hook.IHookPlugin. Skipping the plugin.", e)
+      return null
+    }
+    
+    assert hookPlugin != null
+    return hookPlugin
   }
 
   @Override
@@ -184,6 +246,12 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
         out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
+        
+        if (hookPlugin != null)
+        {
+          out << ind4 + ind4 + "hookPlugin.before(\"$objectClass\");" + nl
+        }
+        
         if (androidApi == AndroidAPI.API_19)
         {
           String instrCallStatic = isStatic ? "Static" : ""

@@ -57,6 +57,7 @@ val monitor_generator_res_name_monitor_template = "monitorTemplate.txt"
 private val monitor_generator_output_dir = "temp"
 val monitor_generator_output_relative_path_api19 = monitor_generator_output_dir + "/generated_Monitor_api19.java"
 val monitor_generator_output_relative_path_api23 = monitor_generator_output_dir + "/generated_Monitor_api23.java"
+val monitor_generator_plugin_hook_classes_dir_path = "hook_plugin_classes_dir"
 
 val apk_inliner_param_input_default = Paths.get("input-apks")
 val apk_inliner_param_output_dir_default = Paths.get("output-apks")
@@ -85,7 +86,7 @@ val monitor_on_avd_apk_name = "monitor.apk"
  *
  * From compiled source code:
  *
- *   Paths.get(ClassLoader.getSystemResource(<this_var_reference>).toUri())
+ *   new Resource("<this_var_reference>").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
  */
 val apk_fixtures = "fixtures/apks"
 

@@ -42,7 +42,7 @@ public class MonitorGeneratorFrontendTest
     MonitorGeneratorFrontend.handleException = { Exception e -> throw e }
 
     // Act
-    MonitorGeneratorFrontend.main([] as String[])
+    MonitorGeneratorFrontend.main(["api23"] as String[])
 
     assert Files.isRegularFile(actualMonitorJava)
     String actualText = actualMonitorJava.text

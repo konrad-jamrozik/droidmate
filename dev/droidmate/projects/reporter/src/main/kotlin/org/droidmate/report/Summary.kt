@@ -17,7 +17,7 @@ import java.nio.file.Path
 class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
 
   private val summaryString: String by lazy {
-    // KJA next
+    // KJA2 next
     Resource("apk_exploration_summary_header.txt").extractedPath.text + "\n" + (data.first()?.apk?.packageName ?: "no apks")
   }
   override fun writeOut() {

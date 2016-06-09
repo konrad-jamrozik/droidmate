@@ -24,6 +24,7 @@ include(
   "projects:uiautomator2-daemon-proxy",
   "projects:monitor-template",
   "projects:monitor-generator",
+  "projects:plugin-api-hook-example",
   "projects:core",
   "projects:reporter",
   "projects:command",

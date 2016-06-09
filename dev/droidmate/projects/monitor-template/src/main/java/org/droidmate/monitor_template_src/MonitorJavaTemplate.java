@@ -200,7 +200,7 @@ public class MonitorJavaTemplate
 
         } else if (MonitorConstants.srvCmd_close.equals(input))
         {
-          // Do nothing here. The command will is handled in org.droidmate.monitor_template_src.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
+          // Do nothing here. The command is handled in org.droidmate.monitor_template_src.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
           return new ArrayList<ArrayList<String>>();
 
         } else

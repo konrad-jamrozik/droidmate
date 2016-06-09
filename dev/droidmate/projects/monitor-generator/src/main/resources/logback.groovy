@@ -38,6 +38,5 @@ appender("stderr_appender", ConsoleAppender) {
 root(TRACE, [
   "stdout_appender",
   "stderr_appender"
-
 ])
 

@@ -23,8 +23,13 @@ sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSet
 dependencies {
 
   compile project(":projects:lib-common")
+  compile project(":projects:lib-kotlin")
 
   compile 'org.codehaus.groovy:groovy-all:2.4.6'
+
+  compile 'ch.qos.logback:logback-classic:1.0.13'
+  compile 'ch.qos.logback:logback-core:1.0.13'
+  compile 'org.slf4j:slf4j-api:1.7.6'
 
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
@@ -101,6 +106,9 @@ Jar libCommonJarTask = findProject(":projects:lib-common").jar as Jar
 def prepareAntBuild = { int apiLevel, File apiLibsDir, File monitor -> 
   projectPropertiesFile.text = "target=android-" + apiLevel
   delete libsDir
+  // KJA observe testDevice fails. Add import of hook to MonitorJavaTemplate. Observe the test fails again, but in a different way.
+  // KJA pull to this dir the classes from plugin-api-hook-example. Maybe building jar with gradle first will be necessary. Then this jar can come both to this libs dir and can be referenced directly from this libs dir into redirections generator. But be wary of project dependency loops!
+  // KJA note the hook has to be compatible with Java 5.
   copy { it.from apiLibsDir into libsDir }
   copy { it.from libCommonJarTask.archivePath into libsDir }
   copy { it.from monitor into monitorJava.parent rename monitor.name, monitorJava.name }

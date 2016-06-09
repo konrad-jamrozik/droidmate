@@ -15,7 +15,6 @@ import java.nio.file.Paths
 
 class functionsKtTest {
 
-  // KJA to fix this, downgrade gnuplot to 4.4.3 (the one on apt, used by travis CI) and fix.
   @Test
   fun plots() {
     
