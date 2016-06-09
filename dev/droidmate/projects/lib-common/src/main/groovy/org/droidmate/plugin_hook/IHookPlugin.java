@@ -6,8 +6,9 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.plugin_hook
+package org.droidmate.plugin_hook;
 
-interface IHookPlugin {
-  fun before(objectClass: String)
+public interface IHookPlugin
+{
+  void before(String objectClass);
 }

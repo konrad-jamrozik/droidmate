@@ -40,7 +40,6 @@ class BuildConstants
   static String monitor_generator_res_name_monitor_template     = safeGetProperty(properties, "monitor_generator_res_name_monitor_template")
   static String monitor_generator_output_relative_path_api19    = safeGetProperty(properties, "monitor_generator_output_relative_path_api19")
   static String monitor_generator_output_relative_path_api23    = safeGetProperty(properties, "monitor_generator_output_relative_path_api23")
-  static String monitor_generator_plugin_hook_classes_dir_path  = safeGetProperty(properties, "monitor_generator_plugin_hook_classes_dir_path")
   static String monitor_api19_apk_name                          = safeGetProperty(properties, "monitor_api19_apk_name")
   static String monitor_api23_apk_name                          = safeGetProperty(properties, "monitor_api23_apk_name")
   static String monitor_on_avd_apk_name                         = safeGetProperty(properties, "monitor_on_avd_apk_name")

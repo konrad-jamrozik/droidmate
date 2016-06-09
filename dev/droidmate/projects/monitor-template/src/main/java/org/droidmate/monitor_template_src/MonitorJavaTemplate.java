@@ -40,6 +40,11 @@ import java.util.*;
 // import de.larma.arthook.*;
 // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
+// org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+// import org.droidmate.plugin_hook.IHookPlugin;
+// import org.droidmate.plugin_hook.HookPlugin;
+// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+
 /**<p>
  * This class will be used by {@code MonitorGenerator} to create {@code Monitor.java} deployed on the device. This class will be
  * first copied by appropriate gradle task of monitor-generator project to its resources dir. Then it will be handled to
@@ -639,6 +644,12 @@ public class MonitorJavaTemplate
 
   //endregion
 
+  //region Hook code
+  // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+  // public static IHookPlugin hookPlugin = new HookPlugin();
+  // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+  //endregion
+  
   //region Generated code
 
   private static void redirectConstructors()

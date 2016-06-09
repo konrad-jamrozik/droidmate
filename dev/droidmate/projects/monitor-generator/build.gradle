@@ -69,7 +69,8 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
   ["main", "classpath", "standardOutput"].each {je."$it" = runTask."$it"}
 
   je.args = args
-  je.standardOutput = new ByteArrayOutputStream() // Mute the task stdout
+  // Output is not muted as we want to see in Gradle build log output of org.droidmate.monitor_generator.MonitorGeneratorFrontend.loadHookPluginIfAvailableElseNull
+  //je.standardOutput = new ByteArrayOutputStream() // Mute the task stdout
   je.outputs.file generatedMonitor
 
   je.doLast { assert generatedMonitor.file }
@@ -101,7 +102,11 @@ def antBuildMonitorApk = { Task task ->
   }
 }
 
+
 File projectPropertiesFile = new File(monitorApkScaffoldingDir, "project.properties")
+evaluationDependsOn(":projects:plugin-api-hook")
+Jar pluginApiHookJarTask = findProject(":projects:plugin-api-hook").jar as Jar
+evaluationDependsOn(":projects:lib-common")
 Jar libCommonJarTask = findProject(":projects:lib-common").jar as Jar
 def prepareAntBuild = { int apiLevel, File apiLibsDir, File monitor -> 
   projectPropertiesFile.text = "target=android-" + apiLevel
@@ -110,8 +115,10 @@ def prepareAntBuild = { int apiLevel, File apiLibsDir, File monitor ->
   // KJA pull to this dir the classes from plugin-api-hook-example. Maybe building jar with gradle first will be necessary. Then this jar can come both to this libs dir and can be referenced directly from this libs dir into redirections generator. But be wary of project dependency loops!
   // KJA note the hook has to be compatible with Java 5.
   copy { it.from apiLibsDir into libsDir }
+  copy { it.from pluginApiHookJarTask.archivePath into libsDir }
   copy { it.from libCommonJarTask.archivePath into libsDir }
   copy { it.from monitor into monitorJava.parent rename monitor.name, monitorJava.name }
+  
 }
 
 File monitor_apk_api19 = new File(buildDir, "monitor_api19.apk")

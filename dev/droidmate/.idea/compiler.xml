@@ -53,6 +53,8 @@
       <module name="monitor_generator_test" target="1.8" />
       <module name="plugin-api-hook-example_main" target="1.8" />
       <module name="plugin-api-hook-example_test" target="1.8" />
+      <module name="plugin-api-hook_main" target="1.5" />
+      <module name="plugin-api-hook_test" target="1.5" />
       <module name="reporter_main" target="1.8" />
       <module name="reporter_test" target="1.8" />
       <module name="robot_main" target="1.8" />

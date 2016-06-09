@@ -1,0 +1,9 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!HookPluginTemplate.java
+
+# ...even if they are in subdirectories
+!*/

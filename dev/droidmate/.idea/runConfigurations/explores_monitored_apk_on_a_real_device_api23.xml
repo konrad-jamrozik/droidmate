@@ -1,0 +1,31 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="explores monitored apk on a real device api23" type="JUnit" factoryName="JUnit" singleton="true">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+      <pattern>
+        <option name="PATTERN" value="org.droidmate.monitor_template_src.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <module name="command_test" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="PACKAGE_NAME" value="org.droidmate.frontend" />
+    <option name="MAIN_CLASS_NAME" value="org.droidmate.frontend.DroidmateFrontendTest" />
+    <option name="METHOD_NAME" value="Explores monitored apk on a real device api23" />
+    <option name="TEST_OBJECT" value="method" />
+    <option name="VM_PARAMETERS" value="-ea -DlogsDir=&quot;temp_dir_for_tests/logs&quot;" />
+    <option name="PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+    <option name="ENV_VARIABLES" />
+    <option name="PASS_PARENT_ENVS" value="true" />
+    <option name="TEST_SEARCH_SCOPE">
+      <value defaultName="wholeProject" />
+    </option>
+    <envs />
+    <patterns>
+      <pattern testClass="org.droidmate.DroidmateFrontendTest,Explores monitored apk on a real device" />
+      <pattern testClass="org.droidmate.DroidmateFrontendTest,Explores monitored apk on a real device using deprecated exploration logic" />
+    </patterns>
+    <method />
+  </configuration>
+</component>

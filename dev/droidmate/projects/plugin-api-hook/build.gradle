@@ -1,0 +1,50 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+/**
+ *  This project contains sources to be edited by anyone who wants to provide custom API call hooking logic.
+ *  For more documentation, please see the class doc of org.droidmate.plugin_hook.HookPluginTemplate
+ */
+
+apply plugin: 'java'
+sourceCompatibility = JavaVersion.VERSION_1_5
+targetCompatibility = JavaVersion.VERSION_1_5
+
+dependencies {
+  compile project(":projects:lib-common")
+}
+
+task makeHookPluginFromTemplateIfNotPresent {
+
+  File hookPluginTemplateSource = sourceSets.main.java.find {it.name == "HookPluginTemplate.java"} as File
+  File hookPluginSource = sourceSets.main.java.find {it.name == "HookPlugin.java"} as File
+
+  assert hookPluginTemplateSource.file
+
+  doFirst {
+    if (hookPluginSource == null)
+      hookPluginSource = new File(hookPluginTemplateSource.parent, "HookPlugin.java")
+    if (!hookPluginSource.file)
+    {
+      println "No HookPlugin.java detected. Generating it from HookPluginTemplate."
+      PrintWriter wr = new FileWriter(hookPluginSource).newPrintWriter()
+      hookPluginTemplateSource.readLines()
+        .each {String line ->
+        if (!line.contains("// !!!!!"))
+          wr.println(line.replace("Template", ""))
+      }
+      wr.close()
+    }
+    assert hookPluginSource.file
+  }
+
+}
+
+assemble.dependsOn tasks.makeHookPluginFromTemplateIfNotPresent
+
+apply from: project(":projects").file("maven.gradle")

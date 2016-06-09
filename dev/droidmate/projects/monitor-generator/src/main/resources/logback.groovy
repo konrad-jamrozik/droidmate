@@ -17,22 +17,23 @@ import static ch.qos.logback.classic.Level.TRACE
 import static ch.qos.logback.core.spi.FilterReply.DENY
 import static ch.qos.logback.core.spi.FilterReply.NEUTRAL
 
-final String layoutPatternHaving_levLogEx = "%-5level %-40logger{40} - %msg%rEx%n"
+final String layoutPattern_bare = "%msg%rEx%n"
+final String layoutPattern_levLogEx = "%-5level %-40logger{40} - %msg%rEx%n"
 
 // =======================================================
 // Console appenders
 // =======================================================
 
 appender("stdout_appender", ConsoleAppender) {
- target = "System.out"
- filter(LevelFilter) {level = ERROR; onMatch = DENY; onMismatch = NEUTRAL}
- encoder(PatternLayoutEncoder) {pattern = layoutPatternHaving_levLogEx}
+  target = "System.out"
+  filter(LevelFilter) {level = ERROR; onMatch = DENY; onMismatch = NEUTRAL}
+  encoder(PatternLayoutEncoder) {pattern = layoutPattern_bare}
 }
 
 appender("stderr_appender", ConsoleAppender) {
- target = "System.err"
- filter(ThresholdFilter) {level = ERROR}
- encoder(PatternLayoutEncoder) {pattern = layoutPatternHaving_levLogEx}
+  target = "System.err"
+  filter(ThresholdFilter) {level = ERROR}
+  encoder(PatternLayoutEncoder) {pattern = layoutPattern_bare}
 }
 
 root(TRACE, [
