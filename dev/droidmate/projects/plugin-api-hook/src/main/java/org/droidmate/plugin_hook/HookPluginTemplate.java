@@ -10,7 +10,6 @@
 package org.droidmate.plugin_hook;
 
 import android.content.Context;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -31,13 +30,20 @@ public class HookPluginTemplate implements IHookPlugin
 {
   private static File hookOutputFile;
   
-  public void hookBeforeApiCall(@NotNull Context context, @NotNull String apiLogcatMessagePayload)
+  public void hookBeforeApiCall(Context context, String apiLogcatMessagePayload)
   {
     if (hookOutputFile == null)
     {
+      // --- DEBUGGING NOTES / WORK IN PROGRESS ---
       // This file will be deleted at the end of DroidMate run unless org.droidmate.configuration.Configuration.uninstallApk 
       // is set to false.
       // Pulling this file will be tricky. See: http://stackoverflow.com/q/18471780/986533
+      // Log observed:
+      // Created hook plugin output file: /data/user/0/org.droidmate.fixtures.apks.monitored/files/hook_file.txt
+      // But when I do:
+      //   adb shell
+      //   run-as <package_name>
+      // I end up in /data/data which has /files dir, but it doesn't have hook_file.txt
       hookOutputFile = new File(context.getFilesDir(), "hook_file.txt");
       
       System.out.println("Created hook plugin output file: "+ hookOutputFile.getAbsolutePath());
@@ -56,7 +62,7 @@ public class HookPluginTemplate implements IHookPlugin
     }
   }
   
-  public Object hookAfterApiCall(@NotNull Context context, @NotNull String apiLogcatMessagePayload, Object returnValue)
+  public Object hookAfterApiCall(Context context, String apiLogcatMessagePayload, Object returnValue)
   {
     System.out.println("hookAfterApiCall/returnValue: "+ returnValue);
     if (apiLogcatMessagePayload.contains("mthd: getDeviceId"))

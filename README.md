@@ -34,7 +34,8 @@ Furthermore:
 - `repo/DEVELOPING.md` explains how to: 
   - setup an IDE for DroidMate development;
   - navigate DroidMate sources and technical documentation;
-  - edit the list of monitored APIs.
+  - edit the list of monitored APIs;
+  - provide your own hooks to the monitored APIs.
 - `repo/TROUBLESHOOTING.md` explains how to work around known bugs & problems.
 
 # How DroidMate works #

@@ -22,7 +22,6 @@ compileJava.configure { JavaCompile jc ->
 }
 
 dependencies {
-  compile project(":projects:lib-common")
   compileOnly files(BuildKt.android_jar_api19.toString())
 }
 
