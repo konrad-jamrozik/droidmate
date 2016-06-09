@@ -111,9 +111,6 @@ Jar libCommonJarTask = findProject(":projects:lib-common").jar as Jar
 def prepareAntBuild = { int apiLevel, File apiLibsDir, File monitor -> 
   projectPropertiesFile.text = "target=android-" + apiLevel
   delete libsDir
-  // KJA observe testDevice fails. Add import of hook to MonitorJavaTemplate. Observe the test fails again, but in a different way.
-  // KJA pull to this dir the classes from plugin-api-hook-example. Maybe building jar with gradle first will be necessary. Then this jar can come both to this libs dir and can be referenced directly from this libs dir into redirections generator. But be wary of project dependency loops!
-  // KJA note the hook has to be compatible with Java 5.
   copy { it.from apiLibsDir into libsDir }
   copy { it.from pluginApiHookJarTask.archivePath into libsDir }
   copy { it.from libCommonJarTask.archivePath into libsDir }
@@ -127,6 +124,7 @@ task antBuildMonitorApk_api19(dependsOn: ["generateMonitor_api19", libCommonJarT
   task.group = "build"
   
   task.inputs.files libCommonJarTask
+  task.inputs.files pluginApiHookJarTask
   task.inputs.files tasks.generateMonitor_api19
   task.inputs.files fileTree(dir: libs_api19_dir, include: '**')
   task.outputs.file monitor_apk_api19
@@ -140,6 +138,7 @@ task antBuildMonitorApk_api23(dependsOn: ["generateMonitor_api23", libCommonJarT
   task.group = "build"
   
   task.inputs.files libCommonJarTask
+  task.inputs.files pluginApiHookJarTask
   task.inputs.files tasks."generateMonitor_api23"
   task.inputs.files fileTree(dir: libs_api23_dir, include: '**')
   task.outputs.file monitor_apk_api23

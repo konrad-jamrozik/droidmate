@@ -90,7 +90,8 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         // Items for logcat message payload.
         String stackTraceVarName = "stackTrace"
         String threadIdVarName = "threadId"
-        String apiLogcatMessagePayload = buildApiLogcatMessagePayload(it, paramVarNames, threadIdVarName, stackTraceVarName)
+        List<String> paramValues = paramVarNames.collect {"convert(${it})"}
+        String apiLogcatMessagePayload = buildApiLogcatMessagePayload(it, paramValues, threadIdVarName, stackTraceVarName)
 
         // Items for call to Instrumentation method returning value.
 
@@ -156,7 +157,8 @@ class RedirectionsGenerator implements IRedirectionsGenerator
 
         String stackTraceVarName = "stackTrace"
         String threadIdVarName = "threadId"
-        String apiLogcatMessagePayload = buildApiLogcatMessagePayload(it, paramVarNames, threadIdVarName, stackTraceVarName)
+        List<String> paramValues = paramVarNames.collect {"convert(${it})"}
+        String apiLogcatMessagePayload = buildApiLogcatMessagePayload(it, paramValues, threadIdVarName, stackTraceVarName)
 
         // Items for call to Instrumentation method returning value.
 
@@ -186,8 +188,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
         out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
-        
-        out << ind4 + ind4 + "hookPlugin.before(\"$objectClass\");" + nl
+        out << ind4 + ind4 + "hookPlugin.hookBeforeApiCall(\"$apiLogcatMessagePayload\");" + nl
         
         if (androidApi == AndroidAPI.API_19)
         {
@@ -244,9 +245,8 @@ class RedirectionsGenerator implements IRedirectionsGenerator
   }
 
   private
-  static String buildApiLogcatMessagePayload(ApiMethodSignature ams, List<String> paramVarNames, String threadIdVarName, String stackTraceVarName)
+  static String buildApiLogcatMessagePayload(ApiMethodSignature ams, List<String> paramValues, String threadIdVarName, String stackTraceVarName)
   {
-    List<String> paramValues = paramVarNames.collect {"convert(${it})"}
 
     return ApiLogcatMessage.toLogcatMessagePayload(
       new Api(ams.objectClass, ams.methodName, ams.returnClass, ams.paramClasses, paramValues, threadIdVarName, stackTraceVarName),

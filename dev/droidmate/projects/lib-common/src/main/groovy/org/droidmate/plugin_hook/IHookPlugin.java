@@ -10,5 +10,7 @@ package org.droidmate.plugin_hook;
 
 public interface IHookPlugin
 {
-  void before(String objectClass);
+  void hookBeforeApiCall(String apiLogcatMessagePayload);
+  
+  Object hookAfterApiCall(Object returnValue); 
 }

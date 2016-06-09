@@ -12,7 +12,6 @@ package org.droidmate.monitor_generator
 import groovy.util.logging.Slf4j
 import org.droidmate.apis.ApiMapping
 import org.droidmate.apis.ApiMethodSignature
-import org.droidmate.plugin_hook.IHookPlugin
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -117,61 +116,4 @@ public class MonitorGeneratorFrontend
     log.error("Exception was thrown and propagated to the frontend.", e)
     System.exit(1)
   }
-
-  // KJA to remove
-  // Code based on: 
-  // http://www.mkyong.com/java/how-to-load-classes-which-are-not-in-your-classpath/
-  // http://stackoverflow.com/a/6219855/986533
-  private static IHookPlugin loadHookPluginIfAvailableElseNull()
-  {
-    Path classesDir = null // new Resource(BuildConstants.monitor_generator_plugin_hook_classes_dir_path).path
-
-    if (!classesDir.isDirectory())
-    {
-      log.debug("Did not found directory holding classes of org.droidmate.plugin_hook.HookPlugin. " +
-        "Searched in: ${classesDir.toAbsolutePath().toString()}. Skipping the plugin.")
-      return null
-    }
-    assert classesDir.isDirectory()
-
-    ClassLoader cl = new URLClassLoader([classesDir.toUri().toURL()] as URL[])
-
-    Class cls
-    try
-    {
-      cls = cl.loadClass("org.droidmate.plugin_hook.HookPlugin")
-    } catch (ClassNotFoundException ignored)
-    {
-      log.debug("No definition of org.droidmate.plugin_hook.HookPlugin found. Skipping the plugin.")
-      return null
-    }
-    assert cls != null
-
-    log.info("Loaded org.droidmate.plugin_hook.HookPlugin from file: "
-      + cls.getProtectionDomain().getCodeSource().getLocation().getFile());
-
-    Object instance
-    try
-    {
-      instance = cls.newInstance()
-    } catch (Exception e)
-    {
-      log.error("Failed to create new instance of org.droidmate.plugin_hook.HookPlugin. Skipping the plugin.", e)
-      return null
-    }
-    assert instance != null
-    IHookPlugin hookPlugin
-    try
-    {
-      hookPlugin = instance as IHookPlugin
-    } catch (Exception e)
-    {
-      log.error("Failed to cast instance of org.droidmate.plugin_hook.HookPlugin to org.droidmate.plugin_hook.IHookPlugin. Skipping the plugin.", e)
-      return null
-    }
-
-    assert hookPlugin != null
-    return hookPlugin
-  }
-
 }
