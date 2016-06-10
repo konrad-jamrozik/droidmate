@@ -132,6 +132,6 @@ tagged `Instrumentation`. If there were any failures, the messages will say so.
 
 ## Providing your own hooks to the monitored APIs
 
-After you do full rebuild, a `dev\droidmate\projects\plugin-api-hook\src\main\java\org\droidmate\plugin_hook\HookPlugin.java` file
-will be created. Edit it to insert your own API method call hooking logic. Then do a full rebuild and run one of
-the `testDevice` tests to ensure everything still works.
+After you do full rebuild, a `repo/dev/droidmate/projects/plugin-api-hook/src/main/java/org/droidmate/plugin_hook/HookPlugin.java` file
+will be created. Edit it to insert your own API method call hooking logic. Then do a full build and run one of
+the `testDevice` tests to ensure everything works.

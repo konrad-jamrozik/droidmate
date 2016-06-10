@@ -62,7 +62,7 @@ After your build passes, you should setup an Android device and run tests requir
 
 All actions in this section assume you first did `cd repo/dev/droidmate`
 
-To build DroidMate and run all regression tests that do not require a device:  `gradlew build`  
+To do a full build, i.e. to build DroidMate and run all regression tests that do not require a device :  `gradlew build`  
 
 To skip tests: `gradlew build -x test`
 
