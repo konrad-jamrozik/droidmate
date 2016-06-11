@@ -28,7 +28,7 @@ Furthermore:
 - `repo/BUILDING.md` explains how to build and test DroidMate.
 - `repo/RUNNING.md` explains how to:
   - use DroidMate API from your Java project, with examples;
-  - run DroidMate from built sources; 
+  - run DroidMate directly from built sources (this method is not recommended, use API instead); 
   - obtain input apks;
   - configure the emulator.
 - `repo/DEVELOPING.md` explains how to: 

@@ -21,7 +21,9 @@ Or to make your life easier, open in IntelliJ IDEA:
 
 Note that to run any tests first you will have to deploy the code to local Maven repository, as described in `repo/BUILDING.md`.
 
-# Running DroidMate from sources
+# Running DroidMate from sources (not recommended!)
+
+**!!! Please note: this method of running DroidMate is not recommended. Instead, use the API from your Java app as described above.**
 
 Ensure you have built DroidMate as described in `repo/BUILDING.md`.
 
