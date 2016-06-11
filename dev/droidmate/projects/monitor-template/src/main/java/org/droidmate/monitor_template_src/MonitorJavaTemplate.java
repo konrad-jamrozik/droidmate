@@ -197,6 +197,7 @@ public class MonitorJavaTemplate
           final ArrayList<String> payload = new ArrayList<String>(Arrays.asList(getPid(), getPackageName(), ""));
           return new ArrayList<ArrayList<String>>(Collections.singletonList(payload));
 
+          // KJA probably another condition here will be added to finalize hook plugin. Probably the server will have to have the hook plugin instance passed in ctor param.
         } else if (MonitorConstants.srvCmd_get_logs.equals(input))
         {
           ArrayList<ArrayList<String>> logsToSend = new ArrayList<ArrayList<String>>(currentLogs);

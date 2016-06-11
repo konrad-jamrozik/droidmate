@@ -32,7 +32,6 @@ public class HookPluginTemplate implements IHookPlugin
     this.context = context;
   }
   
-  // KJA add "finalize hook method". Probably called somewhere from org.droidmate.device.MonitorsClient
   // KJA add a dependency on a way to destructure apilogcatmessagePayload: org.droidmate.common.logcat.ApiLogcatMessage.from(java.lang.String)
   public void hookBeforeApiCall(String apiLogcatMessagePayload)
   {

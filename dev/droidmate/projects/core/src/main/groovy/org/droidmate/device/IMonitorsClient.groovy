@@ -19,6 +19,8 @@ interface IMonitorsClient
 
   ArrayList<ArrayList<String>> getLogs() throws DeviceNeedsRebootException, DeviceException
 
+  // KJA add "finalize hook method".
+  
   List<Integer> getPorts()
 
   void forwardPorts() throws DeviceException
