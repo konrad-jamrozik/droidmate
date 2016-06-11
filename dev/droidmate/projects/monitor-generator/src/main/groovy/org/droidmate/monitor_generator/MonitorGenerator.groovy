@@ -12,6 +12,9 @@ package org.droidmate.monitor_generator
 import groovy.util.logging.Slf4j
 import org.droidmate.apis.ApiMethodSignature
 
+// KJA confirm Nexus 5X works.
+// KJA then make a pull request to ArtHook with the updated tool chain
+// \dev\droidmate\projects\monitor-generator\monitor-apk-scaffolding\libs_api23
 @Slf4j
 class MonitorGenerator implements IMonitorGenerator
 {
