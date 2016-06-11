@@ -12,7 +12,9 @@ import android.content.Context;
 
 public interface IHookPlugin
 {
-  void hookBeforeApiCall(Context context, String apiLogcatMessagePayload);
+  void init(Context context);
+  
+  void hookBeforeApiCall(String apiLogcatMessagePayload);
 
-  Object hookAfterApiCall(Context context, String apiLogcatMessagePayload, Object returnValue);
+  Object hookAfterApiCall(String apiLogcatMessagePayload, Object returnValue);
 }

@@ -122,6 +122,10 @@ public class MonitorJavaTemplate
 
     redirectConstructors();
 
+    // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+    // hookPlugin.init(context);
+    // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+
     Log.i(MonitorConstants.tag_init, MonitorConstants.msgPrefix_init_success + context.getPackageName());
   }
   //endregion

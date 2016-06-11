@@ -21,26 +21,33 @@ import android.content.Context;
 // !!!!! 
 // !!!!! This will generate HookPlugin.java in the same directory as this class. Edit that file instead.
 
-@SuppressWarnings({"unused","Duplicates"})
+// These warnings are suppressed because this class is only a stub serving as an example for actual implementation.
+@SuppressWarnings({"unused", "Duplicates", "FieldCanBeLocal"})
 public class HookPluginTemplate implements IHookPlugin
 {
-  // KJA add "init hook method" and pass Context to it instead of before/after. Probably call it from org.droidmate.monitor_template_src.MonitorJavaTemplate.init 
+  private Context context;
+
+  public void init(Context context)
+  {
+    this.context = context;
+  }
+  
   // KJA add "finalize hook method". Probably called somewhere from org.droidmate.device.MonitorsClient
   // KJA add a dependency on a way to destructure apilogcatmessagePayload: org.droidmate.common.logcat.ApiLogcatMessage.from(java.lang.String)
-  public void hookBeforeApiCall(Context context, String apiLogcatMessagePayload)
+  public void hookBeforeApiCall(String apiLogcatMessagePayload)
   {
     // exampleHookBefore(context, apiLogcatMessagePayload);
   }
 
-  private void exampleHookBefore(Context context, String apiLogcatMessagePayload)
-  {
-    System.out.println("hookBeforeApiCall/apiLogcatMessagePayload: "+ apiLogcatMessagePayload);
-  }
-
-  public Object hookAfterApiCall(Context context, String apiLogcatMessagePayload, Object returnValue)
+  public Object hookAfterApiCall(String apiLogcatMessagePayload, Object returnValue)
   {
     return returnValue;
     // return exampleHookAfter(apiLogcatMessagePayload, returnValue);
+  }
+  
+  private void exampleHookBefore(String apiLogcatMessagePayload)
+  {
+    System.out.println("hookBeforeApiCall/apiLogcatMessagePayload: "+ apiLogcatMessagePayload);
   }
 
   private Object exampleHookAfter(String apiLogcatMessagePayload, Object returnValue)

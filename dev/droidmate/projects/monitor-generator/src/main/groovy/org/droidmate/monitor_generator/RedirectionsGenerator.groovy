@@ -38,6 +38,10 @@ class RedirectionsGenerator implements IRedirectionsGenerator
   private static final ind6 = "      "
   private static final ind4 = "    "
 
+  private static final String hookPluginInstanceName = "hookPlugin"
+  private static final String hookPluginBeforeCallPrefix = hookPluginInstanceName + ".hookBeforeApiCall("
+  private static final String hookPluginAfterCallPrefix = hookPluginInstanceName + ".hookAfterApiCall("
+
   private static String redirMethodNamePrefix = "redir_";
   private static String redirMethodDefPrefix = "Lorg/droidmate/monitor_generator/generated/Monitor;->$redirMethodNamePrefix";
 
@@ -107,15 +111,17 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
         out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
-        out << ind4 + ind4 + "hookPlugin.hookBeforeApiCall(context,\"$apiLogcatMessagePayload\");" + nl
+
+
+        out << ind4 + ind4 + "${hookPluginBeforeCallPrefix}\"$apiLogcatMessagePayload\");" + nl
         if (androidApi == AndroidAPI.API_19)
         {
           out << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
-          out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(context,\"$apiLogcatMessagePayload\", null);" + nl
+          out << ind4 + ind4 + "${hookPluginAfterCallPrefix}\"$apiLogcatMessagePayload\", null);" + nl
         } else if (androidApi == AndroidAPI.API_23)
         {
           out << ind4 + ind4 + "OriginalMethod.by(new \$() {}).invoke(_this$commaSeparatedParamVars);" + nl
-          out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(context,\"$apiLogcatMessagePayload\", null);" + nl
+          out << ind4 + ind4 + "${hookPluginAfterCallPrefix}\"$apiLogcatMessagePayload\", null);" + nl
         } else throw new IllegalStateException()
         out << ind4 + "}" + nl
         out << ind4 + nl
@@ -193,7 +199,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
         out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
-        out << ind4 + ind4 + "hookPlugin.hookBeforeApiCall(context,\"$apiLogcatMessagePayload\");" + nl
+        out << ind4 + ind4 + "${hookPluginBeforeCallPrefix}\"$apiLogcatMessagePayload\");" + nl
         
         if (androidApi == AndroidAPI.API_19)
         {
@@ -203,11 +209,11 @@ class RedirectionsGenerator implements IRedirectionsGenerator
           if (returnsVoid)
           {
             out << ind4 + ind4 + "Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
-            out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(context,\"$apiLogcatMessagePayload\", null);" + nl
+            out << ind4 + ind4 + "${hookPluginAfterCallPrefix}\"$apiLogcatMessagePayload\", null);" + nl
           } else
           {
             out << ind4 + ind4 + "Object returnVal = Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
-            out << ind4 + ind4 + "${returnStatement}hookPlugin.hookAfterApiCall(context,\"$apiLogcatMessagePayload\", ${castType}returnVal);" + nl
+            out << ind4 + ind4 + "${returnStatement}${hookPluginAfterCallPrefix}\"$apiLogcatMessagePayload\", ${castType}returnVal);" + nl
           }
         }
         else if (androidApi == AndroidAPI.API_23)
@@ -223,12 +229,12 @@ class RedirectionsGenerator implements IRedirectionsGenerator
           if (returnsVoid)
           {
             out << ind4 + ind4 + "$invocation;" + nl
-            out << ind4 + ind4 + "hookPlugin.hookAfterApiCall(context,\"$apiLogcatMessagePayload\", null);" + nl
+            out << ind4 + ind4 + "${hookPluginAfterCallPrefix}\"$apiLogcatMessagePayload\", null);" + nl
           }
           else
           {
             out << ind4 + ind4 + "Object returnVal = $invocation;" + nl
-            out << ind4 + ind4 + "${returnStatement}hookPlugin.hookAfterApiCall(context,\"$apiLogcatMessagePayload\", ${castType}returnVal);" + nl
+            out << ind4 + ind4 + "${returnStatement}${hookPluginAfterCallPrefix}\"$apiLogcatMessagePayload\", ${castType}returnVal);" + nl
           }
         } else throw new IllegalStateException()
         out << ind4 + "}" + nl
