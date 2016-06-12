@@ -15,8 +15,7 @@ DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userg
 
 ## Local build requirements ##
 
-To be able to build DroidMate on your local machine, you will need JDK, Android SDK with Android 4 and 6, Apache Ant and some 
-environment variables set to appropriate values.
+To be able to build DroidMate on your local machine, you will need JDK, Android SDK with Android 4 and 6, Apache Ant, gnuplot 4+ with 'pdf' terminal and some environment variables set to appropriate values.
 
 To configure your local setup, do the following:
 
