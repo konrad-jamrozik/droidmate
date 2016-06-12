@@ -7,7 +7,7 @@
 
   www.droidmate.org
 
-  Date of last full review: 10 May 2016
+  Date of last full review: 12 Jun 2016
 
 # Building, testing and running DroidMate #
 
@@ -15,7 +15,7 @@ DroidMate is built with [Gradle](https://docs.gradle.org/current/userguide/userg
 
 ## Local build requirements ##
 
-To be able to build DroidMate on your local machine, you will need JDK, Android SDK with Android 4 and 6, Apache Ant, gnuplot 4+ with 'pdf' terminal and some environment variables set to appropriate values.
+To be able to build DroidMate on your local machine, you will need JDK, Android SDK with Android 4 and 6, Apache Ant, gnuplot 4+ with `pdf` terminal and some environment variables set to appropriate values.
 
 To configure your local setup, do the following:
 
@@ -41,7 +41,7 @@ To configure your local setup, do the following:
   `brew install gnuplot --with-pdflib-lite`.
 * Set `GRADLE_USER_HOME` environment variable to a directory in which Gradle will locally cache the dependencies downloaded from maven repository ([Gradle doc about environment variables](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties)). (optional)
 
-## Build steps ##
+## First build ##
 
 * Setup the local build requirements as described above. 
 * `git clone https://github.com/konrad-jamrozik/droidmate.git repo`
@@ -50,14 +50,6 @@ To configure your local setup, do the following:
 * `gradlew build` (on Unix systems always add `./` i.e. in this case run `./gradlew build`)
 
 If the last step finished with `BUILD SUCCESSFUL` you successfully built DroidMate and successfully ran all regression tests that do not require an Android device.
-
-## Testing DroidMate with Android device ##
-
-After your build passes, you should setup an Android device and run tests requiring it.
-
-* Setup an Android device, as described in the [official doc](http://developer.android.com/training/basics/firstapp/running-app.html#RealDevice). To see which Android devices DroidMate supports, consult the device compatibility section below.
-* If using a physical device (as opposed to emulator), ensure the "settings" app is on the main home screen on the device. You can drag & drop it from the apps list. If you omit this step, DroidMate will not be able to ensure WiFi is enabled before each app restart during exploration. It will work, but will issue a warning to logcat.
-* Run DroidMate tests requiring device as described in the section below.
 
 ## Daily building and testing ##
 
@@ -71,7 +63,17 @@ To run tests only: `gradlew test`
 
 To do a clean build (a full rebuild): `gradlew clean build`
 
-### Testing against a device ###
+## Testing with an Android device
+
+### Setting up the device 
+
+After your build passes, you should setup an Android device and run tests requiring it.
+
+* Setup an Android device, as described in the [official doc](http://developer.android.com/training/basics/firstapp/running-app.html#RealDevice). To see which Android devices DroidMate supports, consult the device compatibility section given in `README.md`.
+* If using a physical device (as opposed to emulator), ensure the "settings" app is on the main home screen on the device. You can drag & drop it from the apps list. If you omit this step, DroidMate will not be able to ensure WiFi is enabled before each app restart during exploration. DroidMate will work, but will issue a warning to logcat.
+* Run DroidMate tests requiring device as described in the section below.
+
+### Running tests with the device
 
 To run DroidMate regression tests requiring a device:
 
@@ -89,7 +91,7 @@ To run DroidMate regression tests requiring a device:
 
 This step is necessary to be able to run DroidMate usage examples tests, as described in `repo/RUNNING.md` 
 
-### Library compatibility ###
+## Library compatibility ##
 
 DroidMate uses the following versions of tools that are independent from local setup:
 
