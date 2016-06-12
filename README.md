@@ -13,7 +13,7 @@
 
 # Introduction #
 
-**DroidMate** is an automated GUI [execution generator | UI fuzzer | dynamic analysis engine] for Android apps.
+**DroidMate** is an automated execution generator / GUI fuzzer / dynamic analysis engine for Android apps.
 
 This file pertains to DroidMate source. You should have found it at DroidMate
 repository root dir, denoted in this file as `repo`.
