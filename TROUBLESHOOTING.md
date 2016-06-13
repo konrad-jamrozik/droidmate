@@ -7,7 +7,7 @@
 
   www.droidmate.org
 
-  Date of last full review: 10 May 2016
+  Date of last full review of this document: 13 Jun 2016
 
 # Troubleshooting DroidMate runs
 
