@@ -9,7 +9,7 @@
 
   www.droidmate.org
 
-  Date of last full review: 10 May 2016
+  Date of last full review of this document: 13 Jun 2016
 
 # Introduction #
 
@@ -20,8 +20,8 @@ repository root dir, denoted in this file as `repo`.
 
 This file explains:
 
-- What DroidMate is and how it works.
-- With which operating systems and tools DroidMate is compatible.
+- What DroidMate is and overview of how it works.
+- With which operating systems and Android devices DroidMate is compatible.
 
 Furthermore:
 
@@ -54,34 +54,33 @@ For more information, please see the papers available on the website linked abov
 ## Compatibility ##
 ### OS compatibility ###
 
-DroidMate works on Ubuntu, Windows 10 and Mac OS X.
+DroidMate works on Ubuntu, Windows 10 and Mac OS X. 
+
+Primary development of DroidMate is done on Windows 10, Ubuntu is used in the CI server. Mac OS X is actively being used by DroidMate users.
  
 ### Android devices and emulators compatibility ###
 
-DroidMate works with Android 4.4.2 (API 19), both physical devices and emulators. 
+DroidMate works on Android 6.0 (API 23), on physical devices. It also works on Android 4.4.2 (API 19), both physical devices and emulators. 
 
-It works on following devices:
+DroidMate works on API 23 emulators, but with limitations. It works fully on the slow, ARM-based emulators. In the fast x86 emulators, DroidMate cannot work with _inlined_ (see `repo/RUNNING.md`) apks and thus, cannot monitor calls to Android framework. This is due to the fact ArtHook, the library used in DroidMate for monitoring when running on API 23, is compatible only with ARM architecture, not x86.
 
-* Nexus 7 (both 2012 and 2013) 
-* Nexus 10 
+DroidMate works on following devices:
+
+API 23:
+* Nexus 7 2013
+* Nexus 5X
+
+API 19:
+* Nexus 7 2012
+* Nexus 10
 * Samsung Galaxy S3
 
-Other devices are not recognized by DroidMate, but may work, as long as the package name of the home screen is the same 
-as for Nexus 7, i.e. `com.android.launcher`. You can check the package name by doing the following:
+If DroidMate doesn't recognize a device it defaults to Nexus 7. You can change the default by editing [DeviceModel](https://github.com/konrad-jamrozik/droidmate/blob/master/dev/droidmate/projects/core/src/main/groovy/org/droidmate/device/model/DeviceModel.groovy#L76-L79). In your device model you just have to ensure the package name of the home screen is correct. You can check the package name by doing the following:
 
 * launch Android Device Monitor, e.g. with `android-sdk/tools/monitor.bat`; 
 * select running device. If device is running, `adb devices` will show it;
 * click on `Dump View Hierarchy for UI Automator`;
 * click on the top level `FrameLayout` and look at `package`.
 
-DroidMate also has an experimental support Android for 6.0 (API 23). However, when running on the fast x86 emulators, DroidMate
- cannot work on _inlined_ (see `repo/RUNNING.md`) apks and thus, cannot monitor calls to Android framework. This is due to the fact ArtHook, the library
- used in DroidMate for monitoring when running on API 23, is compatible only with ARM architecture, not x86.
 
-Following local setup is proven to work with DroidMate:
-
-| Tech. | Version |
-| ----- | ------- |
-| Windows  | 10 |
-| IntelliJ | 2016.1 #IU-145.258 |
-| JDK 8    | 77-b03 x64 |
+DroidMate also has an experimental support Android for 6.0 (API 23). However, when running 
