@@ -56,7 +56,7 @@ For more information, please see the papers available on the website linked abov
 
 DroidMate works on Ubuntu, Windows 10 and Mac OS X. 
 
-Primary development of DroidMate is done on Windows 10, Ubuntu is used in the CI server. Mac OS X is actively being used by DroidMate users.
+Primary development of DroidMate is done on Windows 10. Ubuntu is used in the CI server. Mac OS X is actively being used by DroidMate users.
  
 ### Android devices and emulators compatibility ###
 
