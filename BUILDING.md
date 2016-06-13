@@ -7,7 +7,7 @@
 
   www.droidmate.org
 
-  Date of last full review: 12 Jun 2016
+  Date of last full review of this document: 13 Jun 2016
 
 # Building, testing and running DroidMate #
 
@@ -90,14 +90,3 @@ To run DroidMate regression tests requiring a device:
 `gradlew build install`
 
 This step is necessary to be able to run DroidMate usage examples tests, as described in `repo/RUNNING.md` 
-
-## Library compatibility ##
-
-DroidMate uses the following versions of tools that are independent from local setup:
-
-| Tech.         | Version |
-| ------------- | ------- |
-| Groovy        | 2.4.6   |
-| Gradle        | 2.14-rc-2 |
-| Kotlin        | 1.0.2   |
-| Android Plugin for Gradle | 1.5.0 |
