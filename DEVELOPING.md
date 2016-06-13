@@ -22,27 +22,8 @@ DroidMate is developed with IntelliJ IDEA using the directory-based project form
 
 After opening an IntelliJ project (e.g. `repo/dev/droidmate`), run `Refresh all Gradle projects` from `Gradle` plugin toolbar. After this you should be able to `Build -> Make Project` and run the tests (see section below).
 
-If you run into problems, please see the [troubleshooting section](#troubleshooting-intellij-setup).
+If you run into problems, please see the IntelliJ section in `repo/TROUBLESHOOTING.md`.
 
-### Troubleshooting IntelliJ setup
-
-* In case you run into `Java development kit not set` error or similar after clicking `Refresh all Gradle projects`, just manually point to your local installation of it. Relevant tool window for that will be linked to from the error message. 
-
-* If IntelliJ builds fail erratically, close it, do  
-`cd repo/dev/droidmate`  
-`gradlew clean build`   
-and reopen IntelliJ.
-
-* When opening `repo/dev/droidmate` in IntelliJ, it is expected to have the following error:
-> Unsupported Modules Detected: Compilation is not supported for following modules: DummyAndroidApp. Unfortunately you can't have non-Gradle Java modules and Android-Gradle modules in one project.
-
-The `DummyAndroidApp` project is added only to enable Android plugin views, like e.g. logcat.
-
-* If you get on Gradle rebuild:
-
-> Unsupported major.minor version 52.0
-
-Ensure that Gradle is using JDK 8 in: `Settings -> Build, Execution, Deployment -> Build Tools -> Gradle -> Gradle JVM`.
 
 ### IntelliJ settings
 

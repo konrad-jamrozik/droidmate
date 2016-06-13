@@ -65,3 +65,29 @@ root      2024  2022  302468 33076 ffffffff b773a179 S uiautomator
 root@generic_x86:/ # kill 2024
 kill 2024
 </pre>
+
+# Troubleshooting IntelliJ setup
+
+* Before working with IntelliJ, make a successful full gradle build.
+
+* In case you run into `Java development kit not set` error or similar after clicking `Refresh all Gradle projects`, just manually point to your local installation of it. Relevant tool window for that will be linked to from the error message. 
+
+* If IntelliJ builds fail erratically, close it, do  
+`cd repo/dev/droidmate`  
+`gradlew clean build`   
+and reopen IntelliJ.
+
+* When opening `repo/dev/droidmate` in IntelliJ, it is expected to have the following error:
+> Unsupported Modules Detected: Compilation is not supported for following modules: DummyAndroidApp. Unfortunately you can't have non-Gradle Java modules and Android-Gradle modules in one project.
+
+The `DummyAndroidApp` project is added only to enable Android plugin views, like e.g. logcat.
+
+* If you get on Gradle rebuild:
+
+> Unsupported major.minor version 52.0
+
+Ensure that Gradle is using JDK 8 in: `Settings -> Build, Execution, Deployment -> Build Tools -> Gradle -> Gradle JVM`.
+
+* If the `Refresh all gradle projects` fails with `BuildKt cannot be initalized` or similar, or if opening `repo/dev/droidmate` with IntelliJ doesn't properly load the project structure,  open the `dev/droidmate/buildsrc` project in IntelliJ and run the `initalizes` test. Then retry `Refresh all gradle projects`.
+
+* On Mac OS X environment variables are not picked up by default by GUI applications. If IntelliJ complains you do not have Java SDK or Android SDK configured, or some environment variable is missing, ensure you ran IntelliJ from command line which has those variables setup. Consider starting searching for help from [this superuser question](http://superuser.com/q/476752/225013).  
