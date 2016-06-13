@@ -9,13 +9,11 @@
 
   Date of last full review: 10 May 2016
 
-# Troubleshooting
+# Troubleshooting DroidMate runs
 
 All the mentioned log `.txt` files by default are located under `repo/dev/droidmate/output_device1/logs`.
 
-### Uiautomator-daemon service did not terminate ###
-
-Still occurring as of 10 May 2016.
+### Problem: On Android 4.2.2, DroidMate run fails with exception before any exploration takes place. 
 
 #### Symptoms:
 `master_log.txt` shows:
@@ -51,7 +49,9 @@ java.lang.IllegalStateException: UiAutomationService android.accessibilityservic
 </pre>
 
 #### Diagnosis:
-Last run didn't finish properly and uiautomator-daemon service wasn't killed properly. Most likely `org.droidmate.uiautomator_daemon.UiAutomatorDaemon.init` threw an exception.
+Last run didn't finish properly and uiautomator-daemon service didn't terminate, preventing new instance from starting. Because new instance cannot start, DroidMate throws exception and terminates before exploration can take place.
+
+The uiautomator-daemon most likely didn't terminate because  `org.droidmate.uiautomator_daemon.UiAutomatorDaemon.init` threw an exception.
 
 #### Manual fix:
 Open bash or cmd shell and do:
