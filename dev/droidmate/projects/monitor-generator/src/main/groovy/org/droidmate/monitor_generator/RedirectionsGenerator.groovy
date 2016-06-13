@@ -191,8 +191,8 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         
         if (objectClass == "android.util.Log" && methodName == "i" && paramClasses.size() == 2)
         {
-          out << ind4 + ind4 + "if (p0.startsWith(\"${MonitorConstants.tag_prefix}\"))"
-          out << ind4 + ind4 + "  return 0;"
+          out << ind4 + ind4 + "if (p0.startsWith(\"${MonitorConstants.tag_prefix}\"))" + nl
+          out << ind4 + ind4 + "  return OriginalMethod.by(new \$() {}).invokeStatic(p0, p1);" + nl
         }
         
         out << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
