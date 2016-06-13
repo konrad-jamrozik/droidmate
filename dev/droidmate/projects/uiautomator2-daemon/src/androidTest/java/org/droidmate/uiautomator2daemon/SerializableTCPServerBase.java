@@ -86,6 +86,8 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
 
 
 
+    // WISH DRY-up Duplicates
+    @SuppressWarnings("Duplicates")
     public void run()
     {
       Log.v(tag, "run() using "+port);

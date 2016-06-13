@@ -216,7 +216,12 @@ public class MonitorJavaTemplate
 
         } else if (MonitorConstants.srvCmd_close.equals(input))
         {
-          // Do nothing here. The command is handled in org.droidmate.monitor_template_src.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
+          // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+          // hookPlugin.finalizeHookPlugin();
+          // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+          
+          // In addition to the logic above, this command is handled in org.droidmate.monitor_template_src.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
+          
           return new ArrayList<ArrayList<String>>();
 
         } else
@@ -406,6 +411,9 @@ public class MonitorJavaTemplate
             Log.e(MonitorConstants.tag_srv, String.format("! Failed during startup to bind server socket on port %s. Stopping thread.", port));
             return;
           }
+
+          // KJA after I added hook plugin often I am gettingn ull here, but not always. And the finalize doesn't fire?
+          // Doesn't closing one server somehow interferes with other instances? There are 5 ports after all.
 
           // KNOWN BUG undiagnosed. Got here a set of null pointer in a row on com.audible.application_v1.7.0.apk when running using default settings.
           while (!serverSocket.isClosed())
