@@ -38,7 +38,7 @@ public class HookPluginTemplate implements IHookPlugin
   // KJA add a dependency on a way to destructure apilogcatmessagePayload: org.droidmate.common.logcat.ApiLogcatMessage.from(java.lang.String)
   public void hookBeforeApiCall(String apiLogcatMessagePayload)
   {
-    // exampleHookBefore(context, apiLogcatMessagePayload);
+    // exampleHookBefore(apiLogcatMessagePayload);
   }
 
   public Object hookAfterApiCall(String apiLogcatMessagePayload, Object returnValue)

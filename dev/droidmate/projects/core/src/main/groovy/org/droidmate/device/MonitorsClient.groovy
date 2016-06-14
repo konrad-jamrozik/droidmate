@@ -99,7 +99,7 @@ class MonitorsClient implements IMonitorsClient
         return monitorTcpClient.queryServer(MonitorConstants.srvCmd_get_logs, it)
       } catch (TcpServerUnreachableException ignored)
       {
-        log.trace("Did not reach monitor TCP server at port $it.")
+        log.trace("Did not reach monitor TCP server at port $it when sending out ${MonitorConstants.srvCmd_get_logs} request.")
         return null
       }
     }
@@ -113,6 +113,20 @@ class MonitorsClient implements IMonitorsClient
 
     assert !out.empty
     return (out as Iterable<Iterable>).shallowFlatten()
+  }
+
+  @Override
+  void closeMonitorServers() throws DeviceException
+  {
+    ports.each { 
+      try
+      {
+        monitorTcpClient.queryServer(MonitorConstants.srvCmd_close, it)
+      } catch (TcpServerUnreachableException ignored)
+      {
+        log.trace("Did not reach monitor TCP server at port $it when sending out ${MonitorConstants.srvCmd_close} request.")
+      } 
+    }
   }
 
   @Override

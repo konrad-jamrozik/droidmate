@@ -29,6 +29,8 @@ public interface IDeployableAndroidDevice
 
   void uninstallApk(String apkPackageName, boolean ignoreFailure) throws DeviceException
 
+  void closeMonitorServers() throws DeviceException
+
   void clearPackage(String apkPackageName) throws DeviceException
 
   void clearLogcat() throws DeviceException

@@ -109,11 +109,11 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         out << ind4 + "{" + nl
         out << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
         out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
+        out << ind4 + ind4 + "${hookPluginBeforeCallPrefix}\"$apiLogcatMessagePayload\");" + nl
+        
         out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
 
-
-        out << ind4 + ind4 + "${hookPluginBeforeCallPrefix}\"$apiLogcatMessagePayload\");" + nl
         if (androidApi == AndroidAPI.API_19)
         {
           out << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
@@ -197,9 +197,9 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         
         out << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
         out << ind4 + ind4 + "long $threadIdVarName = getThreadId();" + nl
+        out << ind4 + ind4 + "${hookPluginBeforeCallPrefix}\"$apiLogcatMessagePayload\");" + nl
         out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
-        out << ind4 + ind4 + "${hookPluginBeforeCallPrefix}\"$apiLogcatMessagePayload\");" + nl
         
         if (androidApi == AndroidAPI.API_19)
         {

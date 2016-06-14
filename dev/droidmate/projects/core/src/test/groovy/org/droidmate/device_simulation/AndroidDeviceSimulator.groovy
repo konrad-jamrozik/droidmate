@@ -242,6 +242,11 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  void closeMonitorServers() throws DeviceException
+  {
+  }
+  
+  @Override
   void clearPackage(String apkPackageName)
   {
     updateSimulatorState(new AdbClearPackageAction(apkPackageName))

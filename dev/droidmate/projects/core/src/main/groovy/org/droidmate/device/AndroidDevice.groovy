@@ -370,6 +370,14 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
+  void closeMonitorServers() throws DeviceException
+  {
+    log.debug("closeMonitorServers()")
+    tcpClients.closeMonitorServers()
+  }
+
+
+  @Override
   void clearPackage(String apkPackageName) throws DeviceException
   {
     log.debug("clearPackage($apkPackageName)")

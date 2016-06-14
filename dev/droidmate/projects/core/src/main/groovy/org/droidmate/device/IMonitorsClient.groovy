@@ -19,6 +19,8 @@ interface IMonitorsClient
 
   ArrayList<ArrayList<String>> getLogs() throws DeviceNeedsRebootException, DeviceException
 
+  void closeMonitorServers() throws DeviceException
+
   List<Integer> getPorts()
 
   void forwardPorts() throws DeviceException
