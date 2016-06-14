@@ -10,6 +10,8 @@
 package org.droidmate.plugin_hook;
 
 import android.content.Context;
+import org.droidmate.apis.IApi;
+import org.droidmate.common.logcat.ApiLogcatMessage;
 
 /**
  * Please see {@link HookPluginTemplate} to see how to implement your custom local (not in vcs) ookPlugin.
@@ -30,8 +32,26 @@ class HookPluginExample implements IHookPlugin
 
   public Object hookAfterApiCall(String apiLogcatMessagePayload, Object returnValue)
   {
+    /* KJA because of this call, getting:
+    
+    06-14 16:58:59.526 20557-20557/org.droidmate.fixtures.apks.monitored E/AndroidRuntime: FATAL EXCEPTION: main
+      rocess: org.droidmate.fixtures.apks.monitored, PID: 20557
+      ava.lang.NoClassDefFoundError: Failed resolution of: Lorg/droidmate/common/logcat/ApiLogcatMessage;
+         at org.droidmate.plugin_hook.HookPlugin.hookAfterApiCall(HookPlugin.java:36)
+         at org.droidmate.monitor_generator.generated.Monitor.redir_android_app_Activity_onResume0(Monitor.java:767)
+         
+    Basically the jars here: 
+    dev\droidmate\projects\monitor-generator\monitor-apk-scaffolding\libs
+    
+    Are not visible from other jars in the same dir.
+    
+    Possible fix:
+    https://docs.oracle.com/javase/tutorial/deployment/jar/downman.html
+    
+     */
+    final IApi api = ApiLogcatMessage.from(apiLogcatMessagePayload);
     System.out.println("hookAfterApiCall/returnValue: " + returnValue);
-    if (apiLogcatMessagePayload.contains("mthd: getDeviceId"))
+    if (api.getMethodName().equals("getDeviceId"))
     {
       String mockedDevId = "DEV-ID-MOCKED-BY-AFTER-HOOK";
       System.out.println("hookAfterApiCall: replacing deviceId=" + returnValue + " with mocked value: " + mockedDevId);

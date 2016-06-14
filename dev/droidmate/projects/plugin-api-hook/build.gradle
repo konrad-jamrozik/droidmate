@@ -23,6 +23,7 @@ compileJava.configure { JavaCompile jc ->
 
 dependencies {
   compileOnly files(BuildKt.android_jar_api19.toString())
+  compile project(":projects:lib-common")
 }
 
 task makeHookPluginFromTemplateIfNotPresent {
@@ -52,5 +53,12 @@ task makeHookPluginFromTemplateIfNotPresent {
 }
 
 compileJava.dependsOn tasks.makeHookPluginFromTemplateIfNotPresent
+
+// KJA next https://discuss.gradle.org/t/manifest-with-classpath-in-jar-task-for-subprojects/7030/2
+jar.configure { Jar jar ->
+  jar.manifest { Manifest manifest ->
+    manifest.attributes("Class-Path": "lib-common-dev.jar")
+  }
+}
 
 apply from: project(":projects").file("maven.gradle")
