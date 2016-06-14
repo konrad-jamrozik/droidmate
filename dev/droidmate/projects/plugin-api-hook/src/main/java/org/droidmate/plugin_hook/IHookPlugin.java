@@ -10,6 +10,7 @@ package org.droidmate.plugin_hook;
 
 import android.content.Context;
 
+@SuppressWarnings("unused") // Used in org.droidmate.monitor_template_src.MonitorJavaTemplate 
 public interface IHookPlugin
 {
   void init(Context context);

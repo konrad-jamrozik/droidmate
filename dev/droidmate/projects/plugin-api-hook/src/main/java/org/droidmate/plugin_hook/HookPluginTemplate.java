@@ -21,54 +21,30 @@ import android.content.Context;
 // !!!!! 
 // !!!!! This will generate HookPlugin.java in the same directory as this class. Edit that file instead.
 
-// These warnings are suppressed because this class is only a stub serving as an example for actual implementation.
-@SuppressWarnings({"unused", "Duplicates", "FieldCanBeLocal"})
+/**
+ * Please see {@link HookPluginExample} for an example implementation.
+ */
+// These warnings are suppressed because this class is only a stub of an actual implementation.
+@SuppressWarnings({"unused", "Duplicates", "FieldCanBeLocal", "WeakerAccess"})
 public class HookPluginTemplate implements IHookPlugin
 {
-  private Context context;
 
-  public void init(Context context)
+  public void init(Context context) 
   {
-    this.context = context;
   }
-  
-  public void finalizeHookPlugin() {
-    // exampleFinalizeHookPlugin();
+
+  public void finalizeHookPlugin()
+  {
   }
   // KJA add a dependency on a way to destructure apilogcatmessagePayload: org.droidmate.common.logcat.ApiLogcatMessage.from(java.lang.String)
+  
   public void hookBeforeApiCall(String apiLogcatMessagePayload)
   {
-    // exampleHookBefore(apiLogcatMessagePayload);
   }
 
   public Object hookAfterApiCall(String apiLogcatMessagePayload, Object returnValue)
   {
     return returnValue;
-    // return exampleHookAfter(apiLogcatMessagePayload, returnValue);
-  }
-  
-  private void exampleFinalizeHookPlugin()
-  {
-    System.out.println("finalizeHookPlugin. Context = "+context);
-  }
-  
-  private void exampleHookBefore(String apiLogcatMessagePayload)
-  {
-    System.out.println("hookBeforeApiCall/apiLogcatMessagePayload: "+ apiLogcatMessagePayload);
-  }
-
-  private Object exampleHookAfter(String apiLogcatMessagePayload, Object returnValue)
-  {
-    System.out.println("hookAfterApiCall/returnValue: "+ returnValue);
-    if (apiLogcatMessagePayload.contains("mthd: getDeviceId"))
-    {
-      String mockedDevId = "DEV-ID-MOCKED-BY-AFTER-HOOK";
-      System.out.println("hookAfterApiCall: replacing deviceId="+returnValue+" with mocked value: "+mockedDevId);
-        
-      return mockedDevId;
-    }
-    else
-      return returnValue;
   }
 }
 
