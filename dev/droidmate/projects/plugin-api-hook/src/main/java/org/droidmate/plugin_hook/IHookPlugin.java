@@ -16,6 +16,9 @@ import android.content.Context;
 @SuppressWarnings("unused") // Used in org.droidmate.monitor_template_src.MonitorJavaTemplate 
 public interface IHookPlugin
 {
+  /**
+   * Called in org.droidmate.monitor_template_src.MonitorJavaTemplate#init(android.content.Context)
+   */
   void init(Context context);
   
   void hookBeforeApiCall(String apiLogcatMessagePayload);
@@ -23,8 +26,8 @@ public interface IHookPlugin
   Object hookAfterApiCall(String apiLogcatMessagePayload, Object returnValue);
 
   /**
-   * Called when org.droidmate.device.IDeployableAndroidDevice#closeMonitorServers() succeeds, which might not happen for some
-   * crashes of the AUE.
+   * Called when a call to org.droidmate.device.IDeployableAndroidDevice#closeMonitorServers() is made, 
+   * which might not happen for some crashes of the AUE.
    */
   void finalizeHookPlugin();
 }
