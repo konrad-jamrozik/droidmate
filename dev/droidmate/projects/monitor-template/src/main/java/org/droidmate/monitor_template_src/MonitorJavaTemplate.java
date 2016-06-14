@@ -100,6 +100,11 @@ public class MonitorJavaTemplate
   private static MonitorTCPServer server;
   private static Context context;
 
+  /**
+   * Called by the inlined Application class when the inlined AUE launches activity, as done by
+   * org.droidmate.exploration.device.IRobustDevice#launchApp(org.droidmate.android_sdk.IApk)
+   */
+  @SuppressWarnings("unused")
   public void init(android.content.Context initContext)
   {
     context = initContext;
@@ -220,7 +225,8 @@ public class MonitorJavaTemplate
           // hookPlugin.finalizeHookPlugin();
           // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
           
-          // In addition to the logic above, this command is handled in org.droidmate.monitor_template_src.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
+          // In addition to the logic above, this command is handled in 
+          // org.droidmate.monitor_template_src.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
           
           return new ArrayList<ArrayList<String>>();
 

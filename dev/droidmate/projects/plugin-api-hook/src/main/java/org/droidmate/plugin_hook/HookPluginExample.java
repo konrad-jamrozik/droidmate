@@ -23,11 +23,6 @@ class HookPluginExample implements IHookPlugin
     this.context = context;
   }
 
-  public void finalizeHookPlugin()
-  {
-    System.out.println("finalizeHookPlugin. Context = " + context);
-  }
-
   public void hookBeforeApiCall(String apiLogcatMessagePayload)
   {
     System.out.println("hookBeforeApiCall/apiLogcatMessagePayload: " + apiLogcatMessagePayload);
@@ -44,6 +39,11 @@ class HookPluginExample implements IHookPlugin
       return mockedDevId;
     } else
       return returnValue;
+  }
+
+  public void finalizeHookPlugin()
+  {
+    System.out.println("finalizeHookPlugin. Context = " + context);
   }
 
 }

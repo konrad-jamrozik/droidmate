@@ -10,6 +10,9 @@ package org.droidmate.plugin_hook;
 
 import android.content.Context;
 
+/**
+ * To see where this interface is used, search for "// hookPlugin" in org.droidmate.monitor_template_src.MonitorJavaTemplate 
+ */
 @SuppressWarnings("unused") // Used in org.droidmate.monitor_template_src.MonitorJavaTemplate 
 public interface IHookPlugin
 {
@@ -18,6 +21,10 @@ public interface IHookPlugin
   void hookBeforeApiCall(String apiLogcatMessagePayload);
 
   Object hookAfterApiCall(String apiLogcatMessagePayload, Object returnValue);
-  
+
+  /**
+   * Called when org.droidmate.device.IDeployableAndroidDevice#closeMonitorServers() succeeds, which might not happen for some
+   * crashes of the AUE.
+   */
   void finalizeHookPlugin();
 }
