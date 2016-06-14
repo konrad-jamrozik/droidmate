@@ -43,6 +43,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     this.waitForWindowUpdateTimeout = waitForWindowUpdateTimeout;
   }
 
+  // WISH DRY-up duplicates
   @SuppressWarnings("Duplicates")
   @Override
   public DeviceResponse executeCommand(DeviceCommand deviceCommand) throws UiAutomatorDaemonException

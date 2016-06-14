@@ -150,7 +150,7 @@ class ExploreCommand extends DroidmateCommand
     {
       def deprecatedOut = new ExplorationOutput()
       deprecatedOut.addAll(out.collect {ApkExplorationOutput.from(it)})
-      // KJA2 implement this in ReportCommand
+      // KJA2 (reporting) implement this in ReportCommand
       this.explorationOutputAnalysisPersister.persist(deprecatedOut)
     } catch (Throwable persistingThrowable)
     {

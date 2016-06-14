@@ -10,6 +10,8 @@ package org.droidmate.uiautomator2daemon;
 
 import android.annotation.TargetApi;
 import android.app.Instrumentation;
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.uiautomator.*;
@@ -26,7 +28,7 @@ import java.io.IOException;
 
 import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*;
 
-// KJA2 dry up common code with uiad-1. Put the shared code in uiautomator-daemon-lib
+// KJA2 (refactoring) dry up common code with uiad-1. Put the shared code in uiautomator-daemon-lib
 class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 {
   private final UiDevice device;
@@ -36,14 +38,21 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
    */
   private final boolean waitForGuiToStabilize;
   private final int     waitForWindowUpdateTimeout;
+  private final Context context;
 
   UiAutomatorDaemonDriver(boolean waitForGuiToStabilize, int waitForWindowUpdateTimeout)
   {
     // The instrumentation required to run uiautomator2-daemon is
-    // provided by the adb command adb am shell instrument <PACKAGE>/<RUNNER>
+    // provided by the command: adb shell instrument <PACKAGE>/<RUNNER>
     Instrumentation instr = InstrumentationRegistry.getInstrumentation();
-    assert instr != null;
+    if (instr == null) throw new AssertionError();
+
+    this.context = InstrumentationRegistry.getTargetContext();
+    if (context == null) throw new AssertionError();
+    
     this.device = UiDevice.getInstance(instr);
+    if (device == null) throw new AssertionError();
+    
     this.waitForGuiToStabilize = waitForGuiToStabilize;
     this.waitForWindowUpdateTimeout = waitForWindowUpdateTimeout;
   }
@@ -138,8 +147,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
         waitForGuiToStabilize();
       } else if (action.guiActionCommand.equals(guiActionCommand_turnWifiOn))
       {
-        turnWifiOnAndGoHome();
-
+        turnWifiOn();
       } else if (action.guiActionCommand.equals(guiActionCommand_launchApp))
       {
         launchApp(action.resourceId);
@@ -218,95 +226,19 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     return deviceResponse;
   }
 
-  // KJA2 doesn't work as it should. Investigate. Scrolling might be necessary (uiautomator should be able to do it itself. Look how it searches for "apps" button).
-  private void turnWifiOnAndGoHome()
+
+  /**
+   * Based on: http://stackoverflow.com/a/12420590/986533
+   */
+  private void turnWifiOn()
   {
-    Log.d(uiaDaemon_logcatTag, "Checking wifi state.");
-    try
-    {
-      this.device.findObject(new UiSelector().textContains("Settings")).click();
-      waitForGuiToStabilize();
+    Log.d(uiaDaemon_logcatTag, "Ensuring WiFi is turned on.");
+    WifiManager wfm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+    
+    boolean wifiEnabled = wfm.setWifiEnabled(true);
 
-    } catch (UiObjectNotFoundException e)
-    {
-      Log.w(uiaDaemon_logcatTag, "No 'settings' to click found, while in the process of ensuring that wifi is on! " +
-        "Please ensure the 'settings' app icon is visible (drag-n-drop it to desktop from the list of apps).");
-    }
-
-    try
-    {
-      String switchWidgetName = this.getWifiSwitchWidgetName();
-      UiObject wifiSwitch = this.device.findObject(new UiSelector().resourceId(switchWidgetName));
-
-      // Check if it is possible to access the wifi switch
-      boolean hasWifiSwitch;
-      try
-      {
-        wifiSwitch.getText();
-        hasWifiSwitch = true;
-      } catch (UiObjectNotFoundException e)
-      {
-        hasWifiSwitch = false;
-      }
-
-      // On some Android versions (6.0, for example) the switch stays in a different
-      // window, accessible through a button.
-
-      // If is a button, however, the clickable is the linear layout, i.e.,
-      // its parent's parent, which does not possess a resource-id.
-      // The options are either to iterate through the layouts,
-      // of to click on a screen position and let Android OS handle the rest
-      // WISH Borges Find a more elegant way of doing this
-      if (!hasWifiSwitch)
-      {
-        Log.i(uiaDaemon_logcatTag, "Wifi switch not found, looking for button.");
-        //UiObject wifiButton = this.device.findObject(new UiSelector().text("Wi-Fi"));
-        // Locate the Wifi container
-        UiObject wifiButton = this.device.findObject(new UiSelector().className("android.widget.LinearLayout").instance(4));
-
-        int x = wifiButton.getBounds().centerX();
-        Log.e(uiaDaemon_logcatTag, "Wifi container position x=" + x);
-        int y = wifiButton.getBounds().centerY();
-        Log.e(uiaDaemon_logcatTag, "Wifi container position y=" + y);
-        Log.i(uiaDaemon_logcatTag, "Wifi button located, pressing it.");
-        // Click on the screen
-        this.device.click(x, y);
-        waitForGuiToStabilize();
-
-        // Locate the switch
-        Log.i(uiaDaemon_logcatTag, "Locating wifi switch, again.");
-        wifiSwitch = this.device.findObject(new UiSelector().resourceId(switchWidgetName));
-      }
-
-      if (wifiSwitch.getText().equalsIgnoreCase("OFF"))
-      {
-        Log.i(uiaDaemon_logcatTag, "Turning wifi on.");
-        wifiSwitch.click();
-        waitForGuiToStabilize();
-
-        // WISH to remove if it ultimately proves to be unnecessary.
-//            try
-//            {
-//              Thread.sleep(0);
-//            } catch (InterruptedException e)
-//            {
-//              Log.wtf(uiaDaemon_logcatTag, "Thread interrupted while sleeping after turning wifi on!");
-//            }
-
-        if (wifiSwitch.getText().equalsIgnoreCase("ON"))
-          Log.i(uiaDaemon_logcatTag, "Wifi turned on successfully.");
-        else
-          Log.w(uiaDaemon_logcatTag, "Clicked to make wifi on, but it is not ON!");
-      }
-
-    } catch (UiObjectNotFoundException e)
-    {
-      // WISH this might happen if some app requested settings -> factory reset. Then on clicking "settings" another subscreen of it is displayed. Proposed solution: swipe down the upper right drop-down menu instead.
-      Log.w(uiaDaemon_logcatTag, "No wifi switch found while in the process of ensuring that wifi is on!");
-    }
-
-    this.device.pressHome();
-    waitForGuiToStabilize();
+    if (!wifiEnabled)
+      Log.w(uiaDaemon_logcatTag, "Failed to ensure WiFi is enabled!");
   }
 
   private boolean click(DeviceCommand deviceCommand, int clickXCoor, int clickYCoor)
@@ -625,7 +557,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     //       Msg: /data/local/tmp/window_hierarchy_dump.xml: open failed: EACCES (Permission denied)
     // More information in: http://stackoverflow.com/questions/23424602/android-permission-denied-for-data-local-tmp
 
-    final File dir = InstrumentationRegistry.getTargetContext().getFilesDir();
+    final File dir = context.getFilesDir();
     File file = new File(dir, fileName);
 
     Log.d(uiaDaemon_logcatTag, String.format("Dump data directory: %s", dir.toString()));

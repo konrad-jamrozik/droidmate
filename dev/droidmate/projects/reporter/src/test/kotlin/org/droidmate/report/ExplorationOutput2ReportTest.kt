@@ -35,7 +35,7 @@ class ExplorationOutput2ReportTest {
     // includePlots = false because plots require gnuplot, which does not work on mock file system used in this test.
     report.writeOut(includePlots = false) 
     
-    // KJA2 produce table that can be readily imported to Excel that has columns:
+    // KJA2 (reporting) produce table that can be readily imported to Excel that has columns:
     // apk_name	run_time_in_seconds	actions#	in_that_resets# actionable_views_seen# views_clicked_or_long_clicked_at_least_once# unique_apis# unique_event_apis# ANRs_seen# terminated_with_exception(give exception name: launch timeout, uninstall failure, other)
 
     assertOnDataStructure(report)
