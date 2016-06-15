@@ -1,3 +1,12 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
+
 apply plugin: 'com.android.application'
 apply plugin: 'project-report'
 buildscript {
@@ -32,33 +41,44 @@ android {
     }
   }
   productFlavors {
+    api23 {
+      
+    }
   }
 }
 
+android.variantFilter { variant ->
+  if(variant.buildType.name.equals('debug')) {
+    variant.setIgnore(true);
+  }
+}
 repositories {
   mavenCentral()
 }
 
-dependencies {
-  
-  compile fileTree(dir: 'libs_api23', include: ['*.jar'])
+// Based on: http://stackoverflow.com/a/16790675/986533
+//android {
+//  sourceSets {
+//    api23 {
+//      jniLibs.srcDirs = ['libs_api23/jni']
+//      jni.srcDirs = [] //disable automatic ndk-build
+//    }
+//  }
+//}
 
+//configurations {
+//  api23Compile.extendsFrom compile
+//}
+
+dependencies {
+  compile fileTree(dir: 'libs_built', include: ['*.jar'])
+  api23Compile fileTree(dir: 'libs_api23', include: ['*.jar'])
 }
  
-// Copyright (c) 2012-2016 Saarland University
-// All rights reserved.
-//
-// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
-//
-// This file is part of the "DroidMate" project.
-//
-// www.droidmate.org
-// Based on: http://stackoverflow.com/a/16790675/986533
-android {
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs_api23/jni']
-            jni.srcDirs = [] //disable automatic ndk-build
-        }
-    }
- }
+
+//task build_api23 {
+//  doFirst {
+//    // KJA current work
+//    println "XXX from build api23!"
+//  }
+//}

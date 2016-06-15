@@ -12,9 +12,9 @@ package org.droidmate.monitor_generator
 import groovy.util.logging.Slf4j
 import org.droidmate.apis.ApiMethodSignature
 
-/* KJA (hook/scaffolding) use instead projects/monitor-apk-scaffolding. It already works.
-KJA (hook/libmonitor) create "lib-monitor" project with Java-7-compatible classes used in Monitor.java. Move ApiLogcatMessage to it.
-KJA (hook/name) rename plugin-api-hook to monitor-hook
+/* KJA2 (hook/scaffolding) use instead projects/monitor-apk-scaffolding
+KJA2 (hook/libmonitor) create "lib-monitor" project with Java-7-compatible classes used in Monitor.java. Move ApiLogcatMessage to it.
+KJA2 (hook/name) rename plugin-api-hook to monitor-hook
 */
 
 @Slf4j
