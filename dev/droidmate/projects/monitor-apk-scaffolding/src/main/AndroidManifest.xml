@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is necessary because of gradle 'com.android.application' plugin.
+
+ Moreover, the main project's permissions are included in the generated test APK's
+ which is necessary to allow access to Sockets and to change the Wifi state
+-->
+
+<manifest package="org.droidmate.monitor_generator.generated">
+</manifest>

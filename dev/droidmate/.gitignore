@@ -12,5 +12,3 @@ temp_dir_for_tests
 /temp.txt
 /temp_extracted_resources
 .gitignore
-main/
-test/
