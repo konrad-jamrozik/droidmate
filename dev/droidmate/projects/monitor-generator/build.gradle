@@ -221,7 +221,13 @@ task cleanLibsDir(type: Delete) { group = "build"; delete libsDir }
 task cleanApkScaffoldingOutput(type: Delete) {group = "build"; delete apkScaffoldingOutput }
 
 clean.dependsOn "cleanRun", "cleanAntOutput", "cleanLibsDir", "cleanApkScaffoldingOutput"
-// KJA when done "buildMonitorApk_api23" will replace "antBuildMonitorApk_api23". Similar with api 19 
+/* KJA next steps:
+  - check that testDevice_api19 works
+  - implement "buildMonitorApk_api19"
+  - check that testDevice_api19 works
+  - delete antBuildMonitorApk_api19, 23 and all related logic.
+  - delete monitor-generator/apk-scaffolding
+  */
 build.dependsOn "antBuildMonitorApk_api19", "buildMonitorApk_api23"
 
 test.configure {

@@ -40,6 +40,8 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+  
+  // Based on: https://developer.android.com/studio/build/build-variants.html#product-flavors
   productFlavors {
     api23 {
       
@@ -47,6 +49,7 @@ android {
   }
 }
 
+// Based on: http://stackoverflow.com/a/34337260/986533
 android.variantFilter { variant ->
   if(variant.buildType.name.equals('debug')) {
     variant.setIgnore(true);
@@ -56,29 +59,10 @@ repositories {
   mavenCentral()
 }
 
-// Based on: http://stackoverflow.com/a/16790675/986533
-//android {
-//  sourceSets {
-//    api23 {
-//      jniLibs.srcDirs = ['libs_api23/jni']
-//      jni.srcDirs = [] //disable automatic ndk-build
-//    }
-//  }
-//}
-
-//configurations {
-//  api23Compile.extendsFrom compile
-//}
-
 dependencies {
   compile fileTree(dir: 'libs_built', include: ['*.jar'])
+  
+  // Based on: https://developer.android.com/studio/build/build-variants.html#sourcesets
   api23Compile fileTree(dir: 'libs_api23', include: ['*.jar'])
 }
  
-
-//task build_api23 {
-//  doFirst {
-//    // KJA current work
-//    println "XXX from build api23!"
-//  }
-//}
