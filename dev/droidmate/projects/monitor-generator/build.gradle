@@ -79,15 +79,6 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
 task generateMonitor_api19(type: JavaExec) {JavaExec je -> generateMonitor(je, ["api19"], generatedMonitor_api19) }
 task generateMonitor_api23(type: JavaExec) {JavaExec je -> generateMonitor(je, ["api23"], generatedMonitor_api23) }
 
-/* KJA use instead projects/monitor-apk-scaffolding. It already works, but still the problem of:
-Process: org.droidmate.fixtures.apks.monitored, PID: 24072
-                                                                                       java.lang.NoClassDefFoundError: Failed resolution of: Lorg/droidmate/common/logcat/ApiLogcatMessage;
-                                                                                           at org.droidmate.plugin_hook.HookPlugin.hookAfterApiCall(HookPlugin.java:36)
-                                                                                          
-is not yet solved. 
-KJA Maybe because the ApiLogcaMessage is a groovy file?? It has imports to groovy namespace. Try to inculde instead a "plain" java file.
-KJA rename plugin-api-hook to monitor-hook
-*/
 File monitorApkScaffoldingDir = file "monitor-apk-scaffolding"
 assert monitorApkScaffoldingDir.directory
 
