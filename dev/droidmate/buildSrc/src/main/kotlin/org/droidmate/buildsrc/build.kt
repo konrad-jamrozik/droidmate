@@ -55,8 +55,11 @@ val android_extras_m2repo = android_sdk_dir.resolveDir("extras/android/m2reposit
 
 val monitor_generator_res_name_monitor_template = "monitorTemplate.txt"
 private val monitor_generator_output_dir = "temp"
-val monitor_generator_output_relative_path_api19 = monitor_generator_output_dir + "/generated_Monitor_api19.java"
-val monitor_generator_output_relative_path_api23 = monitor_generator_output_dir + "/generated_Monitor_api23.java"
+fun generated_monitor(apiLevel: Int) : String {
+  return "$monitor_generator_output_dir/generated_Monitor_api$apiLevel.java"
+}
+val monitor_generator_output_relative_path_api19 = generated_monitor(19)
+val monitor_generator_output_relative_path_api23 = generated_monitor(23)
 
 val apk_inliner_param_input_default = Paths.get("input-apks")
 val apk_inliner_param_output_dir_default = Paths.get("output-apks")

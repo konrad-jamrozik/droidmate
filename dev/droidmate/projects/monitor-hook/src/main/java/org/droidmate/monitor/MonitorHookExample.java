@@ -30,7 +30,7 @@ class MonitorHookExample implements IMonitorHook
 
   public Object hookAfterApiCall(String apiLogcatMessagePayload, Object returnValue)
   {
-    // KJA2 (hook/destructuring) make before/after hooks accept not string, but ApiLogcatMessage or similar. Depends on hook/libmonitor
+    // KJA (hook/destructuring) make before/after hooks accept not string, but ApiLogcatMessage or similar. Depends on hook/libmonitor
     System.out.println("hookAfterApiCall/returnValue: " + returnValue);
     if (apiLogcatMessagePayload.contains("mthd: getDeviceId"))
     {

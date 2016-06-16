@@ -71,14 +71,7 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
   je.doLast { assert generatedMonitor.file }
 }
 
-def generatedMonitor = {int apiLevel ->
-  // KJA remove if
-  if (apiLevel == 19)
-    new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api19)
-  else if (apiLevel == 23)
-    new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api23)
-  else assert false;
-}
+def generatedMonitor = {int apiLevel -> new File(runTask.workingDir, BuildKt.generated_monitor(apiLevel))}
 task generateMonitor_api19(type: JavaExec) {generateMonitor(it as JavaExec, ["api19"], generatedMonitor(19)) }
 task generateMonitor_api23(type: JavaExec) {generateMonitor(it as JavaExec, ["api23"], generatedMonitor(23)) }
 
@@ -106,17 +99,12 @@ def assembleApk = {GradleBuild gradleBuildTask, int apiLevel ->
   gradleBuildTask.tasks = ["assembleApi$apiLevel".toString()]
 }
 
-File libsBuilt = new File(monitorApkScaffoldingDir, "libs_built")
-def prepareMonitorBuild_common = {
-  delete libsBuilt
-  copy {it.from monitorHookJarTask.archivePath into libsBuilt}
-  copy {it.from libCommonJarTask.archivePath into libsBuilt}
-}
-
 def monitorJava = { int apiLevel -> new File(monitorApkScaffoldingDir, "src/api$apiLevel/java/org/droidmate/monitor/Monitor.java") }
 File apkScaffoldingOutput = new File(monitorApkScaffoldingDir, "build")
 def apkScaffoldingOutputApk = { int apiLevel -> new File(apkScaffoldingOutput, "outputs/apk/monitor-apk-scaffolding-api$apiLevel-release-unsigned.apk") }
 def monitorApk = { int apiLevel -> new File(buildDir, "monitor_api${apiLevel}.apk") }
+
+File libsBuilt = new File(monitorApkScaffoldingDir, "libs_built")
 
 def buildMonitorApk = { GradleBuild task, int apiLevel ->
 
@@ -135,7 +123,9 @@ def buildMonitorApk = { GradleBuild task, int apiLevel ->
   task.outputs.file monitorApk(apiLevel)
 
   task.doFirst {
-    prepareMonitorBuild_common()
+    delete libsBuilt
+    copy {it.from monitorHookJarTask.archivePath into libsBuilt}
+    copy {it.from libCommonJarTask.archivePath into libsBuilt}
     copyFileWithRename(generatedMonitor(apiLevel), monitorJava(apiLevel))
     assert monitorJava(apiLevel).file
   }
