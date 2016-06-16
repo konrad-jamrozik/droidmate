@@ -10,7 +10,7 @@ import org.droidmate.buildsrc.BuildKt
 
 /**
  *  This project contains sources to be edited by anyone who wants to provide custom API call hooking logic.
- *  For more documentation, please see org.droidmate.plugin_hook.MonitorHookTemplate
+ *  For more documentation, please see org.droidmate.monitor.MonitorHookTemplate
  */
 
 apply plugin: 'java'

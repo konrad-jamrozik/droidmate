@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 
-package org.droidmate.monitor_generator
+package org.droidmate.monitor
 
 import groovy.util.logging.Slf4j
 import org.droidmate.MonitorConstants

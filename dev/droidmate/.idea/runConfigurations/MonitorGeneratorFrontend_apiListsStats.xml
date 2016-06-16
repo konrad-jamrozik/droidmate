@@ -2,11 +2,11 @@
   <configuration default="false" name="MonitorGeneratorFrontend apiListsStats" type="Application" factoryName="Application" folderName="Data extraction" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
       <pattern>
-        <option name="PATTERN" value="org.droidmate.monitor_generator.*" />
+        <option name="PATTERN" value="org.droidmate.monitor.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <option name="MAIN_CLASS_NAME" value="org.droidmate.monitor_generator.MonitorGeneratorFrontend" />
+    <option name="MAIN_CLASS_NAME" value="org.droidmate.monitor.MonitorGeneratorFrontend" />
     <option name="VM_PARAMETERS" value="-ea -Dloglevel=DEBUG" />
     <option name="PROGRAM_PARAMETERS" value="apiListsStats=$PROJECT_DIR$/resources/api_lists_PScout_AppGuard_stats.txt" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />

@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 
-package org.droidmate.monitor_generator
+package org.droidmate.monitor
 
 import java.nio.file.Files
 import java.nio.file.Path

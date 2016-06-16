@@ -7,11 +7,11 @@
 //
 // www.droidmate.org
 
-// org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
-package org.droidmate.monitor_template_src;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-// package org.droidmate.monitor_generator.generated;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+// org.droidmate.monitor.MonitorSrcTemplate:REMOVE_LINES
+package org.droidmate.monitor;
+// org.droidmate.monitor.MonitorSrcTemplate:UNCOMMENT_LINES
+// package org.droidmate.monitor;
+// org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -30,25 +30,25 @@ import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-// org.droidmate.monitor_generator.MonitorSrcTemplate:API_19_UNCOMMENT_LINES
+// org.droidmate.monitor.MonitorSrcTemplate:API_19_UNCOMMENT_LINES
 // import de.uds.infsec.instrumentation.Instrumentation;
 // import de.uds.infsec.instrumentation.annotation.Redirect;
 // import de.uds.infsec.instrumentation.util.Signature;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+// org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
 
-// org.droidmate.monitor_generator.MonitorSrcTemplate:API_23_UNCOMMENT_LINES
+// org.droidmate.monitor.MonitorSrcTemplate:API_23_UNCOMMENT_LINES
 // import de.larma.arthook.*;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+// org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
 
-// org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-// import org.droidmate.plugin_hook.IMonitorHook;
-// import org.droidmate.plugin_hook.MonitorHook;
-// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+// org.droidmate.monitor.MonitorSrcTemplate:UNCOMMENT_LINES
+// import org.droidmate.monitor.IMonitorHook;
+// import org.droidmate.monitor.MonitorHook;
+// org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
 
 /**<p>
  * This class will be used by {@code MonitorGenerator} to create {@code Monitor.java} deployed on the device. This class will be
  * first copied by appropriate gradle task of monitor-generator project to its resources dir. Then it will be handled to
- * {@code org.droidmate.monitor_generator.MonitorSrcTemplate} for further processing.
+ * {@code org.droidmate.monitor.MonitorSrcTemplate} for further processing.
  *
  * </p><p>
  * Note that the final generated version of this file, after running {@code :projects:monitor-generator:build}, will be placed in
@@ -58,7 +58,7 @@ import java.util.*;
  *
  * </p><p>
  * To check if the process of converting this file to a proper {@code Monitor.java} works correctly, see:
- * {@code org.droidmate.monitor_generator.MonitorGeneratorFrontendTest#Generates DroidMate monitor()}.
+ * {@code org.droidmate.monitor.MonitorGeneratorFrontendTest#Generates DroidMate monitor()}.
  *
  * </p><p>
  * Note: The resulting class deployed to the device will be compiled with legacy ant script from Android SDK that supports only
@@ -66,25 +66,25 @@ import java.util.*;
  *
  * </p><p>
  *   See also:<br/>
- *     {@code org.droidmate.monitor_generator.MonitorSrcTemplate}<br/>
- *     {@code org.droidmate.monitor_generator.RedirectionsGenerator}
+ *     {@code org.droidmate.monitor.MonitorSrcTemplate}<br/>
+ *     {@code org.droidmate.monitor.RedirectionsGenerator}
  * </p>
  */
 @SuppressLint("NewApi")
 @SuppressWarnings("Convert2Diamond")
 // !!! DUPLICATION WARNING !!! of class name and location with the build.gradle script of monitor-generator
-// org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
+// org.droidmate.monitor.MonitorSrcTemplate:REMOVE_LINES
 public class MonitorJavaTemplate
-// org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+// org.droidmate.monitor.MonitorSrcTemplate:UNCOMMENT_LINES
 // public class Monitor
-// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+// org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
 {
   //region Class init code
-  // org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
+  // org.droidmate.monitor.MonitorSrcTemplate:REMOVE_LINES
   public MonitorJavaTemplate()
-  // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+  // org.droidmate.monitor.MonitorSrcTemplate:UNCOMMENT_LINES
   // public Monitor()
-  // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+  // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
   {
     try
     {
@@ -117,19 +117,19 @@ public class MonitorJavaTemplate
       server.context = context;
     }
 
-    // org.droidmate.monitor_generator.MonitorSrcTemplate:API_19_UNCOMMENT_LINES
+    // org.droidmate.monitor.MonitorSrcTemplate:API_19_UNCOMMENT_LINES
     // Instrumentation.processClass(Monitor.class);
-    // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+    // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
     
-    // org.droidmate.monitor_generator.MonitorSrcTemplate:API_23_UNCOMMENT_LINES
+    // org.droidmate.monitor.MonitorSrcTemplate:API_23_UNCOMMENT_LINES
     // ArtHook.hook(Monitor.class);
-    // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+    // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
 
     redirectConstructors();
 
-    // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+    // org.droidmate.monitor.MonitorSrcTemplate:UNCOMMENT_LINES
     // monitorHook.init(context);
-    // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+    // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
 
     Log.i(MonitorConstants.tag_init, MonitorConstants.msgPrefix_init_success + context.getPackageName());
   }
@@ -220,9 +220,9 @@ public class MonitorJavaTemplate
 
         } else if (MonitorConstants.srvCmd_close.equals(input))
         {
-          // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+          // org.droidmate.monitor.MonitorSrcTemplate:UNCOMMENT_LINES
           // monitorHook.finalizeMonitorHook();
-          // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+          // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
           
           // In addition to the logic above, this command is handled in 
           // org.droidmate.monitor_template_src.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
@@ -279,7 +279,7 @@ public class MonitorJavaTemplate
           String secondLastFrame = frames[frames.length - 2];
           if (secondLastFrame.startsWith("org.droidmate"))
           {
-            if (!secondLastFrame.startsWith("org.droidmate.monitor_generator.generated.Monitor")) throw new AssertionError();
+            if (!secondLastFrame.startsWith("org.droidmate.monitor.Monitor")) throw new AssertionError();
             if (!anyContains(frames, "Socket.<init>")) throw new AssertionError();
             logsToRemove.add(log);
           }
@@ -569,8 +569,8 @@ public class MonitorJavaTemplate
    * <p>
    * Called by monitor code to log Android API calls. Calls to this methods are generated in:
    * <pre>
-   * org.droidmate.monitor_generator.RedirectionsGenerator#generateCtorCallsAndTargets(java.util.List)
-   * org.droidmate.monitor_generator.RedirectionsGenerator#generateMethodTargets(java.util.List)</pre>
+   * org.droidmate.monitor.RedirectionsGenerator#generateCtorCallsAndTargets(java.util.List)
+   * org.droidmate.monitor.RedirectionsGenerator#generateMethodTargets(java.util.List)</pre>
    * </p>
    * This method has to be accessed in a synchronized manner to ensure proper access to the {@code currentLogs} list and also
    * to ensure calls to {@code SimpleDateFormat.format(new Date())} return correct results.
@@ -668,20 +668,20 @@ public class MonitorJavaTemplate
   //endregion
 
   //region Hook code
-  // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+  // org.droidmate.monitor.MonitorSrcTemplate:UNCOMMENT_LINES
   // public static IMonitorHook monitorHook = new MonitorHook();
-  // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+  // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
   //endregion
   
   //region Generated code
 
   private static void redirectConstructors()
   {
-    // org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES
+    // org.droidmate.monitor.MonitorSrcTemplate:REMOVE_LINES
     ClassLoader[] classLoaders = {Thread.currentThread().getContextClassLoader(), MonitorJavaTemplate.class.getClassLoader()};
-    // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
+    // org.droidmate.monitor.MonitorSrcTemplate:UNCOMMENT_LINES
     // ClassLoader[] classLoaders = {Thread.currentThread().getContextClassLoader(), Monitor.class.getClassLoader()};
-    // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
+    // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
 
     // GENERATED_CODE_INJECTION_POINT:CTOR_REDIR_CALLS
   }

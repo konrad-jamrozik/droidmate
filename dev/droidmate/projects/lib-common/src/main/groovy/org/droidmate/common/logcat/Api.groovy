@@ -28,7 +28,7 @@ import static org.droidmate.common.Assert.assertRegexMatches
 class Api implements IApi, Serializable
 {
 
-  public static final String monitorRedirectionPrefix = "org.droidmate.monitor_generator.generated.Monitor.redir"
+  public static final String monitorRedirectionPrefix = "org.droidmate.monitor.Monitor.redir"
 
   // !!! DUPLICATION WARNING !!! org.droidmate.lib_android.MonitorJavaTemplate.stack_trace_frame_delimiter
   public static final String stack_trace_frame_delimiter = "->";

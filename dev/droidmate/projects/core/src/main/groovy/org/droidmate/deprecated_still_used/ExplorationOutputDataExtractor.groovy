@@ -343,7 +343,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
     writer.close()
   }
 
-  /// !!! DUPLICATION WARNING !!! org.droidmate.monitor_generator.RedirectionsGenerator.redirMethodDefPrefix
+  /// !!! DUPLICATION WARNING !!! org.droidmate.monitor.RedirectionsGenerator.redirMethodDefPrefix
   // and with other code in this class responsible for generating method name.
 
   private static List<String> manuallyConfirmedNonRedundantApis = [
@@ -488,7 +488,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
 
         String paddedThreadId = api.threadId.padLeft(4, ' ')
         String handlerString = ("TId: $paddedThreadId " + stFrames.last().padRight(130, ' '))
-        String apiCallString = (stFrames.first() - "org.droidmate.monitor_generator.generated.Monitor.").replace("_", ".")
+        String apiCallString = (stFrames.first() - "org.droidmate.monitor.Monitor.").replace("_", ".")
         String paramValsString = api.paramValues.toString()
         String fullString = handlerString + " -> " + apiCallString + " " + paramValsString
 

@@ -6,5 +6,5 @@ This file is necessary because of gradle 'com.android.application' plugin.
  which is necessary to allow access to Sockets and to change the Wifi state
 -->
 
-<manifest package="org.droidmate.monitor_generator.generated">
+<manifest package="org.droidmate.monitor">
 </manifest>

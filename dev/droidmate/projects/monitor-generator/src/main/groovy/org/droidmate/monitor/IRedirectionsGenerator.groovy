@@ -7,11 +7,15 @@
 //
 // www.droidmate.org
 
-package org.droidmate.monitor_generator
+package org.droidmate.monitor
 
 import org.droidmate.apis.ApiMethodSignature
 
-interface IMonitorGenerator
+interface IRedirectionsGenerator
 {
- String generate(List<ApiMethodSignature> signatures)
+
+  List<String> generateCtorCallsAndTargets(List<ApiMethodSignature> signatures)
+
+  String generateMethodTargets(List<ApiMethodSignature> signatures)
 }
+

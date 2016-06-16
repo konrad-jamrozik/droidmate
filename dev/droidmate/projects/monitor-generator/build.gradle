@@ -63,14 +63,14 @@ processResources.dependsOn "pullMonitorJavaTemplateSource"
 
 //region Tasks calling MonitorGeneratorFrontend, outputting generatedMonitor_apiXX
 apply plugin: 'application'
-mainClassName = "org.droidmate.monitor_generator.MonitorGeneratorFrontend"
+mainClassName = "org.droidmate.monitor.MonitorGeneratorFrontend"
 JavaExec runTask = tasks.run as JavaExec
 def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
   je.group = "build"
   ["main", "classpath", "standardOutput"].each {je."$it" = runTask."$it"}
 
   je.args = args
-  // Output is not muted as we want to see in Gradle build log output of org.droidmate.monitor_generator.MonitorGeneratorFrontend.loadMonitorHookIfAvailableElseNull
+  // Output is not muted as we want to see in Gradle build log output of org.droidmate.monitor.MonitorGeneratorFrontend.loadMonitorHookIfAvailableElseNull
   //je.standardOutput = new ByteArrayOutputStream() // Mute the task stdout
   je.outputs.file generatedMonitor
 
@@ -180,6 +180,7 @@ task buildMonitorApk_api23(type: GradleBuild, dependsOn: ["generateMonitor_api23
   copyFileWithRename(task, apkScaffoldingOutputApk_api23, monitor_apk_api23)
 }
 
+// KJA merge into clean
 task cleanRun(type: Delete){
   group = "build"
   

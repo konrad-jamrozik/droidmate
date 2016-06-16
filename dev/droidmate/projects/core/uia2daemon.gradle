@@ -1,3 +1,11 @@
+// Copyright (c) 2012-2016 Saarland University
+// All rights reserved.
+//
+// Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+//
+// This file is part of the "DroidMate" project.
+//
+// www.droidmate.org
 import org.droidmate.buildsrc.BuildKt
 
 File uia2DaemonProjectDir = new File(rootDir, BuildKt.uia2_daemon_relative_project_dir.path)
@@ -11,7 +19,6 @@ task pullUiautomator2DaemonApk(type: Copy, dependsOn: "assembleUiautomator2Daemo
   Copy copy ->
     def uiaDaemonApk = file(new File(uia2DaemonBuildDir.absolutePath + "/outputs/apk/", uia2DaemonApkOriginalName))
     copy.from(uiaDaemonApk).into(coreResDir).rename("-debug-unaligned.apk", ".apk")
-    
 }
 
 String uia2DaemonTestApkOriginalName = "${uia2DaemonName}-debug-androidTest-unaligned.apk"

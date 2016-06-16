@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 
-package org.droidmate.monitor_generator
+package org.droidmate.monitor
 
 import groovy.transform.TypeChecked
 import org.droidmate.common.BuildConstants

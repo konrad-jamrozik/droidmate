@@ -36,7 +36,7 @@ import groovy.transform.Immutable
  *
  * </p><p>
  * However, I am keeping the list as it is, to maintain compatibility with the claims made in the paper on the API counts and
- * lists. Related: {@code org.droidmate.monitor_generator.ApiListsStats}
+ * lists. Related: {@code org.droidmate.monitor.ApiListsStats}
  *
  * </p>
  */

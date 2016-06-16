@@ -78,13 +78,13 @@ class FilteredApis implements IFilteredApis
    * stacktrace:
    * dalvik.system.VMStack.getThreadStackTrace(Native Method)->
    * java.lang.Thread.getStackTrace(Thread.java:579)->
-   * org.droidmate.monitor_generator.generated.Monitor.getStackTrace(Monitor.java:303)->
-   * org.droidmate.monitor_generator.generated.Monitor.redir_8_java_net_Socket_ctor0(Monitor.java:542)->
+   * org.droidmate.monitor.Monitor.getStackTrace(Monitor.java:303)->
+   * org.droidmate.monitor.Monitor.redir_8_java_net_Socket_ctor0(Monitor.java:542)->
    * java.lang.reflect.Method.invokeNative(Native Method)->
    * java.lang.reflect.Method.invoke(Method.java:515)->
    * java.net.Socket.&lt;init>(Socket.java)->
    * java.net.ServerSocket.accept(ServerSocket.java:126)->
-   * org.droidmate.monitor_generator.generated.Monitor$SerializableTCPServerBase$MonitorServerRunnable.run(Monitor.java:228)->
+   * org.droidmate.monitor.Monitor$SerializableTCPServerBase$MonitorServerRunnable.run(Monitor.java:228)->
    * java.lang.Thread.run(Thread.java:841)
    * </code></pre>
    *
@@ -95,13 +95,13 @@ class FilteredApis implements IFilteredApis
     def secondLastFrame = stackTrace.takeRight(2).first()
     if (secondLastFrame.startsWith("org.droidmate"))
     {
-      assert secondLastFrame.startsWith("org.droidmate.monitor_generator.generated.Monitor")
+      assert secondLastFrame.startsWith("org.droidmate.monitor.Monitor")
       assert stackTrace.any {it.contains("Socket.<init>")}
       return true
     }
 
     // Assert made just to be extra-sure.
-    assert !(stackTrace.any { it.startsWith("org.droidmate.monitor_generator.generated.Monitor") && it.contains("Socket.<init>") })
+    assert !(stackTrace.any { it.startsWith("org.droidmate.monitor.Monitor") && it.contains("Socket.<init>") })
 
     return false
   }

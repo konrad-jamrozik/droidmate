@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 
-package org.droidmate.monitor_generator
+package org.droidmate.monitor
 
 import java.nio.file.Path
 
@@ -30,18 +30,18 @@ class MonitorSrcTemplate
     //noinspection GroovyAssignabilityCheck // shouldn't be necessary, but IntelliJ is buggy.
     monitorSrcTemplatePath.eachLine {String line ->
 
-      if (line.contains("// org.droidmate.monitor_generator.MonitorSrcTemplate:REMOVE_LINES"))
+      if (line.contains("// org.droidmate.monitor.MonitorSrcTemplate:REMOVE_LINES"))
       {
         remove = true
         uncomment = false
-      } else if (line.contains("// org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES") ||
-        (androidApi == AndroidAPI.API_19 && line.contains("// org.droidmate.monitor_generator.MonitorSrcTemplate:API_19_UNCOMMENT_LINES")) ||
-        (androidApi == AndroidAPI.API_23 && line.contains("// org.droidmate.monitor_generator.MonitorSrcTemplate:API_23_UNCOMMENT_LINES"))
+      } else if (line.contains("// org.droidmate.monitor.MonitorSrcTemplate:UNCOMMENT_LINES") ||
+        (androidApi == AndroidAPI.API_19 && line.contains("// org.droidmate.monitor.MonitorSrcTemplate:API_19_UNCOMMENT_LINES")) ||
+        (androidApi == AndroidAPI.API_23 && line.contains("// org.droidmate.monitor.MonitorSrcTemplate:API_23_UNCOMMENT_LINES"))
       )
       {
         remove = false
         uncomment = true
-      } else if (line.contains("// org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES"))
+      } else if (line.contains("// org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES"))
       {
         remove = false
         uncomment = false

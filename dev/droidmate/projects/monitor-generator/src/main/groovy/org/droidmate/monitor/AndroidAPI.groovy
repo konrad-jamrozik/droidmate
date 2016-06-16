@@ -6,7 +6,7 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.monitor_generator
+package org.droidmate.monitor
 
 enum AndroidAPI {
 

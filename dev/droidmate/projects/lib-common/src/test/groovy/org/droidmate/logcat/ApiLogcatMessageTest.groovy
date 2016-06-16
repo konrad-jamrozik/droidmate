@@ -129,8 +129,8 @@ vertical-align:_middle;
 java.lang.String text/html java.lang.String UTF-8 java.lang.String null \
 stacktrace: dalvik.system.VMStack.getThreadStackTrace(Native Method)->\
 java.lang.Thread.getStackTrace(Thread.java:579)->\
-org.droidmate.monitor_generator.generated.Monitor.getStackTrace(Monitor.java:428)->\
-org.droidmate.monitor_generator.generated.Monitor.redir_android_webkit_WebView_loadDataWithBaseURL5(Monitor.java:1901)->\
+org.droidmate.monitor.Monitor.getStackTrace(Monitor.java:428)->\
+org.droidmate.monitor.Monitor.redir_android_webkit_WebView_loadDataWithBaseURL5(Monitor.java:1901)->\
 java.lang.reflect.Method.invokeNative(Native Method)->\
 java.lang.reflect.Method.invoke(Method.java:515)->\
 android.webkit.WebView.loadDataWithBaseURL(WebView.java)->\

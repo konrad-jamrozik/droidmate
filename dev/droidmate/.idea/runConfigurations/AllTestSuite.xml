@@ -2,7 +2,7 @@
   <configuration default="false" name="AllTestSuite" type="JUnit" factoryName="JUnit" folderName="Other test configs" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
       <pattern>
-        <option name="PATTERN" value="org.droidmate.monitor_template_src.*" />
+        <option name="PATTERN" value="org.droidmate.monitor.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
