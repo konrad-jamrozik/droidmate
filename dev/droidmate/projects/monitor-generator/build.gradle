@@ -40,25 +40,18 @@ dependencies {
 //region Tasks to setup resources necessary for a call to MonitorGeneratorFrontend
 
 // Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
-processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
+processResources.configure { Copy copy ->
 
-task pullMonitorJavaTemplateSource(type: Copy) { Copy copy ->
+  File appguardApisTxt = project(":projects").file("resources/${BuildKt.appguard_apis_txt}")
+  assert appguardApisTxt.file
 
   evaluationDependsOn(":projects:monitor-template")
   // !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.monitor_template_src.MonitorJavaTemplate
   File monitorJavaTemplateSource = findProject(":projects:monitor-template").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
   assert monitorJavaTemplateSource.file
 
-  SourceDirectorySet resDirs = sourceSets.main.resources
-  assert resDirs.srcDirs.size() == 1
-  File resDir = resDirs.srcDirs[0]
-  
-  copy.from monitorJavaTemplateSource 
-  copy.into resDir
-  copy.rename { BuildKt.monitor_generator_res_name_monitor_template }
+  copy.from(appguardApisTxt, monitorJavaTemplateSource).rename(monitorJavaTemplateSource.name, BuildKt.monitor_generator_res_name_monitor_template)
 }
-// KJA add clean here. Split off clean everywhere
-processResources.dependsOn "pullMonitorJavaTemplateSource"
 
 //endregion
 
@@ -70,8 +63,6 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
   je.group = "build"
   ["main", "classpath", "standardOutput"].each {je."$it" = runTask."$it"}
 
-  // KJA add inputs: the resources
-  
   je.args = args
   // Output is not muted as we want to see in Gradle build log output of org.droidmate.monitor.MonitorGeneratorFrontend.loadMonitorHookIfAvailableElseNull
   //je.standardOutput = new ByteArrayOutputStream() // Mute the task stdout
@@ -81,7 +72,7 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
 }
 
 def generatedMonitor = {int apiLevel ->
-  // KJA to get rid of if
+  // KJA remove if
   if (apiLevel == 19)
     new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api19)
   else if (apiLevel == 23)
@@ -156,18 +147,20 @@ task buildMonitorApk_api19(type: GradleBuild) {buildMonitorApk(it as GradleBuild
 task buildMonitorApk_api23(type: GradleBuild) {buildMonitorApk(it as GradleBuild, 23) }
 
 clean.configure {
+  
   delete generatedMonitor(19)
   delete generatedMonitor(23)
+  assert generatedMonitor(19).parent ==  generatedMonitor(23).parent
+  delete generatedMonitor(19).parent
+
   delete monitorJava(19)
   delete monitorJava(23)
 
-  assert generatedMonitor(19).parent ==  generatedMonitor(23).parent
-  delete generatedMonitor(19).parent
-  delete monitorApk(19)
-  delete monitorApk(23)
-
   delete libsBuilt
   delete apkScaffoldingOutput
+
+  delete monitorApk(19)
+  delete monitorApk(23)
 }
 
 build.dependsOn "buildMonitorApk_api19", "buildMonitorApk_api23"
