@@ -37,33 +37,34 @@ dependencies {
   compile project(":projects:monitor-template")
 }
 
-evaluationDependsOn(":projects:monitor-template")
-// !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.monitor_template_src.MonitorJavaTemplate
-File monitorJavaTemplateSource = findProject(":projects:monitor-template").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
-assert monitorJavaTemplateSource.file
-
-SourceDirectorySet resDirs = sourceSets.main.resources
-assert resDirs.srcDirs.size() == 1
-File resDir = resDirs.srcDirs[0]
-
-apply plugin: 'application'
-mainClassName = "org.droidmate.monitor_generator.MonitorGeneratorFrontend"
-
-processResources.dependsOn "pullMonitorJavaTemplateSource"
+//region Tasks to setup resources necessary for a call to MonitorGeneratorFrontend
 
 // Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
 processResources.configure { Copy copy -> copy.from(project(":projects").file("resources")) }
 
 task pullMonitorJavaTemplateSource(type: Copy) { Copy copy ->
 
+  evaluationDependsOn(":projects:monitor-template")
+  // !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.monitor_template_src.MonitorJavaTemplate
+  File monitorJavaTemplateSource = findProject(":projects:monitor-template").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
+  assert monitorJavaTemplateSource.file
+
+  SourceDirectorySet resDirs = sourceSets.main.resources
+  assert resDirs.srcDirs.size() == 1
+  File resDir = resDirs.srcDirs[0]
+  
   copy.from monitorJavaTemplateSource 
   copy.into resDir
   copy.rename { BuildKt.monitor_generator_res_name_monitor_template }
 }
+processResources.dependsOn "pullMonitorJavaTemplateSource"
 
+//endregion
+
+//region Tasks calling MonitorGeneratorFrontend, outputting generatedMonitor_apiXX
+apply plugin: 'application'
+mainClassName = "org.droidmate.monitor_generator.MonitorGeneratorFrontend"
 JavaExec runTask = tasks.run as JavaExec
-File generatedMonitor_api19 = new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api19)
-File generatedMonitor_api23 = new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api23)
 def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
   je.group = "build"
   ["main", "classpath", "standardOutput"].each {je."$it" = runTask."$it"}
@@ -75,9 +76,12 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
 
   je.doLast { assert generatedMonitor.file }
 }
-
+File generatedMonitor_api19 = new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api19)
+File generatedMonitor_api23 = new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api23)
 task generateMonitor_api19(type: JavaExec) {generateMonitor(it as JavaExec, ["api19"], generatedMonitor_api19) }
 task generateMonitor_api23(type: JavaExec) {generateMonitor(it as JavaExec, ["api23"], generatedMonitor_api23) }
+
+//endregion
 
 evaluationDependsOn(":projects:plugin-api-hook")
 Jar pluginApiHookJarTask = findProject(":projects:plugin-api-hook").jar as Jar

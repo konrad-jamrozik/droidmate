@@ -27,6 +27,7 @@ import org.droidmate.buildsrc.BuildKt
 
 apply plugin: 'java'
 
+// KJA this can probable be now V_1_7 due to migration away from ant. Update comments.
 sourceCompatibility = JavaVersion.VERSION_1_5
 targetCompatibility = JavaVersion.VERSION_1_5
 compileJava.configure { JavaCompile jc ->
