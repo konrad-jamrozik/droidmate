@@ -57,6 +57,7 @@ task pullMonitorJavaTemplateSource(type: Copy) { Copy copy ->
   copy.into resDir
   copy.rename { BuildKt.monitor_generator_res_name_monitor_template }
 }
+// KJA add clean here. Split off clean everywhere
 processResources.dependsOn "pullMonitorJavaTemplateSource"
 
 //endregion
@@ -69,6 +70,8 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
   je.group = "build"
   ["main", "classpath", "standardOutput"].each {je."$it" = runTask."$it"}
 
+  // KJA add inputs: the resources
+  
   je.args = args
   // Output is not muted as we want to see in Gradle build log output of org.droidmate.monitor.MonitorGeneratorFrontend.loadMonitorHookIfAvailableElseNull
   //je.standardOutput = new ByteArrayOutputStream() // Mute the task stdout
@@ -76,130 +79,98 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
 
   je.doLast { assert generatedMonitor.file }
 }
-File generatedMonitor_api19 = new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api19)
-File generatedMonitor_api23 = new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api23)
-task generateMonitor_api19(type: JavaExec) {generateMonitor(it as JavaExec, ["api19"], generatedMonitor_api19) }
-task generateMonitor_api23(type: JavaExec) {generateMonitor(it as JavaExec, ["api23"], generatedMonitor_api23) }
+
+def generatedMonitor = {int apiLevel ->
+  // KJA to get rid of if
+  if (apiLevel == 19)
+    new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api19)
+  else if (apiLevel == 23)
+    new File(runTask.workingDir, BuildKt.monitor_generator_output_relative_path_api23)
+  else assert false;
+}
+task generateMonitor_api19(type: JavaExec) {generateMonitor(it as JavaExec, ["api19"], generatedMonitor(19)) }
+task generateMonitor_api23(type: JavaExec) {generateMonitor(it as JavaExec, ["api23"], generatedMonitor(23)) }
 
 //endregion
 
 evaluationDependsOn(":projects:monitor-hook")
-Jar pluginApiHookJarTask = findProject(":projects:monitor-hook").jar as Jar
+Jar monitorHookJarTask = findProject(":projects:monitor-hook").jar as Jar
+
 evaluationDependsOn(":projects:lib-common")
 Jar libCommonJarTask = findProject(":projects:lib-common").jar as Jar
-
-File monitor_apk_api19 = new File(buildDir, "monitor_api19.apk")
-File monitor_apk_api23 = new File(buildDir, "monitor_api23.apk")
 
 File monitorApkScaffoldingDir = project(":projects").file("monitor-apk-scaffolding")
 assert monitorApkScaffoldingDir.directory
 
+
+def copyFileWithRename = {File copiedFile, File targetFile ->
+  assert targetFile.parentFile.directory
+  copy { it.from(copiedFile).into(targetFile.parent).rename { targetFile.name }}
+}
+
+def assembleApk = {GradleBuild gradleBuildTask, int apiLevel ->
+  File monitorApkScaffoldingBuildGradle = new File(monitorApkScaffoldingDir, "build.gradle")
+  assert monitorApkScaffoldingBuildGradle.file
+  gradleBuildTask.buildFile = monitorApkScaffoldingBuildGradle
+  gradleBuildTask.tasks = ["assembleApi$apiLevel".toString()]
+}
+
 File libsBuilt = new File(monitorApkScaffoldingDir, "libs_built")
 def prepareMonitorBuild_common = {
   delete libsBuilt
-  copy {it.from pluginApiHookJarTask.archivePath into libsBuilt}
+  copy {it.from monitorHookJarTask.archivePath into libsBuilt}
   copy {it.from libCommonJarTask.archivePath into libsBuilt}
 }
 
-File monitorJava_api19 = new File(monitorApkScaffoldingDir, "src/api19/java/org/droidmate/monitor_generator/generated/Monitor.java")
-File monitorJava_api23 = new File(monitorApkScaffoldingDir, "src/api23/java/org/droidmate/monitor_generator/generated/Monitor.java")
-assert monitorJava_api19.parentFile.directory
-assert monitorJava_api23.parentFile.directory
-
-// KJA merge with copyFileWithRename()
-def prepareMonitorBuild_monitor_api19 = { 
-  copy {it.from generatedMonitor_api19 into monitorJava_api19.parent rename generatedMonitor_api19.name, monitorJava_api19.name}
-}
-def prepareMonitorBuild_monitor_api23 = { int 
-  copy {it.from generatedMonitor_api23 into monitorJava_api23.parent rename generatedMonitor_api23.name, monitorJava_api23.name}
-}
-
-def setupExternalGradleBuildCallForMonitorApk_api19 = {GradleBuild gradleBuildTask ->
-  File monitorApkScaffoldingBuildGradle = new File(monitorApkScaffoldingDir, "build.gradle")
-  assert monitorApkScaffoldingBuildGradle.file
-  gradleBuildTask.buildFile = monitorApkScaffoldingBuildGradle
-  gradleBuildTask.tasks = ["assembleApi19"]
-}
-
-def setupExternalGradleBuildCallForMonitorApk_api23 = {GradleBuild gradleBuildTask ->
-  File monitorApkScaffoldingBuildGradle = new File(monitorApkScaffoldingDir, "build.gradle")
-  assert monitorApkScaffoldingBuildGradle.file
-  gradleBuildTask.buildFile = monitorApkScaffoldingBuildGradle
-  gradleBuildTask.tasks = ["assembleApi23"]
-}
-
+def monitorJava = { int apiLevel -> new File(monitorApkScaffoldingDir, "src/api$apiLevel/java/org/droidmate/monitor/Monitor.java") }
 File apkScaffoldingOutput = new File(monitorApkScaffoldingDir, "build")
-File apkScaffoldingOutputApk_api19 = new File(apkScaffoldingOutput, "outputs/apk/monitor-apk-scaffolding-api19-release-unsigned.apk")
-File apkScaffoldingOutputApk_api23 = new File(apkScaffoldingOutput, "outputs/apk/monitor-apk-scaffolding-api23-release-unsigned.apk")
+def apkScaffoldingOutputApk = { int apiLevel -> new File(apkScaffoldingOutput, "outputs/apk/monitor-apk-scaffolding-api$apiLevel-release-unsigned.apk") }
+def monitorApk = { int apiLevel -> new File(buildDir, "monitor_api${apiLevel}.apk") }
 
-def copyFileWithRename = {Task task, File copiedFile, File targetFile ->
-  task.doLast { copy { it.from(copiedFile).into(targetFile.parent).rename { targetFile.name }}}
-}
+def buildMonitorApk = { GradleBuild task, int apiLevel ->
 
-// KJA dry up with api23 task
-task buildMonitorApk_api19(type: GradleBuild, dependsOn: ["generateMonitor_api19", libCommonJarTask, pluginApiHookJarTask]) {GradleBuild task ->
-  task.group = "build"
-
-  File libsApi19 = new File(monitorApkScaffoldingDir, "libs_api19")
-  assert libsApi19.directory
-
-  task.inputs.files libCommonJarTask
-  task.inputs.files pluginApiHookJarTask
-  task.inputs.files tasks."generateMonitor_api19"
-  task.inputs.files fileTree(dir: libsApi19, include: '**')
-
-  task.outputs.file monitor_apk_api19
-
-  task.doFirst {
-    prepareMonitorBuild_common()
-    prepareMonitorBuild_monitor_api19()
-    assert monitorJava_api19.file
-  }
-  setupExternalGradleBuildCallForMonitorApk_api19(task)
-  copyFileWithRename(task, apkScaffoldingOutputApk_api19, monitor_apk_api19)
-}
-task buildMonitorApk_api23(type: GradleBuild, dependsOn: ["generateMonitor_api23", libCommonJarTask, pluginApiHookJarTask]) {GradleBuild task ->
-  task.group = "build"
-
-  File libsApi23 = new File(monitorApkScaffoldingDir, "libs_api23")
-  assert libsApi23.isDirectory()
-
-  task.inputs.files libCommonJarTask
-  task.inputs.files pluginApiHookJarTask
-  task.inputs.files tasks."generateMonitor_api23"
-  task.inputs.files fileTree(dir: libsApi23, include: '**')
-
-  task.outputs.file monitor_apk_api23
-
-  task.doFirst {
-    prepareMonitorBuild_common()
-    prepareMonitorBuild_monitor_api23()
-    assert monitorJava_api23.file
-  }
-  setupExternalGradleBuildCallForMonitorApk_api23(task)
-  copyFileWithRename(task, apkScaffoldingOutputApk_api23, monitor_apk_api23)
-}
-
-// KJA merge into clean
-task cleanRun(type: Delete){
-  group = "build"
+  task.dependsOn([libCommonJarTask, monitorHookJarTask, tasks.getByName("generateMonitor_api$apiLevel")])
   
-  delete generatedMonitor_api19
-  delete generatedMonitor_api23
-  delete monitorJava_api19
-  delete monitorJava_api23
+  task.group = "build"
 
-  assert generatedMonitor_api19.parent == generatedMonitor_api23.parent
-  delete generatedMonitor_api19.parent
-  delete monitor_apk_api19
-  delete monitor_apk_api23
+  task.inputs.files libCommonJarTask
+  task.inputs.files monitorHookJarTask
+  task.inputs.files tasks.getByName("generateMonitor_api$apiLevel")
+  
+  File libsApi = new File(monitorApkScaffoldingDir, "libs_api$apiLevel")
+  assert libsApi.directory
+  task.inputs.files fileTree(dir: libsApi, include: '**')
+
+  task.outputs.file monitorApk(apiLevel)
+
+  task.doFirst {
+    prepareMonitorBuild_common()
+    copyFileWithRename(generatedMonitor(apiLevel), monitorJava(apiLevel))
+    assert monitorJava(apiLevel).file
+  }
+  assembleApk(task, apiLevel)
+  task.doLast { copyFileWithRename(apkScaffoldingOutputApk(apiLevel), monitorApk(apiLevel)) }
+}
+
+task buildMonitorApk_api19(type: GradleBuild) {buildMonitorApk(it as GradleBuild, 19) }
+task buildMonitorApk_api23(type: GradleBuild) {buildMonitorApk(it as GradleBuild, 23) }
+
+clean.configure {
+  delete generatedMonitor(19)
+  delete generatedMonitor(23)
+  delete monitorJava(19)
+  delete monitorJava(23)
+
+  assert generatedMonitor(19).parent ==  generatedMonitor(23).parent
+  delete generatedMonitor(19).parent
+  delete monitorApk(19)
+  delete monitorApk(23)
 
   delete libsBuilt
   delete apkScaffoldingOutput
 }
 
 build.dependsOn "buildMonitorApk_api19", "buildMonitorApk_api23"
-clean.dependsOn "cleanRun"
 
 test.configure {
 
