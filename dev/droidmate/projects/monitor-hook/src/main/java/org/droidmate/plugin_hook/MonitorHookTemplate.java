@@ -17,16 +17,16 @@ import android.content.Context;
 // !!!!! Instead, run full gradle rebuild (see README.md) or do:
 // !!!!! 
 // !!!!!   cd repo/droidmate/dev/droidmate 
-// !!!!!   ./gradlew :projects:plugin-api-hook:compileJava 
+// !!!!!   ./gradlew :projects:monitor-hook:compileJava 
 // !!!!! 
-// !!!!! This will generate HookPlugin.java in the same directory as this class. Edit that file instead.
+// !!!!! This will generate MonitorHook.java in the same directory as this class. Edit that file instead.
 
 /**
- * Please see {@link HookPluginExample} for an example implementation.
+ * Please see {@link MonitorHookExample} for an example implementation.
  */
 // These warnings are suppressed because this class is only a stub of an actual implementation.
 @SuppressWarnings({"unused", "Duplicates", "FieldCanBeLocal", "WeakerAccess"})
-public class HookPluginTemplate implements IHookPlugin
+public class MonitorHookTemplate implements IMonitorHook
 {
 
   public void init(Context context) 
@@ -42,7 +42,7 @@ public class HookPluginTemplate implements IHookPlugin
     return returnValue;
   }
 
-  public void finalizeHookPlugin()
+  public void finalizeMonitorHook()
   {
   }
 }

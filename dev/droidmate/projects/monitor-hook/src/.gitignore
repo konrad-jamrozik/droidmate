@@ -3,9 +3,9 @@
 
 # But not these files...
 !.gitignore
-!HookPluginTemplate.java
-!HookPluginExample.java
-!IHookPlugin.java
+!MonitorHookTemplate.java
+!MonitorHookExample.java
+!IMonitorHook.java
 
 # ...even if they are in subdirectories
 !*/

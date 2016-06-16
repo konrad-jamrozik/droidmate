@@ -41,8 +41,8 @@ import java.util.*;
 // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-// import org.droidmate.plugin_hook.IHookPlugin;
-// import org.droidmate.plugin_hook.HookPlugin;
+// import org.droidmate.plugin_hook.IMonitorHook;
+// import org.droidmate.plugin_hook.MonitorHook;
 // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
 /**<p>
@@ -128,7 +128,7 @@ public class MonitorJavaTemplate
     redirectConstructors();
 
     // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-    // hookPlugin.init(context);
+    // monitorHook.init(context);
     // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
 
     Log.i(MonitorConstants.tag_init, MonitorConstants.msgPrefix_init_success + context.getPackageName());
@@ -221,7 +221,7 @@ public class MonitorJavaTemplate
         } else if (MonitorConstants.srvCmd_close.equals(input))
         {
           // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-          // hookPlugin.finalizeHookPlugin();
+          // monitorHook.finalizeMonitorHook();
           // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
           
           // In addition to the logic above, this command is handled in 
@@ -669,7 +669,7 @@ public class MonitorJavaTemplate
 
   //region Hook code
   // org.droidmate.monitor_generator.MonitorSrcTemplate:UNCOMMENT_LINES
-  // public static IHookPlugin hookPlugin = new HookPlugin();
+  // public static IMonitorHook monitorHook = new MonitorHook();
   // org.droidmate.monitor_generator.MonitorSrcTemplate:KEEP_LINES
   //endregion
   

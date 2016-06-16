@@ -10,7 +10,7 @@ import org.droidmate.buildsrc.BuildKt
 
 /**
  *  This project contains sources to be edited by anyone who wants to provide custom API call hooking logic.
- *  For more documentation, please see org.droidmate.plugin_hook.HookPluginTemplate
+ *  For more documentation, please see org.droidmate.plugin_hook.MonitorHookTemplate
  */
 
 apply plugin: 'java'
@@ -26,32 +26,32 @@ dependencies {
   compile project(":projects:lib-common")
 }
 
-task makeHookPluginFromTemplateIfNotPresent {
+task makeMonitorHookFromTemplateIfNotPresent {
 
-  File hookPluginTemplateSource = sourceSets.main.java.find {it.name == "HookPluginTemplate.java"} as File
-  File hookPluginSource = sourceSets.main.java.find {it.name == "HookPlugin.java"} as File
+  File monitorHookTemplateSource = sourceSets.main.java.find {it.name == "MonitorHookTemplate.java"} as File
+  File monitorHookSource = sourceSets.main.java.find {it.name == "MonitorHook.java"} as File
 
-  assert hookPluginTemplateSource.file
+  assert monitorHookTemplateSource.file
 
   doFirst {
-    if (hookPluginSource == null)
-      hookPluginSource = new File(hookPluginTemplateSource.parent, "HookPlugin.java")
-    if (!hookPluginSource.file)
+    if (monitorHookSource == null)
+      monitorHookSource = new File(monitorHookTemplateSource.parent, "MonitorHook.java")
+    if (!monitorHookSource.file)
     {
-      println "No HookPlugin.java detected. Generating it from HookPluginTemplate."
-      PrintWriter wr = new FileWriter(hookPluginSource).newPrintWriter()
-      hookPluginTemplateSource.readLines()
+      println "No MonitorHook.java detected. Generating it from MonitorHookTemplate."
+      PrintWriter wr = new FileWriter(monitorHookSource).newPrintWriter()
+      monitorHookTemplateSource.readLines()
         .each {String line ->
         if (!line.contains("// !!!!!"))
           wr.println(line.replace("Template", ""))
       }
       wr.close()
     }
-    assert hookPluginSource.file
+    assert monitorHookSource.file
   }
 
 }
 
-compileJava.dependsOn tasks.makeHookPluginFromTemplateIfNotPresent
+compileJava.dependsOn tasks.makeMonitorHookFromTemplateIfNotPresent
 
 apply from: project(":projects").file("maven.gradle")

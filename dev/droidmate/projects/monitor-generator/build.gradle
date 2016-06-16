@@ -70,7 +70,7 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
   ["main", "classpath", "standardOutput"].each {je."$it" = runTask."$it"}
 
   je.args = args
-  // Output is not muted as we want to see in Gradle build log output of org.droidmate.monitor_generator.MonitorGeneratorFrontend.loadHookPluginIfAvailableElseNull
+  // Output is not muted as we want to see in Gradle build log output of org.droidmate.monitor_generator.MonitorGeneratorFrontend.loadMonitorHookIfAvailableElseNull
   //je.standardOutput = new ByteArrayOutputStream() // Mute the task stdout
   je.outputs.file generatedMonitor
 
@@ -83,8 +83,8 @@ task generateMonitor_api23(type: JavaExec) {generateMonitor(it as JavaExec, ["ap
 
 //endregion
 
-evaluationDependsOn(":projects:plugin-api-hook")
-Jar pluginApiHookJarTask = findProject(":projects:plugin-api-hook").jar as Jar
+evaluationDependsOn(":projects:monitor-hook")
+Jar pluginApiHookJarTask = findProject(":projects:monitor-hook").jar as Jar
 evaluationDependsOn(":projects:lib-common")
 Jar libCommonJarTask = findProject(":projects:lib-common").jar as Jar
 
@@ -180,7 +180,8 @@ task buildMonitorApk_api23(type: GradleBuild, dependsOn: ["generateMonitor_api23
   copyFileWithRename(task, apkScaffoldingOutputApk_api23, monitor_apk_api23)
 }
 
-clean.configure {
+task cleanRun(type: Delete){
+  group = "build"
   
   delete generatedMonitor_api19
   delete generatedMonitor_api23
@@ -197,6 +198,7 @@ clean.configure {
 }
 
 build.dependsOn "buildMonitorApk_api19", "buildMonitorApk_api23"
+clean.dependsOn "cleanRun"
 
 test.configure {
 
@@ -205,4 +207,8 @@ test.configure {
   // Test not included because the test shouldn't be run as part of a test suite.
   includes = ['']
 
+}
+task debug { group = "help"
+
+  doLast { debugTaskIO(tasks.cleanRun) }
 }

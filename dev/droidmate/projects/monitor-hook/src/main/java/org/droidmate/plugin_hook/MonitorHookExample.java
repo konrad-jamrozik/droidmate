@@ -12,9 +12,9 @@ package org.droidmate.plugin_hook;
 import android.content.Context;
 
 /**
- * Please see {@link HookPluginTemplate} to see how to implement your custom local (not in vcs) ookPlugin.
+ * Please see {@link MonitorHookTemplate} to see how to implement your custom local (not in vcs) MonitorHook.
  */
-class HookPluginExample implements IHookPlugin
+class MonitorHookExample implements IMonitorHook
 {
   private Context context;
 
@@ -42,9 +42,9 @@ class HookPluginExample implements IHookPlugin
       return returnValue;
   }
 
-  public void finalizeHookPlugin()
+  public void finalizeMonitorHook()
   {
-    System.out.println("finalizeHookPlugin. Context = " + context);
+    System.out.println("finalizeMonitorHook. Context = " + context);
   }
 
 }
