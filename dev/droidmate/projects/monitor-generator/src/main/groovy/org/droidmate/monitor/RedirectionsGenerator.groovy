@@ -43,7 +43,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
   private static final String monitorHookAfterCallPrefix = monitorHookInstanceName + ".hookAfterApiCall("
 
   private static String redirMethodNamePrefix = "redir_";
-  private static String redirMethodDefPrefix = "Lorg/droidmate/monitor_generator/generated/Monitor;->$redirMethodNamePrefix";
+  private static String redirMethodDefPrefix = "Lorg/droidmate/monitor/Monitor;->$redirMethodNamePrefix";
 
   private static Map<Integer, String> ctorRedirNames = [:]
   private final  AndroidAPI           androidApi
