@@ -70,7 +70,7 @@ To do a clean build (a full rebuild): `gradlew clean build`
 After your build passes, you should setup an Android device and run tests requiring it.
 
 * Setup an Android device, as described in the [official doc](http://developer.android.com/training/basics/firstapp/running-app.html#RealDevice). To see which Android devices DroidMate supports, consult the device compatibility section given in `README.md`.
-* If using API 19 and a physical device (as opposed to emulator), ensure the "settings" app is on the main home screen on the device. You can drag & drop it from the apps list. If you omit this step, DroidMate will not be able to ensure WiFi is enabled before each app restart during exploration. DroidMate will work, but will issue a warning to logcat.
+* If using Android 4.4.2 (API 19) and a physical device (as opposed to emulator), ensure the "settings" app is on the main home screen on the device. You can drag & drop it from the apps list. If you omit this step, DroidMate will not be able to ensure WiFi is enabled before each app restart during exploration. DroidMate will work, but will issue a warning to logcat.
 * Run DroidMate tests requiring device as described in the section below.
 
 ### Running tests with the device
