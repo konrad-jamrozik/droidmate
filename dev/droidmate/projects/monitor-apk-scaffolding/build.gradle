@@ -43,9 +43,8 @@ android {
   
   // Based on: https://developer.android.com/studio/build/build-variants.html#product-flavors
   productFlavors {
-    api23 {
-      
-    }
+    api19 { }
+    api23 { }
   }
 }
 
@@ -63,6 +62,7 @@ dependencies {
   compile fileTree(dir: 'libs_built', include: ['*.jar'])
   
   // Based on: https://developer.android.com/studio/build/build-variants.html#sourcesets
+  api19Compile fileTree(dir: 'libs_api19', include: ['*.jar'])
   api23Compile fileTree(dir: 'libs_api23', include: ['*.jar'])
 }
  
