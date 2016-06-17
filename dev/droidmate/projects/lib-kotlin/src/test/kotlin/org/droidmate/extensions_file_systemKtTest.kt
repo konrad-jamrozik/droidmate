@@ -13,9 +13,7 @@ import org.hamcrest.Matchers.equalTo
 import org.junit.Test
 import java.nio.file.Paths
 
-// KJA create test suite for lib-kotlin and add all tests to it
 class extensions_file_systemKtTest {
-
 
   @Test
   fun withExtensionTest() {

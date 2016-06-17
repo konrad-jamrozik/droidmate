@@ -6,22 +6,18 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.report
+package org.droidmate
 
-import org.droidmate.test_suite_categories.ExcludedFromFastRegressionTests
+import org.droidmate.device.datatypes.UiautomatorWindowDumpFunctionsTest
 import org.junit.experimental.categories.Categories
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
 @RunWith(Categories::class)
-@Categories.ExcludeCategory(ExcludedFromFastRegressionTests::class)
 @Suite.SuiteClasses(
-  extensions_miscKtTest::class,
-  extensions_time_seriesKtTest::class,
-  functionsKtTest::class,
-  ExplorationOutput2ReportTest::class
-  
+  UiautomatorWindowDumpFunctionsTest::class,
+  extensions_file_systemKtTest::class
 )
-class ReporterTestSuite
+class LibKotlinTestSuite
 {
 }
