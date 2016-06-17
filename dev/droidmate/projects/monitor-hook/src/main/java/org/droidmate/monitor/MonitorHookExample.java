@@ -12,10 +12,13 @@ package org.droidmate.monitor;
 import android.content.Context;
 
 /**
- * Please see {@link MonitorHookTemplate} to see how to implement your custom local (not in vcs) MonitorHook.
+ * <p>Example implementation of {@link IMonitorHook}. Please see {@link MonitorHookTemplate} to see how to implement your 
+ * custom local (not in vcs) MonitorHook.</p>
  */
 class MonitorHookExample implements IMonitorHook
 {
+  // Warnings suppressed because this is just an example implementation stub.
+  @SuppressWarnings({"FieldCanBeLocal", "unused"}) 
   private Context context;
 
   public void init(Context context)
@@ -30,7 +33,6 @@ class MonitorHookExample implements IMonitorHook
 
   public Object hookAfterApiCall(String apiLogcatMessagePayload, Object returnValue)
   {
-    // KJA (hook/destructuring) make before/after hooks accept not string, but ApiLogcatMessage or similar. Depends on hook/libmonitor
     System.out.println("hookAfterApiCall/returnValue: " + returnValue);
     if (apiLogcatMessagePayload.contains("mthd: getDeviceId"))
     {
@@ -44,8 +46,7 @@ class MonitorHookExample implements IMonitorHook
 
   public void finalizeMonitorHook()
   {
-    System.out.println("finalizeMonitorHook. Context = " + context);
+    System.out.println("finalizeMonitorHook");
   }
-
 }
 

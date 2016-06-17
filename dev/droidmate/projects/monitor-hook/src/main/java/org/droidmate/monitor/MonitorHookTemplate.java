@@ -22,7 +22,8 @@ import android.content.Context;
 // !!!!! This will generate MonitorHook.java in the same directory as this class. Edit that file instead.
 
 /**
- * Please see {@link MonitorHookExample} for an example implementation.
+ * <p>Please see {@link MonitorHookExample} for an example implementation. Please see comments marked with !!!!! in this file 
+ * to understand how to use this class to implement your own {@link IMonitorHook}.</p> 
  */
 // These warnings are suppressed because this class is only a stub of an actual implementation.
 @SuppressWarnings({"unused", "Duplicates", "FieldCanBeLocal", "WeakerAccess"})
