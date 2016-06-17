@@ -7,7 +7,7 @@ if (!exists("var_output_file_path")) var_output_file_path="plot.pdf"
 
 if (var_interactive) \
   set terminal wxt; \
-  set output; \
+  set output ; \
 else \
   set output var_output_file_path; \
   set terminal pdf size 3.5,2.62 color

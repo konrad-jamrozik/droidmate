@@ -40,7 +40,7 @@ class TableClickFrequency() {
 
       val clickedWidgets: List<Widget> = this.actRess.flatMap { it.clickedWidgets }
       val noOfClicksPerWidget: Map<Widget, Int> = clickedWidgets.frequencies
-      val widgetsHavingNoOfClicks: Map<Int, Set<Widget>> = noOfClicksPerWidget.inverse
+      val widgetsHavingNoOfClicks: Map<Int, Set<Widget>> = noOfClicksPerWidget.transpose
       val widgetsCountPerNoOfClicks: Map<Int, Int> = widgetsHavingNoOfClicks.mapValues { it.value.size }
 
       val maxNoOfClicks = noOfClicksPerWidget.values.max() ?: 0

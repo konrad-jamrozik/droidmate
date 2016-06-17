@@ -6,13 +6,14 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.report
+package org.droidmate
 
 import com.konradjamrozik.FileSystemsOperations
 import com.konradjamrozik.createDirIfNotExists
 import com.konradjamrozik.isDirectory
 import org.codehaus.groovy.runtime.NioGroovyMethods
 import java.io.File
+import java.nio.file.FileSystem
 import java.nio.file.Files.newDirectoryStream
 import java.nio.file.Path
 
@@ -40,7 +41,7 @@ fun Path.withFiles(vararg files: Path): Path {
   return this
 }
 
-fun java.nio.file.FileSystem.dir(dirName: String): Path {
+fun FileSystem.dir(dirName: String): Path {
   val dir = this.getPath(dirName)
   dir.createDirIfNotExists()
   return dir

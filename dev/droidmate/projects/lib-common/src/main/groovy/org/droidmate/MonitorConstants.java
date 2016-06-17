@@ -8,6 +8,8 @@
 // www.droidmate.org
 package org.droidmate;
 
+import org.droidmate.common.BuildConstants;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -39,5 +41,5 @@ public class MonitorConstants
   public static final String srvCmd_close                   = "close";
   
   public static final String monitor_time_formatter_pattern = "yyyy-MM-dd HH:mm:ss.SSS";
-  public static final Locale monitor_time_formatter_locale  = Locale.US;
+  public static final Locale monitor_time_formatter_locale  = BuildConstants.getLocale();
 }

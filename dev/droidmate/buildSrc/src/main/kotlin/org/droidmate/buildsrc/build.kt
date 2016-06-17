@@ -21,9 +21,12 @@ import org.zeroturnaround.exec.ProcessExecutor
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.nio.file.Paths
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 private val exeExt = if (OS.isWindows) ".exe" else ""
+
+val locale = Locale.US
 
 //region Values directly based on system environment variables
 val java_home = "JAVA_HOME".asEnvDir

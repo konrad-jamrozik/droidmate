@@ -6,13 +6,14 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-package org.droidmate.report
+package org.droidmate
 
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.Test
 import java.nio.file.Paths
 
+// KJA create test suite for lib-kotlin and add all tests to it
 class extensions_file_systemKtTest {
 
 

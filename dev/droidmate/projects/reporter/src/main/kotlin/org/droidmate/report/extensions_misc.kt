@@ -12,6 +12,7 @@ import com.google.common.collect.Table
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.nio.file.Path
+import java.time.Duration
 
 /**
  * Zeroes digits before (i.e. left of) comma. E.g. if [digitsToZero] is 2, then 6789 will become 6700.
@@ -30,7 +31,7 @@ val <T> Iterable<T>.frequencies: Map<T, Int> get() {
   return frequencies
 }
 
-val <K, V> Map<K, V>.inverse: Map<V, Set<K>> get() {
+val <K, V> Map<K, V>.transpose: Map<V, Set<K>> get() {
   val pairs: List<Pair<V, K>> = this.map { Pair(it.value, it.key) }
   return pairs.fold(
     initial = mutableMapOf(),
@@ -45,4 +46,26 @@ val <K, V> Map<K, V>.inverse: Map<V, Set<K>> get() {
 
 fun <R, C, V> Table<R, C, V>.dataFile(file: Path): TableDataFile<R, C, V> {
   return TableDataFile(this, file)
+}
+
+/**
+ * Given a string builder over a string containing variables in form of "$var_name" (without ""), it will replace
+ * all such variables with their value. For examples, see [org.droidmate.report.extensions_miscKtTest.replaceVariableTest].
+ */
+fun StringBuilder.replaceVariable(varName: String, value: String) : StringBuilder
+{
+  val fullVarName = '$'+varName
+  while (this.indexOf(fullVarName) != -1) {
+    val startIndex = this.indexOf(fullVarName)
+    val endIndex = startIndex + fullVarName.length
+    this.replace(startIndex, endIndex, value)
+  }
+  return this
+}
+
+
+val Duration.minutesAndSeconds: String get() {
+  val m = this.toMinutes()
+  val s = this.seconds - m * 60
+  return "$m".padStart(4, ' ') + "m " + "$s".padStart(2, ' ') + "s"
 }

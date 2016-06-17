@@ -22,6 +22,9 @@ import android.content.Context;
  * - search for "// monitorHook" in org.droidmate.monitor.MonitorJavaTemplate<br/>
  * - look at usages of org.droidmate.monitor.RedirectionsGenerator#monitorHookInstanceName
  * </p>
+ * 
+ * <p>If your use case is advanced mocking of return values of method calls, consider using a powerful mocking framework, 
+ * <a href="https://github.com/M66B/XPrivacy">XPrivacy</a></p>.
  */
 @SuppressWarnings("unused") // Used in org.droidmate.monitor.MonitorJavaTemplate 
 public interface IMonitorHook

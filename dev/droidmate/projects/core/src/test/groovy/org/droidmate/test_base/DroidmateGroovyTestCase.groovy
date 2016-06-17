@@ -10,6 +10,7 @@
 package org.droidmate.test_base
 
 import ch.qos.logback.classic.Level
+import org.droidmate.common.BuildConstants
 import org.droidmate.logging.LogbackAppenders
 import org.droidmate.logging.LogbackUtilsRequiringLogbackLog
 import org.junit.Before
@@ -32,7 +33,7 @@ class DroidmateGroovyTestCase extends GroovyTestCase
   public static Level                  stdoutAppendersLogLevelForTesting = Level.ERROR
   public static FilesystemTestFixtures fixtures
   static {
-    Locale.setDefault(Locale.US)
+    Locale.setDefault(BuildConstants.locale)
     // WISH maybe better solution is to use @Rule: https://edgblog.wordpress.com/2013/10/21/a-junit-rule-to-turn-test-logging-onoff/
     LogbackAppenders.setThresholdLevelOfStdStreamsAppenders(stdoutAppendersLogLevelForTesting)
     fixtures = FilesystemTestFixtures.build()

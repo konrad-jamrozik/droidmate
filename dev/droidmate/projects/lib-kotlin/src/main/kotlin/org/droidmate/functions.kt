@@ -21,3 +21,7 @@ val Resource.extractedPath: Path get() {
 val Resource.extractedPathString: String get() {
   return this.extractedPath.toString()
 }
+
+val Resource.text: String get() {
+  return this.extractedPath.text
+}

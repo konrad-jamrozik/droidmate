@@ -46,6 +46,7 @@ class BuildConstants
   static String monitored_inlined_apk_fixture_api19_name        = safeGetProperty(properties, "monitored_inlined_apk_fixture_api19_name")
   static String monitored_inlined_apk_fixture_api23_name        = safeGetProperty(properties, "monitored_inlined_apk_fixture_api23_name")
   static String test_temp_dir_name                              = safeGetProperty(properties, "test_temp_dir_name")
+  static Locale locale                                          = new Locale(safeGetProperty(properties, "locale"))
 
   private static Map<String, String> loadProperties(String fileName)
   {

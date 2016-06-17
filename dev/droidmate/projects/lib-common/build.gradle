@@ -99,6 +99,7 @@ task writeBuildConstantsProperties() { Task it ->
     map["monitor_on_avd_apk_name"] = BuildKt.monitor_on_avd_apk_name
     map["monitor_api19_apk_name"] = BuildKt.monitor_api19_apk_name
     map["monitor_api23_apk_name"] = BuildKt.monitor_api23_apk_name
+    map["locale"] = BuildKt.locale.toString()
 
     buildConstantsFile.withWriter {BufferedWriter wr ->
       map.each {key, value ->

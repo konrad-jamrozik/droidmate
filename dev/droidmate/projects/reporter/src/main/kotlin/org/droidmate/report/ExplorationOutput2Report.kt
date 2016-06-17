@@ -27,7 +27,6 @@ class ExplorationOutput2Report(val data: ExplorationOutput2, val dir: Path) {
     listOf(summaryFile.path) + guiCoverageReports.flatMap { setOf(it.fileViewsCountsOverTime, it.fileClickFrequency) }
   }
 
-
   fun writeOut(includePlots : Boolean = true) {
     summaryFile.writeOut()
     guiCoverageReports.forEach { it.writeOut(includePlots) }
