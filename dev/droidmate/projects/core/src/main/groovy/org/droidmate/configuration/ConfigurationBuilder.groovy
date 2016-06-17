@@ -18,7 +18,6 @@ import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder
 import org.apache.commons.lang3.builder.StandardToStringStyle
-import org.droidmate.apis.ApiMethodSignature
 import org.droidmate.common.BuildConstants
 import org.droidmate.exceptions.ConfigurationException
 import org.slf4j.Logger
@@ -131,6 +130,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
       setLogbackRootLoggerLoggingLevel(config)
       setupResourcesAndPaths(config, fs)
       validateExplorationSettings(config)
+      normalizeAndroidApi(config)
 
       // This increment is done so each connected device will have its uiautomator-daemon reachable on a separate port.
       config.uiautomatorDaemonTcpPort += config.deviceIndex
@@ -144,6 +144,13 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
     assert config != null
     return config
+  }
+
+  static void normalizeAndroidApi(Configuration config) {
+    if (config.androidApi == "19")
+      config.androidApi = Configuration.api19
+    if (config.androidApi == "23")
+      config.androidApi = Configuration.api23
   }
 
   static void validateExplorationSettings(Configuration cfg)

@@ -142,7 +142,7 @@ public class Configuration implements IConfiguration
     "Should the exploration strategy always click the first widget instead of its default more complex behavior")
   public boolean alwaysClickFirstWidget = false
 
-  @Parameter(names = [Configuration.pn_androidApi, "-api"],
+  @Parameter(names = [Configuration.pn_androidApi, "-api", "-apiLevel"],
     description = "Has to be set to the Android API version corresponding to the (virtual) devices on which DroidMate will run. Currently supported value: 'api19'")
   public String androidApi = api19
   
