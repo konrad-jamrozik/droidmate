@@ -46,7 +46,7 @@ processResources.configure { Copy copy ->
   assert appguardApisTxt.file
 
   evaluationDependsOn(":projects:monitor-template")
-  // !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.monitor_template_src.MonitorJavaTemplate
+  // !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.monitor.MonitorJavaTemplate
   File monitorJavaTemplateSource = findProject(":projects:monitor-template").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
   assert monitorJavaTemplateSource.file
 

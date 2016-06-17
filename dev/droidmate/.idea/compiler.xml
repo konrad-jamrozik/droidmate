@@ -47,8 +47,8 @@
       <module name="lib_common_test" target="1.8" />
       <module name="monitor-generator_main" target="1.8" />
       <module name="monitor-generator_test" target="1.8" />
-      <module name="monitor-hook_main" target="1.5" />
-      <module name="monitor-hook_test" target="1.5" />
+      <module name="monitor-hook_main" target="1.7" />
+      <module name="monitor-hook_test" target="1.7" />
       <module name="monitor-template_main" target="1.7" />
       <module name="monitor-template_test" target="1.7" />
       <module name="monitor_generator_main" target="1.8" />

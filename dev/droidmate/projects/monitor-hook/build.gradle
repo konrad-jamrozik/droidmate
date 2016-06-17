@@ -14,16 +14,16 @@ import org.droidmate.buildsrc.BuildKt
  */
 
 apply plugin: 'java'
-sourceCompatibility = JavaVersion.VERSION_1_5
-targetCompatibility = JavaVersion.VERSION_1_5
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
 compileJava.configure { JavaCompile jc ->
   // See explanation of this in build.gradle of 'monitor-template' project.
   jc.options.compilerArgs += "-Xlint:-options"
 }
 
 dependencies {
-  compileOnly files(BuildKt.android_jar_api19.toString())
-  compile project(":projects:lib-common")
+  // depending here only API 23 android.jar, hoping that it can be used without problems for API 19.
+  compileOnly files(BuildKt.android_jar_api23.toString())
 }
 
 task makeMonitorHookFromTemplateIfNotPresent {
@@ -38,7 +38,7 @@ task makeMonitorHookFromTemplateIfNotPresent {
       monitorHookSource = new File(monitorHookTemplateSource.parent, "MonitorHook.java")
     if (!monitorHookSource.file)
     {
-      println "No MonitorHook.java detected. Generating it from MonitorHookTemplate."
+      println "No MonitorHook.java detected. Generating it from MonitorHookTemplate.java."
       PrintWriter wr = new FileWriter(monitorHookSource).newPrintWriter()
       monitorHookTemplateSource.readLines()
         .each {String line ->

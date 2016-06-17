@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 /**
  * <p>
  * This class is responsible for reading messages from the device. It can read messages from the device logcat or from the
- * monitor TCP server (for the server source code, see {@code org.droidmate.monitor_template_src.MonitorJavaTemplate.MonitorTCPServer}).
+ * monitor TCP server (for the server source code, see {@code org.droidmate.monitor.MonitorJavaTemplate.MonitorTCPServer}).
  *
  * </p><p>
  * The messages read are either monitor init messages coming from logcat, method instrumentation messages coming from logcat, or

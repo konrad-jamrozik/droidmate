@@ -225,7 +225,7 @@ public class MonitorJavaTemplate
           // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
           
           // In addition to the logic above, this command is handled in 
-          // org.droidmate.monitor_template_src.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
+          // org.droidmate.monitor.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
           
           return new ArrayList<ArrayList<String>>();
 
