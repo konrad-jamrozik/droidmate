@@ -12,8 +12,6 @@ package org.droidmate.monitor
 import groovy.util.logging.Slf4j
 import org.droidmate.apis.ApiMethodSignature
 
-// KJA (hook/libmonitor) create "lib-monitor" project with Java-7-compatible classes used in Monitor.java. Move ApiLogcatMessage to it.
-
 @Slf4j
 class MonitorGenerator implements IMonitorGenerator
 {

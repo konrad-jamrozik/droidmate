@@ -8,16 +8,28 @@
 // www.droidmate.org
 package org.droidmate.report
 
+import org.droidmate.test_suite_categories.UnderConstruction
 import org.junit.Test
+import org.junit.experimental.categories.Category
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
 class SummaryTest {
 
-  // KJA curr work
+  // KJA current test
+  @Category(UnderConstruction::class)
   @Test
   fun buildsString() {
-    val summaryString = Summary.buildString("zorg", Duration.of(3, ChronoUnit.MINUTES),50,5,17,listOf("api1","api2"),33, listOf("apiPair1", "apiPair2"))
+    val summaryString = Summary.buildString(
+      "example.package.name",
+      Duration.of(3, ChronoUnit.MINUTES),
+      50,
+      5,
+      17,
+      listOf("api1", "api2"),
+      33,
+      listOf("apiPair1", "apiPair2")
+    )
 
     val manualInspection = true
     if (manualInspection)

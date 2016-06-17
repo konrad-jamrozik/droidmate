@@ -12,3 +12,4 @@ Unique [API call, event] pairs table legend:
          Event: event paired with the API signature.    
         Thread: ID of the thread that made the API call. 1 is UI thread.
  API signature: signature of the called Android framework API method.
+
