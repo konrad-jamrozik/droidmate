@@ -15,8 +15,6 @@ apply plugin: 'project-report' // http://www.gradle.org/docs/current/userguide/p
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-//region Dependencies
-
 /*
  This project uses test artifacts of some other projects, so it has to depend on them. Strictly speaking, these calls are necessary
  for dependencies of type "testCompile project(":projects:core").sourceSets.test.output" to work. Otherwise, "sourceSets" would
@@ -64,6 +62,9 @@ mainClassName = "org.droidmate.frontend.DroidmateFrontend"
   }
 }
 
+// Necessary to make CI server work. Looks like Groovy doesn't maintain necessary ordering with Kotlin.
+compileTestGroovy.dependsOn ":projects:lib-kotlin:build"
+
 dependencies {
 
   forceJunitPriority 'junit:junit:4.12'
@@ -88,8 +89,6 @@ dependencies {
   compile project(":projects:core")
   compile project(":projects:reporter")
 }
-
-//endregion Dependencies
 
 apply from: file("test.gradle")
 
