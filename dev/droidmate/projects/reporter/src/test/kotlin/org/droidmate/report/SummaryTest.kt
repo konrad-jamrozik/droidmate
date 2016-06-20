@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.report
 
+import org.droidmate.common.logcat.ApiLogcatMessage
 import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.test_suite_categories.UnderConstruction
 import org.junit.Test
@@ -21,6 +22,12 @@ class SummaryTest {
   @Category(UnderConstruction::class)
   @Test
   fun buildsString() {
+
+    val msg = """
+    |TId: 1 objCls: android.webkit.WebView mthd: methd retCls: void params:  stacktrace: dalvik
+    """.trimMargin()
+    val api1 = ApiLogcatMessage.from(msg)
+    // Act
     val summaryString = Summary.buildString(
       "example.package.name",
       Duration.of(3, ChronoUnit.MINUTES),
@@ -28,7 +35,10 @@ class SummaryTest {
       5,
       DeviceExceptionMissing(),
       17,
-      listOf("api1", "api2"),
+      listOf(
+        Summary.ApiEntry(time = Duration.of(57, ChronoUnit.SECONDS), actionIndex = 1, threadId = 7, apiSignature = "api_1_signature"),
+        Summary.ApiEntry(time = Duration.of(4, ChronoUnit.MINUTES), actionIndex = 2, threadId = 1, apiSignature = "api_2_signature")
+      ),
       33, listOf("apiPair1", "apiPair2")
     )
 

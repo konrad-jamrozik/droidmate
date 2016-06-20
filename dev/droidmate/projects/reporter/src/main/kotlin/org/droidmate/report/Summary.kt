@@ -21,6 +21,19 @@ import java.time.Duration
 
 class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
 
+  data class ApiEntry(val time: Duration, val actionIndex: Int, val threadId: Int, val apiSignature: String) {
+    companion object {
+      private val actionIndexPad: Int = 7
+      private val threadIdPad: Int = 7
+    }
+
+    override fun toString(): String {
+      val actionIndexFormatted = "$actionIndex".padStart(actionIndexPad)
+      val threadIdFormatted = "$threadId".padStart(threadIdPad)
+      return "${time.minutesAndSeconds} $actionIndexFormatted $threadIdFormatted  $apiSignature"
+    }
+  }
+  
   companion object {
     val template: String by lazy {
       Resource("apk_exploration_summary_template.txt").text
@@ -39,7 +52,7 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
       totalResetsCount: Int,
       exception: DeviceException,
       uniqueApisCount: Int,
-      apiEntries: List<String>,
+      apiEntries: List<ApiEntry>,
       uniqueApiEventPairsCount: Int, apiEventEntries: List<String>
     ): String {
 
