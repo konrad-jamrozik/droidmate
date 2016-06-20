@@ -29,33 +29,21 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
     if (data.isEmpty())
       "Exploration output was empty (no apks), so this summary is empty."
     else
-      Resource("apk_exploration_summary_header.txt").extractedPath.text + buildSummary(data)
+      Resource("apk_exploration_summary_header.txt").extractedPath.text + build(data)
   }
   
   companion object {
 
-    fun buildSummary(data: ExplorationOutput2): String
+    fun build(data: ExplorationOutput2): String
     {
-      // KJA 2
-      return "TODO"
+      return build(Payload(data))
     }
-    
-    fun buildString(
-      appPackageName: String,
-      totalRunTime: Duration,
-      totalActionsCount: Int,
-      totalResetsCount: Int,
-      exception: DeviceException,
-      uniqueApisCount: Int,
-      apiEntries: List<ApiEntry>,
-      uniqueApiEventPairsCount: Int,
-      apiEventEntries: List<ApiEventEntry>
-    ): String {
 
-      // KJA 3 next. See "P" bookmark. 
+    fun build(payload: Payload): String {
 
+      return with(payload) {
       // @formatter:off
-      return StringBuilder(template)
+      StringBuilder(template)
         .replaceVariable("exploration_title"            , "droidmate-run:" + appPackageName)
         .replaceVariable("total_run_time"               , totalRunTime.minutesAndSeconds)
         .replaceVariable("total_actions_count"          , totalActionsCount.toString().padStart(4, ' '))
@@ -66,6 +54,7 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
         .replaceVariable("unique_api_event_pairs_count" , uniqueApiEventPairsCount.toString())
         .replaceVariable("api_event_entries"            , apiEventEntries.joinToString(separator = "\n"))
         .toString()
+        }
       // @formatter:on
     }
 
@@ -84,6 +73,32 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
           "* * * * * * * * * *\n"
         }
     }
+  }
+
+  data class Payload(
+    val appPackageName: String,
+    val totalRunTime: Duration,
+    val totalActionsCount: Int,
+    val totalResetsCount: Int,
+    val exception: DeviceException,
+    val uniqueApisCount: Int,
+    val apiEntries: List<ApiEntry>,
+    val uniqueApiEventPairsCount: Int,
+    val apiEventEntries: List<ApiEventEntry>
+  )
+  {
+    // KJA current work
+    constructor(data: ExplorationOutput2) : this(
+      appPackageName = "",
+      totalRunTime = Duration.ZERO,
+      totalActionsCount = 0,
+      totalResetsCount = 0,
+      exception = DeviceExceptionMissing(),
+      uniqueApisCount = 0,
+      apiEntries = emptyList(),
+      uniqueApiEventPairsCount = 0,
+      apiEventEntries = emptyList()
+    ) 
   }
 
   data class ApiEntry(val time: Duration, val actionIndex: Int, val threadId: Int, val apiSignature: String) {
@@ -112,7 +127,6 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
       val threadIdFormatted = "${apiEntry.threadId}".padStart(threadIdPad)
       
       return "${apiEntry.time.minutesAndSeconds} $actionIndexFormatted  $eventFormatted $threadIdFormatted  ${apiEntry.apiSignature}"
-
     }
   }
 }
