@@ -9,6 +9,9 @@
 package org.droidmate.report
 
 import com.konradjamrozik.Resource
+import org.droidmate.common.logging.LogbackConstants
+import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.extractedPath
 import org.droidmate.text
@@ -34,19 +37,30 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
       totalRunTime: Duration,
       totalActionsCount: Int,
       totalResetsCount: Int,
+      exception: DeviceException,
       uniqueApisCount: Int,
       apiEntries: List<String>,
-      uniqueApiEventPairsCount: Int,
-      apiEventEntries: List<String>
+      uniqueApiEventPairsCount: Int, apiEventEntries: List<String>
     ): String {
 
       // KJA 3 next. See "P" bookmark. 
       val explorationTitle = "droidmate-run:" + appPackageName
+
+      val exceptionString =
+        if (exception is DeviceExceptionMissing)
+          ""
+        else {
+          "\n* * * * * * * * * *\nWARNING! This exploration threw an exception.\n\n" +
+            "Exception message: '${exception.message}'.\n\n" +
+            LogbackConstants.err_log_msg + "\n* * * * * * * * * *\n"
+        }
+      
       return replaceVariables(
         explorationTitle,
         totalRunTime.minutesAndSeconds,
         totalActionsCount.toString().padStart(4, ' '),
         totalResetsCount.toString().padStart(4, ' '),
+        exceptionString,
         uniqueApisCount.toString(),
         apiEntries.joinToString(separator = "\n"),
         uniqueApiEventPairsCount.toString(), apiEventEntries.joinToString(separator = "\n"))
@@ -57,6 +71,7 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
       totalRunTime: String,
       totalActionsCount: String,
       totalResetsCount: String,
+      exception: String,
       uniqueApisCount: String,
       apiEntries: String,
       uniqueApiEventPairsCount: String,
@@ -68,6 +83,7 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
         .replaceVariable("total_run_time", totalRunTime)
         .replaceVariable("total_actions_count", totalActionsCount)
         .replaceVariable("total_resets_count", totalResetsCount)
+        .replaceVariable("exception", exception)
         .replaceVariable("unique_apis_count", uniqueApisCount)
         .replaceVariable("api_entries", apiEntries)
         .replaceVariable("unique_api_event_pairs_count", uniqueApiEventPairsCount)

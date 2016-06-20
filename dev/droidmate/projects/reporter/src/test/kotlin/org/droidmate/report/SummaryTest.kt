@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.report
 
+import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.test_suite_categories.UnderConstruction
 import org.junit.Test
 import org.junit.experimental.categories.Category
@@ -25,10 +26,10 @@ class SummaryTest {
       Duration.of(3, ChronoUnit.MINUTES),
       50,
       5,
+      DeviceExceptionMissing(),
       17,
       listOf("api1", "api2"),
-      33,
-      listOf("apiPair1", "apiPair2")
+      33, listOf("apiPair1", "apiPair2")
     )
 
     val manualInspection = true
