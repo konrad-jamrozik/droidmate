@@ -21,23 +21,18 @@ import java.time.Duration
 
 class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
 
-  data class ApiEntry(val time: Duration, val actionIndex: Int, val threadId: Int, val apiSignature: String) {
-    companion object {
-      private val actionIndexPad: Int = 7
-      private val threadIdPad: Int = 7
-    }
+  override fun writeOut() {
+    Files.write(file, summaryString.toByteArray())
+  }
 
-    override fun toString(): String {
-      val actionIndexFormatted = "$actionIndex".padStart(actionIndexPad)
-      val threadIdFormatted = "$threadId".padStart(threadIdPad)
-      return "${time.minutesAndSeconds} $actionIndexFormatted $threadIdFormatted  $apiSignature"
-    }
+  val summaryString: String by lazy {
+    if (data.isEmpty())
+      "Exploration output was empty (no apks), so this summary is empty."
+    else
+      Resource("apk_exploration_summary_header.txt").extractedPath.text + buildSummary(data)
   }
   
   companion object {
-    val template: String by lazy {
-      Resource("apk_exploration_summary_template.txt").text
-    }
 
     fun buildSummary(data: ExplorationOutput2): String
     {
@@ -61,40 +56,47 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
 
       // @formatter:off
       return StringBuilder(template)
-        .replaceVariable("exploration_title",            "droidmate-run:" + appPackageName)
-        .replaceVariable("total_run_time",               totalRunTime.minutesAndSeconds)
-        .replaceVariable("total_actions_count",          totalActionsCount.toString().padStart(4, ' '))
-        .replaceVariable("total_resets_count",           totalResetsCount.toString().padStart(4, ' '))
-        .replaceVariable("exception",                    exceptionString(exception))
-        .replaceVariable("unique_apis_count",            uniqueApisCount.toString())
-        .replaceVariable("api_entries",                  apiEntries.joinToString(separator = "\n"))
-        .replaceVariable("unique_api_event_pairs_count", uniqueApiEventPairsCount.toString())
-        .replaceVariable("api_event_entries",            apiEventEntries.joinToString(separator = "\n"))
+        .replaceVariable("exploration_title"            , "droidmate-run:" + appPackageName)
+        .replaceVariable("total_run_time"               , totalRunTime.minutesAndSeconds)
+        .replaceVariable("total_actions_count"          , totalActionsCount.toString().padStart(4, ' '))
+        .replaceVariable("total_resets_count"           , totalResetsCount.toString().padStart(4, ' '))
+        .replaceVariable("exception"                    , exception.messageIfAny())
+        .replaceVariable("unique_apis_count"            , uniqueApisCount.toString())
+        .replaceVariable("api_entries"                  , apiEntries.joinToString(separator = "\n"))
+        .replaceVariable("unique_api_event_pairs_count" , uniqueApiEventPairsCount.toString())
+        .replaceVariable("api_event_entries"            , apiEventEntries.joinToString(separator = "\n"))
         .toString()
       // @formatter:on
     }
 
-    private fun exceptionString(exception: DeviceException): String {
-      val exceptionString =
-        if (exception is DeviceExceptionMissing)
-          ""
-        else {
-          "\n* * * * * * * * * *\nWARNING! This exploration threw an exception.\n\n" +
-            "Exception message: '${exception.message}'.\n\n" +
-            LogbackConstants.err_log_msg + "\n* * * * * * * * * *\n"
-        }
-      return exceptionString
+    val template: String by lazy {
+      Resource("apk_exploration_summary_template.txt").text
     }
 
+    private fun DeviceException.messageIfAny(): String {
+      return if (this is DeviceExceptionMissing)
+          ""
+        else {
+        "\n* * * * * * * * * *\n" +
+          "WARNING! This exploration threw an exception.\n\n" +
+          "Exception message: '${this.message}'.\n\n" +
+          LogbackConstants.err_log_msg + "\n" +
+          "* * * * * * * * * *\n"
+        }
+    }
   }
 
-  val summaryString: String by lazy {
-    if (data.isEmpty())
-      "Exploration output was empty (no apks), so this summary is empty."
-    else
-      Resource("apk_exploration_summary_header.txt").extractedPath.text + buildSummary(data)
+  data class ApiEntry(val time: Duration, val actionIndex: Int, val threadId: Int, val apiSignature: String) {
+    companion object {
+      private val actionIndexPad: Int = 7
+      private val threadIdPad: Int = 7
+    }
+
+    override fun toString(): String {
+      val actionIndexFormatted = "$actionIndex".padStart(actionIndexPad)
+      val threadIdFormatted = "$threadId".padStart(threadIdPad)
+      return "${time.minutesAndSeconds} $actionIndexFormatted $threadIdFormatted  $apiSignature"
+    }
   }
-  override fun writeOut() {
-    Files.write(file, summaryString.toByteArray())
-  }
+
 }
