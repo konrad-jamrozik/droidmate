@@ -36,7 +36,7 @@ class SummaryTest {
       DeviceExceptionMissing(),
       17,
       listOf(
-        Summary.ApiEntry(time = Duration.of(57, ChronoUnit.SECONDS), actionIndex = 1, threadId = 7, apiSignature = "api_1_signature"),
+        Summary.ApiEntry(time = Duration.of(112, ChronoUnit.SECONDS), actionIndex = 1, threadId = 7, apiSignature = "api_1_signature"),
         Summary.ApiEntry(time = Duration.of(4, ChronoUnit.MINUTES), actionIndex = 2, threadId = 1, apiSignature = "api_2_signature")
       ),
       33, listOf("apiPair1", "apiPair2")

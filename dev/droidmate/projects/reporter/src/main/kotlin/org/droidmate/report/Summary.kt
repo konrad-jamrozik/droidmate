@@ -53,12 +53,28 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
       exception: DeviceException,
       uniqueApisCount: Int,
       apiEntries: List<ApiEntry>,
-      uniqueApiEventPairsCount: Int, apiEventEntries: List<String>
+      uniqueApiEventPairsCount: Int,
+      apiEventEntries: List<String>
     ): String {
 
       // KJA 3 next. See "P" bookmark. 
-      val explorationTitle = "droidmate-run:" + appPackageName
 
+      // @formatter:off
+      return StringBuilder(template)
+        .replaceVariable("exploration_title",            "droidmate-run:" + appPackageName)
+        .replaceVariable("total_run_time",               totalRunTime.minutesAndSeconds)
+        .replaceVariable("total_actions_count",          totalActionsCount.toString().padStart(4, ' '))
+        .replaceVariable("total_resets_count",           totalResetsCount.toString().padStart(4, ' '))
+        .replaceVariable("exception",                    exceptionString(exception))
+        .replaceVariable("unique_apis_count",            uniqueApisCount.toString())
+        .replaceVariable("api_entries",                  apiEntries.joinToString(separator = "\n"))
+        .replaceVariable("unique_api_event_pairs_count", uniqueApiEventPairsCount.toString())
+        .replaceVariable("api_event_entries",            apiEventEntries.joinToString(separator = "\n"))
+        .toString()
+      // @formatter:on
+    }
+
+    private fun exceptionString(exception: DeviceException): String {
       val exceptionString =
         if (exception is DeviceExceptionMissing)
           ""
@@ -67,42 +83,9 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
             "Exception message: '${exception.message}'.\n\n" +
             LogbackConstants.err_log_msg + "\n* * * * * * * * * *\n"
         }
-      
-      return replaceVariables(
-        explorationTitle,
-        totalRunTime.minutesAndSeconds,
-        totalActionsCount.toString().padStart(4, ' '),
-        totalResetsCount.toString().padStart(4, ' '),
-        exceptionString,
-        uniqueApisCount.toString(),
-        apiEntries.joinToString(separator = "\n"),
-        uniqueApiEventPairsCount.toString(), apiEventEntries.joinToString(separator = "\n"))
+      return exceptionString
     }
 
-    private fun replaceVariables(
-      explorationTitle: String,
-      totalRunTime: String,
-      totalActionsCount: String,
-      totalResetsCount: String,
-      exception: String,
-      uniqueApisCount: String,
-      apiEntries: String,
-      uniqueApiEventPairsCount: String,
-      apiEventEntries: String
-    )
-      : String {
-      return StringBuilder(template)
-        .replaceVariable("exploration_title", explorationTitle)
-        .replaceVariable("total_run_time", totalRunTime)
-        .replaceVariable("total_actions_count", totalActionsCount)
-        .replaceVariable("total_resets_count", totalResetsCount)
-        .replaceVariable("exception", exception)
-        .replaceVariable("unique_apis_count", uniqueApisCount)
-        .replaceVariable("api_entries", apiEntries)
-        .replaceVariable("unique_api_event_pairs_count", uniqueApiEventPairsCount)
-        .replaceVariable("api_event_entries", apiEventEntries)
-        .toString()
-    }
   }
 
   val summaryString: String by lazy {
