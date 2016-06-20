@@ -56,7 +56,7 @@ public class Storage2 implements IStorage2
   Collection<Path> getSerializedRuns2()
   {
     Collection<Path> paths = Files.list(droidmateOutputDirPath)
-      .findAll {Path p -> p.fileName.toString().endsWith(ser2FileExt)}
+      .findAll {Path p -> p.isRegularFile() && p.fileName.toString().endsWith(ser2FileExt)}
 
     return paths
   }
