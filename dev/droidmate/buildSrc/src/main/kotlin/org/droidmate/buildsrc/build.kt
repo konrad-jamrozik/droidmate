@@ -26,8 +26,6 @@ import java.util.concurrent.TimeUnit
 
 private val exeExt = if (OS.isWindows) ".exe" else ""
 
-val locale = Locale.US
-
 //region Values directly based on system environment variables
 val java_home = "JAVA_HOME".asEnvDir
 private val android_sdk_dir = "ANDROID_HOME".asEnvDir
@@ -106,6 +104,9 @@ val appguard_apis_txt = "appguard_apis.txt"
  * to a device.
  */
 val dir_name_temp_extracted_resources = "temp_extracted_resources"
+
+// !!! DUPLICATION WARNING !!! with org.droidmate.MonitorConstants.monitor_time_formatter_locale 
+val locale = Locale.US
 
 fun executeCommand(commandName: String, commandContent: String): Int {
 

@@ -28,6 +28,10 @@ evaluationDependsOn(":projects:core")
 evaluationDependsOn(":projects:reporter")
 evaluationDependsOn(":projects:lib-kotlin")
 
+// Necessary to make CI server work. Looks like Groovy doesn't maintain necessary ordering with Kotlin. The build doesn't always
+// fail without this dependency, but it fails on travis-ci.
+compileTestGroovy.dependsOn ":projects:lib-kotlin:build"
+
 /*
   Workaround for a bug causing tests run from Gradle to fail. Source of the workaround: [1]
 
@@ -61,9 +65,6 @@ mainClassName = "org.droidmate.frontend.DroidmateFrontend"
     args appArgs
   }
 }
-
-// Necessary to make CI server work. Looks like Groovy doesn't maintain necessary ordering with Kotlin.
-compileTestGroovy.dependsOn ":projects:lib-kotlin:build"
 
 dependencies {
 
