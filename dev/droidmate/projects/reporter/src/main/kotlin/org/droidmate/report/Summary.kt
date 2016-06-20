@@ -49,7 +49,7 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
       uniqueApisCount: Int,
       apiEntries: List<ApiEntry>,
       uniqueApiEventPairsCount: Int,
-      apiEventEntries: List<String>
+      apiEventEntries: List<ApiEventEntry>
     ): String {
 
       // KJA 3 next. See "P" bookmark. 
@@ -98,5 +98,21 @@ class Summary(val data: ExplorationOutput2, file: Path): DataFile(file) {
       return "${time.minutesAndSeconds} $actionIndexFormatted $threadIdFormatted  $apiSignature"
     }
   }
+  
+  data class ApiEventEntry(val apiEntry: ApiEntry, val event: String) {
+    companion object {
+      private val actionIndexPad: Int = 7
+      private val threadIdPad: Int = 7
+      private val eventPadEnd: Int = 59
+    }
+    
+    override fun toString(): String {
+      val actionIndexFormatted = "${apiEntry.actionIndex}".padStart(actionIndexPad)
+      val eventFormatted = event.padEnd(eventPadEnd)
+      val threadIdFormatted = "${apiEntry.threadId}".padStart(threadIdPad)
+      
+      return "${apiEntry.time.minutesAndSeconds} $actionIndexFormatted  $eventFormatted $threadIdFormatted  ${apiEntry.apiSignature}"
 
+    }
+  }
 }

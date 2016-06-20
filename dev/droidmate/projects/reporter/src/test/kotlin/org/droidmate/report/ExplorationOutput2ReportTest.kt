@@ -21,7 +21,9 @@ import java.nio.file.FileSystem
 import java.nio.file.Path
 
 class ExplorationOutput2ReportTest {
- 
+
+  val manualInspection = true
+  
   @Test
   fun reports() {
 
@@ -76,7 +78,7 @@ class ExplorationOutput2ReportTest {
   }
 
   private fun manualInspection(report: ExplorationOutput2Report) {
-    val manualInspection = true
+
     if (manualInspection) {
       report.txtReportFiles.forEach {
         println(it.toAbsolutePath().toString())

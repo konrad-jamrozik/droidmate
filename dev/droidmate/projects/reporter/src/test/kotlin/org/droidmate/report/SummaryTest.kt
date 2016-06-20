@@ -8,41 +8,45 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.common.logcat.ApiLogcatMessage
 import org.droidmate.exceptions.DeviceExceptionMissing
-import org.droidmate.test_suite_categories.UnderConstruction
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.containsString
 import org.junit.Test
-import org.junit.experimental.categories.Category
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
 class SummaryTest {
 
-  // KJA current test
-  @Category(UnderConstruction::class)
+  val manualInspection = true
+  
   @Test
   fun buildsString() {
 
-    val msg = """
-    |TId: 1 objCls: android.webkit.WebView mthd: methd retCls: void params:  stacktrace: dalvik
-    """.trimMargin()
-    val api1 = ApiLogcatMessage.from(msg)
+    val apiEntry1 = Summary.ApiEntry(time = Duration.of(112, ChronoUnit.SECONDS), actionIndex = 1, threadId = 7, apiSignature = "api_1_signature")
+    val apiEntry2 = Summary.ApiEntry(time = Duration.of(4, ChronoUnit.MINUTES), actionIndex = 2, threadId = 1, apiSignature = "api_2_signature")
+
     // Act
     val summaryString = Summary.buildString(
-      "example.package.name",
-      Duration.of(3, ChronoUnit.MINUTES),
-      50,
-      5,
-      DeviceExceptionMissing(),
-      17,
-      listOf(
-        Summary.ApiEntry(time = Duration.of(112, ChronoUnit.SECONDS), actionIndex = 1, threadId = 7, apiSignature = "api_1_signature"),
-        Summary.ApiEntry(time = Duration.of(4, ChronoUnit.MINUTES), actionIndex = 2, threadId = 1, apiSignature = "api_2_signature")
-      ),
-      33, listOf("apiPair1", "apiPair2")
+      appPackageName = "example.package.name",
+      totalRunTime = Duration.of(3, ChronoUnit.MINUTES),
+      totalActionsCount = 50,
+      totalResetsCount = 5,
+      exception = DeviceExceptionMissing(),
+      uniqueApisCount = 17,
+      apiEntries = listOf(apiEntry1, apiEntry2),
+      uniqueApiEventPairsCount = 33,
+      apiEventEntries = listOf(
+        Summary.ApiEventEntry(apiEntry1, "<event1>"),
+        Summary.ApiEventEntry(apiEntry2, "<event2>")
+      )
     )
 
-    val manualInspection = true
+    // Non-exhaustive asserts
+    assertThat(summaryString, containsString("example.package.name"))
+    assertThat(summaryString, containsString("33"))
+    assertThat(summaryString, containsString("api_1_signature"))
+    assertThat(summaryString, containsString("<event2>"))
+
     if (manualInspection)
       println(summaryString)
   }
