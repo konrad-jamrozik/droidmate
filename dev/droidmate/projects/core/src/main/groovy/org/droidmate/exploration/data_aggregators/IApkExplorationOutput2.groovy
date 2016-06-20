@@ -41,6 +41,8 @@ interface IApkExplorationOutput2 extends Serializable
 
   DeviceException getException()
 
+  DeviceException getExceptionOrNull()
+
   IApk getApk()
 
   String getPackageName()

@@ -12,6 +12,7 @@ import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.exceptions.DroidmateError
 import org.droidmate.exploration.actions.*
 import org.droidmate.logcat.IApiLogcatMessage
@@ -126,19 +127,28 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   }
 
   @Override
-  boolean getNoException()
+  DeviceException getExceptionOrNull()
   {
     boolean lastResultSuccessful = actRess.last().result.successful
-    assert lastResultSuccessful || (actRess.last().result.exception != null)
-    return lastResultSuccessful
+    DeviceException exception = actRess.last().result.exception
+    assert exception != null
+    assert lastResultSuccessful ^ !(exception instanceof DeviceExceptionMissing)
+    return lastResultSuccessful ? null : exception
   }
 
   @Override
   DeviceException getException()
   {
-    assert !noException
-    return actRess.last().result.exception
+    assert exceptionOrNull != null
+    return exceptionOrNull
   }
+
+  @Override
+  boolean getNoException()
+  {
+    return exceptionOrNull == null
+  }
+
 
   @Override
   List<List<IApiLogcatMessage>> getApiLogs()

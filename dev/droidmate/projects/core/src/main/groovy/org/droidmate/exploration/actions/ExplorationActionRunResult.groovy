@@ -13,7 +13,6 @@ import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.device.datatypes.MissingGuiSnapshot
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
-import org.droidmate.exceptions.ForbiddenOperationError
 import org.droidmate.exploration.device.IDeviceLogs
 import org.droidmate.exploration.device.MissingDeviceLogs
 
@@ -45,15 +44,6 @@ class ExplorationActionRunResult implements IExplorationActionRunResult
     assert successful.implies(!(this.deviceLogs instanceof MissingDeviceLogs))
     assert successful.implies(!(this.guiSnapshot instanceof MissingGuiSnapshot))
     assert successful == (this.exception instanceof DeviceExceptionMissing)
-  }
-
-  @Override
-  DeviceException getException() throws ForbiddenOperationError
-  {
-    if (successful)
-      throw new ForbiddenOperationError()
-
-    return exception
   }
 
   @Override

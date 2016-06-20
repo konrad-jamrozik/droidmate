@@ -9,7 +9,7 @@ Total resets count  : $total_resets_count // including the initial action
 --------------------------------------------------------------
 Unique API calls count observed in the run: $unique_apis_count
 
-Below follows a list of first calls to unique Android SDK API methods. It is to be read as follows:
+Below follows a list of first calls to unique Android SDK API methods.
  
      Time  Action  Thread  API signature
 $api_entries     

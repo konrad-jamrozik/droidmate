@@ -211,7 +211,7 @@ class ApkExplorationOutput implements IApkExplorationOutput
     List<TimestampedExplorationAction> actions            = apkout2.actRess.collect { TimestampedExplorationAction.from(it.action.base, it.action.timestamp) }
     List<IDeviceGuiSnapshot>           guiSnapshots       = apkout2.actRess.collect { it.result.guiSnapshot }
     List<List<IApiLogcatMessage>>      apiLogs            = apkout2.actRess.collect { it.result.deviceLogs.apiLogsOrEmpty }
-    DeviceException                    caughtException    = (apkout2.noException) ? null : apkout2.exception
+    DeviceException                    caughtException    = apkout2.exceptionOrNull
     LocalDateTime                      explorationEndTime = apkout2.explorationEndTime
     // @formatter:on
     boolean completed = true
