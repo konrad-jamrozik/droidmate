@@ -66,7 +66,6 @@ public class MainTest
     callMainThenAssertExitStatusIs0(new String[]{});
   }
 
-
   /**
    * <p>
    * This test shows how to access various part of the data structure serialized by DroidMate to file system, containing all the
@@ -203,7 +202,7 @@ public class MainTest
   private void workWithSingleApkExplorationOutput(IApkExplorationOutput2 apkOut)
   {
     final IApk apk = apkOut.getApk();
-    if (apkOut.getNoException())
+    if (!apkOut.getExceptionIsPresent())
     {
 
       int actionCounter = 0;
