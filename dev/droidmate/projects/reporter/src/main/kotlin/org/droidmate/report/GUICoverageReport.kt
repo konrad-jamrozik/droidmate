@@ -41,8 +41,20 @@ data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
   val tableViewsCounts: Table<Int, String, Int> by lazy { data.tableOfViewsCounts }
   val tableClickFrequency: Table<Int, String, Int> by lazy { data.tableOfClickFrequencies }
 
+  private val IApkExplorationOutput2.tableOfViewsCounts: Table<Int, String, Int> get() {
+    return TableViewsCounts.build(this)
+  }
+
+  private val IApkExplorationOutput2.tableOfClickFrequencies: Table<Int, String, Int> get() {
+    return TableClickFrequency.build(this)
+  }
+
   private val tableViewsCountDataFile = this.tableViewsCounts.dataFile(fileViewsCountsOverTime)
   private val tableClickFrequencyDataFile = this.tableClickFrequency.dataFile(fileClickFrequency)
+
+  private fun <R, C, V> Table<R, C, V>.dataFile(file: Path): TableDataFile<R, C, V> {
+    return TableDataFile(this, file)
+  }
 
   fun writeOut(includePlots: Boolean = true) {
 

@@ -73,7 +73,7 @@ class ApkSummary() {
     val apiEventEntries: List<ApiEventEntry>
   ) {
 
-    // KJA current work
+    // KJA 2
     constructor(data: IApkExplorationOutput2) : this(
       appPackageName = data.packageName,
       totalRunTime = data.explorationDuration,
@@ -83,10 +83,10 @@ class ApkSummary() {
       uniqueApisCount = 0,
       apiEntries = data.uniqueApiLogsWithFirstTriggeringActionIndex.map {
         ApiEntry(
-          time = Duration.between(data.explorationStartTime, it.first.time),
-          actionIndex = it.second,
-          threadId = it.first.threadId.toInt(),
-          apiSignature = it.first.uniqueString
+          time = Duration.between(data.explorationStartTime, it.key.time),
+          actionIndex = it.value,
+          threadId = it.key.threadId.toInt(),
+          apiSignature = it.key.uniqueString
         )
       },
       uniqueApiEventPairsCount = 0,
@@ -94,9 +94,11 @@ class ApkSummary() {
     )
 
     companion object {
-      val IApkExplorationOutput2.uniqueApiLogsWithFirstTriggeringActionIndex: List<Pair<IApiLogcatMessage, Int>> get() {
-        // KJA
-        return emptyList()
+      val IApkExplorationOutput2.uniqueApiLogsWithFirstTriggeringActionIndex: Map<IApiLogcatMessage, Int> get() {
+        return this.actRess.uniqueItemsWithFirstOccurrenceIndex(
+          extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
+          extractUniqueString = { it.uniqueString }
+        )
       }
     }
   }
