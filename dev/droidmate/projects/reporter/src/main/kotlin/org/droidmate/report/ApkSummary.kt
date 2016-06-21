@@ -73,9 +73,9 @@ class ApkSummary() {
     
     // KJA current work
     constructor(data: IApkExplorationOutput2) : this(
-      appPackageName = "",
-      totalRunTime = Duration.ZERO,
-      totalActionsCount = 0,
+      appPackageName = data.packageName,
+      totalRunTime = data.explorationDuration,
+      totalActionsCount = data.actRess.size,
       totalResetsCount = 0,
       exception = DeviceExceptionMissing(),
       uniqueApisCount = 0,

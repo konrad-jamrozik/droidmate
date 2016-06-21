@@ -18,6 +18,7 @@ import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.storage.IStorage2
 
+import java.time.Duration
 import java.time.LocalDateTime
 
 interface IApkExplorationOutput2 extends Serializable
@@ -52,6 +53,8 @@ interface IApkExplorationOutput2 extends Serializable
   List<IDeviceGuiSnapshot> getGuiSnapshots()
 
   Integer getExplorationTimeInMs()
+  
+  Duration getExplorationDuration()
 
   boolean getContainsExplorationStartTime()
 

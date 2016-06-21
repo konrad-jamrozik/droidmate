@@ -18,6 +18,7 @@ import org.droidmate.exploration.actions.*
 import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.storage.IStorage2
 
+import java.time.Duration
 import java.time.LocalDateTime
 
 import static java.time.temporal.ChronoUnit.MILLIS
@@ -79,6 +80,8 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     {
       assert this.actRess.size() >= 1
       assert this.containsExplorationStartTime
+      // KJA double check this assert holds
+      assert this.explorationEndTime != null
       assertFirstActionIsReset()
       assertLastActionIsTerminateOrResultIsFailure()
       assertLastGuiSnapshotIsHomeOrResultIsFailure()
@@ -118,6 +121,12 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   Integer getExplorationTimeInMs()
   {
     return MILLIS.between(explorationStartTime, explorationEndTime)
+  }
+  
+  @Override
+  Duration getExplorationDuration()
+  {
+    return Duration.between(explorationStartTime, explorationEndTime)
   }
 
   @Override
