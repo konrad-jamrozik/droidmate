@@ -14,6 +14,7 @@ import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.exploration.actions.ResetAppExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
+import org.droidmate.logcat.IApiLogcatMessage
 import java.time.Duration
 
 class ApkSummary() {
@@ -71,7 +72,7 @@ class ApkSummary() {
     val uniqueApiEventPairsCount: Int,
     val apiEventEntries: List<ApiEventEntry>
   ) {
-    
+
     // KJA current work
     constructor(data: IApkExplorationOutput2) : this(
       appPackageName = data.packageName,
@@ -80,10 +81,24 @@ class ApkSummary() {
       totalResetsCount = data.actions.count { it.base is ResetAppExplorationAction },
       exception = data.exception,
       uniqueApisCount = 0,
-      apiEntries = emptyList(),
+      apiEntries = data.uniqueApiLogsWithFirstTriggeringActionIndex.map {
+        ApiEntry(
+          time = Duration.between(data.explorationStartTime, it.first.time),
+          actionIndex = it.second,
+          threadId = it.first.threadId.toInt(),
+          apiSignature = it.first.uniqueString
+        )
+      },
       uniqueApiEventPairsCount = 0,
       apiEventEntries = emptyList()
     )
+
+    companion object {
+      val IApkExplorationOutput2.uniqueApiLogsWithFirstTriggeringActionIndex: List<Pair<IApiLogcatMessage, Int>> get() {
+        // KJA
+        return emptyList()
+      }
+    }
   }
 
   data class ApiEntry(val time: Duration, val actionIndex: Int, val threadId: Int, val apiSignature: String) {
