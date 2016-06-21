@@ -17,7 +17,7 @@ class ExplorationOutput2Report(val data: ExplorationOutput2, val dir: Path) {
     val fileNameSummary = "summary.txt"
   }
 
-  val summaryFile: IDataFile by lazy { Summary(this.data, dir.resolve(fileNameSummary)) }
+  val summaryFile: IDataFile by lazy { Summary(data, dir.resolve(fileNameSummary)) }
 
   val guiCoverageReports: List<GUICoverageReport> by lazy {
     data.map { GUICoverageReport(it, dir) }

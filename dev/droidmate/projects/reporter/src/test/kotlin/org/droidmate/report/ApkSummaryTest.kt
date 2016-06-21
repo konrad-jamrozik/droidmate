@@ -19,18 +19,18 @@ import java.nio.file.Path
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
-class SummaryTest {
+class ApkSummaryTest {
 
   val manualInspection = true
   
   @Test
   fun buildsFromPayload() {
 
-    val apiEntry1 = Summary.ApiEntry(time = Duration.of(112, ChronoUnit.SECONDS), actionIndex = 1, threadId = 7, apiSignature = "api_1_signature")
-    val apiEntry2 = Summary.ApiEntry(time = Duration.of(4, ChronoUnit.MINUTES), actionIndex = 2, threadId = 1, apiSignature = "api_2_signature")
+    val apiEntry1 = ApkSummary.ApiEntry(time = Duration.of(112, ChronoUnit.SECONDS), actionIndex = 1, threadId = 7, apiSignature = "api_1_signature")
+    val apiEntry2 = ApkSummary.ApiEntry(time = Duration.of(4, ChronoUnit.MINUTES), actionIndex = 2, threadId = 1, apiSignature = "api_2_signature")
 
     // Act
-    val summaryString = Summary.build(Summary.Payload(
+    val summaryString = ApkSummary.build(ApkSummary.Payload(
       appPackageName = "example.package.name",
       totalRunTime = Duration.of(3, ChronoUnit.MINUTES),
       totalActionsCount = 50,
@@ -40,8 +40,8 @@ class SummaryTest {
       apiEntries = listOf(apiEntry1, apiEntry2),
       uniqueApiEventPairsCount = 33,
       apiEventEntries = listOf(
-        Summary.ApiEventEntry(apiEntry1, "<event1>"),
-        Summary.ApiEventEntry(apiEntry2, "<event2>")
+        ApkSummary.ApiEventEntry(apiEntry1, "<event1>"),
+        ApkSummary.ApiEventEntry(apiEntry2, "<event2>")
       ))
     )
 
@@ -57,14 +57,17 @@ class SummaryTest {
 
   @Test
   @Category(UnderConstruction::class)
-  fun buildsFromExplorationOutput2() {
+  fun buildsFromApkExplorationOutput2() {
   
     // KJA current test
 
     val serExplOutput2: Path = FilesystemTestFixtures.build().f_monitoredSer2
     val explOut2 = OutputDir(serExplOutput2.parent).notEmptyExplorationOutput2
-    
+
     // Act
-    val summaryString = Summary.build(explOut2)
+    val summaryString = ApkSummary.build(explOut2.first())
+
+    if (manualInspection)
+      println(summaryString)
   }
 }

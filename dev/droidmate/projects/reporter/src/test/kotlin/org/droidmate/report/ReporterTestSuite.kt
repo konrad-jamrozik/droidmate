@@ -19,7 +19,7 @@ import org.junit.runners.Suite
   extensions_miscKtTest::class,
   extensions_time_seriesKtTest::class,
   functionsKtTest::class,
-  SummaryTest::class,
+  ApkSummaryTest::class,
   ExplorationOutput2ReportTest::class
 
   
