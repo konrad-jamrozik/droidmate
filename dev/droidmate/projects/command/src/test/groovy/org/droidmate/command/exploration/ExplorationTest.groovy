@@ -141,7 +141,7 @@ public class ExplorationTest extends DroidmateGroovyTestCase
 
     if (failableOut.result != null)
     {
-      assert failableOut.result.noException
+      assert !failableOut.result.exceptionIsPresent
 
       def out2Simulation = new DeviceSimulation(failableOut.result)
       def expectedSimulation = simulator.currentSimulation

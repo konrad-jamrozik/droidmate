@@ -17,7 +17,7 @@ class MissingDeviceLogs implements IDeviceLogs, Serializable
 
 
   @Override
-  List<IApiLogcatMessage> getApiLogs()
+  List<IApiLogcatMessage> getApiLogsOrNull()
   {
     throw new ForbiddenOperationError()
   }

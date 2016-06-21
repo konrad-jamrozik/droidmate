@@ -39,7 +39,7 @@ class DeviceLogsHandler implements IDeviceLogsHandler
   void readClearAndAssertOnlyBackgroundApiLogsIfAny() throws DeviceException
   {
     List<IApiLogcatMessage> apiLogs = _readAndClearApiLogs()
-    assert this.logs.apiLogs.every {it.threadId != uiThreadId}
+    assert this.logs.apiLogsOrNull.every {it.threadId != uiThreadId}
 
     addApiLogs(apiLogs)
   }
@@ -48,13 +48,13 @@ class DeviceLogsHandler implements IDeviceLogsHandler
   {
     assert apiLogs != null
 
-    if (this.logs.apiLogs == null)
+    if (this.logs.apiLogsOrNull == null)
       this.logs.apiLogs = []
 
-    if (!this.logs.apiLogs.empty && !apiLogs.empty)
-      assert this.logs.apiLogs.last().time <= apiLogs.first().time
+    if (!this.logs.apiLogsOrNull.empty && !apiLogs.empty)
+      assert this.logs.apiLogsOrNull.last().time <= apiLogs.first().time
 
-    this.logs.apiLogs.addAll(apiLogs)
+    this.logs.apiLogsOrNull.addAll(apiLogs)
   }
 
   boolean gotLogs = false

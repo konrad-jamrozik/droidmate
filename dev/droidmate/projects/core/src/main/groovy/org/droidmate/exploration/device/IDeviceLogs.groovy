@@ -12,7 +12,7 @@ import org.droidmate.logcat.IApiLogcatMessage
 
 interface IDeviceLogs
 {
-  List<IApiLogcatMessage> getApiLogs()
+  List<IApiLogcatMessage> getApiLogsOrNull()
 
   List<IApiLogcatMessage> getApiLogsOrEmpty()
 

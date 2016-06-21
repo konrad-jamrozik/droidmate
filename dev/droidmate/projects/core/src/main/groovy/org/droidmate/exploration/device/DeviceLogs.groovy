@@ -20,11 +20,11 @@ class DeviceLogs implements IDeviceLogs, Serializable
   List<IApiLogcatMessage> apiLogs = null
 
   /**
-   * Might return null! For safe variant, use {@link #getApiLogsOrEmpty}
+   * For safe variant, use {@link #getApiLogsOrEmpty}
    * @return
    */
   @Override
-  List<IApiLogcatMessage> getApiLogs()
+  List<IApiLogcatMessage> getApiLogsOrNull()
   {
     return apiLogs
   }

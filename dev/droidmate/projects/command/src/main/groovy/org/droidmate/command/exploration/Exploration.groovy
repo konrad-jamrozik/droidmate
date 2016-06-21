@@ -78,11 +78,11 @@ class Exploration implements IExploration
 
     output.verify()
 
-    if (output.exceptionOrNull != null)
+    if (output.exceptionIsPresent)
       log.warn("! Encountered ${output.exception.class.simpleName} during the exploration of ${app.packageName} " +
         "after already obtaining some exploration output.")
 
-    return new Failable<IApkExplorationOutput2, DeviceException>(output, output.exceptionOrNull)
+    return new Failable<IApkExplorationOutput2, DeviceException>(output, output.exceptionIsPresent ? output.exception : null)
   }
 
   public IApkExplorationOutput2 explorationLoop(IApk app, IRobustDevice device)

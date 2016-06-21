@@ -38,17 +38,17 @@ interface IApkExplorationOutput2 extends Serializable
 
   void verify() throws DroidmateError
 
-  boolean getNoException()
+  boolean getExceptionIsPresent()
 
   DeviceException getException()
-
-  DeviceException getExceptionOrNull()
 
   IApk getApk()
 
   String getPackageName()
 
   List<List<IApiLogcatMessage>> getApiLogs()
+
+  List<IRunnableExplorationAction> getActions()
 
   List<IDeviceGuiSnapshot> getGuiSnapshots()
 

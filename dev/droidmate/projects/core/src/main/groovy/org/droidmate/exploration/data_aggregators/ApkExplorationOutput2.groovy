@@ -80,12 +80,13 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     {
       assert this.actRess.size() >= 1
       assert this.containsExplorationStartTime
-      // KJA double check this assert holds
       assert this.explorationEndTime != null
       assertFirstActionIsReset()
       assertLastActionIsTerminateOrResultIsFailure()
       assertLastGuiSnapshotIsHomeOrResultIsFailure()
       assertOnlyLastActionMightHaveDeviceException()
+      assertDeviceExceptionIsMissingOnSuccessAndPresentOnFailureNeverNull()
+
       assertLogsAreSortedByTime()
     } catch (AssertionError e)
     {
@@ -107,9 +108,15 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
       assert explorationStartTime <= apiLogsSortedTimes.first()
       assert apiLogsSortedTimes.last() <= explorationEndTime
     }
-
   }
-
+  
+  void assertDeviceExceptionIsMissingOnSuccessAndPresentOnFailureNeverNull()
+  {
+    boolean lastResultSuccessful = actRess.last().result.successful
+    assert exception != null
+    assert lastResultSuccessful == exception instanceof DeviceExceptionMissing
+  }
+  
   void assertOnlyLastActionMightHaveDeviceException()
   {
     assert this.actRess.dropRight(1).every {RunnableExplorationActionWithResult pair ->
@@ -136,33 +143,27 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   }
 
   @Override
-  DeviceException getExceptionOrNull()
+  boolean getExceptionIsPresent()
   {
-    boolean lastResultSuccessful = actRess.last().result.successful
-    DeviceException exception = actRess.last().result.exception
-    assert exception != null
-    assert lastResultSuccessful ^ !(exception instanceof DeviceExceptionMissing)
-    return lastResultSuccessful ? null : exception
+    return !(exception instanceof DeviceExceptionMissing)
   }
-
-  @Override
+  
+  @Override 
   DeviceException getException()
   {
-    assert exceptionOrNull != null
-    return exceptionOrNull
+    return actRess.last().result.exception
   }
-
-  @Override
-  boolean getNoException()
-  {
-    return exceptionOrNull == null
-  }
-
 
   @Override
   List<List<IApiLogcatMessage>> getApiLogs()
   {
     return this.actRess.collect {it.result.deviceLogs.apiLogsOrEmpty}
+  }
+
+  @Override
+  List<IRunnableExplorationAction> getActions()
+  {
+    return this.actRess.collect {it.action}
   }
 
   @Override

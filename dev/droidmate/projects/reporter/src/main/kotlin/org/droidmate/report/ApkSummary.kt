@@ -12,6 +12,7 @@ import com.konradjamrozik.Resource
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
+import org.droidmate.exploration.actions.ResetAppExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import java.time.Duration
 
@@ -76,8 +77,8 @@ class ApkSummary() {
       appPackageName = data.packageName,
       totalRunTime = data.explorationDuration,
       totalActionsCount = data.actRess.size,
-      totalResetsCount = 0,
-      exception = DeviceExceptionMissing(),
+      totalResetsCount = data.actions.count { it.base is ResetAppExplorationAction },
+      exception = data.exception,
       uniqueApisCount = 0,
       apiEntries = emptyList(),
       uniqueApiEventPairsCount = 0,

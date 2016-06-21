@@ -13,10 +13,11 @@ import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
+import org.droidmate.logcat.IApiLogcatMessage
 
 
 val RunnableExplorationActionWithResult.clickedWidgets: Set<Widget> get() {
-  val action = this.action.base;
+  val action = this.action.base
   return when (action) {
     is WidgetExplorationAction -> setOf(action.widget)
     else -> emptySet()
@@ -30,4 +31,8 @@ val IApkExplorationOutput2.tableOfViewsCounts: Table<Int, String, Int> get() {
 val IApkExplorationOutput2.tableOfClickFrequencies: Table<Int, String, Int> get() {
   return TableClickFrequency.build(this)
 }
-  
+
+val IApkExplorationOutput2.filteredApis: List<List<IApiLogcatMessage>> get() {
+  // KJA 
+  return this.apiLogs
+}
