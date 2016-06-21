@@ -6,6 +6,8 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 group 'org.droidmate'
 version 'dev'
@@ -48,5 +50,24 @@ task debug {Task it ->
     sourceSets.test.compileClasspath.each {println it}
     println "sourceSets.test.runtimeClasspath"
     sourceSets.test.runtimeClasspath.each {println it}
+  }
+}
+
+allprojects {
+
+  it.afterEvaluate {
+
+    tasks.withType(Test) {Test testTask ->
+
+      testTask.testLogging.events.add(TestLogEvent.FAILED)
+      testTask.testLogging.exceptionFormat = TestExceptionFormat.FULL
+
+      testTask.afterSuite {TestDescriptor td, TestResult tr ->
+
+        if (td.name.contains("Test Run") && tr.successfulTestCount == tr.testCount)
+          println "==> All ${tr.successfulTestCount} tests passed."
+      }
+
+    }
   }
 }
