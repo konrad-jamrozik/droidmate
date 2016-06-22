@@ -12,19 +12,6 @@ import java.lang.Math.max
 import java.time.Duration
 import java.time.LocalDateTime
 
-// KJA rename file to extensions_collections.kt
-
-fun <T, TItem> Iterable<T>.uniqueItemsWithFirstOccurrenceIndex(
-  extractItems: (T) -> Iterable<TItem>,
-  extractUniqueString: (TItem) -> String
-): Map<TItem, Int> {
-
-  // KJA current work
-  // for first (action,result) pair, get all the unique logs and pair them with the action index (which is 1)
-  // for each new (action, result) pair, check if it has any new unique logs. If yes, add them to the final result.
-  return emptyMap()
-}
-
 fun <T, TItem> Iterable<T>.itemsAtTime(
   startTime: LocalDateTime,
   extractTime: (T) -> LocalDateTime,

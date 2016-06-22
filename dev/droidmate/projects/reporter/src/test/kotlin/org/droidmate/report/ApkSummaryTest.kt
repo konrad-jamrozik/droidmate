@@ -59,7 +59,7 @@ class ApkSummaryTest {
   @Category(UnderConstruction::class)
   fun buildsFromApkExplorationOutput2() {
   
-    // KJA current test
+    // KJA test: buildsFromApkExplorationOutput2 
 
     val serExplOutput2: Path = FilesystemTestFixtures.build().f_monitoredSer2
     val explOut2 = OutputDir(serExplOutput2.parent).notEmptyExplorationOutput2
