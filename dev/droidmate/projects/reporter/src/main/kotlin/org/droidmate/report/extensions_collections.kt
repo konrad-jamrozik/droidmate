@@ -13,8 +13,23 @@ fun <T, TItem> Iterable<T>.uniqueItemsWithFirstOccurrenceIndex(
   extractUniqueString: (TItem) -> String
 ): Map<TItem, Int> {
 
-  // KJA current work
-  // for first (action,result) pair, get all the unique logs and pair them with the action index (which is 1)
-  // for each new (action, result) pair, check if it has any new unique logs. If yes, add them to the final result.
-  return emptyMap()
+  return this.foldIndexed(
+
+    mapOf<String, Pair<TItem, Int>>(), { index, map, elem ->
+
+    val uniqueStringsToItemsWithIndexes: Map<String, Pair<TItem, Int>> =
+      extractItems(elem).associate {
+        Pair(
+          extractUniqueString(it),
+          Pair(it, index + 1)
+        )
+      }
+
+    val newUniqueStrings = uniqueStringsToItemsWithIndexes.keys.subtract(map.keys)
+
+    val uniqueStringsToNewItemsWithIndexes = uniqueStringsToItemsWithIndexes.filterKeys { it in newUniqueStrings }
+
+    map.plus(uniqueStringsToNewItemsWithIndexes)
+    
+  }).map { it.value }.toMap()
 }

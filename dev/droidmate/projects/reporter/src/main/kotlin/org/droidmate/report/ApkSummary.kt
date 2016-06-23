@@ -80,6 +80,7 @@ class ApkSummary() {
       totalActionsCount = data.actRess.size,
       totalResetsCount = data.actions.count { it.base is ResetAppExplorationAction },
       exception = data.exception,
+      // KJA
       uniqueApisCount = 0,
       apiEntries = data.uniqueApiLogsWithFirstTriggeringActionIndex.map {
         ApiEntry(
