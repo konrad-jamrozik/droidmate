@@ -12,7 +12,6 @@ import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.actions.WidgetExplorationAction
 
-
 val RunnableExplorationActionWithResult.clickedWidgets: Set<Widget> get() {
   val action = this.action.base
   return when (action) {

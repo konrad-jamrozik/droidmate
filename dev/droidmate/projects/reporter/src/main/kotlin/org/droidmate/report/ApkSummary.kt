@@ -9,13 +9,12 @@
 package org.droidmate.report
 
 import com.konradjamrozik.Resource
+import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
-import org.droidmate.exploration.actions.ExplorationAction
-import org.droidmate.exploration.actions.ResetAppExplorationAction
-import org.droidmate.exploration.actions.TerminateExplorationAction
-import org.droidmate.exploration.actions.WidgetExplorationAction
+import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.exploration.actions.*
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.logcat.IApiLogcatMessage
 import java.time.Duration
@@ -131,14 +130,47 @@ class ApkSummary() {
 
         fun extractEvent(action: ExplorationAction, thread: Int): String {
 
-          // KJA curr work based on org.droidmate.deprecated_still_used.ExplorationOutputDataExtractor.extractUniqueEvent
+          fun extractWidgetEventString(action: ExplorationAction): String {
+            require(action is WidgetExplorationAction || action is EnterTextExplorationAction)
+            val w: Widget
+            val prefix: String
+            when (action) {
+              is WidgetExplorationAction -> {
+                w = action.widget
+                prefix = (if (action.isLongClick) "l-click:" else "click") + ":"
+              }
+              is EnterTextExplorationAction -> {
+                w = action.widget
+                prefix = "enterText:"
+              }
+              else -> throw UnexpectedIfElseFallthroughError()
+            }
+            checkNotNull(w)
+            val widgetString =
+              if (w.resourceId?.length ?: 0 > 0)
+                "res:" + w.strippedResourceId
+              else if (w?.contentDesc?.length ?: 0 > 0)
+                "dsc:" + w.contentDesc
+              else if (w?.text?.length ?: 0 > 0)
+                "txt:" + w.text
+              else ""
+
+            if (widgetString.isEmpty())
+              return "unlabeled"
+            else
+              return prefix + widgetString
+          }
+          
           return when(action) {
             is ResetAppExplorationAction, is TerminateExplorationAction -> "<reset>"
-            is WidgetExplorationAction -> if (thread == 1) "widget unique string" else "background"
-            else -> "other"
+            is WidgetExplorationAction, is EnterTextExplorationAction ->
+              if (thread == 1) extractWidgetEventString(action) else "background"
+            is PressBackExplorationAction -> "<press back>"
+          // BUG in Kotlin: this else should not be necessary. Groovy's fault?
+            else -> throw UnexpectedIfElseFallthroughError()
           }
         }
-        
+
         return this.actRess.uniqueItemsWithFirstOccurrenceIndex(
           extractItems = { actRes ->
             actRes.result.deviceLogs.apiLogsOrEmpty.map { apiLog ->
