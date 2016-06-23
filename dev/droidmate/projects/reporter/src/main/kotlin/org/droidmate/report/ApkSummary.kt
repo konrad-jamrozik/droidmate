@@ -74,8 +74,17 @@ class ApkSummary() {
     val apiEventEntries: List<ApiEventEntry>
   ) {
 
-    constructor(data: IApkExplorationOutput2) : this(data, data.uniqueApiLogsWithFirstTriggeringActionIndex)
-    private constructor(data: IApkExplorationOutput2, uniqueApiLogsWithFirstTriggeringActionIndex: Map<IApiLogcatMessage, Int>) : this(
+    // KJA don't forget to filter api logs
+    constructor(data: IApkExplorationOutput2) : this(
+      data,
+      data.uniqueApiLogsWithFirstTriggeringActionIndex,
+      data.uniqueApiLogsEventPairsWithFirstTriggeringActionIndex)
+
+    private constructor(
+      data: IApkExplorationOutput2,
+      uniqueApiLogsWithFirstTriggeringActionIndex: Map<IApiLogcatMessage, Int>,
+      uniqueApiLogsEventPairsWithFirstTriggeringActionIndex: Map<Pair<String, IApiLogcatMessage>, Int>
+    ) : this(
       appPackageName = data.packageName,
       totalRunTime = data.explorationDuration,
       totalActionsCount = data.actRess.size,
@@ -83,16 +92,28 @@ class ApkSummary() {
       exception = data.exception,
       uniqueApisCount = uniqueApiLogsWithFirstTriggeringActionIndex.keys.size,
       apiEntries = uniqueApiLogsWithFirstTriggeringActionIndex.map {
+        val (apiLog: IApiLogcatMessage, firstIndex: Int) = it
         ApiEntry(
-          time = Duration.between(data.explorationStartTime, it.key.time),
-          actionIndex = it.value,
-          threadId = it.key.threadId.toInt(),
-          apiSignature = it.key.uniqueString
+          time = Duration.between(data.explorationStartTime, apiLog.time),
+          actionIndex = firstIndex,
+          threadId = apiLog.threadId.toInt(),
+          apiSignature = apiLog.uniqueString
         )
       },
-      // KJA next
-      uniqueApiEventPairsCount = 0,
-      apiEventEntries = emptyList()
+      uniqueApiEventPairsCount = uniqueApiLogsEventPairsWithFirstTriggeringActionIndex.keys.size,
+      apiEventEntries = uniqueApiLogsEventPairsWithFirstTriggeringActionIndex.map {
+        val (pair, firstIndex: Int) = it
+        val (event: String, apiLog: IApiLogcatMessage) = pair
+        ApiEventEntry(
+          ApiEntry(
+            time = Duration.between(data.explorationStartTime, apiLog.time),
+            actionIndex = firstIndex,
+            threadId = apiLog.threadId.toInt(),
+            apiSignature = apiLog.uniqueString
+          ),
+          event = event
+        )
+      }
     )
 
     companion object {
@@ -102,6 +123,12 @@ class ApkSummary() {
           extractUniqueString = { it.uniqueString }
         )
       }
+
+      val IApkExplorationOutput2.uniqueApiLogsEventPairsWithFirstTriggeringActionIndex: Map<Pair<String, IApiLogcatMessage>, Int> get() {
+        // KJA curr work
+        return emptyMap()
+      }
+      
     }
   }
 
