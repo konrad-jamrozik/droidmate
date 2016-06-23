@@ -12,7 +12,10 @@ import com.konradjamrozik.Resource
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
+import org.droidmate.exploration.actions.ExplorationAction
 import org.droidmate.exploration.actions.ResetAppExplorationAction
+import org.droidmate.exploration.actions.TerminateExplorationAction
+import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.logcat.IApiLogcatMessage
 import java.time.Duration
@@ -125,8 +128,28 @@ class ApkSummary() {
       }
 
       val IApkExplorationOutput2.uniqueApiLogsEventPairsWithFirstTriggeringActionIndex: Map<Pair<String, IApiLogcatMessage>, Int> get() {
-        // KJA curr work
-        return emptyMap()
+
+        fun extractEvent(action: ExplorationAction, thread: Int): String {
+
+          // KJA curr work based on org.droidmate.deprecated_still_used.ExplorationOutputDataExtractor.extractUniqueEvent
+          return when(action) {
+            is ResetAppExplorationAction, is TerminateExplorationAction -> "<reset>"
+            is WidgetExplorationAction -> if (thread == 1) "widget unique string" else "background"
+            else -> "other"
+          }
+        }
+        
+        return this.actRess.uniqueItemsWithFirstOccurrenceIndex(
+          extractItems = { actRes ->
+            actRes.result.deviceLogs.apiLogsOrEmpty.map { apiLog ->
+              Pair(
+                extractEvent(action = actRes.action.base, thread = apiLog.threadId.toInt()),
+                apiLog)
+            }
+          },
+          extractUniqueString = { it.first + it.second.uniqueString }
+        )
+
       }
       
     }
