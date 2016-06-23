@@ -61,6 +61,7 @@ class ApkSummary() {
     }
   }
 
+  @Suppress("unused") // BUG in Kotlin on private constructor(data: IApkExplorationOutput2, uniqueApiLogsWithFirstTriggeringActionIndex: Map<IApiLogcatMessage, Int>)
   data class Payload(
     val appPackageName: String,
     val totalRunTime: Duration,
@@ -73,16 +74,15 @@ class ApkSummary() {
     val apiEventEntries: List<ApiEventEntry>
   ) {
 
-    // KJA 2
-    constructor(data: IApkExplorationOutput2) : this(
+    constructor(data: IApkExplorationOutput2) : this(data, data.uniqueApiLogsWithFirstTriggeringActionIndex)
+    private constructor(data: IApkExplorationOutput2, uniqueApiLogsWithFirstTriggeringActionIndex: Map<IApiLogcatMessage, Int>) : this(
       appPackageName = data.packageName,
       totalRunTime = data.explorationDuration,
       totalActionsCount = data.actRess.size,
       totalResetsCount = data.actions.count { it.base is ResetAppExplorationAction },
       exception = data.exception,
-      // KJA
-      uniqueApisCount = 0,
-      apiEntries = data.uniqueApiLogsWithFirstTriggeringActionIndex.map {
+      uniqueApisCount = uniqueApiLogsWithFirstTriggeringActionIndex.keys.size,
+      apiEntries = uniqueApiLogsWithFirstTriggeringActionIndex.map {
         ApiEntry(
           time = Duration.between(data.explorationStartTime, it.key.time),
           actionIndex = it.value,
@@ -90,6 +90,7 @@ class ApkSummary() {
           apiSignature = it.key.uniqueString
         )
       },
+      // KJA next
       uniqueApiEventPairsCount = 0,
       apiEventEntries = emptyList()
     )
