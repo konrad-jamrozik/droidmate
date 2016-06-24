@@ -42,6 +42,19 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     assert apk != null
   }
 
+  ApkExplorationOutput2(IApk apk, List<RunnableExplorationActionWithResult> actRess, LocalDateTime explorationStartTime, LocalDateTime explorationEndTime)
+  {
+    this.apk = apk
+    this.actRess = actRess
+    this.explorationStartTime = explorationStartTime
+    this.explorationEndTime = explorationEndTime
+    assert apk != null
+    assert this.actRess != null
+    assert this.explorationStartTime != null
+    assert this.explorationEndTime != null
+    this.verify()
+  }
+
   @Override
   String getPackageName()
   {

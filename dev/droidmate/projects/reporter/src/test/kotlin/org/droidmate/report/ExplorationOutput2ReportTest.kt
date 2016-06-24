@@ -33,7 +33,7 @@ class ExplorationOutput2ReportTest {
     val mockFsDirWithOutput: Path = mockFs.dir(cfg.droidmateOutputDir).withFiles(serExplOutput)
     
     val report = ExplorationOutput2Report(
-      data = OutputDir(mockFsDirWithOutput).notEmptyExplorationOutput2,
+      rawData = OutputDir(mockFsDirWithOutput).notEmptyExplorationOutput2,
       dir = mockFs.dir(cfg.reportOutputDir)
     )
 

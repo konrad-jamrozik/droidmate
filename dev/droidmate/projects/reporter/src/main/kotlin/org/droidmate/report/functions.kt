@@ -11,10 +11,6 @@ package org.droidmate.report
 import com.google.common.collect.ImmutableTable
 import com.google.common.collect.Table
 import com.konradjamrozik.Resource
-import org.droidmate.exploration.actions.ExplorationAction
-import org.droidmate.exploration.actions.ResetAppExplorationAction
-import org.droidmate.exploration.actions.TerminateExplorationAction
-import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.extractedPathString
 import org.zeroturnaround.exec.ProcessExecutor
 import java.util.concurrent.TimeUnit
@@ -62,14 +58,4 @@ fun <V> buildTable(headers: Iterable<String>, rowCount: Int, computeRow: (Int) -
   }
 
   return builder.build()
-}
-
-fun extractEvent(action: ExplorationAction, thread: Int): String {
-
-  // KJA curr work based on org.droidmate.deprecated_still_used.ExplorationOutputDataExtractor.extractUniqueEvent
-  return when(action) {
-    is ResetAppExplorationAction, is TerminateExplorationAction -> "<reset>"
-    is WidgetExplorationAction -> if (thread == 1) "widget unique string" else "background"
-    else -> "other"
-  }
 }

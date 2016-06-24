@@ -16,7 +16,7 @@ class ExplorationOutput2 extends ArrayList<IApkExplorationOutput2>
 {
   private static final long serialVersionUID = 1
 
-  public static ExplorationOutput2 from(IStorage2 storage)
+  public static List<IApkExplorationOutput2> from(IStorage2 storage)
   {
     return storage.getSerializedRuns2().collect {
       def apkout2 = storage.deserialize(it) as IApkExplorationOutput2

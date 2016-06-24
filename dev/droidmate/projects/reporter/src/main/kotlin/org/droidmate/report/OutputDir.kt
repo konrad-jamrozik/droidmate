@@ -10,17 +10,18 @@ package org.droidmate.report
 
 import org.droidmate.deleteDir
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
+import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.storage.Storage2
 import java.nio.file.Files
 import java.nio.file.Path
 
 class OutputDir(val dir: Path) {
 
-  val explorationOutput2: ExplorationOutput2 by lazy {
+  val explorationOutput2: List<IApkExplorationOutput2> by lazy {
     ExplorationOutput2.from(Storage2(dir))
   }
 
-  val notEmptyExplorationOutput2: ExplorationOutput2 by lazy {
+  val notEmptyExplorationOutput2: List<IApkExplorationOutput2> by lazy {
     check(explorationOutput2.isNotEmpty(), { "Check failed: explorationOutput2.isNotEmpty()" })
     explorationOutput2
   }

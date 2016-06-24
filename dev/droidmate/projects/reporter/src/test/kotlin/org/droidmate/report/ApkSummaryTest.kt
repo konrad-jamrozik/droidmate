@@ -10,11 +10,9 @@ package org.droidmate.report
 
 import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.test_base.FilesystemTestFixtures
-import org.droidmate.test_suite_categories.UnderConstruction
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.containsString
 import org.junit.Test
-import org.junit.experimental.categories.Category
 import java.nio.file.Path
 import java.time.Duration
 import java.time.temporal.ChronoUnit
@@ -56,11 +54,8 @@ class ApkSummaryTest {
   }
 
   @Test
-  @Category(UnderConstruction::class)
   fun buildsFromApkExplorationOutput2() {
   
-    // KJA test: buildsFromApkExplorationOutput2 
-
     val serExplOutput2: Path = FilesystemTestFixtures.build().f_monitoredSer2
     val explOut2 = OutputDir(serExplOutput2.parent).notEmptyExplorationOutput2
 

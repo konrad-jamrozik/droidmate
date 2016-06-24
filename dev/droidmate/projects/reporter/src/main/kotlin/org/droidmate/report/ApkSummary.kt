@@ -76,11 +76,11 @@ class ApkSummary() {
     val apiEventEntries: List<ApiEventEntry>
   ) {
 
-    // KJA don't forget to filter api logs
     constructor(data: IApkExplorationOutput2) : this(
       data,
       data.uniqueApiLogsWithFirstTriggeringActionIndex,
-      data.uniqueApiLogsEventPairsWithFirstTriggeringActionIndex)
+      data.uniqueApiLogsEventPairsWithFirstTriggeringActionIndex
+    )
 
     private constructor(
       data: IApkExplorationOutput2,
@@ -127,9 +127,9 @@ class ApkSummary() {
       }
 
       val IApkExplorationOutput2.uniqueApiLogsEventPairsWithFirstTriggeringActionIndex: Map<Pair<String, IApiLogcatMessage>, Int> get() {
-
+        
         fun extractEvent(action: ExplorationAction, thread: Int): String {
-
+          
           fun extractWidgetEventString(action: ExplorationAction): String {
             require(action is WidgetExplorationAction || action is EnterTextExplorationAction)
             val w: Widget
@@ -170,7 +170,6 @@ class ApkSummary() {
             else -> throw UnexpectedIfElseFallthroughError()
           }
         }
-
         return this.actRess.uniqueItemsWithFirstOccurrenceIndex(
           extractItems = { actRes ->
             actRes.result.deviceLogs.apiLogsOrEmpty.map { apiLog ->
@@ -181,9 +180,7 @@ class ApkSummary() {
           },
           extractUniqueString = { it.first + it.second.uniqueString }
         )
-
       }
-      
     }
   }
 

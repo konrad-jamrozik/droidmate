@@ -33,3 +33,25 @@ fun <T, TItem> Iterable<T>.uniqueItemsWithFirstOccurrenceIndex(
     
   }).map { it.value }.toMap()
 }
+
+/**
+ * Map of counts of how many times given elements appears in this [Iterable].
+ */
+val <T> Iterable<T>.frequencies: Map<T, Int> get() {
+  val grouped: Map<T, List<T>> = this.groupBy { it }
+  val frequencies: Map<T, Int> = grouped.mapValues { it.value.size }
+  return frequencies
+}
+
+val <K, V> Map<K, V>.transpose: Map<V, Set<K>> get() {
+  val pairs: List<Pair<V, K>> = this.map { Pair(it.value, it.key) }
+  return pairs.fold(
+    initial = mutableMapOf(),
+    operation = { acc: MutableMap<V, MutableSet<K>>, pair: Pair<V, K> ->
+      if (!acc.containsKey(pair.first))
+        acc.put(pair.first, mutableSetOf())
+      acc[pair.first]!!.add(pair.second)
+      acc
+    }
+  )
+}

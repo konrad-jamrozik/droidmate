@@ -8,13 +8,19 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.exploration.data_aggregators.ExplorationOutput2
+import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import java.nio.file.Path
 
-class ExplorationOutput2Report(val data: ExplorationOutput2, val dir: Path) {
+class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: Path) {
 
   companion object {
     val fileNameSummary = "summary.txt"
+  }
+
+  val data: List<IApkExplorationOutput2>
+
+  init {
+    data = rawData.withFilteredApiLogs
   }
 
   val summaryFile: IDataFile by lazy { Summary(data, dir.resolve(fileNameSummary)) }

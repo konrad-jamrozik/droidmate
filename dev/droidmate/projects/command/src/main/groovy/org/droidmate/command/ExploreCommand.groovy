@@ -146,6 +146,9 @@ class ExploreCommand extends DroidmateCommand
       throw deployExploreSerializeThrowable
     }
 
+    // KJA new report. Bug: fails org.droidmate.frontend.DroidmateFrontendTest.Explores on a device simulator
+//    new ExplorationOutput2Report(out, cfg.droidmateOutputDirPath).writeOut(/* includePlots */ true)
+    
     try
     {
       def deprecatedOut = new ExplorationOutput()
