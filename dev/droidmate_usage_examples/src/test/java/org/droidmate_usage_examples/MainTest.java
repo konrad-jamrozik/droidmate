@@ -20,7 +20,6 @@ import org.droidmate.exploration.actions.ExplorationAction;
 import org.droidmate.exploration.actions.IExplorationActionRunResult;
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult;
 import org.droidmate.exploration.actions.WidgetExplorationAction;
-import org.droidmate.exploration.data_aggregators.ExplorationOutput2;
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2;
 import org.droidmate.exploration.strategy.IExplorationStrategyProvider;
 import org.droidmate.frontend.DroidmateFrontend;
@@ -192,7 +191,7 @@ public class MainTest
   
   private void workWithDroidmateOutput(String outputDirPath)
   {
-    final ExplorationOutput2 output = new OutputDir(Paths.get(outputDirPath)).getExplorationOutput2();
+    final List<IApkExplorationOutput2> output = new OutputDir(Paths.get(outputDirPath)).getExplorationOutput2();
     output.forEach(this::workWithSingleApkExplorationOutput);
   }
 
