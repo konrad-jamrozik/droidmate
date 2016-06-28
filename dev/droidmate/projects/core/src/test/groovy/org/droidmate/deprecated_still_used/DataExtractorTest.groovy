@@ -122,7 +122,7 @@ public class DataExtractorTest extends DroidmateGroovyTestCase
 
   private static IExplorationOutputDataExtractor getSut()
   {
-    String[] args = [Configuration.pn_appGuardOnlyApis, false]
+    String[] args = []
     Configuration cfg = new ConfigurationBuilder().build(args)
     return new ExplorationOutputDataExtractor(cfg.compareRuns, cfg)
   }

@@ -76,7 +76,6 @@ public class Configuration implements IConfiguration
   public static final String pn_apksNames                                    = "-apksNames"
   public static final String pn_apksDir                                      = "-apksDir"
   public static final String pn_apksLimit                                    = "-apksLimit"
-  public static final String pn_appGuardOnlyApis                             = "-appGuardOnlyApis"
   public static final String pn_checkAppIsRunningRetryAttempts               = "-checkAppIsRunningRetryAttempts"
   public static final String pn_checkAppIsRunningRetryDelay                  = "-checkAppIsRunningRetryDelay"
   public static final String pn_checkDeviceAvailableAfterRebootAttempts      = "-checkDeviceAvailableAfterRebootAttempts"
@@ -159,9 +158,6 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_apksDir],
     description = "Directory containing the apks to be processed by DroidMate.")
   public String apksDirName = defaultApksDir
-
-  @Parameter(names = [Configuration.pn_appGuardOnlyApis], arity = 1)
-  public boolean appGuardOnlyApis = true
 
   @Parameter(names = [Configuration.pn_checkAppIsRunningRetryAttempts])
   public int checkAppIsRunningRetryAttempts = 4

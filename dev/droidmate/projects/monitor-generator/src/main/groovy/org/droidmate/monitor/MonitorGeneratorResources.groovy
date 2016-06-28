@@ -27,10 +27,6 @@ class MonitorGeneratorResources implements IConfiguration
   final Path monitorSrcOutPath
   final Path appguardApis
 
-  final Path jellybeanPublishedApiMapping
-  final Path jellybeanStaticMethods
-  final Path appguardLegacyApis
-
   final AndroidAPI androidApi
 
   MonitorGeneratorResources(String[] args)
@@ -62,14 +58,5 @@ class MonitorGeneratorResources implements IConfiguration
 
     Path appguardApis = new ResourcePath("appguard_apis.txt").path
     this.appguardApis = appguardApis
-
-    Path jellybeanPublishedApiMapping = new ResourcePath("legacy/jellybean_publishedapimapping_modified.txt").path
-    this.jellybeanPublishedApiMapping = jellybeanPublishedApiMapping
-
-    Path jellybeanStaticMethods = new ResourcePath("legacy/jellybean_publishedapimapping_static_methods_list.txt").path
-    this.jellybeanStaticMethods = jellybeanStaticMethods
-
-    Path appguardLegacyApis = new ResourcePath("legacy/appguard_legacy_apis.txt").path
-    this.appguardLegacyApis = appguardLegacyApis
   }
 }

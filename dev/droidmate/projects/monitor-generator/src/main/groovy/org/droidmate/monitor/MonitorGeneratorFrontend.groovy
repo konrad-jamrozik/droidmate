@@ -10,12 +10,7 @@
 package org.droidmate.monitor
 
 import groovy.util.logging.Slf4j
-import org.droidmate.apis.ApiMapping
 import org.droidmate.apis.ApiMethodSignature
-
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
 
 import static java.nio.file.Files.readAllLines
 
@@ -29,39 +24,12 @@ public class MonitorGeneratorFrontend
     {
       MonitorGeneratorResources res = new MonitorGeneratorResources(args)
 
-      if (!computeAndPrintApiListsStats(args, res))
-        generateMonitorSrc(res)
+      generateMonitorSrc(res)
 
     } catch (Exception e)
     {
       handleException(e)
     }
-  }
-
-  private static boolean computeAndPrintApiListsStats(String[] args, MonitorGeneratorResources res)
-  {
-    List<String> jellybeanPublishedApiMapping = readAllLines(res.jellybeanPublishedApiMapping)
-    List<String> jellybeanStaticMethods = readAllLines(res.jellybeanStaticMethods)
-    List<String> appguardLegacyApis = readAllLines(res.appguardLegacyApis)
-    def apiListsStatsArg = "apiListsStats"
-    if (args.any {it.startsWith(apiListsStatsArg)})
-    {
-      def stats = new ApiListsStats(jellybeanPublishedApiMapping, jellybeanStaticMethods, appguardLegacyApis)
-
-      String outFilePath = args.find {it.startsWith(apiListsStatsArg + "=")}
-      if (outFilePath == null)
-        stats.print()
-      else
-      {
-        Path apiListOutFile = Paths.get(outFilePath - (apiListsStatsArg + "="))
-        assert Files.isWritable(apiListOutFile)
-        stats.print(apiListOutFile)
-      }
-
-      return true
-
-    } else
-      return false
   }
 
   private static void generateMonitorSrc(MonitorGeneratorResources res)
@@ -94,22 +62,6 @@ public class MonitorGeneratorFrontend
     }
 
 
-    return signatures
-  }
-
-  // KJA to remove
-  @Deprecated
-  public static List<ApiMethodSignature> getLegacyMethodSignatures(MonitorGeneratorResources res)
-  {
-    // Legacy code, left here as reference, in case I will ever have to run DroidMate again with the old APIs. As of 9 Oct 2015
-    // the BoxMate ICSE 2015 submission uses the old APIs, with filtering on the host side done by
-    // org.droidmate.exploration.output.ExplorationOutputDataExtractor.filterApiLogs(java.util.List<java.util.List<org.droidmate.logcat.IApiLogcatMessage>>, java.lang.String, boolean)
-    ApiMapping mapping = new ApiMapping(
-      readAllLines(res.jellybeanPublishedApiMapping),
-      readAllLines(res.jellybeanStaticMethods),
-      readAllLines(res.appguardLegacyApis)
-    )
-    List<ApiMethodSignature> signatures = mapping.apis
     return signatures
   }
 

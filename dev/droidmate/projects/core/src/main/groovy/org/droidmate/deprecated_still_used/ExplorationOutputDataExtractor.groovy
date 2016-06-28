@@ -10,8 +10,6 @@
 package org.droidmate.deprecated_still_used
 
 import groovy.util.logging.Slf4j
-import org.droidmate.apis.ApiMapping
-import org.droidmate.apis.ApiMethodSignature
 import org.droidmate.apis.ExcludedApis
 import org.droidmate.apis.IApi
 import org.droidmate.common.exploration.datatypes.Widget
@@ -45,14 +43,12 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
 
   private final boolean                  compareRuns
   private final Configuration            config
-  private final List<ApiMethodSignature> appGuardApis
 
 
   ExplorationOutputDataExtractor(boolean compareRuns, Configuration config)
   {
     this.compareRuns = compareRuns
     this.config = config
-    this.appGuardApis = ApiMapping.parseAppguardLegacyApis(config.appGuardApisList)
   }
 
   @Override
@@ -628,11 +624,6 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
         currentFilteredList = currentFilteredList.findAll {!(new ExcludedApis().contains(it.methodName))}
       }
 
-      if (config.appGuardOnlyApis || appGuardApis)
-      {
-        currentFilteredList = currentFilteredList.findAll {isInAppGuardApiList(it)}
-      }
-
       currentFilteredList = currentFilteredList.findAll {!it.isCallToStartInternalActivity(appPackageName)}
 
       out << currentFilteredList
@@ -640,14 +631,6 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
     assert apiLogs.size() == out.size()
     out.each {assert it != null}
     return out
-  }
-
-  boolean isInAppGuardApiList(IApiLogcatMessage api)
-  {
-    assert appGuardApis != null
-    return appGuardApis.any {
-      it.methodName == api.methodName && it.objectClass == api.objectClass
-    }
   }
 
   private static boolean enoughDataToComputeApiCallTimes(

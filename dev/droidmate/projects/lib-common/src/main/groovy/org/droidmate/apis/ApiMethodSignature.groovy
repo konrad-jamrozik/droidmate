@@ -20,6 +20,24 @@ class ApiMethodSignature
   List<String> paramClasses
   boolean isStatic
 
+  /**
+   * <p>
+   * Parsing done according to:
+   *
+   * </p><p>
+   * <code>
+   * http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.3<br/>
+   * </code>
+   * </p><p>
+   * Additional reference:
+   * </p><p>
+   * <code>
+   * http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html#getName%28%29<br/>
+   * http://stackoverflow.com/questions/5085889/l-array-notation-where-does-it-come-from<br/>
+   * http://stackoverflow.com/questions/3442090/java-what-is-this-ljava-lang-object<br/>
+   * </code>
+   * </p>
+   */
   static ApiMethodSignature fromDescriptor(String descriptor)
   {
     def builder = new ApiMethodSignatureBuilderFromClassDescriptor(descriptor)
