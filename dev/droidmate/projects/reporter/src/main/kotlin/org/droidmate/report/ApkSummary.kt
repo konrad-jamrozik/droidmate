@@ -148,11 +148,11 @@ class ApkSummary() {
             checkNotNull(w)
             val widgetString =
               if (w.resourceId?.length ?: 0 > 0)
-                "res:" + w.strippedResourceId
+                "[res:${w.strippedResourceId}]"
               else if (w?.contentDesc?.length ?: 0 > 0)
-                "dsc:" + w.contentDesc
+                "[dsc:${w.contentDesc}]"
               else if (w?.text?.length ?: 0 > 0)
-                "txt:" + w.text
+                "[txt:${w.text}]"
               else ""
 
             if (widgetString.isEmpty())
