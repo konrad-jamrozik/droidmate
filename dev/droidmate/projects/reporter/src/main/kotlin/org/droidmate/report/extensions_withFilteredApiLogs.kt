@@ -8,8 +8,9 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.common.exploration.datatypes.Widget
-import org.droidmate.exploration.actions.*
+import org.droidmate.exploration.actions.ExplorationActionRunResult
+import org.droidmate.exploration.actions.IExplorationActionRunResult
+import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.ApkExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.DeviceLogs
@@ -40,13 +41,4 @@ val List<IApkExplorationOutput2>.withFilteredApiLogs: List<IApkExplorationOutput
   }
 
   return this.map { filterApiLogs(it) }
-}
-
-val RunnableExplorationActionWithResult.clickedWidget: Set<Widget> get() {
-  val action = this.action.base
-  return when (action) {
-    is WidgetExplorationAction -> setOf(action.widget)
-    is EnterTextExplorationAction -> setOf(action.widget)
-    else -> emptySet()
-  }
 }
