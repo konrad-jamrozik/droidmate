@@ -137,7 +137,10 @@ class FilteredApis implements IFilteredApis
    */
   public static boolean isStackTraceOfRedundantApiCall(List<String> stackTraceFrames)
   {
-    String monitoredApiCallTrace = stackTraceFrames.findAll {it.startsWith(Api.monitorRedirectionPrefix)}.first()
+    def frames = stackTraceFrames.findAll {
+      it.startsWith(Api.monitorRedirectionPrefix) || it.startsWith(Api.monitorRedirectionPrefixLegacy)}
+    assert !frames.empty
+    String monitoredApiCallTrace = frames.first()
     return manuallyConfirmedRedundantApis.any {monitoredApiCallTrace.contains(it)}
   }
 

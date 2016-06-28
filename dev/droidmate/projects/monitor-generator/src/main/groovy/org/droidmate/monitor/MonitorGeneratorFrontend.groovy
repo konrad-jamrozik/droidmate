@@ -97,6 +97,7 @@ public class MonitorGeneratorFrontend
     return signatures
   }
 
+  // KJA to remove
   @Deprecated
   public static List<ApiMethodSignature> getLegacyMethodSignatures(MonitorGeneratorResources res)
   {

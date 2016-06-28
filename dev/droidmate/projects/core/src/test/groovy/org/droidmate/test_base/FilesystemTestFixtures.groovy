@@ -58,7 +58,14 @@ class FilesystemTestFixtures
     apks = new ApkFixtures(aapt)
     f_aaptBadgingDump = new ResourcePath("fixtures/f_aaptBadgingDump.txt").path.text
     f_uiaTestCaseLog = new ResourcePath("fixtures/f_uia_test_case_log.txt").path
+    // WISH this fixture still contains the old package name of monitor having "monitor_generator.generated" in it 
+    // (see wish below).
     f_legacySer = new ResourcePath("fixtures/serialized_results/2015 Oct 01 1723 com.antivirus.ser").path
+    // WISH this fixture still contains the old package name of monitor having "monitor_generator.generated" in it, for example,
+    // in a stack trace of a device log:
+    // org.droidmate.monitor_generator.generated.Monitor.redir_android_app_Activity_onResume0(Monitor.java:733)
+    // Instead it should have prefix "org.droidmate.monitor.Monitor.redir" as given by 
+    // org.droidmate.common.logcat.Api.monitorRedirectionPrefix
     f_monitoredSer2 = new ResourcePath("fixtures/serialized_results/2016 May 05 2257 org.droidmate.fixtures.apks.monitored.ser2").path
   }
 
