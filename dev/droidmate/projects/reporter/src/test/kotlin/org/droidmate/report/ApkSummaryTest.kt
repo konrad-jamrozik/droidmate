@@ -19,7 +19,7 @@ import java.time.temporal.ChronoUnit
 
 class ApkSummaryTest {
 
-  val manualInspection = true
+  val printToStdout = false
   
   @Test
   fun buildsFromPayload() {
@@ -49,7 +49,7 @@ class ApkSummaryTest {
     assertThat(summaryString, containsString("api_1_signature"))
     assertThat(summaryString, containsString("<event2>"))
 
-    if (manualInspection)
+    if (printToStdout)
       println(summaryString)
   }
 
@@ -62,7 +62,7 @@ class ApkSummaryTest {
     // Act
     val summaryString = ApkSummary.build(explOut2.first())
 
-    if (manualInspection)
+    if (printToStdout)
       println(summaryString)
   }
 }

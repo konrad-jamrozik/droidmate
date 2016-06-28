@@ -22,7 +22,7 @@ import java.nio.file.Path
 
 class ExplorationOutput2ReportTest {
 
-  val manualInspection = true
+  val printToStdout = false
   
   @Test
   fun reports() {
@@ -79,7 +79,7 @@ class ExplorationOutput2ReportTest {
 
   private fun manualInspection(report: ExplorationOutput2Report) {
 
-    if (manualInspection) {
+    if (printToStdout) {
       report.txtReportFiles.forEach {
         println(it.toAbsolutePath().toString())
         println(it.text)
