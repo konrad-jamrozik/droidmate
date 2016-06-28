@@ -20,6 +20,6 @@ class ReportCommand extends DroidmateCommand
   void execute(Configuration cfg) throws ThrowablesCollection
   {
     ExplorationOutput2 out = new OutputDir(cfg.reportInputDirPath).explorationOutput2
-    new ExplorationOutput2Report(out, cfg.reportOutputDirPath).writeOut(/* includePlots */ true)
+    new ExplorationOutput2Report(out, cfg.reportOutputDirPath).writeOut(cfg.reportIncludePlots, cfg.extractSummaries)
   }
 }

@@ -147,7 +147,7 @@ class ExploreCommand extends DroidmateCommand
       throw deployExploreSerializeThrowable
     }
 
-    new ExplorationOutput2Report(out, cfg.droidmateOutputDirPath).writeOut(cfg.reportIncludePlots)
+    new ExplorationOutput2Report(out, cfg.droidmateOutputDirPath).writeOut(cfg.reportIncludePlots, cfg.extractSummaries)
     
     try
     {

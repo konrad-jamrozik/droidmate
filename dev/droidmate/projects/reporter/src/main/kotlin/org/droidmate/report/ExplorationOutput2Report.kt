@@ -33,8 +33,9 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     listOf(summaryFile.path) + guiCoverageReports.flatMap { setOf(it.fileViewsCountsOverTime, it.fileClickFrequency) }
   }
 
-  fun writeOut(includePlots : Boolean = true) {
-    summaryFile.writeOut()
+  fun writeOut(includePlots : Boolean = true, includeSummary: Boolean = true) {
+    if (includeSummary)
+      summaryFile.writeOut()
     guiCoverageReports.forEach { it.writeOut(includePlots) }
   }
 }
