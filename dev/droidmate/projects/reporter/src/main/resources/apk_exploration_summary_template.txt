@@ -17,5 +17,5 @@ $api_entries
 --------------------------------------------------------------
 Unique [API call, event] pairs count observed in the run: $unique_api_event_pairs_count
 
-     Time  Action  Event                                                        Thread  API signature
+     Time  Action  Event                                                                  Thread  API signature
 $api_event_entries

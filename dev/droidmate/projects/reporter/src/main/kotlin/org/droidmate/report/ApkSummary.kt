@@ -201,7 +201,7 @@ class ApkSummary() {
     companion object {
       private val actionIndexPad: Int = 7
       private val threadIdPad: Int = 7
-      private val eventPadEnd: Int = 59
+      private val eventPadEnd: Int = 69
     }
 
     override fun toString(): String {
