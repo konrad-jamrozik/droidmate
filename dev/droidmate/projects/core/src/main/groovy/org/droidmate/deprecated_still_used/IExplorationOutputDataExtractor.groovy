@@ -15,11 +15,5 @@ public interface IExplorationOutputDataExtractor
 
   public void pgfplotsChartInputData(Map cfgMap, ExplorationOutput explorationOutput, Writer writer)
 
-  void stackTraces(ExplorationOutput output, Writer writer)
-
-  void apiManifest(ExplorationOutput output, Writer writer)
-
-  void actions(ExplorationOutput output, Writer writer)
-
   void possiblyRedundantApiCalls(ExplorationOutput output, Writer writer)
 }

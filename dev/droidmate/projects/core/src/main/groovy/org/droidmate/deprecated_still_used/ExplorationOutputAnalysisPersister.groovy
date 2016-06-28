@@ -95,13 +95,7 @@ class ExplorationOutputAnalysisPersister implements IExplorationOutputAnalysisPe
   {
     String packageName = getExplorationOutputPackageNameWithDash(explorationOutput)
 
-    log.info("Extracting actions, stack traces, api manifests, possibly redundant API calls.")
-
-    dataExtractor.actions(explorationOutput, storage.getWriter("actions${packageName}.txt"))
-
-    dataExtractor.stackTraces(explorationOutput, storage.getWriter("stack_traces${packageName}.txt"))
-
-    dataExtractor.apiManifest(explorationOutput, storage.getWriter("api_manifest${packageName}.txt"))
+    log.info("Extracting possibly redundant API calls.")
 
     dataExtractor.possiblyRedundantApiCalls(explorationOutput, storage.getWriter("possibly_redundant_api_calls${packageName}.txt"));
   }

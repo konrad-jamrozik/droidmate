@@ -13,7 +13,6 @@ import groovy.util.logging.Slf4j
 import org.droidmate.apis.ExcludedApis
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logcat.Api
-import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.*
@@ -45,89 +44,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
     this.config = config
   }
 
-  private static String apiPrint(IApiLogcatMessage api)
-  {
-    String apiThreadId = api.threadId.padLeft(4, ' ')
-    return "TId: $apiThreadId ${api.uniqueString}"
-  }
-
-  private static boolean writeExceptionAndCheckIfPreMonitorInit(IApkExplorationOutput aeo, Writer writer)
-  {
-    boolean exceptionThrownBeforeMonitorInit = false
-    if (aeo.caughtException != null)
-    {
-      writer.write("WARNING! This exploration threw an exception.\n")
-      writer.write("\n")
-      writer.write("Exception message: '${aeo.caughtException.message}'.\n")
-      writer.write("\n")
-      writer.write(LogbackConstants.err_log_msg + "\n")
-      writer.write("\n")
-
-      if (aeo.monitorInitTime == null)
-      {
-        writer.write("The exception was thrown even before API call monitor initialized. No more data available.\n")
-        exceptionThrownBeforeMonitorInit = true
-      }
-      writer.write("\n")
-    }
-    return exceptionThrownBeforeMonitorInit
-  }
   
-  @Override
-  void actions(ExplorationOutput output, Writer writer)
-  {
-    output.each {IApkExplorationOutput aeo ->
-
-      writer.write("==============================================================\n")
-      writer.write("$aeo.header\n")
-      writer.write("==============================================================\n")
-      writer.write("\n");
-
-      int actionsCount = aeo.actions.size()
-      writer.write("Exploration actions count: $actionsCount\n")
-      writer.write("\n")
-
-      if (writeExceptionAndCheckIfPreMonitorInit(aeo, writer))
-        return
-
-      Set<String> uniqApisSeenSoFar = []
-
-      List<List<IApiLogcatMessage>> filteredAllApiLogs = filterApiLogs(aeo.apiLogs, aeo.appPackageName)
-
-      aeo.actions.eachWithIndex {TimestampedExplorationAction tea, int i ->
-
-        Set<IApiLogcatMessage> apiLogs = filteredAllApiLogs[i].unique {it.uniqueString}
-        Set<IApiLogcatMessage> newApiLogs = apiLogs.findAll {!(it.uniqueString in uniqApisSeenSoFar)}
-        uniqApisSeenSoFar += newApiLogs*.uniqueString
-
-        String apis = "Apis# " + "${apiLogs.size()}".padLeft(2, ' ')
-        String newApis = "newApis# " + "${newApiLogs.size()}".padLeft(2, ' ') + ":"
-
-        String actionIndex = "${i + 1}".padLeft(3, ' ')
-
-        String actionString = tea.explorationAction.toTabulatedString()
-
-        if (aeo.isUiaTestCase)
-        {
-          writer.write("\n")
-          writer.write("// ${aeo.comments[i]}\n")
-        }
-        writer.write("$tea.timestamp $apis $actionIndex/$actionsCount $actionString\n")
-
-        if (!newApiLogs.isEmpty())
-        {
-          writer.write("$newApis\n")
-          newApiLogs.each {writer.write("  ${apiPrint(it)}\n")}
-          writer.write("\n")
-        }
-
-      }
-      writer.write("\n")
-    }
-
-    writer.close()
-  }
-
   /// !!! DUPLICATION WARNING !!! org.droidmate.monitor.RedirectionsGenerator.redirMethodDefPrefix
   // and with other code in this class responsible for generating method name.
 
@@ -205,90 +122,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
     writer.close()
   }
 
-  @Override
-  void stackTraces(ExplorationOutput output, Writer writer)
-  {
-    output.each {IApkExplorationOutput aeo ->
-
-      writer.write("==============================================================\n")
-      writer.write("$aeo.header\n")
-      writer.write("==============================================================\n")
-      writer.write("\n")
-
-      def fapiLogs = filterApiLogs(aeo.apiLogs, aeo.appPackageName)
-
-      List<List<String>> stackTracesLists = fapiLogs.collectNested {it.stackTrace}
-
-      writer.write("Stack traces count: " + stackTracesLists.flatten().size() + "\n")
-      writer.write("\n")
-
-      int actionsCount = stackTracesLists.size()
-      stackTracesLists.eachWithIndex {List<String> stl, int i ->
-
-        writer.write("action ${i + 1}/$actionsCount: ${aeo.actions[i].explorationAction}\n")
-        writer.write("\n")
-
-        stl.eachWithIndex {String st, int j ->
-
-          fapiLogs[i][j].with {
-            writer.write("$it.uniqueString\n")
-          }
-          writer.write("Tid: ${fapiLogs[i][j].threadId} Param vals: ${fapiLogs[i][j].paramValues}\n")
-
-          writer.write("Stack trace:\n")
-
-          List<String> stFrames = st.split(Api.stack_trace_frame_delimiter).dropWhile {String it -> !(it.startsWith(Api.monitorRedirectionPrefix))}
-          stFrames = ["(...)", stFrames[0], "(...)"] + stFrames.dropWhile {String it -> !(it.startsWith(aeo.appPackageName))}
-
-          stFrames.each {writer.write("  $it\n")}
-          writer.write("\n")
-        }
-        writer.write("------------\n")
-        writer.write("\n")
-      }
-
-    }
-    writer.close()
-  }
-
-  @Override
-  void apiManifest(ExplorationOutput output, Writer writer)
-  {
-    output.each {IApkExplorationOutput aeo ->
-
-      writer.write("==============================================================\n")
-      writer.write("$aeo.header\n")
-      writer.write("==============================================================\n")
-      writer.write("\n")
-
-      List<IApiLogcatMessage> apiCallData = filterApiLogs(aeo.apiLogs, aeo.appPackageName).flatten().collect {it}
-
-      TreeSet<List<String>> apiManifestForApp = new TreeSet<List<String>>()
-
-      apiCallData.each {IApiLogcatMessage api ->
-
-        List<String> stFrames = api.stackTrace.split(Api.stack_trace_frame_delimiter).findAll {
-          it.startsWith(Api.monitorRedirectionPrefix) || it.startsWith(aeo.appPackageName)
-        }
-
-        String paddedThreadId = api.threadId.padLeft(4, ' ')
-        String handlerString = ("TId: $paddedThreadId " + stFrames.last().padRight(130, ' '))
-        String apiCallString = (stFrames.first() - "org.droidmate.monitor.Monitor.").replace("_", ".")
-        String paramValsString = api.paramValues.toString()
-        String fullString = handlerString + " -> " + apiCallString + " " + paramValsString
-
-        if (!apiManifestForApp.contains(fullString))
-          apiManifestForApp.add(fullString)
-      }
-      apiManifestForApp.each {
-        writer.write(it + "\n")
-      }
-      writer.write("\n")
-    }
-    writer.close()
-  }
-
-
+  
   @Override
   void pgfplotsChartInputData(Map cfgMap, ExplorationOutput explorationOutput, Writer writer)
   {
