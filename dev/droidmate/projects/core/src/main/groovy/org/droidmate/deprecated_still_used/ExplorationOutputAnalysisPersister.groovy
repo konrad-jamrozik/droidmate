@@ -72,7 +72,7 @@ class ExplorationOutputAnalysisPersister implements IExplorationOutputAnalysisPe
     else
       log.info("Persisting summary for ${packageName[1..-1]}.")
 
-    dataExtractor.summary(explorationOutput, storage.getWriter("summary${packageName}.txt"))
+    dataExtractor.summary(explorationOutput, storage.getWriter("summary${packageName}_deprecated.txt"))
 
   }
 
