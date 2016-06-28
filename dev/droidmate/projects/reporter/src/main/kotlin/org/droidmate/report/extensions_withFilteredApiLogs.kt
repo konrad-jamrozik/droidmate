@@ -69,6 +69,6 @@ val IApi.isRedundant: Boolean get() {
 }
 
 val IApi.isExcluded: Boolean get() {
-  // KJA investigate if this can be simplified into oblivion. Maybe pull the excluded APIs list from a file? Will not require recompilation.
+  // KJA2 (reporting / filtering apis) investigate if this can be simplified into oblivion. Maybe pull the excluded APIs list from a file? Will not require recompilation.
   return ExcludedApis().contains(this.methodName)
 }
