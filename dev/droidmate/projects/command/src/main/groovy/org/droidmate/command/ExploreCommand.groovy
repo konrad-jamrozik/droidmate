@@ -28,6 +28,7 @@ import org.droidmate.exploration.strategy.IExplorationStrategyProvider
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.TimeProvider
+import org.droidmate.report.ExplorationOutput2Report
 import org.droidmate.storage.IStorage2
 import org.droidmate.storage.Storage2
 import org.droidmate.tools.*
@@ -146,8 +147,7 @@ class ExploreCommand extends DroidmateCommand
       throw deployExploreSerializeThrowable
     }
 
-    // KJA new report. Bug: fails org.droidmate.frontend.DroidmateFrontendTest.Explores on a device simulator
-//    new ExplorationOutput2Report(out, cfg.droidmateOutputDirPath).writeOut(/* includePlots */ true)
+    new ExplorationOutput2Report(out, cfg.droidmateOutputDirPath).writeOut(cfg.reportIncludePlots)
     
     try
     {

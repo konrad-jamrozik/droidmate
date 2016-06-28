@@ -67,8 +67,9 @@ public class Configuration implements IConfiguration
   //endregion
 
   //region Cmd line parameters names and defaults
-
+  
   // @formatter:off
+  // "pn" stands for "parameter name"
   public static final String pn_actionsLimit                                 = "-actionsLimit"
   public static final String pn_alwaysClickFirstWidget                       = "-alwaysClickFirstWidget"
   public static final String pn_androidApi                                   = "-androidApi"
@@ -99,6 +100,7 @@ public class Configuration implements IConfiguration
   public static final String pn_monitorServerStartQueryDelay                 = "-monitorServerStartQueryDelay"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
   public static final String pn_randomSeed                                   = "-randomSeed"
+  public static final String pn_reportIncludePlots                           = "-reportIncludePlots"
   public static final String pn_reportInputDir                               = "-reportInputDir"
   public static final String pn_reportOutputDir                              = "-reportOutputDir"
   public static final String pn_resetEveryNthExplorationForward              = "-resetEvery"
@@ -270,6 +272,9 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = ["-removeHardCodedApis"], arity = 1)
   public boolean removeHardCodedApis = true
+
+  @Parameter(names = [Configuration.pn_reportIncludePlots], arity = 1)
+  public Boolean reportIncludePlots = true
 
   @Parameter(names = [Configuration.pn_reportInputDir], description =
     "Path to the directory that will be expected to have DroidMate exploration output for reporting purposes.")

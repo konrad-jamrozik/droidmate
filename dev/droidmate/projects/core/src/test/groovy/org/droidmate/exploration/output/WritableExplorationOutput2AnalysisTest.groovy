@@ -11,6 +11,7 @@ package org.droidmate.exploration.output
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2Fixture
 import org.droidmate.exploration.data_aggregators.IExplorationOutput2Fixture
+import org.droidmate.filesystem.MockFileSystem
 import org.droidmate.storage.IWritableDirectory
 import org.droidmate.storage.WritableDirectory
 import org.droidmate.test_base.DroidmateGroovyTestCase
@@ -35,7 +36,7 @@ class WritableExplorationOutput2AnalysisTest extends DroidmateGroovyTestCase
     ExplorationOutput2 out2 = fixture.fixture
     IWritableExplorationOutput2Analysis analysis = new WritableExplorationOutput2Analysis(out2, fixture.timeTicks, fixture.timeTickSizeInMs)
 
-    def cfg = new ConfigurationForTests().withMockFileSystem().get()
+    def cfg = new ConfigurationForTests().withFileSystem(new MockFileSystem([]).fs).get()
     IWritableDirectory writableDirectory = new WritableDirectory(cfg.droidmateOutputDirPath)
 
     // Act

@@ -11,7 +11,6 @@ package org.droidmate.test_helpers.configuration
 import org.droidmate.common.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
-import org.droidmate.filesystem.MockFileSystem
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -56,15 +55,13 @@ class ConfigurationForTests
     new ConfigurationBuilder().build(this.argsList as String[], this.fs)
   }
 
-  public ConfigurationForTests withMockFileSystem()
-  {
-    this.withFileSystem(new MockFileSystem([]).fs)
-    return this
-  }
-
   ConfigurationForTests withFileSystem(FileSystem fs)
   {
     this.fs = fs
+    // false, because plots require gnuplot, which does not work on non-default file system
+    // For details, see org.droidmate.report.plot
+    this.setArg([Configuration.pn_reportIncludePlots, "false"])
+    
     return this
   }
 
@@ -90,8 +87,10 @@ class ConfigurationForTests
   {
     assert argNameAndVal.size() == 2
 
+    // Index of arg name
     int index = this.argsList.findIndexOf { it == argNameAndVal[0] }
 
+    // if arg with given name is already present in argsList
     if (index != -1)
     {
       this.argsList.remove(index) // arg name

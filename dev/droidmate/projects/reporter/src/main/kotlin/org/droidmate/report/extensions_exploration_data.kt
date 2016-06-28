@@ -22,7 +22,7 @@ val List<IApkExplorationOutput2>.withFilteredApiLogs: List<IApkExplorationOutput
     fun filterApiLogs(data: List<RunnableExplorationActionWithResult>): List<RunnableExplorationActionWithResult> {
 
       fun filterApiLogs(data: IExplorationActionRunResult): IExplorationActionRunResult {
-        return data // KJA filter api logs hers
+        return data // KJA filter api logs here
       }
 
       return data.map { RunnableExplorationActionWithResult(it.first, filterApiLogs(it.second)) }
