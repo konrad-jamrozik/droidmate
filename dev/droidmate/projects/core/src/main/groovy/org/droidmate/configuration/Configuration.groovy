@@ -85,7 +85,6 @@ public class Configuration implements IConfiguration
   public static final String pn_clearPackageRetryDelay                       = "-clearPackageRetryDelay"
   public static final String pn_closeANRAttempts                             = "-closeANRAttempts"
   public static final String pn_closeANRDelay                                = "-closeANRDelay"
-  public static final String pn_compareRuns                                  = "-compare"
   public static final String pn_deployRawApks                                = "-deployRawApks"
   public static final String pn_device                                       = "-device"
   public static final String pn_droidmateOutputDir                           = "-droidmateOutputDirPath"
@@ -185,9 +184,6 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_closeANRDelay])
   public int closeANRDelay = 1000
-
-  @Parameter(names = [Configuration.pn_compareRuns], arity = 1)
-  public boolean compareRuns = false
 
   @Parameter(names = [Configuration.pn_droidmateOutputDir, "-outputDir"], description =
     "Path to the directory that will contain DroidMate exploration output.")

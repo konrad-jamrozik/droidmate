@@ -30,7 +30,7 @@ class ExtractDataFromPreviousRunCommand extends DroidmateCommand
   {
     def storage = new Storage(cfg.droidmateOutputDirPath)
 
-    def extractor = new ExplorationOutputDataExtractor(cfg.compareRuns, cfg)
+    def extractor = new ExplorationOutputDataExtractor(cfg)
     def persister = new ExplorationOutputAnalysisPersister(cfg, extractor, storage)
 
     return new ExtractDataFromPreviousRunCommand(storage, persister)

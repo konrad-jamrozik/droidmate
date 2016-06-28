@@ -19,8 +19,6 @@ public interface IExplorationOutputDataExtractor
 
   void apiManifest(ExplorationOutput output, Writer writer)
 
-  void summary(ExplorationOutput output, Writer writer)
-
   void actions(ExplorationOutput output, Writer writer)
 
   void possiblyRedundantApiCalls(ExplorationOutput output, Writer writer)

@@ -71,7 +71,7 @@ class ExploreCommand extends DroidmateCommand
   {
     def storage = new Storage(cfg.droidmateOutputDirPath)
     IApksProvider apksProvider = new ApksProvider(deviceTools.aapt)
-    IExplorationOutputDataExtractor extractor = new ExplorationOutputDataExtractor(cfg.compareRuns, cfg)
+    IExplorationOutputDataExtractor extractor = new ExplorationOutputDataExtractor(cfg)
     IExplorationOutputAnalysisPersister analysisPersister = new ExplorationOutputAnalysisPersister(cfg, extractor, storage)
 
     def storage2 = new Storage2(cfg.droidmateOutputDirPath)

@@ -124,7 +124,7 @@ public class DataExtractorTest extends DroidmateGroovyTestCase
   {
     String[] args = []
     Configuration cfg = new ConfigurationBuilder().build(args)
-    return new ExplorationOutputDataExtractor(cfg.compareRuns, cfg)
+    return new ExplorationOutputDataExtractor(cfg)
   }
 
 }

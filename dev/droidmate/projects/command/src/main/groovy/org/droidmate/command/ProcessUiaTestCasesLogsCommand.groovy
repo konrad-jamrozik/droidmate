@@ -41,7 +41,7 @@ class ProcessUiaTestCasesLogsCommand extends DroidmateCommand
     def storage = new Storage(cfg.droidmateOutputDirPath)
     def processor = new UiaTestCaseLogsProcessor(new ExplorationOutputCollectorFactory(timeProvider, storage))
 
-    def extractor = new ExplorationOutputDataExtractor(cfg.compareRuns, cfg)
+    def extractor = new ExplorationOutputDataExtractor(cfg)
     def persister = new ExplorationOutputAnalysisPersister(cfg, extractor, storage)
 
     return new ProcessUiaTestCasesLogsCommand(processor, storage, persister)

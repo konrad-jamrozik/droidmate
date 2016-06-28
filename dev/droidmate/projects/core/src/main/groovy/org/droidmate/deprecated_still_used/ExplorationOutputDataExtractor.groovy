@@ -11,7 +11,6 @@ package org.droidmate.deprecated_still_used
 
 import groovy.util.logging.Slf4j
 import org.droidmate.apis.ExcludedApis
-import org.droidmate.apis.IApi
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logcat.Api
 import org.droidmate.common.logging.LogbackConstants
@@ -21,7 +20,6 @@ import org.droidmate.exploration.actions.*
 import org.droidmate.exploration.output.FilteredApis
 import org.droidmate.logcat.IApiLogcatMessage
 
-import java.time.Duration
 import java.time.LocalDateTime
 
 import static java.time.temporal.ChronoUnit.MILLIS
@@ -39,139 +37,12 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
   private static final int    nanInt          = -1
   private static final String DataColumnWidth = 3
 
-  public static final int actionsPad = 4
-
-  private final boolean                  compareRuns
   private final Configuration            config
 
 
-  ExplorationOutputDataExtractor(boolean compareRuns, Configuration config)
+  ExplorationOutputDataExtractor(Configuration config)
   {
-    this.compareRuns = compareRuns
     this.config = config
-  }
-
-  @Override
-  void summary(ExplorationOutput output, Writer writer)
-  {
-    IApkExplorationOutput otherRun
-    if (output.any {it.isUiaTestCase})
-    {
-      assert !compareRuns
-      assert output.findAll {it.isUiaTestCase}.size() >= 1
-      assert output.findAll {!it.isUiaTestCase}.size() == 1
-      otherRun = output.find {!it.isUiaTestCase}
-
-    } else if (compareRuns)
-    {
-      assert output.size() == 2
-      assert output.every {!it.isUiaTestCase}
-      assert output*.appPackageName.unique().size() == 1
-    }
-
-    output.each {IApkExplorationOutput aeo ->
-
-      if (compareRuns)
-      {
-        assert output.findAll {it != aeo}.size() == 1
-        otherRun = output.find {it != aeo}
-      }
-
-      writer.write("==============================================================\n")
-      writer.write("$aeo.header\n")
-      writer.write("==============================================================\n")
-      writer.write("\n");
-
-      writeUseCaseComments(aeo, writer)
-
-      if (writeExceptionAndCheckIfPreMonitorInit(aeo, writer))
-        return
-
-      List<List<IApiLogcatMessage>> filteredApiLogs = filterApiLogs(aeo.apiLogs, aeo.appPackageName)
-      int i = 0;
-      // A collection of pairs of (API log, index of action after which the log was observed)
-      List<List> logsWithActionIndexes = filteredApiLogs
-        .collect {logs -> i++; logs.collect {[it, i]}}.flatten().collate(2)
-      // This might happen if all logs have been filtered out. In such case, .collate() has transformed [] into [[]].
-      if (logsWithActionIndexes == [[]])
-        logsWithActionIndexes = []
-
-      // A collection of pairs of (unique API log, index of first action after which the log was observed)
-      List<List> firstUniqueLogsWithActionIndexes =
-        logsWithActionIndexes.groupBy {(it[0] as IApi).uniqueString}.values().collect {it.first()}
-
-      List<List> firstUniqueLogsEventsPairsWithActionIndexes = computeFirstUniqueLogsEventsPairsWithActionIndexes(filteredApiLogs, aeo.actions)
-
-      String formattedActionsCount = "${aeo.actions.size()}".padLeft(actionsPad, ' ')
-
-      writer.write("Total run time:      ${getDurationString(aeo.monitorInitTime, aeo.explorationEndTime)}\n")
-      writer.write("Total actions count: $formattedActionsCount (including the final action terminating exploration)\n")
-
-      if (!aeo.isUiaTestCase)
-      {
-        formattedActionsCount = "${aeo.actions.findAll {it.explorationAction instanceof ResetAppExplorationAction}.size()}".padLeft(actionsPad, ' ')
-        writer.write("Total resets count:  $formattedActionsCount (including the initial action)\n")
-      }
-      writer.write("\n");
-
-      writeUniqueApiCallsTimes(firstUniqueLogsWithActionIndexes, aeo, writer, otherRun)
-      writeUniqueApiEventPairsCallsTimes(firstUniqueLogsEventsPairsWithActionIndexes, aeo, writer, otherRun)
-
-      writer.write("\n")
-    }
-    writer.close()
-  }
-
-  private void writeUniqueApiCallsTimes(List<List> firstUniqueLogsWithActionIndexes, IApkExplorationOutput aeo, Writer writer, IApkExplorationOutput otherRun)
-  {
-    writer.write("--------------------------------------------------------------\n");
-    writer.write("Unique API calls count observed in the run: ${firstUniqueLogsWithActionIndexes.size()}\n")
-    writer.write("\n")
-    writer.write("Below follows a list of first calls to unique APIs. It is to be read as follows:\n")
-
-    if (aeo.isUiaTestCase)
-      writer.write("<time of logging the unique API in DroidMate run for the first time, if any> <index of action that triggered the call, if any> | <time of logging the unique API for the first time> <index of action that triggered the call> <the API call data>\n")
-    else
-      writer.write("<time of logging the unique API for the first time> <index of action that triggered the call> <the API call data>\n")
-
-    writer.write("\n")
-
-    if (aeo.isUiaTestCase)
-      writer.write(" DroidMate     | Use case       API signature\n")
-    else if (compareRuns)
-      writer.write(" Other         | This           API signature\n")
-    else
-      writer.write(" DroidMate     API signature\n")
-
-    firstUniqueLogsWithActionIndexes.each {
-      IApiLogcatMessage api = it[0] as IApiLogcatMessage
-      int actionIndex = it[1] as int
-
-      String apiLogTimeOffsetFormatted = getDurationString(aeo.monitorInitTime, api.time)
-
-      String actionIndexFormatted = "$actionIndex".padLeft(actionsPad, ' ');
-
-      if (aeo.isUiaTestCase || compareRuns)
-      {
-
-        int otherActionIndex = otherRun.apiLogs.findIndexOf {List<IApi> otherActionLogs ->
-          otherActionLogs.any {it.uniqueString == api.uniqueString}
-        }
-        IApiLogcatMessage dmApi = otherRun.apiLogs[otherActionIndex].find {it.uniqueString == api.uniqueString}
-
-
-        if (otherActionIndex >= 0)
-        {
-          String otherApiTimeOffsetFormatted = getDurationString(otherRun.monitorInitTime, dmApi.time)
-          String otherActionIndexFormatted = "${otherActionIndex + 1}".padLeft(actionsPad, ' ');
-          writer.write("$otherApiTimeOffsetFormatted $otherActionIndexFormatted | ")
-        } else
-          writer.write("         None! | ")
-      }
-
-      writer.write("$apiLogTimeOffsetFormatted $actionIndexFormatted ${apiPrint(api)}\n")
-    }
-    writer.write("\n")
   }
 
   private static String apiPrint(IApiLogcatMessage api)
@@ -179,65 +50,6 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
     String apiThreadId = api.threadId.padLeft(4, ' ')
     return "TId: $apiThreadId ${api.uniqueString}"
   }
-
-  private void writeUniqueApiEventPairsCallsTimes(List<List> firstUniqueLogsEventsPairsWithActionIndexes, IApkExplorationOutput aeo, Writer writer, IApkExplorationOutput otherRun)
-  {
-    writer.write("--------------------------------------------------------------\n");
-    writer.write("Unique [API call, event] pairs count observed in the run: ${firstUniqueLogsEventsPairsWithActionIndexes.size()}\n")
-    writer.write("\n")
-    writer.write("Below follows a list of first calls to unique [API call, event] pairs. It is to be read as follows:\n")
-
-    if (aeo.isUiaTestCase)
-      writer.write("<time of logging the unique API call from the unique [API call, event] in DroidMate run for the first time, if any> <index of action that triggered the call, if any> | <time of logging the unique API call from the unique [API call, event] for the first time> <index of action that triggered the call> <the event data> <the API call data>\n")
-    else
-      writer.write("<time of logging the unique API call from the unique [API call, event] for the first time> <index of action that triggered the call> <the event data> <the API call data>\n")
-
-    writer.write("\n")
-
-    if (aeo.isUiaTestCase)
-      writer.write(" DroidMate     | Use case       " + "Event".padRight(eventDisplayWidth, ' ') + " API signature\n")
-    else if (compareRuns)
-      writer.write(" Other         | This           " + "Event".padRight(eventDisplayWidth, ' ') + " API signature\n")
-    else
-      writer.write(" DroidMate     " + "Event".padRight(eventDisplayWidth, ' ') + " API signature\n")
-
-    firstUniqueLogsEventsPairsWithActionIndexes.each {
-      IApiLogcatMessage api = it[0] as IApiLogcatMessage
-      String event = extractUniqueEvent(it[1] as TimestampedExplorationAction, api)
-      int actionIndex = it[2] as int
-
-      String apiLogTimeOffsetFormatted = getDurationString(aeo.monitorInitTime, api.time)
-
-      String actionIndexFormatted = "$actionIndex".padLeft(actionsPad, ' ');
-
-      if (aeo.isUiaTestCase || compareRuns)
-      {
-
-        int currActionIndex = -1
-        int otherActionIndex = otherRun.apiLogs.findIndexOf {List<IApi> otherActionLogs ->
-          currActionIndex++
-          otherActionLogs.any {
-            it.uniqueString == api.uniqueString
-          } && extractUniqueEvent(otherRun.actions[currActionIndex], api) == event
-        }
-
-        IApiLogcatMessage dmApi = otherRun.apiLogs[otherActionIndex].find {it.uniqueString == api.uniqueString}
-
-
-        if (otherActionIndex >= 0)
-        {
-          String dmApiTimeOffsetFormatted = getDurationString(otherRun.monitorInitTime, dmApi.time)
-          String dmActionIndexFormatted = "${otherActionIndex + 1}".padLeft(actionsPad, ' ');
-          writer.write("$dmApiTimeOffsetFormatted $dmActionIndexFormatted | ")
-        } else
-          writer.write("         None! | ")
-      }
-
-      writer.write("$apiLogTimeOffsetFormatted $actionIndexFormatted $event ${apiPrint(api)}\n")
-    }
-    writer.write("\n")
-  }
-
 
   private static boolean writeExceptionAndCheckIfPreMonitorInit(IApkExplorationOutput aeo, Writer writer)
   {
@@ -260,30 +72,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
     }
     return exceptionThrownBeforeMonitorInit
   }
-
-  private static String getDurationString(LocalDateTime start, LocalDateTime endTime)
-  {
-    Duration actionTimeOffset = Duration.between(start, endTime)
-    int m = actionTimeOffset.toMinutes()
-    int s = actionTimeOffset.seconds - m * 60
-    String actionTimeOffsetFormatted = "$m".padLeft(4, ' ') + "m " + "$s".padLeft(2, ' ') + "s"
-    return actionTimeOffsetFormatted
-  }
-
-  private static void writeUseCaseComments(IApkExplorationOutput aeo, Writer writer)
-  {
-    if (aeo.isUiaTestCase)
-    {
-      writer.write("// Manually-written description of the actions of the use case:\n")
-      writer.write("//\n");
-      aeo.comments.eachWithIndex {String comment, int i ->
-        String istr = "${i + 1}".padLeft(2, ' ');
-        writer.write("// $istr. $comment\n")
-      }
-      writer.write("\n");
-    }
-  }
-
+  
   @Override
   void actions(ExplorationOutput output, Writer writer)
   {

@@ -49,9 +49,6 @@ class ExplorationOutputAnalysisPersister implements IExplorationOutputAnalysisPe
       return
     }
 
-    if (config.extractSummaries)
-      persistSummary(explorationOutput)
-
     if (config.extractSaturationCharts)
       persistSaturationCharts(explorationOutput)
 
@@ -59,21 +56,6 @@ class ExplorationOutputAnalysisPersister implements IExplorationOutputAnalysisPe
       persistAdditionalData(explorationOutput)
 
     storage.deleteEmpty()
-  }
-
-
-  private void persistSummary(ExplorationOutput explorationOutput)
-  {
-    String packageName = getExplorationOutputPackageNameWithDash(explorationOutput)
-
-
-    if (packageName == "")
-      log.info("Persisting summary.")
-    else
-      log.info("Persisting summary for ${packageName[1..-1]}.")
-
-    dataExtractor.summary(explorationOutput, storage.getWriter("summary${packageName}_deprecated.txt"))
-
   }
 
   private void persistSaturationCharts(ExplorationOutput explorationOutput)
