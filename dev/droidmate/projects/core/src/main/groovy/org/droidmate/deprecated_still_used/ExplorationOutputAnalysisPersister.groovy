@@ -49,6 +49,7 @@ class ExplorationOutputAnalysisPersister implements IExplorationOutputAnalysisPe
       return
     }
 
+    // KJA migrate to new reporting code
     if (config.extractSaturationCharts)
       persistSaturationCharts(explorationOutput)
 
@@ -97,6 +98,7 @@ class ExplorationOutputAnalysisPersister implements IExplorationOutputAnalysisPe
 
     log.info("Extracting possibly redundant API calls.")
 
+    // KJA migrate to new code
     dataExtractor.possiblyRedundantApiCalls(explorationOutput, storage.getWriter("possibly_redundant_api_calls${packageName}.txt"));
   }
 
