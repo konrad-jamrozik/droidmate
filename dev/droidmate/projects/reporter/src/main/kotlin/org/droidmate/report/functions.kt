@@ -11,14 +11,20 @@ package org.droidmate.report
 import com.google.common.collect.ImmutableTable
 import com.google.common.collect.Table
 import com.konradjamrozik.Resource
+import com.konradjamrozik.isDirectory
+import com.konradjamrozik.isRegularFile
 import org.droidmate.extractedPathString
 import org.zeroturnaround.exec.ProcessExecutor
+import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import kotlin.comparisons.compareBy
 import kotlin.comparisons.naturalOrder
 
 fun plot(dataFilePath: String, outputFilePath: String) {
 
+  require(Paths.get(dataFilePath).isRegularFile, {"Paths.get(dataFilePath='$dataFilePath').isRegularFile"})
+  require(Paths.get(outputFilePath).parent.isDirectory, {"Paths.get(outputFilePath='$outputFilePath').parent.isDirectory"})
+  
   val processExecutor = ProcessExecutor()
     .exitValueNormal()
     .readOutput(true)
