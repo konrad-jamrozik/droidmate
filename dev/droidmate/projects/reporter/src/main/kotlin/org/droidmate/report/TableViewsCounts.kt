@@ -56,7 +56,7 @@ class TableViewsCounts() {
     }
 
     private val IApkExplorationOutput2.uniqueClickedViewsCountByTime: Map<Long, Int> get() {
-      return this.uniqueViewCountByPartitionedTime(extractItems = { it.clickedWidgets })
+      return this.uniqueViewCountByPartitionedTime(extractItems = { it.clickedWidget })
     }
 
     private fun IApkExplorationOutput2.uniqueViewCountByPartitionedTime(

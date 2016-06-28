@@ -38,7 +38,7 @@ class TableClickFrequency() {
 
     private val IApkExplorationOutput2.countOfViewsHavingNoOfClicks: Map<Int, Int> get() {
 
-      val clickedWidgets: List<Widget> = this.actRess.flatMap { it.clickedWidgets }
+      val clickedWidgets: List<Widget> = this.actRess.flatMap { it.clickedWidget }
       val noOfClicksPerWidget: Map<Widget, Int> = clickedWidgets.frequencies
       val widgetsHavingNoOfClicks: Map<Int, Set<Widget>> = noOfClicksPerWidget.transpose
       val widgetsCountPerNoOfClicks: Map<Int, Int> = widgetsHavingNoOfClicks.mapValues { it.value.size }

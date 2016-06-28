@@ -48,7 +48,7 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     this.actRess = actRess
     this.explorationStartTime = explorationStartTime
     this.explorationEndTime = explorationEndTime
-    assert apk != null
+    assert this.apk != null
     assert this.actRess != null
     assert this.explorationStartTime != null
     assert this.explorationEndTime != null

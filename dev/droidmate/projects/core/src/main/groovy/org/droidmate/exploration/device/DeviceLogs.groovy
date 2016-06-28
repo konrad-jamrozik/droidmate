@@ -19,7 +19,12 @@ class DeviceLogs implements IDeviceLogs, Serializable
 
   List<IApiLogcatMessage> apiLogs = null
 
-  /**
+  DeviceLogs(List<IApiLogcatMessage> apiLogs)
+  {
+    this.apiLogs = apiLogs
+  }
+  
+/**
    * For safe variant, use {@link #getApiLogsOrEmpty}
    * @return
    */
