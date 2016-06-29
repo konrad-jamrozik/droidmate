@@ -107,7 +107,13 @@ class FilteredApis implements IFilteredApis
     return false
   }
 
-  // !!! DUPLICATION WARNING !!! org.droidmate.deprecated_still_used.ExplorationOutputDataExtractor.manuallyConfirmedRedundantApis
+  // KJA add duplication warning on the other side
+  /// !!! DUPLICATION WARNING !!! org.droidmate.monitor.RedirectionsGenerator.redirMethodDefPrefix
+  // and with other code in this class responsible for generating method name
+  
+  // KJA mention exact android ver (Android 6, for Android 4 stuff might be different)
+  // KJA deduplicate
+  // KJA make these lists legacy, make new non-legacy lists empty for now. When manually inspecting, provide URLs to the exact source code.
   private static List<String> manuallyConfirmedRedundantApis = [
     "redir_4_android_webkit_WebView_ctor1",
     "redir_5_android_webkit_WebView_ctor2",

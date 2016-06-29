@@ -43,37 +43,6 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
   {
     this.config = config
   }
-
-
-  // KJA add duplication warning on the other side
-  /// !!! DUPLICATION WARNING !!! org.droidmate.monitor.RedirectionsGenerator.redirMethodDefPrefix
-  // and with other code in this class responsible for generating method name.
-  
-  // KJA mention exact android ver (Android 6, for Android 4 stuff might be different)
-  // KJA deduplicate
-  // KJA make these lists legacy, make new non-legacy lists empty for now. When manually inspecting, provide URLs to the exact source code.
-  // !!! DUPLICATION WARNING !!! org.droidmate.exploration.output.FilteredApis.manuallyConfirmedRedundantApis
-  private static List<String> manuallyConfirmedRedundantApis = [
-    "redir_4_android_webkit_WebView_ctor1",
-    "redir_5_android_webkit_WebView_ctor2",
-    "redir_6_android_webkit_WebView_ctor3",
-    "redir_7_android_webkit_WebView_ctor4",
-    "redir_android_app_ActivityManager_restartPackage1",
-    "redir_android_content_ContentResolver_openFileDescriptor2",
-    "redir_android_content_ContentResolver_query5",
-    "redir_android_net_wifi_WifiManager_isWifiEnabled0",
-    "redir_java_net_URL_getContent0",
-    "redir_java_net_URL_openStream0",
-    "redir_android_widget_VideoView_start0",
-    "redir_android_widget_VideoView_setVideoURI1",
-    "redir_android_widget_VideoView_stopPlayback0",
-    "redir_android_widget_VideoView_release1",
-    "redir_android_app_NotificationManager_notify2",
-    "redir_android_os_PowerManager_WakeLock_release0",
-    // This makes actually two methods redundant (as expected), both having one param, but of different type.
-    "redir_android_content_ContextWrapper_setWallpaper1"
-  ]
-  /// end of duplication warning
   
   @Override
   void pgfplotsChartInputData(Map cfgMap, ExplorationOutput explorationOutput, Writer writer)
