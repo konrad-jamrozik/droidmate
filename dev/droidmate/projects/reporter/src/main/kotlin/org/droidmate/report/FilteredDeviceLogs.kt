@@ -45,7 +45,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     }
 
     private fun IApi.checkIsInternalMonitorLog() {
-      // KJA migrate to new code
+      // KJA2 migrate to new code
       check(!FilteredApis.isStackTraceOfMonitorTcpServerSocketInit(this.stackTraceFrames),
         { "The Socket.<init> monitor logs were expected to be removed by monitor before being sent to the host machine." })
     }
@@ -74,7 +74,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      * </p>
      */
     private fun IApi.warnWhenPossiblyRedundant() {
-      // KJA write a test for it.
+      // KJA 2 write a test for it.
       this.stackTraceFrames
         .filter { it.startsWith(Api.monitorRedirectionPrefix) && (it !in apisManuallyCheckedForRedundancy) }
         .forEach { log.warn("Possibly redundant API call discovered: " + it) }
@@ -109,9 +109,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
         false
     }
 
-
     private val IApi.isExcluded: Boolean get() {
-      // KJA (reporting / filtering apis) investigate if this can be simplified into oblivion. Maybe pull the excluded APIs list from a file? Will not require recompilation.
       return ExcludedApis().contains(this.methodName)
     }
 

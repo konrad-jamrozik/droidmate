@@ -49,7 +49,7 @@ class ExplorationOutputAnalysisPersister implements IExplorationOutputAnalysisPe
       return
     }
 
-    // KJA migrate to new reporting code
+    // KJA2 migrate to new reporting code
     if (config.extractSaturationCharts)
       persistSaturationCharts(explorationOutput)
 

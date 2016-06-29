@@ -15,7 +15,7 @@ import org.droidmate.exploration.data_aggregators.ApkExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IDeviceLogs
 
-// KJA annotate all apis in appguard_apis.txt with links to doc, source and to origin
+// KJA2 annotate all apis in appguard_apis.txt with links to doc, source and to origin
 
 val List<IApkExplorationOutput2>.withFilteredApiLogs: List<IApkExplorationOutput2> get() {
 

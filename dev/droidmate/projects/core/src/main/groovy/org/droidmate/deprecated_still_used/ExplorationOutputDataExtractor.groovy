@@ -189,7 +189,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
    * </p>
    *
    */
-  // KJA remove all code dependent on this method and remove this method
+  // KJA2 remove all code dependent on this method and remove this method
   @Deprecated
   /// !!! DUPLICATION WARNING !!! org.droidmate.exploration.output.FilteredApis
   private List<List<IApiLogcatMessage>> filterApiLogs(List<List<IApiLogcatMessage>> apiLogs, String appPackageName, boolean appGuardApis = false)
