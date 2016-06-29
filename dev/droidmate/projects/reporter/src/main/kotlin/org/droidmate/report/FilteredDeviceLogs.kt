@@ -117,6 +117,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     // this file).
     private val apisManuallyConfirmedToBeRedundant: List<String> = emptyList()
     private val apisManuallyConfirmedToBeNotRedundant: List<String> = emptyList()
+    /// !!! DUPLICATION WARNING !!! with org.droidmate.monitor.RedirectionsGenerator.redirMethodNamePrefix and related code.
     private val apisManuallyCheckedForRedundancy: List<String> = apisManuallyConfirmedToBeRedundant + apisManuallyConfirmedToBeNotRedundant
     
     // Updated 29 Jun 2016.
@@ -158,14 +159,12 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       "redir_android_content_ContextWrapper_sendOrderedBroadcast2"
     )
 
-    // KJA When manually inspecting, provide URLs to the exact source code, including Android ver.
     @Suppress("unused")
     private val legacyApisManuallyConfirmedToBeRedundant: List<String> = listOf(
 
       // ----- Methods present in appguard_apis.txt -----
       // Android 6 source: https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r46/core/java/android/os/PowerManager.java#1127
       "redir_android_os_PowerManager_WakeLock_release0",
-      // KJA try to force arthook monitoring failure and write down in RedirectionsGenerator what is going to be output to the logcat. Point out to arthook line on GitHub.
       // KJA looks like openFileDescriptor3 should be monitored instead. 
       // KJA Same story with query5/query6 
       // See C:\my\local\repos\googlesource\platform_frameworks_base_v601_r46\core\java\android\content\ContentResolver.java

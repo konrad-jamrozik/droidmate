@@ -16,18 +16,31 @@ import org.droidmate.common.logcat.Api
 import org.droidmate.common.logcat.ApiLogcatMessage
 
 /**
+ * <p>
  * Class that add the instrumentation code to {@link MonitorJavaTemplate}
- *
- * <p> Informatin about update to Android 6.0: </p>
- *
- * Using AAR on ANT Script:
+ * 
+ * </p><p>
+ * To diagnose method signatures here that cannot be handled by ArtHook (which is used fro Android 6), observe logcat output 
+ * during launch of main activity of an inlined app containing monitor generated using this class.
+ * 
+ * A similar log will appear on it:
+ * <pre>
+ * 06-29 19:17:21.637 16375-16375/org.droidmate.fixtures.apks.monitored W/ArtHook: java.lang.RuntimeException: Can't find original method (redir_android_net_wifi_WifiManager_startScan1)
+ * </pre>
+ * 
+ * </p><p>
+ * Information about update to Android 6.0:
+ * 
+ * </p><p>
+ * Using AAR on ANT Script:<br/>
  *    http://community.openfl.org/t/integrating-aar-files/6837/2
  *    http://stackoverflow.com/questions/23777423/aar-in-eclipse-ant-project
  *
- * Using legacy org.apache.http package on Android 6.0
+ * Using legacy org.apache.http package on Android 6.0<br/>
  *    http://stackoverflow.com/questions/33357561/compiling-google-download-library-targing-api-23-android-marshmallow
  *    http://stackoverflow.com/questions/32064633/how-to-include-http-library-in-android-project-using-m-preview-in-eclipse-ant-bu
  *    (Not working, just for information) http://stackoverflow.com/questions/31653002/how-to-use-the-legacy-apache-http-client-on-android-marshmallow
+ * </p>
  *
  */
 @Slf4j
@@ -43,6 +56,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
   private static final String monitorHookBeforeCallPrefix = monitorHookInstanceName + ".hookBeforeApiCall("
   private static final String monitorHookAfterCallPrefix = monitorHookInstanceName + ".hookAfterApiCall("
 
+  // !!! DUPLICATION WARNING !!! with org.droidmate.report.FilteredDeviceLogs.Companion.apisManuallyCheckedForRedundancy
   private static String redirMethodNamePrefix = "redir_";
   private static String redirMethodDefPrefix = "Lorg/droidmate/monitor/Monitor;->$redirMethodNamePrefix";
 

@@ -23,8 +23,15 @@
 # 3. diagnosing any failures and comparing the list definitions with the official source,
 # 4. fixing the list and writing down the findings in comments in this file.
 #
+# ------
+#
 # Entries starting with !API19 will be skipped when running on Android 4 (API 19) because they do not exist there.
 # Entries starting with !API23 will be skipped when running on Android 6 (API 23) because they do not exist there.
+#
+# ------
+# 
+# To understand how to diagnose method signatures here that cannot be handled by ArtHook (which is used fro Android 6), 
+# read the class comment of org.droidmate.monitor.RedirectionsGenerator
 
 Landroid/app/ActivityThread;->installContentProviders(Landroid/content/Context;Ljava/util/List;)V
 Landroid/app/Activity;->onResume()V
