@@ -53,9 +53,6 @@ class ExplorationOutputAnalysisPersister implements IExplorationOutputAnalysisPe
     if (config.extractSaturationCharts)
       persistSaturationCharts(explorationOutput)
 
-    if (config.extractAdditionalData)
-      persistAdditionalData(explorationOutput)
-
     storage.deleteEmpty()
   }
 
@@ -90,16 +87,6 @@ class ExplorationOutputAnalysisPersister implements IExplorationOutputAnalysisPe
         explorationOutput, storage.getWriter("saturation_chart-${config.saturationChartsHours}h-perEvent${packageName}.txt"),
         timeTickSize: 10000, timeTicks: timeTicks, perEvent: true)
     }
-  }
-
-  private void persistAdditionalData(ExplorationOutput explorationOutput)
-  {
-    String packageName = getExplorationOutputPackageNameWithDash(explorationOutput)
-
-    log.info("Extracting possibly redundant API calls.")
-
-    // KJA migrate to new code
-    dataExtractor.possiblyRedundantApiCalls(explorationOutput, storage.getWriter("possibly_redundant_api_calls${packageName}.txt"));
   }
 
   private static String getExplorationOutputPackageNameWithDash(ExplorationOutput explorationOutput)

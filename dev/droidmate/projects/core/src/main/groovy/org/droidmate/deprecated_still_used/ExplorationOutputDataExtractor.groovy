@@ -87,35 +87,6 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
     "redir_android_content_ContextWrapper_setWallpaper1"
   ]
   /// end of duplication warning
-
-
-  @Override
-  void possiblyRedundantApiCalls(ExplorationOutput output, Writer writer)
-  {
-    List<String> stackTraces = output.collect {filterApiLogs(it.apiLogs, it.appPackageName)}.flatten()*.stackTrace
-
-    Set<String> possiblyRedundantApis = [] as Set
-    stackTraces.each {String st ->
-      def apis = st.split(Api.stack_trace_frame_delimiter).findAll {it.startsWith(Api.monitorRedirectionPrefix)}
-      possiblyRedundantApis += apis.drop(1)
-    }
-
-    manuallyConfirmedNonRedundantApis.each {String nonred ->
-      possiblyRedundantApis.removeAll {it.contains(nonred)}
-    }
-
-    manuallyConfirmedRedundantApis.each {String red ->
-      possiblyRedundantApis.removeAll {it.contains(red)}
-    }
-
-    possiblyRedundantApis.each {
-      log.warn("Possibly redundant API call discovered: " + it)
-      writer.write("$it\n")
-    }
-
-    writer.close()
-  }
-
   
   @Override
   void pgfplotsChartInputData(Map cfgMap, ExplorationOutput explorationOutput, Writer writer)
@@ -218,6 +189,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
    * </p>
    *
    */
+  // KJA remove all code dependent on this method and remove this method
   @Deprecated
   /// !!! DUPLICATION WARNING !!! org.droidmate.exploration.output.FilteredApis
   private List<List<IApiLogcatMessage>> filterApiLogs(List<List<IApiLogcatMessage>> apiLogs, String appPackageName, boolean appGuardApis = false)

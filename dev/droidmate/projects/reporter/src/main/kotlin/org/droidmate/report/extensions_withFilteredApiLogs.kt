@@ -14,12 +14,8 @@ import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.ApkExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IDeviceLogs
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 // KJA annotate all apis in appguard_apis.txt with links to doc, source and to origin
-
-private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
 
 val List<IApkExplorationOutput2>.withFilteredApiLogs: List<IApkExplorationOutput2> get() {
 

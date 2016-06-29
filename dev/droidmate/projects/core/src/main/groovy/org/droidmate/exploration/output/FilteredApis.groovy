@@ -12,6 +12,7 @@ import org.droidmate.apis.IApi
 import org.droidmate.common.logcat.Api
 import org.droidmate.logcat.IApiLogcatMessage
 
+// KJA remove all code dependent on this and remove this class
 /// !!! DUPLICATION WARNING !!! org.droidmate.deprecated_still_used.ExplorationOutputDataExtractor.filterApiLogs(java.util.List<java.util.List<org.droidmate.logcat.IApiLogcatMessage>>, java.lang.String, boolean)
 class FilteredApis implements IFilteredApis
 {

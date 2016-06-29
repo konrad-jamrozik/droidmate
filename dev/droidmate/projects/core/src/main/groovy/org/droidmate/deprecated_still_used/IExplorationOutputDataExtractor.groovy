@@ -14,6 +14,4 @@ public interface IExplorationOutputDataExtractor
 {
 
   public void pgfplotsChartInputData(Map cfgMap, ExplorationOutput explorationOutput, Writer writer)
-
-  void possiblyRedundantApiCalls(ExplorationOutput output, Writer writer)
 }

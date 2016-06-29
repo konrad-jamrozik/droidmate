@@ -80,11 +80,6 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
         .forEach { log.warn("Possibly redundant API call discovered: " + it) }
     }
 
-    private val apisManuallyConfirmedToBeRedundant: List<String> = emptyList()
-    private val apisManuallyConfirmedToBeNotRedundant: List<String> = emptyList()
-    private val apisManuallyCheckedForRedundancy: List<String> = apisManuallyConfirmedToBeRedundant + apisManuallyConfirmedToBeNotRedundant
-
-
     /**
      * <p>
      * Checks if given stack trace was obtained from a log to a redundant API call and issues a warning if so.
@@ -119,5 +114,10 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       // KJA (reporting / filtering apis) investigate if this can be simplified into oblivion. Maybe pull the excluded APIs list from a file? Will not require recompilation.
       return ExcludedApis().contains(this.methodName)
     }
+
+    private val apisManuallyConfirmedToBeRedundant: List<String> = emptyList()
+    private val apisManuallyConfirmedToBeNotRedundant: List<String> = emptyList()
+    private val apisManuallyCheckedForRedundancy: List<String> = apisManuallyConfirmedToBeRedundant + apisManuallyConfirmedToBeNotRedundant
+
   }
 }
