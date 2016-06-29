@@ -113,6 +113,8 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       return ExcludedApis().contains(this.methodName)
     }
 
+    // For now empty lists. Will update them as the warnings are observed, while comparing to the legacy lists (present int
+    // this file).
     private val apisManuallyConfirmedToBeRedundant: List<String> = emptyList()
     private val apisManuallyConfirmedToBeNotRedundant: List<String> = emptyList()
     private val apisManuallyCheckedForRedundancy: List<String> = apisManuallyConfirmedToBeRedundant + apisManuallyConfirmedToBeNotRedundant
@@ -136,26 +138,54 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     //
     private val legacyApisManuallyConfirmedToBeNotRedundant: List<String> = listOf(
       
-      // Still present in appguard_apis.txt
+      // ----- Methods present in appguard_apis.txt -----
       "redir_java_net_URL_openConnection0",
-      // Still present in appguard_apis.txt
       "redir_org_apache_http_impl_client_AbstractHttpClient_execute3",
 
-      // Modified version present in appguard_apis.txt, now generated as redir_5_java_net_Socket_ctor4 
+      // ----- Modified version present in appguard_apis.txt, now generated as redir_5_java_net_Socket_ctor4 -----  
       // It calls ctor0 but then it calls java.net.Socket#tryAllAddresses which has a lot of logic.
       // Android 6 source: https://android.googlesource.com/platform/libcore/+/android-6.0.1_r46/luni/src/main/java/java/net/Socket.java
       // KJA investigate if new socket calls have to be added on Android 6
       "redir_13_java_net_Socket_ctor4",
-
-      // Not present in appguard_apis.txt. Was present in jellybean_publishedapimapping_modified.txt
+      
+      // ----- Methods not present in appguard_apis.txt, but which were present in jellybean_publishedapimapping_modified.txt ----- 
       "redir_android_bluetooth_BluetoothAdapter_enable0",
-      // Not present in appguard_apis.txt. Was present in jellybean_publishedapimapping_modified.txt
       // Actually this call is redundant, but it is a part of suite of API calls detecting Intent-requiring operations.
       "redir_android_content_ContextWrapper_startService1",
-      // Not present in appguard_apis.txt. Was present in jellybean_publishedapimapping_modified.txt
-      // Actually this call is redundant, but it is a part of suite of API calls detecting Intent-requiring operations.
+      // Same as call above.
       "redir_android_content_ContextWrapper_sendOrderedBroadcast2"
     )
-    
+
+    // KJA When manually inspecting, provide URLs to the exact source code, including Android ver.
+    private val legacyApisManuallyConfirmedToBeRedundant: List<String> = listOf(
+
+      // ----- Methods present in appguard_apis.txt -----
+      // KJA try to force arthook monitoring failure and write down in RedirectionsGenerator what is going to be output to the logcat. Point out to arthook line on GitHub.
+      // KJA looks like openFileDescriptor3 should be monitored instead. 
+      // KJA Same story with query5/query6 
+      // See C:\my\local\repos\googlesource\platform_frameworks_base_v601_r46\core\java\android\content\ContentResolver.java
+      // Then update and comment C:\my\local\repos\github\droidmate\dev\droidmate\projects\resources\appguard_apis.txt
+      "redir_android_content_ContentResolver_openFileDescriptor2",
+      "redir_android_content_ContentResolver_query5",
+      
+       // ----- Methods not present in appguard_apis.txt, but which were present in jellybean_publishedapimapping_modified.txt ----- 
+      "redir_4_android_webkit_WebView_ctor1",
+      "redir_5_android_webkit_WebView_ctor2",
+      "redir_6_android_webkit_WebView_ctor3",
+      "redir_7_android_webkit_WebView_ctor4",
+      "redir_android_app_ActivityManager_restartPackage1",
+      "redir_android_net_wifi_WifiManager_isWifiEnabled0",
+      "redir_java_net_URL_getContent0",
+      "redir_java_net_URL_openStream0",
+      
+      "redir_android_widget_VideoView_start0",
+      "redir_android_widget_VideoView_setVideoURI1",
+      "redir_android_widget_VideoView_stopPlayback0",
+      "redir_android_widget_VideoView_release1",
+      "redir_android_app_NotificationManager_notify2",
+      "redir_android_os_PowerManager_WakeLock_release0",
+      // This makes actually two methods redundant (as expected), both having one param, but of different type.
+      "redir_android_content_ContextWrapper_setWallpaper1"      
+    )
   }
 }

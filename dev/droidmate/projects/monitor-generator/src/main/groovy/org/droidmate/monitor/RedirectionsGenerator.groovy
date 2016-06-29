@@ -34,6 +34,7 @@ import org.droidmate.common.logcat.ApiLogcatMessage
 class RedirectionsGenerator implements IRedirectionsGenerator
 {
 
+
   private static final nl   = System.lineSeparator()
   private static final ind6 = "      "
   private static final ind4 = "    "
