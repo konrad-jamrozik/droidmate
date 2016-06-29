@@ -48,20 +48,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
   // KJA add duplication warning on the other side
   /// !!! DUPLICATION WARNING !!! org.droidmate.monitor.RedirectionsGenerator.redirMethodDefPrefix
   // and with other code in this class responsible for generating method name.
-
-  // KJA deduplicate
-  private static List<String> manuallyConfirmedNonRedundantApis = [
-    "redir_java_net_URL_openConnection0",
-    "redir_org_apache_http_impl_client_AbstractHttpClient_execute3",
-    "redir_android_bluetooth_BluetoothAdapter_enable0",
-    // Actually this call is redundant, but it is a part of suite of API calls detecting Intent-requiring operations.
-    "redir_android_content_ContextWrapper_startService1",
-    // The same as the call above.
-    "redir_android_content_ContextWrapper_sendOrderedBroadcast2",
-    // It calls ctor0 but then it calls java.net.Socket#tryAllAddresses which has a lot of logic.
-    "redir_13_java_net_Socket_ctor4"
-  ]
-
+  
   // KJA mention exact android ver (Android 6, for Android 4 stuff might be different)
   // KJA deduplicate
   // KJA make these lists legacy, make new non-legacy lists empty for now. When manually inspecting, provide URLs to the exact source code.
