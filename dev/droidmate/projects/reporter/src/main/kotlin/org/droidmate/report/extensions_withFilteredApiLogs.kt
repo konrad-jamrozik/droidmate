@@ -8,16 +8,18 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.apis.ExcludedApis
-import org.droidmate.apis.IApi
 import org.droidmate.exploration.actions.ExplorationActionRunResult
 import org.droidmate.exploration.actions.IExplorationActionRunResult
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.ApkExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.exploration.device.DeviceLogs
 import org.droidmate.exploration.device.IDeviceLogs
-import org.droidmate.exploration.output.FilteredApis
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+// KJA annotate all apis in appguard_apis.txt with links to doc, source and to origin
+
+private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
 
 val List<IApkExplorationOutput2>.withFilteredApiLogs: List<IApkExplorationOutput2> get() {
 
@@ -29,16 +31,7 @@ val List<IApkExplorationOutput2>.withFilteredApiLogs: List<IApkExplorationOutput
 
         fun filterApiLogs(deviceLogs: IDeviceLogs, packageName: String): IDeviceLogs {
 
-          return DeviceLogs(
-            deviceLogs.apiLogsOrEmpty
-              .apply { forEach { it.checkIsInternalMonitorLog() } }
-              .filterNot {
-                it.isRedundant
-                  || it.isExcluded
-                  || it.isCallToStartInternalActivity(packageName
-                )
-              }
-          )
+          return FilteredDeviceLogs(deviceLogs.apiLogsOrEmpty, packageName)
         }
 
         return ExplorationActionRunResult(
@@ -59,16 +52,3 @@ val List<IApkExplorationOutput2>.withFilteredApiLogs: List<IApkExplorationOutput
   return this.map { filterApiLogs(it) }
 }
 
-fun IApi.checkIsInternalMonitorLog() {
-  check(!FilteredApis.isStackTraceOfMonitorTcpServerSocketInit(this.stackTraceFrames),
-    { "The Socket.<init> monitor logs were expected to be removed by monitor before being sent to the host machine." })
-}
-
-val IApi.isRedundant: Boolean get() {
-  return FilteredApis.isStackTraceOfRedundantApiCall(this.stackTraceFrames)
-}
-
-val IApi.isExcluded: Boolean get() {
-  // KJA2 (reporting / filtering apis) investigate if this can be simplified into oblivion. Maybe pull the excluded APIs list from a file? Will not require recompilation.
-  return ExcludedApis().contains(this.methodName)
-}

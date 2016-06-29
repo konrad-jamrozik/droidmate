@@ -44,6 +44,7 @@ import groovy.transform.Immutable
 class ExcludedApis
 {
 
+ // KJA remove this class, incorporate the exclusion directly in the appguard_apis.txt
  boolean contains(String methodName)
  {
   return [

@@ -44,10 +44,12 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
     this.config = config
   }
 
-  
+
+  // KJA add duplication warning on the other side
   /// !!! DUPLICATION WARNING !!! org.droidmate.monitor.RedirectionsGenerator.redirMethodDefPrefix
   // and with other code in this class responsible for generating method name.
 
+  // KJA deduplicate
   private static List<String> manuallyConfirmedNonRedundantApis = [
     "redir_java_net_URL_openConnection0",
     "redir_org_apache_http_impl_client_AbstractHttpClient_execute3",
@@ -60,6 +62,9 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
     "redir_13_java_net_Socket_ctor4"
   ]
 
+  // KJA mention exact android ver (Android 6, for Android 4 stuff might be different)
+  // KJA deduplicate
+  // KJA make these lists legacy, make new non-legacy lists empty for now. When manually inspecting, provide URLs to the exact source code.
   // !!! DUPLICATION WARNING !!! org.droidmate.exploration.output.FilteredApis.manuallyConfirmedRedundantApis
   private static List<String> manuallyConfirmedRedundantApis = [
     "redir_4_android_webkit_WebView_ctor1",
@@ -83,18 +88,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
   ]
   /// end of duplication warning
 
-  /**
-   * Imagine a stack trace of monitored APIs of: A called by B, B called by C. Here, A is at the end of stack trace and B and C
-   * are inside it. If such stack trace is encountered, also stack traces of: "B called by C" and "C" are encountered, as all
-   * A, B and C are monitored.
-   * <p>
-   *
-   * If we have never seen A inside a stack trace, only at the end, we have a guarantee it is not redundant: it has to be
-   * monitored. However, if A would have been inside a stack trace, like B and C are in this case, it might just be delegating to
-   * other call, and thus is possibly redundant (doesn't have to be monitored at all) and has to be manually checked for that.
-   *
-   * </p>
-   */
+
   @Override
   void possiblyRedundantApiCalls(ExplorationOutput output, Writer writer)
   {
@@ -110,8 +104,8 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
       possiblyRedundantApis.removeAll {it.contains(nonred)}
     }
 
-    manuallyConfirmedRedundantApis.each {String nonred ->
-      possiblyRedundantApis.removeAll {it.contains(nonred)}
+    manuallyConfirmedRedundantApis.each {String red ->
+      possiblyRedundantApis.removeAll {it.contains(red)}
     }
 
     possiblyRedundantApis.each {
