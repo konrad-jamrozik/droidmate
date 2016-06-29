@@ -136,13 +136,15 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     // appguard_legacy_apis.txt:  
     //   located in repos\sechair\droidmate-private\resources\legacy_api_lists
     //
+    @Suppress("unused")
     private val legacyApisManuallyConfirmedToBeNotRedundant: List<String> = listOf(
       
       // ----- Methods present in appguard_apis.txt -----
       "redir_java_net_URL_openConnection0",
       "redir_org_apache_http_impl_client_AbstractHttpClient_execute3",
 
-      // ----- Modified version present in appguard_apis.txt, now generated as redir_5_java_net_Socket_ctor4 -----  
+      // ----- Methods whose modified version is present in appguard_apis.txt -----
+      // Now present as redir_5_java_net_Socket_ctor4  
       // It calls ctor0 but then it calls java.net.Socket#tryAllAddresses which has a lot of logic.
       // Android 6 source: https://android.googlesource.com/platform/libcore/+/android-6.0.1_r46/luni/src/main/java/java/net/Socket.java
       // KJA investigate if new socket calls have to be added on Android 6
@@ -157,9 +159,12 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     )
 
     // KJA When manually inspecting, provide URLs to the exact source code, including Android ver.
+    @Suppress("unused")
     private val legacyApisManuallyConfirmedToBeRedundant: List<String> = listOf(
 
       // ----- Methods present in appguard_apis.txt -----
+      // Android 6 source: https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r46/core/java/android/os/PowerManager.java#1127
+      "redir_android_os_PowerManager_WakeLock_release0",
       // KJA try to force arthook monitoring failure and write down in RedirectionsGenerator what is going to be output to the logcat. Point out to arthook line on GitHub.
       // KJA looks like openFileDescriptor3 should be monitored instead. 
       // KJA Same story with query5/query6 
@@ -177,14 +182,13 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       "redir_android_net_wifi_WifiManager_isWifiEnabled0",
       "redir_java_net_URL_getContent0",
       "redir_java_net_URL_openStream0",
-      
       "redir_android_widget_VideoView_start0",
       "redir_android_widget_VideoView_setVideoURI1",
       "redir_android_widget_VideoView_stopPlayback0",
       "redir_android_widget_VideoView_release1",
       "redir_android_app_NotificationManager_notify2",
-      "redir_android_os_PowerManager_WakeLock_release0",
-      // This makes actually two methods redundant (as expected), both having one param, but of different type.
+      // This makes actually two methods redundant in jellybean_publishedapimapping_modified.txt, 
+      // both having one param, but of different type.
       "redir_android_content_ContextWrapper_setWallpaper1"      
     )
   }
