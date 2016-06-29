@@ -123,6 +123,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     //
     // appguard_apis.txt: 
     //   located in repos\github\droidmate\dev\droidmate\projects\resources
+    // After build, APIs from this file are generated into Monitor.java
     //
     // AppGuard MonitorInitalizer.java: 
     //   path given in repos\sechair\droidmate-private\resources\from_Philipp\appguard_apis_list_origin.txt
@@ -134,10 +135,18 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     //   located in repos\sechair\droidmate-private\resources\legacy_api_lists
     //
     private val legacyApisManuallyConfirmedToBeNotRedundant: List<String> = listOf(
+      
       // Still present in appguard_apis.txt
       "redir_java_net_URL_openConnection0",
       // Still present in appguard_apis.txt
       "redir_org_apache_http_impl_client_AbstractHttpClient_execute3",
+
+      // Modified version present in appguard_apis.txt, now generated as redir_5_java_net_Socket_ctor4 
+      // It calls ctor0 but then it calls java.net.Socket#tryAllAddresses which has a lot of logic.
+      // Android 6 source: https://android.googlesource.com/platform/libcore/+/android-6.0.1_r46/luni/src/main/java/java/net/Socket.java
+      // KJA investigate if new socket calls have to be added on Android 6
+      "redir_13_java_net_Socket_ctor4",
+
       // Not present in appguard_apis.txt. Was present in jellybean_publishedapimapping_modified.txt
       "redir_android_bluetooth_BluetoothAdapter_enable0",
       // Not present in appguard_apis.txt. Was present in jellybean_publishedapimapping_modified.txt
@@ -145,11 +154,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       "redir_android_content_ContextWrapper_startService1",
       // Not present in appguard_apis.txt. Was present in jellybean_publishedapimapping_modified.txt
       // Actually this call is redundant, but it is a part of suite of API calls detecting Intent-requiring operations.
-      "redir_android_content_ContextWrapper_sendOrderedBroadcast2",
-      // Modified version present in appguard_apis.txt, now generated as redir_5_java_net_Socket_ctor4 
-      // It calls ctor0 but then it calls java.net.Socket#tryAllAddresses which has a lot of logic.
-      // Android 6 source: https://android.googlesource.com/platform/libcore/+/android-6.0.1_r46/luni/src/main/java/java/net/Socket.java
-      "redir_13_java_net_Socket_ctor4"      
+      "redir_android_content_ContextWrapper_sendOrderedBroadcast2"
     )
     
   }
