@@ -68,12 +68,14 @@ class ExplorationOutput2ReportTest {
         )
       )
     }
+    // KJA add asserts here on report.apiCoverageReports
   }
 
   private fun assertOnFiles(report: ExplorationOutput2Report) {
     assertThat(report.dir.fileNames, hasItems(
       containsString(GUICoverageReport.fileNameSuffixViewCount),
       containsString(GUICoverageReport.fileNameSuffixClickFrequency), 
+      // KJA add asserts here from ApiCoverageReport
       equalTo(ExplorationOutput2Report.fileNameSummary))
     )
   }

@@ -14,8 +14,13 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class TableDataFile<R, C, V>(val table: Table<R, C, V>, file: Path) : DataFile(file) {
+
+  override fun writeOut() {
+    Files.write(file, tableString.toByteArray())
+  }
   
   private val tableString: String by lazy {
+    
     val headerRowString = table.columnKeySet().joinToString(separator = "\t")
 
     val dataRowsStrings: List<String> = table.rowMap().map {
@@ -35,9 +40,6 @@ class TableDataFile<R, C, V>(val table: Table<R, C, V>, file: Path) : DataFile(f
       outputFilePath = plotFile.toAbsolutePath().toString())
   }
 
-  override fun writeOut() {
-    Files.write(file, tableString.toByteArray())
-  }
 
   override fun toString(): String{
     return file.toString()

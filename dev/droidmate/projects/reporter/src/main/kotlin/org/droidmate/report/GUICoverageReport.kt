@@ -16,6 +16,8 @@ import java.nio.file.Path
 
 data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
+  private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
+
   init {
     require(dir.isDirectory)
   }
@@ -36,8 +38,6 @@ data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
     clickFrequencyFile.writeOut()
 
   }
-
-  private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
 
   private val viewCountFile by lazy { TableDataFile(viewCountTable, viewCountPath) }
   private val clickFrequencyFile by lazy { TableDataFile(clickFrequencyTable, clickFrequencyPath) }
