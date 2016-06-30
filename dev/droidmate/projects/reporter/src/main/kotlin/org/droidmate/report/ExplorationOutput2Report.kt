@@ -29,14 +29,21 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     data.map { GUICoverageReport(it, dir) }
   }
 
+  val apiCoverageReports: List<ApiCoverageReport> by lazy {
+    data.map { ApiCoverageReport(it, dir) }
+  }
+
   val txtReportFiles: List<Path> by lazy {
-    listOf(summaryFile.path) + guiCoverageReports.flatMap { setOf(it.fileViewsCountsOverTime, it.fileClickFrequency) }
+    listOf(summaryFile.path) + guiCoverageReports.flatMap { setOf(it.viewCountPath, it.clickFrequencyPath) }
   }
 
   fun writeOut(includePlots : Boolean = true, includeSummary: Boolean = true) {
+    
     if (includeSummary)
       summaryFile.writeOut()
+    
     guiCoverageReports.forEach { it.writeOut(includePlots) }
+    apiCoverageReports.forEach { it.writeOut(includePlots) }
   }
 }
 

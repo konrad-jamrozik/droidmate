@@ -24,6 +24,7 @@ class ExplorationOutput2ReportTest {
 
   val printToStdout = false
   
+  // KJA curr test
   @Test
   fun reports() {
 
@@ -51,16 +52,16 @@ class ExplorationOutput2ReportTest {
 
   private fun assertOnDataStructure(report: ExplorationOutput2Report) {
     report.guiCoverageReports.forEach {
-      assertThat(it.tableViewsCounts.rowKeySet().size, greaterThan(0))
-      assertThat(it.tableViewsCounts.columnKeySet(),
+      assertThat(it.viewCountTable.rowKeySet().size, greaterThan(0))
+      assertThat(it.viewCountTable.columnKeySet(),
         hasItems(
           TableViewsCounts.headerTime,
           TableViewsCounts.headerViewsSeen,
           TableViewsCounts.headerViewsClicked
         )
       )
-      assertThat(it.tableClickFrequency.rowKeySet().size, greaterThan(0))
-      assertThat(it.tableClickFrequency.columnKeySet(),
+      assertThat(it.clickFrequencyTable.rowKeySet().size, greaterThan(0))
+      assertThat(it.clickFrequencyTable.columnKeySet(),
         hasItems(
           TableClickFrequency.headerNoOfClicks,
           TableClickFrequency.headerViewsCount
@@ -71,7 +72,7 @@ class ExplorationOutput2ReportTest {
 
   private fun assertOnFiles(report: ExplorationOutput2Report) {
     assertThat(report.dir.fileNames, hasItems(
-      containsString(GUICoverageReport.fileNameSuffixViewsCountsOverTime),
+      containsString(GUICoverageReport.fileNameSuffixViewCount),
       containsString(GUICoverageReport.fileNameSuffixClickFrequency), 
       equalTo(ExplorationOutput2Report.fileNameSummary))
     )

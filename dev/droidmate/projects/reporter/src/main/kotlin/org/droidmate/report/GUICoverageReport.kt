@@ -8,7 +8,6 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import com.google.common.collect.Table
 import com.konradjamrozik.isDirectory
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.slf4j.Logger
@@ -17,59 +16,42 @@ import java.nio.file.Path
 
 data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
-  companion object {
-    val fileNameSuffixViewsCountsOverTime = "_viewsCountsOverTime.txt"
-    val fileNameSuffixClickFrequency = "_clickFrequency.txt"
-  }
-
-  private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
-
   init {
     require(dir.isDirectory)
-  }
-
-  private val fileNamePrefix by lazy { data.apk.fileName.replace(".", "_") }
-
-  val fileViewsCountsOverTime: Path by lazy {
-    this.dir.resolve("$fileNamePrefix$fileNameSuffixViewsCountsOverTime")
-  }
-
-  val fileClickFrequency: Path by lazy {
-    this.dir.resolve("$fileNamePrefix$fileNameSuffixClickFrequency")
-  }
-
-  val tableViewsCounts: Table<Int, String, Int> by lazy { data.tableOfViewsCounts }
-  val tableClickFrequency: Table<Int, String, Int> by lazy { data.tableOfClickFrequencies }
-
-  private val IApkExplorationOutput2.tableOfViewsCounts: Table<Int, String, Int> get() {
-    return TableViewsCounts.build(this)
-  }
-
-  private val IApkExplorationOutput2.tableOfClickFrequencies: Table<Int, String, Int> get() {
-    return TableClickFrequency.build(this)
-  }
-
-  private val tableViewsCountDataFile = this.tableViewsCounts.dataFile(fileViewsCountsOverTime)
-  private val tableClickFrequencyDataFile = this.tableClickFrequency.dataFile(fileClickFrequency)
-
-  private fun <R, C, V> Table<R, C, V>.dataFile(file: Path): TableDataFile<R, C, V> {
-    return TableDataFile(this, file)
   }
 
   fun writeOut(includePlots: Boolean = true) {
 
     log.info("Writing out GUI coverage report for ${data.apk.fileName}")
 
-    log.info("Writing out $tableViewsCountDataFile")
-    tableViewsCountDataFile.writeOut()
-    
+    log.info("Writing out $viewCountFile")
+    viewCountFile.writeOut()
+
     if (includePlots) {
-      log.info("Writing out ${tableViewsCountDataFile.plotFile}")
-      tableViewsCountDataFile.writeOutPlot()
+      log.info("Writing out ${viewCountFile.plotFile}")
+      viewCountFile.writeOutPlot()
     }
 
-    log.info("Writing out $tableClickFrequencyDataFile")
-    tableClickFrequencyDataFile.writeOut()
-    
+    log.info("Writing out $clickFrequencyFile")
+    clickFrequencyFile.writeOut()
+
   }
+
+  private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
+
+  private val viewCountFile by lazy { TableDataFile(viewCountTable, viewCountPath) }
+  private val clickFrequencyFile by lazy { TableDataFile(clickFrequencyTable, clickFrequencyPath) }
+
+  val viewCountTable by lazy { TableViewsCounts.build(data) }
+  val clickFrequencyTable by lazy { TableClickFrequency.build(data) }
+
+  val viewCountPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixViewCount") }
+  val clickFrequencyPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixClickFrequency") }
+
+  companion object {
+    val fileNameSuffixViewCount = "_viewCount.txt"
+    val fileNameSuffixClickFrequency = "_clickFrequency.txt"
+  }
+
+  private val fileNamePrefix by lazy { data.apk.fileName.replace(".", "_") }
 }

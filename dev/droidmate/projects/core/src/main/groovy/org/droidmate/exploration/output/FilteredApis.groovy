@@ -12,7 +12,7 @@ import org.droidmate.apis.IApi
 import org.droidmate.common.logcat.Api
 import org.droidmate.logcat.IApiLogcatMessage
 
-// KJA2 remove all code dependent on this and remove this class
+// KJA to remove (2)
 /// !!! DUPLICATION WARNING !!! org.droidmate.deprecated_still_used.ExplorationOutputDataExtractor.filterApiLogs(java.util.List<java.util.List<org.droidmate.logcat.IApiLogcatMessage>>, java.lang.String, boolean)
 class FilteredApis implements IFilteredApis
 {
@@ -107,10 +107,10 @@ class FilteredApis implements IFilteredApis
     return false
   }
 
-  // KJA add duplication warning on the other side
   /// !!! DUPLICATION WARNING !!! org.droidmate.monitor.RedirectionsGenerator.redirMethodDefPrefix
   // and with other code in this class responsible for generating method name
-  
+
+  // KJA to remove
   private static List<String> manuallyConfirmedRedundantApis = [
     "redir_4_android_webkit_WebView_ctor1",
     "redir_5_android_webkit_WebView_ctor2",
@@ -139,6 +139,7 @@ class FilteredApis implements IFilteredApis
    * However, the redundant API calls might appear in data that was obtained before they have been removed from the API list.
    * In such cases, this method is useful for filtering them out.
    */
+  // KJA to remove
   public static boolean isStackTraceOfRedundantApiCall(List<String> stackTraceFrames)
   {
     def frames = stackTraceFrames.findAll {

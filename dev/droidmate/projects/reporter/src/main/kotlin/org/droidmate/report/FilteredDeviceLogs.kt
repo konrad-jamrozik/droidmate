@@ -74,7 +74,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      * </p>
      */
     private fun IApi.warnWhenPossiblyRedundant() {
-      // KJA 2 write a test for it.
+      // KJA2 write a test for it.
       this.stackTraceFrames
         .filter { it.startsWith(Api.monitorRedirectionPrefix) && (it !in apisManuallyCheckedForRedundancy) }
         .forEach { log.warn("Possibly redundant API call discovered: " + it) }
@@ -148,7 +148,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       // Now present as redir_5_java_net_Socket_ctor4  
       // It calls ctor0 but then it calls java.net.Socket#tryAllAddresses which has a lot of logic.
       // Android 6 source: https://android.googlesource.com/platform/libcore/+/android-6.0.1_r46/luni/src/main/java/java/net/Socket.java
-      // KJA investigate if new socket calls have to be added on Android 6
+      // KJA2 investigate if new socket calls have to be added on Android 6
       "redir_13_java_net_Socket_ctor4",
       
       // ----- Methods not present in appguard_apis.txt, but which were present in jellybean_publishedapimapping_modified.txt ----- 
@@ -165,8 +165,8 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       // ----- Methods present in appguard_apis.txt -----
       // Android 6 source: https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r46/core/java/android/os/PowerManager.java#1127
       "redir_android_os_PowerManager_WakeLock_release0",
-      // KJA looks like openFileDescriptor3 should be monitored instead. 
-      // KJA Same story with query5/query6 
+      // KJA2 looks like openFileDescriptor3 should be monitored instead. 
+      // KJA2 Same story with query5/query6 
       // See C:\my\local\repos\googlesource\platform_frameworks_base_v601_r46\core\java\android\content\ContentResolver.java
       // Then update and comment C:\my\local\repos\github\droidmate\dev\droidmate\projects\resources\appguard_apis.txt
       "redir_android_content_ContentResolver_openFileDescriptor2",
