@@ -15,7 +15,7 @@ import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
 
-class TableViewsCounts() {
+class TableViewCount() {
   
   companion object {
     

@@ -42,7 +42,7 @@ data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
   private val viewCountFile by lazy { TableDataFile(viewCountTable, viewCountPath) }
   private val clickFrequencyFile by lazy { TableDataFile(clickFrequencyTable, clickFrequencyPath) }
 
-  val viewCountTable by lazy { TableViewsCounts.build(data) }
+  val viewCountTable by lazy { TableViewCount.build(data) }
   val clickFrequencyTable by lazy { TableClickFrequency.build(data) }
 
   val viewCountPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixViewCount") }

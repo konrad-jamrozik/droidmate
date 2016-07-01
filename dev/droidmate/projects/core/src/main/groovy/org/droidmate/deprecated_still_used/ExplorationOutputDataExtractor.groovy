@@ -44,7 +44,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
     this.config = config
   }
   
-  // KJA to remove
+  // KJA2-1 to remove
   @Override
   void pgfplotsChartInputData(Map cfgMap, ExplorationOutput explorationOutput, Writer writer)
   {
@@ -89,7 +89,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
    * The values for given apk represent the number of API seen until given amount of seconds have passed,
    * as given in the input list {@code secondsPassed}.
    */
-  // KJA to remove
+  // KJA2-1 to remove
   private List<List<Integer>> computeUniqApisUntilSecondsForEachApk(
     ExplorationOutput explorationOutput, List<Double> secondsPassed, int timeTickSize, boolean perEvent, boolean appGuardApis)
   {
@@ -147,7 +147,7 @@ class ExplorationOutputDataExtractor implements IExplorationOutputDataExtractor
    * </p>
    *
    */
-  // KJA to remove
+  // KJA2-1 to remove
   @Deprecated
   /// !!! DUPLICATION WARNING !!! org.droidmate.exploration.output.FilteredApis
   private List<List<IApiLogcatMessage>> filterApiLogs(List<List<IApiLogcatMessage>> apiLogs, String appPackageName, boolean appGuardApis = false)

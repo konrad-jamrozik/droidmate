@@ -49,14 +49,14 @@ class ExplorationOutputAnalysisPersister implements IExplorationOutputAnalysisPe
       return
     }
 
-    // KJA migrate to new reporting code
+    // KJA2-1 migrate to new reporting code
     if (config.extractSaturationCharts)
       persistSaturationCharts(explorationOutput)
 
     storage.deleteEmpty()
   }
 
-  // KJA to remove
+  // KJA2-1 to remove
   private void persistSaturationCharts(ExplorationOutput explorationOutput)
   {
     String packageName = getExplorationOutputPackageNameWithDash(explorationOutput)

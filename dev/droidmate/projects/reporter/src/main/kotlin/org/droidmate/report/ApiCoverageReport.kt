@@ -32,4 +32,10 @@ data class ApiCoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
       log.info("includePlots - TODO!")
     }
   }
+
+  val apiCountTable by lazy { TableApiCount.build(data) }
+  
+  companion object {
+    val fileNameSuffixApiCount = "_apiCount.txt"
+  }
 }

@@ -22,7 +22,7 @@ class ApkApisChart implements IApkApisChart
   /** The value of this constant represents a "nan" string understandable by pgfplots as "do not plot this data point". */
   public static final int nanInt = -1
 
-  // KJA to remove (2)
+  // KJA2-1 to remove (2)
   ApkApisChart(IApkExplorationOutput2 apkOut)
   {
     this.apkOut = apkOut

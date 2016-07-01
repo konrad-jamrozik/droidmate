@@ -39,7 +39,7 @@ class ExplorationOutput2ReportTest {
     )
 
     // Act
-    // includePlots = false because plots require gnuplot, which does not work on mock file system used in this test.
+    // "includePlots" is set to false because plots require gnuplot, which does not work on mock file system used in this test.
     report.writeOut(includePlots = false) 
     
     // KJA2 (reporting) produce table that can be readily imported to Excel that has columns:
@@ -55,9 +55,9 @@ class ExplorationOutput2ReportTest {
       assertThat(it.viewCountTable.rowKeySet().size, greaterThan(0))
       assertThat(it.viewCountTable.columnKeySet(),
         hasItems(
-          TableViewsCounts.headerTime,
-          TableViewsCounts.headerViewsSeen,
-          TableViewsCounts.headerViewsClicked
+          TableViewCount.headerTime,
+          TableViewCount.headerViewsSeen,
+          TableViewCount.headerViewsClicked
         )
       )
       assertThat(it.clickFrequencyTable.rowKeySet().size, greaterThan(0))
@@ -68,14 +68,25 @@ class ExplorationOutput2ReportTest {
         )
       )
     }
-    // KJA add asserts here on report.apiCoverageReports
+    report.apiCoverageReports.forEach {
+      // KJA currently failing asserts
+//      assertThat(it.apiCountTable.rowKeySet().size, greaterThan(0))
+//      assertThat(it.apiCountTable.columnKeySet(),
+//        hasItems(
+//          TableApiCount.headerTime,
+//          TableApiCount.headerApisSeen,
+//          TableApiCount.headerApiEventsSeen
+//        )
+//      )      
+    }
   }
 
   private fun assertOnFiles(report: ExplorationOutput2Report) {
     assertThat(report.dir.fileNames, hasItems(
       containsString(GUICoverageReport.fileNameSuffixViewCount),
-      containsString(GUICoverageReport.fileNameSuffixClickFrequency), 
-      // KJA add asserts here from ApiCoverageReport
+      containsString(GUICoverageReport.fileNameSuffixClickFrequency),
+      // KJA currently failing asserts
+//      containsString(ApiCoverageReport.fileNameSuffixApiCount),
       equalTo(ExplorationOutput2Report.fileNameSummary))
     )
   }
