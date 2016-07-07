@@ -20,7 +20,7 @@ import org.droidmate.common.logcat.ApiLogcatMessage
  * Class that add the instrumentation code to {@link MonitorJavaTemplate}
  * 
  * </p><p>
- * To diagnose method signatures here that cannot be handled by ArtHook (which is used fro Android 6), observe logcat output 
+ * To diagnose method signatures here that cannot be handled by ArtHook (which is used for Android 6), observe logcat output 
  * during launch of main activity of an inlined app containing monitor generated using this class.
  * 
  * A similar log will appear on it:
