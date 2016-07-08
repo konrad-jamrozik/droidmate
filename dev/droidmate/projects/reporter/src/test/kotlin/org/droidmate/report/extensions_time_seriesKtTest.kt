@@ -103,7 +103,7 @@ class extensions_time_seriesKtTest {
   }
 
   @Test
-  fun accumulateMaxesAndPadTest() {
+  fun accumulateMaxesAndPadPartitionsTest() {
 
     // Act
     val accumulatedAndPadded: Map<Long, Int> = partitionedTimeSeriesFixture

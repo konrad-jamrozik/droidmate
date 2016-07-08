@@ -18,6 +18,12 @@ class TableDataFile<R, C, V>(val table: Table<R, C, V>, file: Path) : DataFile(f
   override fun writeOut() {
     Files.write(file, tableString.toByteArray())
   }
+
+  fun writeOutPlot() {
+    plot(
+      dataFilePath = file.toAbsolutePath().toString(),
+      outputFilePath = plotFile.toAbsolutePath().toString())
+  }
   
   private val tableString: String by lazy {
     
@@ -33,14 +39,7 @@ class TableDataFile<R, C, V>(val table: Table<R, C, V>, file: Path) : DataFile(f
   }
 
   val plotFile by lazy { file.withExtension("pdf") }
-
-  fun writeOutPlot() {
-    plot(
-      dataFilePath = file.toAbsolutePath().toString(),
-      outputFilePath = plotFile.toAbsolutePath().toString())
-  }
-
-
+  
   override fun toString(): String{
     return file.toString()
   }

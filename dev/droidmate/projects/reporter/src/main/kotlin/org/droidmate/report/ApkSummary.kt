@@ -120,6 +120,7 @@ class ApkSummary() {
 
     companion object {
       val IApkExplorationOutput2.uniqueApiLogsWithFirstTriggeringActionIndex: Map<IApiLogcatMessage, Int> get() {
+        // KJA getting here count = 1 immediately, while ApkSummary shows it should be on 14s. Data shows thati indeed onResume log is immediately present. Bug in ApkSummary?
         return this.actRess.uniqueItemsWithFirstOccurrenceIndex(
           extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
           extractUniqueString = { it.uniqueString }

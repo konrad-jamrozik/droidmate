@@ -17,17 +17,55 @@ class TableApiCount() {
 
     val headerTime = "Time_seconds"
     val headerApisSeen = "Apis_seen"
-    val headerApiEventsSeen = "Api_Event_pairs_seen"
+    val headerApiEventsSeen = "Api+Event_pairs_seen"
+
+    // KJA DRY with TableViewCount
+    val stepSizeInMs = 1000L
 
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
       // return ImmutableTable.of() // KJA to implement
+
+      // KJA DRY with TableViewCount
+      val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs).toList()
+      // KJA to implement
+      val uniqueApisCountByTime = data.uniqueApisCountByTime
+      // KJA to implement
+      val uniqueApiEventPairsCountByTime = timeRange.associate { Pair(it, 0) }
+      
       return buildTable(
         headers = listOf(headerTime, headerApisSeen, headerApiEventsSeen),
-        rowCount = 1,
+        rowCount = timeRange.size,
         computeRow = { rowIndex ->
-          listOf(0, 1, 2)
+          val timePassed = timeRange[rowIndex]
+          listOf(
+            (timePassed / stepSizeInMs).toInt(),
+            uniqueApisCountByTime[timePassed]!!,
+            uniqueApiEventPairsCountByTime[timePassed]!!)
         }
       )
     }
+
+    private val IApkExplorationOutput2.uniqueApisCountByTime: Map<Long, Int> get() {
+      val partitionSize = 1000L
+      // KJA DRY with TableViewCount
+      return this.actRess.itemsAtTime(
+        startTime = this.explorationStartTime,
+        extractTime = { it.action.timestamp },
+        extractItems = { it.result.deviceLogs.apiLogsOrEmpty }
+      )
+        .mapKeys {
+          // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
+          // The currently applied workaround is to add 500 milliseconds.
+          it.key + 500L
+        }
+        .accumulateUniqueStrings(
+          extractUniqueString = { it.uniqueString }
+        )
+        .mapValues { it.value.count() }
+        .partition(partitionSize)
+        .accumulateMaxes(extractMax = { it.max() ?: 0 })
+        .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroLeastSignificantDigits(3))
+    }
+
   }
 }
