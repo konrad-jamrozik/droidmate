@@ -17,8 +17,6 @@ import org.junit.runners.Suite
 @Categories.ExcludeCategory(ExcludedFromFastRegressionTests::class)
 @Suite.SuiteClasses(
   extensions_miscKtTest::class,
-  IterableExtensionsKtTest::class,
-  MapExtensionsKtTest::class,
   extensions_time_seriesKtTest::class,
   functionsKtTest::class,
   ApkSummaryTest::class,

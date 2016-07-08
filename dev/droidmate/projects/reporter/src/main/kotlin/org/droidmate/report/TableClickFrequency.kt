@@ -9,6 +9,8 @@
 package org.droidmate.report
 
 import com.google.common.collect.Table
+import com.konradjamrozik.frequencies
+import com.konradjamrozik.transpose
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 

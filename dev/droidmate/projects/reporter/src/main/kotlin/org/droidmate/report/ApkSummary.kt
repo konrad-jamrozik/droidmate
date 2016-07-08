@@ -9,6 +9,7 @@
 package org.droidmate.report
 
 import com.konradjamrozik.Resource
+import com.konradjamrozik.uniqueItemsWithFirstOccurrenceIndex
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.DeviceException
