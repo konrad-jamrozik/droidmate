@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.report
 
+// KJA 1 move entire file to utilities project + tests
 /**
  * @return 
  *   Map of counts of how many times given elements appears in this receiver [Iterable].

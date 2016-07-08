@@ -19,16 +19,15 @@ class TableApiCount() {
     val headerApisSeen = "Apis_seen"
     val headerApiEventsSeen = "Api+Event_pairs_seen"
 
-    // KJA DRY with TableViewCount
+    // KJA 4 DRY with TableViewCount
     val stepSizeInMs = 1000L
 
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
 
-      // KJA DRY with TableViewCount
+      // KJA 4 DRY with TableViewCount
       val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs).toList()
-      // KJA to implement
       val uniqueApisCountByTime = data.uniqueApisCountByTime
-      // KJA to implement
+      // KJA 3 to implement
       val uniqueApiEventPairsCountByTime = timeRange.associate { Pair(it, 0) }
       
       return buildTable(
@@ -46,8 +45,8 @@ class TableApiCount() {
 
     private val IApkExplorationOutput2.uniqueApisCountByTime: Map<Long, Int> get() {
       val partitionSize = 1000L
-      // KJA DRY with TableViewCount
-      // KJA curr work: instead use itemsAtTimes and take timestamp from device log 
+      // KJA 4 DRY with TableViewCount
+      // KJA 2 instead use itemsAtTimes and take timestamp from device log 
       return this.actRess.itemsAtTime(
         extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
         startTime = this.explorationStartTime,

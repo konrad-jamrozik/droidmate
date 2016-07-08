@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.report
 
+// KJA 1 move entire file to utilities project + tests
 val <K, V> Map<K, V>.transpose: Map<V, Set<K>> get() {
   val pairs: List<Pair<V, K>> = this.map { Pair(it.value, it.key) }
   return pairs.fold(

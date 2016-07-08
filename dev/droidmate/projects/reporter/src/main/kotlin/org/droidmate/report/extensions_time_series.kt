@@ -25,7 +25,7 @@ fun <T, TItem> Iterable<T>.itemsAtTime(
   return this.associate { Pair(computeDuration(extractTime(it)), extractItems(it)) }
 }
 
-// KJA curr work
+// KJA 2 
 //fun <T, TItem> Iterable<T>.itemsAtTimes(
 //  startTime: LocalDateTime,
 //  extractTime: (TItem) -> LocalDateTime,
