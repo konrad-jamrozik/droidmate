@@ -22,7 +22,7 @@ import java.nio.file.Path
 
 class ExplorationOutput2ReportTest {
 
-  val printToStdout = false
+  val printToStdout = true
   
   // KJA curr test
   @Test

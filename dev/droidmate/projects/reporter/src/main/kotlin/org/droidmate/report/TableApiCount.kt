@@ -8,7 +8,6 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import com.google.common.collect.ImmutableTable
 import com.google.common.collect.Table
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
@@ -21,7 +20,14 @@ class TableApiCount() {
     val headerApiEventsSeen = "Api_Event_pairs_seen"
 
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
-      return ImmutableTable.of() // KJA to implement
+      // return ImmutableTable.of() // KJA to implement
+      return buildTable(
+        headers = listOf(headerTime, headerApisSeen, headerApiEventsSeen),
+        rowCount = 1,
+        computeRow = { rowIndex ->
+          listOf(0, 1, 2)
+        }
+      )
     }
   }
 }

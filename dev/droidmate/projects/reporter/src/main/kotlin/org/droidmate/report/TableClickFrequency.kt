@@ -33,7 +33,8 @@ class TableClickFrequency() {
             noOfClicks,
             countOfViewsHavingNoOfClicks[noOfClicks]!!
           )
-        })
+        }
+      )
     }
 
     private val IApkExplorationOutput2.countOfViewsHavingNoOfClicks: Map<Int, Int> get() {
