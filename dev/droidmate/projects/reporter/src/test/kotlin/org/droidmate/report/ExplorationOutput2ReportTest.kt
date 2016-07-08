@@ -67,8 +67,6 @@ class ExplorationOutput2ReportTest {
           TableClickFrequency.headerViewsCount
         )
       )
-    }
-    report.apiCoverageReports.forEach {
       // KJA currently failing asserts
 //      assertThat(it.apiCountTable.rowKeySet().size, greaterThan(0))
 //      assertThat(it.apiCountTable.columnKeySet(),
@@ -86,7 +84,7 @@ class ExplorationOutput2ReportTest {
       containsString(GUICoverageReport.fileNameSuffixViewCount),
       containsString(GUICoverageReport.fileNameSuffixClickFrequency),
       // KJA currently failing asserts
-//      containsString(ApiCoverageReport.fileNameSuffixApiCount),
+//      containsString(GUICoverageReport.fileNameSuffixApiCount),
       equalTo(ExplorationOutput2Report.fileNameSummary))
     )
   }

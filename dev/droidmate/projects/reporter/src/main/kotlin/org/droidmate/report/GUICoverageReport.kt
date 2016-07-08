@@ -24,34 +24,43 @@ data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
   fun writeOut(includePlots: Boolean = true) {
 
-    log.info("Writing out GUI coverage report for ${data.apk.fileName}")
+    log.info("Writing out tabular data report for ${data.apk.fileName}")
 
     log.info("Writing out $viewCountFile")
     viewCountFile.writeOut()
 
-    if (includePlots) {
-      log.info("Writing out ${viewCountFile.plotFile}")
-      viewCountFile.writeOutPlot()
-    }
-
     log.info("Writing out $clickFrequencyFile")
     clickFrequencyFile.writeOut()
 
+    log.info("Writing out $apiCountFile")
+    apiCountFile.writeOut()
+
+    if (includePlots) {
+      log.info("Writing out ${viewCountFile.plotFile}")
+      viewCountFile.writeOutPlot()
+
+      log.info("Writing out ${apiCountFile.plotFile}")
+      apiCountFile.writeOutPlot()
+    }
   }
 
   private val viewCountFile by lazy { TableDataFile(viewCountTable, viewCountPath) }
   private val clickFrequencyFile by lazy { TableDataFile(clickFrequencyTable, clickFrequencyPath) }
+  private val apiCountFile by lazy { TableDataFile(apiCountTable, apiCountPath) }
 
   val viewCountTable by lazy { TableViewCount.build(data) }
   val clickFrequencyTable by lazy { TableClickFrequency.build(data) }
-
+  val apiCountTable by lazy { TableApiCount.build(data) }
+  
   val viewCountPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixViewCount") }
   val clickFrequencyPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixClickFrequency") }
+  val apiCountPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixApiCount") }
 
   private val fileNamePrefix by lazy { data.apk.fileName.replace(".", "_") }
   
   companion object {
     val fileNameSuffixViewCount = "_viewCount.txt"
     val fileNameSuffixClickFrequency = "_clickFrequency.txt"
+    val fileNameSuffixApiCount = "_apiCount.txt"
   }
 }
