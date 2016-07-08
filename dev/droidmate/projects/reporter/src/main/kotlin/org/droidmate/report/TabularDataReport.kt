@@ -14,9 +14,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
 
-data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
+data class TabularDataReport(val data: IApkExplorationOutput2, val dir: Path) {
 
-  private val log: Logger = LoggerFactory.getLogger(GUICoverageReport::class.java)
+  private val log: Logger = LoggerFactory.getLogger(TabularDataReport::class.java)
 
   init {
     require(dir.isDirectory)
@@ -24,7 +24,7 @@ data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
 
   fun writeOut(includePlots: Boolean = true) {
 
-    log.info("Writing out tabular data report for ${data.apk.fileName}")
+    log.info("Writing out table report for ${data.apk.fileName}")
 
     log.info("Writing out $viewCountFile")
     viewCountFile.writeOut()
@@ -44,23 +44,27 @@ data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
     }
   }
 
-  private val viewCountFile by lazy { TableDataFile(viewCountTable, viewCountPath) }
-  private val clickFrequencyFile by lazy { TableDataFile(clickFrequencyTable, clickFrequencyPath) }
-  private val apiCountFile by lazy { TableDataFile(apiCountTable, apiCountPath) }
+  // @formatter:off
+  val viewCountFile      by lazy { TableDataFile(viewCountTable      , viewCountPath) }
+  val clickFrequencyFile by lazy { TableDataFile(clickFrequencyTable , clickFrequencyPath) }
+  val apiCountFile       by lazy { TableDataFile(apiCountTable       , apiCountPath) }
 
-  val viewCountTable by lazy { TableViewCount.build(data) }
+  val viewCountTable      by lazy { TableViewCount.build(data) }
   val clickFrequencyTable by lazy { TableClickFrequency.build(data) }
-  val apiCountTable by lazy { TableApiCount.build(data) }
+  val apiCountTable       by lazy { TableApiCount.build(data) }
   
-  val viewCountPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixViewCount") }
-  val clickFrequencyPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixClickFrequency") }
-  val apiCountPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixApiCount") }
+  val viewCountPath      : Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixViewCount") }
+  val clickFrequencyPath : Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixClickFrequency") }
+  val apiCountPath       : Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixApiCount") }
+  
+  val paths by lazy { setOf(viewCountPath, clickFrequencyPath, apiCountPath) }
 
   private val fileNamePrefix by lazy { data.apk.fileName.replace(".", "_") }
   
   companion object {
-    val fileNameSuffixViewCount = "_viewCount.txt"
+    val fileNameSuffixViewCount      = "_viewCount.txt"
     val fileNameSuffixClickFrequency = "_clickFrequency.txt"
-    val fileNameSuffixApiCount = "_apiCount.txt"
+    val fileNameSuffixApiCount       = "_apiCount.txt"
   }
+  // @formatter:on
 }

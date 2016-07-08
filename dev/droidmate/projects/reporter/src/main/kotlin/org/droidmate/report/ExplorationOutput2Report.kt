@@ -13,24 +13,18 @@ import java.nio.file.Path
 
 class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: Path) {
 
-  companion object {
-    val fileNameSummary = "summary.txt"
-  }
+  companion object { val fileNameSummary = "summary.txt" }
 
   val data: List<IApkExplorationOutput2>
 
-  init {
-    data = rawData.withFilteredApiLogs
-  }
+  init { data = rawData.withFilteredApiLogs }
 
   val summaryFile: IDataFile by lazy { Summary(data, dir.resolve(fileNameSummary)) }
 
-  val guiCoverageReports: List<GUICoverageReport> by lazy {
-    data.map { GUICoverageReport(it, dir) }
-  }
+  val tabularReports: List<TabularDataReport> by lazy { data.map { TabularDataReport(it, dir) } }
 
   val txtReportFiles: List<Path> by lazy {
-    listOf(summaryFile.path) + guiCoverageReports.flatMap { setOf(it.viewCountPath, it.clickFrequencyPath) }
+    listOf(summaryFile.path) + tabularReports.flatMap { it.paths }
   }
 
   fun writeOut(includePlots : Boolean = true, includeSummary: Boolean = true) {
@@ -38,7 +32,7 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     if (includeSummary)
       summaryFile.writeOut()
     
-    guiCoverageReports.forEach { it.writeOut(includePlots) }
+    tabularReports.forEach { it.writeOut(includePlots) }
   }
 }
 

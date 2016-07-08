@@ -51,7 +51,7 @@ class ExplorationOutput2ReportTest {
   }
 
   private fun assertOnDataStructure(report: ExplorationOutput2Report) {
-    report.guiCoverageReports.forEach {
+    report.tabularReports.forEach {
       assertThat(it.viewCountTable.rowKeySet().size, greaterThan(0))
       assertThat(it.viewCountTable.columnKeySet(),
         hasItems(
@@ -81,10 +81,10 @@ class ExplorationOutput2ReportTest {
 
   private fun assertOnFiles(report: ExplorationOutput2Report) {
     assertThat(report.dir.fileNames, hasItems(
-      containsString(GUICoverageReport.fileNameSuffixViewCount),
-      containsString(GUICoverageReport.fileNameSuffixClickFrequency),
+      containsString(TabularDataReport.fileNameSuffixViewCount),
+      containsString(TabularDataReport.fileNameSuffixClickFrequency),
       // KJA currently failing asserts
-//      containsString(GUICoverageReport.fileNameSuffixApiCount),
+//      containsString(TabularDataReport.fileNameSuffixApiCount),
       equalTo(ExplorationOutput2Report.fileNameSummary))
     )
   }
