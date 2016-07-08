@@ -45,7 +45,9 @@ class TableClickFrequency() {
 
       val maxNoOfClicks = noOfClicksPerWidget.values.max() ?: 0
       val noOfClicksProgression = 0..maxNoOfClicks step 1
-      return noOfClicksProgression.associate { Pair(it, 0) } + widgetsCountPerNoOfClicks
+      val zeroWidgetsCountsPerNoOfClicks = noOfClicksProgression.associate { Pair(it, 0) }
+      
+      return zeroWidgetsCountsPerNoOfClicks + widgetsCountPerNoOfClicks
     }
   }
 }

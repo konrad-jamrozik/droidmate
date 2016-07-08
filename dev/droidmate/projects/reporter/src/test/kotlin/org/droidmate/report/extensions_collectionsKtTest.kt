@@ -59,13 +59,14 @@ class extensions_collectionsKtTest {
   fun frequenciesTest() {
     assertThat(
       listOf(
-        "a", "a", "b", "a", "x", "x", "x", "e", "f", "e", "x")
+        "a", "a", "b", "a", "x", "x", "x", "X", "e", "f", "e", "x")
         .frequencies,
       equalTo(
         mapOf(
           Pair("a", 3),
           Pair("b", 1),
           Pair("x", 4),
+          Pair("X", 1),
           Pair("e", 2),
           Pair("f", 1))
       )
