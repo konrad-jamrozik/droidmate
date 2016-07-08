@@ -26,15 +26,22 @@ data class ApiCoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
   fun writeOut(includePlots: Boolean = true) {
 
     log.info("Writing out API coverage report for ${data.apk.fileName}")
-    log.info("TODO!")
+    log.info("Writing out $apiCountFile")
+    apiCountFile.writeOut()
 
     if (includePlots) {
-      log.info("includePlots - TODO!")
+      log.info("Writing out ${apiCountFile.plotFile}")
+      apiCountFile.writeOutPlot()
     }
   }
-
-  val apiCountTable by lazy { TableApiCount.build(data) }
+  private val apiCountFile by lazy { TableDataFile(apiCountTable, apiCountPath) }
   
+  val apiCountTable by lazy { TableApiCount.build(data) }
+
+  val apiCountPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixApiCount") }
+
+  private val fileNamePrefix by lazy { data.apk.fileName.replace(".", "_") }
+
   companion object {
     val fileNameSuffixApiCount = "_apiCount.txt"
   }

@@ -48,10 +48,10 @@ data class GUICoverageReport(val data: IApkExplorationOutput2, val dir: Path) {
   val viewCountPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixViewCount") }
   val clickFrequencyPath: Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixClickFrequency") }
 
+  private val fileNamePrefix by lazy { data.apk.fileName.replace(".", "_") }
+  
   companion object {
     val fileNameSuffixViewCount = "_viewCount.txt"
     val fileNameSuffixClickFrequency = "_clickFrequency.txt"
   }
-
-  private val fileNamePrefix by lazy { data.apk.fileName.replace(".", "_") }
 }
