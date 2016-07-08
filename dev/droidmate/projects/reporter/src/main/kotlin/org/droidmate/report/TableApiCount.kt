@@ -23,7 +23,6 @@ class TableApiCount() {
     val stepSizeInMs = 1000L
 
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
-      // return ImmutableTable.of() // KJA to implement
 
       // KJA DRY with TableViewCount
       val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs).toList()
@@ -48,10 +47,11 @@ class TableApiCount() {
     private val IApkExplorationOutput2.uniqueApisCountByTime: Map<Long, Int> get() {
       val partitionSize = 1000L
       // KJA DRY with TableViewCount
+      // KJA curr work: instead use itemsAtTimes and take timestamp from device log 
       return this.actRess.itemsAtTime(
+        extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
         startTime = this.explorationStartTime,
-        extractTime = { it.action.timestamp },
-        extractItems = { it.result.deviceLogs.apiLogsOrEmpty }
+        extractTime = { it.action.timestamp }
       )
         .mapKeys {
           // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.

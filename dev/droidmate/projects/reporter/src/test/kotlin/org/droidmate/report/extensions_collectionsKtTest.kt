@@ -8,8 +8,6 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalTo
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -55,39 +53,5 @@ class extensions_collectionsKtTest {
     assertEquals(expected, actual)
   }
 
-  @Test
-  fun frequenciesTest() {
-    assertThat(
-      listOf(
-        "a", "a", "b", "a", "x", "x", "x", "X", "e", "f", "e", "x")
-        .frequencies,
-      equalTo(
-        mapOf(
-          Pair("a", 3),
-          Pair("b", 1),
-          Pair("x", 4),
-          Pair("X", 1),
-          Pair("e", 2),
-          Pair("f", 1))
-      )
-    )
-  }
-
-  @Test
-  fun transposeTest() {
-    assertThat(
-      mapOf(
-        Pair("abc", 4),
-        Pair("def", 4),
-        Pair("x", 1)
-      ).transpose,
-      equalTo(
-        mapOf(
-          Pair(4, setOf("abc", "def")),
-          Pair(1, setOf("x"))
-        )
-      )
-    )
-  }
 }
 

@@ -8,6 +8,18 @@
 // www.droidmate.org
 package org.droidmate.report
 
+/**
+ * @return 
+ *   A map from unique items to the index of first element in the receiver iterable from which given unique item was
+ *   obtained. The indexing starts at 0.
+ * 
+ * @param extractItems 
+ *   A function that is applied to each element of the receiver iterable, converting it to an iterable of items.
+ * 
+ * @param extractUniqueString 
+ *   A function used to remove duplicates from all the items extracted from receiver iterable using [extractItems].
+ * 
+ */
 fun <T, TItem> Iterable<T>.uniqueItemsWithFirstOccurrenceIndex(
   extractItems: (T) -> Iterable<TItem>,
   extractUniqueString: (TItem) -> String
@@ -34,24 +46,3 @@ fun <T, TItem> Iterable<T>.uniqueItemsWithFirstOccurrenceIndex(
   }).map { it.value }.toMap()
 }
 
-/**
- * Map of counts of how many times given elements appears in this [Iterable].
- */
-val <T> Iterable<T>.frequencies: Map<T, Int> get() {
-  val grouped: Map<T, List<T>> = this.groupBy { it }
-  val frequencies: Map<T, Int> = grouped.mapValues { it.value.size }
-  return frequencies
-}
-
-val <K, V> Map<K, V>.transpose: Map<V, Set<K>> get() {
-  val pairs: List<Pair<V, K>> = this.map { Pair(it.value, it.key) }
-  return pairs.fold(
-    initial = mutableMapOf(),
-    operation = { acc: MutableMap<V, MutableSet<K>>, pair: Pair<V, K> ->
-      if (!acc.containsKey(pair.first))
-        acc.put(pair.first, mutableSetOf())
-      acc[pair.first]!!.add(pair.second)
-      acc
-    }
-  )
-}

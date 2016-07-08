@@ -25,6 +25,25 @@ fun <T, TItem> Iterable<T>.itemsAtTime(
   return this.associate { Pair(computeDuration(extractTime(it)), extractItems(it)) }
 }
 
+// KJA curr work
+//fun <T, TItem> Iterable<T>.itemsAtTimes(
+//  startTime: LocalDateTime,
+//  extractTime: (TItem) -> LocalDateTime,
+//  extractItems: (T) -> Iterable<TItem>
+//): Map<Long, Iterable<TItem>> {
+//
+//  fun computeDuration(time: LocalDateTime): Long {
+//    return Duration.between(startTime, time).toMillis()
+//  }
+//  // KJA current work. To implements. see com.konradjamrozik.MapExtensions.groupValues
+//  val x: List<Map<Long, TItem>> = this.map {
+//    val items = extractItems(it)
+//    val itemsByTime: Map<Long, TItem> = items.associate { Pair(computeDuration(extractTime(it)), it) }
+//    itemsByTime
+//  }
+//
+//}
+
 fun <TItem>  Map<Long, Iterable<TItem>>.accumulateUniqueStrings(
   extractUniqueString: (TItem) -> String
 ): Map<Long, Iterable<String>> {
