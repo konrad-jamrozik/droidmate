@@ -35,7 +35,7 @@ fun <T, TItem> Iterable<T>.itemsAtTime(
 //  fun computeDuration(time: LocalDateTime): Long {
 //    return Duration.between(startTime, time).toMillis()
 //  }
-//  // KJA current work. To implements. see com.konradjamrozik.MapExtensions.groupValues
+//  // KJA 1 current work. To implement. see com.konradjamrozik.MapExtensions.groupValues
 //  val x: List<Map<Long, TItem>> = this.map {
 //    val items = extractItems(it)
 //    val itemsByTime: Map<Long, TItem> = items.associate { Pair(computeDuration(extractTime(it)), it) }
