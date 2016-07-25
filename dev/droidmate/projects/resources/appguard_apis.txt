@@ -391,3 +391,6 @@ Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpH
 !API19 Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V
 # If this method call is commented out, asserts for api23 in method org.droidmate.frontend.DroidmateFrontendTest#exploreOnRealDevice will have to be changed, by removing "i".
 !API19 Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I static
+# APIs for bug repro from Mark Schuegraf.
+!API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I static
+!API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I static

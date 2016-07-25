@@ -280,6 +280,11 @@ public class MonitorJavaTemplate
           if (secondLastFrame.startsWith("org.droidmate"))
           {
             if (!secondLastFrame.startsWith("org.droidmate.monitor.Monitor")) throw new AssertionError();
+            // KJA getting asserrt fail here when following is in APIs list: !API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I static
+            // Following logs also appear on logcat: (to find origin of these logs, search code files for 'Socket accepted' and 'OnServerRequest(getLogs)') 
+            // 07-25 21:11:48.649 25530-25566/org.droidmate.fixtures.apks.monitored I/Monitor_API_method_call: TId: 7200 objCls: android.util.Log mthd: v retCls: int params: java.lang.String Monitor_server java.lang.String Socket_accepted. stacktrace: dalvik.system.VMStack.getThreadStackTrace(Native Method)->java.lang.Thread.getStackTrace(Thread.java:580)->org.droidmate.monitor.Monitor.getStackTrace(Monitor.java:468)->org.droidmate.monitor.Monitor.redir_android_util_Log_v2(Monitor.java:2190)->org.droidmate.monitor.Monitor$SerializableTCPServerBase$MonitorServerRunnable.run(Monitor.java:403)->java.lang.Thread.run(Thread.java:818)
+            // 07-25 21:11:48.656 25530-25566/org.droidmate.fixtures.apks.monitored I/Monitor_API_method_call: TId: 7200 objCls: android.util.Log mthd: v retCls: int params: java.lang.String Monitor_server java.lang.String OnServerRequest(getLogs) stacktrace: dalvik.system.VMStack.getThreadStackTrace(Native Method)->java.lang.Thread.getStackTrace(Thread.java:580)->org.droidmate.monitor.Monitor.getStackTrace(Monitor.java:468)->org.droidmate.monitor.Monitor.redir_android_util_Log_v2(Monitor.java:2190)->org.droidmate.monitor.Monitor$MonitorTCPServer.OnServerRequest(Monitor.java:173)->org.droidmate.monitor.Monitor$MonitorTCPServer.OnServerRequest(Monitor.java:158)->org.droidmate.monitor.Monitor$SerializableTCPServerBase$MonitorServerRunnable.run(Monitor.java:437)->java.lang.Thread.run(Thread.java:818)
+
             if (!anyContains(frames, "Socket.<init>")) throw new AssertionError();
             logsToRemove.add(log);
           }
