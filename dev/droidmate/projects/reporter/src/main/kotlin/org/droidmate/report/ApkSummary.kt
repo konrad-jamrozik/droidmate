@@ -167,7 +167,8 @@ class ApkSummary() {
             is WidgetExplorationAction, is EnterTextExplorationAction ->
               if (thread == 1) extractWidgetEventString(action) else "background"
             is PressBackExplorationAction -> "<press back>"
-          // BUG in Kotlin: this else should not be necessary. Groovy's fault?
+          // Kotlin bug: this else should not be necessary. Groovy's fault?
+          // Maybe this is the reason: https://discuss.kotlinlang.org/t/algebraic-data-types-are-not-exhaustive/1857/4
             else -> throw UnexpectedIfElseFallthroughError()
           }
         }
