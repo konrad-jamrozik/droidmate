@@ -194,8 +194,7 @@ public class MonitorJavaTemplate
       {
         Log.v(MonitorConstants.tag_srv, "OnServerRequest(" + input + ")");
 
-        removeSocketInitLogFromMonitorTCPServer(currentLogs);
-
+        removeSocketInitLogFromMonitorTCPServerAndValidateLogsAreNotFromTCPServer(currentLogs);
 
         if (MonitorConstants.srvCmd_connCheck.equals(input))
         {
@@ -247,8 +246,12 @@ public class MonitorJavaTemplate
 
     /**
      * <p>
-     * Removes calls to {@code Socket.<init>} made by the DroidMate monitor from current set of recorded api logs
-     * {@code currentLogs}.
+     * This method removes calls to {@code Socket.<init>} made by the DroidMate monitor from current set of recorded api logs
+     * {@code currentLogs}. In addition, it ensures the logs do not come from messages logged by the MonitorTCPServer or 
+     * MonitorJavaTemplate itself. This would be a bug and thus it will cause an assertion failure in this method.
+     *
+     * </p><p>
+     * Regarding the {@code Socket.<init> removal}:
      *
      * </p><p>
      * One of the monitored APIs is {@code Socket.<init>}, and so it is being added to {@code currentLogs} on each invocation.
@@ -257,30 +260,28 @@ public class MonitorJavaTemplate
      *
      * </p>
      * @param currentLogs
-     * Currently recorded set of monitored logs, that will have the {@code Socket.<init>} logs caused by monitor removed from it.
+     * Currently recorded set of monitored logs, that will have the {@code Socket.<init>} logs caused by monitor removed from it
+     * and that will cause an assertion failure if the logs come from MonitorTCPServer or MonitorJavaTemplate.
      */
-    private void removeSocketInitLogFromMonitorTCPServer(List<ArrayList<String>> currentLogs)
+    private void removeSocketInitLogFromMonitorTCPServerAndValidateLogsAreNotFromTCPServer(List<ArrayList<String>> currentLogs)
     {
       ArrayList<ArrayList<String>> logsToRemove = new ArrayList<ArrayList<String>>();
       for (ArrayList<String> log : currentLogs)
       {
+        // ".get(2)" gets the payload. For details, see the doc of the param passed to this method.
         String msgPayload = log.get(2);
-        // !!! DUPLICATION WARNING !!! with org.droidmate.common.logcat.ApiLogcatMessage.ApiLogcatMessagePayload.keyword_stacktrace
-        int stacktraceIndex = msgPayload.lastIndexOf("stacktrace: ");
 
-        if (stacktraceIndex == -1)
-          throw new AssertionError("The message payload was expected to have a 'stacktrace: ' substring in it");
+        failOnLogsFromMonitorTCPServerOrMonitorJavaTemplate(msgPayload);
 
-        String stackTrace = msgPayload.substring(stacktraceIndex);
+        String[] frames = extractStackTraceFrames(msgPayload);
 
-        String[] frames = stackTrace.split(Api.stack_trace_frame_delimiter);
         if (frames.length >= 2)
         {
           String secondLastFrame = frames[frames.length - 2];
           if (secondLastFrame.startsWith("org.droidmate"))
           {
             if (!secondLastFrame.startsWith("org.droidmate.monitor.Monitor")) throw new AssertionError();
-            // KJA getting asserrt fail here when following is in APIs list: !API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I static
+            // KJA getting assert fail here when following is in APIs list: !API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I static
             // Following logs also appear on logcat: (to find origin of these logs, search code files for 'Socket accepted' and 'OnServerRequest(getLogs)') 
             // 07-25 21:11:48.649 25530-25566/org.droidmate.fixtures.apks.monitored I/Monitor_API_method_call: TId: 7200 objCls: android.util.Log mthd: v retCls: int params: java.lang.String Monitor_server java.lang.String Socket_accepted. stacktrace: dalvik.system.VMStack.getThreadStackTrace(Native Method)->java.lang.Thread.getStackTrace(Thread.java:580)->org.droidmate.monitor.Monitor.getStackTrace(Monitor.java:468)->org.droidmate.monitor.Monitor.redir_android_util_Log_v2(Monitor.java:2190)->org.droidmate.monitor.Monitor$SerializableTCPServerBase$MonitorServerRunnable.run(Monitor.java:403)->java.lang.Thread.run(Thread.java:818)
             // 07-25 21:11:48.656 25530-25566/org.droidmate.fixtures.apks.monitored I/Monitor_API_method_call: TId: 7200 objCls: android.util.Log mthd: v retCls: int params: java.lang.String Monitor_server java.lang.String OnServerRequest(getLogs) stacktrace: dalvik.system.VMStack.getThreadStackTrace(Native Method)->java.lang.Thread.getStackTrace(Thread.java:580)->org.droidmate.monitor.Monitor.getStackTrace(Monitor.java:468)->org.droidmate.monitor.Monitor.redir_android_util_Log_v2(Monitor.java:2190)->org.droidmate.monitor.Monitor$MonitorTCPServer.OnServerRequest(Monitor.java:173)->org.droidmate.monitor.Monitor$MonitorTCPServer.OnServerRequest(Monitor.java:158)->org.droidmate.monitor.Monitor$SerializableTCPServerBase$MonitorServerRunnable.run(Monitor.java:437)->java.lang.Thread.run(Thread.java:818)
@@ -300,6 +301,28 @@ public class MonitorJavaTemplate
       if (logsToRemove.size() == 1)
         currentLogs.remove(logsToRemove.get(0));
 
+    }
+
+    private void failOnLogsFromMonitorTCPServerOrMonitorJavaTemplate(String msgPayload)
+    {
+      if (msgPayload.contains(MonitorConstants.tag_srv) || msgPayload.contains(MonitorConstants.tag_init))
+        throw new AssertionError(
+          "Attempt to log a message whose payload contains " +
+            MonitorConstants.tag_srv + " or " + MonitorConstants.tag_init + ". The message payload: " + msgPayload);
+    }
+
+    private String[] extractStackTraceFrames(String msgPayload)
+    {
+
+      // !!! DUPLICATION WARNING !!! with org.droidmate.common.logcat.ApiLogcatMessage.ApiLogcatMessagePayload.keyword_stacktrace
+      int stacktraceIndex = msgPayload.lastIndexOf("stacktrace: ");
+
+      if (stacktraceIndex == -1)
+        throw new AssertionError("The message payload was expected to have a 'stacktrace: ' substring in it");
+
+      String stackTrace = msgPayload.substring(stacktraceIndex);
+
+      return stackTrace.split(Api.stack_trace_frame_delimiter);
     }
 
     private boolean anyContains(String[] strings, String s)
@@ -424,7 +447,7 @@ public class MonitorJavaTemplate
             return;
           }
 
-          // KNOWN BUG undiagnosed. Got here a set of null pointer in a row on com.audible.application_v1.7.0.apk when running using default settings.
+          // KNOWN BUG undiagnosed. Got here a null pointer on com.audible.application_v1.7.0.apk when running using default settings. It happened on every run.
           while (!serverSocket.isClosed())
           {
             Log.v(MonitorConstants.tag_srv, String.format("Accepting socket from client on port %s...", port));
