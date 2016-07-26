@@ -203,8 +203,14 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         
         out << ind4 + "public static $returnClass $redirMethodName($thisParam$formalParams)" + nl
         out << ind4 + "{" + nl
-        
-        if (objectClass == "android.util.Log" && methodName == "i" && paramClasses.size() == 2)
+
+        /**
+         * MonitorJavaTemplate and MonitorTCPServer have calls to Log.i() and Log.v() in them, whose tag starts with 
+         * MonitorConstants.tag_prefix. This conditional ensures
+         * such calls are not being monitored, 
+         * as they are DroidMate's monitor internal code, not the behavior of the app under exploration.
+         */
+        if (objectClass == "android.util.Log" && (methodName == "i" || methodName == "v") && paramClasses.size() == 2)
         {
           out << ind4 + ind4 + "if (p0.startsWith(\"${MonitorConstants.tag_prefix}\"))" + nl
           out << ind4 + ind4 + "  return OriginalMethod.by(new \$() {}).invokeStatic(p0, p1);" + nl
