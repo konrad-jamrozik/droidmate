@@ -68,14 +68,14 @@ class ExplorationOutput2ReportTest {
         )
       )
       // KJA currently failing asserts
-//      assertThat(it.apiCountTable.rowKeySet().size, greaterThan(0))
-//      assertThat(it.apiCountTable.columnKeySet(),
-//        hasItems(
-//          TableApiCount.headerTime,
-//          TableApiCount.headerApisSeen,
-//          TableApiCount.headerApiEventsSeen
-//        )
-//      )      
+      assertThat(it.apiCountTable.rowKeySet().size, greaterThan(0))
+      assertThat(it.apiCountTable.columnKeySet(),
+        hasItems(
+          TableApiCount.headerTime,
+          TableApiCount.headerApisSeen,
+          TableApiCount.headerApiEventsSeen
+        )
+      )      
     }
   }
 

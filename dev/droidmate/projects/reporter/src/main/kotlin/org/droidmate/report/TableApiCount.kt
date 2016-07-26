@@ -46,17 +46,18 @@ class TableApiCount() {
     private val IApkExplorationOutput2.uniqueApisCountByTime: Map<Long, Int> get() {
       val partitionSize = 1000L
       // KJA 4 DRY with TableViewCount
-      // KJA 2 instead use itemsAtTimes and take timestamp from device log 
-      return this.actRess.itemsAtTime(
+      // KJA 2 to implement itemsAtTimes 
+      return this.actRess.itemsAtTimes(
         extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
         startTime = this.explorationStartTime,
-        extractTime = { it.action.timestamp }
+        extractTime = { it.time }
       )
         .mapKeys {
           // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
-          // The currently applied workaround is to add 500 milliseconds.
-          it.key + 500L
+          // The currently applied workaround is to add 100 milliseconds.
+          it.key + 100L
         }
+        // KJA bug here: because the input collection is not ordered by keys, the accumulation is screwwed.
         .accumulateUniqueStrings(
           extractUniqueString = { it.uniqueString }
         )
