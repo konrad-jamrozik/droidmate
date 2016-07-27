@@ -10,12 +10,10 @@ package org.droidmate.report
 
 import com.konradjamrozik.Resource
 import com.konradjamrozik.uniqueItemsWithFirstOccurrenceIndex
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
-import org.droidmate.exploration.actions.*
+import org.droidmate.exploration.actions.ResetAppExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.logcat.IApiLogcatMessage
 import java.time.Duration
@@ -40,7 +38,7 @@ class ApkSummary() {
         .replaceVariable("exception"                    , exception.messageIfAny())
         .replaceVariable("unique_apis_count"            , uniqueApisCount.toString())
         .replaceVariable("api_entries"                  , apiEntries.joinToString(separator = "\n"))
-        .replaceVariable("unique_api_event_pairs_count" , uniqueApiEventPairsCount.toString())
+        .replaceVariable("unique_api_event_pairs_count" , uniqueEventApiPairsCount.toString())
         .replaceVariable("api_event_entries"            , apiEventEntries.joinToString(separator = "\n"))
         .toString()
         }
@@ -73,20 +71,20 @@ class ApkSummary() {
     val exception: DeviceException,
     val uniqueApisCount: Int,
     val apiEntries: List<ApiEntry>,
-    val uniqueApiEventPairsCount: Int,
+    val uniqueEventApiPairsCount: Int,
     val apiEventEntries: List<ApiEventEntry>
   ) {
 
     constructor(data: IApkExplorationOutput2) : this(
       data,
       data.uniqueApiLogsWithFirstTriggeringActionIndex,
-      data.uniqueApiLogsEventPairsWithFirstTriggeringActionIndex
+      data.uniqueEventApiPairsWithFirstTriggeringActionIndex
     )
 
     private constructor(
       data: IApkExplorationOutput2,
       uniqueApiLogsWithFirstTriggeringActionIndex: Map<IApiLogcatMessage, Int>,
-      uniqueApiLogsEventPairsWithFirstTriggeringActionIndex: Map<Pair<String, IApiLogcatMessage>, Int>
+      uniqueEventApiPairsWithFirstTriggeringActionIndex: Map<EventApiPair, Int>
     ) : this(
       appPackageName = data.packageName,
       totalRunTime = data.explorationDuration,
@@ -103,10 +101,10 @@ class ApkSummary() {
           apiSignature = apiLog.uniqueString
         )
       },
-      uniqueApiEventPairsCount = uniqueApiLogsEventPairsWithFirstTriggeringActionIndex.keys.size,
-      apiEventEntries = uniqueApiLogsEventPairsWithFirstTriggeringActionIndex.map {
-        val (pair, firstIndex: Int) = it
-        val (event: String, apiLog: IApiLogcatMessage) = pair
+      uniqueEventApiPairsCount = uniqueEventApiPairsWithFirstTriggeringActionIndex.keys.size,
+      apiEventEntries = uniqueEventApiPairsWithFirstTriggeringActionIndex.map {
+        val (eventApiPair, firstIndex: Int) = it
+        val (event: String, apiLog: IApiLogcatMessage) = eventApiPair
         ApiEventEntry(
           ApiEntry(
             time = Duration.between(data.explorationStartTime, apiLog.time),
@@ -127,63 +125,17 @@ class ApkSummary() {
         )
       }
 
-      val IApkExplorationOutput2.uniqueApiLogsEventPairsWithFirstTriggeringActionIndex: Map<Pair<String, IApiLogcatMessage>, Int> get() {
+      val IApkExplorationOutput2.uniqueEventApiPairsWithFirstTriggeringActionIndex: Map<EventApiPair, Int> get() {
         
         // KJA this logic needs to be extracted to be used in org.droidmate.report.TableApiCount.Companion.build.uniqueApiEventPairsCountByTime
-        fun extractEvent(action: ExplorationAction, thread: Int): String {
-          
-          fun extractWidgetEventString(action: ExplorationAction): String {
-            require(action is WidgetExplorationAction || action is EnterTextExplorationAction)
-            val w: Widget
-            val prefix: String
-            when (action) {
-              is WidgetExplorationAction -> {
-                w = action.widget
-                prefix = (if (action.isLongClick) "l-click:" else "click") + ":"
-              }
-              is EnterTextExplorationAction -> {
-                w = action.widget
-                prefix = "enterText:"
-              }
-              else -> throw UnexpectedIfElseFallthroughError()
-            }
-            checkNotNull(w)
-            val widgetString =
-              if (w.resourceId?.length ?: 0 > 0)
-                "[res:${w.strippedResourceId}]"
-              else if (w?.contentDesc?.length ?: 0 > 0)
-                "[dsc:${w.contentDesc}]"
-              else if (w?.text?.length ?: 0 > 0)
-                "[txt:${w.text}]"
-              else ""
-
-            if (widgetString.isEmpty())
-              return "unlabeled"
-            else
-              return prefix + widgetString
-          }
-          
-          return when(action) {
-            is ResetAppExplorationAction, is TerminateExplorationAction -> "<reset>"
-            is WidgetExplorationAction, is EnterTextExplorationAction ->
-              if (thread == 1) extractWidgetEventString(action) else "background"
-            is PressBackExplorationAction -> "<press back>"
-          // Kotlin bug: this else should not be necessary. Groovy's fault?
-          // Maybe this is the reason: https://discuss.kotlinlang.org/t/algebraic-data-types-are-not-exhaustive/1857/4
-            else -> throw UnexpectedIfElseFallthroughError()
-          }
-        }
         return this.actRess.uniqueItemsWithFirstOccurrenceIndex(
           extractItems = { actRes ->
-            actRes.result.deviceLogs.apiLogsOrEmpty.map { apiLog ->
-              Pair(
-                extractEvent(action = actRes.action.base, thread = apiLog.threadId.toInt()),
-                apiLog)
-            }
+            actRes.result.deviceLogs.apiLogsOrEmpty.map { apiLog -> EventApiPair(actRes, apiLog) }
           },
-          extractUniqueString = { it.first + it.second.uniqueString }
+          extractUniqueString = { it.uniqueString }
         )
       }
+
     }
   }
 
@@ -216,3 +168,4 @@ class ApkSummary() {
     }
   }
 }
+

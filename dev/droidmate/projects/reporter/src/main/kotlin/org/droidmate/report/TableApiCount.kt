@@ -28,7 +28,7 @@ class TableApiCount() {
       val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs).toList()
       val uniqueApisCountByTime = data.uniqueApisCountByTime
       // KJA 1 to implement
-      val uniqueApiEventPairsCountByTime = timeRange.associate { Pair(it, 0) }
+      val uniqueApiEventPairsCountByTime = data.uniqueEventApiPairsCountByTime
       
       return buildTable(
         headers = listOf(headerTime, headerApisSeen, headerApiEventsSeen),
@@ -64,6 +64,31 @@ class TableApiCount() {
         .accumulateMaxes(extractMax = { it.max() ?: 0 })
         .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroLeastSignificantDigits(3))
     }
+
+    
+    private val IApkExplorationOutput2.uniqueEventApiPairsCountByTime: Map<Long, Int> get() {
+      val partitionSize = 1000L
+      // KJA 2 DRY with TableViewCount
+      return this.actRess.itemsAtTimes(
+        // KJA curr work
+        extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
+        startTime = this.explorationStartTime,
+        extractTime = { it.time }
+      )
+        .mapKeys {
+          // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
+          // The currently applied workaround is to add 100 milliseconds.
+          it.key + 100L
+        }
+        .accumulateUniqueStrings(
+          extractUniqueString = { it.uniqueString }
+        )
+        .mapValues { it.value.count() }
+        .partition(partitionSize)
+        .accumulateMaxes(extractMax = { it.max() ?: 0 })
+        .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroLeastSignificantDigits(3))
+    }
+
 
   }
 }

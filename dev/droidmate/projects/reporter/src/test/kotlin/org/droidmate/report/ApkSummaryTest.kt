@@ -36,7 +36,7 @@ class ApkSummaryTest {
       exception = DeviceExceptionMissing(),
       uniqueApisCount = 17,
       apiEntries = listOf(apiEntry1, apiEntry2),
-      uniqueApiEventPairsCount = 33,
+      uniqueEventApiPairsCount = 33,
       apiEventEntries = listOf(
         ApkSummary.ApiEventEntry(apiEntry1, "<event1>"),
         ApkSummary.ApiEventEntry(apiEntry2, "<event2>")
