@@ -19,15 +19,15 @@ class TableApiCount() {
     val headerApisSeen = "Apis_seen"
     val headerApiEventsSeen = "Api+Event_pairs_seen"
 
-    // KJA 4 DRY with TableViewCount
+    // KJA 2 DRY with TableViewCount
     val stepSizeInMs = 1000L
 
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
 
-      // KJA 4 DRY with TableViewCount
+      // KJA 2 DRY with TableViewCount
       val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs).toList()
       val uniqueApisCountByTime = data.uniqueApisCountByTime
-      // KJA 3 to implement
+      // KJA 1 to implement
       val uniqueApiEventPairsCountByTime = timeRange.associate { Pair(it, 0) }
       
       return buildTable(
@@ -45,8 +45,7 @@ class TableApiCount() {
 
     private val IApkExplorationOutput2.uniqueApisCountByTime: Map<Long, Int> get() {
       val partitionSize = 1000L
-      // KJA 4 DRY with TableViewCount
-      // KJA 2 to implement itemsAtTimes 
+      // KJA 2 DRY with TableViewCount
       return this.actRess.itemsAtTimes(
         extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
         startTime = this.explorationStartTime,
@@ -57,7 +56,6 @@ class TableApiCount() {
           // The currently applied workaround is to add 100 milliseconds.
           it.key + 100L
         }
-        // KJA bug here: because the input collection is not ordered by keys, the accumulation is screwwed.
         .accumulateUniqueStrings(
           extractUniqueString = { it.uniqueString }
         )

@@ -64,7 +64,7 @@ class ApkSummary() {
     }
   }
 
-  @Suppress("unused") // BUG in Kotlin on private constructor(data: IApkExplorationOutput2, uniqueApiLogsWithFirstTriggeringActionIndex: Map<IApiLogcatMessage, Int>)
+  @Suppress("unused") // Kotlin BUG on private constructor(data: IApkExplorationOutput2, uniqueApiLogsWithFirstTriggeringActionIndex: Map<IApiLogcatMessage, Int>)
   data class Payload(
     val appPackageName: String,
     val totalRunTime: Duration,
@@ -129,6 +129,7 @@ class ApkSummary() {
 
       val IApkExplorationOutput2.uniqueApiLogsEventPairsWithFirstTriggeringActionIndex: Map<Pair<String, IApiLogcatMessage>, Int> get() {
         
+        // KJA this logic needs to be extracted to be used in org.droidmate.report.TableApiCount.Companion.build.uniqueApiEventPairsCountByTime
         fun extractEvent(action: ExplorationAction, thread: Int): String {
           
           fun extractWidgetEventString(action: ExplorationAction): String {

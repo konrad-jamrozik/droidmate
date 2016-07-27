@@ -67,7 +67,6 @@ class ExplorationOutput2ReportTest {
           TableClickFrequency.headerViewsCount
         )
       )
-      // KJA currently failing asserts
       assertThat(it.apiCountTable.rowKeySet().size, greaterThan(0))
       assertThat(it.apiCountTable.columnKeySet(),
         hasItems(
@@ -83,9 +82,9 @@ class ExplorationOutput2ReportTest {
     assertThat(report.dir.fileNames, hasItems(
       containsString(TabularDataReport.fileNameSuffixViewCount),
       containsString(TabularDataReport.fileNameSuffixClickFrequency),
-      // KJA currently failing asserts
-//      containsString(TabularDataReport.fileNameSuffixApiCount),
-      equalTo(ExplorationOutput2Report.fileNameSummary))
+      containsString(TabularDataReport.fileNameSuffixApiCount),
+      equalTo(ExplorationOutput2Report.fileNameSummary)
+    )
     )
   }
 

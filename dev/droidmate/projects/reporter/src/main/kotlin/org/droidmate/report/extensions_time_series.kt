@@ -8,8 +8,8 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import com.google.common.collect.ArrayListMultimap
-import com.google.common.collect.LinkedListMultimap
+import com.konradjamrozik.associateMany
+import com.konradjamrozik.flatten
 import java.lang.Math.max
 import java.time.Duration
 import java.time.LocalDateTime
@@ -27,24 +27,6 @@ fun <T, TItem> Iterable<T>.itemsAtTime(
   return this.associate { Pair(computeDuration(extractTime(it)), extractItems(it)) }
 }
 
-inline fun <T, K, V> Iterable<T>.associateMany(transform: (T) -> Pair<K, V>): Map<K, Iterable<V>> {
-  // KJA curr work: move to utils and test. Test for 2 same values, to ensure they were not removed (i.e. we expect list of values, not set of values)
-  val multimap = ArrayListMultimap.create<K, V>()
-  this.forEach { val pair = transform(it); multimap.put(pair.first, pair.second) }
-  return multimap.asMap()
-}
-
-fun <K, V> Iterable<Map<K, Iterable<V>>>.flatten(): Map<K, Iterable<V>> {
-  // KJA curr work: move to utils and test. 
-  // KJA problem here: loses incremental sorting by keys.
-  val multimap = LinkedListMultimap.create<K, V>()
-  this.forEach { map ->
-    map.forEach { multimap.putAll(it.key, it.value) }
-  }
-  return multimap.asMap()
-}
-
-// KJA 2 
 fun <T, TItem> Iterable<T>.itemsAtTimes(
   startTime: LocalDateTime,
   extractTime: (TItem) -> LocalDateTime,
@@ -54,7 +36,7 @@ fun <T, TItem> Iterable<T>.itemsAtTimes(
   fun computeDuration(time: LocalDateTime): Long {
     return Duration.between(startTime, time).toMillis()
   }
-  // KJA 1 current work. To implement. 
+  
   val itemsAtTimesListedByOriginElement: List<Map<Long, Iterable<TItem>>> = this.map {
     val items: Iterable<TItem> = extractItems(it)
     val itemsAtTime: Map<Long, Iterable<TItem>> = items.associateMany { Pair(computeDuration(extractTime(it)), it) }
