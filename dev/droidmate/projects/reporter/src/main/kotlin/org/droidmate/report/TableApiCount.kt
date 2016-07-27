@@ -9,6 +9,7 @@
 package org.droidmate.report
 
 import com.google.common.collect.Table
+import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
 class TableApiCount() {
@@ -19,16 +20,15 @@ class TableApiCount() {
     val headerApisSeen = "Apis_seen"
     val headerApiEventsSeen = "Api+Event_pairs_seen"
 
-    // KJA 2 DRY with TableViewCount
+    // KJA DRY with TableViewCount
     val stepSizeInMs = 1000L
 
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
 
-      // KJA 2 DRY with TableViewCount
+      // KJA DRY with TableViewCount
       val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs).toList()
       val uniqueApisCountByTime = data.uniqueApisCountByTime
-      // KJA 1 to implement
-      val uniqueApiEventPairsCountByTime = data.uniqueEventApiPairsCountByTime
+      val uniqueEventApiPairsCountByTime = data.uniqueEventApiPairsCountByTime
       
       return buildTable(
         headers = listOf(headerTime, headerApisSeen, headerApiEventsSeen),
@@ -38,14 +38,14 @@ class TableApiCount() {
           listOf(
             (timePassed / stepSizeInMs).toInt(),
             uniqueApisCountByTime[timePassed]!!,
-            uniqueApiEventPairsCountByTime[timePassed]!!)
+            uniqueEventApiPairsCountByTime[timePassed]!!)
         }
       )
     }
 
     private val IApkExplorationOutput2.uniqueApisCountByTime: Map<Long, Int> get() {
       val partitionSize = 1000L
-      // KJA 2 DRY with TableViewCount
+      // KJA DRY with TableViewCount
       return this.actRess.itemsAtTimes(
         extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
         startTime = this.explorationStartTime,
@@ -68,12 +68,11 @@ class TableApiCount() {
     
     private val IApkExplorationOutput2.uniqueEventApiPairsCountByTime: Map<Long, Int> get() {
       val partitionSize = 1000L
-      // KJA 2 DRY with TableViewCount
+      // KJA DRY with TableViewCount
       return this.actRess.itemsAtTimes(
-        // KJA curr work
-        extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
+        extractItems = RunnableExplorationActionWithResult::extractEventApiPairs,
         startTime = this.explorationStartTime,
-        extractTime = { it.time }
+        extractTime = EventApiPair::time
       )
         .mapKeys {
           // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.

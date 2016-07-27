@@ -14,6 +14,7 @@ import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.exploration.actions.ResetAppExplorationAction
+import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.logcat.IApiLogcatMessage
 import java.time.Duration
@@ -127,12 +128,9 @@ class ApkSummary() {
 
       val IApkExplorationOutput2.uniqueEventApiPairsWithFirstTriggeringActionIndex: Map<EventApiPair, Int> get() {
         
-        // KJA this logic needs to be extracted to be used in org.droidmate.report.TableApiCount.Companion.build.uniqueApiEventPairsCountByTime
         return this.actRess.uniqueItemsWithFirstOccurrenceIndex(
-          extractItems = { actRes ->
-            actRes.result.deviceLogs.apiLogsOrEmpty.map { apiLog -> EventApiPair(actRes, apiLog) }
-          },
-          extractUniqueString = { it.uniqueString }
+          extractItems = RunnableExplorationActionWithResult::extractEventApiPairs,
+          extractUniqueString = EventApiPair::uniqueString
         )
       }
 

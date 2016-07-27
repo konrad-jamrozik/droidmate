@@ -21,3 +21,7 @@ val RunnableExplorationActionWithResult.clickedWidget: Set<Widget> get() {
     else -> emptySet()
   }
 }
+
+fun RunnableExplorationActionWithResult.extractEventApiPairs(): List<EventApiPair> {
+  return this.result.deviceLogs.apiLogsOrEmpty.map { apiLog -> EventApiPair(this, apiLog) }
+}
