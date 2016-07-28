@@ -23,12 +23,8 @@ class TableApiCount private constructor(val table: Table<Int, String, Int>) : Ta
     val headerApiEventsSeen = "Api+Event_pairs_seen"
 
     // KJA DRY with TableViewCount
-    val stepSizeInMs = 1000L
-
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
-
-      // KJA DRY with TableViewCount
-      val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs).toList()
+      val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(ReportTable.parititonSize).toList()
       val uniqueApisCountByTime = data.uniqueApisCountByTime
       val uniqueEventApiPairsCountByTime = data.uniqueEventApiPairsCountByTime
       
@@ -38,7 +34,7 @@ class TableApiCount private constructor(val table: Table<Int, String, Int>) : Ta
         computeRow = { rowIndex ->
           val timePassed = timeRange[rowIndex]
           listOf(
-            (timePassed / stepSizeInMs).toInt(),
+            (timePassed / ReportTable.parititonSize).toInt(),
             uniqueApisCountByTime[timePassed]!!,
             uniqueEventApiPairsCountByTime[timePassed]!!)
         }
@@ -50,9 +46,9 @@ class TableApiCount private constructor(val table: Table<Int, String, Int>) : Ta
         extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
         startTime = this.explorationStartTime,
         extractTime = { it.time }
-      ).countsPartitionedByTime(// KJA DRY with TableViewCount
+      ).countsPartitionedByTime(
         extractUniqueString = { it.uniqueString },
-        partitionSize = 1000L,
+        partitionSize = ReportTable.parititonSize,
         lastPartition = this.explorationTimeInMs
       )
     }
@@ -63,9 +59,9 @@ class TableApiCount private constructor(val table: Table<Int, String, Int>) : Ta
         extractItems = RunnableExplorationActionWithResult::extractEventApiPairs,
         startTime = this.explorationStartTime,
         extractTime = EventApiPair::time
-      ).countsPartitionedByTime(// KJA DRY with TableViewCount
+      ).countsPartitionedByTime(
         extractUniqueString = EventApiPair::uniqueString,
-        partitionSize = 1000L,
+        partitionSize = ReportTable.parititonSize,
         lastPartition = this.explorationTimeInMs
       )
     }

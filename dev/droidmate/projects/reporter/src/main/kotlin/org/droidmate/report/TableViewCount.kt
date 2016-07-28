@@ -25,11 +25,10 @@ class TableViewCount private constructor(val table: Table<Int, String, Int>) : T
     val headerViewsSeen = "Actionable_unique_views_seen"
     val headerViewsClicked = "Actionable_unique_views_clicked"
     
-    val stepSizeInMs = 1000L
 
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
 
-      val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs).toList()
+      val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(ReportTable.parititonSize).toList()
       val uniqueSeenActionableViewsCountByTime: Map<Long, Int> = data.uniqueSeenActionableViewsCountByTime
       val uniqueClickedViewsCountByTime: Map<Long, Int> = data.uniqueClickedViewsCountByTime
 
@@ -39,7 +38,7 @@ class TableViewCount private constructor(val table: Table<Int, String, Int>) : T
         computeRow = { rowIndex ->
           val timePassed = timeRange[rowIndex]
           listOf(
-            (timePassed / stepSizeInMs).toInt(),
+            (timePassed / ReportTable.parititonSize).toInt(),
             uniqueSeenActionableViewsCountByTime[timePassed]!!,
             uniqueClickedViewsCountByTime[timePassed]!!)
         })
@@ -70,7 +69,7 @@ class TableViewCount private constructor(val table: Table<Int, String, Int>) : T
         extractItems = extractItems
       ).countsPartitionedByTime(
         extractUniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString },
-        partitionSize = 1000L,
+        partitionSize = ReportTable.parititonSize,
         lastPartition = this.explorationTimeInMs
       )
     }
