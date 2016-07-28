@@ -50,8 +50,8 @@ set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 pointtype 7 poin
 set style line 2 linecolor rgb '#dd181f' linetype 1 linewidth 2 pointtype 7 pointsize 0.1
 
 # Plot
-plot var_data_file_path using 1:2 with points linestyle 1,\
-     var_data_file_path using 1:3 with points linestyle 2
+plot var_data_file_path using 1:2 with lines linestyle 1,\
+     var_data_file_path using 1:3 with lines linestyle 2
      
 unset output
 reset

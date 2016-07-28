@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.report
 
+import org.droidmate.common.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.dir
 import org.droidmate.fileNames
@@ -19,6 +20,7 @@ import org.hamcrest.Matchers.*
 import org.junit.Test
 import java.nio.file.FileSystem
 import java.nio.file.Path
+import java.nio.file.Paths
 
 class ExplorationOutput2ReportTest {
 
@@ -96,5 +98,16 @@ class ExplorationOutput2ReportTest {
         println(it.text)
       }
     }
+  }
+
+  @Test
+  fun `reports to file system`()
+  {
+    val serExplOutput: Path = FilesystemTestFixtures.build().f_monitoredSer2
+    val report = ExplorationOutput2Report(
+      rawData = OutputDir(serExplOutput.parent).notEmptyExplorationOutput2,
+      dir = Paths.get(BuildConstants.getTest_temp_dir_name())
+    )
+    report.writeOut()
   }
 }
