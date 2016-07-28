@@ -61,19 +61,6 @@ fun <T, TItem> Iterable<T>.itemsAtTimes(
   return itemsAtTimesGroupedByOriginElement.flatten()
 }
 
-fun <TItem>  Map<Long, Iterable<TItem>>.accumulateUniqueStrings(
-  extractUniqueString: (TItem) -> String
-): Map<Long, Iterable<String>> {
-
-  val uniqueStringsAcc: MutableSet<String> = hashSetOf()
-  
-  return this.mapValues {
-    uniqueStringsAcc.addAll(it.value.map { extractUniqueString(it) })
-    uniqueStringsAcc.toList()
-  }
-}
-
-// KJA simplify?
 fun Map<Long, Iterable<String>>.accumulate(): Map<Long, Iterable<String>> {
 
   val uniqueStringsAcc: MutableSet<String> = hashSetOf()

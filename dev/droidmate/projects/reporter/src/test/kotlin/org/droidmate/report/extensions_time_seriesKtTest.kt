@@ -16,17 +16,17 @@ class extensions_time_seriesKtTest {
 
   private val startTimeFixture: LocalDateTime = LocalDateTime.of(2000, 1, 1, 0, 0)
   private val inputDataFixture = listOf(
-    Pair(startTimeFixture.plusSeconds(3), listOf("a ", "b", "c")),
-    Pair(startTimeFixture.plusSeconds(7), listOf("a", "  c", "d")),
-    Pair(startTimeFixture.plusSeconds(15), listOf("  c")),
-    Pair(startTimeFixture.plusSeconds(23), listOf("b ", "e"))
+    Pair(startTimeFixture.plusSeconds(3), listOf("a", "b", "c")),
+    Pair(startTimeFixture.plusSeconds(7), listOf("a", "c", "d")),
+    Pair(startTimeFixture.plusSeconds(15), listOf("c")),
+    Pair(startTimeFixture.plusSeconds(23), listOf("b", "e"))
   )
 
   private val itemsAtTimeFixture: Map<Long, List<String>> = mapOf(
-    Pair(3000L, listOf("a ", "b", "c")),
-    Pair(7000L, listOf("a", "  c", "d")),
-    Pair(15000L, listOf("  c")),
-    Pair(23000L, listOf("b ", "e"))
+    Pair(3000L, listOf("a", "b", "c")),
+    Pair(7000L, listOf("a", "c", "d")),
+    Pair(15000L, listOf("c")),
+    Pair(23000L, listOf("b", "e"))
   )
 
   private val accumulatedUniqueStringsFixture: Map<Long, List<String>> = mapOf(
@@ -51,12 +51,10 @@ class extensions_time_seriesKtTest {
   }
 
   @Test
-  fun accumulateUniqueStringsTest() {
+  fun accumulateTest() {
 
     // Act
-    val accumulatedUniqueStrings = itemsAtTimeFixture.accumulateUniqueStrings(
-      extractUniqueString = { it.trim() }
-    )
+    val accumulatedUniqueStrings = itemsAtTimeFixture.accumulate()
 
     assertEquals(expected = accumulatedUniqueStringsFixture, actual = accumulatedUniqueStrings)
   }
