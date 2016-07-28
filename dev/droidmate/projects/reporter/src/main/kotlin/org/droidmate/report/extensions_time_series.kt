@@ -73,6 +73,17 @@ fun <TItem>  Map<Long, Iterable<TItem>>.accumulateUniqueStrings(
   }
 }
 
+// KJA simplify?
+fun Map<Long, Iterable<String>>.accumulate(): Map<Long, Iterable<String>> {
+
+  val uniqueStringsAcc: MutableSet<String> = hashSetOf()
+
+  return this.mapValues {
+    uniqueStringsAcc.addAll(it.value)
+    uniqueStringsAcc.toList()
+  }
+}
+
 fun <T> Map<Long, T>.partition(partitionSize: Long): Map<Long, List<T>> {
 
   tailrec fun <T> _partition(
@@ -123,8 +134,7 @@ fun Map<Long, Int>.padPartitions(
   }
 }
 
-fun <TItem> Map<Long, Iterable<TItem>>.countsPartitionedByTime(
-  extractUniqueString: (TItem) -> String,
+fun Map<Long, Iterable<String>>.countsPartitionedByTime(
   partitionSize: Long,
   lastPartition: Int
 ): Map<Long, Int> {
@@ -134,7 +144,7 @@ fun <TItem> Map<Long, Iterable<TItem>>.countsPartitionedByTime(
       // The currently applied workaround is to add 100 milliseconds.
       it.key + 100L
     }
-    .accumulateUniqueStrings(extractUniqueString)
+    .accumulate()
     .mapValues { it.value.count() }
     .partition(partitionSize)
     .accumulateMaxes(extractMax = { it.max() ?: 0 })

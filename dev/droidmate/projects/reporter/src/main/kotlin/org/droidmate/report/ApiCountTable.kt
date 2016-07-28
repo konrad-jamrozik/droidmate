@@ -8,11 +8,10 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import com.google.common.collect.Table
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
-class ApiCountTable : TimeSeriesTable {
+class ApiCountTable : CountsPartitionedByTimeTable {
 
   constructor(data: IApkExplorationOutput2) : super(
     data.explorationTimeInMs,
@@ -33,46 +32,27 @@ class ApiCountTable : TimeSeriesTable {
     val headerApisSeen = "Apis_seen"
     val headerApiEventsSeen = "Api+Event_pairs_seen"
 
-    fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
-      return TimeSeriesTable.build(
-        data.explorationTimeInMs,
-        listOf(
-          headerTime,
-          headerApisSeen,
-          headerApiEventsSeen
-        ),
-        listOf(
-          data.uniqueApisCountByTime,
-          data.uniqueEventApiPairsCountByTime
-        )
-      )
-    }
-
-    private val IApkExplorationOutput2.uniqueApisCountByTime: Map<Long, Int> get() {
+    private val IApkExplorationOutput2.uniqueApisCountByTime: Map<Long, Iterable<String>> get() {
       return this.actRess.itemsAtTimes(
         extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
         startTime = this.explorationStartTime,
         extractTime = { it.time }
-      ).countsPartitionedByTime(
-        extractUniqueString = { it.uniqueString },
-        partitionSize = TimeSeriesTable.partitionSize,
-        lastPartition = this.explorationTimeInMs
-      )
+      ).mapValues {
+        val apis = it.value
+        apis.map { it.uniqueString }
+      }
     }
 
-    private val IApkExplorationOutput2.uniqueEventApiPairsCountByTime: Map<Long, Int> get() {
+    private val IApkExplorationOutput2.uniqueEventApiPairsCountByTime: Map<Long, Iterable<String>> get() {
 
       return this.actRess.itemsAtTimes(
         extractItems = RunnableExplorationActionWithResult::extractEventApiPairs,
         startTime = this.explorationStartTime,
         extractTime = EventApiPair::time
-      ).countsPartitionedByTime(
-        extractUniqueString = EventApiPair::uniqueString,
-        partitionSize = TimeSeriesTable.partitionSize,
-        lastPartition = this.explorationTimeInMs
-      )
+      ).mapValues {
+        val eventApiPairs = it.value
+        eventApiPairs.map { it.uniqueString }
+      }
     }
-
-
   }
 }
