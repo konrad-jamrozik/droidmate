@@ -13,7 +13,6 @@ import org.droidmate.common.logcat.Api
 import org.droidmate.logcat.IApiLogcatMessage
 
 // KJA2-1 to remove (2)
-/// !!! DUPLICATION WARNING !!! org.droidmate.deprecated_still_used.ExplorationOutputDataExtractor.filterApiLogs(java.util.List<java.util.List<org.droidmate.logcat.IApiLogcatMessage>>, java.lang.String, boolean)
 class FilteredApis implements IFilteredApis
 {
   private final List<IApiLogcatMessage> apiLogs

@@ -35,8 +35,6 @@ class ApkExplorationOutput implements IApkExplorationOutput
   /**
    * Denotes the exploration from which this output was collected completed successfully, i.e. without throwing exception
    * that would terminate the exploration before correctly completing this output.
-   *
-   * @see ExplorationOutputCollector#collect(java.lang.String, groovy.lang.Closure)
    */
   boolean completed = false
 
