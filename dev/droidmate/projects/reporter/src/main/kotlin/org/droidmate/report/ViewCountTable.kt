@@ -28,20 +28,18 @@ class ViewCountTable private constructor(val table: Table<Int, String, Int>) : T
 
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
 
-      val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(ReportTable.parititonSize).toList()
-      val uniqueSeenActionableViewsCountByTime: Map<Long, Int> = data.uniqueSeenActionableViewsCountByTime
-      val uniqueClickedViewsCountByTime: Map<Long, Int> = data.uniqueClickedViewsCountByTime
-
-      return buildTable(
-        headers = listOf(headerTime, headerViewsSeen, headerViewsClicked),
-        rowCount = timeRange.size,
-        computeRow = { rowIndex ->
-          val timePassed = timeRange[rowIndex]
-          listOf(
-            (timePassed / ReportTable.parititonSize).toInt(),
-            uniqueSeenActionableViewsCountByTime[timePassed]!!,
-            uniqueClickedViewsCountByTime[timePassed]!!)
-        })
+      return TimeSeriesTable.build(
+        data.explorationTimeInMs,
+        listOf(
+          headerTime, 
+          headerViewsSeen, 
+          headerViewsClicked
+        ),
+        listOf(
+          data.uniqueSeenActionableViewsCountByTime, 
+          data.uniqueClickedViewsCountByTime
+        )
+      )
     }
 
     private val IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime: Map<Long, Int> get() {
@@ -69,7 +67,7 @@ class ViewCountTable private constructor(val table: Table<Int, String, Int>) : T
         extractItems = extractItems
       ).countsPartitionedByTime(
         extractUniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString },
-        partitionSize = ReportTable.parititonSize,
+        partitionSize = TimeSeriesTable.partitionSize,
         lastPartition = this.explorationTimeInMs
       )
     }

@@ -22,23 +22,18 @@ class ApiCountTable private constructor(val table: Table<Int, String, Int>) : Ta
       val headerApisSeen = "Apis_seen"
       val headerApiEventsSeen = "Api+Event_pairs_seen"
 
-      // KJA DRY with ViewCountTable
       fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
-        
-        val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(ReportTable.parititonSize).toList()
-        val uniqueApisCountByTime = data.uniqueApisCountByTime
-        val uniqueEventApiPairsCountByTime = data.uniqueEventApiPairsCountByTime
-
-        return buildTable(
-          headers = listOf(headerTime, headerApisSeen, headerApiEventsSeen),
-          rowCount = timeRange.size,
-          computeRow = { rowIndex ->
-            val timePassed = timeRange[rowIndex]
-            listOf(
-              (timePassed / ReportTable.parititonSize).toInt(),
-              uniqueApisCountByTime[timePassed]!!,
-              uniqueEventApiPairsCountByTime[timePassed]!!)
-          }
+        return TimeSeriesTable.build(
+          data.explorationTimeInMs,
+          listOf(
+            headerTime,
+            headerApisSeen,
+            headerApiEventsSeen
+          ),
+          listOf(
+            data.uniqueApisCountByTime,
+            data.uniqueEventApiPairsCountByTime
+          )
         )
       }
 
@@ -49,7 +44,7 @@ class ApiCountTable private constructor(val table: Table<Int, String, Int>) : Ta
           extractTime = { it.time }
         ).countsPartitionedByTime(
           extractUniqueString = { it.uniqueString },
-          partitionSize = ReportTable.parititonSize,
+          partitionSize = TimeSeriesTable.partitionSize,
           lastPartition = this.explorationTimeInMs
         )
       }
@@ -62,7 +57,7 @@ class ApiCountTable private constructor(val table: Table<Int, String, Int>) : Ta
           extractTime = EventApiPair::time
         ).countsPartitionedByTime(
           extractUniqueString = EventApiPair::uniqueString,
-          partitionSize = ReportTable.parititonSize,
+          partitionSize = TimeSeriesTable.partitionSize,
           lastPartition = this.explorationTimeInMs
         )
       }
