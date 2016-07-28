@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":DummyAndroidApp" external.linked.project.path="$MODULE_DIR$/../../../DummyAndroidApp" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="org.droidmate" external.system.module.version="dev" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":DummyAndroidApp" external.linked.project.path="$DM_REPO$/dev/droidmate/DummyAndroidApp" external.root.project.path="$DM_REPO$/dev/droidmate" external.system.id="GRADLE" external.system.module.group="org.droidmate" external.system.module.version="dev" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
@@ -16,10 +16,9 @@
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../DummyAndroidApp">
-      <sourceFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/gen" isTestSource="false" generated="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/.gradle" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../DummyAndroidApp/build" />
+    <content url="file://$DM_REPO$/dev/droidmate/DummyAndroidApp">
+      <excludeFolder url="file://$DM_REPO$/dev/droidmate/DummyAndroidApp/.gradle" />
+      <excludeFolder url="file://$DM_REPO$/dev/droidmate/DummyAndroidApp/build" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
