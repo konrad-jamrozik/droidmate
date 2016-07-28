@@ -62,7 +62,7 @@ class TableApiCount() {
         startTime = this.explorationStartTime,
         extractTime = EventApiPair::time
       ).countsPartitionedByTime(// KJA DRY with TableViewCount
-        extractUniqueString = { it.uniqueString },
+        extractUniqueString = EventApiPair::uniqueString,
         partitionSize = 1000L,
         lastPartition = this.explorationTimeInMs
       )
