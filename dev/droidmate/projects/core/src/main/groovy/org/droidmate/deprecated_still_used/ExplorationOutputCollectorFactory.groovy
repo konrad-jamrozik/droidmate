@@ -10,6 +10,7 @@ package org.droidmate.deprecated_still_used
 
 import org.droidmate.misc.ITimeProvider
 
+// KJA to remove next
 @Deprecated
 class ExplorationOutputCollectorFactory implements IExplorationOutputCollectorFactory
 {

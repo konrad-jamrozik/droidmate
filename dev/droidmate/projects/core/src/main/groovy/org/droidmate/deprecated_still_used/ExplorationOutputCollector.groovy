@@ -16,6 +16,7 @@ import org.droidmate.misc.ITimeProvider
 
 import static org.droidmate.common.logging.Markers.exceptions
 
+// KJA to remove next
 @Slf4j
 @Deprecated
 class ExplorationOutputCollector implements IExplorationOutputCollector

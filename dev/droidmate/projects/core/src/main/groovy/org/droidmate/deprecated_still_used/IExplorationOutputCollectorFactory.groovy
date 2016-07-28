@@ -8,6 +8,7 @@
 // www.droidmate.org
 package org.droidmate.deprecated_still_used
 
+// KJA to remove next
 @Deprecated
 public interface IExplorationOutputCollectorFactory
 {

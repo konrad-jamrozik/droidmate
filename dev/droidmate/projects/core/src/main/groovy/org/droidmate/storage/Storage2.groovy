@@ -20,7 +20,6 @@ import java.nio.file.StandardOpenOption
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-// !!! DUPLICATION WARNING !!! org.droidmate.deprecated_still_used.Storage
 /**
  * Persistent storage. Allows for serializing to HDD and back.
  */

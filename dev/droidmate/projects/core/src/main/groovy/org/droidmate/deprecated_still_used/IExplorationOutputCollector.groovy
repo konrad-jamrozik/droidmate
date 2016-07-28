@@ -9,6 +9,7 @@
 
 package org.droidmate.deprecated_still_used
 
+// KJA to remove next
 @Deprecated
 interface IExplorationOutputCollector
 {

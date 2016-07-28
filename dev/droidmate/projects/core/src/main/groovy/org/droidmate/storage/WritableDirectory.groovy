@@ -45,7 +45,6 @@ class WritableDirectory implements IWritableDirectory
     writer.withWriter { closure(writer) }
   }
 
-  // !!! DUPLICATION WARNING !!! with  org.droidmate.deprecated_still_used.Storage.getWriter
   private Writer getWriter(String fileName)
   {
     Path path = getNewPath(fileName)
