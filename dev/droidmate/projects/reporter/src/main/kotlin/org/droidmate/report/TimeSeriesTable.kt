@@ -10,8 +10,14 @@ package org.droidmate.report
 
 import com.google.common.collect.Table
 
-class TimeSeriesTable {
+open class TimeSeriesTable private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
 
+  constructor(
+    maxTime: Int,
+    headers: List<String>,
+    columns: List<Map<Long, Int>>
+  ) : this(TimeSeriesTable.build(maxTime, headers, columns))
+  
   companion object {
     val partitionSize = 1000L
     fun build(
