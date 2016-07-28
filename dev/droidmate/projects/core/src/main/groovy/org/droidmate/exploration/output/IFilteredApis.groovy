@@ -13,5 +13,6 @@ import org.droidmate.logcat.IApiLogcatMessage
 interface IFilteredApis
 {
 
+  // KJA to remove
   Collection<List<IApiLogcatMessage>> groupByUniqueString()
 }
