@@ -24,7 +24,13 @@ fun <T, TItem> Iterable<T>.itemsAtTime(
   extractItems: (T) -> Iterable<TItem>
 ): Map<Long, Iterable<TItem>> {
 
-  return this.associate { Pair(computeDuration(startTime, extractTime(it)), extractItems(it)) }
+  // Implicit assumption: each element of receiver has a different key (== duration).
+  return this.associate {
+    Pair(
+      computeDuration(startTime, extractTime(it)),
+      extractItems(it)
+    )
+  }
 }
 
 fun <T, TItem> Iterable<T>.itemsAtTimes(
@@ -33,12 +39,26 @@ fun <T, TItem> Iterable<T>.itemsAtTimes(
   extractItems: (T) -> Iterable<TItem>
 ): Map<Long, Iterable<TItem>> {
 
-  val itemsAtTimesListedByOriginElement: Iterable<Map<Long, Iterable<TItem>>> = this.map {
+  val itemsAtTimesGroupedByOriginElement: Iterable<Map<Long, Iterable<TItem>>> = this.map {
+
+    // Items from the currently processed element.
     val items: Iterable<TItem> = extractItems(it)
-    val itemsAtTime: Map<Long, Iterable<TItem>> = items.associateMany { Pair(computeDuration(startTime, extractTime(it)), it) }
+
+    // Items from the currently processed element, keyed by the computed duration. Multiple items might have
+    // the same time.
+    val itemsAtTime: Map<Long, Iterable<TItem>> =
+      items
+        .associateMany {
+          Pair(
+            computeDuration(startTime, extractTime(it)),
+            it)
+        }
+    
     itemsAtTime
   }
-  return itemsAtTimesListedByOriginElement.flatten()
+  
+  // We do not care from which element given (time->item) mapping came, so we flatten it.
+  return itemsAtTimesGroupedByOriginElement.flatten()
 }
 
 fun <TItem>  Map<Long, Iterable<TItem>>.accumulateUniqueStrings(
