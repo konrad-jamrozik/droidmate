@@ -14,17 +14,17 @@ import java.lang.Math.max
 import java.time.Duration
 import java.time.LocalDateTime
 
+private fun computeDuration(startTime: LocalDateTime, time: LocalDateTime): Long {
+  return Duration.between(startTime, time).toMillis()
+}
+
 fun <T, TItem> Iterable<T>.itemsAtTime(
   startTime: LocalDateTime,
   extractTime: (T) -> LocalDateTime,
   extractItems: (T) -> Iterable<TItem>
 ): Map<Long, Iterable<TItem>> {
 
-  fun computeDuration(time: LocalDateTime): Long {
-    return Duration.between(startTime, time).toMillis()
-  }
-
-  return this.associate { Pair(computeDuration(extractTime(it)), extractItems(it)) }
+  return this.associate { Pair(computeDuration(startTime, extractTime(it)), extractItems(it)) }
 }
 
 fun <T, TItem> Iterable<T>.itemsAtTimes(
@@ -33,13 +33,9 @@ fun <T, TItem> Iterable<T>.itemsAtTimes(
   extractItems: (T) -> Iterable<TItem>
 ): Map<Long, Iterable<TItem>> {
 
-  fun computeDuration(time: LocalDateTime): Long {
-    return Duration.between(startTime, time).toMillis()
-  }
-  
-  val itemsAtTimesListedByOriginElement: List<Map<Long, Iterable<TItem>>> = this.map {
+  val itemsAtTimesListedByOriginElement: Iterable<Map<Long, Iterable<TItem>>> = this.map {
     val items: Iterable<TItem> = extractItems(it)
-    val itemsAtTime: Map<Long, Iterable<TItem>> = items.associateMany { Pair(computeDuration(extractTime(it)), it) }
+    val itemsAtTime: Map<Long, Iterable<TItem>> = items.associateMany { Pair(computeDuration(startTime, extractTime(it)), it) }
     itemsAtTime
   }
   return itemsAtTimesListedByOriginElement.flatten()
