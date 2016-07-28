@@ -9,7 +9,7 @@
 
 package org.droidmate.test_suites
 
-import org.droidmate.command.uia_test_cases.UiaTestCaseLogsProcessorTest
+
 import org.droidmate.report.ReporterTestSuite
 import org.droidmate.tests.android_sdk.AaptWrapperTest
 import org.droidmate.tests.android_sdk.AdbWrapperTest
@@ -28,7 +28,6 @@ import org.junit.runners.Suite
 @RunWith(Suite)
 @Suite.SuiteClasses([
   ConfigurationBuilderTest,
-  UiaTestCaseLogsProcessorTest,
   AaptWrapperTest,
   AdbWrapperTest,
   DeviceTest,

@@ -19,13 +19,11 @@ abstract class DroidmateCommand
   abstract void execute(Configuration cfg) throws ThrowablesCollection
 
   public static DroidmateCommand build(
-    boolean processUiaTestCasesLogs, boolean report, boolean inline, Configuration cfg)
+    boolean report, boolean inline, Configuration cfg)
   {
-    assert [processUiaTestCasesLogs, report, inline].count {it} <= 1
+    assert [report, inline].count {it} <= 1
 
-    if (processUiaTestCasesLogs)
-      return ProcessUiaTestCasesLogsCommand.build(cfg)
-    else if (report)
+    if (report)
       return new ReportCommand()
     else if (inline)
       return InlineCommand.build()

@@ -37,7 +37,6 @@ class FilesystemTestFixtures
   // end of DUPLICATION WARNING
 
   public String f_aaptBadgingDump
-  public Path   f_uiaTestCaseLog
   public Path   f_legacySer
   /**
    * The metadata to the run used for this fixture is located in directory located in the same dir as this fixture.
@@ -57,7 +56,6 @@ class FilesystemTestFixtures
   {
     apks = new ApkFixtures(aapt)
     f_aaptBadgingDump = new ResourcePath("fixtures/f_aaptBadgingDump.txt").path.text
-    f_uiaTestCaseLog = new ResourcePath("fixtures/f_uia_test_case_log.txt").path
     // WISH this fixture still contains the old package name of monitor having "monitor_generator.generated" in it 
     // (see wish below).
     f_legacySer = new ResourcePath("fixtures/serialized_results/2015 Oct 01 1723 com.antivirus.ser").path

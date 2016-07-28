@@ -247,9 +247,6 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_uninstallApk], arity = 1)
   public boolean uninstallApk = true
 
-  @Parameter(names = ["-processUiaLogs"])
-  public boolean processUiaTestCasesLogs = false
-
   @Parameter(names = [Configuration.pn_randomSeed, "-seed"], description =
     "The seed for a random generator used by a random-clicking GUI exploration strategy. If null, a seed will be randomized.")
   public Long randomSeed = null
