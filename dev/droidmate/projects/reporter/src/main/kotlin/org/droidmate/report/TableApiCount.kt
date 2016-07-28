@@ -44,48 +44,28 @@ class TableApiCount() {
     }
 
     private val IApkExplorationOutput2.uniqueApisCountByTime: Map<Long, Int> get() {
-      val partitionSize = 1000L
-      // KJA DRY with TableViewCount
       return this.actRess.itemsAtTimes(
         extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
         startTime = this.explorationStartTime,
         extractTime = { it.time }
+      ).countsPartitionedByTime(// KJA DRY with TableViewCount
+        extractUniqueString = { it.uniqueString },
+        partitionSize = 1000L,
+        lastPartition = this.explorationTimeInMs
       )
-        .mapKeys {
-          // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
-          // The currently applied workaround is to add 100 milliseconds.
-          it.key + 100L
-        }
-        .accumulateUniqueStrings(
-          extractUniqueString = { it.uniqueString }
-        )
-        .mapValues { it.value.count() }
-        .partition(partitionSize)
-        .accumulateMaxes(extractMax = { it.max() ?: 0 })
-        .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroLeastSignificantDigits(3))
     }
-
     
     private val IApkExplorationOutput2.uniqueEventApiPairsCountByTime: Map<Long, Int> get() {
-      val partitionSize = 1000L
-      // KJA DRY with TableViewCount
+
       return this.actRess.itemsAtTimes(
         extractItems = RunnableExplorationActionWithResult::extractEventApiPairs,
         startTime = this.explorationStartTime,
         extractTime = EventApiPair::time
+      ).countsPartitionedByTime(// KJA DRY with TableViewCount
+        extractUniqueString = { it.uniqueString },
+        partitionSize = 1000L,
+        lastPartition = this.explorationTimeInMs
       )
-        .mapKeys {
-          // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
-          // The currently applied workaround is to add 100 milliseconds.
-          it.key + 100L
-        }
-        .accumulateUniqueStrings(
-          extractUniqueString = { it.uniqueString }
-        )
-        .mapValues { it.value.count() }
-        .partition(partitionSize)
-        .accumulateMaxes(extractMax = { it.max() ?: 0 })
-        .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroLeastSignificantDigits(3))
     }
 
 

@@ -122,3 +122,21 @@ fun Map<Long, Int>.padPartitions(
     return this.plus(paddedPartitions)
   }
 }
+
+fun <TItem> Map<Long, Iterable<TItem>>.countsPartitionedByTime(
+  extractUniqueString: (TItem) -> String,
+  partitionSize: Long,
+  lastPartition: Int
+): Map<Long, Int> {
+  return this
+    .mapKeys {
+      // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
+      // The currently applied workaround is to add 100 milliseconds.
+      it.key + 100L
+    }
+    .accumulateUniqueStrings(extractUniqueString)
+    .mapValues { it.value.count() }
+    .partition(partitionSize)
+    .accumulateMaxes(extractMax = { it.max() ?: 0 })
+    .padPartitions(partitionSize, lastPartition.zeroLeastSignificantDigits(3))
+}

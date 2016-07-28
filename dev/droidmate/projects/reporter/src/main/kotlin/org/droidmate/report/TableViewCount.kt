@@ -63,28 +63,16 @@ class TableViewCount() {
       extractItems: (RunnableExplorationActionWithResult) -> Iterable<Widget>
     ): Map<Long, Int> {
 
-      val partitionSize = 1000L
-      return this
-        .actRess
-        .itemsAtTime(
-          startTime = this.explorationStartTime,
-          extractTime = { it.action.timestamp },
-          extractItems = extractItems
-        )
-        .mapKeys {
-          // KNOWN BUG got here time with relation to exploration start of -25, but it should be always > 0.
-          // The currently applied workaround is to add 500 milliseconds.
-          it.key + 500L
-        }
-        .accumulateUniqueStrings(
-          extractUniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString }
-        )
-        .mapValues { it.value.count() }
-        .partition(partitionSize)
-        .accumulateMaxes(extractMax = { it.max() ?: 0 })
-        .padPartitions(partitionSize, lastPartition = this.explorationTimeInMs.zeroLeastSignificantDigits(3))
+      return this.actRess.itemsAtTime(
+        startTime = this.explorationStartTime,
+        extractTime = { it.action.timestamp },
+        extractItems = extractItems
+      ).countsPartitionedByTime(
+        extractUniqueString = { WidgetStrategy.WidgetInfo(it).uniqueString },
+        partitionSize = 1000L,
+        lastPartition = this.explorationTimeInMs
+      )
     }
-
   }
 }
 
