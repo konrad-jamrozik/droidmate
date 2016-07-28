@@ -17,7 +17,8 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.command.exploration.Exploration
 import org.droidmate.command.exploration.IExploration
 import org.droidmate.configuration.Configuration
-import org.droidmate.deprecated_still_used.*
+import org.droidmate.deprecated_still_used.ApkExplorationOutput
+import org.droidmate.deprecated_still_used.ExplorationOutput
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
@@ -43,23 +44,19 @@ class ExploreCommand extends DroidmateCommand
   private final IApksProvider                       apksProvider
   private final IAndroidDeviceDeployer              deviceDeployer
   private final IApkDeployer                        apkDeployer
-  private final IExplorationOutputAnalysisPersister explorationOutputAnalysisPersister
   private final IExploration                        exploration
   private final IStorage2                           storage2
 
-
   ExploreCommand(
-    IApksProvider apksProvider,
-    IAndroidDeviceDeployer deviceDeployer,
-    IApkDeployer apkDeployer,
-    IExplorationOutputAnalysisPersister explorationOutputAnalysisPersister,
-    IExploration exploration,
+    IApksProvider apksProvider, 
+    IAndroidDeviceDeployer deviceDeployer, 
+    IApkDeployer apkDeployer, 
+    IExploration exploration, 
     IStorage2 storage2)
   {
     this.apksProvider = apksProvider
     this.deviceDeployer = deviceDeployer
     this.apkDeployer = apkDeployer
-    this.explorationOutputAnalysisPersister = explorationOutputAnalysisPersister
     this.exploration = exploration
     this.storage2 = storage2
   }
@@ -69,14 +66,11 @@ class ExploreCommand extends DroidmateCommand
                                      ITimeProvider timeProvider = new TimeProvider(),
                                      IDeviceTools deviceTools = new DeviceTools(cfg))
   {
-    def storage = new Storage(cfg.droidmateOutputDirPath)
     IApksProvider apksProvider = new ApksProvider(deviceTools.aapt)
-    IExplorationOutputDataExtractor extractor = new ExplorationOutputDataExtractor(cfg)
-    IExplorationOutputAnalysisPersister analysisPersister = new ExplorationOutputAnalysisPersister(cfg, extractor, storage)
 
     def storage2 = new Storage2(cfg.droidmateOutputDirPath)
     IExploration exploration = Exploration.build(cfg, timeProvider, strategyProvider)
-    return new ExploreCommand(apksProvider, deviceTools.deviceDeployer, deviceTools.apkDeployer, analysisPersister, exploration, storage2)
+    return new ExploreCommand(apksProvider, deviceTools.deviceDeployer, deviceTools.apkDeployer, exploration, storage2)
   }
 
   @Override
@@ -152,9 +146,9 @@ class ExploreCommand extends DroidmateCommand
     try
     {
       def deprecatedOut = new ExplorationOutput()
+      // KJA migrate the time checks in ".from" to new output format 
       deprecatedOut.addAll(out.collect {ApkExplorationOutput.from(it)})
-      // KJA2 (reporting) implement this in ReportCommand
-      this.explorationOutputAnalysisPersister.persist(deprecatedOut)
+      
     } catch (Throwable persistingThrowable)
     {
       explorationExceptions << new ExplorationException(persistingThrowable)

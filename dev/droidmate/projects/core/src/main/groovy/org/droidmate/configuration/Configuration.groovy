@@ -204,11 +204,6 @@ public class Configuration implements IConfiguration
     "Determines if the user should be asked for confirmation before the exploration driver conducts next action on the Android device. If yes, the information about the action about to be taken will be also displayed.")
   public boolean exploreInteractively = false
 
-  @Parameter(names = ["-extractData"], description =
-    "(Deprecated! Use -report instead) If present, instead of normal run, DroidMate will deserialize previous exploration output and extract data from it, for example it will extract input data for pgfplots charting tool.")
-  @Deprecated
-  public Boolean extractData = false
-
   @Parameter(names = ["-extractSaturationCharts", "-esc"], arity = 1)
   public boolean extractSaturationCharts = false
 

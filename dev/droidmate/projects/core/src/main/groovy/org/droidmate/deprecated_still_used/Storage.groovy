@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatter
 @Slf4j
 @Deprecated
 @TypeChecked
+// KJA to remove soon
 public class Storage implements IStorage
 {
 
@@ -74,6 +75,7 @@ public class Storage implements IStorage
     serOut.close()
   }
 
+  // KJA to remove
   @Override
   ExplorationOutput deserializeAll()
   {

@@ -86,7 +86,7 @@ public class DroidmateFrontend
 
   private static DroidmateCommand determineAndBuildCommand(Configuration cfg)
   {
-    return DroidmateCommand.build(cfg.processUiaTestCasesLogs, cfg.extractData, cfg.report, cfg.inline, cfg)
+    return DroidmateCommand.build(cfg.processUiaTestCasesLogs, cfg.report, cfg.inline, cfg)
   }
 
   private static void validateStdoutLoglevel()

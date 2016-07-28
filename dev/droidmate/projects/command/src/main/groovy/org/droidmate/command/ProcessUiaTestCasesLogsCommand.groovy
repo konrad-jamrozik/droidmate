@@ -20,17 +20,16 @@ import java.nio.file.Path
 
 import static java.nio.file.Files.readAllLines
 
+// KJA to remove soon
 @Slf4j
 class ProcessUiaTestCasesLogsCommand extends DroidmateCommand
 {
 
-  final IExplorationOutputAnalysisPersister persister
   final IStorage                            storage
   final IUiaTestCaseLogsProcessor           uiautomatorTestCaseLogsProcessor
 
-  ProcessUiaTestCasesLogsCommand(IUiaTestCaseLogsProcessor uiautomatorTestCaseLogsProcessor, IStorage storage, IExplorationOutputAnalysisPersister persister)
+  ProcessUiaTestCasesLogsCommand(IUiaTestCaseLogsProcessor uiautomatorTestCaseLogsProcessor, IStorage storage)
   {
-    this.persister = persister
     this.storage = storage
     this.uiautomatorTestCaseLogsProcessor = uiautomatorTestCaseLogsProcessor
   }
@@ -41,10 +40,7 @@ class ProcessUiaTestCasesLogsCommand extends DroidmateCommand
     def storage = new Storage(cfg.droidmateOutputDirPath)
     def processor = new UiaTestCaseLogsProcessor(new ExplorationOutputCollectorFactory(timeProvider, storage))
 
-    def extractor = new ExplorationOutputDataExtractor(cfg)
-    def persister = new ExplorationOutputAnalysisPersister(cfg, extractor, storage)
-
-    return new ProcessUiaTestCasesLogsCommand(processor, storage, persister)
+    return new ProcessUiaTestCasesLogsCommand(processor, storage)
   }
 
   /**
@@ -80,11 +76,11 @@ class ProcessUiaTestCasesLogsCommand extends DroidmateCommand
     List<ExplorationOutput> listOfDroidmateRunsWithTheirUiaTestCases =
       groupDroidmateRunsWithTheirUiaTestCases(pkgNames, storage.serializedRuns, uiaTestCases)
 
-    listOfDroidmateRunsWithTheirUiaTestCases.eachWithIndex {ExplorationOutput explorationOutput, int i ->
-      log.info("Processing run ${(i + 1)}/${pkgNames.size()}.")
-      persister.persist(explorationOutput)
-
-    }
+    // KJA perister.persist was removed
+//    listOfDroidmateRunsWithTheirUiaTestCases.eachWithIndex {ExplorationOutput explorationOutput, int i ->
+//      log.info("Processing run ${(i + 1)}/${pkgNames.size()}.")
+//      persister.persist(explorationOutput)
+//    }
   }
 
   private List<String> extractPackageNames(Collection<Path> serializedDroidmateRuns)
