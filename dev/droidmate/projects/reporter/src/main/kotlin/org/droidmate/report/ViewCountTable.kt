@@ -8,39 +8,32 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import com.google.common.collect.Table
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.datatypes.MissingGuiSnapshot
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
 
-class ViewCountTable private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
+class ViewCountTable : TimeSeriesTable {
 
-  constructor(data: IApkExplorationOutput2) : this(ViewCountTable.build(data))
+  constructor(data: IApkExplorationOutput2) : super(
+    data.explorationTimeInMs,
+    listOf(
+      headerTime,
+      headerViewsSeen,
+      headerViewsClicked
+    ),
+    listOf(
+      data.uniqueSeenActionableViewsCountByTime,
+      data.uniqueClickedViewsCountByTime
+    )
+  )
   
   companion object {
     
     val headerTime = "Time_seconds"
     val headerViewsSeen = "Actionable_unique_views_seen"
     val headerViewsClicked = "Actionable_unique_views_clicked"
-    
-
-    fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
-
-      return TimeSeriesTable.build(
-        data.explorationTimeInMs,
-        listOf(
-          headerTime, 
-          headerViewsSeen, 
-          headerViewsClicked
-        ),
-        listOf(
-          data.uniqueSeenActionableViewsCountByTime, 
-          data.uniqueClickedViewsCountByTime
-        )
-      )
-    }
 
     private val IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime: Map<Long, Int> get() {
       return this.uniqueViewCountByPartitionedTime(
