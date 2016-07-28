@@ -50,9 +50,9 @@ data class TabularDataReport(val data: IApkExplorationOutput2, val dir: Path) {
   val clickFrequencyFile by lazy { TableDataFile(clickFrequencyTable , clickFrequencyPath) }
   val apiCountFile       by lazy { TableDataFile(apiCountTable       , apiCountPath) }
 
-  val viewCountTable      by lazy { TableViewCount(data) }
-  val clickFrequencyTable by lazy { TableClickFrequency(data) }
-  val apiCountTable       by lazy { TableApiCount(data) }
+  val viewCountTable      by lazy { ViewCountTable(data) }
+  val clickFrequencyTable by lazy { ClickFrequencyTable(data) }
+  val apiCountTable       by lazy { ApiCountTable(data) }
   
   val viewCountPath      : Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixViewCount") }
   val clickFrequencyPath : Path by lazy { dir.resolve("$fileNamePrefix$fileNameSuffixClickFrequency") }

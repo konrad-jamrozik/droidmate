@@ -12,9 +12,9 @@ import com.google.common.collect.Table
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
-class TableApiCount private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
+class ApiCountTable private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
 
-    constructor(data: IApkExplorationOutput2) : this(TableApiCount.build(data))
+    constructor(data: IApkExplorationOutput2) : this(ApiCountTable.build(data))
   
     companion object {
 
@@ -22,8 +22,9 @@ class TableApiCount private constructor(val table: Table<Int, String, Int>) : Ta
       val headerApisSeen = "Apis_seen"
       val headerApiEventsSeen = "Api+Event_pairs_seen"
 
-      // KJA DRY with TableViewCount
+      // KJA DRY with ViewCountTable
       fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
+        
         val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(ReportTable.parititonSize).toList()
         val uniqueApisCountByTime = data.uniqueApisCountByTime
         val uniqueEventApiPairsCountByTime = data.uniqueEventApiPairsCountByTime

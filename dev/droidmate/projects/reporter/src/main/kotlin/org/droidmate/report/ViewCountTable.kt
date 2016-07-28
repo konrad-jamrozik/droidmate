@@ -15,9 +15,9 @@ import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
 
-class TableViewCount private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
+class ViewCountTable private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
 
-  constructor(data: IApkExplorationOutput2) : this(TableViewCount.build(data))
+  constructor(data: IApkExplorationOutput2) : this(ViewCountTable.build(data))
   
   companion object {
     

@@ -14,9 +14,9 @@ import com.konradjamrozik.transpose
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
-class TableClickFrequency private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
+class ClickFrequencyTable private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
 
-  constructor(data: IApkExplorationOutput2) : this(TableClickFrequency.build(data))
+  constructor(data: IApkExplorationOutput2) : this(ClickFrequencyTable.build(data))
   
   companion object {
     val headerNoOfClicks = "No_of_clicks"

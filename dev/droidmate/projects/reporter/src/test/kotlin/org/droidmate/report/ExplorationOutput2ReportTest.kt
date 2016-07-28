@@ -55,24 +55,24 @@ class ExplorationOutput2ReportTest {
       assertThat(it.viewCountTable.rowKeySet().size, greaterThan(0))
       assertThat(it.viewCountTable.columnKeySet(),
         hasItems(
-          TableViewCount.headerTime,
-          TableViewCount.headerViewsSeen,
-          TableViewCount.headerViewsClicked
+          ViewCountTable.headerTime,
+          ViewCountTable.headerViewsSeen,
+          ViewCountTable.headerViewsClicked
         )
       )
       assertThat(it.clickFrequencyTable.rowKeySet().size, greaterThan(0))
       assertThat(it.clickFrequencyTable.columnKeySet(),
         hasItems(
-          TableClickFrequency.headerNoOfClicks,
-          TableClickFrequency.headerViewsCount
+          ClickFrequencyTable.headerNoOfClicks,
+          ClickFrequencyTable.headerViewsCount
         )
       )
       assertThat(it.apiCountTable.rowKeySet().size, greaterThan(0))
       assertThat(it.apiCountTable.columnKeySet(),
         hasItems(
-          TableApiCount.headerTime,
-          TableApiCount.headerApisSeen,
-          TableApiCount.headerApiEventsSeen
+          ApiCountTable.headerTime,
+          ApiCountTable.headerApisSeen,
+          ApiCountTable.headerApiEventsSeen
         )
       )      
     }
