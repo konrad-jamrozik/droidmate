@@ -26,7 +26,6 @@ class ExplorationOutput2ReportTest {
 
   val printToStdout = true
   
-  // KJA curr test
   @Test
   fun reports() {
 

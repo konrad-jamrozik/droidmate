@@ -39,7 +39,6 @@ data class TabularDataReport(val data: IApkExplorationOutput2, val dir: Path) {
       log.info("Writing out ${viewCountFile.plotFile}")
       viewCountFile.writeOutPlot()
 
-      // KJA 1 ensure plots for api count file are rendered correctly. See test: org.droidmate.report.functionsKtTest.plots
       log.info("Writing out ${apiCountFile.plotFile}")
       apiCountFile.writeOutPlot()
     }
