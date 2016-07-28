@@ -14,13 +14,14 @@ import com.konradjamrozik.transpose
 import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
-class TableClickFrequency() {
+class TableClickFrequency private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
+
+  constructor(data: IApkExplorationOutput2) : this(TableClickFrequency.build(data))
   
   companion object {
     val headerNoOfClicks = "No_of_clicks"
     val headerViewsCount = "Views_count"
 
-    // Design note: Instead of "build" one could implement the logic in constructor: http://stackoverflow.com/a/37598292/986533
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
 
       val countOfViewsHavingNoOfClicks: Map<Int, Int> = data.countOfViewsHavingNoOfClicks

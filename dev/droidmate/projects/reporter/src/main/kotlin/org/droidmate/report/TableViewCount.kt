@@ -15,7 +15,9 @@ import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy
 
-class TableViewCount() {
+class TableViewCount private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
+
+  constructor(data: IApkExplorationOutput2) : this(TableViewCount.build(data))
   
   companion object {
     
@@ -25,7 +27,6 @@ class TableViewCount() {
     
     val stepSizeInMs = 1000L
 
-    // Design note: Instead of "build" one could implement the logic in constructor: http://stackoverflow.com/a/37598292/986533
     fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
 
       val timeRange: List<Long> = 0L.rangeTo(data.explorationTimeInMs).step(stepSizeInMs).toList()
