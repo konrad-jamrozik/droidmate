@@ -22,8 +22,8 @@ import org.droidmate.common.logcat.ApiLogcatMessage
  * </p><p>
  * To diagnose method signatures here that cannot be handled by ArtHook (which is used for Android 6), observe logcat output 
  * during launch of main activity of an inlined app containing monitor generated using this class.
- * 
- * A similar log will appear on it:
+ *
+ * A log similar to the following one will appear on it:
  * <pre>
  * 06-29 19:17:21.637 16375-16375/org.droidmate.fixtures.apks.monitored W/ArtHook: java.lang.RuntimeException: Can't find original method (redir_android_net_wifi_WifiManager_startScan1)
  * </pre>
@@ -46,7 +46,6 @@ import org.droidmate.common.logcat.ApiLogcatMessage
 @Slf4j
 class RedirectionsGenerator implements IRedirectionsGenerator
 {
-
 
   private static final nl   = System.lineSeparator()
   private static final ind6 = "      "

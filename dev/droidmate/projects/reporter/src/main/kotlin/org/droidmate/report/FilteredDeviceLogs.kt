@@ -8,7 +8,6 @@
 // www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.apis.ExcludedApis
 import org.droidmate.apis.IApi
 import org.droidmate.common.logcat.Api
 import org.droidmate.exploration.device.DeviceLogs
@@ -37,13 +36,11 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
         }
         .filterNot {
           it.warnAndReturnIsRedundant
-            || it.isExcluded
             || it.isCallToStartInternalActivity(packageName)
         }
     }
 
     private fun IApi.checkIsInternalMonitorLog() {
-      // KJA2 migrate to new code
       check(!isStackTraceOfMonitorTcpServerSocketInit(this.stackTraceFrames),
         { "The Socket.<init> monitor logs were expected to be removed by monitor before being sent to the host machine." })
     }
@@ -152,10 +149,6 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
         true
       } else
         false
-    }
-
-    private val IApi.isExcluded: Boolean get() {
-      return ExcludedApis().contains(this.methodName)
     }
 
     // For now empty lists. Will update them as the warnings are observed, while comparing to the legacy lists 

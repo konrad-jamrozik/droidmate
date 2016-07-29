@@ -274,9 +274,9 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
       def launchActivity2Logs = apiLogs[2]
       def terminateAppApiLogs = apiLogs[3]
 
-      assert resetAppApiLogs*.methodName == ["onResume"]
+      assert resetAppApiLogs*.methodName == []
       assert clickApiLogs*.methodName == ["openConnection"]
-      assert launchActivity2Logs*.methodName == ["startActivityForResult", "onResume"]
+      assert launchActivity2Logs*.methodName == []
       assert terminateAppApiLogs.empty
     }
     else if (api == "api23")
@@ -299,13 +299,13 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
       def launchActivity2Logs = apiLogs[5]
       def terminateAppApiLogs = apiLogs[6]
 
-      assert resetAppApiLogs*.methodName == ["onResume"]
-      assert clickApiLogs*.methodName == ["i", "openConnection", "i"]
-      assert openPermissionDialogApiLogs.methodName == ["i", "i"]
-      assert onResumeApiLogs*.methodName == ["onResume"]
-      assert cameraApiLogs*.methodName == ["i", "open"]
-      assert launchActivity2Logs*.methodName == ["i", "startActivityForResult", "onResume"]
-      assert terminateAppApiLogs.empty
+      assert resetAppApiLogs*.methodName == []
+      assert clickApiLogs*.methodName == ["openConnection"]
+      assert openPermissionDialogApiLogs.methodName == []
+      assert onResumeApiLogs*.methodName == []
+      assert cameraApiLogs*.methodName == ["open"]
+      assert launchActivity2Logs*.methodName == []
+      assert terminateAppApiLogs*.methodName == []
     }
     else throw new UnexpectedIfElseFallthroughError()
   }

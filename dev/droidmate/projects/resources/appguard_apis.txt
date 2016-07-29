@@ -30,14 +30,10 @@
 #
 # ------
 # 
-# To understand how to diagnose method signatures here that cannot be handled by ArtHook (which is used fro Android 6), 
+# To understand how to diagnose method signatures here that cannot be handled by ArtHook (which is used for Android 6), 
 # read the class comment of org.droidmate.monitor.RedirectionsGenerator
 
 Landroid/app/ActivityThread;->installContentProviders(Landroid/content/Context;Ljava/util/List;)V
-Landroid/app/Activity;->onResume()V
-Landroid/app/Activity;->startActivityForResult(Landroid/content/Intent;I)V
-Landroid/app/Activity;->startActivityFromChild(Landroid/app/Activity;Landroid/content/Intent;I)V
-Landroid/app/Activity;->startActivityIfNeeded(Landroid/content/Intent;I)Z
 Landroid/app/ActivityManager;->getRecentTasks(II)Ljava/util/List;
 Landroid/app/ActivityManager;->getRunningTasks(I)Ljava/util/List;
 
@@ -368,7 +364,7 @@ Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
 #
 # DefaultHttpClient doesn't actually contain the execute() method [1]. It inherits it from AbstractHttpClient [2].
 #
-# Futhermore, all the execute() methods are really just delegates to AbstractHttpClient.execute(HttpHost, HttpRequest, HttpContext) [2]
+# Furthermore, all the execute() methods are really just delegates to AbstractHttpClient.execute(HttpHost, HttpRequest, HttpContext) [2]
 #
 # [1] https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/DefaultHttpClient.java
 # [2] https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/AbstractHttpClient.java#514
@@ -386,11 +382,24 @@ Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
 # Here is the method that actually needs to be monitored [2], as all the others delegate to it:
 Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
 
-# APIs added on 9 Jun 2016 to enable sensitive dataflow leaks. Obtained from Vitalii. Taken from "apis_art.txt" that should be located in the same dir as this file.
+# APIs added on 9 Jun 2016 to enable sensitive dataflow leaks. Obtained from Vitalii. 
+# Taken from "apis_art.txt" that should be located in the same dir as this file.
 # Note that as of 9 Jun 2016 the methods from Vitalii are missing the " static" suffix.
 !API19 Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V
-# If this method call is commented out, asserts for api23 in method org.droidmate.frontend.DroidmateFrontendTest#exploreOnRealDevice will have to be changed, by removing "i".
-!API19 Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I static
+
+# ! If this method call is commented out, asserts for api23 in method org.droidmate.frontend.DroidmateFrontendTest#exploreOnRealDevice will have to be changed.
+# !API19 Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I static
+
 # APIs for bug repro from Mark Schuegraf.
-!API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I static
-!API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I static
+# !API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I static
+# !API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I static
+
+# While these methods were present in the original MonitorInitalizer.java in AppGuard, 
+# they pertain to activity lifecycle and thus are very common and security-critical. 
+# For this reason they are not monitored.
+# ! If this method call is commented out, asserts for api23 in method org.droidmate.frontend.DroidmateFrontendTest#exploreOnRealDevice will have to be changed.
+# Landroid/app/Activity;->onResume()V
+# ! If this method call is commented out, asserts for api23 in method org.droidmate.frontend.DroidmateFrontendTest#exploreOnRealDevice will have to be changed.
+# Landroid/app/Activity;->startActivityForResult(Landroid/content/Intent;I)V
+# Landroid/app/Activity;->startActivityFromChild(Landroid/app/Activity;Landroid/content/Intent;I)V
+# Landroid/app/Activity;->startActivityIfNeeded(Landroid/content/Intent;I)Z
