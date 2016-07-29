@@ -13,7 +13,6 @@ import org.droidmate.apis.IApi
 import org.droidmate.common.logcat.Api
 import org.droidmate.exploration.device.DeviceLogs
 import org.droidmate.exploration.device.IDeviceLogs
-import org.droidmate.exploration.output.FilteredApis
 import org.droidmate.logcat.IApiLogcatMessage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -39,17 +38,62 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
         .filterNot {
           it.warnAndReturnIsRedundant
             || it.isExcluded
-            || it.isCallToStartInternalActivity(packageName
-          )
+            || it.isCallToStartInternalActivity(packageName)
         }
     }
 
     private fun IApi.checkIsInternalMonitorLog() {
       // KJA2 migrate to new code
-      check(!FilteredApis.isStackTraceOfMonitorTcpServerSocketInit(this.stackTraceFrames),
+      check(!isStackTraceOfMonitorTcpServerSocketInit(this.stackTraceFrames),
         { "The Socket.<init> monitor logs were expected to be removed by monitor before being sent to the host machine." })
     }
 
+    /**
+     * <p>
+     * Checks if given stack trace was obtained from a log to a call to socket &lt;init> made by Monitor TCP server
+     * ({@code org.droidmate.uiautomator_daemon.MonitorJavaTemplate.MonitorTCPServer}).
+     *
+     * </p><p>
+     * Here is an example of a log of monitored API call to such method (with line breaks added for clarity):
+     *
+     * </p><p>
+     * <pre><code>
+     * 2015-07-31 16:55:17.132 TRACE from monitor - 07-31 16:55:14.782 I/Adapted_Monitored_API_method_call(817):
+     * TId: 1941
+     * objCls: java.net.Socket
+     * mthd: &lt;init>
+     * retCls: void
+     * params:
+     *
+     * stacktrace:
+     * dalvik.system.VMStack.getThreadStackTrace(Native Method)->
+     * java.lang.Thread.getStackTrace(Thread.java:579)->
+     * org.droidmate.monitor.Monitor.getStackTrace(Monitor.java:303)->
+     * org.droidmate.monitor.Monitor.redir_8_java_net_Socket_ctor0(Monitor.java:542)->
+     * java.lang.reflect.Method.invokeNative(Native Method)->
+     * java.lang.reflect.Method.invoke(Method.java:515)->
+     * java.net.Socket.&lt;init>(Socket.java)->
+     * java.net.ServerSocket.accept(ServerSocket.java:126)->
+     * org.droidmate.monitor.Monitor$SerializableTCPServerBase$MonitorServerRunnable.run(Monitor.java:228)->
+     * java.lang.Thread.run(Thread.java:841)
+     * </code></pre>
+     *
+     * </p>
+     */
+    fun isStackTraceOfMonitorTcpServerSocketInit(stackTrace: List<String>): Boolean {
+      val secondLastFrame = stackTrace.takeLast(2).first()
+      if (secondLastFrame.startsWith("org.droidmate")) {
+        check(secondLastFrame.startsWith("org.droidmate.monitor.Monitor"))
+        check(stackTrace.any { it.contains("Socket.<init>") })
+        return true
+      }
+
+      // Assert made just to be extra-sure.
+      check(!(stackTrace.any { it.startsWith("org.droidmate.monitor.Monitor") && it.contains("Socket.<init>") }))
+
+      return false
+    }    
+    
     /**
      * <p>
      * Logs warning about presence of possibly redundant API calls. An API call is redundant if it always calls
@@ -75,6 +119,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      */
     private fun IApi.warnWhenPossiblyRedundant() {
       // KJA2 write a test for it.
+      // KJA this seems to be broken, as it will basically mark any non-manually-checked api to be possibly redundant. Only APIs that never end up being at the end of stack trace should be considered possibly redundant.
       this.stackTraceFrames
         .filter { it.startsWith(Api.monitorRedirectionPrefix) && (it !in apisManuallyCheckedForRedundancy) }
         .forEach { log.warn("Possibly redundant API call discovered: " + it) }
@@ -113,8 +158,8 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       return ExcludedApis().contains(this.methodName)
     }
 
-    // For now empty lists. Will update them as the warnings are observed, while comparing to the legacy lists (present int
-    // this file).
+    // For now empty lists. Will update them as the warnings are observed, while comparing to the legacy lists 
+    // (present in this file).
     private val apisManuallyConfirmedToBeRedundant: List<String> = emptyList()
     private val apisManuallyConfirmedToBeNotRedundant: List<String> = emptyList()
     /// !!! DUPLICATION WARNING !!! with org.droidmate.monitor.RedirectionsGenerator.redirMethodNamePrefix and related code.

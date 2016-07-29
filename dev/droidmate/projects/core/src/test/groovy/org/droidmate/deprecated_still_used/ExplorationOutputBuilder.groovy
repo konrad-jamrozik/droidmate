@@ -101,7 +101,7 @@ class ExplorationOutputBuilder
           time: monitorInitPlusMss(mssSinceMonitorInit[i]),
           methodName: methodNames[i],
           // Minimal stack trace to pass all the validation checks.
-          // In particular, the ->Socket.<init> is enforced by asserts in org.droidmate.exploration.output.FilteredApis.isStackTraceOfMonitorTcpServerSocketInit
+          // In particular, the ->Socket.<init> is enforced by asserts in org.droidmate.report.FilteredDeviceLogs.Companion.isStackTraceOfMonitorTcpServerSocketInit
           stackTrace: "$Api.monitorRedirectionPrefix->Socket.<init>->$currentlyBuiltApkExplOutput.appPackageName"
         )
       }

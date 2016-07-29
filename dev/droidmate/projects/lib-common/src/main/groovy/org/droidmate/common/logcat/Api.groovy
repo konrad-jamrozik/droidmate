@@ -219,7 +219,7 @@ class Api implements IApi, Serializable
     return componentPackage
   }
 
-  // WISH would be nice to have this in one of the output files, but first its caller, org.droidmate.exploration.output.DataExtractor.filterApiLogs,
+  // KJA would be nice to have this in one of the output files, but first its caller, org.droidmate.exploration.output.DataExtractor.filterApiLogs,
   // has to be refactored out so it is called only once, avoiding duplicate logging.
   @Override
   boolean isCallToStartInternalActivity(String appPackageName)
