@@ -96,7 +96,7 @@ class GuiScreensBuilderFromApkExplorationOutput2 implements IGuiScreensBuilder
 
         default:
           new UnexpectedIfElseFallthroughError(
-            "Unsupported ExplorationAction class while extracting transitions from IApkExplorationOutput. " +
+            "Unsupported ExplorationAction class while extracting transitions from IApkExplorationOutput2. " +
               "The unsupported class: ${explAction.class}")
       }
 

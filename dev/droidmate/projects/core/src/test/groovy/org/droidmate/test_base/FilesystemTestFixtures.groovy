@@ -37,7 +37,6 @@ class FilesystemTestFixtures
   // end of DUPLICATION WARNING
 
   public String f_aaptBadgingDump
-  public Path   f_legacySer
   /**
    * The metadata to the run used for this fixture is located in directory located in the same dir as this fixture.
    * In addition, the run configuration is codified in IntelliJ run config of "Explore fixture: f_monitoredSer2"
@@ -56,9 +55,6 @@ class FilesystemTestFixtures
   {
     apks = new ApkFixtures(aapt)
     f_aaptBadgingDump = new ResourcePath("fixtures/f_aaptBadgingDump.txt").path.text
-    // WISH this fixture still contains the old package name of monitor having "monitor_generator.generated" in it 
-    // (see wish below).
-    f_legacySer = new ResourcePath("fixtures/serialized_results/2015 Oct 01 1723 com.antivirus.ser").path
     // WISH this fixture still contains the old package name of monitor having "monitor_generator.generated" in it, for example,
     // in a stack trace of a device log:
     // org.droidmate.monitor_generator.generated.Monitor.redir_android_app_Activity_onResume0(Monitor.java:733)

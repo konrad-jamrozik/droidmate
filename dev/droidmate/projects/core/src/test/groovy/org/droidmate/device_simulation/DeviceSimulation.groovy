@@ -8,7 +8,7 @@
 // www.droidmate.org
 package org.droidmate.device_simulation
 
-import org.droidmate.deprecated_still_used.IApkExplorationOutput
+
 import org.droidmate.device.datatypes.AdbClearPackageAction
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
