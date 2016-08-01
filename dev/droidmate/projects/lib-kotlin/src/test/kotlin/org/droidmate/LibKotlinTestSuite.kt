@@ -16,7 +16,8 @@ import org.junit.runners.Suite
 @RunWith(Categories::class)
 @Suite.SuiteClasses(
   UiautomatorWindowDumpFunctionsTest::class,
-  extensions_file_systemKtTest::class
+  extensions_file_systemKtTest::class,
+  TimeDiffWithToleranceTest::class
 )
 class LibKotlinTestSuite
 {
