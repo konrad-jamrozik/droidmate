@@ -9,6 +9,7 @@
 package org.droidmate.exploration.data_aggregators
 
 import groovy.util.logging.Slf4j
+import org.droidmate.TimeDiffWithTolerance
 import org.droidmate.android_sdk.IApk
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
@@ -100,24 +101,14 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
       assertDeviceExceptionIsMissingOnSuccessAndPresentOnFailureNeverNull()
 
       assertLogsAreSortedByTime()
-      warnIfTimestampsAreIncorrectWithGivenImprecision()
+      warnIfTimestampsAreIncorrectWithGivenTolerance()
       
     } catch (AssertionError e)
     {
       throw new DroidmateError(e)
     }
   }
-
-  void warnIfTimestampsAreIncorrectWithGivenImprecision()
-  {
-    // KJA current work
-    //TimestampDiffTolerance = new TimestampDiffTolerance(3000)
-    warnIfExplorationEndTimeIsNotAfterStartTimeWithGivenImprecision()
-    warnIfExplorationStartTimeIsNotBeforeFirstLogTimeWithGivenImprecision()
-    warnIfExplorationEndTimeIsNotAfterLastLogTimeWithGivenImprecision()
-    warnIfLogsAreNotAfterActionWithGivenImprecision()
-
-  }
+  
 
   public void assertLogsAreSortedByTime()
   {
@@ -149,6 +140,52 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     }
   }
 
+  void warnIfTimestampsAreIncorrectWithGivenTolerance()
+  {
+    def diff = new TimeDiffWithTolerance(Duration.ofSeconds(3))
+    warnIfExplorationStartTimeIsNotBeforeEndTime(diff)
+    warnIfExplorationStartTimeIsNotBeforeFirstLogTime(diff)
+    warnIfLastLogTimeIsNotBeforeExplorationEndTime(diff)
+    warnIfLogsAreNotAfterAction(diff)
+  }
+
+  private boolean warnIfExplorationStartTimeIsNotBeforeEndTime(TimeDiffWithTolerance diff)
+  {
+    return diff.warnIfBeyond(this.explorationStartTime, this.explorationEndTime, "exploration start time", "exploration end time")
+  }
+
+  private void warnIfExplorationStartTimeIsNotBeforeFirstLogTime(TimeDiffWithTolerance diff)
+  {
+    if (!this.apiLogs.empty)
+    {
+      def firstLog = this.apiLogs.find {!it.empty}?.first()
+      if (firstLog != null)
+        diff.warnIfBeyond(this.explorationStartTime, firstLog.time, "exploration start time", "first API log")
+    }
+  }
+
+  private void warnIfLastLogTimeIsNotBeforeExplorationEndTime(TimeDiffWithTolerance diff)
+  {
+    if (!this.apiLogs.empty)
+    {
+      def lastLog = this.apiLogs.find {!it.empty}?.last()
+      if (lastLog != null)
+        diff.warnIfBeyond(lastLog.time, this.explorationEndTime, "last API log", "exploration end time")
+    }
+  }
+
+  private void warnIfLogsAreNotAfterAction(TimeDiffWithTolerance diff)
+  {
+    this.actRess.each {
+      if (!it.result.deviceLogs.apiLogsOrEmpty.empty)
+      {
+        def actionTime = it.action.timestamp
+        def firstLogTime = it.result.deviceLogs.apiLogsOrEmpty.first().time
+        diff.warnIfBeyond(actionTime, firstLogTime, "action time", "first log time for action")
+      }
+    }
+  }
+  
   @Override
   Integer getExplorationTimeInMs()
   {
