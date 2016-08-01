@@ -17,8 +17,6 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.command.exploration.Exploration
 import org.droidmate.command.exploration.IExploration
 import org.droidmate.configuration.Configuration
-import org.droidmate.deprecated_still_used.ApkExplorationOutput
-import org.droidmate.deprecated_still_used.ExplorationOutput
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
@@ -143,17 +141,6 @@ class ExploreCommand extends DroidmateCommand
 
     new ExplorationOutput2Report(out, cfg.droidmateOutputDirPath).writeOut(cfg.reportIncludePlots, cfg.extractSummaries)
     
-    try
-    {
-      def deprecatedOut = new ExplorationOutput()
-      // KJA migrate the time checks in ".from" to new output format 
-      deprecatedOut.addAll(out.collect {ApkExplorationOutput.from(it)})
-      
-    } catch (Throwable persistingThrowable)
-    {
-      explorationExceptions << new ExplorationException(persistingThrowable)
-    }
-
     return explorationExceptions
   }
 
