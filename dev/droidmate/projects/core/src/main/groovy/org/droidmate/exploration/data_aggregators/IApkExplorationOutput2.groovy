@@ -58,5 +58,7 @@ interface IApkExplorationOutput2 extends Serializable
 
   boolean getContainsExplorationStartTime()
 
+  boolean getContainsExplorationEndTime()
+
   void serialize(IStorage2 storage2)
 }

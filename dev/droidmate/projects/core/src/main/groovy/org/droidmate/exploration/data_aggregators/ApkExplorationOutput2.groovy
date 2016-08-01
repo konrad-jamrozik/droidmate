@@ -50,8 +50,6 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     this.explorationEndTime = explorationEndTime
     assert this.apk != null
     assert this.actRess != null
-    assert this.explorationStartTime != null
-    assert this.explorationEndTime != null
     this.verify()
   }
 
@@ -93,7 +91,8 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     {
       assert this.actRess.size() >= 1
       assert this.containsExplorationStartTime
-      assert this.explorationEndTime != null
+      assert this.containsExplorationEndTime
+      
       assertFirstActionIsReset()
       assertLastActionIsTerminateOrResultIsFailure()
       assertLastGuiSnapshotIsHomeOrResultIsFailure()
@@ -101,10 +100,23 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
       assertDeviceExceptionIsMissingOnSuccessAndPresentOnFailureNeverNull()
 
       assertLogsAreSortedByTime()
+      warnIfTimestampsAreIncorrectWithGivenImprecision()
+      
     } catch (AssertionError e)
     {
       throw new DroidmateError(e)
     }
+  }
+
+  void warnIfTimestampsAreIncorrectWithGivenImprecision()
+  {
+    // KJA current work
+    //TimestampDiffTolerance = new TimestampDiffTolerance(3000)
+    warnIfExplorationEndTimeIsNotAfterStartTimeWithGivenImprecision()
+    warnIfExplorationStartTimeIsNotBeforeFirstLogTimeWithGivenImprecision()
+    warnIfExplorationEndTimeIsNotAfterLastLogTimeWithGivenImprecision()
+    warnIfLogsAreNotAfterActionWithGivenImprecision()
+
   }
 
   public void assertLogsAreSortedByTime()
@@ -154,6 +166,13 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   {
     return this.explorationStartTime != null
   }
+
+  @Override
+  boolean getContainsExplorationEndTime()
+  {
+    return this.explorationEndTime != null
+  }
+
 
   @Override
   boolean getExceptionIsPresent()
