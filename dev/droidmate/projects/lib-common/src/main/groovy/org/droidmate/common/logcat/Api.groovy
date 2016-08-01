@@ -7,7 +7,7 @@
 //
 // www.droidmate.org
 
-// WISH move to org.droidmate.apis. Now it is not done as it would break deserialization. See also: org.droidmate.deprecated_still_used.DeprecatedClassesDeserializer
+// KJA2 move to org.droidmate.apis. Now it is not done as it would break deserialization. See also: org.droidmate.deprecated_still_used.DeprecatedClassesDeserializer
 package org.droidmate.common.logcat
 
 import groovy.transform.Canonical
@@ -22,8 +22,8 @@ import static org.droidmate.common.Assert.assertRegexMatches
 /**
  * See {@link IApi}
  */
-// WISH Api should be a decorator to ApiMethodSignature. WATCH OUT FOR SERIALIZATION ISSUES!
-// WISH Api should be renamed to ApiCall. WATCH OUT FOR SERIALIZATION ISSUES!
+// KJA2 Api should be a decorator to ApiMethodSignature. WATCH OUT FOR SERIALIZATION ISSUES!
+// KJA2 Api should be renamed to ApiCall. WATCH OUT FOR SERIALIZATION ISSUES!
 @Canonical
 class Api implements IApi, Serializable
 {
@@ -217,22 +217,6 @@ class Api implements IApi, Serializable
       componentPackage = matchedParts[1]
     }
     return componentPackage
-  }
-
-  // KJA would be nice to have this in one of the output files, but first its caller, org.droidmate.exploration.output.DataExtractor.filterApiLogs,
-  // has to be refactored out so it is called only once, avoiding duplicate logging.
-  @Override
-  boolean isCallToStartInternalActivity(String appPackageName)
-  {
-    if ((paramTypes.findIndexOf {it == "android.content.Intent"} != -1) &&
-      (methodName.startsWith("startActivit") || methodName == "startIntentSender"))
-    {
-      def (String _, String targetPackage) = parseIntent()
-      if (targetPackage == appPackageName)
-        return true
-    }
-    return false
-
   }
 
   // Implementation based on android.content.Intent#toUriInner

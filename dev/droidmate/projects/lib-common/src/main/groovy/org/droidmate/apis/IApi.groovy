@@ -35,6 +35,4 @@ interface IApi
   List<String> getStackTraceFrames()
 
   String getUniqueString()
-
-  boolean isCallToStartInternalActivity(String appPackageName)
 }

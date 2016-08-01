@@ -34,10 +34,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
             it.warnWhenPossiblyRedundant()
           }
         }
-        .filterNot {
-          it.warnAndReturnIsRedundant
-            || it.isCallToStartInternalActivity(packageName)
-        }
+        .filterNot {it.warnAndReturnIsRedundant}
     }
 
     private fun IApi.checkIsInternalMonitorLog() {
