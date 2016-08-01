@@ -33,12 +33,6 @@ class DeviceSimulation implements IDeviceSimulation
     this(new GuiScreensBuilderFromSpec(timeGenerator, specString, packageName), packageName)
   }
 
-  @Deprecated
-  DeviceSimulation(IApkExplorationOutput out)
-  {
-    this(new GuiScreensBuilderFromApkExplorationOutput(out), out.appPackageName)
-  }
-
   DeviceSimulation(IApkExplorationOutput2 out)
   {
     this(new GuiScreensBuilderFromApkExplorationOutput2(out), out.packageName)

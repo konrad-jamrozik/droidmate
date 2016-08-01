@@ -9,10 +9,7 @@
 
 package org.droidmate.deprecated_still_used
 
-import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.exceptions.DroidmateError
 import org.droidmate.logcat.IApiLogcatMessage
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
 
@@ -21,11 +18,7 @@ interface IApkExplorationOutput extends Serializable
 {
   String getAppPackageName()
 
-  List<ITimeFormattedLogcatMessage> getInstrumentationMsgs()
-
   List<TimestampedExplorationAction> getActions()
-
-  List<IDeviceGuiSnapshot> getGuiSnapshots()
 
   Exception getCaughtException()
   void setCaughtException(Exception e)
@@ -33,23 +26,6 @@ interface IApkExplorationOutput extends Serializable
   List<List<IApiLogcatMessage>> getApiLogs()
 
   LocalDateTime getMonitorInitTime()
-  void setMonitorInitTime(LocalDateTime time)
 
-  LocalDateTime getExplorationEndTime()
   void setExplorationEndTime(LocalDateTime time)
-
-  boolean getIsUiaTestCase()
-
-  String getHeader()
-
-  List<String> getComments()
-
-  interface IUiaTestCaseAnnotations extends Serializable
-  {
-    String getTestCaseName()
-
-    List<String> getComments()
-  }
-
-  void verifyCompletedDataIntegrity() throws DroidmateError
 }

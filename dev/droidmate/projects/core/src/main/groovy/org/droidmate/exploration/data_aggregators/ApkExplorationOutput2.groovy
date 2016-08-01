@@ -142,6 +142,17 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
 
   void warnIfTimestampsAreIncorrectWithGivenTolerance()
   {
+    /**
+     * <p>
+     * Used for time comparisons allowing for some imprecision.
+     *
+     * </p><p>
+     * Some time comparisons in DroidMate happen between time obtained from an Android device and a time obtained from the machine
+     * on which DroidMate runs. Because these two computers most likely won't have clocks synchronized with millisecond precision,
+     * this variable is incorporated in such time comparisons.
+     *
+     * </p>
+     */
     def diff = new TimeDiffWithTolerance(Duration.ofSeconds(3))
     warnIfExplorationStartTimeIsNotBeforeEndTime(diff)
     warnIfExplorationStartTimeIsNotBeforeFirstLogTime(diff)
