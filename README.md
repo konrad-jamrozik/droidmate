@@ -81,6 +81,3 @@ If DroidMate doesn't recognize a device it defaults to Nexus 7. You can change t
 * select running device. If device is running, `adb devices` will show it;
 * click on `Dump View Hierarchy for UI Automator`;
 * click on the top level `FrameLayout` and look at `package`.
-
-
-DroidMate also has an experimental support Android for 6.0 (API 23). However, when running 
