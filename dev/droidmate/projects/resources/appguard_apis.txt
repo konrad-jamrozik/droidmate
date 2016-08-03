@@ -384,18 +384,14 @@ Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpH
 
 # APIs added on 9 Jun 2016 to enable sensitive dataflow leaks. Obtained from Vitalii. 
 # Taken from "apis_art.txt" that should be located in the same dir as this file.
-# Note that as of 9 Jun 2016 the methods from Vitalii are missing the " static" suffix.
+# Note that as of 9 Jun 2016 the methods from Vitalii are missing the " static" suffix. The methods have been obtained from HornDroid API list.
 !API19 Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V
 
 # ! If this method call is commented out, asserts for api23 in method org.droidmate.frontend.DroidmateFrontendTest#exploreOnRealDevice will have to be changed.
 # !API19 Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I static
 
-# APIs for bug repro from Mark Schuegraf.
-# !API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I static
-# !API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I static
-
 # While these methods were present in the original MonitorInitalizer.java in AppGuard, 
-# they pertain to activity lifecycle and thus are very common and security-critical. 
+# they pertain to activity lifecycle and thus are very common and not security-critical. 
 # For this reason they are not monitored.
 # ! If this method call is commented out, asserts for api23 in method org.droidmate.frontend.DroidmateFrontendTest#exploreOnRealDevice will have to be changed.
 # Landroid/app/Activity;->onResume()V
@@ -403,3 +399,10 @@ Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpH
 # Landroid/app/Activity;->startActivityForResult(Landroid/content/Intent;I)V
 # Landroid/app/Activity;->startActivityFromChild(Landroid/app/Activity;Landroid/content/Intent;I)V
 # Landroid/app/Activity;->startActivityIfNeeded(Landroid/content/Intent;I)Z
+
+# APIs for various bugs repros from Mark Schuegraf.
+# !API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I static
+# !API19 Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I static
+# !API19 Ljava/io/FileOutputStream;->write([BII)V
+# !API19 Ljava/io/FileOutputStream;->write(I)V
+# !API19 Ljava/io/FileOutputStream;->write([B)V
