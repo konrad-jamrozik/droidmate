@@ -1,7 +1,7 @@
 <component name="CopyrightManager">
   <settings default="">
     <module2copyright>
-      <element module="Copyrighted source files" copyright="DroidMate 80 chars" />
+      <element module="Copyrighted source files" copyright="DroidMate GNU GPL v3" />
     </module2copyright>
     <LanguageOptions name="__TEMPLATE__">
       <option name="addBlankAfter" value="false" />
