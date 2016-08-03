@@ -36,15 +36,15 @@ val List<IApkExplorationOutput2>.withFilteredApiLogs: List<IApkExplorationOutput
 
       fun filterApiLogs(result: IExplorationActionRunResult): IExplorationActionRunResult {
 
-        fun filterApiLogs(deviceLogs: IDeviceLogs, packageName: String): IDeviceLogs {
+        fun filterApiLogs(deviceLogs: IDeviceLogs): IDeviceLogs {
 
-          return FilteredDeviceLogs(deviceLogs.apiLogsOrEmpty, packageName)
+          return FilteredDeviceLogs(deviceLogs.apiLogsOrEmpty)
         }
 
         return ExplorationActionRunResult(
           result.successful,
           result.exploredAppPackageName,
-          filterApiLogs(result.deviceLogs, result.exploredAppPackageName),
+          filterApiLogs(result.deviceLogs),
           result.guiSnapshot,
           result.exception
         )

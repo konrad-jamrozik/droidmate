@@ -28,14 +28,14 @@ import org.slf4j.LoggerFactory
 
 class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by logs {
 
-  constructor(apiLogs: List<IApiLogcatMessage>, packageName: String) :
-  this(DeviceLogs(filterApiLogs(apiLogs, packageName)))
+  constructor(apiLogs: List<IApiLogcatMessage>) :
+  this(DeviceLogs(filterApiLogs(apiLogs)))
 
   companion object {
 
     private val log: Logger = LoggerFactory.getLogger(FilteredDeviceLogs::class.java)
 
-    private fun filterApiLogs(apiLogs: List<IApiLogcatMessage>, packageName: String): List<IApiLogcatMessage> {
+    private fun filterApiLogs(apiLogs: List<IApiLogcatMessage>): List<IApiLogcatMessage> {
 
       return apiLogs
         .apply {
