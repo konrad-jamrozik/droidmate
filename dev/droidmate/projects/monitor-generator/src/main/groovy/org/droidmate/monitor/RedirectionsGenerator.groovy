@@ -209,10 +209,15 @@ class RedirectionsGenerator implements IRedirectionsGenerator
          * such calls are not being monitored, 
          * as they are DroidMate's monitor internal code, not the behavior of the app under exploration.
          */
-        if (objectClass == "android.util.Log" && (methodName in ["v","d","i","w","e"]) && paramClasses.size() == 2)
+        if (objectClass == "android.util.Log" && (methodName in ["v", "d", "i", "w", "e"]) && paramClasses.size() in [2, 3])
         {
           out << ind4 + ind4 + "if (p0.startsWith(\"${MonitorConstants.tag_prefix}\"))" + nl
-          out << ind4 + ind4 + "  return OriginalMethod.by(new \$() {}).invokeStatic(p0, p1);" + nl
+          if (paramClasses.size() == 2)
+            out << ind4 + ind4 + "  return OriginalMethod.by(new \$() {}).invokeStatic(p0, p1);" + nl
+          else if (paramClasses.size() == 3)
+            out << ind4 + ind4 + "  return OriginalMethod.by(new \$() {}).invokeStatic(p0, p1, p2);" + nl
+          else
+            assert false: "paramClasses.size() is not in [2,3]. It is ${paramClasses.size()}"
         }
         
         out << ind4 + ind4 + "String $stackTraceVarName = getStackTrace();" + nl
