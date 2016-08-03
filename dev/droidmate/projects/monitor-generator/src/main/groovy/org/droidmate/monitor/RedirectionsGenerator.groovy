@@ -209,7 +209,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
          * such calls are not being monitored, 
          * as they are DroidMate's monitor internal code, not the behavior of the app under exploration.
          */
-        if (objectClass == "android.util.Log" && (methodName == "i" || methodName == "v") && paramClasses.size() == 2)
+        if (objectClass == "android.util.Log" && (methodName in ["v","d","i","w","e"]) && paramClasses.size() == 2)
         {
           out << ind4 + ind4 + "if (p0.startsWith(\"${MonitorConstants.tag_prefix}\"))" + nl
           out << ind4 + ind4 + "  return OriginalMethod.by(new \$() {}).invokeStatic(p0, p1);" + nl
