@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -528,7 +529,7 @@ public class MonitorJavaTemplate
     return Thread.currentThread().getId();
   }
 
-  private static String convert(Object param)
+  static String convert(Object param)
   {
     if (param == null)
       return "null";
@@ -539,14 +540,16 @@ public class MonitorJavaTemplate
       StringBuilder sb = new StringBuilder("[");
       boolean first = true;
 
-      for (Object item : (Object[]) param)
-      {
-        if (first)
-          first = false;
-        else
-          sb.append(", ");
+      Object[] objects = convertToObjectArray(param);
 
-        sb.append(String.format("%s", item));
+      for (Object obj : objects)
+      {
+
+        if (!first)
+          sb.append(",");
+        first = false;
+
+        sb.append(String.format("%s", obj));
       }
       sb.append("]");
 
@@ -584,6 +587,25 @@ public class MonitorJavaTemplate
     // solution would be to provide this method with an generated code injection point.
     // end of duplication warning
     return paramStr.replace(" ", "_");
+  }
+
+  // Copied from http://stackoverflow.com/a/16428065/986533
+  private static Object[] convertToObjectArray(Object array)
+  {
+    Class ofArray = array.getClass().getComponentType();
+    if (ofArray.isPrimitive())
+    {
+      List<Object> ar = new ArrayList<>();
+      int length = Array.getLength(array);
+      for (int i = 0; i < length; i++)
+      {
+        ar.add(Array.get(array, i));
+      }
+      return ar.toArray();
+    } else
+    {
+      return (Object[]) array;
+    }
   }
 
   private static final SimpleDateFormat monitor_time_formatter = new SimpleDateFormat(MonitorConstants.monitor_time_formatter_pattern, MonitorConstants.monitor_time_formatter_locale);
