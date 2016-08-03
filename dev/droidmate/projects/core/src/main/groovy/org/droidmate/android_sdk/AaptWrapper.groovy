@@ -32,6 +32,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.regex.Matcher
 
+import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
+
 /**
  * Wrapper for the {@code aapt} tool from Android SDK.
  */
