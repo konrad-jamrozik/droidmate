@@ -17,7 +17,6 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-// KJA move to org.droidmate.apis. Now it is not done as it would break deserialization. See also: org.droidmate.deprecated_still_used.DeprecatedClassesDeserializer
 package org.droidmate.apis
 
 import groovy.transform.Canonical
@@ -25,14 +24,12 @@ import groovy.util.logging.Slf4j
 
 import java.util.regex.Matcher
 
-import static org.droidmate.common.Assert.assertRegexMatches
+import static org.droidmate.misc.Assert.assertRegexMatches
 
 @Slf4j
 /**
  * See {@link IApi}
  */
-// KJA Api should be a decorator to ApiMethodSignature. WATCH OUT FOR SERIALIZATION ISSUES!
-// KJA Api should be renamed to ApiCall. WATCH OUT FOR SERIALIZATION ISSUES!
 @Canonical
 class Api implements IApi, Serializable
 {

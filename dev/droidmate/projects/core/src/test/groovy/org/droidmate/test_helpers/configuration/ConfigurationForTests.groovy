@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.test_helpers.configuration
 
-import org.droidmate.common.BuildConstants
+import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 

@@ -20,7 +20,7 @@
 package org.droidmate.exceptions;
 
 
-import org.droidmate.common.DroidmateException;
+import org.droidmate.misc.DroidmateException;
 
 public class ConfigurationException extends DroidmateException
 {

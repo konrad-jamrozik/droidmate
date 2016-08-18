@@ -21,11 +21,11 @@ package org.droidmate.exploration.device
 
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
-import org.droidmate.MonitorConstants
 import org.droidmate.apis.ITimeFormattedLogcatMessage
-import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.logging.LogbackConstants
+import org.droidmate.misc.MonitorConstants
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

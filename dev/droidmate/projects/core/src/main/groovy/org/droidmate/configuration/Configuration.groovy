@@ -20,8 +20,8 @@ package org.droidmate.configuration
 
 import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
-import org.droidmate.common.BuildConstants
 import org.droidmate.exceptions.ConfigurationException
+import org.droidmate.misc.BuildConstants
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.nio.file.FileSystem
@@ -134,7 +134,7 @@ public class Configuration implements IConfiguration
 
   public static final int    defaultActionsLimit                    = 10
   public static final String defaultApksDir                         = "apks"
-  // !!! DUPLICATION WARNING !!! org.droidmate.common.logging.LogbackConstants.getLogsDirPath
+  // !!! DUPLICATION WARNING !!! org.droidmate.logging.LogbackConstants.getLogsDirPath
   // !!! DUPLICATION WARNING !!! repo\dev\droidmate\.gitignore
   public static final String defaultDroidmateOutputDir              = "output_device1"
   public static final int    defaultResetEveryNthExplorationForward = 0

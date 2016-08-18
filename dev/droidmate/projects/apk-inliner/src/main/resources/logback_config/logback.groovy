@@ -21,7 +21,7 @@ import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.classic.filter.LevelFilter
 import ch.qos.logback.classic.filter.ThresholdFilter
 import ch.qos.logback.core.ConsoleAppender
-import org.droidmate.common.logging.AllDroidmateMarkersFilter
+import org.droidmate.logging.AllDroidmateMarkersFilter
 
 import static ch.qos.logback.classic.Level.ERROR
 import static ch.qos.logback.classic.Level.TRACE

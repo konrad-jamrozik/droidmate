@@ -22,13 +22,13 @@ package org.droidmate.android_sdk
 import com.google.common.base.Splitter
 import com.google.common.collect.Iterables
 import groovy.util.logging.Slf4j
-import org.droidmate.common.BuildConstants
-import org.droidmate.common.ISysCmdExecutor
-import org.droidmate.common.SysCmdExecutorException
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.AdbWrapperException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.misc.BuildConstants
+import org.droidmate.misc.ISysCmdExecutor
+import org.droidmate.misc.SysCmdExecutorException
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.nio.file.Files

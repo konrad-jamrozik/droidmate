@@ -21,8 +21,8 @@ package org.droidmate.device_simulation
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
-import org.droidmate.common.Boolean3
-import org.droidmate.common.DroidmateException
+import org.droidmate.misc.Boolean3
+import org.droidmate.misc.DroidmateException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.*

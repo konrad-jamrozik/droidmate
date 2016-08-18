@@ -20,7 +20,7 @@
 package org.droidmate.test_base
 
 import ch.qos.logback.classic.Level
-import org.droidmate.common.BuildConstants
+import org.droidmate.misc.BuildConstants
 import org.droidmate.logging.LogbackAppenders
 import org.droidmate.logging.LogbackUtilsRequiringLogbackLog
 import org.junit.Before

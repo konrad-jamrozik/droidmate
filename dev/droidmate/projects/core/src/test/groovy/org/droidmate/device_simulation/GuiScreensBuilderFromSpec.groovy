@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.device_simulation
 
-import org.droidmate.common.LabeledEdge
+import org.droidmate.misc.LabeledEdge
 import org.droidmate.misc.ITimeGenerator
 
 import java.util.regex.Matcher

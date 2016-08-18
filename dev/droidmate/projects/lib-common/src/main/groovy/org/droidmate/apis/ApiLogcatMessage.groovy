@@ -23,7 +23,7 @@ import com.google.common.base.Splitter
 import com.google.common.collect.Lists
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
-import org.droidmate.common.DroidmateException
+import org.droidmate.misc.DroidmateException
 
 /**
  * See {@link IApiLogcatMessage}

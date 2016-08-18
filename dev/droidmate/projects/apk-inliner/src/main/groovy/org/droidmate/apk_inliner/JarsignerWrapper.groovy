@@ -20,9 +20,9 @@
 package org.droidmate.apk_inliner
 
 import groovy.util.logging.Slf4j
-import org.droidmate.common.DroidmateException
-import org.droidmate.common.ISysCmdExecutor
-import org.droidmate.common.SysCmdExecutorException
+import org.droidmate.misc.DroidmateException
+import org.droidmate.misc.ISysCmdExecutor
+import org.droidmate.misc.SysCmdExecutorException
 
 import java.nio.file.Path
 

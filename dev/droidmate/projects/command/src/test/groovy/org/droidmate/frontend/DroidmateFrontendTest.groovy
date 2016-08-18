@@ -22,7 +22,6 @@ import com.google.common.base.Throwables
 import org.droidmate.android_sdk.AaptWrapperStub
 import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.command.ExploreCommand
-import org.droidmate.common.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device_simulation.AndroidDeviceSimulator
@@ -35,6 +34,7 @@ import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.filesystem.MockFileSystem
+import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.report.OutputDir
 import org.droidmate.storage.Storage2
@@ -258,7 +258,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    * </p><p>
    * The test will make DroidMate output results to {@code BuildConstants.test_temp_dir_name}.
    * To ensure logs are also output there, run this test with VM arg of {@code -DlogsDir="temp_dir_for_tests/logs"}.
-   * Note that {@code logsDir} is defined in {@code org.droidmate.common.logging.LogbackConstants.getLogsDirPath}.
+   * Note that {@code logsDir} is defined in {@code org.droidmate.logging.LogbackConstants.getLogsDirPath}.
    *
    * </p>
    */

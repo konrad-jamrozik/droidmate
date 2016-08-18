@@ -26,8 +26,8 @@ package org.droidmate.monitor;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
-import org.droidmate.MonitorConstants;
 import org.droidmate.apis.Api;
+import org.droidmate.misc.MonitorConstants;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

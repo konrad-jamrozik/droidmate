@@ -31,7 +31,7 @@ import com.google.common.base.Stopwatch
 import groovy.transform.TypeChecked
 import groovy.transform.TypeCheckingMode
 import groovy.util.logging.Slf4j
-import org.droidmate.common.logging.LogbackConstants
+import org.droidmate.logging.LogbackConstants
 import org.droidmate.logging.LazyFileAppender
 import org.droidmate.logging.LogbackAppenders
 import org.droidmate.test_base.DroidmateGroovyTestCase

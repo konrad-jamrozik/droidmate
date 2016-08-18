@@ -20,7 +20,6 @@
 package org.droidmate.logging
 
 import groovy.util.logging.Slf4j
-import org.droidmate.common.logging.LogbackConstants
 
 import static groovy.io.FileType.FILES
 

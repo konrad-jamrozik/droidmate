@@ -20,7 +20,7 @@ package org.droidmate.tools
 
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.IAaptWrapper
-import org.droidmate.common.BuildConstants
+import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
 
 class SingleApkFixture

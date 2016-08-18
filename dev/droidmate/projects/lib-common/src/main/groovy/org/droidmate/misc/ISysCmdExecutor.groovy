@@ -17,22 +17,14 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common
+package org.droidmate.misc;
 
-import java.nio.file.Files
-import java.nio.file.Path
+public interface ISysCmdExecutor {
 
-class Dex
-{
+  String[] execute(String commandDescription, String... cmdLineParams) throws SysCmdExecutorException
 
-  @Delegate
-  private final Path path
+  String[] executeWithoutTimeout(String commandDescription, String... cmdLineParams) throws SysCmdExecutorException
 
-  Dex(Path path)
-  {
-    assert path != null
-    assert Files.isRegularFile(path)
-    assert path.fileName.toString().endsWith(".dex")
-    this.path = path
-  }
+  String[] executeWithTimeout(String commandDescription, int timeout, String... cmdLineParams) throws SysCmdExecutorException
+
 }

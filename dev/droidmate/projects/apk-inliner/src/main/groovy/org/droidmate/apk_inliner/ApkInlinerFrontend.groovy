@@ -23,7 +23,7 @@ import groovy.util.logging.Slf4j
 import joptsimple.OptionParser
 import joptsimple.OptionSet
 import joptsimple.ValueConverter
-import org.droidmate.common.BuildConstants
+import org.droidmate.misc.BuildConstants
 
 import java.nio.file.FileSystems
 import java.nio.file.Path

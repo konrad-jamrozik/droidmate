@@ -16,16 +16,36 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.common
 
-import org.junit.Test
+package org.droidmate.logging
 
-public class BuildConstantsTest
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.filter.AbstractMatcherFilter
+import ch.qos.logback.core.spi.FilterReply
+import org.slf4j.Marker
+
+/**
+ * <p>
+ * Logback filter for matching logged message marker against any of the markers defined in {@link Markers}.
+ *
+ * </p><p>
+ * Based on <a href="http://stackoverflow.com/a/8759210/986533">this stack overflow answer</a>.
+ *
+ * </p>
+ */
+public class AllDroidmateMarkersFilter extends AbstractMatcherFilter<ILoggingEvent>
 {
-  @Test
-  void "initializes"()
-  {
-    BuildConstants.properties
-  }
 
+  @Override
+  public FilterReply decide(ILoggingEvent event)
+  {
+    Marker marker = event.getMarker()
+    if (!isStarted())
+      return FilterReply.NEUTRAL
+    if (marker == null)
+      return onMismatch
+    if (Markers.getAllMarkers().any { it.contains(marker) })
+      return onMatch
+    return onMismatch
+  }
 }

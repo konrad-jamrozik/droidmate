@@ -23,10 +23,10 @@ import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.ApkExplorationException
 import org.droidmate.android_sdk.IApk
-import org.droidmate.common.Assert
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IDeployableAndroidDevice
 import org.droidmate.exceptions.DeviceException
+import org.droidmate.misc.Assert
 
 /**
  * @see IApkDeployer#withDeployedApk(org.droidmate.device.IDeployableAndroidDevice, org.droidmate.android_sdk.IApk, groovy.lang.Closure)

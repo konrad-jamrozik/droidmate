@@ -17,31 +17,15 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common
+package org.droidmate.misc
 
-public class DroidmateException extends Exception
+public class TextUtilsCategory
 {
 
-  private static final long serialVersionUID = 1
-
-  public DroidmateException()
+  public static wrapWith(String self, String brackets)
   {
-    super()
+    assert self != null
+    assert brackets?.size() == 2
+    return self.replaceFirst("^", brackets[0]).replaceFirst("\$", brackets[1])
   }
-
-  public DroidmateException(Throwable cause)
-  {
-    super(cause)
-  }
-
-  public DroidmateException(String message, Throwable cause)
-  {
-    super(message, cause)
-  }
-
-  public DroidmateException(String message)
-  {
-    super(message)
-  }
-
 }

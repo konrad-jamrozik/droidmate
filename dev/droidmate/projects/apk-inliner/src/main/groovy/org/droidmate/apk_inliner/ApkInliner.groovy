@@ -22,7 +22,7 @@ package org.droidmate.apk_inliner
 import com.konradjamrozik.Resource
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
-import org.droidmate.common.*
+import org.droidmate.misc.*
 
 import java.nio.file.Path
 import java.nio.file.Paths

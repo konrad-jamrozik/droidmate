@@ -22,7 +22,7 @@ import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.IAaptWrapper
 import org.droidmate.android_sdk.IApk
-import org.droidmate.common.logging.Markers
+import org.droidmate.logging.Markers
 
 import java.nio.file.Files
 import java.nio.file.Path

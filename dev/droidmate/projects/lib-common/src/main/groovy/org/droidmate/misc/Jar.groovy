@@ -17,15 +17,22 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common
+package org.droidmate.misc
 
-public class TextUtilsCategory
+import java.nio.file.Files
+import java.nio.file.Path
+
+class Jar
 {
 
-  public static wrapWith(String self, String brackets)
+  @Delegate
+  private final Path path
+
+  Jar(Path path)
   {
-    assert self != null
-    assert brackets?.size() == 2
-    return self.replaceFirst("^", brackets[0]).replaceFirst("\$", brackets[1])
+    assert path != null
+    assert Files.isRegularFile(path)
+    assert path.fileName.toString().endsWith(".jar")
+    this.path = path
   }
 }

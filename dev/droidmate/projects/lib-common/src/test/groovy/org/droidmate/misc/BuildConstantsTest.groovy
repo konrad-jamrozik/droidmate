@@ -16,11 +16,16 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.common
+package org.droidmate.misc
 
-enum Boolean3
+import org.junit.Test
+
+public class BuildConstantsTest
 {
-  True,
-  False,
-  Unknown
+  @Test
+  void "initializes"()
+  {
+    BuildConstants.properties
+  }
+
 }

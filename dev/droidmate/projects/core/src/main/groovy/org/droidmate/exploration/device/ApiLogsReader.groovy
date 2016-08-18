@@ -20,16 +20,16 @@
 package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
-import org.droidmate.MonitorConstants
 import org.droidmate.apis.ApiLogcatMessage
 import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.apis.TimeFormattedLogcatMessage
-import org.droidmate.common.DroidmateException
-import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
+import org.droidmate.logging.LogbackConstants
+import org.droidmate.misc.DroidmateException
+import org.droidmate.misc.MonitorConstants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

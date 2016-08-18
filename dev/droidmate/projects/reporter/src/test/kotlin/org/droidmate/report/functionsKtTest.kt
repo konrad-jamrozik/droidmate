@@ -19,7 +19,7 @@
 package org.droidmate.report
 
 import com.konradjamrozik.Resource
-import org.droidmate.common.BuildConstants
+import org.droidmate.misc.BuildConstants
 import org.junit.Test
 import java.nio.file.Paths
 

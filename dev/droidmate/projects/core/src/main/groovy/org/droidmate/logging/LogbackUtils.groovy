@@ -19,9 +19,6 @@
 
 package org.droidmate.logging
 
-import org.droidmate.common.logging.LogbackConstants
-
-
 class LogbackUtils
 {
   public static String getLogFilePath(String logName) {"${LogbackConstants.LOGS_DIR_PATH}${File.separator}${logName}"}
