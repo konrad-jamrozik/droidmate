@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.device_simulation
 
-import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.*
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2

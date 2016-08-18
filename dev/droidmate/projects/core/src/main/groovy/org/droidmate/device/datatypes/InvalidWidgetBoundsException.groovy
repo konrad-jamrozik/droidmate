@@ -17,7 +17,7 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common.exceptions
+package org.droidmate.device.datatypes
 
 import org.droidmate.common.DroidmateException;
 

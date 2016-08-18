@@ -21,7 +21,7 @@ package org.droidmate.exploration.actions
 
 import groovy.transform.Canonical
 import groovy.transform.TupleConstructor
-import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.device.datatypes.Widget
 
 @Canonical
 @TupleConstructor(includeSuperProperties = true)

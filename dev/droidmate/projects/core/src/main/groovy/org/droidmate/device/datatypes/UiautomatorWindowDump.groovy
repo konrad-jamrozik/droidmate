@@ -23,8 +23,6 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import groovy.util.slurpersupport.GPathResult
-import org.droidmate.common.exceptions.InvalidWidgetBoundsException
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 

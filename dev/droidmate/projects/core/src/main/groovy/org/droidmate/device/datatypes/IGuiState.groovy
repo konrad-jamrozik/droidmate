@@ -19,8 +19,6 @@
 
 package org.droidmate.device.datatypes
 
-import org.droidmate.common.exploration.datatypes.Widget
-
 interface IGuiState extends Serializable
 {
   String getTopNodePackageName()

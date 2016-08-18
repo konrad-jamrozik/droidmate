@@ -18,8 +18,8 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.datatypes.MissingGuiSnapshot
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.WidgetStrategy

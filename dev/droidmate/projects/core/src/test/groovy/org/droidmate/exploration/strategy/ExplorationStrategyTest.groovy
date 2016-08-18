@@ -20,7 +20,7 @@
 package org.droidmate.exploration.strategy
 
 import groovy.transform.TypeChecked
-import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.datatypes.GuiState
 import org.droidmate.device.datatypes.UiautomatorWindowDumpTestHelper

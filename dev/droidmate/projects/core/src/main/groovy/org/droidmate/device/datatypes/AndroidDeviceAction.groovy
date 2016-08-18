@@ -19,7 +19,6 @@
 
 package org.droidmate.device.datatypes
 
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.uiautomator_daemon.guimodel.GuiAction
 
 import java.awt.*

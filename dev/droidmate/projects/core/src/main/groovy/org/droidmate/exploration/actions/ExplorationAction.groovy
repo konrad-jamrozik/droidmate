@@ -20,7 +20,7 @@
 package org.droidmate.exploration.actions
 
 import org.droidmate.common.TextUtilsCategory
-import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.device.datatypes.Widget
 
 abstract class ExplorationAction implements Serializable
 {

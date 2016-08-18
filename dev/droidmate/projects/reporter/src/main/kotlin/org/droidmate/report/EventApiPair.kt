@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.*
 import org.droidmate.logcat.IApiLogcatMessage

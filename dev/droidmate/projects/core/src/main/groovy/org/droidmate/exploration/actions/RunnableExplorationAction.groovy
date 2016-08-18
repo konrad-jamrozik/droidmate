@@ -20,9 +20,9 @@ package org.droidmate.exploration.actions
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.device.datatypes.MissingGuiSnapshot
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError

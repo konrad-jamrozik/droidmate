@@ -20,7 +20,6 @@
 package org.droidmate.device.datatypes
 
 import groovy.transform.TypeChecked
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.model.DeviceModel
 import org.droidmate.device.model.IDeviceModel
 

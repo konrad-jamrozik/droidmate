@@ -22,9 +22,9 @@ package org.droidmate.exploration.strategy
 import groovy.transform.Canonical
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.datatypes.IGuiState
 import org.droidmate.device.datatypes.RuntimePermissionDialogBoxGuiState
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.exploration.actions.ExplorationAction
 import org.droidmate.exploration.actions.WidgetExplorationAction
 
