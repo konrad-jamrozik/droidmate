@@ -127,7 +127,6 @@ clean.dependsOn "cleanConstantsFile"
 
 processResources.dependsOn("writeBuildConstantsProperties")
 
-apply from: project(":projects").file("maven.gradle")
 
 test.configure {
 
@@ -144,10 +143,11 @@ test.configure {
 
 }
 
-
 task testi(type: Test, dependsOn: "testClasses") { Test it ->
   it.group = "verification"
   it.description = "Interactive test"
   it.outputs.upToDateWhen { false }
   it.filter.includeTest "*BuildConstantsTest", "*"
 }
+
+apply from: project(":projects").file("maven.gradle")

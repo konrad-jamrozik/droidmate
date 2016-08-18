@@ -89,12 +89,12 @@ dependencies {
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
 
-  testCompile project(path: ':projects:core', configuration: 'tests')
-  
   // See the comment to "evaluationDependsOn" for explanation of these dependencies.
+  testCompileOnly files { project(':projects:core').sourceSets.test.groovy.srcDirs }
   testCompileOnly files { project(':projects:reporter').sourceSets.test.kotlin.srcDirs }
   testCompileOnly files { project(':projects:lib-kotlin').sourceSets.test.kotlin.srcDirs }
   testCompileOnly files { project(':projects:lib-common').sourceSets.test.groovy.srcDirs }
+  testCompile project(":projects:core").sourceSets.test.output
   testCompile project(":projects:reporter").sourceSets.test.output
   testCompile project(":projects:lib-kotlin").sourceSets.test.output
   testCompile project(":projects:lib-common").sourceSets.test.output
