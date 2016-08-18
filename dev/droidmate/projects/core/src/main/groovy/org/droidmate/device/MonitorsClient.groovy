@@ -19,11 +19,11 @@
 package org.droidmate.device
 
 import groovy.util.logging.Slf4j
-import org.droidmate.MonitorConstants
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.misc.MonitorConstants
 
 @Slf4j
 class MonitorsClient implements IMonitorsClient

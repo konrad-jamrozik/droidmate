@@ -16,7 +16,7 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate;
+package org.droidmate.misc;
 
 import java.util.Arrays;
 import java.util.List;

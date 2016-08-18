@@ -17,22 +17,18 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common
+package org.droidmate.misc
 
-import java.nio.file.Files
-import java.nio.file.Path
-
-class Jar
+class Pair<T1 extends Serializable, T2 extends Serializable> implements Serializable
 {
+  private static final long serialVersionUID = 1
 
-  @Delegate
-  private final Path path
+  T1 first
+  T2 second
 
-  Jar(Path path)
+  Pair(T1 first, T2 second)
   {
-    assert path != null
-    assert Files.isRegularFile(path)
-    assert path.fileName.toString().endsWith(".jar")
-    this.path = path
+    this.first = first
+    this.second = second
   }
 }

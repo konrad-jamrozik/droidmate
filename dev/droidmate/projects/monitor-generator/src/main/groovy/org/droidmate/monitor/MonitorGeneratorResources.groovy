@@ -20,8 +20,8 @@
 package org.droidmate.monitor
 
 import com.konradjamrozik.ResourcePath
-import org.droidmate.common.BuildConstants
-import org.droidmate.common.IConfiguration
+import org.droidmate.misc.BuildConstants
+import org.droidmate.misc.IConfiguration
 
 import java.nio.file.Path
 import java.nio.file.Paths

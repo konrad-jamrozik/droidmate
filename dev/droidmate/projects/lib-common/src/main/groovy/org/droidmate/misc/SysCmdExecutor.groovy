@@ -17,13 +17,13 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common
+package org.droidmate.misc
 
 import com.google.common.base.Joiner
 import com.google.common.base.Stopwatch
 import groovy.util.logging.Slf4j
 import org.apache.commons.exec.*
-import org.droidmate.common.logging.Markers
+import org.droidmate.logging.Markers
 
 import java.util.concurrent.TimeUnit
 

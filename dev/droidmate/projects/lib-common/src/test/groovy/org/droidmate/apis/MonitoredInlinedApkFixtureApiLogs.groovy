@@ -16,9 +16,7 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.common.logcat
-
-import org.droidmate.apis.IApiLogcatMessage
+package org.droidmate.apis
 
 class MonitoredInlinedApkFixtureApiLogs
 {
@@ -42,7 +40,7 @@ class MonitoredInlinedApkFixtureApiLogs
 
     // In the legacy API set using PScout APIs the
     // <java.net.URLConnection: void <init>(java.net.URL)>
-    // was monitored, now it isn't. The commented out asserts are from the legacy montored set of pscout APIs:
+    // was monitored, now it isn't. The commented out asserts are from the legacy monitored set of pscout APIs:
 //    assert clickApiLogs.size() == 2
 //    assert clickApiLogs*.methodName == ["openConnection", "<init>"]
 

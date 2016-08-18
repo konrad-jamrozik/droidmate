@@ -19,10 +19,11 @@
 
 package org.droidmate.apis
 
-import org.droidmate.MonitorConstants
+import org.droidmate.misc.MonitorConstants
 
 import java.time.LocalDateTime
 
+@SuppressWarnings("GroovyUnusedDeclaration") // Actually used in org.droidmate.exploration.data_aggregators.ExplorationOutput2Builder.buildDeviceLogs 
 class ApiLogcatMessageTestHelper
 {
 

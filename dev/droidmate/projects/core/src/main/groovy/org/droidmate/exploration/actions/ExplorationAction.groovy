@@ -19,8 +19,8 @@
 
 package org.droidmate.exploration.actions
 
-import org.droidmate.common.TextUtilsCategory
 import org.droidmate.device.datatypes.Widget
+import org.droidmate.misc.TextUtilsCategory
 
 abstract class ExplorationAction implements Serializable
 {

@@ -20,7 +20,7 @@
 package org.droidmate.exceptions
 
 import groovy.util.logging.Slf4j
-import org.droidmate.common.DroidmateException
+import org.droidmate.misc.DroidmateException
 
 @Slf4j
 public class TestSaboteurException extends DroidmateException

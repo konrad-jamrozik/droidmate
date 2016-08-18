@@ -19,7 +19,7 @@
 package org.droidmate
 
 import com.konradjamrozik.Resource
-import org.droidmate.common.BuildConstants
+import org.droidmate.misc.BuildConstants
 import java.nio.file.Path
 import java.nio.file.Paths
 

@@ -20,7 +20,7 @@
 package org.droidmate.monitor
 
 import groovy.transform.TypeChecked
-import org.droidmate.common.BuildConstants
+import org.droidmate.misc.BuildConstants
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -19,7 +19,7 @@
 
 package org.droidmate.device.datatypes
 
-import org.droidmate.common.DroidmateException;
+import org.droidmate.misc.DroidmateException;
 
 public class InvalidWidgetBoundsException extends DroidmateException
 {

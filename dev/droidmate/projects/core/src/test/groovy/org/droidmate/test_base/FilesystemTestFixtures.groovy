@@ -23,8 +23,8 @@ import com.konradjamrozik.ResourcePath
 import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.IAaptWrapper
-import org.droidmate.common.BuildConstants
-import org.droidmate.common.SysCmdExecutor
+import org.droidmate.misc.BuildConstants
+import org.droidmate.misc.SysCmdExecutor
 import org.droidmate.configuration.Configuration
 
 import java.nio.file.Path

@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.exceptions
 
-import org.droidmate.common.DroidmateException
+import org.droidmate.misc.DroidmateException
 
 public class ThrowablesCollection extends DroidmateException
 {

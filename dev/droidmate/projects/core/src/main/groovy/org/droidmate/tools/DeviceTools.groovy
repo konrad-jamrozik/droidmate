@@ -24,8 +24,8 @@ import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.AdbWrapper
 import org.droidmate.android_sdk.IAaptWrapper
 import org.droidmate.android_sdk.IAdbWrapper
-import org.droidmate.common.SysCmdExecutor
 import org.droidmate.configuration.Configuration
+import org.droidmate.misc.SysCmdExecutor
 
 @Slf4j
 class DeviceTools implements IDeviceTools

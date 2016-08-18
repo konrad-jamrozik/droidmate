@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.android_sdk
 
-import org.droidmate.common.DroidmateException
+import org.droidmate.misc.DroidmateException
 
 public class ExplorationException extends DroidmateException
 {

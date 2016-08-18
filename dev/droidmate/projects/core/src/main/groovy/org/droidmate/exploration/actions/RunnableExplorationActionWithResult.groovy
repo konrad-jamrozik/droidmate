@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.exploration.actions
 
-import org.droidmate.common.Pair
+import org.droidmate.misc.Pair
 
 class RunnableExplorationActionWithResult extends Pair<IRunnableExplorationAction, IExplorationActionRunResult>
 {

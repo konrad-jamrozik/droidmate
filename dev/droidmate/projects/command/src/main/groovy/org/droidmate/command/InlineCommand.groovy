@@ -22,9 +22,9 @@ import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
 import org.droidmate.apk_inliner.ApkInliner
-import org.droidmate.common.SysCmdExecutor
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.ThrowablesCollection
+import org.droidmate.misc.SysCmdExecutor
 import org.droidmate.tools.ApksProvider
 
 import java.nio.file.Files

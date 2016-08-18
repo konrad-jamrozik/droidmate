@@ -17,18 +17,31 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common
+package org.droidmate.misc
 
-class Pair<T1 extends Serializable, T2 extends Serializable> implements Serializable
+public class DroidmateException extends Exception
 {
+
   private static final long serialVersionUID = 1
 
-  T1 first
-  T2 second
-
-  Pair(T1 first, T2 second)
+  public DroidmateException()
   {
-    this.first = first
-    this.second = second
+    super()
   }
+
+  public DroidmateException(Throwable cause)
+  {
+    super(cause)
+  }
+
+  public DroidmateException(String message, Throwable cause)
+  {
+    super(message, cause)
+  }
+
+  public DroidmateException(String message)
+  {
+    super(message)
+  }
+
 }

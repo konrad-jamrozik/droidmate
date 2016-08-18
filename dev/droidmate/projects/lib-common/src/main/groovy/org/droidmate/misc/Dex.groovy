@@ -17,35 +17,22 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common
+package org.droidmate.misc
 
-import groovy.transform.Canonical
+import java.nio.file.Files
+import java.nio.file.Path
 
-@Canonical
-class LabeledEdge<TSource extends Serializable, TLabel extends Serializable, TTarget extends Serializable> implements Serializable
+class Dex
 {
 
-  private static final long serialVersionUID = 1
+  @Delegate
+  private final Path path
 
-  TSource source
-  TLabel  label
-  TTarget target
-
-  LabeledEdge(TSource source, TLabel label, TTarget target)
+  Dex(Path path)
   {
-    this.source = source
-    this.label = label
-    this.target = target
-  }
-
-
-  @Override
-  public String toString()
-  {
-    return "LabeledEdge{\n" +
-      "source = " + source + "\n" +
-      "label  = " + label + "\n" +
-      "target = " + target + "\n" +
-      "} " + super.toString()
+    assert path != null
+    assert Files.isRegularFile(path)
+    assert path.fileName.toString().endsWith(".dex")
+    this.path = path
   }
 }

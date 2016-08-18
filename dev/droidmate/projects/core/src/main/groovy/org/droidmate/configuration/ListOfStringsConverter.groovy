@@ -20,7 +20,7 @@
 package org.droidmate.configuration
 
 import com.beust.jcommander.IStringConverter
-import org.droidmate.common.DroidmateException
+import org.droidmate.misc.DroidmateException
 
 public class ListOfStringsConverter implements IStringConverter<List<String>>
 {

@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.common.BuildConstants
+import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.dir
 import org.droidmate.fileNames

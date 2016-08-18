@@ -19,7 +19,7 @@
 package org.droidmate.storage
 
 import groovy.util.logging.Slf4j
-import org.droidmate.common.Assert
+import org.droidmate.misc.Assert
 
 import java.nio.channels.Channels
 import java.nio.channels.FileChannel

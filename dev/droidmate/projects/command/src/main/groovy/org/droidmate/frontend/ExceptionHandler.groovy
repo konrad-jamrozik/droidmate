@@ -21,12 +21,12 @@ package org.droidmate.frontend
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.ApkExplorationException
 import org.droidmate.android_sdk.ExplorationException
-import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.logging.LogbackConstants
 
-import static org.droidmate.common.logging.Markers.exceptions
+import static org.droidmate.logging.Markers.exceptions
 
 @Slf4j
 class ExceptionHandler implements IExceptionHandler

@@ -23,14 +23,14 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import groovy.util.slurpersupport.GPathResult
-import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.logging.LogbackConstants
 
 import java.awt.*
 import java.util.List
 
 import static groovy.transform.TypeCheckingMode.SKIP
-import static org.droidmate.common.logging.Markers.exceptions
+import static org.droidmate.logging.Markers.exceptions
 
 /**
  * <p>

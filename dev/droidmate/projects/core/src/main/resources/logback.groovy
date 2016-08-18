@@ -25,16 +25,12 @@ import ch.qos.logback.classic.filter.LevelFilter
 import ch.qos.logback.classic.filter.ThresholdFilter
 import ch.qos.logback.core.ConsoleAppender
 import ch.qos.logback.core.filter.EvaluatorFilter
-import org.droidmate.common.SysCmdExecutor
-import org.droidmate.common.logging.AllDroidmateMarkersFilter
-import org.droidmate.common.logging.Markers
-import org.droidmate.logging.LazyFileAppender
-import org.droidmate.logging.LogbackAppenders
-import org.droidmate.logging.MarkerFilter
+import org.droidmate.logging.*
+import org.droidmate.misc.SysCmdExecutor
 
 import static ch.qos.logback.classic.Level.*
 import static ch.qos.logback.core.spi.FilterReply.*
-import static org.droidmate.common.logging.LogbackConstants.*
+import static org.droidmate.logging.LogbackConstants.*
 import static org.droidmate.logging.LogbackUtils.getLogFilePath
 import static org.droidmate.logging.LogbackUtils.getLogFilePathForLastElement
 
@@ -211,7 +207,7 @@ List loggersWithLazyFileAppenders = [
   // We cannot refer here to the classes directly as they would make SLF4J create substitute loggers and thus, issue warning to stderr.
   //@formatter:off
   // Uncomment if a detailed SysCmdExecutor log is needed.
-//  [loggerName: "org.droidmate.common.SysCmdExecutor",                         additivity: false, pattern: pat_date_level],
+//  [loggerName: "SysCmdExecutor",                         additivity: false, pattern: pat_date_level],
   [loggerName: "org.droidmate.android_sdk.AaptWrapper",                       additivity: true,  pattern: pat_date_level],
   [loggerName: "org.droidmate.exploration.strategy.WidgetStrategy",           additivity: false, pattern: pat_date_level, additionalAppenders: warnAppenders],
   [loggerName: "org.droidmate.exploration",                                   additivity: true,  pattern: pat_date_level_logger],//, additionalAppenders: warnAppenders],

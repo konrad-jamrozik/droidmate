@@ -28,8 +28,8 @@ import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder
 import org.apache.commons.lang3.builder.StandardToStringStyle
-import org.droidmate.common.BuildConstants
 import org.droidmate.exceptions.ConfigurationException
+import org.droidmate.misc.BuildConstants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -39,7 +39,7 @@ import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
 
-import static org.droidmate.common.logging.Markers.runData
+import static org.droidmate.logging.Markers.runData
 
 /**
  * @see IConfigurationBuilder#build(java.lang.String [ ], java.nio.file.FileSystem)

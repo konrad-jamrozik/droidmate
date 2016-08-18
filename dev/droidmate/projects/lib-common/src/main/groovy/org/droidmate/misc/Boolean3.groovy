@@ -16,8 +16,11 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
+package org.droidmate.misc
 
-package org.droidmate.common
-
-public interface IConfiguration
-{}
+enum Boolean3
+{
+  True,
+  False,
+  Unknown
+}

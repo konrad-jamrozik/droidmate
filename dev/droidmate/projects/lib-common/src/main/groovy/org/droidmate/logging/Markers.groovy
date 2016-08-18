@@ -17,7 +17,7 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common.logging
+package org.droidmate.logging
 
 import org.slf4j.Marker
 import org.slf4j.MarkerFactory

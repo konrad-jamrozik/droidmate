@@ -23,18 +23,18 @@ import groovy.time.TimeCategory
 import groovy.time.TimeDuration
 import groovy.util.logging.Slf4j
 import org.droidmate.command.DroidmateCommand
-import org.droidmate.common.DroidmateException
-import org.droidmate.common.logging.LogbackConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
+import org.droidmate.logging.LogbackConstants
 import org.droidmate.logging.LogbackUtilsRequiringLogbackLog
+import org.droidmate.misc.DroidmateException
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import java.time.LocalDate
 
 import static LogbackConstants.system_prop_stdout_loglevel
-import static org.droidmate.common.logging.Markers.runData
+import static org.droidmate.logging.Markers.runData
 
 /**
  * <p>

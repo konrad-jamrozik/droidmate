@@ -17,35 +17,35 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common.logging
+package org.droidmate.misc
 
-import ch.qos.logback.classic.spi.ILoggingEvent
-import ch.qos.logback.core.filter.AbstractMatcherFilter
-import ch.qos.logback.core.spi.FilterReply
-import org.slf4j.Marker
+import groovy.transform.Canonical
 
-/**
- * <p>
- * Logback filter for matching logged message marker against any of the markers defined in {@link Markers}.
- *
- * </p><p>
- * Based on <a href="http://stackoverflow.com/a/8759210/986533">this stack overflow answer</a>.
- *
- * </p>
- */
-public class AllDroidmateMarkersFilter extends AbstractMatcherFilter<ILoggingEvent>
+@Canonical
+class LabeledEdge<TSource extends Serializable, TLabel extends Serializable, TTarget extends Serializable> implements Serializable
 {
 
-  @Override
-  public FilterReply decide(ILoggingEvent event)
+  private static final long serialVersionUID = 1
+
+  TSource source
+  TLabel  label
+  TTarget target
+
+  LabeledEdge(TSource source, TLabel label, TTarget target)
   {
-    Marker marker = event.getMarker()
-    if (!isStarted())
-      return FilterReply.NEUTRAL
-    if (marker == null)
-      return onMismatch
-    if (Markers.getAllMarkers().any { it.contains(marker) })
-      return onMatch
-    return onMismatch
+    this.source = source
+    this.label = label
+    this.target = target
+  }
+
+
+  @Override
+  public String toString()
+  {
+    return "LabeledEdge{\n" +
+      "source = " + source + "\n" +
+      "label  = " + label + "\n" +
+      "target = " + target + "\n" +
+      "} " + super.toString()
   }
 }

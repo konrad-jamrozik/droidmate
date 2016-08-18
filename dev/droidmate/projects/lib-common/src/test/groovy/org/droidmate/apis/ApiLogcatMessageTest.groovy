@@ -19,8 +19,7 @@
 
 package org.droidmate.apis
 
-import org.droidmate.common.DroidmateException
-import org.droidmate.apis.ApiLogcatMessage
+import org.droidmate.misc.DroidmateException
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith

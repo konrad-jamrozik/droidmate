@@ -26,7 +26,7 @@ import groovy.util.logging.Slf4j
 import groovy.util.slurpersupport.GPathResult
 import org.apache.commons.io.FileUtils
 import org.droidmate.android_sdk.IAdbWrapper
-import org.droidmate.common.DroidmateException
+import org.droidmate.misc.DroidmateException
 import org.junit.FixMethodOrder
 import org.junit.Ignore
 import org.junit.Rule

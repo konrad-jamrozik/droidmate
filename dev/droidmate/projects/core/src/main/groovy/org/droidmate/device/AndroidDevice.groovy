@@ -20,12 +20,10 @@
 package org.droidmate.device
 
 import groovy.util.logging.Slf4j
-import org.droidmate.MonitorConstants
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.android_sdk.IApk
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.apis.TimeFormattedLogcatMessage
-import org.droidmate.common.Boolean3
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.datatypes.*
 import org.droidmate.device.model.DeviceModel
@@ -35,6 +33,8 @@ import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.exceptions.NoAndroidDevicesAvailableException
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.logging.LogbackUtils
+import org.droidmate.misc.Boolean3
+import org.droidmate.misc.MonitorConstants
 import org.droidmate.uiautomator_daemon.DeviceCommand
 import org.droidmate.uiautomator_daemon.DeviceResponse
 import org.droidmate.uiautomator_daemon.UiautomatorWindowHierarchyDumpDeviceResponse

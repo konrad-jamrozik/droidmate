@@ -23,7 +23,7 @@ import groovy.transform.TypeChecked
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IApk
-import org.droidmate.common.BuildConstants
+import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.test_base.DroidmateGroovyTestCase

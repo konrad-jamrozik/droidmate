@@ -19,7 +19,7 @@
 
 package org.droidmate.android_sdk
 
-import org.droidmate.common.DroidmateException
+import org.droidmate.misc.DroidmateException
 
 import java.nio.file.Path
 

@@ -22,7 +22,7 @@ package org.droidmate.tests.android_sdk
 import groovy.transform.TypeChecked
 import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
-import org.droidmate.common.SysCmdExecutor
+import org.droidmate.misc.SysCmdExecutor
 import org.droidmate.configuration.Configuration
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.junit.FixMethodOrder

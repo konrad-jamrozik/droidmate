@@ -21,13 +21,13 @@ package org.droidmate.exploration.device
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
 import org.droidmate.apis.IApiLogcatMessage
-import org.droidmate.common.Boolean3
-import org.droidmate.common.Utils
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
+import org.droidmate.misc.Boolean3
+import org.droidmate.misc.Utils
 
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newPressHomeDeviceAction
 
@@ -303,7 +303,7 @@ class RobustDevice implements IRobustDevice
   {
     try
     {
-      // WISH when ANR immediately appears, waiting for full org.droidmate.common.SysCmdExecutor.sysCmdExecuteTimeout to pass here is wasteful.
+      // WISH when ANR immediately appears, waiting for full SysCmdExecutor.sysCmdExecuteTimeout to pass here is wasteful.
       Boolean3 result = this.device.launchMainActivity(launchableActivityComponentName)
       def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
 
