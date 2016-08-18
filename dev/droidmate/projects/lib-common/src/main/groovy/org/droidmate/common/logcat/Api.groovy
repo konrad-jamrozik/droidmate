@@ -39,8 +39,6 @@ class Api implements IApi, Serializable
 {
 
   public static final String monitorRedirectionPrefix = "org.droidmate.monitor.Monitor.redir"
-  // Kept to maintain compatibility with legacy fixtures, like org.droidmate.test_base.FilesystemTestFixtures.f_monitoredSer2
-  public static final String monitorRedirectionPrefixLegacy = "org.droidmate.monitor_generator.generated.Monitor.redir"
 
   // !!! DUPLICATION WARNING !!! org.droidmate.lib_android.MonitorJavaTemplate.stack_trace_frame_delimiter
   public static final String stack_trace_frame_delimiter = "->";

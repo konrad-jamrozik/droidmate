@@ -138,9 +138,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      */
     private val IApi.warnAndReturnIsRedundant: Boolean get() {
 
-      val monitoredFrames = stackTraceFrames.filter {
-        it.startsWith(Api.monitorRedirectionPrefix) || it.startsWith(Api.monitorRedirectionPrefixLegacy)
-      }
+      val monitoredFrames = stackTraceFrames.filter { it.startsWith(Api.monitorRedirectionPrefix) }
       check(monitoredFrames.isNotEmpty())
       /* 
         We take only first monitored call, as this is the bottom of stack trace, i.e. this method doesn't call any other 
