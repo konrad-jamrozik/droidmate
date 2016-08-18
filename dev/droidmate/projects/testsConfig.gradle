@@ -17,8 +17,70 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
+
 /*
- This file enables projects to depend on other project's 'test' configuraion.
+    Adds a new testFixtures source set which should contain utilities/fixtures to assist in unit testing
+    classes from the main source set.
+
+    The test fixtures are automatically made available to the test classpath.
+
+    The gradle/groovyProject.gradle script automatically applies this if a project has a src/testFixtures dir.
+*/
+
+// http://stackoverflow.com/a/37423632/986533
+//configurations {
+//  outputDirs
+//
+//  testFixturesCompile.extendsFrom compile
+//  testFixturesRuntime.extendsFrom runtime, testFixturesCompile
+//
+//  // Expose configurations that include the test fixture classes for clients to use
+//  testFixturesUsageCompile.extendsFrom testFixturesCompile, outputDirs
+//  testFixturesUsageRuntime.extendsFrom testFixturesRuntime, testFixturesUsageCompile
+//
+//  // Assume that the project wants to use the fixtures for its tests
+//  testCompile.extendsFrom testFixturesUsageCompile
+//  testRuntime.extendsFrom testFixturesUsageRuntime
+//}
+//
+//sourceSets {
+//  testFixtures {
+//    compileClasspath = sourceSets.main.output + configurations.testFixturesCompile
+//    runtimeClasspath = output + compileClasspath + configurations.testFixturesRuntime
+//  }
+//}
+//
+//dependencies {
+//  outputDirs sourceSets.testFixtures.output
+//  testFixturesUsageCompile project(project.path)
+//}
+//
+//plugins.withType(IdeaPlugin) {
+//  idea {
+//    module {
+//      testSourceDirs += sourceSets.testFixtures.groovy.srcDirs
+//      testSourceDirs += sourceSets.testFixtures.resources.srcDirs
+//    }
+//  }
+//}
+//
+//plugins.withType(org.gradle.plugins.ide.eclipse.EclipsePlugin) {
+//  eclipse {
+//    classpath {
+//      plusConfigurations.add(configurations.testFixturesCompile)
+//      plusConfigurations.add(configurations.testFixturesRuntime)
+//
+//      //avoiding the certain output directories from the classpath in Eclipse
+//      minusConfigurations.add(configurations.outputDirs)
+//    }
+//  }
+//}
+
+
+// -------------
+
+/*
+ This file enables projects to depend on other project's 'test' configuration.
  Based on: http://stackoverflow.com/a/5153162/986533
  
  Usage:
@@ -27,15 +89,15 @@
 }
 */
 
-task testJar(type: Jar, dependsOn: testClasses) {
-  baseName = "test-${project.archivesBaseName}"
-  from sourceSets.test.output
-}
-
-configurations {
-  tests
-}
-
-artifacts {
-  tests testJar
-}
+//task testJar(type: Jar, dependsOn: testClasses) {
+//  baseName = "test-${project.archivesBaseName}"
+//  from sourceSets.test.output
+//}
+//
+//configurations {
+//  tests
+//}
+//
+//artifacts {
+//  tests testJar
+//}

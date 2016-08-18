@@ -40,6 +40,8 @@ test.configure {
   includes = ['**/FastRegressionTestSuite.class']
 
 }
+
+evaluationDependsOn(":projects:core")
 SourceDirectorySet testResDirs = project(":projects:core").sourceSets.test.resources
 assert testResDirs.srcDirs.size() == 1
 File testResDir = testResDirs.srcDirs[0]
