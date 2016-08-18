@@ -22,13 +22,13 @@ apply from: project(":projects").file("debug.gradle")
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-// See the comment to "evaluationDependsOn" in 'command' project for explanation of these dependencies.
-evaluationDependsOn(":projects:lib-common")
 
 // See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
+
+dependWithTest(project, ":projects:lib-common", "groovy")
 
 dependencies {
 
@@ -40,7 +40,6 @@ dependencies {
   testCompile 'junit:junit:4.12'
   testCompile 'org.hamcrest:hamcrest-core:1.3'
 
-  compile project(":projects:lib-common")
   compile project(":projects:lib-kotlin")
   compile project(":projects:uiautomator-daemon-lib")
 
@@ -63,10 +62,6 @@ dependencies {
 
   // Only for org.droidmate.tests_misc.JavaReprosTest.BBoxError
   testCompile 'de.erichseifert.vectorgraphics2d:VectorGraphics2D:0.10'
-
-  // See the comment to "evaluationDependsOn" in 'command' project for explanation of these dependencies.
-  testCompile project(":projects:lib-common").sourceSets.test.output
-
 }
 
 apply from: file("resources.gradle")

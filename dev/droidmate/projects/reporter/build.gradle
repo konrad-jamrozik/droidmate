@@ -41,8 +41,7 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
-// See the comment to "evaluationDependsOn" in 'command' project for explanation of these dependencies.
-evaluationDependsOn(":projects:core")
+dependWithTest(project, ":projects:core", "groovy")
 
 dependencies {
 
@@ -53,14 +52,8 @@ dependencies {
   testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
   testCompile 'org.hamcrest:hamcrest-library:1.3'
 
-  // See the comment to "evaluationDependsOn" in 'command' project for explanation of these dependencies.
-  testCompileOnly files { project(':projects:core').sourceSets.test.groovy.srcDirs }
-  testCompile project(":projects:core").sourceSets.test.output
-  
-
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-  compile project(":projects:core")
   
   compile 'com.google.jimfs:jimfs:1.0'
   compile 'org.zeroturnaround:zt-exec:1.9'
