@@ -19,6 +19,7 @@
 
 package org.droidmate.test_base
 
+import com.konradjamrozik.Resource
 import com.konradjamrozik.ResourcePath
 import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
@@ -28,6 +29,7 @@ import org.droidmate.misc.SysCmdExecutor
 import org.droidmate.configuration.Configuration
 
 import java.nio.file.Path
+import java.nio.file.Paths
 
 /**
  * <p>
@@ -64,13 +66,11 @@ class FilesystemTestFixtures
   FilesystemTestFixtures(IAaptWrapper aapt)
   {
     apks = new ApkFixtures(aapt)
-    f_aaptBadgingDump = new ResourcePath("fixtures/f_aaptBadgingDump.txt").path.text
-    // WISH this fixture still contains the old package name of monitor having "monitor_generator.generated" in it, for example,
-    // in a stack trace of a device log:
-    // org.droidmate.monitor_generator.generated.Monitor.redir_android_app_Activity_onResume0(Monitor.java:733)
-    // Instead it should have prefix "org.droidmate.monitor.Monitor.redir" as given by 
-    // org.droidmate.apis.Api.monitorRedirectionPrefix
-    f_monitoredSer2 = new ResourcePath("fixtures/serialized_results/2016 May 05 2257 org.droidmate.fixtures.apks.monitored.ser2").path
+
+    // KJA consider using org.droidmate.extractedPath
+    f_aaptBadgingDump = new Resource("fixtures/f_aaptBadgingDump.txt").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
+    // KJA consider using org.droidmate.extractedPath
+    f_monitoredSer2 = new Resource("fixtures/serialized_results/2016 May 05 2257 org.droidmate.fixtures.apks.monitored.ser2").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources))
   }
 
   public class ApkFixtures
@@ -83,12 +83,15 @@ class FilesystemTestFixtures
     ApkFixtures(IAaptWrapper aapt)
     {
       gui = Apk.build(aapt,
-        new ResourcePath("${BuildConstants.apk_fixtures}/GuiApkFixture-debug.apk").path)
+        // KJA consider using org.droidmate.extractedPath
+        new Resource("${BuildConstants.apk_fixtures}/GuiApkFixture-debug.apk").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)))
 
       monitoredInlined_api19 = Apk.build(aapt,
-        new ResourcePath("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api19_name}").path)
+        // KJA consider using org.droidmate.extractedPath
+        new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api19_name}").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)))
       monitoredInlined_api23 = Apk.build(aapt,
-        new ResourcePath("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api23_name}").path)
+        // KJA consider using org.droidmate.extractedPath
+        new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api23_name}").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)))
     }
   }
 
@@ -108,14 +111,15 @@ class FilesystemTestFixtures
     WindowDumpFixtures()
     {
       // @formatter:off
-      f_app_stopped_dialogbox   = new ResourcePath("fixtures/window_dumps/f_app_stopped_dialogbox_nexus7vert.xml").path.text
-      f_app_stopped_OK_disabled = new ResourcePath("fixtures/window_dumps/f_app_stopped_OK_disabled.xml").path.text
-      f_nexus7_home_screen      = new ResourcePath("fixtures/window_dumps/f_nexus7_home_screen.xml").path.text
-      f_tsa_mainAct             = new ResourcePath("fixtures/window_dumps/f_tsa_mainAct_4Jan14.xml").path.text
-      f_tsa_emptyAct            = new ResourcePath("fixtures/window_dumps/f_tsa_empty_activity.xml").path.text
-      f_tsa_1button             = new ResourcePath("fixtures/window_dumps/f_tsa_1button.xml").path.text
-      f_chrome_offline          = new ResourcePath("fixtures/window_dumps/f_chrome_offline_nexus7vert.xml").path.text
-      f_complActUsing_dialogbox = new ResourcePath("fixtures/window_dumps/f_complete_action_using.xml").path.text
+      // KJA consider using org.droidmate.extractedPath
+      f_app_stopped_dialogbox   = new Resource("fixtures/window_dumps/f_app_stopped_dialogbox_nexus7vert.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
+      f_app_stopped_OK_disabled = new Resource("fixtures/window_dumps/f_app_stopped_OK_disabled.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
+      f_nexus7_home_screen      = new Resource("fixtures/window_dumps/f_nexus7_home_screen.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
+      f_tsa_mainAct             = new Resource("fixtures/window_dumps/f_tsa_mainAct_4Jan14.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
+      f_tsa_emptyAct            = new Resource("fixtures/window_dumps/f_tsa_empty_activity.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
+      f_tsa_1button             = new Resource("fixtures/window_dumps/f_tsa_1button.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
+      f_chrome_offline          = new Resource("fixtures/window_dumps/f_chrome_offline_nexus7vert.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
+      f_complActUsing_dialogbox = new Resource("fixtures/window_dumps/f_complete_action_using.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
       // @formatter:on
     }
   }

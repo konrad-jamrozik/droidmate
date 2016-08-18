@@ -29,10 +29,16 @@ targetCompatibility = JavaVersion.VERSION_1_8
  This project uses test artifacts of some other projects, so it has to depend on them. Strictly speaking, these calls are necessary
  for dependencies of type "testCompile project(":projects:core").sourceSets.test.output" to work. Otherwise, "sourceSets" would
  not be recognized.
- WISH this is a hack. Correct solution is described here: http://stackoverflow.com/a/15361666/986533
+ 
+ Note that the dependencies of  "testCompileOnly" are for IntelliJ. See http://stackoverflow.com/a/37423632/986533
+ 
+ WISH this is a hack. Correct solution is described here: http://stackoverflow.com/questions/5144325/gradle-test-dependency 
 
+ More:
+ http://stackoverflow.com/a/15361666/986533
  https://discuss.gradle.org/t/multiproject-testcompile-dependencies-not-seen-by-dependant-project/6779
  http://stackoverflow.com/questions/5644011/multi-project-test-dependencies-with-gradle
+ https://discuss.gradle.org/t/cross-project-test-dependencies/12117/6
  */
 // KJA consider fixing this hack with last comment of https://discuss.gradle.org/t/dependencies-on-source-set-of-different-projects/12906/2
 evaluationDependsOn(":projects:core")
@@ -82,9 +88,13 @@ dependencies {
 
   forceJunitPriority 'junit:junit:4.12'
   testCompile 'junit:junit:4.12'
+
+  testCompile project(path: ':projects:core', configuration: 'tests')
   
   // See the comment to "evaluationDependsOn" for explanation of these dependencies.
-  testCompile project(":projects:core").sourceSets.test.output
+  testCompileOnly files { project(':projects:reporter').sourceSets.test.kotlin.srcDirs }
+  testCompileOnly files { project(':projects:lib-kotlin').sourceSets.test.kotlin.srcDirs }
+  testCompileOnly files { project(':projects:lib-common').sourceSets.test.groovy.srcDirs }
   testCompile project(":projects:reporter").sourceSets.test.output
   testCompile project(":projects:lib-kotlin").sourceSets.test.output
   testCompile project(":projects:lib-common").sourceSets.test.output
@@ -103,6 +113,7 @@ dependencies {
   compile project(":projects:core")
   compile project(":projects:reporter")
 }
+
 
 apply from: file("test.gradle")
 
