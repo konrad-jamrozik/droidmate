@@ -28,6 +28,7 @@ configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
 sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
 
+dependWithTest(project, ":projects:lib-kotlin", "kotlin")
 dependWithTest(project, ":projects:lib-common", "groovy")
 
 dependencies {
@@ -40,7 +41,6 @@ dependencies {
   testCompile 'junit:junit:4.12'
   testCompile 'org.hamcrest:hamcrest-core:1.3'
 
-  compile project(":projects:lib-kotlin")
   compile project(":projects:uiautomator-daemon-lib")
 
   compile 'com.beust:jcommander:1.35'
