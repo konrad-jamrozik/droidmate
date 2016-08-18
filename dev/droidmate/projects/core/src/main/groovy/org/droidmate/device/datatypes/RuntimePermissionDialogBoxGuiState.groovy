@@ -20,7 +20,6 @@
 package org.droidmate.device.datatypes
 
 import groovy.transform.Canonical
-import org.droidmate.common.exploration.datatypes.Widget
 
 /**
  * Specialized GuiState class that represents an application with an active "Runtime permission" dialog box

@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.exploration.actions.EnterTextExplorationAction
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.actions.WidgetExplorationAction

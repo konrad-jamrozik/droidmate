@@ -21,7 +21,6 @@ package org.droidmate.device.datatypes
 
 import groovy.transform.Canonical
 import org.droidmate.common.TextUtilsCategory
-import org.droidmate.common.exploration.datatypes.Widget
 
 @Canonical(excludes = "id")
 class GuiState implements Serializable, IGuiState

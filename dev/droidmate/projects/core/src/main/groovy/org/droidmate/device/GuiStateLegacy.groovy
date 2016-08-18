@@ -18,7 +18,6 @@
 // web: www.droidmate.org
 package org.droidmate.device.datatypes
 
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.model.DeviceModel
 import org.droidmate.device.model.IDeviceModel
 

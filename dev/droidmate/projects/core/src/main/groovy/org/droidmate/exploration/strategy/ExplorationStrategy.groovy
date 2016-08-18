@@ -22,10 +22,10 @@ package org.droidmate.exploration.strategy
 import com.google.common.base.Ticker
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device.datatypes.IGuiState
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.*
 
@@ -154,7 +154,7 @@ class ExplorationStrategy implements IExplorationStrategy
       case WidgetExplorationAction:
         Widget w = (explorationAction as WidgetExplorationAction).widget
 
-        String text = w.text // For other properties, see org.droidmate.common.exploration.datatypes.Widget
+        String text = w.text // For other properties, see org.droidmate.device.datatypes.Widget
 
         // Otherwise the widget is not interesting (DroidMate will never do anything with it)
         boolean canBeActedUpon = w.canBeActedUpon()

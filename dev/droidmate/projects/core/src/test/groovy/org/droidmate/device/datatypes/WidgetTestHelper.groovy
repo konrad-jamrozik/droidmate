@@ -19,7 +19,6 @@
 
 package org.droidmate.device.datatypes
 
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.device.model.DeviceModel
 
 import java.awt.*

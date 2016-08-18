@@ -20,7 +20,6 @@
 package org.droidmate.device.datatypes
 
 import groovy.transform.Canonical
-import org.droidmate.common.exploration.datatypes.Widget
 import org.droidmate.uiautomator_daemon.guimodel.GuiAction
 
 @Canonical

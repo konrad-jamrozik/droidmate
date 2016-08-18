@@ -17,11 +17,10 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common.exploration.datatypes
+package org.droidmate.device.datatypes
 
 import groovy.transform.AutoClone
 import groovy.transform.Canonical
-import org.droidmate.common.exceptions.InvalidWidgetBoundsException
 
 import java.awt.*
 import java.util.regex.Matcher

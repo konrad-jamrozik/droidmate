@@ -20,7 +20,7 @@ package org.droidmate.device_simulation
 
 import com.google.common.base.MoreObjects
 import org.droidmate.MonitorConstants
-import org.droidmate.common.exploration.datatypes.Widget
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.common.logcat.TimeFormattedLogcatMessage
 import org.droidmate.device.datatypes.*
 import org.droidmate.device.model.DeviceModel
