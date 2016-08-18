@@ -1,0 +1,41 @@
+// DroidMate, an automated execution generator for Android apps.
+// Copyright (C) 2012-2016 Konrad Jamrozik
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// email: jamrozik@st.cs.uni-saarland.de
+// web: www.droidmate.org
+
+/*
+ This file enables projects to depend on other project's 'test' configuraion.
+ Based on: http://stackoverflow.com/a/5153162/986533
+ 
+ Usage:
+ dependencies {
+    testCompile project(path: ':aProject', configuration: 'tests')
+}
+*/
+
+task testJar(type: Jar, dependsOn: testClasses) {
+  baseName = "test-${project.archivesBaseName}"
+  from sourceSets.test.output
+}
+
+configurations {
+  tests
+}
+
+artifacts {
+  tests testJar
+}
