@@ -19,8 +19,8 @@
 
 package org.droidmate.exploration.device
 
+import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.exceptions.DeviceException
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
 

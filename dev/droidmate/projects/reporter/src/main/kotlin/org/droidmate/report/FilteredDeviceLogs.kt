@@ -18,11 +18,11 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
+import org.droidmate.apis.Api
 import org.droidmate.apis.IApi
-import org.droidmate.common.logcat.Api
+import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.exploration.device.DeviceLogs
 import org.droidmate.exploration.device.IDeviceLogs
-import org.droidmate.logcat.IApiLogcatMessage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

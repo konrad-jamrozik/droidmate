@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.device_simulation
 
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
+import org.droidmate.apis.ITimeFormattedLogcatMessage
 
 interface IScreenTransitionResult
 {

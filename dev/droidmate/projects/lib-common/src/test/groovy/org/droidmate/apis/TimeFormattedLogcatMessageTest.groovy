@@ -17,7 +17,7 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common.logcat
+package org.droidmate.apis
 
 import groovy.transform.TypeChecked
 import org.junit.FixMethodOrder

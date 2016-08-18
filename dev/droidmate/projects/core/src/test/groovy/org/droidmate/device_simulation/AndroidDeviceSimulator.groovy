@@ -27,7 +27,7 @@ import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.*
 import org.droidmate.exploration.actions.WidgetExplorationAction
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
+import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.test_base.FilesystemTestFixtures

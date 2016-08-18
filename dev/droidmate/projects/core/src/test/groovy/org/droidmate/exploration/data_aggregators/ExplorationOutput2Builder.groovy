@@ -20,7 +20,7 @@
 package org.droidmate.exploration.data_aggregators
 
 import org.droidmate.android_sdk.ApkTestHelper
-import org.droidmate.common.logcat.Api
+import org.droidmate.apis.Api
 import org.droidmate.device.datatypes.UiautomatorWindowDumpTestHelper
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceExceptionMissing
@@ -34,7 +34,7 @@ import org.droidmate.exploration.device.IDeviceLogs
 
 import java.time.LocalDateTime
 
-import static org.droidmate.common.logcat.ApiLogcatMessageTestHelper.newApiLogcatMessage
+import org.droidmate.apis.ApiLogcatMessageTestHelper
 
 class ExplorationOutput2Builder
 {
@@ -126,7 +126,7 @@ class ExplorationOutput2Builder
       def methodName = it[0] as String
       def mssSinceExplorationStart = it[1] as Integer
 
-      return newApiLogcatMessage(
+      return ApiLogcatMessageTestHelper.newApiLogcatMessage(
         time: explorationStartPlusMss(mssSinceExplorationStart),
         methodName: methodName,
         // Minimal stack trace to pass all the validation checks.

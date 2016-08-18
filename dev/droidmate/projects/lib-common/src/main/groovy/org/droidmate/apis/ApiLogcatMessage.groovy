@@ -17,18 +17,13 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-// WISH move to org.droidmate.logcat. Now it is not done as it would break deserialization. See also: org.droidmate.deprecated_still_used.DeprecatedClassesDeserializer
-package org.droidmate.common.logcat
+package org.droidmate.apis
 
 import com.google.common.base.Splitter
 import com.google.common.collect.Lists
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
-import org.droidmate.apis.IApi
-import org.droidmate.common.ClassFileFormat
 import org.droidmate.common.DroidmateException
-import org.droidmate.logcat.IApiLogcatMessage
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 /**
  * See {@link IApiLogcatMessage}

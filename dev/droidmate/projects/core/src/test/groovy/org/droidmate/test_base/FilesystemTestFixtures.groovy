@@ -69,7 +69,7 @@ class FilesystemTestFixtures
     // in a stack trace of a device log:
     // org.droidmate.monitor_generator.generated.Monitor.redir_android_app_Activity_onResume0(Monitor.java:733)
     // Instead it should have prefix "org.droidmate.monitor.Monitor.redir" as given by 
-    // org.droidmate.common.logcat.Api.monitorRedirectionPrefix
+    // org.droidmate.apis.Api.monitorRedirectionPrefix
     f_monitoredSer2 = new ResourcePath("fixtures/serialized_results/2016 May 05 2257 org.droidmate.fixtures.apks.monitored.ser2").path
   }
 

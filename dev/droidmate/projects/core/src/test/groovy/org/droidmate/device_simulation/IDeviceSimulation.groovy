@@ -21,7 +21,7 @@ package org.droidmate.device_simulation
 import com.google.common.annotations.VisibleForTesting
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
+import org.droidmate.apis.ITimeFormattedLogcatMessage
 
 interface IDeviceSimulation
 {

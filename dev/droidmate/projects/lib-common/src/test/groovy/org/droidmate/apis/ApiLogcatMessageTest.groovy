@@ -17,10 +17,10 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.logcat
+package org.droidmate.apis
 
 import org.droidmate.common.DroidmateException
-import org.droidmate.common.logcat.ApiLogcatMessage
+import org.droidmate.apis.ApiLogcatMessage
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith

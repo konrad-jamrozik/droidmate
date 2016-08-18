@@ -19,12 +19,12 @@
 
 package org.droidmate.device
 
+import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.common.Boolean3
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
 
 import java.time.LocalDateTime
 

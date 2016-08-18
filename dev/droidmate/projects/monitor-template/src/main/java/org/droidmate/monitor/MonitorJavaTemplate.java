@@ -27,7 +27,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import org.droidmate.MonitorConstants;
-import org.droidmate.common.logcat.Api;
+import org.droidmate.apis.Api;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -320,7 +320,7 @@ public class MonitorJavaTemplate
     private String[] extractStackTraceFrames(String msgPayload)
     {
 
-      // !!! DUPLICATION WARNING !!! with org.droidmate.common.logcat.ApiLogcatMessage.ApiLogcatMessagePayload.keyword_stacktrace
+      // !!! DUPLICATION WARNING !!! with org.droidmate.apis.ApiLogcatMessage.ApiLogcatMessagePayload.keyword_stacktrace
       int stacktraceIndex = msgPayload.lastIndexOf("stacktrace: ");
 
       if (stacktraceIndex == -1)

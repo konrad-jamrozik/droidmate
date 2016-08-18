@@ -18,8 +18,8 @@
 // web: www.droidmate.org
 package org.droidmate.apis
 
-import static org.droidmate.common.ClassFileFormat.convertJNItypeNotationToSourceCode
-import static org.droidmate.common.ClassFileFormat.matchClassFieldDescriptors
+import static ClassFileFormat.convertJNItypeNotationToSourceCode
+import static ClassFileFormat.matchClassFieldDescriptors
 
 class ApiMethodSignatureBuilderFromClassDescriptor implements IApiMethodSignatureBuilder
 {

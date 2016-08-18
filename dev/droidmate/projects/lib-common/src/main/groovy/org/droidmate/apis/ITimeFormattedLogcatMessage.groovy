@@ -17,21 +17,26 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.logcat
+package org.droidmate.apis
 
-import org.droidmate.apis.IApi
+import java.time.LocalDateTime
 
 /**
- * <p>
- * A log of monitored Android API call in form of a logcat message.
- * </p><p>
- *
- * The contract is the message was sent by a monitored apk to Android device's logcat and was read from logcat into an instance
- * implementing this interface.
- * </p>
+ * See {@link TimeFormattedLogcatMessage}
  */
-public interface IApiLogcatMessage extends ITimeFormattedLogcatMessage, IApi
+interface ITimeFormattedLogcatMessage extends Serializable
 {
+
+  LocalDateTime getTime()
+
+  String getLevel()
+
+  String getTag()
+
+  String getPidString()
+
+  String getMessagePayload()
+
+  String toLogcatMessageString()
+
 }
-
-

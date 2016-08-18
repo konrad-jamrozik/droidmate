@@ -129,6 +129,22 @@ processResources.dependsOn("writeBuildConstantsProperties")
 
 apply from: project(":projects").file("maven.gradle")
 
+test.configure {
+
+  /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
+
+   API reference:
+   workingDir  http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.testing.Test.html
+   rootDir     http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html
+   */
+  workingDir rootDir
+
+  /* Lurking bug: GRADLE-1682. */
+  includes = ['**/LibCommonTestSuite.class']
+
+}
+
+
 task testi(type: Test, dependsOn: "testClasses") { Test it ->
   it.group = "verification"
   it.description = "Interactive test"

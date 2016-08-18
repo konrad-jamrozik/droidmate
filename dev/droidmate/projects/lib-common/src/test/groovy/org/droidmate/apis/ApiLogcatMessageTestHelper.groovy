@@ -17,26 +17,32 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.logcat
+package org.droidmate.apis
+
+import org.droidmate.MonitorConstants
 
 import java.time.LocalDateTime
 
-/**
- * See {@link org.droidmate.common.logcat.TimeFormattedLogcatMessage}
- */
-interface ITimeFormattedLogcatMessage extends Serializable
+class ApiLogcatMessageTestHelper
 {
 
-  LocalDateTime getTime()
+  public static final String log_level_for_testing = "I"
 
-  String getLevel()
+  static IApiLogcatMessage newApiLogcatMessage(Map apiAttributes)
+  {
+    def time = apiAttributes.remove("time") as LocalDateTime
+    apiAttributes["stackTrace"] = apiAttributes["stackTrace"] ?: "$Api.monitorRedirectionPrefix"
 
-  String getTag()
+    def logcatMessage = TimeFormattedLogcatMessage.from(
+      time ?: TimeFormattedLogcatMessage.assumedDate,
+      log_level_for_testing,
+      MonitorConstants.tag_api,
+      "3993", // arbitrary process ID
+      ApiLogcatMessage.toLogcatMessagePayload(new Api(apiAttributes))
+    )
 
-  String getPidString()
+    return ApiLogcatMessage.from(logcatMessage)
+  }
 
-  String getMessagePayload()
-
-  String toLogcatMessageString()
 
 }

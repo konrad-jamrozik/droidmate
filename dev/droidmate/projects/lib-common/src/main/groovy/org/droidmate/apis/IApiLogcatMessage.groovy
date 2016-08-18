@@ -17,33 +17,19 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.common.logcat
+package org.droidmate.apis
 
-import org.droidmate.MonitorConstants
-import org.droidmate.logcat.IApiLogcatMessage
-
-import java.time.LocalDateTime
-
-class ApiLogcatMessageTestHelper
+/**
+ * <p>
+ * A log of monitored Android API call in form of a logcat message.
+ * </p><p>
+ *
+ * The contract is the message was sent by a monitored apk to Android device's logcat and was read from logcat into an instance
+ * implementing this interface.
+ * </p>
+ */
+public interface IApiLogcatMessage extends ITimeFormattedLogcatMessage, IApi
 {
-
-  public static final String log_level_for_testing = "I"
-
-  static IApiLogcatMessage newApiLogcatMessage(Map apiAttributes)
-  {
-    def time = apiAttributes.remove("time") as LocalDateTime
-    apiAttributes["stackTrace"] = apiAttributes["stackTrace"] ?: "$Api.monitorRedirectionPrefix"
-
-    def logcatMessage = TimeFormattedLogcatMessage.from(
-      time ?: TimeFormattedLogcatMessage.assumedDate,
-      log_level_for_testing,
-      MonitorConstants.tag_api,
-      "3993", // arbitrary process ID
-      ApiLogcatMessage.toLogcatMessagePayload(new Api(apiAttributes))
-    )
-
-    return ApiLogcatMessage.from(logcatMessage)
-  }
-
-
 }
+
+

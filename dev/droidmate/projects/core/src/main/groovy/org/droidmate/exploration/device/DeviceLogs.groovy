@@ -20,7 +20,7 @@ package org.droidmate.exploration.device
 
 import com.google.common.base.MoreObjects
 import groovy.util.logging.Slf4j
-import org.droidmate.logcat.IApiLogcatMessage
+import org.droidmate.apis.IApiLogcatMessage
 
 @Slf4j
 class DeviceLogs implements IDeviceLogs, Serializable

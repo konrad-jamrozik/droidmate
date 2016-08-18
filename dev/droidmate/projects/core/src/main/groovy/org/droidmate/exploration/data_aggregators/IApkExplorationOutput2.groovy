@@ -19,13 +19,13 @@
 package org.droidmate.exploration.data_aggregators
 
 import org.droidmate.android_sdk.IApk
+import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DroidmateError
 import org.droidmate.exploration.actions.IExplorationActionRunResult
 import org.droidmate.exploration.actions.IRunnableExplorationAction
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
-import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.storage.IStorage2
 
 import java.time.Duration
