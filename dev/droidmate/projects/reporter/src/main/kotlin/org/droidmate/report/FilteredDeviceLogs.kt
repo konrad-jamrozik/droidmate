@@ -53,15 +53,11 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     }
 
     /**
-     * <p>
      * Checks if given stack trace was obtained from a log to a call to socket &lt;init> made by Monitor TCP server
      * ({@code org.droidmate.uiautomator_daemon.MonitorJavaTemplate.MonitorTCPServer}).
      *
-     * </p><p>
      * Here is an example of a log of monitored API call to such method (with line breaks added for clarity):
      *
-     * </p><p>
-     * <pre><code>
      * 2015-07-31 16:55:17.132 TRACE from monitor - 07-31 16:55:14.782 I/Adapted_Monitored_API_method_call(817):
      * TId: 1941
      * objCls: java.net.Socket
@@ -80,9 +76,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      * java.net.ServerSocket.accept(ServerSocket.java:126)->
      * org.droidmate.monitor.Monitor$SerializableTCPServerBase$MonitorServerRunnable.run(Monitor.java:228)->
      * java.lang.Thread.run(Thread.java:841)
-     * </code></pre>
      *
-     * </p>
      */
     fun isStackTraceOfMonitorTcpServerSocketInit(stackTrace: List<String>): Boolean {
       val secondLastFrame = stackTrace.takeLast(2).first()
@@ -99,33 +93,35 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     }    
     
     /**
-     * <p>
-     * Logs warning about presence of possibly redundant API calls. An API call is redundant if it always calls
-     * (delegates to) another API call which is also monitored. Thus, the redundant monitored API call shouldn't be monitored.
-     * </p><p>
+     * Logs warnings about presence of possibly redundant API calls. 
+     * An API call is redundant if it always calls another API call which is also monitored.
+     * Monitoring redundant API calls results in pairs of API calls being logged, skewing the results. 
+     * One call should be sufficient. Thus, the redundant monitored API call shouldn't be monitored.
      *
-     * This is checked by examining stack traces. Consider stack trace of a monitored API call of method C, looking
-     * like that: A->B->C. In this stack trace A calls B, B calls C. If C always calls D, which is also monitored, we will have
-     * another log with a stack trace of A->B->C->D. In such case C is redundant. We have to monitor only D.
-     * </p><p>
+     * API call redundancy is checked by examining stack traces. If given API call does appear inside a stack trace, i.e. not
+     * at its end, then given API call is possibly redundant.
+     *
+     * Consider stack trace of a monitored API call of method C, looking like that: A->B->C.
+     * In this stack trace A calls B and B calls C. If API call B is also monitored, the monitoring might be redundant. 
+     * It indeed is redundant if B always calls C, which is monitored. In such case monitoring B in addition to C will result in  
+     * two API calls always being logged, with stack traces: A->B (for B) and A->B->C (for C). This is redundant. 
+     * It is not redundant if B does not always call C. In such cases sometimes there will be only log for B 
+     * (with stack trace A->B), without log for C.
      *
      * To determine monitored API calls which are possibly redundant, we look at the internal calls (i.e. all but the last one)
-     * in the stack trace which are monitored. In the given example, this is C. Such method calls are logged,
-     * to be assessed manually for redundancy and added to
+     * in the stack trace which are monitored. In the given example, we look at A and B (C is the last one).
+     * Such method calls are logged as warning, to be assessed manually for redundancy and added to
      * org.droidmate.report.FilteredDeviceLogs.Companion.apisManuallyConfirmedToBeRedundant
      * or org.droidmate.report.FilteredDeviceLogs.Companion.apisManuallyConfirmedToBeNotRedundant.
-     * </p><p>
      *
      * If the call was manually determined to be redundant, the org.droidmate.monitor.MonitorGeneratorResources.appguardApis
      * file should have such call removed and DroidMate should be recompiled with the new monitor. Otherwise, a warning will be
      * issued that a redundant APIs are still being logged.
-     * </p>
      */
     private fun IApi.warnWhenPossiblyRedundant() {
-      // KJA2 write a test for it.
-      // KJA this seems to be broken, as it will basically mark any non-manually-checked api to be possibly redundant. Only APIs that never end up being at the end of stack trace should be considered possibly redundant.
       this.stackTraceFrames
         .filter { it.startsWith(Api.monitorRedirectionPrefix) && (it !in apisManuallyCheckedForRedundancy) }
+        .drop(1) // We drop the first frame as it is the end of stack trace and thus not a candidate for redundancy.
         .forEach { log.warn("Possibly redundant API call discovered: " + it) }
     }
 
@@ -136,7 +132,8 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      * monitor. Thus, if such call is encountered, a warning is issued.
      * </p><p>
      *
-     * Note that the redundant API calls might appear in data that was obtained before they have been removed from the API list.
+     * Note that the redundant API calls might appear in data that was obtained before they have been removed from the API list
+     * that was used to obtain that data.
      * </p>
      */
     private val IApi.warnAndReturnIsRedundant: Boolean get() {
