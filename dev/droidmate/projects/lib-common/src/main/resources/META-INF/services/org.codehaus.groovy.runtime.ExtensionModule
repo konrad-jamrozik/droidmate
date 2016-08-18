@@ -2,4 +2,4 @@ moduleName = lib-common-module
 moduleVersion = 0.1.0
 # WARNING There is a known limitation preventing classes using the extensions to have @TypeChecked annotation:
 # https://discuss.gradle.org/t/groovy-extension-modules-do-not-work-with-static-compilation-using-the-gradle-compiler/7593/20  
-extensionClasses = org.droidmate.common.logcat.ApiLogcatMessageListExtensions
+extensionClasses = org.droidmate.apis.ApiLogcatMessageListExtensions

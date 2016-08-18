@@ -21,9 +21,9 @@ package org.droidmate.monitor
 
 import groovy.util.logging.Slf4j
 import org.droidmate.MonitorConstants
+import org.droidmate.apis.Api
+import org.droidmate.apis.ApiLogcatMessage
 import org.droidmate.apis.ApiMethodSignature
-import org.droidmate.common.logcat.Api
-import org.droidmate.common.logcat.ApiLogcatMessage
 
 /**
  * <p>

@@ -19,7 +19,7 @@
 
 package org.droidmate.logcat
 
-import org.droidmate.common.logcat.Api
+import org.droidmate.apis.Api
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith

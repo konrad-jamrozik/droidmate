@@ -18,11 +18,10 @@
 // web: www.droidmate.org
 
 // KJA move to org.droidmate.apis. Now it is not done as it would break deserialization. See also: org.droidmate.deprecated_still_used.DeprecatedClassesDeserializer
-package org.droidmate.common.logcat
+package org.droidmate.apis
 
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
-import org.droidmate.apis.IApi
 
 import java.util.regex.Matcher
 

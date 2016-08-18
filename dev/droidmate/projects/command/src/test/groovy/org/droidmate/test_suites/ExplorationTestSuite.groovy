@@ -19,7 +19,6 @@
 package org.droidmate.test_suites
 
 import org.droidmate.command.exploration.ExplorationTest
-import org.droidmate.common.logcat.TimeFormattedLogcatMessageTest
 import org.droidmate.device.datatypes.UiautomatorWindowDumpFunctionsTest
 import org.droidmate.device.datatypes.UiautomatorWindowDumpTest
 import org.droidmate.exploration.strategy.ExplorationStrategyTest
@@ -28,7 +27,6 @@ import org.junit.runners.Suite
 
 @RunWith(Suite)
 @Suite.SuiteClasses([
-  TimeFormattedLogcatMessageTest,
   UiautomatorWindowDumpFunctionsTest,
   UiautomatorWindowDumpTest,
   ExplorationStrategyTest,

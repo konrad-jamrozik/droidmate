@@ -20,6 +20,7 @@ package org.droidmate.exploration.actions
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
+import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.device.datatypes.MissingGuiSnapshot
 import org.droidmate.device.datatypes.Widget
@@ -29,7 +30,6 @@ import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.device.IDeviceLogs
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.MissingDeviceLogs
-import org.droidmate.logcat.IApiLogcatMessage
 
 import java.time.LocalDateTime
 
@@ -127,7 +127,7 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
       logs.each { IApiLogcatMessage log ->
         String time = log.time
         String methodName = log.methodName
-        // And so on. See org.droidmate.logcat.ITimeFormattedLogcatMessage
+        // And so on. See org.droidmate.apis.ITimeFormattedLogcatMessage
         // and org.droidmate.apis.IApi
       }
     }

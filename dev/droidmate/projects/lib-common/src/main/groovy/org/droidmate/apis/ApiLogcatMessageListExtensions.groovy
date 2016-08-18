@@ -16,25 +16,12 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.device_simulation
+package org.droidmate.apis
 
-import com.google.common.base.MoreObjects
-import groovy.transform.Canonical
-import org.droidmate.apis.ITimeFormattedLogcatMessage
-
-@Canonical
-class ScreenTransitionResult implements IScreenTransitionResult
+class ApiLogcatMessageListExtensions
 {
-
-  IGuiScreen                             screen
-  ArrayList<ITimeFormattedLogcatMessage> logs
-
-  @Override
-  public String toString()
+  public static Boolean sortedByTimePerPID(List<IApiLogcatMessage> self)
   {
-    return MoreObjects.toStringHelper(this)
-      .add("logs", logs*.messagePayload.collect { it.truncate(100) })
-      .add("screen", screen)
-      .toString()
+    return self.groupBy {it.pidString}.every {pid, logsByPid -> logsByPid*.time == logsByPid*.time.collect().sort() }
   }
 }

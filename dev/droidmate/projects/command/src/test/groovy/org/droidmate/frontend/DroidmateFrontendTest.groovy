@@ -20,6 +20,7 @@ package org.droidmate.frontend
 
 import com.google.common.base.Throwables
 import org.droidmate.android_sdk.AaptWrapperStub
+import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.command.ExploreCommand
 import org.droidmate.common.BuildConstants
 import org.droidmate.configuration.Configuration
@@ -34,7 +35,6 @@ import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.filesystem.MockFileSystem
-import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.report.OutputDir
 import org.droidmate.storage.Storage2

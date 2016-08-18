@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.common.logcat
 
-import org.droidmate.logcat.IApiLogcatMessage
+import org.droidmate.apis.IApiLogcatMessage
 
 class MonitoredInlinedApkFixtureApiLogs
 {

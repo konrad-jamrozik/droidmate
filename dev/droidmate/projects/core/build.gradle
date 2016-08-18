@@ -22,6 +22,9 @@ apply from: project(":projects").file("debug.gradle")
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+// See the comment to "evaluationDependsOn" in 'command' project for explanation of these dependencies.
+evaluationDependsOn(":projects:lib-common")
+
 // See explanation for equivalent lines in ":projects:command:build.gradle"
 configurations {forceJunitPriority}
 sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
@@ -60,6 +63,9 @@ dependencies {
 
   // Only for org.droidmate.tests_misc.JavaReprosTest.BBoxError
   testCompile 'de.erichseifert.vectorgraphics2d:VectorGraphics2D:0.10'
+
+  // See the comment to "evaluationDependsOn" in 'command' project for explanation of these dependencies.
+  testCompile project(":projects:lib-common").sourceSets.test.output
 
 }
 

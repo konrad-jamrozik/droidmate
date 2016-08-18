@@ -16,14 +16,21 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.common.logcat
+package org.droidmate
 
-import org.droidmate.logcat.IApiLogcatMessage
+import org.droidmate.apis.ApiLogcatMessageTest
+import org.droidmate.apis.ClassFileFormatTest
+import org.droidmate.apis.TimeFormattedLogcatMessageTest
+import org.junit.experimental.categories.Categories
+import org.junit.runner.RunWith
+import org.junit.runners.Suite
 
-class ApiLogcatMessageListExtensions
+@RunWith(Categories)
+@Suite.SuiteClasses([
+  ApiLogcatMessageTest,
+  ClassFileFormatTest,
+  TimeFormattedLogcatMessageTest
+])
+class LibCommonTestSuite
 {
-  public static Boolean sortedByTimePerPID(List<IApiLogcatMessage> self)
-  {
-    return self.groupBy {it.pidString}.every {pid, logsByPid -> logsByPid*.time == logsByPid*.time.collect().sort() }
-  }
 }

@@ -23,7 +23,7 @@ import org.droidmate.device.datatypes.AdbClearPackageAction
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
+import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
 
 class DeviceSimulation implements IDeviceSimulation

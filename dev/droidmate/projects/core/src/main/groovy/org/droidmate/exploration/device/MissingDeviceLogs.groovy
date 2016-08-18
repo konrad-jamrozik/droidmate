@@ -18,8 +18,8 @@
 // web: www.droidmate.org
 package org.droidmate.exploration.device
 
+import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.exceptions.ForbiddenOperationError
-import org.droidmate.logcat.IApiLogcatMessage
 
 class MissingDeviceLogs implements IDeviceLogs, Serializable
 {

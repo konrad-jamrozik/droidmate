@@ -20,6 +20,7 @@ package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.IApk
+import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.common.Boolean3
 import org.droidmate.common.Utils
 import org.droidmate.configuration.Configuration
@@ -27,7 +28,6 @@ import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
 import org.droidmate.exceptions.DeviceException
 import org.droidmate.exceptions.DeviceNeedsRebootException
-import org.droidmate.logcat.IApiLogcatMessage
 
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newPressHomeDeviceAction
 

@@ -21,12 +21,12 @@ package org.droidmate.device_simulation
 import com.google.common.base.MoreObjects
 import org.droidmate.MonitorConstants
 import org.droidmate.device.datatypes.Widget
-import org.droidmate.common.logcat.TimeFormattedLogcatMessage
+import org.droidmate.apis.TimeFormattedLogcatMessage
 import org.droidmate.device.datatypes.*
 import org.droidmate.device.model.DeviceModel
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exceptions.UnsupportedMultimethodDispatch
-import org.droidmate.logcat.ITimeFormattedLogcatMessage
+import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import org.droidmate.uiautomator_daemon.guimodel.GuiAction

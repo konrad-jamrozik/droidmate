@@ -20,6 +20,7 @@ package org.droidmate.command.exploration
 
 import org.droidmate.android_sdk.ApkTestHelper
 import org.droidmate.android_sdk.IApk
+import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.common.BuildConstants
 import org.droidmate.common.logcat.MonitoredInlinedApkFixtureApiLogs
 import org.droidmate.configuration.Configuration
@@ -32,7 +33,6 @@ import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
-import org.droidmate.logcat.IApiLogcatMessage
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator

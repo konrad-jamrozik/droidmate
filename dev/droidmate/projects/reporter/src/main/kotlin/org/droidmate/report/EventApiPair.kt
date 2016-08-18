@@ -18,10 +18,10 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
+import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.device.datatypes.Widget
 import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.*
-import org.droidmate.logcat.IApiLogcatMessage
 import java.time.LocalDateTime
 
 class EventApiPair(actRes: RunnableExplorationActionWithResult, apiLog: IApiLogcatMessage) {
