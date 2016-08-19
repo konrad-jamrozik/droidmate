@@ -26,7 +26,7 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.exploration.device.IRobustDevice
-import org.droidmate.test_base.DroidmateGroovyTestCase
+import org.droidmate.tests.DroidmateGroovyTestCase
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresDeviceSlow

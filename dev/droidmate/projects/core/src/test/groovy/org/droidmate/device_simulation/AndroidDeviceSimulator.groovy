@@ -30,7 +30,7 @@ import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
-import org.droidmate.test_base.ApkFixtures
+import org.droidmate.tests.ApkFixtures
 
 import java.nio.file.Path
 import java.time.LocalDateTime
