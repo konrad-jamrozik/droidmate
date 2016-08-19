@@ -56,7 +56,6 @@ class FilesystemTestFixtures
   public Path   f_monitoredSer2
 
   public final ApkFixtures        apks
-  public final WindowDumpFixtures windowDumps = new WindowDumpFixtures()
 
   static FilesystemTestFixtures build()
   {
@@ -92,35 +91,6 @@ class FilesystemTestFixtures
       monitoredInlined_api23 = Apk.build(aapt,
         // KJA consider using org.droidmate.extractedPath
         new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api23_name}").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)))
-    }
-  }
-
-  public class WindowDumpFixtures
-  {
-
-    public final String f_app_stopped_dialogbox
-    public final String f_app_stopped_OK_disabled
-    public final String f_nexus7_home_screen
-    // f_tsa = "Fixture of TestSubjectApp"
-    public final String f_tsa_mainAct
-    public final String f_tsa_emptyAct
-    public final String f_tsa_1button
-    public final String f_chrome_offline
-    public final String f_complActUsing_dialogbox
-
-    WindowDumpFixtures()
-    {
-      // @formatter:off
-      // KJA consider using org.droidmate.extractedPath
-      f_app_stopped_dialogbox   = new Resource("fixtures/window_dumps/f_app_stopped_dialogbox_nexus7vert.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
-      f_app_stopped_OK_disabled = new Resource("fixtures/window_dumps/f_app_stopped_OK_disabled.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
-      f_nexus7_home_screen      = new Resource("fixtures/window_dumps/f_nexus7_home_screen.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
-      f_tsa_mainAct             = new Resource("fixtures/window_dumps/f_tsa_mainAct_4Jan14.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
-      f_tsa_emptyAct            = new Resource("fixtures/window_dumps/f_tsa_empty_activity.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
-      f_tsa_1button             = new Resource("fixtures/window_dumps/f_tsa_1button.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
-      f_chrome_offline          = new Resource("fixtures/window_dumps/f_chrome_offline_nexus7vert.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
-      f_complActUsing_dialogbox = new Resource("fixtures/window_dumps/f_complete_action_using.xml").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
-      // @formatter:on
     }
   }
 }
