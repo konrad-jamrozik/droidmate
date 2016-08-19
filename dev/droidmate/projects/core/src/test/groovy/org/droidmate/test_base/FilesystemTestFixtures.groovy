@@ -39,21 +39,7 @@ import java.nio.file.Paths
  */
 class FilesystemTestFixtures
 {
-
-  // !!! DUPLICATION WARNING !!!
-  // These values have to be the same as the ones of the apk fixture file represented by apkName_simple variable
-  // (search the source code for the variable name to find its defining class).
   public static String apkFixture_simple_packageName                     = "org.droidmate.fixtures.apks.simple"
-  public static String apkFixture_simple_launchableActivityComponentName =
-    "org.droidmate.fixtures.apks.simple/org.droidmate.fixtures.apks.simple.MainActivity"
-  // end of DUPLICATION WARNING
-
-  public String f_aaptBadgingDump
-  /**
-   * The metadata to the run used for this fixture is located in directory located in the same dir as this fixture.
-   * In addition, the run configuration is codified in IntelliJ run config of "Explore fixture: f_monitoredSer2"
-   */
-  public Path   f_monitoredSer2
 
   public final ApkFixtures        apks
 
@@ -66,10 +52,6 @@ class FilesystemTestFixtures
   {
     apks = new ApkFixtures(aapt)
 
-    // KJA consider using org.droidmate.extractedPath
-    f_aaptBadgingDump = new Resource("fixtures/f_aaptBadgingDump.txt").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)).text
-    // KJA consider using org.droidmate.extractedPath
-    f_monitoredSer2 = new Resource("fixtures/serialized_results/2016 May 05 2257 org.droidmate.fixtures.apks.monitored.ser2").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources))
   }
 
   public class ApkFixtures

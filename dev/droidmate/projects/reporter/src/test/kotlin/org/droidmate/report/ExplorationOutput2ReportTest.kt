@@ -22,6 +22,7 @@ import org.droidmate.*
 import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.test_base.FilesystemTestFixtures
+import org.droidmate.tests.fixture_monitoredSer2
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.Test
@@ -38,12 +39,12 @@ class ExplorationOutput2ReportTest {
     
   }
   
-  // @Test KJA broken, reconstruct f_monitoredSer2
+  // @Test KJA broken, reconstruct fixture_monitoredSer2
   fun reports() {
 
     val mockFs: FileSystem = mockFs()
     val cfg = Configuration.getDefault()
-    val serExplOutput: Path = FilesystemTestFixtures.build().f_monitoredSer2
+    val serExplOutput: Path = fixture_monitoredSer2
     val mockFsDirWithOutput: Path = mockFs.dir(cfg.droidmateOutputDir).withFiles(serExplOutput)
     
     val report = ExplorationOutput2Report(
@@ -111,10 +112,10 @@ class ExplorationOutput2ReportTest {
     }
   }
 
-  // @Test KJA broken, reconstruct f_monitoredSer2
+  // @Test KJA broken, reconstruct fixture_monitoredSer2
   fun `reports to file system`()
   {
-    val serExplOutput: Path = FilesystemTestFixtures.build().f_monitoredSer2
+    val serExplOutput: Path = fixture_monitoredSer2
     val report = ExplorationOutput2Report(
       rawData = OutputDir(serExplOutput.parent).notEmptyExplorationOutput2,
       dir = Paths.get(BuildConstants.getTest_temp_dir_name())
