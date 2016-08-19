@@ -22,12 +22,7 @@ apply from: project(":projects").file("debug.gradle")
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-
-// See explanation for equivalent lines in ":projects:command:build.gradle"
-configurations {forceJunitPriority}
-sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
-sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
-
+dependOnJunit(project)
 dependWithTest(project, ":projects:lib-kotlin", "kotlin")
 dependWithTest(project, ":projects:lib-common", "groovy")
 
@@ -37,8 +32,6 @@ dependencies {
     exclude group: "org.slf4j", module: "slf4j-simple"
   }
 
-  forceJunitPriority 'junit:junit:4.12'
-  testCompile 'junit:junit:4.12'
   testCompile 'org.hamcrest:hamcrest-core:1.3'
 
   compile project(":projects:uiautomator-daemon-lib")

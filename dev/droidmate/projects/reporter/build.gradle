@@ -36,19 +36,12 @@ apply plugin: "kotlin"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-// Why these lines? See explanation for equivalent lines in ":projects:command:build.gradle"
-// KJA dry
-configurations {forceJunitPriority}
-sourceSets.test.runtimeClasspath = configurations.forceJunitPriority + sourceSets.test.runtimeClasspath
-sourceSets.test.compileClasspath = configurations.forceJunitPriority + sourceSets.test.compileClasspath
-
+dependOnJunit(project)
 dependWithTest(project, ":projects:lib-kotlin", "kotlin")
 dependWithTest(project, ":projects:core", "groovy")
 
 dependencies {
 
-  forceJunitPriority 'junit:junit:4.12'
-  testCompile 'junit:junit:4.12'
   testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
   testCompile 'org.hamcrest:hamcrest-library:1.3'
 

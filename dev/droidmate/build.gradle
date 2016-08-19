@@ -46,7 +46,6 @@ subprojects {
     mavenCentral()
     maven {url "https://jitpack.io"}
   }
-
 }
 
 apply from: file("log.gradle")
