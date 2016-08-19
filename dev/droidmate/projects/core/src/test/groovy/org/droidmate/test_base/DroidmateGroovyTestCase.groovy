@@ -39,14 +39,11 @@ class DroidmateGroovyTestCase extends GroovyTestCase
 //    println "Done waiting!"
 //  }
 
-
   public static Level       stdoutAppendersLogLevelForTesting = Level.ERROR
-  public static ApkFixtures fixtures
   static {
     Locale.setDefault(BuildConstants.locale)
     // WISH maybe better solution is to use @Rule: https://edgblog.wordpress.com/2013/10/21/a-junit-rule-to-turn-test-logging-onoff/
     LogbackAppenders.setThresholdLevelOfStdStreamsAppenders(stdoutAppendersLogLevelForTesting)
-    fixtures = ApkFixtures.build()
   }
 
   @Before
