@@ -21,17 +21,6 @@ allprojects {
   group = "org.droidmate"
   version = "dev"
 }
-// WISH Borges Merged
-//project.ext.utils = new GroovyShell().parse(new File("${project.projectDir}/GroovyUtils/Utils.groovy"))
-
-//task wrapper(type: Wrapper) {
-//  gradleVersion = '2.10'
-//}
-
-/* java plugin uses "build" for outputs by default, but the underlying ant script uses "bin".
-   This is setup in root project, not in the target project, as this way we guarantee the property
-   is set before it is read by any of the projects.
-*/
 
 ext.kotlin_version = '1.0.3'
 
@@ -58,48 +47,7 @@ subprojects {
     maven {url "https://jitpack.io"}
   }
 
-  /*
-  Making one Gradle project depend on other Gradle's project test output is highly nontrivial. Recommended solution is to 
-  depend on a test jar, as described here: 
-  
-  http://stackoverflow.com/a/5153162/986533 
-  and here
-  http://stackoverflow.com/a/15361666/986533
-  
-  However, then navigating to the sources of the dependency doesn't navigate to the IJ project, but to the jar, which is bad.
-  Instead, I applied the following solution:
-  
-  http://stackoverflow.com/a/37423632/986533
-  
-  More discussion here:
-  https://discuss.gradle.org/t/multiproject-testcompile-dependencies-not-seen-by-dependant-project/6779
-  https://discuss.gradle.org/t/cross-project-test-dependencies/12117/6
-  */
-  ext.dependWithTest = { Project target, String dependency, String lang ->
-
-    target.evaluationDependsOn(dependency)
-    
-    if (lang == "kotlin")
-    {
-      target.dependencies {
-        // This line makes IntelliJ navigate to sources instead of external jar.
-        testCompileOnly files {project(dependency).sourceSets.test.kotlin.srcDirs}
-      }
-    } else if (lang == "groovy")
-    {
-      target.dependencies {
-        // As line above, but for groovy, not kotlin.
-        testCompileOnly files {project(dependency).sourceSets.test.groovy.srcDirs}
-      }
-    } else assert false : "Unsupported language of dependency. The language: $lang"
-    
-    target.dependencies { 
-      // This makes the test classes of 'dependency' project available to the classpath of 'target' project
-      testCompile project(dependency).sourceSets.test.output
-      // This is just the plain project dependency.
-      compile project(dependency)
-    }
-  }
 }
 
 apply from: file("log.gradle")
+apply from: file("functions.gradle")

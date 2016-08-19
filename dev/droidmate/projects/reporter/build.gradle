@@ -57,11 +57,9 @@ dependencies {
   
   compile 'com.google.jimfs:jimfs:1.0'
   compile 'org.zeroturnaround:zt-exec:1.9'
-
-
-
 }
 
+// KJA dry
 test.configure {
 
   /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
