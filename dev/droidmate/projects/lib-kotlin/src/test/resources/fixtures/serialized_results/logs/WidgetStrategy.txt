@@ -1,0 +1,39 @@
+2016-08-19 21:58:45.063 DEBUG Encountered NEW widget context:
+WC:[seenCount=0, package=org.droidmate.fixtures.apks.monitored
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"API: URL.openConnection()"/"org.droidmate.fixtures.apks.monitored:id/button_api"/[274,240]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Launch Activity 2"/"org.droidmate.fixtures.apks.monitored:id/button_activity2"/[274,432]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Launch Home"/"org.droidmate.fixtures.apks.monitored:id/button_home"/[274,528]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"APIs: Andr 6 srcs, sinks"/"org.droidmate.fixtures.apks.monitored:id/button_A6"/[274,624]]
+2016-08-19 21:58:46.040 DEBUG Encountered existing widget context:
+WC:[seenCount=1, package=org.droidmate.fixtures.apks.monitored
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"API: URL.openConnection()"/"org.droidmate.fixtures.apks.monitored:id/button_api"/[274,240]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Launch Activity 2"/"org.droidmate.fixtures.apks.monitored:id/button_activity2"/[274,432]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Launch Home"/"org.droidmate.fixtures.apks.monitored:id/button_home"/[274,528]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"APIs: Andr 6 srcs, sinks"/"org.droidmate.fixtures.apks.monitored:id/button_A6"/[274,624]]
+2016-08-19 21:58:47.136 DEBUG Encountered NEW widget context:
+WC:[seenCount=0, package=com.google.android.packageinstaller
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Deny"/"com.android.packageinstaller:id/permission_deny_button"/[896,1014]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Allow"/"com.android.packageinstaller:id/permission_allow_button"/[1046,1014]]
+2016-08-19 21:58:47.136 DEBUG Blacklisted WI: bl? 1 act#: 0 lcc#: 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]
+2016-08-19 21:58:47.979 DEBUG Encountered existing widget context:
+WC:[seenCount=2, package=org.droidmate.fixtures.apks.monitored
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"API: URL.openConnection()"/"org.droidmate.fixtures.apks.monitored:id/button_api"/[274,240]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Launch Activity 2"/"org.droidmate.fixtures.apks.monitored:id/button_activity2"/[274,432]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Launch Home"/"org.droidmate.fixtures.apks.monitored:id/button_home"/[274,528]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"APIs: Andr 6 srcs, sinks"/"org.droidmate.fixtures.apks.monitored:id/button_A6"/[274,624]]
+2016-08-19 21:58:47.981 DEBUG Chosen widget info: WI: bl? 0 act#: 1 lcc#: 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]
+2016-08-19 21:58:48.670 DEBUG Encountered existing widget context:
+WC:[seenCount=3, package=org.droidmate.fixtures.apks.monitored
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"API: URL.openConnection()"/"org.droidmate.fixtures.apks.monitored:id/button_api"/[274,240]
+WI: bl? 0 act#: 1 lcc#: 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Launch Activity 2"/"org.droidmate.fixtures.apks.monitored:id/button_activity2"/[274,432]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Launch Home"/"org.droidmate.fixtures.apks.monitored:id/button_home"/[274,528]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"APIs: Andr 6 srcs, sinks"/"org.droidmate.fixtures.apks.monitored:id/button_A6"/[274,624]]
+2016-08-19 21:58:49.958 DEBUG Encountered NEW widget context:
+WC:[seenCount=0, package=org.droidmate.fixtures.apks.monitored
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"API: Camera.open() + Launch Activity 3"/"org.droidmate.fixtures.apks.monitored:id/button_api_activity3"/[561,240]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"Crash Activity"/"org.droidmate.fixtures.apks.monitored:id/button_crash"/[561,336]
+WI: bl? 0 act#: 0 lcc#: 0 Wdgt:Button/"API: AudioManager.isBluetoothA2dpOn() + Launch Google Play"/"org.droidmate.fixtures.apks.monitored:id/button_api_google"/[561,432]]

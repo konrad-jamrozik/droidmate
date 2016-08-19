@@ -1,4 +1,2 @@
-This fixture is copied from
-dev\droidmate_usage_examples\src\test\resources\fixture_output_device1\
-
-To regenerate it, please run appropriate test in droidmate_usage_examples.
+This fixture was obtained by running IJ run config "explores monitored apk on a real device api23"
+and then copying here the contents of dir dev\droidmate\temp_dir_for_tests

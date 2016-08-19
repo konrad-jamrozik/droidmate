@@ -63,8 +63,8 @@ class ApkSummaryTest {
       println(summaryString)
   }
 
-  // KJA also rebuild fixture for usage examples
-  // @Test KJA broken, reconstruct fixture_monitoredSer2
+  // KJA failing test
+  // @Test
   fun buildsFromApkExplorationOutput2() {
   
     

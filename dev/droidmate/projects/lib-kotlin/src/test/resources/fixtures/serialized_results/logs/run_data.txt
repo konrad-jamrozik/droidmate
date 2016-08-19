@@ -1,0 +1,92 @@
+--------------------------------------------------------------------------------
+
+Working dir:   C:\my\local\repos\github\droidmate\dev\droidmate
+
+JVM arguments: [-ea, -DlogsDir=temp_dir_for_tests/logs, -Didea.launcher.port=7535, -Didea.launcher.bin.path=C:\Program Files (x86)\JetBrains\IntelliJ IDEA 2016.2\bin, -Didea.junit.sm_runner, -Dfile.encoding=UTF-8]
+
+Configuration dump:
+
+aaptCommandApi19=C:\Program Files (x86)\Android\android-sdk\build-tools\19.1.0\aapt.exe
+aaptCommandApi23=C:\Program Files (x86)\Android\android-sdk\build-tools\23.0.3\aapt.exe
+actionsLimit=10
+adbCommand=C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe
+alwaysClickFirstWidget=false
+androidApi=api23
+apksDirName=apks
+apksDirPath=C:\my\local\repos\github\droidmate\dev\droidmate\projects\core\build\resources\test\fixtures\apks
+apksLimit=0
+apksNames=[MonitoredApkFixture_api23-debug-inlined.apk]
+appGuardApisList=[Landroid/app/ActivityThread;->installContentProviders(Landroid/content/Context;Ljava/util/List;)V, Landroid/app/ActivityManager;->getRecentTasks(II)Ljava/util/List;, Landroid/app/ActivityManager;->getRunningTasks(I)Ljava/util/List;, Landroid/bluetooth/BluetoothHeadset;->startVoiceRecognition(Landroid/bluetooth/BluetoothDevice;)Z, Landroid/bluetooth/BluetoothHeadset;->stopVoiceRecognition(Landroid/bluetooth/BluetoothDevice;)Z, Landroid/content/ContentProviderClient;->bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I, Landroid/content/ContentProviderClient;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I, Landroid/content/ContentProviderClient;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;, Landroid/content/ContentProviderClient;->openFile(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;, Landroid/content/ContentProviderClient;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;, Landroid/content/ContentProviderClient;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I, Landroid/content/ContentResolver;->bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I, Landroid/content/ContentResolver;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I, Landroid/content/ContentResolver;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;, Landroid/content/ContentResolver;->openFileDescriptor(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;, Landroid/content/ContentResolver;->openInputStream(Landroid/net/Uri;)Ljava/io/InputStream;, Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V, Landroid/content/ContentResolver;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I, Landroid/hardware/Camera;->open(I)Landroid/hardware/Camera; static, Landroid/location/LocationManager;->addGpsStatusListener(Landroid/location/GpsStatus$Listener;)Z, Landroid/location/LocationManager;->addNmeaListener(Landroid/location/GpsStatus$NmeaListener;)Z, Landroid/location/LocationManager;->addProximityAlert(DDFJLandroid/app/PendingIntent;)V, Landroid/location/LocationManager;->addTestProvider(Ljava/lang/String;ZZZZZZZII)V, Landroid/location/LocationManager;->clearTestProviderEnabled(Ljava/lang/String;)V, Landroid/location/LocationManager;->clearTestProviderLocation(Ljava/lang/String;)V, Landroid/location/LocationManager;->clearTestProviderStatus(Ljava/lang/String;)V, Landroid/location/LocationManager;->getBestProvider(Landroid/location/Criteria;Z)Ljava/lang/String;, Landroid/location/LocationManager;->getLastKnownLocation(Ljava/lang/String;)Landroid/location/Location;, Landroid/location/LocationManager;->getProvider(Ljava/lang/String;)Landroid/location/LocationProvider;, Landroid/location/LocationManager;->getProviders(Landroid/location/Criteria;Z)Ljava/util/List;, Landroid/location/LocationManager;->getProviders(Z)Ljava/util/List;, Landroid/location/LocationManager;->isProviderEnabled(Ljava/lang/String;)Z, Landroid/location/LocationManager;->removeTestProvider(Ljava/lang/String;)V, Landroid/location/LocationManager;->requestLocationUpdates(JFLandroid/location/Criteria;Landroid/app/PendingIntent;)V, Landroid/location/LocationManager;->requestLocationUpdates(JFLandroid/location/Criteria;Landroid/location/LocationListener;Landroid/os/Looper;)V, Landroid/location/LocationManager;->requestLocationUpdates(Ljava/lang/String;JFLandroid/app/PendingIntent;)V, Landroid/location/LocationManager;->requestLocationUpdates(Ljava/lang/String;JFLandroid/location/LocationListener;)V, Landroid/location/LocationManager;->requestLocationUpdates(Ljava/lang/String;JFLandroid/location/LocationListener;Landroid/os/Looper;)V, Landroid/location/LocationManager;->requestSingleUpdate(Landroid/location/Criteria;Landroid/app/PendingIntent;)V, Landroid/location/LocationManager;->requestSingleUpdate(Landroid/location/Criteria;Landroid/location/LocationListener;Landroid/os/Looper;)V, Landroid/location/LocationManager;->requestSingleUpdate(Ljava/lang/String;Landroid/app/PendingIntent;)V, Landroid/location/LocationManager;->requestSingleUpdate(Ljava/lang/String;Landroid/location/LocationListener;Landroid/os/Looper;)V, Landroid/location/LocationManager;->sendExtraCommand(Ljava/lang/String;Ljava/lang/String;Landroid/os/Bundle;)Z, Landroid/location/LocationManager;->setTestProviderEnabled(Ljava/lang/String;Z)V, Landroid/location/LocationManager;->setTestProviderLocation(Ljava/lang/String;Landroid/location/Location;)V, Landroid/location/LocationManager;->setTestProviderStatus(Ljava/lang/String;ILandroid/os/Bundle;J)V, Landroid/media/AudioManager;->isBluetoothA2dpOn()Z, Landroid/media/AudioManager;->isWiredHeadsetOn()Z, Landroid/media/AudioManager;->setBluetoothScoOn(Z)V, Landroid/media/AudioManager;->setMicrophoneMute(Z)V, Landroid/media/AudioManager;->setMode(I)V, Landroid/media/AudioManager;->setParameter(Ljava/lang/String;Ljava/lang/String;)V, Landroid/media/AudioManager;->setParameters(Ljava/lang/String;)V, Landroid/media/AudioManager;->setSpeakerphoneOn(Z)V, Landroid/media/AudioManager;->startBluetoothSco()V, Landroid/media/AudioManager;->stopBluetoothSco()V, Landroid/media/AudioRecord;-><init>(IIIII)V, Landroid/media/MediaPlayer;->setWakeMode(Landroid/content/Context;I)V, Landroid/media/MediaRecorder;->setAudioSource(I)V, Landroid/media/MediaRecorder;->setVideoSource(I)V, Landroid/net/ConnectivityManager;->requestRouteToHost(II)Z, Landroid/net/ConnectivityManager;->setMobileDataEnabled(Z)V, Landroid/net/ConnectivityManager;->setNetworkPreference(I)V, Landroid/net/ConnectivityManager;->setRadio(IZ)Z, Landroid/net/ConnectivityManager;->setRadios(Z)Z, Landroid/net/ConnectivityManager;->startUsingNetworkFeature(ILjava/lang/String;)I, Landroid/net/ConnectivityManager;->stopUsingNetworkFeature(ILjava/lang/String;)I, Landroid/net/ConnectivityManager;->tether(Ljava/lang/String;)I, Landroid/net/ConnectivityManager;->untether(Ljava/lang/String;)I, Landroid/net/wifi/WifiManager$MulticastLock;->acquire()V, Landroid/net/wifi/WifiManager$MulticastLock;->release()V, Landroid/net/wifi/WifiManager$WifiLock;->acquire()V, Landroid/net/wifi/WifiManager$WifiLock;->release()V, Landroid/net/wifi/WifiManager;->addNetwork(Landroid/net/wifi/WifiConfiguration;)I, Landroid/net/wifi/WifiManager;->disableNetwork(I)Z, Landroid/net/wifi/WifiManager;->disconnect()Z, Landroid/net/wifi/WifiManager;->enableNetwork(IZ)Z, Landroid/net/wifi/WifiManager;->initializeMulticastFiltering()Z, Landroid/net/wifi/WifiManager;->pingSupplicant()Z, Landroid/net/wifi/WifiManager;->reassociate()Z, Landroid/net/wifi/WifiManager;->reconnect()Z, Landroid/net/wifi/WifiManager;->removeNetwork(I)Z, Landroid/net/wifi/WifiManager;->saveConfiguration()Z, Landroid/net/wifi/WifiManager;->setWifiApEnabled(Landroid/net/wifi/WifiConfiguration;Z)Z, Landroid/net/wifi/WifiManager;->setWifiEnabled(Z)Z, Landroid/net/wifi/WifiManager;->startScan()Z, Landroid/os/PowerManager$WakeLock;->acquire()V, Landroid/os/PowerManager$WakeLock;->acquire(J)V, Landroid/os/PowerManager$WakeLock;->release()V, Landroid/os/PowerManager$WakeLock;->release(I)V, Landroid/speech/SpeechRecognizer;->cancel()V, Landroid/speech/SpeechRecognizer;->handleCancelMessage()V, Landroid/speech/SpeechRecognizer;->handleStartListening(Landroid/content/Intent;)V, Landroid/speech/SpeechRecognizer;->handleStopMessage()V, Landroid/speech/SpeechRecognizer;->startListening(Landroid/content/Intent;)V, Landroid/speech/SpeechRecognizer;->stopListening()V, Landroid/telephony/TelephonyManager;->getCellLocation()Landroid/telephony/CellLocation;, Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;, Landroid/telephony/TelephonyManager;->getDeviceSoftwareVersion()Ljava/lang/String;, Landroid/telephony/TelephonyManager;->getLine1Number()Ljava/lang/String;, Landroid/telephony/TelephonyManager;->getNeighboringCellInfo()Ljava/util/List;, Landroid/telephony/TelephonyManager;->getSimSerialNumber()Ljava/lang/String;, Landroid/telephony/TelephonyManager;->getSubscriberId()Ljava/lang/String;, Landroid/telephony/TelephonyManager;->getVoiceMailAlphaTag()Ljava/lang/String;, Landroid/telephony/TelephonyManager;->getVoiceMailNumber()Ljava/lang/String;, Landroid/telephony/TelephonyManager;->listen(Landroid/telephony/PhoneStateListener;I)V, Landroid/webkit/WebView;->loadDataWithBaseURL(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V, Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;)V, Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;Ljava/util/Map;)V, Ljava/net/DatagramSocket;->connect(Ljava/net/InetAddress;I)V, Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V, Ljava/net/MulticastSocket;->joinGroup(Ljava/net/InetAddress;)V, Ljava/net/MulticastSocket;->joinGroup(Ljava/net/SocketAddress;Ljava/net/NetworkInterface;)V, Ljava/net/Socket;-><init>(Ljava/lang/String;I)V, Ljava/net/Socket;-><init>(Ljava/lang/String;ILjava/net/InetAddress;I)V, Ljava/net/Socket;-><init>(Ljava/lang/String;IZ)V, Ljava/net/Socket;-><init>(Ljava/net/InetAddress;I)V, Ljava/net/Socket;-><init>(Ljava/net/InetAddress;ILjava/net/InetAddress;I)V, Ljava/net/Socket;-><init>(Ljava/net/InetAddress;IZ)V, Ljava/net/Socket;->connect(Ljava/net/SocketAddress;)V, Ljava/net/Socket;->connect(Ljava/net/SocketAddress;I)V, Ljava/net/URL;->openConnection()Ljava/net/URLConnection;, Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;, Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V]
+args={-randomSeed,0,-waitForWindowUpdateTimeout,50,-launchActivityDelay,0,-monitorServerStartTimeout,0,-monitorServerStartQueryDelay,0,-checkAppIsRunningRetryDelay,0,-clearPackageRetryDelay,0,-getValidGuiSnapshotRetryDelay,0,-stopAppSuccessCheckDelay,0,-closeANRDelay,0,-droidmateOutputDirPath,temp_dir_for_tests,-reportInputDir,temp_dir_for_tests,-reportOutputDir,temp_dir_for_tests,-runOnNotInlined,-useApkFixturesDir,true,-apksNames,[MonitoredApkFixture_api23-debug-inlined.apk],-widgetIndexes,[0, 1, 2, 2, 2],-androidApi,api23}
+checkAppIsRunningRetryAttempts=4
+checkAppIsRunningRetryDelay=0
+checkDeviceAvailableAfterRebootAttempts=12
+checkDeviceAvailableAfterRebootFirstDelay=60000
+checkDeviceAvailableAfterRebootLaterDelays=10000
+clearPackageRetryAttempts=3
+clearPackageRetryDelay=0
+closeANRAttempts=4
+closeANRDelay=0
+deployRawApks=false
+deviceIndex=0
+displayHelp=false
+droidmateOutputDir=temp_dir_for_tests
+droidmateOutputDirPath=temp_dir_for_tests
+exploreInteractively=false
+extractSaturationCharts=false
+extractSummaries=true
+getValidGuiSnapshotRetryAttempts=10
+getValidGuiSnapshotRetryDelay=0
+inline=false
+launchActivityDelay=0
+launchActivityTimeout=120000
+logLevel=trace
+logWidgets=false
+monitorApkApi19=temp_extracted_resources\monitor_api19.apk
+monitorApkApi23=temp_extracted_resources\monitor_api23.apk
+monitorServerStartQueryDelay=0
+monitorServerStartTimeout=0
+outputAppGuardCharts=false
+randomSeed=0
+removeHardCodedApis=true
+report=false
+reportIncludePlots=true
+reportInputDir=temp_dir_for_tests
+reportInputDirPath=temp_dir_for_tests
+reportOutputDir=temp_dir_for_tests
+reportOutputDirPath=temp_dir_for_tests
+resetEveryNthExplorationForward=0
+runOnNotInlined=true
+saturationChartsHours=2.0
+socketTimeout=180000
+softReset=false
+splitCharts=false
+stopAppRetryAttempts=4
+stopAppSuccessCheckDelay=0
+timeLimit=0
+uiaTestCasesLogsDirPath=.\uia_test_cases_logs
+uiautomator2DaemonApk=temp_extracted_resources\uiautomator2-daemon.apk
+uiautomator2DaemonTestApk=temp_extracted_resources\uiautomator2-daemon-test.apk
+uiautomatorDaemonJar=temp_extracted_resources\uiautomator-daemon.jar
+uiautomatorDaemonServerStartQueryDelay=2000
+uiautomatorDaemonServerStartTimeout=20000
+uiautomatorDaemonTcpPort=59800
+uiautomatorDaemonWaitForGuiToStabilize=true
+uiautomatorDaemonWaitForWindowUpdateTimeout=50
+uninstallApk=true
+useApkFixturesDir=true
+waitForCanRebootDelay=30000
+widgetIndexes=[0, 1, 2, 2, 2]
+widgetUniqueStringWithFieldPrecedence=true
+
+End of configuration dump
+
+--------------------------------------------------------------------------------
+Used input apks file paths:
+
+C:\my\local\repos\github\droidmate\dev\droidmate\projects\core\build\resources\test\fixtures\apks\MonitoredApkFixture_api23-debug-inlined.apk
+
+--------------------------------------------------------------------------------
+Run start  timestamp: 2016 Aug 19 21:58:26
+Run finish timestamp: 2016 Aug 19 21:59:00
+DroidMate ran for: 34.688 seconds

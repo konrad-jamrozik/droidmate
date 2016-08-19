@@ -38,7 +38,7 @@ class ExplorationOutput2ReportTest {
     
   }
   
-  // @Test KJA broken, reconstruct fixture_monitoredSer2
+  @Test
   fun reports() {
 
     val mockFs: FileSystem = mockFs()
@@ -111,7 +111,8 @@ class ExplorationOutput2ReportTest {
     }
   }
 
-  // @Test KJA broken, reconstruct fixture_monitoredSer2
+  // KJA failing test
+  // @Test
   fun `reports to file system`()
   {
     val serExplOutput: Path = fixture_monitoredSer2
