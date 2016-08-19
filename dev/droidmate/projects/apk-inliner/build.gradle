@@ -57,8 +57,6 @@ clean.configure {
   }
 }
 
-test.configure {
-  // includes = [''] // Turn off all tests
-}
+configureTest(project, [''])//['**/ApkInlinerFrontendTest.class'])
 
 apply from: project(":projects").file("maven.gradle")

@@ -159,11 +159,5 @@ clean.configure {
 
 build.dependsOn "buildMonitorApk_api19", "buildMonitorApk_api23"
 
-test.configure {
-
-  // Workaround for GRADLE-1682. See http://stackoverflow.com/a/14947906/986533
-  // includes = ['**/MonitorGeneratorFrontendTest.class']
-  // Test not included because the test shouldn't be run as part of a test suite.
-  includes = ['']
-
-}
+// Tests not included because the test shouldn't be run as part of a test suite.
+configureTest(project, [''])
