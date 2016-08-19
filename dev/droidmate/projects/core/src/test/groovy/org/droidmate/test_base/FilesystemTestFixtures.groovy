@@ -20,13 +20,13 @@
 package org.droidmate.test_base
 
 import com.konradjamrozik.Resource
-import com.konradjamrozik.ResourcePath
+import org.droidmate.Extensions_ResourceKt
 import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.IAaptWrapper
+import org.droidmate.configuration.Configuration
 import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.SysCmdExecutor
-import org.droidmate.configuration.Configuration
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -81,16 +81,9 @@ class FilesystemTestFixtures
 
     ApkFixtures(IAaptWrapper aapt)
     {
-      gui = Apk.build(aapt,
-        // KJA consider using org.droidmate.extractedPath
-        new Resource("${BuildConstants.apk_fixtures}/GuiApkFixture-debug.apk").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)))
-
-      monitoredInlined_api19 = Apk.build(aapt,
-        // KJA consider using org.droidmate.extractedPath
-        new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api19_name}").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)))
-      monitoredInlined_api23 = Apk.build(aapt,
-        // KJA consider using org.droidmate.extractedPath
-        new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api23_name}").extractTo(Paths.get(BuildConstants.dir_name_temp_extracted_resources)))
+      gui = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/GuiApkFixture-debug.apk")))
+      monitoredInlined_api19 = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api19_name}")))
+      monitoredInlined_api23 = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api23_name}")))
     }
   }
 }
