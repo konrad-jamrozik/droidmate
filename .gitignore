@@ -42,8 +42,7 @@ proguard/
 
 # Contents of dirs named like so are expected to be regenerated each time DroidMate is run.
 # As one concrete example, see: <repo root>\dev\droidmate\projects\core\logs
-logs
-droidmate_output
+# None! Obsolete rule, erased
 
 # resources build by DroidMate sub-projects on each build
 lib-common-dev.jar

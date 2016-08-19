@@ -11,10 +11,11 @@ package org.droidmate_usage_examples;
 import com.google.common.collect.Iterables;
 import com.google.common.io.Files;
 import org.droidmate.android_sdk.IApk;
+import org.droidmate.apis.IApiLogcatMessage;
 import org.droidmate.command.ExploreCommand;
-import org.droidmate.device.datatypes.Widget;
 import org.droidmate.configuration.Configuration;
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot;
+import org.droidmate.device.datatypes.Widget;
 import org.droidmate.exceptions.DeviceException;
 import org.droidmate.exploration.actions.ExplorationAction;
 import org.droidmate.exploration.actions.IExplorationActionRunResult;
@@ -24,7 +25,6 @@ import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2;
 import org.droidmate.exploration.strategy.IExplorationStrategyProvider;
 import org.droidmate.frontend.DroidmateFrontend;
 import org.droidmate.frontend.ICommandProvider;
-import org.droidmate.apis.IApiLogcatMessage;
 import org.droidmate.report.OutputDir;
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,14 +48,16 @@ public class MainTest
   /**
    * <p>
    * This test shows how to access DroidMate API with default settings. If you run it right off the bat, DroidMate will inform 
-   * you into which dir to put apks. If you put apks there, DroidMate will inform you why and how you should inline them.
-   *
+   * you there are no input apks and then it will terminate. It will also tell you into which dir to put apks. 
+   * If you put apks there, DroidMate will inform you why and how you should inline them. You can do it by running test 
+   * {@link #inline_apks()}.
+   * 
    * </p><p>
    * DroidMate will also tell you where to look for its run output. Both the .txt files and serialized results. To see how
    * to access serialized results, see {@link #deserialize_and_work_with_exploration_result()}
    *
    * </p><p>
-   * In any case, please read the README.md mentioned in {@link MainTest}.
+   * If you feel lost, please read the README.md mentioned in {@link MainTest}.
    *
    * </p>
    */
@@ -67,12 +69,30 @@ public class MainTest
 
   /**
    * <p>
+   * This test will make DroidMate inline all the apks present in the default input directory, which should be
+   * {@code dev/droidmate_usage_examples/apks}.
+   * </p><p>
+   *
+   * You can find an apk to inline in {@code dev/droidmate_usage_examples/apks/originals}
+   * </p>
+   */
+  @Test
+  public void inline_apks()
+  {
+    callMainThenAssertExitStatusIs0(new String[]{Configuration.pn_inline});
+  }
+
+  /**
+   * <p>
    * This test shows how to access various part of the data structure serialized by DroidMate to file system, containing all the
    * results from the exploration. Note that the methods used are not exhaustive. Explore the sources
    * of the used types to find out more.
    * 
    * </p><p>
-   * For details of the run used to obtain the fixture for this test, 
+   * To obtain the serialized results from the fixture again, you can run {@link #explore_with_common_settings_changed()}.
+   * 
+   * </p><p>
+   * For details of such run (used to obtain the fixture for this test), 
    * please see {@code dev/droidmate_usage_examples/src/test/resources}. 
    * The apk used to obtain the fixture is located in {@code dev/droidmate_usage_examples/apks/inlined}.  
    *   
@@ -81,8 +101,7 @@ public class MainTest
   @Test
   public void deserialize_fixture_and_work_with_exploration_result() throws IOException, URISyntaxException
   {
-    // KJA rebuild serialized data
-    // workWithDroidmateOutput(copyDroidmateOutputFixtureToDir("mock_droidmate_output_dir").getParent());
+     workWithDroidmateOutput(copyDroidmateOutputFixtureToDir("mock_droidmate_output_dir").getParent());
   }
   
   /**
@@ -101,15 +120,6 @@ public class MainTest
   {
     workWithDroidmateOutput(Configuration.defaultDroidmateOutputDir);
   }
-  
-  /**
-   * This test will make DroidMate inline all the apks present in the default input directory.
-   */
-  @Test
-  public void inline_apks()
-  {
-    callMainThenAssertExitStatusIs0(new String[]{Configuration.pn_inline});
-  }
 
   /**
    * <p>
@@ -119,20 +129,25 @@ public class MainTest
    * </p><p>
    * This test has been used to obtain fixture for {@link #deserialize_fixture_and_work_with_exploration_result()}. 
    * 
+   * </p><p>
+   * To ensure this test does meaningful work, copy an apk file from {@code dev/droidmate_usage_examples/apks/inlined} 
+   * to {@code dev/droidmate_usage_examples/apks}. By default this dir is empty, so it won't require any actual Android device 
+   * presence. This is needed because we want to be able to run all tests (e.g. as part of "gradlew build") without access to
+   * an android device.
+   *   
    * </p>
    */
   @Test
   public void explore_with_common_settings_changed()
   {
     List<String> args = new ArrayList<>();
-    
-    // Notation explanation: "pn" means "parameter name"
-    
+
+    // "pn" stands for "parameter name"
     Collections.addAll(args, Configuration.pn_apksDir, Configuration.defaultApksDir);
     Collections.addAll(args, Configuration.pn_timeLimit, "10");
     Collections.addAll(args, Configuration.pn_resetEveryNthExplorationForward, String.valueOf(Configuration.defaultResetEveryNthExplorationForward));
     Collections.addAll(args, Configuration.pn_randomSeed, "43");
-    Collections.addAll(args, Configuration.pn_androidApi, Configuration.api19);
+    Collections.addAll(args, Configuration.pn_androidApi, Configuration.api23);
     
     callMainThenAssertExitStatusIs0(args.toArray(new String[args.size()]));
   }
@@ -174,9 +189,7 @@ public class MainTest
 
     final URL fixtureURL = Iterables.getOnlyElement(
       Collections.list(
-        // "2016 May 13 1003 com.ht.manga.gpanda.ser2"
-        // 2016 May 13 1205 com.adobe.reader.ser2
-        ClassLoader.getSystemResources("fixture_output_device1/2016 May 13 1240 ru.tubin.bp.ser2")));
+        ClassLoader.getSystemResources("fixture_output_device1/2016 Aug 19 2128 ru.tubin.bp.ser2")));
     final File fixtureFile = new File(fixtureURL.toURI());
 
 

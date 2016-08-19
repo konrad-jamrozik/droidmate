@@ -27,7 +27,7 @@ import java.nio.file.Path
  * The metadata to the run used for this fixture is located in directory located in the same dir as this fixture.
  * In addition, the run configuration is codified in IntelliJ run config of "fixture_monitoredSer2"
  */
-val fixture_monitoredSer2: Path by lazy { Resource("fixtures/serialized_results/2016 May 05 2257 org.droidmate.fixtures.apks.monitored.ser2").extractedPath }
+val fixture_monitoredSer2: Path by lazy { Resource("fixtures/serialized_results/2016 Aug 19 2128 ru.tubin.bp.ser2").extractedPath }
 val fixture_aaptBadgingDump: String by lazy { Resource("fixtures/f_aaptBadgingDump.txt").extractedText }
 
 // tsa == TestSubjectApp
