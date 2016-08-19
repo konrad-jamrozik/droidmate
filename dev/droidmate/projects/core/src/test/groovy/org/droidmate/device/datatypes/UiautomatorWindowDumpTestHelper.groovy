@@ -22,6 +22,7 @@ package org.droidmate.device.datatypes
 import groovy.transform.TypeChecked
 import org.droidmate.device.model.DeviceModel
 import org.droidmate.device.model.IDeviceModel
+import org.droidmate.tests.FixturesKt
 
 import java.awt.*
 
@@ -48,35 +49,35 @@ class UiautomatorWindowDumpTestHelper
 
   public static UiautomatorWindowDump newEmptyActivityWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_tsa_emptyAct, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName)
+    return new UiautomatorWindowDump(FixturesKt.windowDump_tsa_emptyAct, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName)
   }
 
   public static UiautomatorWindowDump newAppHasStoppedDialogWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_dialogbox, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName)
+    return new UiautomatorWindowDump(FixturesKt.windowDump_app_stopped_dialogbox, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName)
   }
 
   public static UiautomatorWindowDump newAppHasStoppedDialogOKDisabledWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_app_stopped_OK_disabled, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName)
+    return new UiautomatorWindowDump(FixturesKt.windowDump_app_stopped_OK_disabled, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName)
   }
 
 
   public static UiautomatorWindowDump newCompleteActionUsingWindowDump()
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_complActUsing_dialogbox, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName)
+    return new UiautomatorWindowDump(FixturesKt.windowDump_complActUsing_dialogbox, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName)
   }
 
 
   public static UiautomatorWindowDump newHomeScreenWindowDump(String id = null)
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_nexus7_home_screen, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName, id)
+    return new UiautomatorWindowDump(FixturesKt.windowDump_nexus7_home_screen, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName, id)
   }
 
 
   public static UiautomatorWindowDump newAppOutOfScopeWindowDump(String id = null)
   {
-    return new UiautomatorWindowDump(fixtures.windowDumps.f_chrome_offline, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName, id)
+    return new UiautomatorWindowDump(FixturesKt.windowDump_chrome_offline, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName, id)
   }
 
   //endregion Fixture dumps
