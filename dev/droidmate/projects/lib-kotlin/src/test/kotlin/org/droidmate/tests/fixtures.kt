@@ -21,11 +21,15 @@ package org.droidmate.tests
 import com.konradjamrozik.Resource
 import org.droidmate.extractedText
 
+// tsa == TestSubjectApp
+
 // @formatter:off
+val windowDump_nexus7_avd_raw          : String by lazy { Resource("fixtures/window_dumps/nexus7_2013_avd_api_23_home_raw.xml").extractedText }
+val windowDump_nexus7_avd_noframe      : String by lazy { Resource("fixtures/window_dumps/nexus7_2013_avd_api_23_home_dm_no_frame.xml").extractedText }
+// Older fixtures, migrated from :projects:core
 val windowDump_app_stopped_dialogbox   : String by lazy { Resource("fixtures/window_dumps/f_app_stopped_dialogbox_nexus7vert.xml").extractedText }
 val windowDump_app_stopped_OK_disabled : String by lazy { Resource("fixtures/window_dumps/f_app_stopped_OK_disabled.xml").extractedText }
 val windowDump_nexus7_home_screen      : String by lazy { Resource("fixtures/window_dumps/f_nexus7_home_screen.xml").extractedText }
-// tsa == TestSubjectApp
 val windowDump_tsa_mainAct             : String by lazy { Resource("fixtures/window_dumps/f_tsa_mainAct_4Jan14.xml").extractedText }
 val windowDump_tsa_emptyAct            : String by lazy { Resource("fixtures/window_dumps/f_tsa_empty_activity.xml").extractedText }
 val windowDump_tsa_1button             : String by lazy { Resource("fixtures/window_dumps/f_tsa_1button.xml").extractedText }
