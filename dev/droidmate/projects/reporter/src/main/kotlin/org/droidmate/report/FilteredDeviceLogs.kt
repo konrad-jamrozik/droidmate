@@ -153,7 +153,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
         false
     }
 
-    // KJA
+    // KJA possible redundancy
     //org.droidmate.report.FilteredDeviceLogs  Possibly redundant API call discovered: org.droidmate.monitor.Monitor.redir_org_apache_http_impl_client_AbstractHttpClient_execute3(Monitor.java:2164)
     //2016-08-19 21:28:21.407 WARN  org.droidmate.report.FilteredDeviceLogs  Possibly redundant API call discovered: org.droidmate.monitor.Monitor.redir_org_apache_http_impl_client_AbstractHttpClient_execute3(Monitor.java:2164)
     

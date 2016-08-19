@@ -63,8 +63,7 @@ class ApkSummaryTest {
       println(summaryString)
   }
 
-  // KJA failing test
-  // @Test
+   @Test
   fun buildsFromApkExplorationOutput2() {
   
     
