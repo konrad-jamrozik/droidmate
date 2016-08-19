@@ -33,6 +33,7 @@ Furthermore:
   - use DroidMate API from your Java project, with examples;
   - run DroidMate directly from built sources (this method is not recommended, use API instead); 
   - obtain input apks;
+  - prepare (`inline`) input apks to be compatible with DroidMate method call monitoring; 
   - configure the emulator.
 - `repo/DEVELOPING.md` explains how to: 
   - setup an IDE for DroidMate development;
