@@ -1,0 +1,4 @@
+This fixture is copied from
+dev\droidmate_usage_examples\src\test\resources\fixture_output_device1\
+
+To regenerate it, please run appropriate test in droidmate_usage_examples.
