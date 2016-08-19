@@ -1,0 +1,91 @@
+2016-08-19 21:58:39.524 TRACE o.d.e.actions.RunnableExplorationAction  RunnableResetAppExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device)
+2016-08-19 21:58:39.524 DEBUG o.d.e.a.RunnableResetAppExplorationAction 1. Clear package org.droidmate.fixtures.apks.monitored.
+2016-08-19 21:58:40.561 DEBUG o.d.e.a.RunnableResetAppExplorationAction 2. Clear logcat.
+2016-08-19 21:58:40.612 DEBUG o.d.e.a.RunnableResetAppExplorationAction 3. Ensure home screen is displayed.
+2016-08-19 21:58:40.706 DEBUG o.d.e.a.RunnableResetAppExplorationAction 4. Turn wifi on.
+2016-08-19 21:58:40.735 DEBUG o.d.e.a.RunnableResetAppExplorationAction 5. Get GUI snapshot to ensure device displays valid screen that is not "app has stopped" dialog box.
+2016-08-19 21:58:40.810 DEBUG o.d.e.a.RunnableResetAppExplorationAction 6. Ensure app is not running.
+2016-08-19 21:58:40.816 DEBUG o.d.e.a.RunnableResetAppExplorationAction 7. Launch app org.droidmate.fixtures.apks.monitored.
+2016-08-19 21:58:40.817 DEBUG o.d.exploration.device.RobustDevice      launchApp(org.droidmate.fixtures.apks.monitored)
+2016-08-19 21:58:44.873 DEBUG o.d.e.a.RunnableResetAppExplorationAction 8. Get GUI snapshot.
+2016-08-19 21:58:44.931 DEBUG o.d.e.a.RunnableResetAppExplorationAction 9. Try to read API logs.
+2016-08-19 21:58:44.947 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:44.982 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:58:44.985 TRACE o.d.e.actions.RunnableExplorationAction  RunnableResetAppExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device) - DONE
+2016-08-19 21:58:45.045 DEBUG o.d.e.strategy.ExplorationStrategy       decide(ExplorationActionRunResult{successful=true, snapshot=UiautomatorWindowDump{org.droidmate.fixtures.apks.monitored. Widgets# 16}, DeviceLogs{apiLogs#=0}, exception=N/A (lack of DeviceException)})
+2016-08-19 21:58:45.084 INFO  o.d.e.strategy.ExplorationStrategy       1/5 <ExplAct LC? 0 Wdgt:Button/"API: URL.openConnection()"/"org.droidmate.fixtures.apks.monitored:id/button_api"/[274,240]>
+2016-08-19 21:58:45.089 TRACE o.d.e.actions.RunnableExplorationAction  RunnableWidgetExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device)
+2016-08-19 21:58:45.089 DEBUG o.d.e.a.RunnableWidgetExplorationAction  1. Assert only background API logs are present, if any.
+2016-08-19 21:58:45.089 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:45.109 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:58:45.113 DEBUG o.d.e.a.RunnableWidgetExplorationAction  2. Perform widget click: <ExplAct LC? 0 Wdgt:Button/"API: URL.openConnection()"/"org.droidmate.fixtures.apks.monitored:id/button_api"/[274,240]>.
+2016-08-19 21:58:45.855 DEBUG o.d.e.a.RunnableWidgetExplorationAction  3. Read and clear API logs if any, then seal logs reading.
+2016-08-19 21:58:45.855 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:45.900 TRACE o.d.exploration.device.DeviceTimeDiff    computeDiff(device) result:
+Current time   : 2016-08-19 21:58:45.896
+Device time    : 2016-08-19 21:58:37.304
+Resulting diff : PT-8.592S
+2016-08-19 21:58:45.952 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 1
+2016-08-19 21:58:45.952 DEBUG o.d.e.a.RunnableWidgetExplorationAction  4. Get GUI snapshot.
+2016-08-19 21:58:46.030 TRACE o.d.e.actions.RunnableExplorationAction  RunnableWidgetExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device) - DONE
+2016-08-19 21:58:46.032 DEBUG o.d.e.strategy.ExplorationStrategy       decide(ExplorationActionRunResult{successful=true, snapshot=UiautomatorWindowDump{org.droidmate.fixtures.apks.monitored. Widgets# 16}, DeviceLogs{apiLogs#=1}, exception=N/A (lack of DeviceException)})
+2016-08-19 21:58:46.042 INFO  o.d.e.strategy.ExplorationStrategy       2/5 <ExplAct LC? 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]>
+2016-08-19 21:58:46.042 TRACE o.d.e.actions.RunnableExplorationAction  RunnableWidgetExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device)
+2016-08-19 21:58:46.042 DEBUG o.d.e.a.RunnableWidgetExplorationAction  1. Assert only background API logs are present, if any.
+2016-08-19 21:58:46.042 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:46.057 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:58:46.057 DEBUG o.d.e.a.RunnableWidgetExplorationAction  2. Perform widget click: <ExplAct LC? 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]>.
+2016-08-19 21:58:47.039 DEBUG o.d.e.a.RunnableWidgetExplorationAction  3. Read and clear API logs if any, then seal logs reading.
+2016-08-19 21:58:47.041 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:47.055 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:58:47.055 DEBUG o.d.e.a.RunnableWidgetExplorationAction  4. Get GUI snapshot.
+2016-08-19 21:58:47.134 TRACE o.d.e.actions.RunnableExplorationAction  RunnableWidgetExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device) - DONE
+2016-08-19 21:58:47.134 DEBUG o.d.e.strategy.ExplorationStrategy       decide(ExplorationActionRunResult{successful=true, snapshot=UiautomatorWindowDump{"Runtime permission" dialog box. Allow widget enabled: true}, DeviceLogs{apiLogs#=0}, exception=N/A (lack of DeviceException)})
+2016-08-19 21:58:47.138 INFO  o.d.e.strategy.ExplorationStrategy       3/5 <ExplAct LC? 0 Wdgt:Button/"Allow"/"com.android.packageinstaller:id/permission_allow_button"/[1046,1014]>
+2016-08-19 21:58:47.139 TRACE o.d.e.actions.RunnableExplorationAction  RunnableWidgetExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device)
+2016-08-19 21:58:47.139 DEBUG o.d.e.a.RunnableWidgetExplorationAction  1. Assert only background API logs are present, if any.
+2016-08-19 21:58:47.139 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:47.153 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:58:47.153 DEBUG o.d.e.a.RunnableWidgetExplorationAction  2. Perform widget click: <ExplAct LC? 0 Wdgt:Button/"Allow"/"com.android.packageinstaller:id/permission_allow_button"/[1046,1014]>.
+2016-08-19 21:58:47.892 DEBUG o.d.e.a.RunnableWidgetExplorationAction  3. Read and clear API logs if any, then seal logs reading.
+2016-08-19 21:58:47.892 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:47.906 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:58:47.906 DEBUG o.d.e.a.RunnableWidgetExplorationAction  4. Get GUI snapshot.
+2016-08-19 21:58:47.977 TRACE o.d.e.actions.RunnableExplorationAction  RunnableWidgetExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device) - DONE
+2016-08-19 21:58:47.978 DEBUG o.d.e.strategy.ExplorationStrategy       decide(ExplorationActionRunResult{successful=true, snapshot=UiautomatorWindowDump{org.droidmate.fixtures.apks.monitored. Widgets# 16}, DeviceLogs{apiLogs#=0}, exception=N/A (lack of DeviceException)})
+2016-08-19 21:58:47.981 INFO  o.d.e.strategy.ExplorationStrategy       4/5 <ExplAct LC? 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]>
+2016-08-19 21:58:47.982 TRACE o.d.e.actions.RunnableExplorationAction  RunnableWidgetExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device)
+2016-08-19 21:58:47.982 DEBUG o.d.e.a.RunnableWidgetExplorationAction  1. Assert only background API logs are present, if any.
+2016-08-19 21:58:47.982 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:47.995 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:58:47.996 DEBUG o.d.e.a.RunnableWidgetExplorationAction  2. Perform widget click: <ExplAct LC? 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]>.
+2016-08-19 21:58:48.174 DEBUG o.d.e.a.RunnableWidgetExplorationAction  3. Read and clear API logs if any, then seal logs reading.
+2016-08-19 21:58:48.174 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:48.222 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 1
+2016-08-19 21:58:48.222 DEBUG o.d.e.a.RunnableWidgetExplorationAction  4. Get GUI snapshot.
+2016-08-19 21:58:48.669 TRACE o.d.e.actions.RunnableExplorationAction  RunnableWidgetExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device) - DONE
+2016-08-19 21:58:48.669 DEBUG o.d.e.strategy.ExplorationStrategy       decide(ExplorationActionRunResult{successful=true, snapshot=UiautomatorWindowDump{org.droidmate.fixtures.apks.monitored. Widgets# 16}, DeviceLogs{apiLogs#=1}, exception=N/A (lack of DeviceException)})
+2016-08-19 21:58:48.671 INFO  o.d.e.strategy.ExplorationStrategy       5/5 <ExplAct LC? 0 Wdgt:Button/"Launch Activity 2"/"org.droidmate.fixtures.apks.monitored:id/button_activity2"/[274,432]>
+2016-08-19 21:58:48.672 TRACE o.d.e.actions.RunnableExplorationAction  RunnableWidgetExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device)
+2016-08-19 21:58:48.672 DEBUG o.d.e.a.RunnableWidgetExplorationAction  1. Assert only background API logs are present, if any.
+2016-08-19 21:58:48.672 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:48.684 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:58:48.684 DEBUG o.d.e.a.RunnableWidgetExplorationAction  2. Perform widget click: <ExplAct LC? 0 Wdgt:Button/"Launch Activity 2"/"org.droidmate.fixtures.apks.monitored:id/button_activity2"/[274,432]>.
+2016-08-19 21:58:49.871 DEBUG o.d.e.a.RunnableWidgetExplorationAction  3. Read and clear API logs if any, then seal logs reading.
+2016-08-19 21:58:49.871 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:49.884 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:58:49.884 DEBUG o.d.e.a.RunnableWidgetExplorationAction  4. Get GUI snapshot.
+2016-08-19 21:58:49.957 TRACE o.d.e.actions.RunnableExplorationAction  RunnableWidgetExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device) - DONE
+2016-08-19 21:58:49.958 DEBUG o.d.e.strategy.ExplorationStrategy       decide(ExplorationActionRunResult{successful=true, snapshot=UiautomatorWindowDump{org.droidmate.fixtures.apks.monitored. Widgets# 14}, DeviceLogs{apiLogs#=0}, exception=N/A (lack of DeviceException)})
+2016-08-19 21:58:49.959 INFO  o.d.e.strategy.ExplorationStrategy       Terminating exploration: No actions left.
+2016-08-19 21:58:49.964 INFO  o.d.e.strategy.ExplorationStrategy       <ExplAct Terminate exploration>
+2016-08-19 21:58:49.968 TRACE o.d.e.actions.RunnableExplorationAction  RunnableTerminateExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device)
+2016-08-19 21:58:49.968 DEBUG o.d.e.a.RunnableTerminateExplorationAction 1. Read background API logs, if any.
+2016-08-19 21:58:49.968 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:58:49.982 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:58:49.982 DEBUG o.d.e.a.RunnableTerminateExplorationAction 2. Close monitor servers, if any.
+2016-08-19 21:58:49.998 DEBUG o.d.e.a.RunnableTerminateExplorationAction 3. Clear package org.droidmate.fixtures.apks.monitored}.
+2016-08-19 21:58:51.273 DEBUG o.d.e.a.RunnableTerminateExplorationAction 4. Assert app is not running.
+2016-08-19 21:58:51.281 DEBUG o.d.e.a.RunnableTerminateExplorationAction 5. Ensure home screen is displayed.
+2016-08-19 21:58:51.840 TRACE o.d.e.actions.RunnableExplorationAction  RunnableTerminateExplorationAction.performDeviceActions(app=MonitoredApkFixture_api23-debug-inlined.apk, device) - DONE
+2016-08-19 21:59:00.852 INFO  o.d.e.d.ExplorationOutput2               Deserialized exploration output of org.droidmate.fixtures.apks.monitored from temp_dir_for_tests\2016 Aug 19 2158 org.droidmate.fixtures.apks.monitored.ser2

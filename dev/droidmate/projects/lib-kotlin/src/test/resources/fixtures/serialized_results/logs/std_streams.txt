@@ -1,0 +1,36 @@
+2016-08-19 21:58:25.875 INFO  o.d.configuration.ConfigurationBuilder   Using uiautomator-daemon.jar located at C:\my\local\repos\github\droidmate\dev\droidmate\temp_extracted_resources\uiautomator-daemon.jar
+2016-08-19 21:58:25.878 INFO  o.d.configuration.ConfigurationBuilder   Using uiautomator2-daemon.apk located at C:\my\local\repos\github\droidmate\dev\droidmate\temp_extracted_resources\uiautomator2-daemon.apk
+2016-08-19 21:58:25.885 INFO  o.d.configuration.ConfigurationBuilder   Using uiautomator2-daemon-test.apk located at C:\my\local\repos\github\droidmate\dev\droidmate\temp_extracted_resources\uiautomator2-daemon-test.apk
+2016-08-19 21:58:25.891 INFO  o.d.configuration.ConfigurationBuilder   Using monitor_api19.apk located at C:\my\local\repos\github\droidmate\dev\droidmate\temp_extracted_resources\monitor_api19.apk
+2016-08-19 21:58:25.899 INFO  o.d.configuration.ConfigurationBuilder   Using monitor_api23.apk located at C:\my\local\repos\github\droidmate\dev\droidmate\temp_extracted_resources\monitor_api23.apk
+2016-08-19 21:58:26.120 INFO  org.droidmate.frontend.DroidmateFrontend Bootstrapping DroidMate: building Configuration from args and instantiating objects for DroidmateCommand.
+2016-08-19 21:58:26.120 INFO  org.droidmate.frontend.DroidmateFrontend IMPORTANT: for help on how to configure DroidMate, run it with -help
+2016-08-19 21:58:26.121 INFO  org.droidmate.frontend.DroidmateFrontend IMPORTANT: for detailed logs from DroidMate run, please see .\temp_dir_for_tests/logs.
+2016-08-19 21:58:26.263 INFO  org.droidmate.frontend.DroidmateFrontend Successfully instantiated ExploreCommand. Welcome to DroidMate. Lie back, relax and enjoy.
+2016-08-19 21:58:26.265 INFO  org.droidmate.frontend.DroidmateFrontend Run start timestamp: Fri Aug 19 21:58:26 CEST 2016
+2016-08-19 21:58:26.269 INFO  org.droidmate.tools.ApksProvider         Reading input apks from C:\my\local\repos\github\droidmate\dev\droidmate\projects\core\build\resources\test\fixtures\apks
+2016-08-19 21:58:26.475 INFO  o.droidmate.tools.AndroidDeviceDeployer  Setup device with deviceIndex of 0
+2016-08-19 21:58:35.564 INFO  org.droidmate.command.ExploreCommand     Processing 1 out of 1 apks: MonitoredApkFixture_api23-debug-inlined.apk
+2016-08-19 21:58:35.622 INFO  org.droidmate.tools.ApkDeployer          Reinstalling MonitoredApkFixture_api23-debug-inlined.apk
+2016-08-19 21:58:38.169 INFO  o.d.command.exploration.Exploration      run(org.droidmate.fixtures.apks.monitored, device)
+2016-08-19 21:58:39.498 INFO  o.d.command.exploration.Exploration      Initial action: <ExplAct Reset app>
+2016-08-19 21:58:45.084 INFO  o.d.e.strategy.ExplorationStrategy       1/5 <ExplAct LC? 0 Wdgt:Button/"API: URL.openConnection()"/"org.droidmate.fixtures.apks.monitored:id/button_api"/[274,240]>
+2016-08-19 21:58:46.042 INFO  o.d.e.strategy.ExplorationStrategy       2/5 <ExplAct LC? 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]>
+2016-08-19 21:58:47.138 INFO  o.d.e.strategy.ExplorationStrategy       3/5 <ExplAct LC? 0 Wdgt:Button/"Allow"/"com.android.packageinstaller:id/permission_allow_button"/[1046,1014]>
+2016-08-19 21:58:47.981 INFO  o.d.e.strategy.ExplorationStrategy       4/5 <ExplAct LC? 0 Wdgt:Button/"API: Camera.open()"/"org.droidmate.fixtures.apks.monitored:id/button_camera"/[274,336]>
+2016-08-19 21:58:48.671 INFO  o.d.e.strategy.ExplorationStrategy       5/5 <ExplAct LC? 0 Wdgt:Button/"Launch Activity 2"/"org.droidmate.fixtures.apks.monitored:id/button_activity2"/[274,432]>
+2016-08-19 21:58:49.959 INFO  o.d.e.strategy.ExplorationStrategy       Terminating exploration: No actions left.
+2016-08-19 21:58:49.964 INFO  o.d.e.strategy.ExplorationStrategy       <ExplAct Terminate exploration>
+2016-08-19 21:58:51.860 INFO  org.droidmate.storage.Storage2           Serializing ApkExplorationOutput2 to temp_dir_for_tests\2016 Aug 19 2158 org.droidmate.fixtures.apks.monitored.ser2
+2016-08-19 21:58:51.936 INFO  org.droidmate.tools.ApkDeployer          Uninstalling MonitoredApkFixture_api23-debug-inlined.apk
+2016-08-19 21:59:00.549 INFO  org.droidmate.report.TabularDataReport   Writing out table report for MonitoredApkFixture_api23-debug-inlined.apk
+2016-08-19 21:59:00.621 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.txt
+2016-08-19 21:59:00.633 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_clickFrequency.txt
+2016-08-19 21:59:00.659 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.txt
+2016-08-19 21:59:00.670 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.pdf
+2016-08-19 21:59:00.743 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.pdf
+2016-08-19 21:59:00.804 INFO  org.droidmate.frontend.DroidmateFrontend DroidMate run finished successfully.
+2016-08-19 21:59:00.806 INFO  org.droidmate.frontend.DroidmateFrontend Run finish timestamp: 2016 Aug 19 21:59:00. DroidMate ran for 34.688 seconds.
+2016-08-19 21:59:00.806 INFO  org.droidmate.frontend.DroidmateFrontend By default, the results from the run can be found in .\output_device1 directory.
+2016-08-19 21:59:00.806 INFO  org.droidmate.frontend.DroidmateFrontend By default, for detailed diagnostics logs from the run, see .\temp_dir_for_tests/logs directory.
+2016-08-19 21:59:00.852 INFO  o.d.e.d.ExplorationOutput2               Deserialized exploration output of org.droidmate.fixtures.apks.monitored from temp_dir_for_tests\2016 Aug 19 2158 org.droidmate.fixtures.apks.monitored.ser2

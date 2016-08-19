@@ -1,0 +1,126 @@
+--------- beginning of main
+08-19 21:58:25.799 I/art     (17786): Late-enabling -Xcheck:jni
+08-19 21:58:25.840 W/System  (17786): ClassLoader referenced unknown path: /data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test-1/lib/arm
+08-19 21:58:25.841 W/System  (17786): ClassLoader referenced unknown path: /data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon-1/lib/arm
+08-19 21:58:25.863 I/MonitoringInstrumentation(17786): Instrumentation Started!
+08-19 21:58:25.865 I/MonitoringInstrumentation(17786): Setting context classloader to 'dalvik.system.PathClassLoader[DexPathList[[zip file "/system/framework/android.test.runner.jar", zip file "/data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test-1/base.apk", zip file "/data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon-1/base.apk"],nativeLibraryDirectories=[/data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test-1/lib/arm, /data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon-1/lib/arm, /vendor/lib, /system/lib]]]', Original: 'dalvik.system.PathClassLoader[DexPathList[[zip file "/system/framework/android.test.runner.jar", zip file "/data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test-1/base.apk", zip file "/data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon-1/base.apk"],nativeLibraryDirectories=[/data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test-1/lib/arm, /data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon-1/lib/arm, /vendor/lib, /system/lib]]]'
+08-19 21:58:25.867 I/MonitoringInstrumentation(17786): No JSBridge.
+08-19 21:58:25.880 I/UsageTrackerFacilitator(17786): Usage tracking enabled
+08-19 21:58:25.881 I/TestRequestBuilder(17786): Scanning classpath to find tests in apks [/data/app/org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test-1/base.apk]
+08-19 21:58:26.811 D/TestExecutor(17786): Adding listener android.support.test.internal.runner.listener.LogRunListener
+08-19 21:58:26.813 D/TestExecutor(17786): Adding listener android.support.test.internal.runner.listener.InstrumentationResultPrinter
+08-19 21:58:26.813 D/TestExecutor(17786): Adding listener android.support.test.internal.runner.listener.ActivityFinisherRunListener
+08-19 21:58:26.816 I/TestRunner(17786): run started: 1 tests
+08-19 21:58:26.818 I/TestRunner(17786): started: init(org.droidmate.uiautomator2daemon.UiAutomator2DaemonTest)
+08-19 21:58:26.820 I/MonitoringInstrumentation(17786): Activities that are still in CREATED to STOPPED: 0
+08-19 21:58:26.821 W/droidmate/uiad(17786): wait_for_gui_to_stabilize=true
+08-19 21:58:26.821 W/droidmate/uiad(17786): wait_for_window_update_timeout=50
+08-19 21:58:26.821 W/droidmate/uiad(17786): uiadaemon_server_tcp_port=59800
+08-19 21:58:26.822 D/droidmate/uiad(17786): Logging logcat to: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/droidmate_logcat.txt
+08-19 21:58:26.862 D/droidmate/uiad(17786): uiAutomatorDaemonServer.start(59800)
+08-19 21:58:26.863 D/droidmate/server(17786): new ServerSocket(59800)
+08-19 21:58:26.864 I/uiautomator-daemon_server_start_tag(17786): UiAutomator Daemon server started successfully
+08-19 21:58:26.864 D/droidmate/uiad(17786): uiAutomatorDaemonServer.start(59800) / SUCCESS
+08-19 21:58:26.864 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:26.959 D/droidmate/uiad(17786): getDeviceModel()
+08-19 21:58:26.959 D/droidmate/uiad(17786): Device model: asus-Nexus 7
+08-19 21:58:26.963 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:30.595 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:30.596 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:30.596 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:30.596 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:30.596 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:30.648 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:30.662 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:32.033 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:32.033 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:32.033 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:32.033 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:32.033 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:32.091 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:32.098 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:32.143 D/droidmate/uiad(17786): Ensuring WiFi is turned on.
+08-19 21:58:32.148 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:32.154 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:32.154 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:32.154 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:32.155 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:32.155 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:32.198 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:32.205 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:35.920 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:35.920 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:35.921 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:35.922 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:35.922 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:36.261 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:36.269 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:36.293 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:36.293 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:36.293 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:36.294 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:36.294 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:36.323 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:36.330 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:36.559 D/droidmate/uiad(17786): Clicking on (x,y) coordinates of (274,240)
+08-19 21:58:36.566 D/InteractionController(17786): clickNoSync (274, 240)
+08-19 21:58:37.264 D/droidmate/uiad(17786): GUI stabilized after 2 iterations / 574ms
+08-19 21:58:37.267 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:37.374 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:37.374 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:37.374 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:37.375 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:37.375 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:37.418 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:37.426 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:37.484 D/droidmate/uiad(17786): Clicking on (x,y) coordinates of (274,336)
+08-19 21:58:37.486 D/InteractionController(17786): clickNoSync (274, 336)
+08-19 21:58:38.449 D/droidmate/uiad(17786): GUI stabilized after 2 iterations / 857ms
+08-19 21:58:38.453 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:38.477 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:38.477 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:38.477 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:38.478 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:38.478 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:38.519 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:38.526 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:38.578 D/droidmate/uiad(17786): Clicking on (x,y) coordinates of (1046,1014)
+08-19 21:58:38.581 D/InteractionController(17786): clickNoSync (1046, 1014)
+08-19 21:58:39.301 D/droidmate/uiad(17786): GUI stabilized after 2 iterations / 614ms
+08-19 21:58:39.304 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:39.327 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:39.327 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:39.327 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:39.328 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:39.328 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:39.370 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:39.379 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:39.421 D/droidmate/uiad(17786): Clicking on (x,y) coordinates of (274,336)
+08-19 21:58:39.423 D/InteractionController(17786): clickNoSync (274, 336)
+08-19 21:58:39.581 D/droidmate/uiad(17786): GUI stabilized after 1 iterations / 50ms
+08-19 21:58:39.586 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:39.646 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:39.646 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:39.646 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:39.647 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:39.647 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:40.062 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:40.069 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:40.107 D/droidmate/uiad(17786): Clicking on (x,y) coordinates of (274,432)
+08-19 21:58:40.109 D/InteractionController(17786): clickNoSync (274, 432)
+08-19 21:58:41.279 D/droidmate/uiad(17786): GUI stabilized after 1 iterations / 1065ms
+08-19 21:58:41.282 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:41.306 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:41.306 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:41.306 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:41.307 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:41.307 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:41.348 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:41.359 D/droidmate/server(17786): serverSocket.accept(59800)
+08-19 21:58:42.701 D/droidmate/uiad(17786): Getting window hierarchy dump
+08-19 21:58:42.701 D/droidmate/uiad(17786): Dump data directory: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files
+08-19 21:58:42.701 D/droidmate/uiad(17786): Dump data file: /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml
+08-19 21:58:42.701 D/droidmate/uiad(17786): Trying to create dump file '/data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/window_hierarchy_dump.xml'
+08-19 21:58:42.701 D/droidmate/uiad(17786): Executing dump
+08-19 21:58:43.234 D/droidmate/uiad(17786): Dump executed
+08-19 21:58:43.240 D/droidmate/server(17786): serverSocket.accept(59800)

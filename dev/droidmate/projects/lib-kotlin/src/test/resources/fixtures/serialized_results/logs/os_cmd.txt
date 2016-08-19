@@ -1,0 +1,30 @@
+"C:\Program Files (x86)\Android\android-sdk\build-tools\23.0.3\aapt.exe" dump badging "C:\my\local\repos\github\droidmate\dev\droidmate\projects\core\build\resources\test\fixtures\apks\MonitoredApkFixture_api23-debug-inlined.apk"
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" devices
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 shell run-as org.droidmate.uiautomator2daemon.UiAutomator2Daemon rm /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/droidmate_logcat.txt
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 logcat -c
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 install -r "C:\my\local\repos\github\droidmate\dev\droidmate\temp_extracted_resources\uiautomator2-daemon.apk"
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 install -r "C:\my\local\repos\github\droidmate\dev\droidmate\temp_extracted_resources\uiautomator2-daemon-test.apk"
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 push "C:\my\local\repos\github\droidmate\dev\droidmate\temp_extracted_resources\monitor_api23.apk" /data/local/tmp/monitor.apk
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 forward tcp:59800 tcp:59800
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 forward tcp:59701 tcp:59701
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 forward tcp:59702 tcp:59702
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 forward tcp:59703 tcp:59703
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 forward tcp:59704 tcp:59704
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 shell am instrument --user 0 -e wait_for_gui_to_stabilize true -e wait_for_window_update_timeout 50 -e uiadaemon_server_tcp_port 59800 -w org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test/android.support.test.runner.AndroidJUnitRunner
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 logcat -d -b main -v time *:s uiautomator-daemon_server_start_tag
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 logcat -c
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 uninstall org.droidmate.fixtures.apks.monitored
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 install -r "C:\my\local\repos\github\droidmate\dev\droidmate\projects\core\build\resources\test\fixtures\apks\MonitoredApkFixture_api23-debug-inlined.apk"
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 shell pm list packages org.droidmate.fixtures.apks.monitored
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 shell pm clear org.droidmate.fixtures.apks.monitored
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 logcat -c
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 shell am start -W -S -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n org.droidmate.fixtures.apks.monitored/org.droidmate.fixtures.apks.monitored.Activity1
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 shell pm clear org.droidmate.fixtures.apks.monitored
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" devices
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 shell pm clear org.droidmate.fixtures.apks.monitored
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 uninstall org.droidmate.fixtures.apks.monitored
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" devices
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 exec-out run-as org.droidmate.uiautomator2daemon.UiAutomator2Daemon cat /data/user/0/org.droidmate.uiautomator2daemon.UiAutomator2Daemon/files/droidmate_logcat.txt
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon
+"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -s 079fc239 shell rm /data/local/tmp/monitor.apk
