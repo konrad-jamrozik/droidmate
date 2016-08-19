@@ -28,9 +28,6 @@ import org.droidmate.configuration.Configuration
 import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.SysCmdExecutor
 
-import java.nio.file.Path
-import java.nio.file.Paths
-
 /**
  * <p>
  * This class provides access to fixtures located on the file system, like apks, windows dumps, etc.
@@ -41,8 +38,10 @@ class FilesystemTestFixtures
 {
   public static String apkFixture_simple_packageName                     = "org.droidmate.fixtures.apks.simple"
 
-  public final ApkFixtures        apks
-
+  public final Apk gui
+  public final Apk monitoredInlined_api19
+  public final Apk monitoredInlined_api23
+  
   static FilesystemTestFixtures build()
   {
     return new FilesystemTestFixtures(new AaptWrapper(Configuration.default, new SysCmdExecutor()))
@@ -50,22 +49,9 @@ class FilesystemTestFixtures
 
   FilesystemTestFixtures(IAaptWrapper aapt)
   {
-    apks = new ApkFixtures(aapt)
+    gui = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/GuiApkFixture-debug.apk")))
+    monitoredInlined_api19 = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api19_name}")))
+    monitoredInlined_api23 = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api23_name}")))
 
-  }
-
-  public class ApkFixtures
-  {
-
-    public final Apk gui
-    public final Apk monitoredInlined_api19
-    public final Apk monitoredInlined_api23
-
-    ApkFixtures(IAaptWrapper aapt)
-    {
-      gui = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/GuiApkFixture-debug.apk")))
-      monitoredInlined_api19 = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api19_name}")))
-      monitoredInlined_api23 = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api23_name}")))
-    }
   }
 }
