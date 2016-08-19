@@ -19,7 +19,7 @@
 package org.droidmate.report
 
 import org.droidmate.exceptions.DeviceExceptionMissing
-import org.droidmate.test_base.FilesystemTestFixtures
+import org.droidmate.tests.fixture_monitoredSer2
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.containsString
 import org.junit.Test
@@ -64,10 +64,11 @@ class ApkSummaryTest {
   }
 
   // KJA also rebuild fixture for usage examples
-  // @Test KJA broken, reconstruct f_monitoredSer2
+  // @Test KJA broken, reconstruct fixture_monitoredSer2
   fun buildsFromApkExplorationOutput2() {
   
-    val serExplOutput2: Path = FilesystemTestFixtures.build().f_monitoredSer2
+    
+    val serExplOutput2: Path = fixture_monitoredSer2
     val explOut2 = OutputDir(serExplOutput2.parent).notEmptyExplorationOutput2
 
     // Act

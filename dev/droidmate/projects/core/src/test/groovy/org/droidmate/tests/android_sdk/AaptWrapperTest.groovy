@@ -25,6 +25,7 @@ import org.droidmate.android_sdk.Apk
 import org.droidmate.misc.SysCmdExecutor
 import org.droidmate.configuration.Configuration
 import org.droidmate.test_base.DroidmateGroovyTestCase
+import org.droidmate.tests.FixturesKt
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -71,7 +72,7 @@ public class AaptWrapperTest extends DroidmateGroovyTestCase
   //region Helper methods
   private static String getAaptBadgingDump()
   {
-    String aaptBadgingDump = fixtures.f_aaptBadgingDump
+    String aaptBadgingDump = FixturesKt.fixture_aaptBadgingDump
     assert aaptBadgingDump.contains("package: name='com.box.android'")
     assert aaptBadgingDump.contains("launchable-activity: name='com.box.android.activities.SplashScreenActivity'")
     return aaptBadgingDump

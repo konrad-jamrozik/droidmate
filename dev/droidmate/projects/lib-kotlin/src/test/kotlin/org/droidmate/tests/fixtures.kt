@@ -19,7 +19,16 @@
 package org.droidmate.tests
 
 import com.konradjamrozik.Resource
+import org.droidmate.extractedPath
 import org.droidmate.extractedText
+import java.nio.file.Path
+
+/**
+ * The metadata to the run used for this fixture is located in directory located in the same dir as this fixture.
+ * In addition, the run configuration is codified in IntelliJ run config of "fixture_monitoredSer2"
+ */
+val fixture_monitoredSer2: Path by lazy { Resource("fixtures/serialized_results/2016 May 05 2257 org.droidmate.fixtures.apks.monitored.ser2").extractedPath }
+val fixture_aaptBadgingDump: String by lazy { Resource("fixtures/f_aaptBadgingDump.txt").extractedText }
 
 // tsa == TestSubjectApp
 
@@ -36,3 +45,4 @@ val windowDump_tsa_1button             : String by lazy { Resource("fixtures/win
 val windowDump_chrome_offline          : String by lazy { Resource("fixtures/window_dumps/f_chrome_offline_nexus7vert.xml").extractedText }
 val windowDump_complActUsing_dialogbox : String by lazy { Resource("fixtures/window_dumps/f_complete_action_using.xml").extractedText }
 // @formatter:on
+
