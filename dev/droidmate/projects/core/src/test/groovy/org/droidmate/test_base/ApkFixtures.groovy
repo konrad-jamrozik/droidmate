@@ -34,7 +34,7 @@ import org.droidmate.misc.SysCmdExecutor
  *
  * </p>
  */
-class FilesystemTestFixtures
+class ApkFixtures
 {
   public static String apkFixture_simple_packageName                     = "org.droidmate.fixtures.apks.simple"
 
@@ -42,12 +42,12 @@ class FilesystemTestFixtures
   public final Apk monitoredInlined_api19
   public final Apk monitoredInlined_api23
   
-  static FilesystemTestFixtures build()
+  static ApkFixtures build()
   {
-    return new FilesystemTestFixtures(new AaptWrapper(Configuration.default, new SysCmdExecutor()))
+    return new ApkFixtures(new AaptWrapper(Configuration.default, new SysCmdExecutor()))
   }
 
-  FilesystemTestFixtures(IAaptWrapper aapt)
+  ApkFixtures(IAaptWrapper aapt)
   {
     gui = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/GuiApkFixture-debug.apk")))
     monitoredInlined_api19 = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api19_name}")))

@@ -29,7 +29,7 @@ import org.droidmate.exploration.actions.IExplorationActionRunResult
 import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2Builder
 import org.droidmate.test_base.DroidmateGroovyTestCase
-import org.droidmate.test_base.FilesystemTestFixtures
+import org.droidmate.test_base.ApkFixtures
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -128,7 +128,7 @@ class ExplorationStrategyTest extends DroidmateGroovyTestCase
   {
     def strategy = getStrategy(/* actionsLimit */ 3, /* resetEveryNthExplorationForward */ 1
     )
-    def gs = newGuiStateWithWidgets(3, FilesystemTestFixtures.apkFixture_simple_packageName)
+    def gs = newGuiStateWithWidgets(3, ApkFixtures.apkFixture_simple_packageName)
 
     verifyProcessOnGuiStateReturnsResetExplorationAction(strategy, gs)
     verifyProcessOnGuiStateReturnsResetExplorationAction(strategy, gs)
@@ -141,7 +141,7 @@ class ExplorationStrategyTest extends DroidmateGroovyTestCase
   {
     def strategy = getStrategy(/* actionsLimit */ 8, /* resetEveryNthExplorationForward */ 3
     )
-    def gs = newGuiStateWithWidgets(3, FilesystemTestFixtures.apkFixture_simple_packageName)
+    def gs = newGuiStateWithWidgets(3, ApkFixtures.apkFixture_simple_packageName)
     def egs = newGuiStateWithTopLevelNodeOnly()
 
     verifyProcessOnGuiStateReturnsWidgetExplorationAction(strategy, gs) // 1st exploration forward: widget click
@@ -170,7 +170,7 @@ class ExplorationStrategyTest extends DroidmateGroovyTestCase
   static IExplorationActionRunResult newResultFromGuiState(GuiState guiState)
   {
     def builder = new ExplorationOutput2Builder()
-    return builder.buildActionResult([guiSnapshot: UiautomatorWindowDumpTestHelper.fromGuiState(guiState), packageName: FilesystemTestFixtures.apkFixture_simple_packageName])
+    return builder.buildActionResult([guiSnapshot: UiautomatorWindowDumpTestHelper.fromGuiState(guiState), packageName: ApkFixtures.apkFixture_simple_packageName])
   }
 
   private static void verifyProcessOnGuiStateReturnsWidgetExplorationAction(
