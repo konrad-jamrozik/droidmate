@@ -24,6 +24,7 @@ import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
 import org.droidmate.misc.SysCmdExecutor
 import org.droidmate.configuration.Configuration
+import org.droidmate.test_base.ApkFixtures
 import org.droidmate.test_base.DroidmateGroovyTestCase
 import org.droidmate.tests.FixturesKt
 import org.junit.FixMethodOrder
@@ -61,7 +62,7 @@ public class AaptWrapperTest extends DroidmateGroovyTestCase
     AaptWrapper sut = new AaptWrapper(Configuration.default, new SysCmdExecutor())
     sut.metaClass.aaptDumpBadging = {Path _ -> aaptBadgingDump}
 
-    Apk ignoredApk = fixtures.monitoredInlined_api19
+    Apk ignoredApk = ApkFixtures.build().monitoredInlined_api19
 
     // Act
     String launchableActivityName = sut.getLaunchableActivityComponentName(Paths.get(ignoredApk.absolutePath))

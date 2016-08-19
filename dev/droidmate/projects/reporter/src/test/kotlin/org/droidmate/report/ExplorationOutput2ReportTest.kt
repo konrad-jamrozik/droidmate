@@ -21,7 +21,6 @@ package org.droidmate.report
 import org.droidmate.*
 import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
-import org.droidmate.test_base.FilesystemTestFixtures
 import org.droidmate.tests.fixture_monitoredSer2
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*

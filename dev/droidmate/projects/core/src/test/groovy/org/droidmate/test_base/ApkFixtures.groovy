@@ -28,15 +28,9 @@ import org.droidmate.configuration.Configuration
 import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.SysCmdExecutor
 
-/**
- * <p>
- * This class provides access to fixtures located on the file system, like apks, windows dumps, etc.
- *
- * </p>
- */
 class ApkFixtures
 {
-  public static String apkFixture_simple_packageName                     = "org.droidmate.fixtures.apks.simple"
+  public static String apkFixture_simple_packageName = "org.droidmate.fixtures.apks.simple"
 
   public final Apk gui
   public final Apk monitoredInlined_api19
@@ -52,6 +46,5 @@ class ApkFixtures
     gui = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/GuiApkFixture-debug.apk")))
     monitoredInlined_api19 = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api19_name}")))
     monitoredInlined_api23 = Apk.build(aapt, Extensions_ResourceKt.getExtractedPath(new Resource("${BuildConstants.apk_fixtures}/${BuildConstants.monitored_inlined_apk_fixture_api23_name}")))
-
   }
 }
