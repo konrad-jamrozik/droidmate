@@ -18,28 +18,7 @@
 // web: www.droidmate.org
 import org.droidmate.buildsrc.BuildKt
 
-test.configure {
-
-  /* The tests have to be run from root project dir (droidmate) for the classpaths to be properly resolved.
- 
-   API reference:
-   workingDir  http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.testing.Test.html
-   rootDir     http://www.gradle.org/docs/current/dsl/org.gradle.api.Project.html
-   */
-  workingDir rootDir
-
-  /* Lurking bug: GRADLE-1682.
-
-  Currently the bug doesn't manifest itself, but if you run into "superClassName is empty", you bumped into it.
-
-  Reference:
-  http://stackoverflow.com/questions/14814837/gradle-test-fails-with-error
-  http://stackoverflow.com/questions/11129401/debug-gradle-plugins-with-intellij/11129708#11129708
-  http://issues.gradle.org/browse/GRADLE-1682
-  */
-  includes = ['**/FastRegressionTestSuite.class']
-
-}
+configureTest(project, ['**/FastRegressionTestSuite.class'])
 
 evaluationDependsOn(":projects:core")
 SourceDirectorySet testResDirs = project(":projects:core").sourceSets.test.resources

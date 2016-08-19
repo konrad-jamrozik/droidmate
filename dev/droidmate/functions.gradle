@@ -104,9 +104,17 @@ subprojects {
        */
       workingDir rootDir
 
-      /* Lurking bug: GRADLE-1682. */
+      /* Lurking bug: GRADLE-1682.
+      
+      Currently the bug doesn't manifest itself, but if you run into "superClassName is empty", you bumped into it.
+      
+      Reference:
+      http://stackoverflow.com/questions/14814837/gradle-test-fails-with-error
+      http://stackoverflow.com/questions/11129401/debug-gradle-plugins-with-intellij/11129708#11129708
+      http://issues.gradle.org/browse/GRADLE-1682
+      Workaround: http://stackoverflow.com/a/14947906/986533
+      */
       includes = includedTests
-
     }
   }
 }
