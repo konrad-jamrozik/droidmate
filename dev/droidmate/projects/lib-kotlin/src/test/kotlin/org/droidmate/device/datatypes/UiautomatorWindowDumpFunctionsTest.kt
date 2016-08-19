@@ -20,6 +20,8 @@
 package org.droidmate.device.datatypes
 
 import com.konradjamrozik.Resource
+import org.droidmate.tests.windowDump_nexus7_avd_noframe
+import org.droidmate.tests.windowDump_nexus7_avd_raw
 import org.junit.Test
 import org.w3c.dom.Attr
 import org.w3c.dom.Node
@@ -38,14 +40,11 @@ class UiautomatorWindowDumpFunctionsTest {
   @Test
   fun strips_avd_frame_from_gui_dump() {
 
-    val dump_with_frame = Resource("fixtures/window_dumps/nexus7_2013_avd_api_23_home_dm_no_frame.xml").text
-    val dump_raw = Resource("fixtures/window_dumps/nexus7_2013_avd_api_23_home_raw.xml").text
-
     // Act 
-    val stripped_frame = stripAVDframe(dump_with_frame)
+    val stripped_frame = stripAVDframe(windowDump_nexus7_avd_noframe)
 
     val diff = org.xmlunit.builder.DiffBuilder
-      .compare(Input.fromString(dump_raw))
+      .compare(Input.fromString(windowDump_nexus7_avd_raw))
       .withTest(Input.fromString(stripped_frame))
       .withAttributeFilter { attr: Attr -> attr.name != "bounds" }
       .withNodeFilter { node: Node -> depth(node) <= 9 }
