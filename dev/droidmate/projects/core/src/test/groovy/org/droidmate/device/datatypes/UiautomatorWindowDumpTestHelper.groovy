@@ -27,8 +27,7 @@ import org.droidmate.tests.FixturesKt
 import java.awt.*
 
 import static groovy.transform.TypeCheckingMode.SKIP
-import static org.droidmate.test_base.DroidmateGroovyTestCase.fixtures
-import static org.droidmate.test_base.FilesystemTestFixtures.apkFixture_simple_packageName
+import static org.droidmate.test_base.ApkFixtures.apkFixture_simple_packageName
 
 @TypeChecked(SKIP)
 class UiautomatorWindowDumpTestHelper

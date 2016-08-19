@@ -30,7 +30,7 @@ import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
-import org.droidmate.test_base.FilesystemTestFixtures
+import org.droidmate.test_base.ApkFixtures
 
 import java.nio.file.Path
 import java.time.LocalDateTime
@@ -57,7 +57,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
    */
   AndroidDeviceSimulator(
     ITimeGenerator timeGenerator,
-    List<String> pkgNames = [FilesystemTestFixtures.apkFixture_simple_packageName],
+    List<String> pkgNames = [ApkFixtures.apkFixture_simple_packageName],
     String spec,
     List<IExceptionSpec> exceptionSpecs = [],
     boolean unreliableSimulation = false)
