@@ -32,6 +32,6 @@ val Resource.extractedPathString: String get() {
   return this.extractedPath.toString()
 }
 
-val Resource.text: String get() {
-  return this.extractedPath.text
+val Resource.extractedText: String get() {
+  return extractedPath.text
 }
