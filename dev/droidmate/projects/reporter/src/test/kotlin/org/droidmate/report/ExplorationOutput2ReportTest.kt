@@ -18,13 +18,10 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
+import org.droidmate.*
 import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
-import org.droidmate.dir
-import org.droidmate.fileNames
 import org.droidmate.test_base.FilesystemTestFixtures
-import org.droidmate.text
-import org.droidmate.withFiles
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.Test

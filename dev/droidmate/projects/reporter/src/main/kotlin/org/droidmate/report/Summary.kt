@@ -20,8 +20,7 @@ package org.droidmate.report
 
 import com.konradjamrozik.Resource
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.extractedPath
-import org.droidmate.text
+import org.droidmate.extractedText
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -35,7 +34,7 @@ class Summary(val data: List<IApkExplorationOutput2>, file: Path): DataFile(file
     if (data.isEmpty())
       "Exploration output was empty (no apks), so this summary is empty."
     else
-      Resource("apk_exploration_summary_header.txt").extractedPath.text + data.joinToString { it -> ApkSummary.build(it) }
+      Resource("apk_exploration_summary_header.txt").extractedText + data.joinToString { it -> ApkSummary.build(it) }
   }
 
 }
