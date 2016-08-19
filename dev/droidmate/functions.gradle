@@ -1,0 +1,69 @@
+// DroidMate, an automated execution generator for Android apps.
+// Copyright (C) 2012-2016 Konrad Jamrozik
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// email: jamrozik@st.cs.uni-saarland.de
+// web: www.droidmate.org
+
+// Author: Konrad Jamrozik, github.com/konrad-jamrozik
+
+/*
+  This file contains functions used by multiple projects. These functions usually are workaround/hacks around Gradle limitations.
+ */
+
+subprojects {
+  /*
+  Making one Gradle project depend on other Gradle's project test output is highly nontrivial. Recommended solution is to 
+  depend on a test jar, as described here: 
+  
+  http://stackoverflow.com/a/5153162/986533 
+  and here
+  http://stackoverflow.com/a/15361666/986533
+  
+  However, then navigating to the sources of the dependency doesn't navigate to the IJ project, but to the jar, which is bad.
+  Instead, I applied the following solution:
+  
+  http://stackoverflow.com/a/37423632/986533
+  
+  More discussion here:
+  https://discuss.gradle.org/t/multiproject-testcompile-dependencies-not-seen-by-dependant-project/6779
+  https://discuss.gradle.org/t/cross-project-test-dependencies/12117/6
+  */
+  ext.dependWithTest = {Project target, String dependency, String lang ->
+
+    target.evaluationDependsOn(dependency)
+
+    if (lang == "kotlin")
+    {
+      target.dependencies {
+        // This line makes IntelliJ navigate to sources instead of external jar.
+        testCompileOnly files {project(dependency).sourceSets.test.kotlin.srcDirs}
+      }
+    } else if (lang == "groovy")
+    {
+      target.dependencies {
+        // As line above, but for groovy, not kotlin.
+        testCompileOnly files {project(dependency).sourceSets.test.groovy.srcDirs}
+      }
+    } else assert false: "Unsupported language of dependency. The language: $lang"
+
+    target.dependencies {
+      // This makes the test classes of 'dependency' project available to the classpath of 'target' project
+      testCompile project(dependency).sourceSets.test.output
+      // This is just the plain project dependency.
+      compile project(dependency)
+    }
+  }
+}
