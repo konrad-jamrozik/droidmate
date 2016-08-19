@@ -17,7 +17,7 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.test_base
+package org.droidmate.tests
 
 import com.konradjamrozik.Resource
 import org.droidmate.Extensions_ResourceKt

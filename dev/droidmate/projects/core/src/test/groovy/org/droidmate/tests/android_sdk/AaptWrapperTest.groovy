@@ -24,8 +24,8 @@ import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
 import org.droidmate.misc.SysCmdExecutor
 import org.droidmate.configuration.Configuration
-import org.droidmate.test_base.ApkFixtures
-import org.droidmate.test_base.DroidmateGroovyTestCase
+import org.droidmate.tests.ApkFixtures
+import org.droidmate.tests.DroidmateGroovyTestCase
 import org.droidmate.tests.FixturesKt
 import org.junit.FixMethodOrder
 import org.junit.Test

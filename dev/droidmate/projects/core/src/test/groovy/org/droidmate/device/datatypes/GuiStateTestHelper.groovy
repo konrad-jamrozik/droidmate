@@ -23,7 +23,7 @@ import org.droidmate.device.model.DeviceModel
 
 import static WidgetTestHelper.newTopLevelWidget
 import static org.droidmate.device.datatypes.UiautomatorWindowDumpTestHelper.*
-import static org.droidmate.test_base.ApkFixtures.apkFixture_simple_packageName
+import static org.droidmate.tests.ApkFixtures.apkFixture_simple_packageName
 
 class GuiStateTestHelper
 {

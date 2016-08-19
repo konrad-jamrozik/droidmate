@@ -28,8 +28,8 @@ import org.droidmate.exploration.actions.ExplorationAction
 import org.droidmate.exploration.actions.IExplorationActionRunResult
 import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2Builder
-import org.droidmate.test_base.DroidmateGroovyTestCase
-import org.droidmate.test_base.ApkFixtures
+import org.droidmate.tests.DroidmateGroovyTestCase
+import org.droidmate.tests.ApkFixtures
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith

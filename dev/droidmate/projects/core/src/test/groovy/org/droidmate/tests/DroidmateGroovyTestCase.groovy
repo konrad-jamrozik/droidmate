@@ -17,7 +17,7 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.test_base
+package org.droidmate.tests
 
 import ch.qos.logback.classic.Level
 import org.droidmate.misc.BuildConstants

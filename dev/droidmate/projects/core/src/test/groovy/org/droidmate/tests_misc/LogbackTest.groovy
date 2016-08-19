@@ -34,7 +34,7 @@ import groovy.util.logging.Slf4j
 import org.droidmate.logging.LogbackConstants
 import org.droidmate.logging.LazyFileAppender
 import org.droidmate.logging.LogbackAppenders
-import org.droidmate.test_base.DroidmateGroovyTestCase
+import org.droidmate.tests.DroidmateGroovyTestCase
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
