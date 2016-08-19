@@ -1,0 +1,229 @@
+2016-08-19 21:27:20.878 TRACE o.d.l.LogbackUtilsRequiringLogbackLog    Deleted old logs in directory .\output_device1\logs.
+2016-08-19 21:27:20.900 INFO  org.droidmate.frontend.DroidmateFrontend Bootstrapping DroidMate: building Configuration from args and instantiating objects for DroidmateCommand.
+2016-08-19 21:27:20.901 INFO  org.droidmate.frontend.DroidmateFrontend IMPORTANT: for help on how to configure DroidMate, run it with -help
+2016-08-19 21:27:20.902 INFO  org.droidmate.frontend.DroidmateFrontend IMPORTANT: for detailed logs from DroidMate run, please see .\output_device1\logs.
+2016-08-19 21:27:20.912 DEBUG o.d.configuration.ConfigurationBuilder   memoizedBuildConfiguration(args, fs)
+2016-08-19 21:27:21.024 INFO  o.d.configuration.ConfigurationBuilder   Using uiautomator-daemon.jar located at C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\uiautomator-daemon.jar
+2016-08-19 21:27:21.027 INFO  o.d.configuration.ConfigurationBuilder   Using uiautomator2-daemon.apk located at C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\uiautomator2-daemon.apk
+2016-08-19 21:27:21.037 INFO  o.d.configuration.ConfigurationBuilder   Using uiautomator2-daemon-test.apk located at C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\uiautomator2-daemon-test.apk
+2016-08-19 21:27:21.044 INFO  o.d.configuration.ConfigurationBuilder   Using monitor_api19.apk located at C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\monitor_api19.apk
+2016-08-19 21:27:21.049 INFO  o.d.configuration.ConfigurationBuilder   Using monitor_api23.apk located at C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\monitor_api23.apk
+2016-08-19 21:27:21.185 INFO  org.droidmate.frontend.DroidmateFrontend Successfully instantiated ExploreCommand. Welcome to DroidMate. Lie back, relax and enjoy.
+2016-08-19 21:27:21.188 INFO  org.droidmate.frontend.DroidmateFrontend Run start timestamp: Fri Aug 19 21:27:20 CEST 2016
+2016-08-19 21:27:21.271 INFO  org.droidmate.tools.ApksProvider         Reading input apks from C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\apks\inlined
+2016-08-19 21:27:21.386 INFO  o.droidmate.tools.AndroidDeviceDeployer  Setup device with deviceIndex of 0
+2016-08-19 21:27:21.526 DEBUG org.droidmate.device.AndroidDevice       removeLogcatLogFile()
+2016-08-19 21:27:21.660 DEBUG org.droidmate.device.AndroidDevice       clearLogcat()
+2016-08-19 21:27:21.727 DEBUG org.droidmate.device.AndroidDevice       installApk(uiautomator2-daemon.apk)
+2016-08-19 21:27:23.569 DEBUG org.droidmate.device.AndroidDevice       installApk(uiautomator2-daemon-test.apk)
+2016-08-19 21:27:28.619 DEBUG org.droidmate.device.AndroidDevice       pushJar(temp_extracted_resources\monitor_api23.apk, monitor.apk)
+2016-08-19 21:27:28.697 TRACE org.droidmate.device.AndroidDevice       setupConnection(079fc239) / this.tcpClients.forwardPorts()
+2016-08-19 21:27:28.698 TRACE org.droidmate.android_sdk.AdbWrapper     forwardPort(079fc239, 59800)
+2016-08-19 21:27:28.727 TRACE org.droidmate.android_sdk.AdbWrapper     forwardPort(079fc239, 59701)
+2016-08-19 21:27:28.751 TRACE org.droidmate.android_sdk.AdbWrapper     forwardPort(079fc239, 59702)
+2016-08-19 21:27:28.775 TRACE org.droidmate.android_sdk.AdbWrapper     forwardPort(079fc239, 59703)
+2016-08-19 21:27:28.800 TRACE org.droidmate.android_sdk.AdbWrapper     forwardPort(079fc239, 59704)
+2016-08-19 21:27:28.824 TRACE org.droidmate.device.AndroidDevice       setupConnection(079fc239) / this.startUiaDaemon()
+2016-08-19 21:27:28.824 DEBUG org.droidmate.device.AndroidDevice       startUiaDaemon()
+2016-08-19 21:27:30.912 TRACE org.droidmate.device.AndroidDevice       DONE startUiaDaemon()
+2016-08-19 21:27:30.912 TRACE org.droidmate.device.AndroidDevice       setupConnection(079fc239) / DONE
+2016-08-19 21:27:30.915 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59800)
+2016-08-19 21:27:30.940 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:30.947 INFO  org.droidmate.command.ExploreCommand     Processing 1 out of 1 apks: ru.tubin.bp_v1.43-inlined.apk
+2016-08-19 21:27:30.948 DEBUG org.droidmate.tools.ApkDeployer          withDeployedApk(device, ru.tubin.bp_v1.43-inlined.apk, computation)
+2016-08-19 21:27:30.950 DEBUG org.droidmate.device.AndroidDevice       clearLogcat()
+2016-08-19 21:27:31.004 INFO  org.droidmate.tools.ApkDeployer          Reinstalling ru.tubin.bp_v1.43-inlined.apk
+2016-08-19 21:27:31.005 DEBUG org.droidmate.device.AndroidDevice       uninstallApk(ru.tubin.bp, ignoreFailure: true)
+2016-08-19 21:27:32.213 DEBUG org.droidmate.device.AndroidDevice       installApk(ru.tubin.bp_v1.43-inlined.apk)
+2016-08-19 21:27:34.406 INFO  o.d.command.exploration.Exploration      run(ru.tubin.bp, device)
+2016-08-19 21:27:34.407 TRACE o.d.command.exploration.Exploration      tryDeviceHasPackageInstalled(device, ru.tubin.bp)
+2016-08-19 21:27:34.408 DEBUG org.droidmate.device.AndroidDevice       hasPackageInstalled(ru.tubin.bp)
+2016-08-19 21:27:35.401 TRACE o.d.command.exploration.Exploration      tryWarnDeviceDisplaysHomeScreen(device, ru.tubin.bp_v1.43-inlined.apk)
+2016-08-19 21:27:35.405 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot()
+2016-08-19 21:27:35.405 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59800)
+2016-08-19 21:27:35.481 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:35.648 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot(): UiautomatorWindowDump{home screen}
+2016-08-19 21:27:35.667 DEBUG o.d.command.exploration.Exploration      explorationLoop(app=ru.tubin.bp_v1.43-inlined.apk, device)
+2016-08-19 21:27:35.673 INFO  o.d.command.exploration.Exploration      Initial action: <ExplAct Reset app>
+2016-08-19 21:27:35.678 DEBUG o.d.command.exploration.Exploration      Exploration start time: 2016-08-19T21:27:35.678
+2016-08-19 21:27:35.687 TRACE o.d.e.actions.RunnableExplorationAction  RunnableResetAppExplorationAction.performDeviceActions(app=ru.tubin.bp_v1.43-inlined.apk, device)
+2016-08-19 21:27:35.688 DEBUG o.d.e.a.RunnableResetAppExplorationAction 1. Clear package ru.tubin.bp.
+2016-08-19 21:27:35.693 DEBUG org.droidmate.device.AndroidDevice       clearPackage(ru.tubin.bp)
+2016-08-19 21:27:41.684 DEBUG org.droidmate.device.AndroidDevice       anyMonitorIsReachable()
+2016-08-19 21:27:41.686 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:27:41.691 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59702)
+2016-08-19 21:27:41.692 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59703)
+2016-08-19 21:27:41.693 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59704)
+2016-08-19 21:27:41.695 TRACE org.droidmate.device.MonitorsClient      No monitor is reachable.
+2016-08-19 21:27:41.696 DEBUG o.d.e.a.RunnableResetAppExplorationAction 2. Clear logcat.
+2016-08-19 21:27:41.696 DEBUG org.droidmate.device.AndroidDevice       clearLogcat()
+2016-08-19 21:27:41.816 DEBUG o.d.e.a.RunnableResetAppExplorationAction 3. Ensure home screen is displayed.
+2016-08-19 21:27:41.816 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot()
+2016-08-19 21:27:41.816 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59800)
+2016-08-19 21:27:41.883 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:41.907 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot(): UiautomatorWindowDump{home screen}
+2016-08-19 21:27:41.907 DEBUG o.d.e.a.RunnableResetAppExplorationAction 4. Turn wifi on.
+2016-08-19 21:27:41.916 DEBUG org.droidmate.device.AndroidDevice       perform(ClickGuiAction{turn_wifi_on})
+2016-08-19 21:27:41.917 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59800)
+2016-08-19 21:27:41.931 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:41.931 DEBUG o.d.e.a.RunnableResetAppExplorationAction 5. Get GUI snapshot to ensure device displays valid screen that is not "app has stopped" dialog box.
+2016-08-19 21:27:41.934 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot()
+2016-08-19 21:27:41.934 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59800)
+2016-08-19 21:27:41.994 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:42.011 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot(): UiautomatorWindowDump{home screen}
+2016-08-19 21:27:42.011 DEBUG o.d.e.a.RunnableResetAppExplorationAction 6. Ensure app is not running.
+2016-08-19 21:27:42.011 DEBUG org.droidmate.device.AndroidDevice       anyMonitorIsReachable()
+2016-08-19 21:27:42.011 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:27:42.013 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59702)
+2016-08-19 21:27:42.014 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59703)
+2016-08-19 21:27:42.015 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59704)
+2016-08-19 21:27:42.017 TRACE org.droidmate.device.MonitorsClient      No monitor is reachable.
+2016-08-19 21:27:42.017 DEBUG o.d.e.a.RunnableResetAppExplorationAction 7. Launch app ru.tubin.bp.
+2016-08-19 21:27:42.018 DEBUG o.d.exploration.device.RobustDevice      launchApp(ru.tubin.bp)
+2016-08-19 21:27:42.018 DEBUG org.droidmate.device.AndroidDevice       launchMainActivity(ru.tubin.bp/ru.tubin.bp.activities.Main)
+2016-08-19 21:27:52.770 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot()
+2016-08-19 21:27:52.770 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59800)
+2016-08-19 21:27:52.915 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:52.956 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot(): UiautomatorWindowDump{com.google.android.inputmethod.latin. Widgets# 95}
+2016-08-19 21:27:52.956 DEBUG o.d.e.a.RunnableResetAppExplorationAction 8. Get GUI snapshot.
+2016-08-19 21:27:52.957 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot()
+2016-08-19 21:27:52.957 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59800)
+2016-08-19 21:27:53.039 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:53.072 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot(): UiautomatorWindowDump{com.google.android.inputmethod.latin. Widgets# 95}
+2016-08-19 21:27:53.072 DEBUG o.d.e.a.RunnableResetAppExplorationAction 9. Try to read API logs.
+2016-08-19 21:27:53.079 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:27:53.080 DEBUG org.droidmate.device.AndroidDevice       readAndClearMonitorTcpMessages()
+2016-08-19 21:27:53.081 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:27:53.097 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:53.097 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59702)
+2016-08-19 21:27:53.098 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59702 when sending out getLogs request.
+2016-08-19 21:27:53.098 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59703)
+2016-08-19 21:27:53.099 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59703 when sending out getLogs request.
+2016-08-19 21:27:53.099 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59704)
+2016-08-19 21:27:53.101 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59704 when sending out getLogs request.
+2016-08-19 21:27:53.114 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:27:53.119 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:53.123 TRACE o.d.exploration.device.DeviceTimeDiff    computeDiff(device) result:
+Current time   : 2016-08-19 21:27:53.120
+Device time    : 2016-08-19 21:27:44.605
+Resulting diff : PT-8.515S
+2016-08-19 21:27:53.175 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 7
+2016-08-19 21:27:53.177 TRACE o.d.e.actions.RunnableExplorationAction  RunnableResetAppExplorationAction.performDeviceActions(app=ru.tubin.bp_v1.43-inlined.apk, device) - DONE
+2016-08-19 21:27:53.223 DEBUG o.d.e.strategy.ExplorationStrategy       decide(ExplorationActionRunResult{successful=true, snapshot=UiautomatorWindowDump{com.google.android.inputmethod.latin. Widgets# 95}, DeviceLogs{apiLogs#=7}, exception=N/A (lack of DeviceException)})
+2016-08-19 21:27:53.246 INFO  o.d.e.strategy.ExplorationStrategy       Terminating exploration: Initial GUI state doesn't belong to the app. The GUI state: GuiState <pkg=com.google.android.inputmethod.latin Widgets count = 95>
+2016-08-19 21:27:53.252 INFO  o.d.e.strategy.ExplorationStrategy       <ExplAct Terminate exploration>
+2016-08-19 21:27:53.256 TRACE o.d.e.actions.RunnableExplorationAction  RunnableTerminateExplorationAction.performDeviceActions(app=ru.tubin.bp_v1.43-inlined.apk, device)
+2016-08-19 21:27:53.257 DEBUG o.d.e.a.RunnableTerminateExplorationAction 1. Read background API logs, if any.
+2016-08-19 21:27:53.257 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:27:53.257 DEBUG org.droidmate.device.AndroidDevice       readAndClearMonitorTcpMessages()
+2016-08-19 21:27:53.257 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:27:53.271 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:53.271 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59702)
+2016-08-19 21:27:53.273 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59702 when sending out getLogs request.
+2016-08-19 21:27:53.273 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59703)
+2016-08-19 21:27:53.275 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59703 when sending out getLogs request.
+2016-08-19 21:27:53.275 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59704)
+2016-08-19 21:27:53.277 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59704 when sending out getLogs request.
+2016-08-19 21:27:53.278 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:27:53.279 DEBUG o.d.e.a.RunnableTerminateExplorationAction 2. Close monitor servers, if any.
+2016-08-19 21:27:53.279 DEBUG org.droidmate.device.AndroidDevice       closeMonitorServers()
+2016-08-19 21:27:53.280 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:27:53.294 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:53.294 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59702)
+2016-08-19 21:27:53.296 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59702 when sending out close request.
+2016-08-19 21:27:53.296 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59703)
+2016-08-19 21:27:53.298 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59703 when sending out close request.
+2016-08-19 21:27:53.299 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59704)
+2016-08-19 21:27:53.301 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59704 when sending out close request.
+2016-08-19 21:27:53.301 DEBUG o.d.e.a.RunnableTerminateExplorationAction 3. Clear package ru.tubin.bp}.
+2016-08-19 21:27:53.302 DEBUG org.droidmate.device.AndroidDevice       clearPackage(ru.tubin.bp)
+2016-08-19 21:27:59.628 DEBUG org.droidmate.device.AndroidDevice       anyMonitorIsReachable()
+2016-08-19 21:27:59.628 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:27:59.654 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:27:59.654 TRACE org.droidmate.device.MonitorsClient      Reached server at port 59701. PID: 15102 package: ru.tubin.bp
+2016-08-19 21:27:59.654 TRACE org.droidmate.device.MonitorsClient      At least one monitor is reachable.
+2016-08-19 21:27:59.654 DEBUG org.droidmate.device.AndroidDevice       appProcessIsRunning(ru.tubin.bp)
+2016-08-19 21:27:59.750 TRACE org.droidmate.device.AndroidDevice       App process of ru.tubin.bp is running
+2016-08-19 21:27:59.750 DEBUG org.droidmate.device.AndroidDevice       clearPackage(ru.tubin.bp)
+2016-08-19 21:28:05.878 DEBUG org.droidmate.device.AndroidDevice       anyMonitorIsReachable()
+2016-08-19 21:28:05.878 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:28:05.881 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59702)
+2016-08-19 21:28:05.884 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59703)
+2016-08-19 21:28:05.887 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59704)
+2016-08-19 21:28:05.889 TRACE org.droidmate.device.MonitorsClient      No monitor is reachable.
+2016-08-19 21:28:05.890 DEBUG o.d.e.a.RunnableTerminateExplorationAction 4. Assert app is not running.
+2016-08-19 21:28:05.891 DEBUG org.droidmate.device.AndroidDevice       anyMonitorIsReachable()
+2016-08-19 21:28:05.891 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:28:05.893 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59702)
+2016-08-19 21:28:05.895 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59703)
+2016-08-19 21:28:05.897 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59704)
+2016-08-19 21:28:05.900 TRACE org.droidmate.device.MonitorsClient      No monitor is reachable.
+2016-08-19 21:28:05.900 DEBUG o.d.e.a.RunnableTerminateExplorationAction 5. Ensure home screen is displayed.
+2016-08-19 21:28:05.901 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot()
+2016-08-19 21:28:05.901 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59800)
+2016-08-19 21:28:06.005 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:28:06.014 DEBUG org.droidmate.device.AndroidDevice       getGuiSnapshot(): UiautomatorWindowDump{home screen}
+2016-08-19 21:28:06.014 TRACE o.d.e.actions.RunnableExplorationAction  RunnableTerminateExplorationAction.performDeviceActions(app=ru.tubin.bp_v1.43-inlined.apk, device) - DONE
+2016-08-19 21:28:06.035 INFO  org.droidmate.storage.Storage2           Serializing ApkExplorationOutput2 to output_device1\2016 Aug 19 2128 ru.tubin.bp.ser2
+2016-08-19 21:28:06.071 DEBUG org.droidmate.tools.ApkDeployer          Finalizing: withDeployedApk(robust-{device 079fc239}, ru.tubin.bp_v1.43-inlined.apk).finally{} for computation(ru.tubin.bp_v1.43-inlined.apk)
+2016-08-19 21:28:06.071 TRACE org.droidmate.device.AndroidDevice       isAvailable(079fc239)
+2016-08-19 21:28:06.096 INFO  org.droidmate.tools.ApkDeployer          Uninstalling ru.tubin.bp_v1.43-inlined.apk
+2016-08-19 21:28:06.096 DEBUG org.droidmate.device.AndroidDevice       closeMonitorServers()
+2016-08-19 21:28:06.096 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:28:06.097 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59701 when sending out close request.
+2016-08-19 21:28:06.097 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59702)
+2016-08-19 21:28:06.099 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59702 when sending out close request.
+2016-08-19 21:28:06.099 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59703)
+2016-08-19 21:28:06.100 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59703 when sending out close request.
+2016-08-19 21:28:06.100 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59704)
+2016-08-19 21:28:06.101 TRACE org.droidmate.device.MonitorsClient      Did not reach monitor TCP server at port 59704 when sending out close request.
+2016-08-19 21:28:06.101 DEBUG org.droidmate.device.AndroidDevice       clearPackage(ru.tubin.bp)
+2016-08-19 21:28:12.115 DEBUG org.droidmate.device.AndroidDevice       anyMonitorIsReachable()
+2016-08-19 21:28:12.115 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59701)
+2016-08-19 21:28:12.118 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59702)
+2016-08-19 21:28:12.120 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59703)
+2016-08-19 21:28:12.122 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59704)
+2016-08-19 21:28:12.124 TRACE org.droidmate.device.MonitorsClient      No monitor is reachable.
+2016-08-19 21:28:12.125 DEBUG org.droidmate.device.AndroidDevice       uninstallApk(ru.tubin.bp, ignoreFailure: false)
+2016-08-19 21:28:13.330 DEBUG org.droidmate.tools.ApkDeployer          Finalizing DONE: withDeployedApk(robust-{device 079fc239}, ru.tubin.bp_v1.43-inlined.apk).finally{} for computation(ru.tubin.bp_v1.43-inlined.apk)
+2016-08-19 21:28:13.331 TRACE org.droidmate.tools.ApkDeployer          Undeployed apk ru.tubin.bp_v1.43-inlined.apk
+2016-08-19 21:28:13.332 DEBUG o.droidmate.tools.AndroidDeviceDeployer  Finalizing: withSetupDevice(0)->finally{} for computation(robust-{device 079fc239})
+2016-08-19 21:28:13.332 TRACE org.droidmate.device.AndroidDevice       isAvailable(079fc239)
+2016-08-19 21:28:13.356 TRACE o.droidmate.tools.AndroidDeviceDeployer  Tearing down.
+2016-08-19 21:28:13.357 DEBUG org.droidmate.device.AndroidDevice       pullLogcatLogFile()
+2016-08-19 21:28:13.460 TRACE org.droidmate.device.AndroidDevice       stopUiaDaemon()
+2016-08-19 21:28:13.460 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59800)
+2016-08-19 21:28:13.468 TRACE o.droidmate.device.SerializableTCPClient socket.close()
+2016-08-19 21:28:18.822 TRACE org.droidmate.device.AndroidDevice       DONE stopUiaDaemon()
+2016-08-19 21:28:18.823 DEBUG org.droidmate.device.AndroidDevice       uninstallApk(org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test, ignoreFailure: true)
+2016-08-19 21:28:20.065 DEBUG org.droidmate.device.AndroidDevice       uninstallApk(org.droidmate.uiautomator2daemon.UiAutomator2Daemon, ignoreFailure: true)
+2016-08-19 21:28:21.314 DEBUG org.droidmate.device.AndroidDevice       removeJar(monitor.apk)
+2016-08-19 21:28:21.379 DEBUG o.droidmate.tools.AndroidDeviceDeployer  Finalizing DONE: withSetupDevice(0)->finally{} for computation(robust-{device 079fc239})
+2016-08-19 21:28:21.406 WARN  org.droidmate.report.FilteredDeviceLogs  Possibly redundant API call discovered: org.droidmate.monitor.Monitor.redir_org_apache_http_impl_client_AbstractHttpClient_execute3(Monitor.java:2164)
+2016-08-19 21:28:21.407 WARN  org.droidmate.report.FilteredDeviceLogs  Possibly redundant API call discovered: org.droidmate.monitor.Monitor.redir_org_apache_http_impl_client_AbstractHttpClient_execute3(Monitor.java:2164)
+2016-08-19 21:28:21.443 INFO  org.droidmate.report.TabularDataReport   Writing out table report for ru.tubin.bp_v1.43-inlined.apk
+2016-08-19 21:28:21.486 INFO  org.droidmate.report.TabularDataReport   Writing out output_device1\ru_tubin_bp_v1_43-inlined_apk_viewCount.txt
+2016-08-19 21:28:21.494 INFO  org.droidmate.report.TabularDataReport   Writing out output_device1\ru_tubin_bp_v1_43-inlined_apk_clickFrequency.txt
+2016-08-19 21:28:21.513 INFO  org.droidmate.report.TabularDataReport   Writing out output_device1\ru_tubin_bp_v1_43-inlined_apk_apiCount.txt
+2016-08-19 21:28:21.519 INFO  org.droidmate.report.TabularDataReport   Writing out output_device1\ru_tubin_bp_v1_43-inlined_apk_viewCount.pdf
+2016-08-19 21:28:21.532 DEBUG org.zeroturnaround.exec.ProcessExecutor  Executing [gnuplot, -e, var_interactive=0;var_data_file_path='C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\output_device1\ru_tubin_bp_v1_43-inlined_apk_viewCount.txt';var_output_file_path='C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\output_device1\ru_tubin_bp_v1_43-inlined_apk_viewCount.pdf', C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\plot_template.plt].
+2016-08-19 21:28:21.534 DEBUG org.zeroturnaround.exec.ProcessExecutor  Started java.lang.ProcessImpl@35fb22a9
+2016-08-19 21:28:21.536 TRACE o.z.exec.stream.StreamPumper             org.zeroturnaround.exec.stream.StreamPumper@225d4a45 started.
+2016-08-19 21:28:21.584 TRACE o.z.exec.stream.StreamPumper             org.zeroturnaround.exec.stream.StreamPumper@225d4a45 finished.
+2016-08-19 21:28:21.586 DEBUG org.zeroturnaround.exec.WaitForProcess   java.lang.ProcessImpl@35fb22a9 stopped with exit code 0
+2016-08-19 21:28:21.586 TRACE o.z.exec.stream.PumpStreamHandler        Joining output thread Thread[Thread-2,5,]...
+2016-08-19 21:28:21.587 TRACE o.z.exec.stream.PumpStreamHandler        Flushing output stream ...
+2016-08-19 21:28:21.587 TRACE o.z.exec.stream.PumpStreamHandler        Flushing error stream org.apache.commons.io.output.NullOutputStream@5139fd5b...
+2016-08-19 21:28:21.589 INFO  org.droidmate.report.TabularDataReport   Writing out output_device1\ru_tubin_bp_v1_43-inlined_apk_apiCount.pdf
+2016-08-19 21:28:21.591 DEBUG org.zeroturnaround.exec.ProcessExecutor  Executing [gnuplot, -e, var_interactive=0;var_data_file_path='C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\output_device1\ru_tubin_bp_v1_43-inlined_apk_apiCount.txt';var_output_file_path='C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\output_device1\ru_tubin_bp_v1_43-inlined_apk_apiCount.pdf', C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\plot_template.plt].
+2016-08-19 21:28:21.594 DEBUG org.zeroturnaround.exec.ProcessExecutor  Started java.lang.ProcessImpl@73ad7e90
+2016-08-19 21:28:21.594 TRACE o.z.exec.stream.StreamPumper             org.zeroturnaround.exec.stream.StreamPumper@1842d535 started.
+2016-08-19 21:28:21.638 TRACE o.z.exec.stream.StreamPumper             org.zeroturnaround.exec.stream.StreamPumper@1842d535 finished.
+2016-08-19 21:28:21.640 DEBUG org.zeroturnaround.exec.WaitForProcess   java.lang.ProcessImpl@73ad7e90 stopped with exit code 0
+2016-08-19 21:28:21.640 TRACE o.z.exec.stream.PumpStreamHandler        Joining output thread Thread[Thread-3,5,]...
+2016-08-19 21:28:21.640 TRACE o.z.exec.stream.PumpStreamHandler        Flushing output stream ...
+2016-08-19 21:28:21.640 TRACE o.z.exec.stream.PumpStreamHandler        Flushing error stream org.apache.commons.io.output.NullOutputStream@5139fd5b...
+2016-08-19 21:28:21.645 INFO  org.droidmate.frontend.DroidmateFrontend DroidMate run finished successfully.
+2016-08-19 21:28:21.647 INFO  org.droidmate.frontend.DroidmateFrontend Run finish timestamp: 2016 Aug 19 21:28:21. DroidMate ran for 1 minutes, 0.775 seconds.
+2016-08-19 21:28:21.647 INFO  org.droidmate.frontend.DroidmateFrontend By default, the results from the run can be found in .\output_device1 directory.
+2016-08-19 21:28:21.648 INFO  org.droidmate.frontend.DroidmateFrontend By default, for detailed diagnostics logs from the run, see .\output_device1\logs directory.

@@ -1,0 +1,30 @@
+2016-08-19 21:27:35.687 TRACE o.d.e.actions.RunnableExplorationAction  RunnableResetAppExplorationAction.performDeviceActions(app=ru.tubin.bp_v1.43-inlined.apk, device)
+2016-08-19 21:27:35.688 DEBUG o.d.e.a.RunnableResetAppExplorationAction 1. Clear package ru.tubin.bp.
+2016-08-19 21:27:41.696 DEBUG o.d.e.a.RunnableResetAppExplorationAction 2. Clear logcat.
+2016-08-19 21:27:41.816 DEBUG o.d.e.a.RunnableResetAppExplorationAction 3. Ensure home screen is displayed.
+2016-08-19 21:27:41.907 DEBUG o.d.e.a.RunnableResetAppExplorationAction 4. Turn wifi on.
+2016-08-19 21:27:41.931 DEBUG o.d.e.a.RunnableResetAppExplorationAction 5. Get GUI snapshot to ensure device displays valid screen that is not "app has stopped" dialog box.
+2016-08-19 21:27:42.011 DEBUG o.d.e.a.RunnableResetAppExplorationAction 6. Ensure app is not running.
+2016-08-19 21:27:42.017 DEBUG o.d.e.a.RunnableResetAppExplorationAction 7. Launch app ru.tubin.bp.
+2016-08-19 21:27:42.018 DEBUG o.d.exploration.device.RobustDevice      launchApp(ru.tubin.bp)
+2016-08-19 21:27:52.956 DEBUG o.d.e.a.RunnableResetAppExplorationAction 8. Get GUI snapshot.
+2016-08-19 21:27:53.072 DEBUG o.d.e.a.RunnableResetAppExplorationAction 9. Try to read API logs.
+2016-08-19 21:27:53.079 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:27:53.123 TRACE o.d.exploration.device.DeviceTimeDiff    computeDiff(device) result:
+Current time   : 2016-08-19 21:27:53.120
+Device time    : 2016-08-19 21:27:44.605
+Resulting diff : PT-8.515S
+2016-08-19 21:27:53.175 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 7
+2016-08-19 21:27:53.177 TRACE o.d.e.actions.RunnableExplorationAction  RunnableResetAppExplorationAction.performDeviceActions(app=ru.tubin.bp_v1.43-inlined.apk, device) - DONE
+2016-08-19 21:27:53.223 DEBUG o.d.e.strategy.ExplorationStrategy       decide(ExplorationActionRunResult{successful=true, snapshot=UiautomatorWindowDump{com.google.android.inputmethod.latin. Widgets# 95}, DeviceLogs{apiLogs#=7}, exception=N/A (lack of DeviceException)})
+2016-08-19 21:27:53.246 INFO  o.d.e.strategy.ExplorationStrategy       Terminating exploration: Initial GUI state doesn't belong to the app. The GUI state: GuiState <pkg=com.google.android.inputmethod.latin Widgets count = 95>
+2016-08-19 21:27:53.252 INFO  o.d.e.strategy.ExplorationStrategy       <ExplAct Terminate exploration>
+2016-08-19 21:27:53.256 TRACE o.d.e.actions.RunnableExplorationAction  RunnableTerminateExplorationAction.performDeviceActions(app=ru.tubin.bp_v1.43-inlined.apk, device)
+2016-08-19 21:27:53.257 DEBUG o.d.e.a.RunnableTerminateExplorationAction 1. Read background API logs, if any.
+2016-08-19 21:27:53.257 DEBUG o.d.exploration.device.ApiLogsReader     getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
+2016-08-19 21:27:53.278 DEBUG o.d.exploration.device.ApiLogsReader     apiLogs# 0
+2016-08-19 21:27:53.279 DEBUG o.d.e.a.RunnableTerminateExplorationAction 2. Close monitor servers, if any.
+2016-08-19 21:27:53.301 DEBUG o.d.e.a.RunnableTerminateExplorationAction 3. Clear package ru.tubin.bp}.
+2016-08-19 21:28:05.890 DEBUG o.d.e.a.RunnableTerminateExplorationAction 4. Assert app is not running.
+2016-08-19 21:28:05.900 DEBUG o.d.e.a.RunnableTerminateExplorationAction 5. Ensure home screen is displayed.
+2016-08-19 21:28:06.014 TRACE o.d.e.actions.RunnableExplorationAction  RunnableTerminateExplorationAction.performDeviceActions(app=ru.tubin.bp_v1.43-inlined.apk, device) - DONE

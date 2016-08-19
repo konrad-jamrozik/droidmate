@@ -1,0 +1,32 @@
+2016-08-19 21:27:20.900 INFO  org.droidmate.frontend.DroidmateFrontend Bootstrapping DroidMate: building Configuration from args and instantiating objects for DroidmateCommand.
+2016-08-19 21:27:20.901 INFO  org.droidmate.frontend.DroidmateFrontend IMPORTANT: for help on how to configure DroidMate, run it with -help
+2016-08-19 21:27:20.902 INFO  org.droidmate.frontend.DroidmateFrontend IMPORTANT: for detailed logs from DroidMate run, please see .\output_device1\logs.
+2016-08-19 21:27:21.024 INFO  o.d.configuration.ConfigurationBuilder   Using uiautomator-daemon.jar located at C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\uiautomator-daemon.jar
+2016-08-19 21:27:21.027 INFO  o.d.configuration.ConfigurationBuilder   Using uiautomator2-daemon.apk located at C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\uiautomator2-daemon.apk
+2016-08-19 21:27:21.037 INFO  o.d.configuration.ConfigurationBuilder   Using uiautomator2-daemon-test.apk located at C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\uiautomator2-daemon-test.apk
+2016-08-19 21:27:21.044 INFO  o.d.configuration.ConfigurationBuilder   Using monitor_api19.apk located at C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\monitor_api19.apk
+2016-08-19 21:27:21.049 INFO  o.d.configuration.ConfigurationBuilder   Using monitor_api23.apk located at C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\temp_extracted_resources\monitor_api23.apk
+2016-08-19 21:27:21.185 INFO  org.droidmate.frontend.DroidmateFrontend Successfully instantiated ExploreCommand. Welcome to DroidMate. Lie back, relax and enjoy.
+2016-08-19 21:27:21.188 INFO  org.droidmate.frontend.DroidmateFrontend Run start timestamp: Fri Aug 19 21:27:20 CEST 2016
+2016-08-19 21:27:21.271 INFO  org.droidmate.tools.ApksProvider         Reading input apks from C:\my\local\repos\github\droidmate\dev\droidmate_usage_examples\apks\inlined
+2016-08-19 21:27:21.386 INFO  o.droidmate.tools.AndroidDeviceDeployer  Setup device with deviceIndex of 0
+2016-08-19 21:27:30.947 INFO  org.droidmate.command.ExploreCommand     Processing 1 out of 1 apks: ru.tubin.bp_v1.43-inlined.apk
+2016-08-19 21:27:31.004 INFO  org.droidmate.tools.ApkDeployer          Reinstalling ru.tubin.bp_v1.43-inlined.apk
+2016-08-19 21:27:34.406 INFO  o.d.command.exploration.Exploration      run(ru.tubin.bp, device)
+2016-08-19 21:27:35.673 INFO  o.d.command.exploration.Exploration      Initial action: <ExplAct Reset app>
+2016-08-19 21:27:53.246 INFO  o.d.e.strategy.ExplorationStrategy       Terminating exploration: Initial GUI state doesn't belong to the app. The GUI state: GuiState <pkg=com.google.android.inputmethod.latin Widgets count = 95>
+2016-08-19 21:27:53.252 INFO  o.d.e.strategy.ExplorationStrategy       <ExplAct Terminate exploration>
+2016-08-19 21:28:06.035 INFO  org.droidmate.storage.Storage2           Serializing ApkExplorationOutput2 to output_device1\2016 Aug 19 2128 ru.tubin.bp.ser2
+2016-08-19 21:28:06.096 INFO  org.droidmate.tools.ApkDeployer          Uninstalling ru.tubin.bp_v1.43-inlined.apk
+2016-08-19 21:28:21.406 WARN  org.droidmate.report.FilteredDeviceLogs  Possibly redundant API call discovered: org.droidmate.monitor.Monitor.redir_org_apache_http_impl_client_AbstractHttpClient_execute3(Monitor.java:2164)
+2016-08-19 21:28:21.407 WARN  org.droidmate.report.FilteredDeviceLogs  Possibly redundant API call discovered: org.droidmate.monitor.Monitor.redir_org_apache_http_impl_client_AbstractHttpClient_execute3(Monitor.java:2164)
+2016-08-19 21:28:21.443 INFO  org.droidmate.report.TabularDataReport   Writing out table report for ru.tubin.bp_v1.43-inlined.apk
+2016-08-19 21:28:21.486 INFO  org.droidmate.report.TabularDataReport   Writing out output_device1\ru_tubin_bp_v1_43-inlined_apk_viewCount.txt
+2016-08-19 21:28:21.494 INFO  org.droidmate.report.TabularDataReport   Writing out output_device1\ru_tubin_bp_v1_43-inlined_apk_clickFrequency.txt
+2016-08-19 21:28:21.513 INFO  org.droidmate.report.TabularDataReport   Writing out output_device1\ru_tubin_bp_v1_43-inlined_apk_apiCount.txt
+2016-08-19 21:28:21.519 INFO  org.droidmate.report.TabularDataReport   Writing out output_device1\ru_tubin_bp_v1_43-inlined_apk_viewCount.pdf
+2016-08-19 21:28:21.589 INFO  org.droidmate.report.TabularDataReport   Writing out output_device1\ru_tubin_bp_v1_43-inlined_apk_apiCount.pdf
+2016-08-19 21:28:21.645 INFO  org.droidmate.frontend.DroidmateFrontend DroidMate run finished successfully.
+2016-08-19 21:28:21.647 INFO  org.droidmate.frontend.DroidmateFrontend Run finish timestamp: 2016 Aug 19 21:28:21. DroidMate ran for 1 minutes, 0.775 seconds.
+2016-08-19 21:28:21.647 INFO  org.droidmate.frontend.DroidmateFrontend By default, the results from the run can be found in .\output_device1 directory.
+2016-08-19 21:28:21.648 INFO  org.droidmate.frontend.DroidmateFrontend By default, for detailed diagnostics logs from the run, see .\output_device1\logs directory.
