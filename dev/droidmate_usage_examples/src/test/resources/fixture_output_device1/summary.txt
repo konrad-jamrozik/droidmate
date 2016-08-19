@@ -1,0 +1,42 @@
+Unique API calls table legend:
+
+          Time: first log time of unique API call.
+        Action: index of action that triggered the call. 
+        Thread: ID of the thread that made the API call. 1 is UI thread.
+ API signature: signature of the called Android framework API method.
+         
+Unique [API call, event] pairs table legend:
+
+          Time: first log time of unique pair of [API call, event]
+        Action: index of action that triggered the pair. 
+         Event: event paired with the API signature.    
+        Thread: ID of the thread that made the API call. 1 is UI thread.
+ API signature: signature of the called Android framework API method.
+
+==============================================================
+droidmate-run:ru.tubin.bp
+==============================================================
+
+Total run time      :    0m 30s
+Total actions count :    2 // including the final action terminating exploration
+Total resets count  :    1 // including the initial action
+
+--------------------------------------------------------------
+Unique API calls count observed in the run: 4
+
+Below follows a list of first calls to unique Android SDK API methods.
+ 
+     Time  Action  Thread  API signature
+   0m 11s       1    1460  android.telephony.TelephonyManager: java.lang.String getDeviceId()
+   0m 11s       1    1463  org.apache.http.impl.client.AbstractHttpClient: org.apache.http.HttpResponse execute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)
+   0m 11s       1    1463  java.net.Socket: void connect(java.net.SocketAddress,int)
+   0m 11s       1    1460  android.location.LocationManager: java.lang.String getBestProvider(android.location.Criteria,boolean)     
+
+--------------------------------------------------------------
+Unique [API call, event] pairs count observed in the run: 4
+
+     Time  Action  Event                                                                  Thread  API signature
+   0m 11s       1  <reset>                                                                  1460  android.telephony.TelephonyManager: java.lang.String getDeviceId()
+   0m 11s       1  <reset>                                                                  1463  org.apache.http.impl.client.AbstractHttpClient: org.apache.http.HttpResponse execute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)
+   0m 11s       1  <reset>                                                                  1463  java.net.Socket: void connect(java.net.SocketAddress,int)
+   0m 11s       1  <reset>                                                                  1460  android.location.LocationManager: java.lang.String getBestProvider(android.location.Criteria,boolean)

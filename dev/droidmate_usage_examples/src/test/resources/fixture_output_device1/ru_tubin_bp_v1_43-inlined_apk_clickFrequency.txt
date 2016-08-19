@@ -1,0 +1,2 @@
+No_of_clicks	Views_count
+0	0
