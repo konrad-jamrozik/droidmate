@@ -111,8 +111,7 @@ class ExplorationOutput2ReportTest {
     }
   }
 
-  // KJA failing test
-  // @Test
+   @Test
   fun `reports to file system`()
   {
     val serExplOutput: Path = fixture_monitoredSer2
