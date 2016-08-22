@@ -15,7 +15,7 @@
 # http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.3
 # with the optional " static" word appended at the end. Please note the space.
 #
-# The list was originally adapted from AppGuard. Details are explained in a private repository:
+# The list was originally adapted from AppGuard from MonitorInitializer.java. Details are explained in a private repository:
 # https://hg.st.cs.uni-saarland.de/projects/droidmate-private/repository/revisions/master/entry/resources/from_Philipp/appguard_apis_list_origin.txt
 #
 # The manual adaptations of this list were made to make it compatible with Android 4.4.4-r2.0.1 [1] and Android 6.
@@ -343,7 +343,7 @@ Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;Ljava/util/Map;)V
 # ! If this method call is commented out, asserts for api23 in method org.droidmate.frontend.DroidmateFrontendTest#exploreOnRealDevice will have to be changed.
 # !API19 Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I static
 
-# While these methods were present in the original MonitorInitalizer.java in AppGuard, 
+# While these methods were present in the original MonitorInitializer.java in AppGuard, 
 # they pertain to activity lifecycle and thus are very common and not security-critical. 
 # For this reason they are not monitored.
 # ! If this method call is commented out, asserts for api23 in method org.droidmate.frontend.DroidmateFrontendTest#exploreOnRealDevice will have to be changed.
@@ -361,9 +361,9 @@ Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;Ljava/util/Map;)V
 # !API19 Ljava/io/FileOutputStream;->write([B)V
 
 # ========================================
-# NETWORKING APIS
+# NETWORKING APIs, reviewed on 22 Aug 2016 for Android 6.0.1_r63. 
 # ========================================
-# Reviewed on 22 Aug 2016 for Android 6.0.1_r63. 
+# 
 # Might break on Android 4.4.4_r2.0.1, although developer.android.com doc is the same.
 #
 # API comments pertain to 6.0.1_r63
@@ -409,29 +409,61 @@ Ljava/net/Socket;-><init>(Ljava/net/InetAddress;IZ)V
 
 Ljava/net/Socket;->connect(Ljava/net/SocketAddress;I)V
 
-# KJA work in progress
+# ========== java.net.URL constructors
 
-# KJA to review
+# REDUNDANT: delegates to Ljava/net/URL;-><init>(Ljava/net/URL;Ljava/lang/String;Ljava/net/URLStreamHandler;)V
+## Ljava/net/URL;-><init>(Ljava/lang/String;)V
+
+# REDUNDANT: delegates to Ljava/net/URL;-><init>(Ljava/net/URL;Ljava/lang/String;Ljava/net/URLStreamHandler;)V
+## Ljava/net/URL;-><init>(Ljava/net/URL;Ljava/lang/String;)V
+
+Ljava/net/URL;-><init>(Ljava/net/URL;Ljava/lang/String;Ljava/net/URLStreamHandler;)V
+
+# REDUNDANT: delegates to Ljava/net/URL;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/net/URLStreamHandler;)V
+##Ljava/net/URL;-><init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+# REDUNDANT: delegates to Ljava/net/URL;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/net/URLStreamHandler;)V
+##Ljava/net/URL;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V
+
+Ljava/net/URL;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/net/URLStreamHandler;)V
+
+# ========== java.net.URL methods
+
+# Fundamental methods for establishing connections, as described here: https://developer.android.com/reference/java/net/HttpURLConnection.html
+Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
+Ljava/net/URL;->openConnection(Ljava/net/Proxy;)Ljava/net/URLConnection;
+
+# ========== java.net.URLConnection
+
+# API23 Can't find original method (redir_9_java_net_URLConnection_ctor1) 
+# Possibly because the method is "protected"
+## Ljava/net/URLConnection;-><init>(Ljava/net/URL;)V
+
+!API19 Ljava/net/URLConnection;->connect()V
+# This method is part of a general connection lifecycle as described here: https://developer.android.com/reference/java/net/URLConnection.html
+# However, a HttpURLConnection doesn't actually use it. Instead of connection, one writes to OutputStream,
+# as described here: https://developer.android.com/reference/java/net/HttpURLConnection.html
+#
+# In the original MonitorInitializer.java following method is defined to be monitored:
+# Ljava/net/HttpURLConnection;->connect()V
+# But its instrumentation fails:
+# 10-09 19:35:44.456  10187-10187/? W/Instrumentation? Failed to redirect method java.net.HttpURLConnection->connect
+#
+# Failure reason: the method doesn't actually exist in the class HttpURLConnection [1];
+# instead, it is inherited from URLConnection [2]. However URLConnection also cannot be monitored in API 19 due to:
+# 10-09 19:53:46.226  10965-10965/org.droidmate.fixtures.apks.monitored W/Instrumentation? Skipping abstract method: connect V
+# 10-09 19:53:46.226  10965-10965/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method java.net.URLConnection->connect to org.droidmate.monitor_generator.generated.Monitor->redir_java_net_URLConnection_connect0
+#
+# Nevertheless, it works on API23, so it is monitored on it.
+#
+# [1] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/HttpURLConnection.java
+# [2] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/URLConnection.java#167
+
+# ========== KJA to review
 Ljava/net/DatagramSocket;->connect(Ljava/net/InetAddress;I)V
 Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V
 Ljava/net/MulticastSocket;->joinGroup(Ljava/net/InetAddress;)V
 Ljava/net/MulticastSocket;->joinGroup(Ljava/net/SocketAddress;Ljava/net/NetworkInterface;)V
-Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
-
-# Instrumentation fails:
-# 10-09 19:35:44.456  10187-10187/? W/Instrumentation? Failed to redirect method java.net.HttpURLConnection->connect
-#
-# Failure reason: the method doesn't actually exist in the class [1]; instead, it is inherited from [2].
-# However [2] also cannot be monitored due to:
-# 10-09 19:53:46.226  10965-10965/org.droidmate.fixtures.apks.monitored W/Instrumentation? Skipping abstract method: connect V
-# 10-09 19:53:46.226  10965-10965/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method java.net.URLConnection->connect to org.droidmate.monitor_generator.generated.Monitor->redir_java_net_URLConnection_connect0
-#
-# [1] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/HttpURLConnection.java
-# [2] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/URLConnection.java#167
-#     Ljava/net/URLConnection;->connect()V
-#
-# KJA monitor this
-#Ljava/net/HttpURLConnection;->connect()V
 
 # KJA to review
 # Instrumentation fails, but workaround is applied.
@@ -457,6 +489,7 @@ Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
 # Here is the method that actually needs to be monitored [2], as all the others delegate to it:
 Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
 
+
 # ========================================
-# END OF NETWORKING APIS
+# End of NETWORKING APIs
 # ========================================

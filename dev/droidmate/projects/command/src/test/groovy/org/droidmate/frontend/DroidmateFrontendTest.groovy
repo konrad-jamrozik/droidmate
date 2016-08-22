@@ -285,7 +285,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
       def terminateAppApiLogs = apiLogs[3]
 
       assert resetAppApiLogs*.methodName == []
-      assert clickApiLogs*.methodName == ["openConnection"]
+      assert clickApiLogs*.methodName == ["<init>", "openConnection"]
       assert launchActivity2Logs*.methodName == []
       assert terminateAppApiLogs.empty
     }
@@ -310,7 +310,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
       def terminateAppApiLogs = apiLogs[6]
 
       assert resetAppApiLogs*.methodName == []
-      assert clickApiLogs*.methodName == ["openConnection"]
+      assert clickApiLogs*.methodName == ["<init>", "openConnection"]
       assert openPermissionDialogApiLogs.methodName == []
       assert onResumeApiLogs*.methodName == []
       assert cameraApiLogs*.methodName == ["open"]
