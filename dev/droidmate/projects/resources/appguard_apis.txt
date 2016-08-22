@@ -335,55 +335,6 @@ Landroid/webkit/WebView;->loadDataWithBaseURL(Ljava/lang/String;Ljava/lang/Strin
 Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;)V
 Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;Ljava/util/Map;)V
 
-# KJA to review
-Ljava/net/DatagramSocket;->connect(Ljava/net/InetAddress;I)V
-Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V
-
-# Instrumentation fails:
-# 10-09 19:35:44.456  10187-10187/? W/Instrumentation? Failed to redirect method java.net.HttpURLConnection->connect
-#
-# Failure reason: the method doesn't actually exist in the class [1]; instead, it is inherited from [2].
-# However [2] also cannot be monitored due to:
-# 10-09 19:53:46.226  10965-10965/org.droidmate.fixtures.apks.monitored W/Instrumentation? Skipping abstract method: connect V
-# 10-09 19:53:46.226  10965-10965/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method java.net.URLConnection->connect to org.droidmate.monitor_generator.generated.Monitor->redir_java_net_URLConnection_connect0
-#
-# [1] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/HttpURLConnection.java
-# [2] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/URLConnection.java#167
-#     Ljava/net/URLConnection;->connect()V
-#
-# KJA monitor this
-#Ljava/net/HttpURLConnection;->connect()V
-
-# KJA to review
-Ljava/net/MulticastSocket;->joinGroup(Ljava/net/InetAddress;)V
-Ljava/net/MulticastSocket;->joinGroup(Ljava/net/SocketAddress;Ljava/net/NetworkInterface;)V
-
-# KJA to review
-Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
-
-# Instrumentation fails, but workaround is applied.
-# // forgot to copy-paste here the instrumentation failure log
-#
-# DefaultHttpClient doesn't actually contain the execute() method [1]. It inherits it from AbstractHttpClient [2].
-#
-# Furthermore, all the execute() methods are really just delegates to AbstractHttpClient.execute(HttpHost, HttpRequest, HttpContext) [2]
-#
-# [1] https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/DefaultHttpClient.java
-# [2] https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/AbstractHttpClient.java#514
-#
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;)Lorg/apache/http/HttpResponse;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/client/ResponseHandler;)Ljava/lang/Object;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/client/ResponseHandler;Lorg/apache/http/protocol/HttpContext;)Ljava/lang/Object;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;)Lorg/apache/http/HttpResponse;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/client/ResponseHandler;)Ljava/lang/Object;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/client/ResponseHandler;Lorg/apache/http/protocol/HttpContext;)Ljava/lang/Object;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
-#
-# Workaround below:
-# Here is the method that actually needs to be monitored [2], as all the others delegate to it:
-Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
-
 # APIs added on 9 Jun 2016 to enable sensitive dataflow leaks. Obtained from Vitalii. 
 # Taken from "apis_art.txt" that should be located in the same dir as this file.
 # Note that as of 9 Jun 2016 the methods from Vitalii are missing the " static" suffix. The methods have been obtained from HornDroid API list.
@@ -459,6 +410,52 @@ Ljava/net/Socket;-><init>(Ljava/net/InetAddress;IZ)V
 Ljava/net/Socket;->connect(Ljava/net/SocketAddress;I)V
 
 # KJA work in progress
+
+# KJA to review
+Ljava/net/DatagramSocket;->connect(Ljava/net/InetAddress;I)V
+Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V
+Ljava/net/MulticastSocket;->joinGroup(Ljava/net/InetAddress;)V
+Ljava/net/MulticastSocket;->joinGroup(Ljava/net/SocketAddress;Ljava/net/NetworkInterface;)V
+Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
+
+# Instrumentation fails:
+# 10-09 19:35:44.456  10187-10187/? W/Instrumentation? Failed to redirect method java.net.HttpURLConnection->connect
+#
+# Failure reason: the method doesn't actually exist in the class [1]; instead, it is inherited from [2].
+# However [2] also cannot be monitored due to:
+# 10-09 19:53:46.226  10965-10965/org.droidmate.fixtures.apks.monitored W/Instrumentation? Skipping abstract method: connect V
+# 10-09 19:53:46.226  10965-10965/org.droidmate.fixtures.apks.monitored W/Instrumentation? Failed to redirect method java.net.URLConnection->connect to org.droidmate.monitor_generator.generated.Monitor->redir_java_net_URLConnection_connect0
+#
+# [1] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/HttpURLConnection.java
+# [2] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/URLConnection.java#167
+#     Ljava/net/URLConnection;->connect()V
+#
+# KJA monitor this
+#Ljava/net/HttpURLConnection;->connect()V
+
+# KJA to review
+# Instrumentation fails, but workaround is applied.
+# // forgot to copy-paste here the instrumentation failure log
+#
+# DefaultHttpClient doesn't actually contain the execute() method [1]. It inherits it from AbstractHttpClient [2].
+#
+# Furthermore, all the execute() methods are really just delegates to AbstractHttpClient.execute(HttpHost, HttpRequest, HttpContext) [2]
+#
+# [1] https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/DefaultHttpClient.java
+# [2] https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/AbstractHttpClient.java#514
+#
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;)Lorg/apache/http/HttpResponse;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/client/ResponseHandler;)Ljava/lang/Object;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/client/ResponseHandler;Lorg/apache/http/protocol/HttpContext;)Ljava/lang/Object;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;)Lorg/apache/http/HttpResponse;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/client/ResponseHandler;)Ljava/lang/Object;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/client/ResponseHandler;Lorg/apache/http/protocol/HttpContext;)Ljava/lang/Object;
+#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
+#
+# Workaround below:
+# Here is the method that actually needs to be monitored [2], as all the others delegate to it:
+Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
 
 # ========================================
 # END OF NETWORKING APIS
