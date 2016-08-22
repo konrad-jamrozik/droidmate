@@ -11,6 +11,10 @@
 #
 # This file defines list of Android SDK APIs monitored during DroidMate run.
 #
+# The methods are written in the "class" file format
+# http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.3
+# with the optional " static" word appended at the end. Please note the space.
+#
 # The list was originally adapted from AppGuard. Details are explained in a private repository:
 # https://hg.st.cs.uni-saarland.de/projects/droidmate-private/repository/revisions/master/entry/resources/from_Philipp/appguard_apis_list_origin.txt
 #
@@ -330,6 +334,8 @@ Landroid/telephony/TelephonyManager;->listen(Landroid/telephony/PhoneStateListen
 Landroid/webkit/WebView;->loadDataWithBaseURL(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
 Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;)V
 Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;Ljava/util/Map;)V
+
+# KJA to review
 Ljava/net/DatagramSocket;->connect(Ljava/net/InetAddress;I)V
 Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V
 
@@ -345,18 +351,14 @@ Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V
 # [2] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/URLConnection.java#167
 #     Ljava/net/URLConnection;->connect()V
 #
+# KJA monitor this
 #Ljava/net/HttpURLConnection;->connect()V
 
+# KJA to review
 Ljava/net/MulticastSocket;->joinGroup(Ljava/net/InetAddress;)V
 Ljava/net/MulticastSocket;->joinGroup(Ljava/net/SocketAddress;Ljava/net/NetworkInterface;)V
-Ljava/net/Socket;-><init>(Ljava/lang/String;I)V
-Ljava/net/Socket;-><init>(Ljava/lang/String;ILjava/net/InetAddress;I)V
-Ljava/net/Socket;-><init>(Ljava/lang/String;IZ)V
-Ljava/net/Socket;-><init>(Ljava/net/InetAddress;I)V
-Ljava/net/Socket;-><init>(Ljava/net/InetAddress;ILjava/net/InetAddress;I)V
-Ljava/net/Socket;-><init>(Ljava/net/InetAddress;IZ)V
-Ljava/net/Socket;->connect(Ljava/net/SocketAddress;)V
-Ljava/net/Socket;->connect(Ljava/net/SocketAddress;I)V
+
+# KJA to review
 Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
 
 # Instrumentation fails, but workaround is applied.
@@ -406,3 +408,58 @@ Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpH
 # !API19 Ljava/io/FileOutputStream;->write([BII)V
 # !API19 Ljava/io/FileOutputStream;->write(I)V
 # !API19 Ljava/io/FileOutputStream;->write([B)V
+
+# ========================================
+# NETWORKING APIS
+# ========================================
+# Reviewed on 22 Aug 2016 for Android 6.0.1_r63. 
+# Might break on Android 4.4.4_r2.0.1, although developer.android.com doc is the same.
+#
+# API comments pertain to 6.0.1_r63
+
+# ========== java.net.Socket documentation
+# https://developer.android.com/reference/java/net/Socket.html
+# https://android.googlesource.com/platform/libcore/+/android-6.0.1_r63/luni/src/main/java/java/net/Socket.java
+# https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/Socket.java
+
+# ========== java.net.Socket constructors
+
+# SECURITY-IRRELEVANT: it doesn't actually connect anywhere, and doesn't contain any server address.
+## Ljava/net/Socket;-><init>()V
+
+# Similar to no-arg constructor, but takes as param SocketAddress which might contain server address.
+Ljava/net/Socket;-><init>(Ljava/net/Proxy;)V
+
+# REDUNDANT: delegates to <init>(Ljava/lang/String;ILjava/net/InetAddress;I)V
+## Ljava/net/Socket;-><init>(Ljava/lang/String;I)V
+
+# Calls no-arg constructor and then tryAllAddresses(dstName, dstPort, localAddress, localPort, streaming=true)
+Ljava/net/Socket;-><init>(Ljava/lang/String;ILjava/net/InetAddress;I)V
+
+# @Deprecated. Calls no-arg constructor and then tryAllAddresses(hostName, port, null, 0, streaming)
+Ljava/net/Socket;-><init>(Ljava/lang/String;IZ)V
+
+# Calls: no-arg constructor, checkDestination, startupSocket
+Ljava/net/Socket;-><init>(Ljava/net/InetAddress;I)V
+
+# Calls: no-arg constructor, checkDestination, startupSocket
+Ljava/net/Socket;-><init>(Ljava/net/InetAddress;ILjava/net/InetAddress;I)V
+
+# @Deprecated. Calls: no-arg constructor, checkDestination, startupSocket
+Ljava/net/Socket;-><init>(Ljava/net/InetAddress;IZ)V
+
+# SECURITY-IRRELEVANT: protected, used only in private or test code.
+## Ljava/net/Socket;-><init>(Ljava/net/SocketImpl;)V
+
+# ========== java.net.Socket methods
+
+# REDUNDANT: delegates to Ljava/net/Socket;->connect(Ljava/net/SocketAddress;I)V
+## Ljava/net/Socket;->connect(Ljava/net/SocketAddress;)V
+
+Ljava/net/Socket;->connect(Ljava/net/SocketAddress;I)V
+
+# KJA work in progress
+
+# ========================================
+# END OF NETWORKING APIS
+# ========================================
