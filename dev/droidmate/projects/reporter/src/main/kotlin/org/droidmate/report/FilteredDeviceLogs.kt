@@ -28,8 +28,7 @@ import org.slf4j.LoggerFactory
 
 class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by logs {
 
-  constructor(apiLogs: List<IApiLogcatMessage>) :
-  this(DeviceLogs(filterApiLogs(apiLogs)))
+  constructor(apiLogs: List<IApiLogcatMessage>) : this(DeviceLogs(filterApiLogs(apiLogs)))
 
   companion object {
 
@@ -121,7 +120,9 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     private fun IApi.warnWhenPossiblyRedundant() {
       this.stackTraceFrames
         .filter { it.startsWith(Api.monitorRedirectionPrefix) && (it !in apisManuallyCheckedForRedundancy) }
-        .drop(1) // We drop the first frame as it is the end of stack trace and thus not a candidate for redundancy.
+        // We drop the first frame as it is the end of stack trace and thus not a candidate for redundancy in this particular
+        // stack trace.
+        .drop(1) 
         .forEach { log.warn("Possibly redundant API call discovered: " + it) }
     }
 
@@ -141,9 +142,9 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       val monitoredFrames = stackTraceFrames.filter { it.startsWith(Api.monitorRedirectionPrefix) }
       check(monitoredFrames.isNotEmpty())
       /* 
-        We take only first monitored call, as this is the bottom of stack trace, i.e. this method doesn't call any other 
+        We take only the first monitored call, as this is the bottom of the stack trace, i.e. this method doesn't call any other 
         monitored methods. All other monitored calls in the stack trace will be present again in the logs, at the bottom of their
-        own stack trace. They will be checked for redundancy then, so they don't have to be checked here.
+        own stack traces. They will be checked for redundancy then, so they don't have to be checked here.
        */
       val monitoredCall = monitoredFrames.first()
       return if (monitoredCall in apisManuallyConfirmedToBeRedundant) {
@@ -153,14 +154,15 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
         false
     }
 
-    // KJA possible redundancy
-    //org.droidmate.report.FilteredDeviceLogs  Possibly redundant API call discovered: org.droidmate.monitor.Monitor.redir_org_apache_http_impl_client_AbstractHttpClient_execute3(Monitor.java:2164)
-    //2016-08-19 21:28:21.407 WARN  org.droidmate.report.FilteredDeviceLogs  Possibly redundant API call discovered: org.droidmate.monitor.Monitor.redir_org_apache_http_impl_client_AbstractHttpClient_execute3(Monitor.java:2164)
-    
     // For now empty lists. Will update them as the warnings are observed, while comparing to the legacy lists 
     // (present in this file).
     private val apisManuallyConfirmedToBeRedundant: List<String> = emptyList()
-    private val apisManuallyConfirmedToBeNotRedundant: List<String> = emptyList()
+    private val apisManuallyConfirmedToBeNotRedundant: List<String> = listOf(
+      // WISH Observed possible redundancy once. Waiting to see it again, to investigate the stack trace.
+      // https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/AbstractHttpClient.java#514
+      // https://android.googlesource.com/platform/external/apache-http/+/android-6.0.1_r63/src/org/apache/http/impl/client/AbstractHttpClient.java#519
+//      "redir_org_apache_http_impl_client_AbstractHttpClient_execute3"
+    )
     /// !!! DUPLICATION WARNING !!! with org.droidmate.monitor.RedirectionsGenerator.redirMethodNamePrefix and related code.
     private val apisManuallyCheckedForRedundancy: List<String> = apisManuallyConfirmedToBeRedundant + apisManuallyConfirmedToBeNotRedundant
     
@@ -191,8 +193,9 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       // ----- Methods whose modified version is present in appguard_apis.txt -----
       // Now present as redir_5_java_net_Socket_ctor4  
       // It calls ctor0 but then it calls java.net.Socket#tryAllAddresses which has a lot of logic.
-      // Android 6 source: https://android.googlesource.com/platform/libcore/+/android-6.0.1_r46/luni/src/main/java/java/net/Socket.java
-      // KJA2 investigate if new socket calls have to be added on Android 6
+      // https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/Socket.java
+      // https://android.googlesource.com/platform/libcore/+/android-6.0.1_r63/luni/src/main/java/java/net/Socket.java
+      // KJA investigate if new socket calls have to be added on Android 6
       "redir_13_java_net_Socket_ctor4",
       
       // ----- Methods not present in appguard_apis.txt, but which were present in jellybean_publishedapimapping_modified.txt ----- 

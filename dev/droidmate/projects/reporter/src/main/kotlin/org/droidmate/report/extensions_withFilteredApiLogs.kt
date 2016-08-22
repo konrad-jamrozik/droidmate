@@ -25,8 +25,6 @@ import org.droidmate.exploration.data_aggregators.ApkExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IDeviceLogs
 
-// KJA2 annotate all apis in appguard_apis.txt with links to doc, source and to origin
-
 // WISH use instead lazy extension property implemented with workaround: https://youtrack.jetbrains.com/issue/KT-13053#comment=27-1510399
 val List<IApkExplorationOutput2>.withFilteredApiLogs: List<IApkExplorationOutput2> get() {
 
