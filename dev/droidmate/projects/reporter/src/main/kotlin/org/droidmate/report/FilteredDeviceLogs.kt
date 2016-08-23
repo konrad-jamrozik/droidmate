@@ -212,8 +212,8 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       // ----- Methods present in appguard_apis.txt -----
       // Android 6 source: https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r46/core/java/android/os/PowerManager.java#1127
       "redir_android_os_PowerManager_WakeLock_release0",
-      // KJA2 looks like openFileDescriptor3 should be monitored instead. 
-      // KJA2 Same story with query5/query6 
+      // KJA looks like openFileDescriptor3 should be monitored instead. 
+      // KJA Same story with query5/query6 
       // See C:\my\local\repos\googlesource\platform_frameworks_base_v601_r46\core\java\android\content\ContentResolver.java
       // Then update and comment C:\my\local\repos\github\droidmate\dev\droidmate\projects\resources\appguard_apis.txt
       "redir_android_content_ContentResolver_openFileDescriptor2",
