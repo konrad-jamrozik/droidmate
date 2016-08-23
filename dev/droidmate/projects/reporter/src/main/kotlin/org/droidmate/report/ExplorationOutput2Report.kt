@@ -23,26 +23,26 @@ import java.nio.file.Path
 
 class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: Path) {
 
+  fun writeOut(includePlots : Boolean = true, includeSummary: Boolean = true) {
+
+    if (includeSummary)
+      summaryFile.writeOut()
+
+    tabularReports.forEach { it.writeOut(includePlots) }
+  }
+
+  val summaryFile: IDataFile by lazy { Summary(data, dir.resolve(fileNameSummary)) }
+
+  val tabularReports: List<TabularDataReport> by lazy { data.map { TabularDataReport(it, dir) } }
+
   companion object { val fileNameSummary = "summary.txt" }
 
   val data: List<IApkExplorationOutput2>
 
   init { data = rawData.withFilteredApiLogs }
 
-  val summaryFile: IDataFile by lazy { Summary(data, dir.resolve(fileNameSummary)) }
-
-  val tabularReports: List<TabularDataReport> by lazy { data.map { TabularDataReport(it, dir) } }
-
   val txtReportFiles: List<Path> by lazy {
     listOf(summaryFile.path) + tabularReports.flatMap { it.paths }
-  }
-
-  fun writeOut(includePlots : Boolean = true, includeSummary: Boolean = true) {
-    
-    if (includeSummary)
-      summaryFile.writeOut()
-    
-    tabularReports.forEach { it.writeOut(includePlots) }
   }
 }
 
