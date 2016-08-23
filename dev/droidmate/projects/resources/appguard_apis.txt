@@ -74,21 +74,6 @@ Landroid/bluetooth/BluetoothHeadset;->stopVoiceRecognition(Landroid/bluetooth/Bl
 #Landroid/bluetooth/HeadsetBase;->acquireWakeLock()V
 #Landroid/bluetooth/HeadsetBase;->releaseWakeLock()V
 
-Landroid/content/ContentProviderClient;->bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I
-Landroid/content/ContentProviderClient;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
-Landroid/content/ContentProviderClient;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
-Landroid/content/ContentProviderClient;->openFile(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
-Landroid/content/ContentProviderClient;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
-Landroid/content/ContentProviderClient;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
-Landroid/content/ContentResolver;->bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I
-Landroid/content/ContentResolver;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
-Landroid/content/ContentResolver;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
-Landroid/content/ContentResolver;->openFileDescriptor(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
-Landroid/content/ContentResolver;->openInputStream(Landroid/net/Uri;)Ljava/io/InputStream;
-Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
-Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
-Landroid/content/ContentResolver;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
-
 # Just delegates to the call below. See:
 # https://github.com/android/platform_frameworks_base/blob/android-4.4.4_r2.0.1/core/java/android/hardware/Camera.java#L319
 #
@@ -491,11 +476,12 @@ Ljava/net/URL;->openConnection(Ljava/net/Proxy;)Ljava/net/URLConnection;
 # [1] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/HttpURLConnection.java
 # [2] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/URLConnection.java#167
 
-# ========== KJA to review
+# ========== org.apache.http.impl.client.AbstractHttpClient
 
-# KJA to review
-# Instrumentation fails, but workaround is applied.
-# // forgot to copy-paste here the instrumentation failure log
+# Note: this class as well as its implementation, DefaultHttpClient, are deprecated and HttpURLConnection should be used instead.
+# This is explained here: https://developer.android.com/reference/org/apache/http/impl/client/DefaultHttpClient.html
+
+# Note: AppGuard's MonitorInitializer.java monitors a set of "execute" methods of DefaultHttpClient, but it doesn't work on API19:
 #
 # DefaultHttpClient doesn't actually contain the execute() method [1]. It inherits it from AbstractHttpClient [2].
 #
@@ -503,21 +489,49 @@ Ljava/net/URL;->openConnection(Ljava/net/Proxy;)Ljava/net/URLConnection;
 #
 # [1] https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/DefaultHttpClient.java
 # [2] https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/AbstractHttpClient.java#514
-#
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;)Lorg/apache/http/HttpResponse;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/client/ResponseHandler;)Ljava/lang/Object;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/client/ResponseHandler;Lorg/apache/http/protocol/HttpContext;)Ljava/lang/Object;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;)Lorg/apache/http/HttpResponse;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/client/ResponseHandler;)Ljava/lang/Object;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/client/ResponseHandler;Lorg/apache/http/protocol/HttpContext;)Ljava/lang/Object;
-#Lorg/apache/http/impl/client/DefaultHttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
-#
-# Workaround below:
-# Here is the method that actually needs to be monitored [2], as all the others delegate to it:
-Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
 
+# API23 sources:
+# https://android.googlesource.com/platform/external/apache-http/+/android-6.0.1_r63/src/org/apache/http/impl/client/DefaultHttpClient.java
+# https://android.googlesource.com/platform/external/apache-http/+/android-6.0.1_r63/src/org/apache/http/impl/client/AbstractHttpClient.java
+
+# Here is the method that actually needs to be monitored [2], as all the other execute() methods delegate to it:
+Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpHost;Lorg/apache/http/HttpRequest;Lorg/apache/http/protocol/HttpContext;)Lorg/apache/http/HttpResponse;
 
 # ========================================
 # End of NETWORKING APIs
+# ========================================
+
+# ========================================
+# CONTENT APIs, reviewed on 23 Aug 2016 for Android 6.0.1_r63. 
+# ========================================
+#
+# Might break on Android 4.4.4_r2.0.1, although developer.android.com doc is the same.
+#
+# API comments pertain to 6.0.1_r63
+
+# ========== android.content.ContentResolver documentation
+# https://developer.android.com/reference/android/content/ContentResolver.html
+# https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r63/core/java/android/content/ContentResolver.java
+# https://android.googlesource.com/platform/frameworks/base/+/android-4.4.4_r2.0.1/core/java/android/content/ContentResolver.java
+
+# ========== android.content.ContentResolver 
+#
+Landroid/content/ContentResolver;->bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I
+Landroid/content/ContentResolver;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
+Landroid/content/ContentResolver;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
+Landroid/content/ContentResolver;->openFileDescriptor(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
+Landroid/content/ContentResolver;->openInputStream(Landroid/net/Uri;)Ljava/io/InputStream;
+Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
+Landroid/content/ContentResolver;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
+
+Landroid/content/ContentProviderClient;->bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I
+Landroid/content/ContentProviderClient;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
+Landroid/content/ContentProviderClient;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
+Landroid/content/ContentProviderClient;->openFile(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
+Landroid/content/ContentProviderClient;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+Landroid/content/ContentProviderClient;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
+
+# ========================================
+# End of CONTENT APIs 
 # ========================================
