@@ -519,15 +519,17 @@ Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpH
 # ========================================
 
 # ========================================
-# CONTENT APIs  
+# CONTENT PROVIDER APIs  
 # ========================================
 #
 # Reviewed on 23 Aug 2016 for Android 6.0.1_r63.
-# Might break on Android 4.4.4_r2.0.1, although developer.android.com doc is the same.
+# Might break on Android 4.4.4_r2.0.1.
 # API comments pertain to 6.0.1_r63
 #
 # Intro to content APIs from official doc: 
 # https://developer.android.com/guide/topics/providers/content-providers.html
+# On class difference
+# http://stackoverflow.com/questions/5084896/using-contentproviderclient-vs-contentresolver-to-access-content-provider
 
 # ========== android.content.ContentResolver documentation
 # https://developer.android.com/reference/android/content/ContentResolver.html
@@ -535,23 +537,47 @@ Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpH
 # https://android.googlesource.com/platform/frameworks/base/+/android-4.4.4_r2.0.1/core/java/android/content/ContentResolver.java
 
 # ========== android.content.ContentResolver 
-#
+
+# APIs unchanged from AppGuard's MonitorInitializer.java
 Landroid/content/ContentResolver;->bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I
 Landroid/content/ContentResolver;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
 Landroid/content/ContentResolver;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
-Landroid/content/ContentResolver;->openFileDescriptor(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
-Landroid/content/ContentResolver;->openInputStream(Landroid/net/Uri;)Ljava/io/InputStream;
-Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
-Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
 Landroid/content/ContentResolver;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
+Landroid/content/ContentResolver;->openInputStream(Landroid/net/Uri;)Ljava/io/InputStream;
+# Note: openOutputStream methods are not monitored as they ultimately are redundant: they call openAssetFileDescriptor, which should be monitored.
 
+# REDUNDANT: originally present in AppGuard's MonitorInitializer.java, but it delegates to 3-param openFileDescriptor, which in turn just delegates to openAssetFileDescriptor.
+## Landroid/content/ContentResolver;->openFileDescriptor(Landroid/net/Uri;Ljava/lang/String;Landroid/os/CancellationSignal;)Landroid/os/ParcelFileDescriptor;
+# REDUNDANT: delegates to 3-param openAssetFileDescriptor
+## Landroid/content/ContentResolver;->openFileDescriptor(Landroid/net/Uri;Ljava/lang/String;Landroid/os/CancellationSignal;)Landroid/os/ParcelFileDescriptor;
+# Note: there are also openTypedAssertFileDescriptor() methods that ultimately delegate to this one.
+Landroid/content/ContentResolver;->openAssetFileDescriptor(Landroid/net/Uri;Ljava/lang/String;Landroid/os/CancellationSignal;)Landroid/content/res/AssetFileDescriptor;
+
+# Note: there is a 2-arg query() method that just delegates to this one.
+Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Landroid/os/CancellationSignal;)Landroid/database/Cursor;
+
+# Note: there is a 3-arg registerContentObserver() method that just delegates to this one.
+Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
+
+# ========== android.content.ContentProviderClient
+
+# APIs unchanged from AppGuard's MonitorInitializer.java
 Landroid/content/ContentProviderClient;->bulkInsert(Landroid/net/Uri;[Landroid/content/ContentValues;)I
 Landroid/content/ContentProviderClient;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
 Landroid/content/ContentProviderClient;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
-Landroid/content/ContentProviderClient;->openFile(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
-Landroid/content/ContentProviderClient;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
 Landroid/content/ContentProviderClient;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
 
+# REDUNDANT: delegates to 3-arg openFile
+# Landroid/content/ContentProviderClient;->openFile(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
+Landroid/content/ContentProviderClient;->openFile(Landroid/net/Uri;Ljava/lang/String;Landroid/os/CancellationSignal;)Landroid/os/ParcelFileDescriptor;
+# Note: there is a 2-arg openAssetFile() that just delegates to this one.
+Landroid/content/ContentProviderClient;->openAssetFile(Landroid/net/Uri;Ljava/lang/String;Landroid/os/CancellationSignal;)Landroid/content/res/AssetFileDescriptor;
+Landroid/content/ContentProviderClient;->openTypedAssetFileDescriptor(Landroid/net/Uri;Ljava/lang/String;Landroid/os/Bundle;Landroid/os/CancellationSignal;)Landroid/content/res/AssetFileDescriptor;
+
+# REDUNDANT: delegates to the  6-arg query() method.
+## Landroid/content/ContentProviderClient;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+Landroid/content/ContentProviderClient;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Landroid/os/CancellationSignal;)Landroid/database/Cursor;
+
 # ========================================
-# End of CONTENT APIs 
+# End of CONTENT PROVIDER APIs 
 # ========================================
