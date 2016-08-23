@@ -24,9 +24,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
 
-data class TabularDataReport(val data: IApkExplorationOutput2, val dir: Path) {
+data class ApkTabularDataReport(val data: IApkExplorationOutput2, val dir: Path) {
 
-  private val log: Logger = LoggerFactory.getLogger(TabularDataReport::class.java)
+  private val log: Logger = LoggerFactory.getLogger(ApkTabularDataReport::class.java)
 
   init {
     require(dir.isDirectory)

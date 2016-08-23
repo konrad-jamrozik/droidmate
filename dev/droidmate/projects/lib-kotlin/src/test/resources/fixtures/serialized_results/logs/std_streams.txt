@@ -23,12 +23,12 @@
 2016-08-19 21:58:49.964 INFO  o.d.e.strategy.ExplorationStrategy       <ExplAct Terminate exploration>
 2016-08-19 21:58:51.860 INFO  org.droidmate.storage.Storage2           Serializing ApkExplorationOutput2 to temp_dir_for_tests\2016 Aug 19 2158 org.droidmate.fixtures.apks.monitored.ser2
 2016-08-19 21:58:51.936 INFO  org.droidmate.tools.ApkDeployer          Uninstalling MonitoredApkFixture_api23-debug-inlined.apk
-2016-08-19 21:59:00.549 INFO  org.droidmate.report.TabularDataReport   Writing out table report for MonitoredApkFixture_api23-debug-inlined.apk
-2016-08-19 21:59:00.621 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.txt
-2016-08-19 21:59:00.633 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_clickFrequency.txt
-2016-08-19 21:59:00.659 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.txt
-2016-08-19 21:59:00.670 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.pdf
-2016-08-19 21:59:00.743 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.pdf
+2016-08-19 21:59:00.549 INFO  org.droidmate.report.ApkTabularDataReport   Writing out table report for MonitoredApkFixture_api23-debug-inlined.apk
+2016-08-19 21:59:00.621 INFO  org.droidmate.report.ApkTabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.txt
+2016-08-19 21:59:00.633 INFO  org.droidmate.report.ApkTabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_clickFrequency.txt
+2016-08-19 21:59:00.659 INFO  org.droidmate.report.ApkTabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.txt
+2016-08-19 21:59:00.670 INFO  org.droidmate.report.ApkTabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.pdf
+2016-08-19 21:59:00.743 INFO  org.droidmate.report.ApkTabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.pdf
 2016-08-19 21:59:00.804 INFO  org.droidmate.frontend.DroidmateFrontend DroidMate run finished successfully.
 2016-08-19 21:59:00.806 INFO  org.droidmate.frontend.DroidmateFrontend Run finish timestamp: 2016 Aug 19 21:59:00. DroidMate ran for 34.688 seconds.
 2016-08-19 21:59:00.806 INFO  org.droidmate.frontend.DroidmateFrontend By default, the results from the run can be found in .\output_device1 directory.

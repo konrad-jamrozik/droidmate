@@ -378,11 +378,11 @@ Resulting diff : PT-8.592S
 2016-08-19 21:58:59.139 DEBUG org.droidmate.device.AndroidDevice       uninstallApk(org.droidmate.uiautomator2daemon.UiAutomator2Daemon, ignoreFailure: true)
 2016-08-19 21:59:00.402 DEBUG org.droidmate.device.AndroidDevice       removeJar(monitor.apk)
 2016-08-19 21:59:00.466 DEBUG o.droidmate.tools.AndroidDeviceDeployer  Finalizing DONE: withSetupDevice(0)->finally{} for computation(robust-{device 079fc239})
-2016-08-19 21:59:00.549 INFO  org.droidmate.report.TabularDataReport   Writing out table report for MonitoredApkFixture_api23-debug-inlined.apk
-2016-08-19 21:59:00.621 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.txt
-2016-08-19 21:59:00.633 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_clickFrequency.txt
-2016-08-19 21:59:00.659 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.txt
-2016-08-19 21:59:00.670 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.pdf
+2016-08-19 21:59:00.549 INFO  org.droidmate.report.ApkTabularDataReport   Writing out table report for MonitoredApkFixture_api23-debug-inlined.apk
+2016-08-19 21:59:00.621 INFO  org.droidmate.report.ApkTabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.txt
+2016-08-19 21:59:00.633 INFO  org.droidmate.report.ApkTabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_clickFrequency.txt
+2016-08-19 21:59:00.659 INFO  org.droidmate.report.ApkTabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.txt
+2016-08-19 21:59:00.670 INFO  org.droidmate.report.ApkTabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.pdf
 2016-08-19 21:59:00.689 DEBUG org.zeroturnaround.exec.ProcessExecutor  Executing [gnuplot, -e, var_interactive=0;var_data_file_path='C:\my\local\repos\github\droidmate\dev\droidmate\temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.txt';var_output_file_path='C:\my\local\repos\github\droidmate\dev\droidmate\temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_viewCount.pdf', C:\my\local\repos\github\droidmate\dev\droidmate\temp_extracted_resources\plot_template.plt].
 2016-08-19 21:59:00.691 DEBUG org.zeroturnaround.exec.ProcessExecutor  Started java.lang.ProcessImpl@138caeca
 2016-08-19 21:59:00.693 TRACE o.z.exec.stream.StreamPumper             org.zeroturnaround.exec.stream.StreamPumper@529b77a started.
@@ -391,7 +391,7 @@ Resulting diff : PT-8.592S
 2016-08-19 21:59:00.740 TRACE o.z.exec.stream.PumpStreamHandler        Joining output thread Thread[Thread-2,5,]...
 2016-08-19 21:59:00.741 TRACE o.z.exec.stream.PumpStreamHandler        Flushing output stream ...
 2016-08-19 21:59:00.741 TRACE o.z.exec.stream.PumpStreamHandler        Flushing error stream org.apache.commons.io.output.NullOutputStream@32da93d8...
-2016-08-19 21:59:00.743 INFO  org.droidmate.report.TabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.pdf
+2016-08-19 21:59:00.743 INFO  org.droidmate.report.ApkTabularDataReport   Writing out temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.pdf
 2016-08-19 21:59:00.745 DEBUG org.zeroturnaround.exec.ProcessExecutor  Executing [gnuplot, -e, var_interactive=0;var_data_file_path='C:\my\local\repos\github\droidmate\dev\droidmate\temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.txt';var_output_file_path='C:\my\local\repos\github\droidmate\dev\droidmate\temp_dir_for_tests\MonitoredApkFixture_api23-debug-inlined_apk_apiCount.pdf', C:\my\local\repos\github\droidmate\dev\droidmate\temp_extracted_resources\plot_template.plt].
 2016-08-19 21:59:00.747 DEBUG org.zeroturnaround.exec.ProcessExecutor  Started java.lang.ProcessImpl@1a480135
 2016-08-19 21:59:00.748 TRACE o.z.exec.stream.StreamPumper             org.zeroturnaround.exec.stream.StreamPumper@2cacfc13 started.

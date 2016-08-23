@@ -28,12 +28,12 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     if (includeSummary)
       summaryFile.writeOut()
 
-    tabularReports.forEach { it.writeOut(includePlots) }
+    apksTabularReports.forEach { it.writeOut(includePlots) }
   }
 
   val summaryFile: IDataFile by lazy { Summary(data, dir.resolve(fileNameSummary)) }
 
-  val tabularReports: List<TabularDataReport> by lazy { data.map { TabularDataReport(it, dir) } }
+  val apksTabularReports: List<ApkTabularDataReport> by lazy { data.map { ApkTabularDataReport(it, dir) } }
 
   companion object { val fileNameSummary = "summary.txt" }
 
@@ -42,7 +42,6 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
   init { data = rawData.withFilteredApiLogs }
 
   val txtReportFiles: List<Path> by lazy {
-    listOf(summaryFile.path) + tabularReports.flatMap { it.paths }
+    listOf(summaryFile.path) + apksTabularReports.flatMap { it.paths }
   }
 }
-

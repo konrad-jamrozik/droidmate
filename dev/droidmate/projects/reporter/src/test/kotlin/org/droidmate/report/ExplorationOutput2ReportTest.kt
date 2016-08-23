@@ -59,7 +59,7 @@ class ExplorationOutput2ReportTest {
   }
 
   private fun assertOnDataStructure(report: ExplorationOutput2Report) {
-    report.tabularReports.forEach {
+    report.apksTabularReports.forEach {
       assertThat(it.viewCountTable.rowKeySet().size, greaterThan(0))
       assertThat(it.viewCountTable.columnKeySet(),
         hasItems(
@@ -88,9 +88,9 @@ class ExplorationOutput2ReportTest {
 
   private fun assertOnFiles(report: ExplorationOutput2Report) {
     assertThat(report.dir.fileNames, hasItems(
-      containsString(TabularDataReport.fileNameSuffixViewCount),
-      containsString(TabularDataReport.fileNameSuffixClickFrequency),
-      containsString(TabularDataReport.fileNameSuffixApiCount),
+      containsString(ApkTabularDataReport.fileNameSuffixViewCount),
+      containsString(ApkTabularDataReport.fileNameSuffixClickFrequency),
+      containsString(ApkTabularDataReport.fileNameSuffixApiCount),
       equalTo(ExplorationOutput2Report.fileNameSummary)
     )
     )
