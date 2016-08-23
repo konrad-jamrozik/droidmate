@@ -409,6 +409,35 @@ Ljava/net/Socket;-><init>(Ljava/net/InetAddress;IZ)V
 
 Ljava/net/Socket;->connect(Ljava/net/SocketAddress;I)V
 
+# ========== java.net.DatagramSocket constructors
+
+# Calls: checkPort, createSocket
+Ljava/net/DatagramSocket;-><init>(I)V
+
+# Calls: checkPort, createSocket
+Ljava/net/DatagramSocket;-><init>(ILjava/net/InetAddress;)V
+
+Ljava/net/DatagramSocket;-><init>(Ljava/net/SocketAddress;)V
+
+# Note that there are other constructors. They have been manually inspected and determined to be redundant.
+
+# ========== java.net.DatagramSocket methods
+
+Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V
+
+# REDUNDANT: delegates to the Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V
+## Ljava/net/DatagramSocket;->connect(Ljava/net/InetAddress;I)V
+
+# ========== java.net.MulticastSocket constructors
+
+# All MulticastSocket constructors call super, which is DatagramSocket constructor, which should be monitored.
+
+# ========== java.net.MulticastSocket methods
+
+# From method javadoc: "A socket must join a group before data may be received". Thus these methods are monitored.
+Ljava/net/MulticastSocket;->joinGroup(Ljava/net/InetAddress;)V
+Ljava/net/MulticastSocket;->joinGroup(Ljava/net/SocketAddress;Ljava/net/NetworkInterface;)V
+
 # ========== java.net.URL constructors
 
 # REDUNDANT: delegates to Ljava/net/URL;-><init>(Ljava/net/URL;Ljava/lang/String;Ljava/net/URLStreamHandler;)V
@@ -433,18 +462,21 @@ Ljava/net/URL;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lj
 Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
 Ljava/net/URL;->openConnection(Ljava/net/Proxy;)Ljava/net/URLConnection;
 
-# ========== java.net.URLConnection
+# ========== java.net.URLConnection constructors
 
-# API23 Can't find original method (redir_9_java_net_URLConnection_ctor1) 
-# Possibly because the method is "protected"
+# API23 (ArtHook) error: "Can't find original method (redir_9_java_net_URLConnection_ctor1)" 
+# Possibly because the method is "protected".
 ## Ljava/net/URLConnection;-><init>(Ljava/net/URL;)V
+
+# ========== java.net.URLConnection methods
 
 !API19 Ljava/net/URLConnection;->connect()V
 # This method is part of a general connection lifecycle as described here: https://developer.android.com/reference/java/net/URLConnection.html
-# However, a HttpURLConnection doesn't actually use it. Instead of connection, one writes to OutputStream,
-# as described here: https://developer.android.com/reference/java/net/HttpURLConnection.html
+# Note that the http implementation of URLConnection, the HttpURLConnection doesn't actually use connect() method. 
+# Instead of connection, one writes to OutputStream, as described here: 
+# https://developer.android.com/reference/java/net/HttpURLConnection.html
 #
-# In the original MonitorInitializer.java following method is defined to be monitored:
+# In the AppGuard's MonitorInitializer.java following method is defined to be monitored:
 # Ljava/net/HttpURLConnection;->connect()V
 # But its instrumentation fails:
 # 10-09 19:35:44.456  10187-10187/? W/Instrumentation? Failed to redirect method java.net.HttpURLConnection->connect
@@ -460,10 +492,6 @@ Ljava/net/URL;->openConnection(Ljava/net/Proxy;)Ljava/net/URLConnection;
 # [2] https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/URLConnection.java#167
 
 # ========== KJA to review
-Ljava/net/DatagramSocket;->connect(Ljava/net/InetAddress;I)V
-Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V
-Ljava/net/MulticastSocket;->joinGroup(Ljava/net/InetAddress;)V
-Ljava/net/MulticastSocket;->joinGroup(Ljava/net/SocketAddress;Ljava/net/NetworkInterface;)V
 
 # KJA to review
 # Instrumentation fails, but workaround is applied.
