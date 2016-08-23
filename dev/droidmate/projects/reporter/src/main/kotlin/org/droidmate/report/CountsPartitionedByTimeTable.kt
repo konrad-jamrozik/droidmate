@@ -22,6 +22,7 @@ import com.google.common.collect.Table
 
 open class CountsPartitionedByTimeTable private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
 
+  // Kotlin BUG: this constructor is actually used
   constructor(
     maxTime: Int,
     headers: List<String>,

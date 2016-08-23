@@ -18,30 +18,44 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
+import com.google.common.collect.ImmutableTable
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import java.nio.file.Path
 
 class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: Path) {
 
+  val data: List<IApkExplorationOutput2>
+
+  init { data = rawData.withFilteredApiLogs }
+  
   fun writeOut(includePlots : Boolean = true, includeSummary: Boolean = true) {
 
     if (includeSummary)
       summaryFile.writeOut()
+    
+    aggregateStatsFile.writeOut()
 
     apksTabularReports.forEach { it.writeOut(includePlots) }
   }
 
   val summaryFile: IDataFile by lazy { Summary(data, dir.resolve(fileNameSummary)) }
 
+  
+  val aggregateStatsFile : TableDataFile<Int, String, Int> by lazy {
+    // KJA curr work 
+    TableDataFile<Int, String, Int>(
+      ImmutableTable.of(4,"aa",5), 
+      dir.resolve(fileNameAggregateStats)) }
+  
   val apksTabularReports: List<ApkTabularDataReport> by lazy { data.map { ApkTabularDataReport(it, dir) } }
 
-  companion object { val fileNameSummary = "summary.txt" }
+  companion object { 
+    val fileNameSummary = "summary.txt"
+    val fileNameAggregateStats = "aggregate_stats.txt"
+  }
 
-  val data: List<IApkExplorationOutput2>
-
-  init { data = rawData.withFilteredApiLogs }
 
   val txtReportFiles: List<Path> by lazy {
-    listOf(summaryFile.path) + apksTabularReports.flatMap { it.paths }
+    listOf(summaryFile.path, aggregateStatsFile.path) + apksTabularReports.flatMap { it.paths }
   }
 }

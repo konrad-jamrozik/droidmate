@@ -18,10 +18,13 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.*
-import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
+import org.droidmate.dir
+import org.droidmate.fileNames
+import org.droidmate.misc.BuildConstants
 import org.droidmate.tests.fixture_monitoredSer2
+import org.droidmate.text
+import org.droidmate.withFiles
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.Test
@@ -59,6 +62,7 @@ class ExplorationOutput2ReportTest {
   }
 
   private fun assertOnDataStructure(report: ExplorationOutput2Report) {
+    // KJA add asserts on aggregateStatsTable
     report.apksTabularReports.forEach {
       assertThat(it.viewCountTable.rowKeySet().size, greaterThan(0))
       assertThat(it.viewCountTable.columnKeySet(),
@@ -91,7 +95,8 @@ class ExplorationOutput2ReportTest {
       containsString(ApkTabularDataReport.fileNameSuffixViewCount),
       containsString(ApkTabularDataReport.fileNameSuffixClickFrequency),
       containsString(ApkTabularDataReport.fileNameSuffixApiCount),
-      equalTo(ExplorationOutput2Report.fileNameSummary)
+      equalTo(ExplorationOutput2Report.fileNameSummary),
+      equalTo(ExplorationOutput2Report.fileNameAggregateStats)
     )
     )
   }
