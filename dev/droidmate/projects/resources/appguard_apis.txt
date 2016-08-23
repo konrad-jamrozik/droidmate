@@ -1,41 +1,55 @@
-# Copyright (c) 2012-2016 Saarland University
-# All rights reserved.
+# DroidMate, an automated execution generator for Android apps.
+# Copyright (C) 2012-2016 Konrad Jamrozik
 #
-# Author: Konrad Jamrozik, jamrozik@st.cs.uni-saarland.de
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-# This file is part of the "DroidMate" project.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-# www.droidmate.org
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-# -----
-#
+# email: jamrozik@st.cs.uni-saarland.de
+# web: www.droidmate.org
+
 # This file defines list of Android SDK APIs monitored during DroidMate run.
 #
 # The methods are written in the "class" file format
 # http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.3
-# with the optional " static" word appended at the end. Please note the space.
+# with the optional " static" word appended at the end. Please note the space at the beginning.
 #
-# The list was originally adapted from AppGuard from MonitorInitializer.java. Details are explained in a private repository:
+# ------
+#
+# The list was originally adapted from AppGuard from MonitorInitializer.java. 
+# Details of that .java file are explained in a private repository:
 # https://hg.st.cs.uni-saarland.de/projects/droidmate-private/repository/revisions/master/entry/resources/from_Philipp/appguard_apis_list_origin.txt
 #
-# The manual adaptations of this list were made to make it compatible with Android 4.4.4-r2.0.1 [1] and Android 6.
-# [1] https://github.com/android/platform_frameworks_base/tree/android-4.4.4_r2.0.1/core/java/android
+# The manual adaptations of this list were made to make it compatible with 
+# API19 / Android 4.4.4-r2.0.1 [1] and API2 / Android 6.0.1_r63 [2]
+# [1] https://android.googlesource.com/platform/frameworks/base.git/+/android-4.4.4_r2.0.1
+# [2] https://android.googlesource.com/platform/frameworks/base.git/+/android-6.0.1_r63
 #
-# The modification were done by
+# The first set of modifications, to make sure the methods work on API 19, were done by
 # 1. deploying the instrumented monitored app on the device,
 # 2. observing the logcat messages with "Instrumentation" tag,
 # 3. diagnosing any failures and comparing the list definitions with the official source,
 # 4. fixing the list and writing down the findings in comments in this file.
+#
+# The second of set of modifications was done in similar way, but with API23 which uses ArtHook.
+# To understand how to diagnose method signatures here that cannot be handled by ArtHook (which is used for Android 6), 
+# read the class comment of org.droidmate.monitor.RedirectionsGenerator
 #
 # ------
 #
 # Entries starting with !API19 will be skipped when running on Android 4 (API 19) because they do not exist there.
 # Entries starting with !API23 will be skipped when running on Android 6 (API 23) because they do not exist there.
 #
-# ------
-# 
-# To understand how to diagnose method signatures here that cannot be handled by ArtHook (which is used for Android 6), 
-# read the class comment of org.droidmate.monitor.RedirectionsGenerator
+
 
 Landroid/app/ActivityThread;->installContentProviders(Landroid/content/Context;Ljava/util/List;)V
 Landroid/app/ActivityManager;->getRecentTasks(II)Ljava/util/List;
@@ -346,11 +360,11 @@ Landroid/webkit/WebView;->loadUrl(Ljava/lang/String;Ljava/util/Map;)V
 # !API19 Ljava/io/FileOutputStream;->write([B)V
 
 # ========================================
-# NETWORKING APIs, reviewed on 22 Aug 2016 for Android 6.0.1_r63. 
+# NETWORKING APIs
 # ========================================
 # 
+# Reviewed on 22 Aug 2016 for Android 6.0.1_r63.
 # Might break on Android 4.4.4_r2.0.1, although developer.android.com doc is the same.
-#
 # API comments pertain to 6.0.1_r63
 
 # ========== java.net.Socket documentation
@@ -447,6 +461,9 @@ Ljava/net/URL;-><init>(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lj
 Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
 Ljava/net/URL;->openConnection(Ljava/net/Proxy;)Ljava/net/URLConnection;
 
+# ========== java.net.URLConnection documentation
+# https://developer.android.com/reference/java/net/URLConnection.html
+
 # ========== java.net.URLConnection constructors
 
 # API23 (ArtHook) error: "Can't find original method (redir_9_java_net_URLConnection_ctor1)" 
@@ -456,7 +473,7 @@ Ljava/net/URL;->openConnection(Ljava/net/Proxy;)Ljava/net/URLConnection;
 # ========== java.net.URLConnection methods
 
 !API19 Ljava/net/URLConnection;->connect()V
-# This method is part of a general connection lifecycle as described here: https://developer.android.com/reference/java/net/URLConnection.html
+# This method is part of a general connection lifecycle as described in the doc (see above)
 # Note that the http implementation of URLConnection, the HttpURLConnection doesn't actually use connect() method. 
 # Instead of connection, one writes to OutputStream, as described here: 
 # https://developer.android.com/reference/java/net/HttpURLConnection.html
@@ -502,12 +519,15 @@ Lorg/apache/http/impl/client/AbstractHttpClient;->execute(Lorg/apache/http/HttpH
 # ========================================
 
 # ========================================
-# CONTENT APIs, reviewed on 23 Aug 2016 for Android 6.0.1_r63. 
+# CONTENT APIs  
 # ========================================
 #
+# Reviewed on 23 Aug 2016 for Android 6.0.1_r63.
 # Might break on Android 4.4.4_r2.0.1, although developer.android.com doc is the same.
-#
 # API comments pertain to 6.0.1_r63
+#
+# Intro to content APIs from official doc: 
+# https://developer.android.com/guide/topics/providers/content-providers.html
 
 # ========== android.content.ContentResolver documentation
 # https://developer.android.com/reference/android/content/ContentResolver.html

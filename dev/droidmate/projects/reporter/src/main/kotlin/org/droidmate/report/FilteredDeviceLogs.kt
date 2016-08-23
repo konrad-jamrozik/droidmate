@@ -195,7 +195,6 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       // It calls ctor0 but then it calls java.net.Socket#tryAllAddresses which has a lot of logic.
       // https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/Socket.java
       // https://android.googlesource.com/platform/libcore/+/android-6.0.1_r63/luni/src/main/java/java/net/Socket.java
-      // KJA investigate if new socket calls have to be added on Android 6
       "redir_13_java_net_Socket_ctor4",
       
       // ----- Methods not present in appguard_apis.txt, but which were present in jellybean_publishedapimapping_modified.txt ----- 
