@@ -19,50 +19,52 @@
 package org.droidmate.report
 
 import com.google.common.collect.Table
-import com.konradjamrozik.frequencies
-import com.konradjamrozik.transpose
-import org.droidmate.device.datatypes.Widget
+import org.droidmate.exploration.actions.RunnableResetAppExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
-// KJA curr work
-class AggregateStatsTable private constructor(val table: Table<Int, String, Int>) : Table<Int, String, Int> by table {
+// KJA (reporting) produce table that can be readily imported to Excel that has columns:
+// apk_name	run_time_in_seconds	actions#	in_that_resets# 
+// actionable_views_seen# views_clicked_or_long_clicked_at_least_once# unique_apis# unique_event_apis# ANRs_seen# terminated_with_exception(give exception name: launch timeout, uninstall failure, other)
+class AggregateStatsTable private constructor(val table: Table<Int, String, String>) : Table<Int, String, String> by table {
 
-  constructor(data: IApkExplorationOutput2) : this(AggregateStatsTable.build(data))
+  constructor(data: List<IApkExplorationOutput2>) : this(AggregateStatsTable.build(data))
   
   companion object {
-    val headerNoOfClicks = "No_of_clicks"
-    val headerViewsCount = "Views_count"
+    val headerApkName = "apk_name"
+    val headerExplorationTimeInSeconds = "exploration_time_in_seconds"
+    val headerActionsCount = "actions#"
+    val headerResetActionsCount = "reset_actions#"
 
-    fun build(data: IApkExplorationOutput2): Table<Int, String, Int> {
-
-      val countOfViewsHavingNoOfClicks: Map<Int, Int> = data.countOfViewsHavingNoOfClicks
+    fun build(data: List<IApkExplorationOutput2>): Table<Int, String, String> {
 
       return buildTable(
-        headers = listOf(headerNoOfClicks, headerViewsCount),
-        rowCount = countOfViewsHavingNoOfClicks.keys.size,
+        headers = listOf(
+          headerApkName,
+          headerExplorationTimeInSeconds,
+          headerActionsCount,
+          headerResetActionsCount
+        ),
+        rowCount = data.size,
         computeRow = { rowIndex ->
-          check(countOfViewsHavingNoOfClicks.containsKey(rowIndex))
-          val noOfClicks = rowIndex
+          val apkData = data[rowIndex]
           listOf(
-            noOfClicks,
-            countOfViewsHavingNoOfClicks[noOfClicks]!!
+            apkData.apk.fileName,
+            apkData.explorationTimeInSeconds,
+            apkData.actionsCount,
+            apkData.resetActionsCount
           )
         }
       )
     }
 
-    private val IApkExplorationOutput2.countOfViewsHavingNoOfClicks: Map<Int, Int> get() {
+    private val IApkExplorationOutput2.explorationTimeInSeconds: String
+      get() = (explorationTimeInMs / 1000).toString()
 
-      val clickedWidgets: List<Widget> = this.actRess.flatMap { it.clickedWidget }
-      val noOfClicksPerWidget: Map<Widget, Int> = clickedWidgets.frequencies
-      val widgetsHavingNoOfClicks: Map<Int, Set<Widget>> = noOfClicksPerWidget.transpose
-      val widgetsCountPerNoOfClicks: Map<Int, Int> = widgetsHavingNoOfClicks.mapValues { it.value.size }
+    private val IApkExplorationOutput2.actionsCount: String
+      get() = actions.size.toString()
 
-      val maxNoOfClicks = noOfClicksPerWidget.values.max() ?: 0
-      val noOfClicksProgression = 0..maxNoOfClicks step 1
-      val zeroWidgetsCountsPerNoOfClicks = noOfClicksProgression.associate { Pair(it, 0) }
-      
-      return zeroWidgetsCountsPerNoOfClicks + widgetsCountPerNoOfClicks
-    }
+    private val IApkExplorationOutput2.resetActionsCount: String
+      get() = actions.filter { it is RunnableResetAppExplorationAction }.size.toString()
+
   }
 }
