@@ -37,7 +37,7 @@ val RunnableExplorationActionWithResult.actionableWidgets: Iterable<Widget>
   get() {
     return when (result.guiSnapshot) {
       is MissingGuiSnapshot -> emptyList()
-      else -> result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() }
+      else -> result.guiSnapshot.guiState.actionableWidgets
     }
   }
 

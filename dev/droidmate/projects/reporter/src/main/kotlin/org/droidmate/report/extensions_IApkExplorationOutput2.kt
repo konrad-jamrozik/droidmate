@@ -18,8 +18,16 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
-// KJA
-val IApkExplorationOutput2.todo: String
-  get() = (explorationTimeInMs / 1000).toString()
+// KJA test, simplify, extract methods, check if utils has stuff liek that
+val IApkExplorationOutput2.uniqueActionableWidgets: Set<Widget>
+  get() {
+    val grouped: Map<String, List<Widget>> = this.actRess.flatMap { it.actionableWidgets }.groupBy { it.uniqueString }
+    val uniquesByString: Map<String, Widget> = grouped.mapValues { it.value.first() }
+    val uniqueWidgets = uniquesByString.values
+    // KJA test
+    check(uniqueWidgets == uniqueWidgets.toSet())
+    return uniqueWidgets.toSet()
+  }
