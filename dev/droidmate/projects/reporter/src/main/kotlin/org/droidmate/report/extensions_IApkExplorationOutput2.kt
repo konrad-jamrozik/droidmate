@@ -18,20 +18,8 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.device.datatypes.Widget
-import org.droidmate.exploration.actions.EnterTextExplorationAction
-import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
-import org.droidmate.exploration.actions.WidgetExplorationAction
+import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
-val RunnableExplorationActionWithResult.clickedWidget: Set<Widget> get() {
-  val action = this.action.base
-  return when (action) {
-    is WidgetExplorationAction -> setOf(action.widget)
-    is EnterTextExplorationAction -> setOf(action.widget)
-    else -> emptySet()
-  }
-}
-
-fun RunnableExplorationActionWithResult.extractEventApiPairs(): List<EventApiPair> {
-  return this.result.deviceLogs.apiLogsOrEmpty.map { apiLog -> EventApiPair(this, apiLog) }
-}
+// KJA
+val IApkExplorationOutput2.todo: String
+  get() = (explorationTimeInMs / 1000).toString()

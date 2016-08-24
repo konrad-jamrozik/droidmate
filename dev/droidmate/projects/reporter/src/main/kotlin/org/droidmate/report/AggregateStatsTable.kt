@@ -59,6 +59,7 @@ class AggregateStatsTable private constructor(val table: Table<Int, String, Stri
             apkData.explorationTimeInSeconds,
             apkData.actionsCount,
             apkData.resetActionsCount,
+            //apkData.actRess.first().result.guiSnapshot
             "0", // KJA todo views seen. See ViewCountTable and DRY
             "0" // KJA todo views clicked. See ViewCountTable and DRY
           )

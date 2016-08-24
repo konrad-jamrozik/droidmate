@@ -63,7 +63,7 @@ class ApkSummaryTest {
       println(summaryString)
   }
 
-   @Test
+  @Test
   fun buildsFromApkExplorationOutput2() {
   
     

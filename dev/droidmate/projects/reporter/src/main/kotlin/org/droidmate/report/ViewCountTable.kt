@@ -18,7 +18,6 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.device.datatypes.MissingGuiSnapshot
 import org.droidmate.device.datatypes.Widget
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
@@ -47,13 +46,7 @@ class ViewCountTable : CountsPartitionedByTimeTable {
 
     private val IApkExplorationOutput2.uniqueSeenActionableViewsCountByTime: Map<Long, Iterable<String>> get() {
       return this.uniqueViewCountByPartitionedTime(
-        // KJA this lambda should be converted to extension property that produces actionable widgets from RunnableExplorationActionWithResult
-        extractItems = {
-          when (it.result.guiSnapshot) {
-            is MissingGuiSnapshot -> emptyList()
-            else -> it.result.guiSnapshot.guiState.widgets.filter { it.canBeActedUpon() }
-          }
-        }
+        extractItems = { it.actionableWidgets }
       )
     }
 
