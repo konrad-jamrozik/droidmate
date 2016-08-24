@@ -52,8 +52,6 @@ class ExplorationOutput2ReportTest {
     // Act
     // "includePlots" is set to false because plots require gnuplot, which does not work on mock file system used in this test.
     report.writeOut(includePlots = false) 
-    
-
 
     assertOnDataStructure(report)
     assertOnFiles(report)

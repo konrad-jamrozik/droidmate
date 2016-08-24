@@ -20,15 +20,20 @@ package org.droidmate.report
 
 import org.droidmate.device.datatypes.Widget
 import org.droidmate.exploration.actions.ResetAppExplorationAction
+import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
 val IApkExplorationOutput2.uniqueActionableWidgets: Set<Widget>
-  get() {
-    return this.actRess.setByUniqueString(
-      extractItems = { it.actionableWidgets },
-      uniqueString = { it.uniqueString }
-    )
-  }
+  get() = this.actRess.setByUniqueString(
+    extractItems = RunnableExplorationActionWithResult::actionableWidgets,
+    uniqueString = Widget::uniqueString
+  )
+
+val IApkExplorationOutput2.uniqueClickedWidgets: Set<Widget>
+  get() = this.actRess.setByUniqueString(
+    extractItems = RunnableExplorationActionWithResult::clickedWidget,
+    uniqueString = Widget::uniqueString
+  )
 
 val IApkExplorationOutput2.resetActionsCount: Int
   get() = actions.count { it.base is ResetAppExplorationAction }
