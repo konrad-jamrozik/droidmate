@@ -19,9 +19,9 @@
 package org.droidmate.report
 
 import org.droidmate.device.datatypes.Widget
+import org.droidmate.exploration.actions.ResetAppExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
-// KJA test, simplify, extract methods, check if utils has stuff like that
 val IApkExplorationOutput2.uniqueActionableWidgets: Set<Widget>
   get() {
     return this.actRess.setByUniqueString(
@@ -29,3 +29,6 @@ val IApkExplorationOutput2.uniqueActionableWidgets: Set<Widget>
       uniqueString = { it.uniqueString }
     )
   }
+
+val IApkExplorationOutput2.resetActionsCount: Int
+  get() = actions.count { it.base is ResetAppExplorationAction }

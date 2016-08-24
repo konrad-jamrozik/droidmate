@@ -19,7 +19,6 @@
 package org.droidmate.report
 
 import com.google.common.collect.Table
-import org.droidmate.exploration.actions.RunnableResetAppExplorationAction
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
 // KJA (reporting) produce table that can be readily imported to Excel that has columns:
@@ -56,25 +55,15 @@ class AggregateStatsTable private constructor(val table: Table<Int, String, Stri
           listOf(
             apkData.apk.fileName,
             apkData.packageName,
-            apkData.explorationTimeInSeconds,
-            apkData.actionsCount,
-            apkData.resetActionsCount,
-            //apkData.actRess.first().result.guiSnapshot
-            "0", // KJA todo views seen. See ViewCountTable and DRY
+            apkData.explorationDuration.seconds.toString(),
+            apkData.actions.size.toString(),
+            apkData.resetActionsCount.toString(),
+            apkData.uniqueActionableWidgets.size.toString(),
             "0" // KJA todo views clicked. See ViewCountTable and DRY
           )
         }
       )
     }
-
-    private val IApkExplorationOutput2.explorationTimeInSeconds: String
-      get() = (explorationTimeInMs / 1000).toString()
-
-    private val IApkExplorationOutput2.actionsCount: String
-      get() = actions.size.toString()
-
-    private val IApkExplorationOutput2.resetActionsCount: String
-      get() = actions.filter { it is RunnableResetAppExplorationAction }.size.toString()
 
   }
 }

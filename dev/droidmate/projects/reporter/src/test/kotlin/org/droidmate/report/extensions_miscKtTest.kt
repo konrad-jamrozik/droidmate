@@ -45,11 +45,11 @@ class extensions_miscKtTest {
   @Test
   fun setByUniqueStringTest() {
     assertThat(
-      listOf(1, 2, 3, 6).setByUniqueString(
+      listOf(5, 6, 9, 10, 13, 29, 50, 60).setByUniqueString(
         extractItems = { listOf(it, it + 1) },
-        uniqueString = { it.toString() }
+        uniqueString = { it.toString().dropLast(1) }
       ),
-      equalTo(setOf(1, 2, 3, 4, 6, 7))
+      equalTo(setOf(5, 10, 29, 30, 50, 60))
     )
   }
 }
