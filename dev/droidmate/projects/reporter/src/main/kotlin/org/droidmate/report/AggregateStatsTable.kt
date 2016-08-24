@@ -30,28 +30,37 @@ class AggregateStatsTable private constructor(val table: Table<Int, String, Stri
   constructor(data: List<IApkExplorationOutput2>) : this(AggregateStatsTable.build(data))
   
   companion object {
-    val headerApkName = "apk_name"
-    val headerExplorationTimeInSeconds = "exploration_time_in_seconds"
-    val headerActionsCount = "actions#"
-    val headerResetActionsCount = "reset_actions#"
+    val headerApkName = "file_name"
+    val headerPackageName = "package_name"
+    val headerExplorationTimeInSeconds = "exploration_seconds"
+    val headerActionsCount = "actions"
+    val headerResetActionsCount = "in_this_reset_actions"
+    val headerViewsSeenCount = "actionable_unique_views_seen_at_least_once"
+    val headerViewsClickedCount = "actionable_unique_views_clicked_or_long_clicked_at_least_once"
 
     fun build(data: List<IApkExplorationOutput2>): Table<Int, String, String> {
 
       return buildTable(
         headers = listOf(
           headerApkName,
+          headerPackageName,
           headerExplorationTimeInSeconds,
           headerActionsCount,
-          headerResetActionsCount
+          headerResetActionsCount,
+          headerViewsSeenCount,
+          headerViewsClickedCount
         ),
         rowCount = data.size,
         computeRow = { rowIndex ->
           val apkData = data[rowIndex]
           listOf(
             apkData.apk.fileName,
+            apkData.packageName,
             apkData.explorationTimeInSeconds,
             apkData.actionsCount,
-            apkData.resetActionsCount
+            apkData.resetActionsCount,
+            "0", // KJA todo views seen. See ViewCountTable and DRY
+            "0" // KJA todo views clicked. See ViewCountTable and DRY
           )
         }
       )

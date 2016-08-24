@@ -56,9 +56,15 @@ public class DroidmateFrontend
 
   public static int main(String[] args, ICommandProvider commandProvider, FileSystem fs = FileSystems.getDefault(), IExceptionHandler exceptionHandler = new ExceptionHandler())
   {
-    println "DroidMate"
-    println "Copyright (c) 2012 - ${LocalDate.now().year} Saarland University"
-    println "All rights reserved."
+    println "DroidMate, an automated execution generator for Android apps."
+    println "Copyright (c) 2012 - ${LocalDate.now().year} Konrad Jamrozik"
+    println "This program is free software licensed under GNU GPL v3."
+    println ""
+    println "You should have received a copy of the GNU General Public License"
+    println "along with this program.  If not, see <http://www.gnu.org/licenses/>."
+    println ""
+    println "email: jamrozik@st.cs.uni-saarland.de"
+    println "web: www.droidmate.org"
 
     int exitStatus = 0
     Date runStart = new Date()
