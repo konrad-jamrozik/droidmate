@@ -57,3 +57,16 @@ val Duration.minutesAndSeconds: String get() {
 val Widget.uniqueString: String get() {
   return WidgetStrategy.WidgetInfo(this).uniqueString
 }
+
+fun <T, TItem> Iterable<T>.setByUniqueString(
+  extractItems: (T) -> Iterable<TItem>,
+  uniqueString: (TItem) -> String
+): Set<TItem> {
+
+  val grouped: Map<String, List<TItem>> = this.flatMap { extractItems(it) }.groupBy { uniqueString(it) }
+  val uniquesByString: Map<String, TItem> = grouped.mapValues { it.value.first() }
+  val uniques: Collection<TItem> = uniquesByString.values
+  val uniquesSet = uniques.toSet()
+  check(uniques.size == uniquesSet.size)
+  return uniquesSet
+}
