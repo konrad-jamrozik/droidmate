@@ -18,6 +18,8 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
+import org.droidmate.device.datatypes.Widget
+import org.droidmate.exploration.strategy.WidgetStrategy
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.Duration
@@ -50,4 +52,8 @@ val Duration.minutesAndSeconds: String get() {
   val m = this.toMinutes()
   val s = this.seconds - m * 60
   return "$m".padStart(4, ' ') + "m " + "$s".padStart(2, ' ') + "s"
+}
+
+val Widget.uniqueString: String get() {
+  return WidgetStrategy.WidgetInfo(this).uniqueString
 }

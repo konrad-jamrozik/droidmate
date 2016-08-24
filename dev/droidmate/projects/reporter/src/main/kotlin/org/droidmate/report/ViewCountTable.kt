@@ -21,7 +21,6 @@ package org.droidmate.report
 import org.droidmate.device.datatypes.Widget
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.droidmate.exploration.strategy.WidgetStrategy
 
 class ViewCountTable : CountsPartitionedByTimeTable {
 
@@ -64,7 +63,7 @@ class ViewCountTable : CountsPartitionedByTimeTable {
         extractItems = extractItems
       ).mapValues {
         val widgets = it.value
-        widgets.map { WidgetStrategy.WidgetInfo(it).uniqueString }
+        widgets.map { it.uniqueString }
       }
     }
   }
