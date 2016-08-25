@@ -27,7 +27,6 @@ import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import java.nio.file.Path
-import java.nio.file.Paths
 
 /**
  * <p>
@@ -104,7 +103,6 @@ public class Configuration implements IConfiguration
   public static final String pn_inline                                       = "-inline"
   public static final String pn_launchActivityDelay                          = "-launchActivityDelay"
   public static final String pn_launchActivityTimeout                        = "-launchActivityTimeout"
-  public static final String pn_logWidgets                                   = "-logWidgets"
   public static final String pn_monitorServerStartQueryDelay                 = "-monitorServerStartQueryDelay"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
   public static final String pn_randomSeed                                   = "-randomSeed"
@@ -113,9 +111,7 @@ public class Configuration implements IConfiguration
   public static final String pn_reportOutputDir                              = "-reportOutputDir"
   public static final String pn_resetEveryNthExplorationForward              = "-resetEvery"
   public static final String pn_runOnNotInlined                              = "-runOnNotInlined"
-  public static final String pn_splitCharts                                  = "-splitCharts"
   public static final String pn_socketTimeout                                = "-socketTimeout"
-  public static final String pn_softReset                                    = "-softReset"
   public static final String pn_timeLimit                                    = "-timeLimit"
   public static final String pn_uiautomatorDaemonServerStartTimeout          = "-uiautomatorDaemonServerStartTimeout"
   public static final String pn_uiautomatorDaemonServerStartQueryDelay       = "-uiautomatorDaemonServerStartQueryDelay"
@@ -236,9 +232,6 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_launchActivityTimeout])
   public int launchActivityTimeout = 1000 * 60 * 2
 
-  @Parameter(names = [Configuration.pn_logWidgets])
-  public boolean logWidgets = false
-
   @Parameter(names = ["-logLevel"], description =
     "Logging level of the entirety of application. Possible values, comma separated: trace, debug, info.")
   String logLevel = "trace"
@@ -249,11 +242,6 @@ public class Configuration implements IConfiguration
   @Parameter(names = [Configuration.pn_monitorServerStartTimeout])
   public int monitorServerStartTimeout = 20000
 
-  @Parameter(names = ["-outputAppGuardCharts"], arity = 1)
-  public boolean outputAppGuardCharts = false
-
-  public Path uiaTestCasesLogsDirPath = Paths.get("./uia_test_cases_logs")
-
   @Parameter(names = [Configuration.pn_uninstallApk], arity = 1)
   public boolean uninstallApk = true
 
@@ -261,18 +249,15 @@ public class Configuration implements IConfiguration
     "The seed for a random generator used by a random-clicking GUI exploration strategy. If null, a seed will be randomized.")
   public Long randomSeed = null
 
-  @Parameter(names = ["-removeHardCodedApis"], arity = 1)
-  public boolean removeHardCodedApis = true
-
   @Parameter(names = [Configuration.pn_reportIncludePlots], arity = 1)
   public Boolean reportIncludePlots = true
 
   @Parameter(names = [Configuration.pn_reportInputDir], description =
-    "Path to the directory that will be expected to have DroidMate exploration output for reporting purposes.")
+    "Path to the directory containing report input. The input is to be DroidMate exploration output.")
   public String reportInputDir = "reportInput"
 
   @Parameter(names = [Configuration.pn_reportOutputDir], description =
-    "Path to the directory that will contain DroidMate the report files generated from exploration output.")
+    "Path to the directory that will contain the report files.")
   public String reportOutputDir = "reportOutput"
 
   @Parameter(names = [Configuration.pn_resetEveryNthExplorationForward])
@@ -282,19 +267,10 @@ public class Configuration implements IConfiguration
     "Allow DroidMate to run on non-inlined apks.")
   public Boolean runOnNotInlined = false
 
-  @Parameter(names = ["-saturationChartsHours"], description = "The time span covered by the saturation charts data, in hours.")
-  public Double saturationChartsHours = 2.0
-
-  @Parameter(names = [Configuration.pn_splitCharts], arity = 1)
-  public boolean splitCharts = false
-
   @Parameter(names = [Configuration.pn_socketTimeout], arity = 1)
   // Has to be hefty as "turn_wifi_on" device action can take 20+ seconds.
   // Also, starting activity might take some times.
   public int socketTimeout = 3 * 60 * 1000 // ms
-
-  @Parameter(names = [Configuration.pn_softReset], arity = 1)
-  public boolean softReset = false
 
   @Parameter(names = [Configuration.pn_uiautomatorDaemonServerStartTimeout], description =
     "How long DroidMate should wait, in milliseconds, for message on logcat confirming that UiAutomatorDaemonServer has started on android (virtual) device.")
@@ -341,9 +317,6 @@ public class Configuration implements IConfiguration
 
   @Parameter(names = [Configuration.pn_waitForCanRebootDelay])
   public int waitForCanRebootDelay = 30 * 1000
-
-  @Parameter(names = ["-widgetUniqueStringWithFieldPrecedence"], arity = 1)
-  public boolean widgetUniqueStringWithFieldPrecedence = true
 
   //endregion
 
