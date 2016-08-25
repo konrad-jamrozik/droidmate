@@ -144,6 +144,13 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
     assert hierarchy.name() == "hierarchy"
 
     String topNodePackage = hierarchy.node[0]?.@package?.text()
+    // KJA bug assert fail after on fixture droidmate clicked "Crash activity"
+    // Looka like the GUI can be nonempty but with empty topnodepackage
+    // KJA DEBUG
+    if (topNodePackage.empty)
+    {
+      log.warn("Hierarchy without top node package:\n"+hierarchy)
+    }
     assert !topNodePackage.empty
 
 

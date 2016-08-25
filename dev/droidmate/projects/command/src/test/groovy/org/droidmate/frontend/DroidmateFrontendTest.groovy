@@ -173,6 +173,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
     assert exitStatus != 0
 
+    // KJA test failure. Probably because I call "belongsToApp" on a null Widget. See IApkExplActAndResult extensions in reporter project.
     assert spy.handledThrowable instanceof ThrowablesCollection
     assert spy.throwables.size() == exceptionSpecs.size()
     assert spy.throwables.collect {Throwables.getRootCause(it) as ITestException}*.exceptionSpec == exceptionSpecs

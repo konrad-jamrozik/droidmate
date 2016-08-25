@@ -20,13 +20,11 @@ package org.droidmate.report
 
 import com.konradjamrozik.isDirectory
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.nio.file.Path
 
 data class ApkTabularDataReport(val data: IApkExplorationOutput2, val dir: Path) {
 
-  private val log: Logger = LoggerFactory.getLogger(ApkTabularDataReport::class.java)
+//  private val log: Logger = LoggerFactory.getLogger(ApkTabularDataReport::class.java)
 
   init {
     require(dir.isDirectory)
@@ -34,22 +32,22 @@ data class ApkTabularDataReport(val data: IApkExplorationOutput2, val dir: Path)
 
   fun writeOut(includePlots: Boolean = true) {
 
-    log.info("Writing out table report for ${data.apk.fileName}")
+//    log.info("Writing out table report for ${data.apk.fileName}")
 
-    log.info("Writing out $viewCountFile")
+//    log.info("Writing out $viewCountFile")
     viewCountFile.writeOut()
 
-    log.info("Writing out $clickFrequencyFile")
+//    log.info("Writing out $clickFrequencyFile")
     clickFrequencyFile.writeOut()
 
-    log.info("Writing out $apiCountFile")
+//    log.info("Writing out $apiCountFile")
     apiCountFile.writeOut()
 
     if (includePlots) {
-      log.info("Writing out ${viewCountFile.plotFile}")
+//      log.info("Writing out ${viewCountFile.plotFile}")
       viewCountFile.writeOutPlot()
 
-      log.info("Writing out ${apiCountFile.plotFile}")
+//      log.info("Writing out ${apiCountFile.plotFile}")
       apiCountFile.writeOutPlot()
     }
   }
