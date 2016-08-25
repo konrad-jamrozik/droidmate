@@ -36,6 +36,9 @@ class AggregateStatsTable private constructor(val table: Table<Int, String, Stri
     val headerResetActionsCount = "in_this_reset_actions"
     val headerViewsSeenCount = "actionable_unique_views_seen_at_least_once"
     val headerViewsClickedCount = "actionable_unique_views_clicked_or_long_clicked_at_least_once"
+    val headerApisSeenCount = "unique_apis"
+    val headerEventApiPairsSeenCount = "unique_event_api_pairs"
+    val headerException = "exception"
 
     fun build(data: List<IApkExplorationOutput2>): Table<Int, String, String> {
 
@@ -47,7 +50,10 @@ class AggregateStatsTable private constructor(val table: Table<Int, String, Stri
           headerActionsCount,
           headerResetActionsCount,
           headerViewsSeenCount,
-          headerViewsClickedCount
+          headerViewsClickedCount,
+          headerApisSeenCount,
+          headerEventApiPairsSeenCount,
+          headerException
         ),
         rowCount = data.size,
         computeRow = { rowIndex ->
@@ -59,8 +65,11 @@ class AggregateStatsTable private constructor(val table: Table<Int, String, Stri
             apkData.actions.size.toString(),
             apkData.resetActionsCount.toString(),
             apkData.uniqueActionableWidgets.size.toString(),
-            apkData.uniqueClickedWidgets.size.toString()
-            // KJA remaining columns
+            apkData.uniqueClickedWidgets.size.toString(),
+            apkData.uniqueApis.size.toString(),
+            apkData.uniqueEventApiPairs.size.toString(),
+            apkData.exception.toString()
+            
           )
         }
       )

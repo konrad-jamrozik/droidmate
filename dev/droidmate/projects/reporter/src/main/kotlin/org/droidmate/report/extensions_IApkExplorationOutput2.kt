@@ -18,6 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
+import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.device.datatypes.Widget
 import org.droidmate.exploration.actions.ResetAppExplorationAction
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
@@ -33,6 +34,18 @@ val IApkExplorationOutput2.uniqueClickedWidgets: Set<Widget>
   get() = this.actRess.setByUniqueString(
     extractItems = RunnableExplorationActionWithResult::clickedWidget,
     uniqueString = Widget::uniqueString
+  )
+
+val IApkExplorationOutput2.uniqueApis: Set<IApiLogcatMessage>
+  get() = this.actRess.setByUniqueString(
+    extractItems = { it.result.deviceLogs.apiLogsOrEmpty },
+    uniqueString = { it.uniqueString } 
+  )
+
+val IApkExplorationOutput2.uniqueEventApiPairs: Set<EventApiPair>
+  get() = this.actRess.setByUniqueString(
+    extractItems = RunnableExplorationActionWithResult::extractEventApiPairs,
+    uniqueString = { it.uniqueString }
   )
 
 val IApkExplorationOutput2.resetActionsCount: Int
