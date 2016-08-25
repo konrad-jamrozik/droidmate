@@ -153,8 +153,8 @@ public class Configuration implements IConfiguration
   public boolean alwaysClickFirstWidget = false
 
   @Parameter(names = [Configuration.pn_androidApi, "-api", "-apiLevel"],
-    description = "Has to be set to the Android API version corresponding to the (virtual) devices on which DroidMate will run. Currently supported value: 'api19'")
-  public String androidApi = api19
+    description = "Has to be set to the Android API version corresponding to the (virtual) devices on which DroidMate will run. Currently supported values: api19, api23")
+  public String androidApi = api23
   
   @Parameter(names = [Configuration.pn_apksLimit, "-limit"],
     description = "Limits the number of apks on which DroidMate will run. 0 means no limit.")
