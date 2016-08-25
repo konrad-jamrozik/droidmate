@@ -29,8 +29,17 @@ class ApkViewsFile(val data: IApkExplorationOutput2, dir: Path) : DataFile(build
     Files.write(file, apkViewsString.toByteArray())
   }
 
-  val apkViewsString: String by lazy { ApkViews(data).toString() }
+  val apkViewsString: String by lazy { data.apkViewsString }
 
+  private val IApkExplorationOutput2.apkViewsString: String
+    get() {
+      return "Unique actionable widget\n" +
+        this.uniqueActionableWidgets.map { it.uniqueString }.joinToString(separator = "\n") +
+        "\n====================\n" +
+        "Unique clicked widgets\n" +
+        this.uniqueClickedWidgets.map { it.uniqueString }.joinToString(separator = "\n")
+    }
+  
   companion object {
     
     val fileNameSuffix = "_views.txt"
@@ -39,6 +48,8 @@ class ApkViewsFile(val data: IApkExplorationOutput2, dir: Path) : DataFile(build
       require(dir.isDirectory)
       return dir.resolve("${data.fileNamePrefix}$fileNameSuffix")
     }
+
+
   }
 }
 
