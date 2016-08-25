@@ -35,6 +35,8 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     aggregateStatsFile.writeOut()
 
     apksTabularReports.forEach { it.writeOut(includePlots) }
+
+    apksViewsFiles.forEach { it.writeOut() }
   }
 
   val summaryFile: IDataFile by lazy { Summary(data, dir.resolve(fileNameSummary)) }
@@ -44,6 +46,7 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
   }
   
   val apksTabularReports: List<ApkTabularDataReport> by lazy { data.map { ApkTabularDataReport(it, dir) } }
+  val apksViewsFiles: List<ApkViewsFile> by lazy { data.map {ApkViewsFile(it, dir) } }
 
   companion object { 
     val fileNameSummary = "summary.txt"
@@ -51,6 +54,8 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
   }
 
   val txtReportFiles: List<Path> by lazy {
-    listOf(summaryFile.path, aggregateStatsFile.path) + apksTabularReports.flatMap { it.paths }
+    listOf(summaryFile.path, aggregateStatsFile.path) +
+      apksTabularReports.flatMap { it.paths } +
+      apksViewsFiles.map { it.path }
   }
 }

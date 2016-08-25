@@ -50,3 +50,6 @@ val IApkExplorationOutput2.uniqueEventApiPairs: Set<EventApiPair>
 
 val IApkExplorationOutput2.resetActionsCount: Int
   get() = actions.count { it.base is ResetAppExplorationAction }
+
+val IApkExplorationOutput2.fileNamePrefix: String
+  get() = apk.fileName.replace(".", "_")

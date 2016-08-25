@@ -110,6 +110,7 @@ class ExplorationOutput2ReportTest {
       containsString(ApkTabularDataReport.fileNameSuffixViewCount),
       containsString(ApkTabularDataReport.fileNameSuffixClickFrequency),
       containsString(ApkTabularDataReport.fileNameSuffixApiCount),
+      containsString(ApkViewsFile.fileNameSuffix),
       equalTo(ExplorationOutput2Report.fileNameSummary),
       equalTo(ExplorationOutput2Report.fileNameAggregateStats)
     )
