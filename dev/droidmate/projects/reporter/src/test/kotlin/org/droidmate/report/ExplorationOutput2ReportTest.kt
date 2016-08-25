@@ -62,11 +62,21 @@ class ExplorationOutput2ReportTest {
     
     assertThat(report.aggregateStatsFile.table.rowKeySet().size, greaterThan(0))
     assertThat(report.aggregateStatsFile.table.columnKeySet(),
-      hasItems(
-        // KJA update asserts when done
-        AggregateStatsTable.headerApkName,
-        AggregateStatsTable.headerExplorationTimeInSeconds
-      )
+      with(AggregateStatsTable) {
+        hasItems(
+          headerApkName,
+          headerPackageName,
+          headerExplorationTimeInSeconds,
+          headerActionsCount,
+          headerResetActionsCount,
+          headerViewsSeenCount,
+          headerViewsClickedCount,
+          headerApisSeenCount,
+          headerEventApiPairsSeenCount,
+          headerException
+        )  
+      }
+      
     )
     report.apksTabularReports.forEach {
       assertThat(it.viewCountTable.rowKeySet().size, greaterThan(0))

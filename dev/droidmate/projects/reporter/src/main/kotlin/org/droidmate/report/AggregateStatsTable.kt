@@ -21,9 +21,6 @@ package org.droidmate.report
 import com.google.common.collect.Table
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
-// KJA (reporting) produce table that can be readily imported to Excel that has columns:
-// apk_name	run_time_in_seconds	actions#	in_that_resets# actionable_views_seen# views_clicked_or_long_clicked_at_least_once#
-//  unique_apis# unique_event_apis# ANRs_seen# terminated_with_exception(give exception name: launch timeout, uninstall failure, other)
 class AggregateStatsTable private constructor(val table: Table<Int, String, String>) : Table<Int, String, String> by table {
 
   constructor(data: List<IApkExplorationOutput2>) : this(AggregateStatsTable.build(data))
@@ -69,7 +66,6 @@ class AggregateStatsTable private constructor(val table: Table<Int, String, Stri
             apkData.uniqueApis.size.toString(),
             apkData.uniqueEventApiPairs.size.toString(),
             apkData.exception.toString()
-            
           )
         }
       )

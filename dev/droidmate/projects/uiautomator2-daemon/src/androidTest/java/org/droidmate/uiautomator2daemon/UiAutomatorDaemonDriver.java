@@ -38,7 +38,7 @@ import java.io.IOException;
 
 import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*;
 
-// KJA2 (refactoring) dry up common code with uiad-1. Put the shared code in uiautomator-daemon-lib
+// WISH there is code duplication between uiad-1 and uiad-2. When DM no longer needs to work with Android 4, remove uiad-1. 
 class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
 {
   private final UiDevice device;
