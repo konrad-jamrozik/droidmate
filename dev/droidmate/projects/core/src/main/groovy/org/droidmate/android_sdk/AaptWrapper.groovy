@@ -188,9 +188,9 @@ public class AaptWrapper implements IAaptWrapper
     try
     {
       String aaptCommand
-      if (cfg.androidApi == "api19")
+      if (cfg.androidApi == Configuration.api19)
         aaptCommand = cfg.aaptCommandApi19
-      else if (cfg.androidApi == "api23")
+      else if (cfg.androidApi == Configuration.api23)
         aaptCommand = cfg.aaptCommandApi23
       else 
         throw new UnexpectedIfElseFallthroughError()

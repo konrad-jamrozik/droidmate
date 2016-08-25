@@ -96,7 +96,7 @@ class DeviceTest extends DroidmateGroovyTestCase
   // WISH better to do this through adb: http://stackoverflow.com/a/10038568/986533
   void "Turns wifi on on api23"()
   {
-    IDeviceTools deviceTools = new DeviceTools(new ConfigurationForTests().setArgs([Configuration.pn_androidApi, "api23",]).forDevice().get())
+    IDeviceTools deviceTools = new DeviceTools(new ConfigurationForTests().setArgs([Configuration.pn_androidApi, Configuration.api23,]).forDevice().get())
     deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
       device.perform(newTurnWifiOnDeviceAction())
       return []

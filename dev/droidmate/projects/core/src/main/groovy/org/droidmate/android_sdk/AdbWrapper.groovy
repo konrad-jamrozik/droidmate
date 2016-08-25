@@ -617,9 +617,9 @@ public class AdbWrapper implements IAdbWrapper
   @Override
   public void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
   {
-    if (cfg.androidApi == "api19")
+    if (cfg.androidApi == Configuration.api19)
       startUiautomatorDaemon_api19(deviceSerialNumber, port)
-    else if (cfg.androidApi == "api23")
+    else if (cfg.androidApi == Configuration.api23)
       startUiautomatorDaemon_api23(deviceSerialNumber, port)
     else throw new UnexpectedIfElseFallthroughError()
   }

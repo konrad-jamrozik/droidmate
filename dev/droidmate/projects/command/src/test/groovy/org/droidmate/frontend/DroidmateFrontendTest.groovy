@@ -227,9 +227,10 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     String[] args = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api19_name]",
       Configuration.pn_widgetIndexes, "[0, 1]",
+      Configuration.pn_androidApi, Configuration.api19,
     ]).get().args
 
-    exploreOnRealDevice(args, "api19")
+    exploreOnRealDevice(args, Configuration.api19)
   }
 
 
@@ -240,10 +241,10 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     String[] args = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api23_name]",
       Configuration.pn_widgetIndexes, "[0, 1, 2, 2, 2]",
-      Configuration.pn_androidApi, "api23",
+      Configuration.pn_androidApi, Configuration.api23
     ]).get().args
 
-    exploreOnRealDevice(args, "api23")
+    exploreOnRealDevice(args, Configuration.api23)
   }
 
   /**
@@ -275,7 +276,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     IApkExplorationOutput2 apkOut = outputDir.explorationOutput2.findSingle()
 
     List<List<IApiLogcatMessage>> apiLogs = apkOut?.apiLogs
-    if (api == "api19")
+    if (api == Configuration.api19)
     {
       assert apiLogs.size() == 4
 
@@ -289,7 +290,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
       assert launchActivity2Logs*.methodName == []
       assert terminateAppApiLogs.empty
     }
-    else if (api == "api23")
+    else if (api == Configuration.api23)
     {
       // Api logs' structure (Android 6):
       //  [0] Reset

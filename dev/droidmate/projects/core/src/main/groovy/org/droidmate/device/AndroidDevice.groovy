@@ -252,9 +252,9 @@ public class AndroidDevice implements IAndroidDevice
   void removeLogcatLogFile() throws DeviceException
   {
     log.debug("removeLogcatLogFile()")
-    if (cfg.androidApi == "api19")
+    if (cfg.androidApi == Configuration.api19)
       this.adbWrapper.removeFile_api19(this.serialNumber, logcatLogFileName)
-    else if (cfg.androidApi == "api23")
+    else if (cfg.androidApi == Configuration.api23)
       this.adbWrapper.removeFile_api23(this.serialNumber, logcatLogFileName, uia2Daemon_packageName)
     else throw new UnexpectedIfElseFallthroughError()
 
@@ -265,9 +265,9 @@ public class AndroidDevice implements IAndroidDevice
   void pullLogcatLogFile() throws DeviceException
   {
     log.debug("pullLogcatLogFile()")
-    if (cfg.androidApi == "api19")
+    if (cfg.androidApi == Configuration.api19)
       this.adbWrapper.pullFile_api19(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"))
-    else if (cfg.androidApi == "api23")
+    else if (cfg.androidApi == Configuration.api23)
       this.adbWrapper.pullFile_api23(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"), uia2Daemon_packageName)
     else throw new UnexpectedIfElseFallthroughError()
 
