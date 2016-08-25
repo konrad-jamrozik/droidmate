@@ -90,11 +90,9 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   {
     this.id = id
     this.deviceDisplayBounds = new Rectangle(displayDimensions)
-
-    this.wellFormedness = checkWellFormedness(windowHierarchyDump)
-
     this.androidLauncherPackageName = androidLauncherPackageName
-
+    
+    this.wellFormedness = checkWellFormedness(windowHierarchyDump)
     if (this.wellFormedness == WellFormedness.OK)
     {
       this.windowHierarchyDump = stripAVDframe(windowHierarchyDump)
@@ -139,17 +137,17 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   private GuiState computeGuiState(String windowHierarchyDump)
   {
     assert wellFormedness == WellFormedness.OK
+    
 
     GPathResult hierarchy = new XmlSlurper().parseText(windowHierarchyDump)
     assert hierarchy.name() == "hierarchy"
 
     String topNodePackage = hierarchy.node[0]?.@package?.text()
     // KJA bug assert fail after on fixture droidmate clicked "Crash activity"
-    // Looka like the GUI can be nonempty but with empty topnodepackage
     // KJA DEBUG
     if (topNodePackage.empty)
     {
-      log.warn("Hierarchy without top node package:\n"+hierarchy)
+      log.warn("window hierarchy dump: \n"+windowHierarchyDump)
     }
     assert !topNodePackage.empty
 
@@ -245,12 +243,25 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   {
     if (windowHierarchyDump == null)
       return WellFormedness.is_null
-    else if (windowHierarchyDump.length() == 0)
+    else if (windowHierarchyDump.length() == 0 || isEmptyStub(windowHierarchyDump))
       return WellFormedness.is_empty
     else if (!windowHierarchyDump.contains(rootXmlNodePrefix))
       return WellFormedness.missing_root_xml_node_prefix
     else
       return WellFormedness.OK
+  }
+
+  /**
+   * This covers a case when the dump looks as follows:
+   * 
+   * <?xml version="1.0" encoding="UTF-8"?><hierarchy rotation="0">
+   *
+   *
+   * </hierarchy>
+   */
+  private boolean isEmptyStub(String windowHierarchyDump)
+  {
+    return windowHierarchyDump.count("<") == 3 && windowHierarchyDump.count("\n") <= 3
   }
 
   private enum WellFormedness {
