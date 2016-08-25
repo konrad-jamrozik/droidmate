@@ -92,10 +92,18 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
     this.deviceDisplayBounds = new Rectangle(displayDimensions)
     this.androidLauncherPackageName = androidLauncherPackageName
     
+    log.warn("WD: "+windowHierarchyDump)
     this.wellFormedness = checkWellFormedness(windowHierarchyDump)
     if (this.wellFormedness == WellFormedness.OK)
     {
-      this.windowHierarchyDump = stripAVDframe(windowHierarchyDump)
+      /* 
+        To make DroidMate work with AVD, here stripAVDframe(windowHierarchyDump) should be called. But this function is broken 
+        do not use it (meaning you won't be able to run DroidMate on AVD. Just don't do it. 
+        DroidMate doesn't work on fast Android 6 emulators anyway). Sometimes it strips frames even on normal devices, 
+        resulting in malformed dump. 
+      */
+      // KJA deleting stripAVDframe results in "is about to start but the device doesn't display home screen"
+      this.windowHierarchyDump = windowHierarchyDump//stripAVDframe(windowHierarchyDump)
       this.guiState = computeGuiState(this.windowHierarchyDump)
     }
     else
@@ -138,7 +146,6 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   {
     assert wellFormedness == WellFormedness.OK
     
-
     GPathResult hierarchy = new XmlSlurper().parseText(windowHierarchyDump)
     assert hierarchy.name() == "hierarchy"
 
@@ -261,7 +268,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
    */
   private boolean isEmptyStub(String windowHierarchyDump)
   {
-    return windowHierarchyDump.count("<") == 3 && windowHierarchyDump.count("\n") <= 3
+    return windowHierarchyDump.count("<") <= 3 && windowHierarchyDump.count("\n") <= 5
   }
 
   private enum WellFormedness {
@@ -334,6 +341,9 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   }
 
   private String stripAVDframe(String windowHierarchyDump){
+    /*
+      Do not use this function. See comment in org.droidmate.device.datatypes.UiautomatorWindowDump.computeGuiState
+    */
     return UiautomatorWindowDump_functionsKt.stripAVDframe(windowHierarchyDump)
 }
 }

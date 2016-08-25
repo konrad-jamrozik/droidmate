@@ -47,8 +47,11 @@ import javax.xml.xpath.XPathFactory
  */
 fun stripAVDframe(windowHierarchyDump: String): String {
 
+  /*
+    Do not use this function. See comment in org.droidmate.device.datatypes.UiautomatorWindowDump.computeGuiState
+   */
   val doc: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(windowHierarchyDump.byteInputStream())
-  val xpath: XPathExpression = XPathFactory.newInstance().newXPath().compile("/hierarchy/node[@package=\"com.android.systemui\"]");
+  val xpath: XPathExpression = XPathFactory.newInstance().newXPath().compile("/hierarchy/node[@package=\"com.android.systemui\"]")
   val nodeList: NodeList = xpath.evaluate(doc, XPathConstants.NODESET) as NodeList
 
   for (i in 0..nodeList.length - 1) {
