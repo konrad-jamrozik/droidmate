@@ -20,6 +20,7 @@
 package org.droidmate.device.datatypes
 
 import org.w3c.dom.Document
+import org.w3c.dom.Node
 import org.w3c.dom.NodeList
 import java.io.ByteArrayOutputStream
 import javax.xml.parsers.DocumentBuilderFactory
@@ -32,11 +33,15 @@ import javax.xml.xpath.XPathFactory
 
 
 /**
+ * THIS FUNCTION IS BROKEN, DO NOT USE IT. See below.
+ * 
  * DroidMate obtains Android device's window hierarchy dump via
  * android.support.test.uiautomator.UiDevice#dumpWindowHierarchy(java.io.File)
  * called in org.droidmate.uiautomator2daemon.UiAutomatorDaemonDriver
  *
- * When run on AVD this dump will contain a frame that has to be stripped. This function takes care of that.
+ * This dump contains as first children of the <hierarchy> node some nodes with com.android.systemui package.
+ * They are deleted by this function. Interestingly, they are not present if the window hierarchy is obtained with monitor tool
+ * from Android SDK.
  *
  * Implemented with help of:
  * http://stackoverflow.com/a/3717875/986533
@@ -44,22 +49,38 @@ import javax.xml.xpath.XPathFactory
  * http://www.xpathtester.com/xpath
  * https://docs.oracle.com/javase/7/docs/api/javax/xml/parsers/package-summary.html
  * https://docs.oracle.com/javase/7/docs/api/javax/xml/xpath/package-summary.html
+ *
  */
-fun stripAVDframe(windowHierarchyDump: String): String {
+fun removeSystemuiNodes(windowHierarchyDump: String): String {
 
-  /*
-    Do not use this function. See comment in org.droidmate.device.datatypes.UiautomatorWindowDump.computeGuiState
-   */
-  val doc: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(windowHierarchyDump.byteInputStream())
-  val xpath: XPathExpression = XPathFactory.newInstance().newXPath().compile("/hierarchy/node[@package=\"com.android.systemui\"]")
-  val nodeList: NodeList = xpath.evaluate(doc, XPathConstants.NODESET) as NodeList
+  val doc: Document = getDumpDocument(windowHierarchyDump)
+  val nodesToRemove: NodeList = getNodesToRemove(doc)
 
-  for (i in 0..nodeList.length - 1) {
-    val currNode = nodeList.item(i)
-    currNode.parentNode.removeChild(currNode)
+  for (i in 0..nodesToRemove.length - 1) {
+    removeNode(nodesToRemove.item(i))
   }
 
-  val baos = ByteArrayOutputStream()
-  TransformerFactory.newInstance().newTransformer().transform(DOMSource(doc), StreamResult(baos))
-  return baos.toString(Charsets.UTF_8.name()) 
+  val outputString = writeDocToString(doc)
+  return outputString 
 }
+
+private fun getDumpDocument(windowHierarchyDump: String) = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(windowHierarchyDump.byteInputStream())
+
+private fun getNodesToRemove(windowHierarchyDumpDocument: Document): NodeList {
+  val nodesToRemoveXpath: XPathExpression = XPathFactory.newInstance().newXPath().compile("/hierarchy/node[@package=\"com.android.systemui\"]")
+  val nodesToRemove: NodeList = nodesToRemoveXpath.evaluate(windowHierarchyDumpDocument, XPathConstants.NODESET) as NodeList
+  return nodesToRemove
+}
+
+private fun removeNode(currNodeToBeRemoved: Node) {
+  // Current node is removed by informing its parent that its child, being current node, is o be removed.
+  currNodeToBeRemoved.parentNode.removeChild(currNodeToBeRemoved)
+}
+
+private fun writeDocToString(windowHierarchyDumpDocument: Document): String {
+  val baos = ByteArrayOutputStream()
+  TransformerFactory.newInstance().newTransformer().transform(DOMSource(windowHierarchyDumpDocument), StreamResult(baos))
+  val outputString = baos.toString(Charsets.UTF_8.name())
+  return outputString
+}
+

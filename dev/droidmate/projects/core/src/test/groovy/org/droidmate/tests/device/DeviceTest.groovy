@@ -23,13 +23,13 @@ import groovy.transform.TypeChecked
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.android_sdk.IApk
-import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.exploration.device.IRobustDevice
-import org.droidmate.tests.DroidmateGroovyTestCase
+import org.droidmate.misc.BuildConstants
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresDeviceSlow
+import org.droidmate.tests.DroidmateGroovyTestCase
 import org.droidmate.tools.ApksProvider
 import org.droidmate.tools.DeviceTools
 import org.droidmate.tools.IDeviceTools
@@ -93,7 +93,22 @@ class DeviceTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
-  // WISH better to do this through adb: http://stackoverflow.com/a/10038568/986533
+  void "Obtains GUI snapshot for manual inspection."()
+  {
+    IDeviceTools deviceTools = new DeviceTools(
+      new ConfigurationForTests()
+        .setArgs([Configuration.pn_androidApi, Configuration.api23,])
+        .forDevice()
+        .get()
+    )
+    deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
+      println device.guiSnapshot.windowHierarchyDump
+      return []
+    }
+  }
+
+  @Category([RequiresDevice])
+  @Test
   void "Turns wifi on on api23"()
   {
     IDeviceTools deviceTools = new DeviceTools(new ConfigurationForTests().setArgs([Configuration.pn_androidApi, Configuration.api23,]).forDevice().get())

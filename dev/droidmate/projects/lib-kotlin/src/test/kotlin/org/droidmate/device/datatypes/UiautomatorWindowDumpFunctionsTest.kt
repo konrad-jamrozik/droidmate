@@ -19,9 +19,8 @@
 
 package org.droidmate.device.datatypes
 
-import com.konradjamrozik.Resource
-import org.droidmate.tests.windowDump_nexus7_avd_noframe
-import org.droidmate.tests.windowDump_nexus7_avd_raw
+import org.droidmate.tests.windowDump_nexus7_2013_home_empty
+import org.droidmate.tests.windowDump_nexus7_2013_home_removed_systemui
 import org.junit.Test
 import org.w3c.dom.Attr
 import org.w3c.dom.Node
@@ -35,17 +34,16 @@ class UiautomatorWindowDumpFunctionsTest {
     http://stackoverflow.com/questions/141993/best-way-to-compare-2-xml-documents-in-java
     https://github.com/xmlunit/user-guide/wiki/Migrating-from-XMLUnit-1.x-to-2.x
     https://github.com/xmlunit/user-guide/wiki
-  
    */
   @Test
-  fun strips_avd_frame_from_gui_dump() {
+  fun `removes systemui nodes`() {
 
     // Act 
-    val stripped_frame = stripAVDframe(windowDump_nexus7_avd_noframe)
+    val withRemovedNodes = removeSystemuiNodes(windowDump_nexus7_2013_home_empty)
 
     val diff = org.xmlunit.builder.DiffBuilder
-      .compare(Input.fromString(windowDump_nexus7_avd_raw))
-      .withTest(Input.fromString(stripped_frame))
+      .compare(Input.fromString(windowDump_nexus7_2013_home_removed_systemui))
+      .withTest(Input.fromString(withRemovedNodes))
       .withAttributeFilter { attr: Attr -> attr.name != "bounds" }
       .withNodeFilter { node: Node -> depth(node) <= 9 }
       .ignoreWhitespace()
