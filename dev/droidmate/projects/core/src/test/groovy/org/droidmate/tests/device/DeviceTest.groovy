@@ -93,7 +93,7 @@ class DeviceTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
-  void "Obtains GUI snapshot for manual inspection."()
+  void "Obtains GUI snapshot for manual inspection"()
   {
     IDeviceTools deviceTools = new DeviceTools(
       new ConfigurationForTests()

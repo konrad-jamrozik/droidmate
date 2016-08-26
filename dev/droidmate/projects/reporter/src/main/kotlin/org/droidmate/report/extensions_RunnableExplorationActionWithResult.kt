@@ -35,11 +35,15 @@ val RunnableExplorationActionWithResult.clickedWidget: Set<Widget> get() {
 
 val RunnableExplorationActionWithResult.actionableWidgets: Iterable<Widget>
   get() {
-    if (!(result.guiSnapshot.guiState.belongsToApp(result.exploredAppPackageName)))
-      return this.clickedWidget
+
     return when (result.guiSnapshot) {
       is MissingGuiSnapshot -> this.clickedWidget
-      else -> result.guiSnapshot.guiState.actionableWidgets.union(this.clickedWidget)
+      else -> {
+        if (!(result.guiSnapshot.guiState.belongsToApp(result.exploredAppPackageName)))
+          return this.clickedWidget
+        else
+          return result.guiSnapshot.guiState.actionableWidgets.union(this.clickedWidget)
+      }
     }
   }
 
