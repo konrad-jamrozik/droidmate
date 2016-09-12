@@ -118,12 +118,20 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      * issued that a redundant APIs are still being logged.
      */
     private fun IApi.warnWhenPossiblyRedundant() {
-      this.stackTraceFrames
+      val monitoredMethods = this.stackTraceFrames
         .filter { it.startsWith(Api.monitorRedirectionPrefix) && (it !in apisManuallyCheckedForRedundancy) }
+      val possiblyRedundantMethods = monitoredMethods
         // We drop the first frame as it is the end of stack trace and thus not a candidate for redundancy in this particular
         // stack trace.
-        .drop(1) 
-        .forEach { log.warn("Possibly redundant API call discovered: " + it) }
+        .drop(1)
+      
+      if (possiblyRedundantMethods.isNotEmpty())
+      {
+        log.warn("Possibly redundant API call discovered!\n" +
+        "The possibly redundant API calls (except the first one):\n" + monitoredMethods.joinToString(separator="\n") + "\n" +
+        "All methods on the stack trace:\n" + this.stackTraceFrames.joinToString(separator="\n") ) 
+      }
+        
     }
 
     /**
@@ -154,14 +162,43 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
         false
     }
 
-    // For now empty lists. Will update them as the warnings are observed, while comparing to the legacy lists 
+    // This list is to be updated as the warnings are observed, while comparing to the legacy lists 
     // (present in this file).
-    private val apisManuallyConfirmedToBeRedundant: List<String> = emptyList()
+    private val apisManuallyConfirmedToBeRedundant: List<String> = listOf(
+      
+    )
+    
     private val apisManuallyConfirmedToBeNotRedundant: List<String> = listOf(
-      // WISH Observed possible redundancy once. Waiting to see it again, to investigate the stack trace.
-      // https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/AbstractHttpClient.java#514
-      // https://android.googlesource.com/platform/external/apache-http/+/android-6.0.1_r63/src/org/apache/http/impl/client/AbstractHttpClient.java#519
-//      "redir_org_apache_http_impl_client_AbstractHttpClient_execute3"
+      // KJA curr work
+      /*
+        This is a deprecated method (see the monitored apis list) which ultimately calls Socket.connect2().
+        In 75 cases observed, the Socket.connect2 was always called. 
+        
+        However, the distance of the calls in the stack between these two methods is large, plus brief manual investigation has
+        shown the intermediate methods have complex logic. Thus, we cannot lure out a case in which Socket.connect2 is not called,
+        thus the API is not considered redundant.  
+         
+        Relevant stack trace: 
+          org.droidmate.monitor.Monitor.redir_java_net_Socket_connect2(Monitor.java:1979)
+          org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:124)
+          org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:149)
+          org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:169)
+          org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:124)
+          org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:366)
+          org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:560)
+          java.lang.reflect.Method.invoke(Native Method)
+          de.larma.arthook.OriginalMethod.invoke(OriginalMethod.java:43)
+          org.droidmate.monitor.Monitor.redir_org_apache_http_impl_client_AbstractHttpClient_execute3(Monitor.java:2068)
+      
+        Monitored methods from the stack trace above:
+          org.droidmate.monitor.Monitor.redir_java_net_Socket_connect2(Monitor.java:1979)
+          org.droidmate.monitor.Monitor.redir_org_apache_http_impl_client_AbstractHttpClient_execute3(Monitor.java:2068)
+      
+        Relevant source code:
+          https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/AbstractHttpClient.java#514
+          https://android.googlesource.com/platform/external/apache-http/+/android-6.0.1_r63/src/org/apache/http/impl/client/AbstractHttpClient.java#519
+       */
+      "redir_org_apache_http_impl_client_AbstractHttpClient_execute3"
     )
     /// !!! DUPLICATION WARNING !!! with org.droidmate.monitor.RedirectionsGenerator.redirMethodNamePrefix and related code.
     private val apisManuallyCheckedForRedundancy: List<String> = apisManuallyConfirmedToBeRedundant + apisManuallyConfirmedToBeNotRedundant
@@ -188,7 +225,6 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       
       // ----- Methods present in appguard_apis.txt -----
       "redir_java_net_URL_openConnection0",
-      "redir_org_apache_http_impl_client_AbstractHttpClient_execute3",
 
       // ----- Methods whose modified version is present in appguard_apis.txt -----
       // Now present as redir_5_java_net_Socket_ctor4  
