@@ -118,9 +118,12 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      * issued that a redundant APIs are still being logged.
      */
     private fun IApi.warnWhenPossiblyRedundant() {
+      
       val monitoredMethods = this.stackTraceFrames
-        .filter { it.startsWith(Api.monitorRedirectionPrefix) && (it !in apisManuallyCheckedForRedundancy) }
+        .filter { it.startsWith(Api.monitorRedirectionPrefix) }
+      
       val possiblyRedundantMethods = monitoredMethods
+        .filterNot { (apisManuallyCheckedForRedundancy.any { manuallyChecked -> it.contains(manuallyChecked) })}
         // We drop the first frame as it is the end of stack trace and thus not a candidate for redundancy in this particular
         // stack trace.
         .drop(1)
