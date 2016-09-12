@@ -172,7 +172,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     )
     
     private val apisManuallyConfirmedToBeNotRedundant: List<String> = listOf(
-      // KJA curr work
+      
       /*
         This is a deprecated method (see the monitored apis list) which ultimately calls Socket.connect2().
         In 75 cases observed, the Socket.connect2 was always called. 
@@ -201,7 +201,44 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
           https://android.googlesource.com/platform/external/apache-http/+/android-4.4.4_r2.0.1/src/org/apache/http/impl/client/AbstractHttpClient.java#514
           https://android.googlesource.com/platform/external/apache-http/+/android-6.0.1_r63/src/org/apache/http/impl/client/AbstractHttpClient.java#519
        */
-      "redir_org_apache_http_impl_client_AbstractHttpClient_execute3"
+      "redir_org_apache_http_impl_client_AbstractHttpClient_execute3",
+
+      /*
+        Redundancy was being reported because the monitored method called itself down the stack trace. See the lines prefixed 
+        with arrows in the the relevant stack trace:
+       
+          dalvik.system.VMStack.getThreadStackTrace(Native Method)
+          java.lang.Thread.getStackTrace(Thread.java:580)
+          org.droidmate.monitor.Monitor.getStackTrace(Monitor.java:502)
+      --> org.droidmate.monitor.Monitor.redir_java_net_URL_openConnection0(Monitor.java:2027)
+          libcore.net.url.JarURLConnectionImpl.<init>(JarURLConnectionImpl.java:73)
+          libcore.net.url.JarHandler.openConnection(JarHandler.java:42)
+          java.net.URL.openConnection(URL.java:479)
+          java.lang.reflect.Method.invoke(Native Method)
+          de.larma.arthook.OriginalMethod.invoke(OriginalMethod.java:43)
+      --> org.droidmate.monitor.Monitor.redir_java_net_URL_openConnection0(Monitor.java:2032)
+          java.net.URL.openStream(URL.java:470)
+
+       */
+      "redir_java_net_URL_openConnection0",
+      
+      /*
+        Same story as with openConnection0 (see above).
+        
+        Relevant stack trace:
+          dalvik.system.VMStack.getThreadStackTrace(Native Method)
+          java.lang.Thread.getStackTrace(Thread.java:580)
+          org.droidmate.monitor.Monitor.getStackTrace(Monitor.java:502)
+      --> org.droidmate.monitor.Monitor.redir_10_java_net_URL_ctor3(Monitor.java:837)
+          java.net.URL.<init>(URL.java:125)
+          libcore.net.url.JarHandler.parseURL(JarHandler.java:82)
+          java.net.URL.<init>(URL.java:188)
+          java.lang.reflect.Method.invoke(Native Method)
+          de.larma.arthook.OriginalMethod.invoke(OriginalMethod.java:43)
+      --> org.droidmate.monitor.Monitor.redir_10_java_net_URL_ctor3(Monitor.java:842)
+          java.net.URL.<init>(URL.java:125)        
+       */
+      "redir_10_java_net_URL_ctor3"
     )
     /// !!! DUPLICATION WARNING !!! with org.droidmate.monitor.RedirectionsGenerator.redirMethodNamePrefix and related code.
     private val apisManuallyCheckedForRedundancy: List<String> = apisManuallyConfirmedToBeRedundant + apisManuallyConfirmedToBeNotRedundant
@@ -227,7 +264,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     private val legacyApisManuallyConfirmedToBeNotRedundant: List<String> = listOf(
       
       // ----- Methods present in appguard_apis.txt -----
-      "redir_java_net_URL_openConnection0",
+      // None left, all checked and moved to current list.
 
       // ----- Methods whose modified version is present in appguard_apis.txt -----
       // Now present as redir_5_java_net_Socket_ctor4  
