@@ -437,6 +437,9 @@ Ljava/net/DatagramSocket;->connect(Ljava/net/SocketAddress;)V
 Ljava/net/MulticastSocket;->joinGroup(Ljava/net/InetAddress;)V
 Ljava/net/MulticastSocket;->joinGroup(Ljava/net/SocketAddress;Ljava/net/NetworkInterface;)V
 
+# ========== java.net.URL documentation
+# https://android.googlesource.com/platform/libcore/+/android-6.0.1_r63/luni/src/main/java/java/net/URL.java
+
 # ========== java.net.URL constructors
 
 # REDUNDANT: delegates to Ljava/net/URL;-><init>(Ljava/net/URL;Ljava/lang/String;Ljava/net/URLStreamHandler;)V
