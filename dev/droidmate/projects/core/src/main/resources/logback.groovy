@@ -99,7 +99,7 @@ appender(appender_name_master, LazyFileAppender) {
   // http://logback.qos.ch/manual/filters.html#GEventEvaluator
   filter(EvaluatorFilter) {
     evaluator(GEventEvaluator) {
-      expression = "((e.loggerName.contains('$SysCmdExecutor.simpleName') || ) && (e.level == TRACE))"
+      expression = "((e.loggerName.contains('$SysCmdExecutor.simpleName')) && (e.level == TRACE))"
     }
     onMatch = DENY
     onMismatch = NEUTRAL
@@ -107,7 +107,7 @@ appender(appender_name_master, LazyFileAppender) {
   // Do not log anything from zeroturnaround, for example org.zeroturnaround.exec.stream.StreamPumper
   filter(EvaluatorFilter) {
     evaluator(GEventEvaluator) {
-      expression = "(e.loggerName.contains('zeroturnaround')"
+      expression = "(e.loggerName.contains('zeroturnaround'))"
     }
     onMatch = DENY
     onMismatch = NEUTRAL
