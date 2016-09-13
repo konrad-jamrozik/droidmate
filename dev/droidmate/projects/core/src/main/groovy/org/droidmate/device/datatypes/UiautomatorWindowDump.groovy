@@ -302,26 +302,26 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
   @Override
   public String toString()
   {
-    String cls = UiautomatorWindowDump.simpleName
+    String clazz = UiautomatorWindowDump.simpleName
     if (this.wellFormedness != WellFormedness.OK)
-      return "$cls{!not well-formed!: $windowHierarchyDump}"
+      return "$clazz{!not well-formed!: $windowHierarchyDump}"
 
     if (this.guiState.isHomeScreen())
-      return "$cls{home screen}"
+      return "$clazz{home screen}"
 
     if (this.guiState.isRequestRuntimePermissionDialogBox())
-      return "$cls{\"Runtime permission\" dialog box. Allow widget enabled: ${(this.guiState as RuntimePermissionDialogBoxGuiState).allowWidget.enabled}}"
+      return "$clazz{\"Runtime permission\" dialog box. Allow widget enabled: ${(this.guiState as RuntimePermissionDialogBoxGuiState).allowWidget.enabled}}"
 
     if (this.guiState.isAppHasStoppedDialogBox())
-      return "$cls{\"App has stopped\" dialog box. OK widget enabled: ${(this.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled}}"
+      return "$clazz{\"App has stopped\" dialog box. OK widget enabled: ${(this.guiState as AppHasStoppedDialogBoxGuiState).OKWidget.enabled}}"
 
     if (this.guiState.isCompleteActionUsingDialogBox())
-      return "$cls{\"Complete action using\" dialog box.}"
+      return "$clazz{\"Complete action using\" dialog box.}"
 
     if (this.guiState.isSelectAHomeAppDialogBox())
-      return "$cls{\"Select a home app\" dialog box.}"
+      return "$clazz{\"Select a home app\" dialog box.}"
 
-    String returnString = "$cls{${packageName}. Widgets# ${this.guiState.widgets.size()}}"
+    String returnString = "$clazz{${packageName}. Widgets# ${this.guiState.widgets.size()}}"
     
     // Uncomment when necessary for debugging.
 //    List<Widget> widgets = this.guiState.widgets
