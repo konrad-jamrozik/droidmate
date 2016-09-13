@@ -121,6 +121,8 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       
       val monitoredMethods = this.stackTraceFrames
         .filter { it.startsWith(Api.monitorRedirectionPrefix) }
+
+      check(monitoredMethods.isNotEmpty())
       
       val possiblyRedundantMethods = monitoredMethods
         .filterNot { (apisManuallyCheckedForRedundancy.any { manuallyChecked -> it.contains(manuallyChecked) })}
@@ -150,15 +152,17 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      */
     private val IApi.warnAndReturnIsRedundant: Boolean get() {
 
-      val monitoredFrames = stackTraceFrames.filter { it.startsWith(Api.monitorRedirectionPrefix) }
-      check(monitoredFrames.isNotEmpty())
+      val monitoredMethods = stackTraceFrames.filter { it.startsWith(Api.monitorRedirectionPrefix) }
+      
+      check(monitoredMethods.isNotEmpty())
+      
       /* 
         We take only the first monitored call, as this is the bottom of the stack trace, i.e. this method doesn't call any other 
         monitored methods. All other monitored calls in the stack trace will be present again in the logs, at the bottom of their
         own stack traces. They will be checked for redundancy then, so they don't have to be checked here.
        */
-      val monitoredCall = monitoredFrames.first()
-      return if (monitoredCall in apisManuallyConfirmedToBeRedundant) {
+      val monitoredCall = monitoredMethods.first()
+      return if (apisManuallyConfirmedToBeRedundant.any { monitoredCall.contains(it) }) {
         log.warn("Redundant API call discovered: " + monitoredCall)
         true
       } else
@@ -168,7 +172,8 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     // This list is to be updated as the warnings are observed, while comparing to the legacy lists 
     // (present in this file).
     private val apisManuallyConfirmedToBeRedundant: List<String> = listOf(
-      
+      // Android 6 source: https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r46/core/java/android/os/PowerManager.java#1127
+      "redir_android_os_PowerManager_WakeLock_release0"
     )
     
     private val apisManuallyConfirmedToBeNotRedundant: List<String> = listOf(
@@ -285,8 +290,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     private val legacyApisManuallyConfirmedToBeRedundant: List<String> = listOf(
 
       // ----- Methods present in appguard_apis.txt -----
-      // Android 6 source: https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r46/core/java/android/os/PowerManager.java#1127
-      "redir_android_os_PowerManager_WakeLock_release0",
+      
       "redir_android_content_ContentResolver_openFileDescriptor2",
       "redir_android_content_ContentResolver_query5",
       

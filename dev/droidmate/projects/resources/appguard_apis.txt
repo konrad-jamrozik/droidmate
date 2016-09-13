@@ -232,7 +232,11 @@ Landroid/net/wifi/WifiManager;->startScan()Z
 
 Landroid/os/PowerManager$WakeLock;->acquire()V
 Landroid/os/PowerManager$WakeLock;->acquire(J)V
-Landroid/os/PowerManager$WakeLock;->release()V
+
+# REDUNDANT: just delegates to release(I)
+# Source: https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r46/core/java/android/os/PowerManager.java#1127
+## Landroid/os/PowerManager$WakeLock;->release()V
+
 Landroid/os/PowerManager$WakeLock;->release(I)V
 
 # Instrumentation fails:
