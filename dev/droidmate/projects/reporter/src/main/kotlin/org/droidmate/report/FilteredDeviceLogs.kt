@@ -163,7 +163,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
        */
       val monitoredCall = monitoredMethods.first()
       return if (apisManuallyConfirmedToBeRedundant.any { monitoredCall.contains(it) }) {
-        log.warn("Redundant API call discovered: " + monitoredCall)
+        log.warn("Redundant API call discovered. The reported data was obtained using monitor that was monitoring API methods which are redundant. The API call: " + monitoredCall)
         true
       } else
         false
@@ -243,7 +243,16 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       --> org.droidmate.monitor.Monitor.redir_10_java_net_URL_ctor3(Monitor.java:842)
           java.net.URL.<init>(URL.java:125)        
        */
-      "redir_10_java_net_URL_ctor3"
+      "redir_10_java_net_URL_ctor3",
+      
+      /*
+        This method calls other monitored method, openAssetFileDescriptor, if the parameter URI has file scheme:
+          https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r63/core/java/android/content/ContentResolver.java#662
+        But this doesn't happen when the parameter URI has Android resource scheme:
+          https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r63/core/java/android/content/ContentResolver.java#647
+        this this method is not redundant.
+       */
+      "redir_android_content_ContentResolver_openInputStream1"
     )
     /// !!! DUPLICATION WARNING !!! with org.droidmate.monitor.RedirectionsGenerator.redirMethodNamePrefix and related code.
     private val apisManuallyCheckedForRedundancy: List<String> = apisManuallyConfirmedToBeRedundant + apisManuallyConfirmedToBeNotRedundant
