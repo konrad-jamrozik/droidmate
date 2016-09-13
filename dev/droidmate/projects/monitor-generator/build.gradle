@@ -43,18 +43,18 @@ dependencies {
 
 //region Tasks to setup resources necessary for a call to MonitorGeneratorFrontend
 
-// Ensure BuildKt.appguard_apis_txt is available at runtime as a resource. 
+// Ensure BuildKt.monitored_apis_txt is available at runtime as a resource. 
 processResources.configure { Copy copy ->
 
-  File appguardApisTxt = project(":projects").file("resources/${BuildKt.appguard_apis_txt}")
-  assert appguardApisTxt.file
+  File monitoredApisTxt = project(":projects").file("resources/${BuildKt.monitored_apis_txt}")
+  assert monitoredApisTxt.file
 
   evaluationDependsOn(":projects:monitor-template")
   // !!! DUPLICATION WARNING !!! with the file name and file location of class org.droidmate.monitor.MonitorJavaTemplate
   File monitorJavaTemplateSource = findProject(":projects:monitor-template").sourceSets.main.java.find { it.name == "MonitorJavaTemplate.java" } as File
   assert monitorJavaTemplateSource.file
 
-  copy.from(appguardApisTxt, monitorJavaTemplateSource).rename(monitorJavaTemplateSource.name, BuildKt.monitor_generator_res_name_monitor_template)
+  copy.from(monitoredApisTxt, monitorJavaTemplateSource).rename(monitorJavaTemplateSource.name, BuildKt.monitor_generator_res_name_monitor_template)
 }
 
 //endregion

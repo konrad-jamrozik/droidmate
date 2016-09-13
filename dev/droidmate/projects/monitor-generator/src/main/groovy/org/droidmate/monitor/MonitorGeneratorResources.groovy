@@ -35,7 +35,7 @@ class MonitorGeneratorResources implements IConfiguration
 
   final Path monitorSrcTemplatePath
   final Path monitorSrcOutPath
-  final Path appguardApis
+  final Path monitoredApis
 
   final AndroidAPI androidApi
 
@@ -66,7 +66,7 @@ class MonitorGeneratorResources implements IConfiguration
     Path monitorSrcTemplatePath = new ResourcePath(BuildConstants.monitor_generator_res_name_monitor_template).path
     this.monitorSrcTemplatePath = monitorSrcTemplatePath
 
-    Path appguardApis = new ResourcePath("appguard_apis.txt").path
-    this.appguardApis = appguardApis
+    Path monitoredApis = new ResourcePath("monitored_apis.txt").path
+    this.monitoredApis = monitoredApis
   }
 }

@@ -101,7 +101,7 @@ Run the tests from IntelliJ as described in section above to be able to navigate
 
 The list of monitored APIs is located in
 
-`repo/dev/droidmate/projects/resources/appguard_apis.txt`
+`repo/dev/droidmate/projects/resources/monitored_apis.txt`
 
 Lines starting with `#` and empty lines are discarded.
 

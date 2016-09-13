@@ -100,7 +100,7 @@ task writeBuildConstantsProperties() { Task it ->
     map["monitor_generator_output_relative_path_api19"] = BuildKt.monitor_generator_output_relative_path_api19
     map["monitor_generator_output_relative_path_api23"] = BuildKt.monitor_generator_output_relative_path_api23
     map["test_temp_dir_name"] = BuildKt.test_temp_dir_name
-    map["appguard_apis_txt"] = BuildKt.appguard_apis_txt
+    map["monitored_apis_txt"] = BuildKt.monitored_apis_txt
     map["dir_name_temp_extracted_resources"] = BuildKt.dir_name_temp_extracted_resources
     map["monitor_generator_res_name_monitor_template"] = BuildKt.monitor_generator_res_name_monitor_template
     map["aapt_command_relative_api19"] = BuildKt.aapt_command_relative_api19

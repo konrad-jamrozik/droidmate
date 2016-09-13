@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 import com.konradjamrozik.IterableExtensions
 
-// Ensure BuildKt.appguard_apis_txt is available at runtime as a resource.
+// Ensure BuildKt.monitored_apis_txt is available at runtime as a resource.
 processResources.configure { Copy copy -> copy.from(project(":projects").file("resources"))}
 
 processResources.dependsOn(

@@ -113,7 +113,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      * org.droidmate.report.FilteredDeviceLogs.Companion.apisManuallyConfirmedToBeRedundant
      * or org.droidmate.report.FilteredDeviceLogs.Companion.apisManuallyConfirmedToBeNotRedundant.
      *
-     * If the call was manually determined to be redundant, the org.droidmate.monitor.MonitorGeneratorResources.appguardApis
+     * If the call was manually determined to be redundant, the org.droidmate.monitor.MonitorGeneratorResources.monitoredApis
      * file should have such call removed and DroidMate should be recompiled with the new monitor. Otherwise, a warning will be
      * issued that a redundant APIs are still being logged.
      */
@@ -261,12 +261,12 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     //
     // Comments to elements of this list refer to the following resources:
     //
-    // appguard_apis.txt: 
+    // monitored_apis.txt: 
     //   located in repos\github\droidmate\dev\droidmate\projects\resources
     // After build, APIs from this file are generated into Monitor.java
     //
     // AppGuard MonitorInitalizer.java: 
-    //   path given in repos\sechair\droidmate-private\resources\from_Philipp\appguard_apis_list_origin.txt
+    //   path given in repos\sechair\droidmate-private\resources\from_Philipp\monitored_apis_list_origin.txt
     //
     // jellybean_publishedapimapping_modified.txt: 
     //   located in repos\sechair\droidmate-private\resources\legacy_api_lists
@@ -277,17 +277,17 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     @Suppress("unused")
     private val legacyApisManuallyConfirmedToBeNotRedundant: List<String> = listOf(
       
-      // ----- Methods present in appguard_apis.txt -----
+      // ----- Methods present in monitored_apis.txt -----
       // None left, all checked and moved to current list.
 
-      // ----- Methods whose modified version is present in appguard_apis.txt -----
+      // ----- Methods whose modified version is present in monitored_apis.txt -----
       // Now present as redir_5_java_net_Socket_ctor4  
       // It calls ctor0 but then it calls java.net.Socket#tryAllAddresses which has a lot of logic.
       // https://android.googlesource.com/platform/libcore/+/android-4.4.4_r2.0.1/luni/src/main/java/java/net/Socket.java
       // https://android.googlesource.com/platform/libcore/+/android-6.0.1_r63/luni/src/main/java/java/net/Socket.java
       "redir_13_java_net_Socket_ctor4",
       
-      // ----- Methods not present in appguard_apis.txt, but which were present in jellybean_publishedapimapping_modified.txt ----- 
+      // ----- Methods not present in monitored_apis.txt, but which were present in jellybean_publishedapimapping_modified.txt ----- 
       "redir_android_bluetooth_BluetoothAdapter_enable0",
       // Actually this call is redundant, but it is a part of suite of API calls detecting Intent-requiring operations.
       "redir_android_content_ContextWrapper_startService1",
@@ -298,12 +298,12 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     @Suppress("unused")
     private val legacyApisManuallyConfirmedToBeRedundant: List<String> = listOf(
 
-      // ----- Methods present in appguard_apis.txt -----
+      // ----- Methods present in monitored_apis.txt -----
       
       "redir_android_content_ContentResolver_openFileDescriptor2",
       "redir_android_content_ContentResolver_query5",
       
-       // ----- Methods not present in appguard_apis.txt, but which were present in jellybean_publishedapimapping_modified.txt ----- 
+       // ----- Methods not present in monitored_apis.txt, but which were present in jellybean_publishedapimapping_modified.txt ----- 
       "redir_4_android_webkit_WebView_ctor1",
       "redir_5_android_webkit_WebView_ctor2",
       "redir_6_android_webkit_WebView_ctor3",
