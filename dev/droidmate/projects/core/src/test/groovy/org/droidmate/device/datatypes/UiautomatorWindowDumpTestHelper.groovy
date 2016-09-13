@@ -61,6 +61,12 @@ class UiautomatorWindowDumpTestHelper
     return new UiautomatorWindowDump(FixturesKt.windowDump_app_stopped_OK_disabled, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName)
   }
 
+  public static UiautomatorWindowDump newSelectAHomeAppWindowDump()
+  {
+    return new UiautomatorWindowDump(FixturesKt.windowDump_selectAHomeApp, deviceModel.getDeviceDisplayDimensionsForTesting(), deviceModel.androidLauncherPackageName)
+  }
+
+
 
   public static UiautomatorWindowDump newCompleteActionUsingWindowDump()
   {

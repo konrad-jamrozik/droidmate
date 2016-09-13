@@ -116,12 +116,17 @@ class UiautomatorWindowDumpTest extends DroidmateGroovyTestCase
 
   }
 
-
   @Test
   void "Parses bounds"()
   {
     assert new Rectangle(100, 150, 1, 3) == Widget.parseBounds("[100,150][101,153]")
   }
 
+  @Test
+  void "Recognizes 'Select a Home app' dialog box"()
+  {
+    UiautomatorWindowDump gs = newSelectAHomeAppWindowDump()
+    assert gs.guiState.isSelectAHomeAppDialogBox()
+  }
 
 }

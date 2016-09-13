@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><hierarchy rotation="0">
+  
+  
+  <node bounds="[0,63][1080,1794]" checkable="false" checked="false" class="android.widget.FrameLayout" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="" scrollable="false" selected="false" text="">
+    <node bounds="[0,63][1080,1794]" checkable="false" checked="false" class="android.widget.LinearLayout" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="" scrollable="false" selected="false" text="">
+      <node bounds="[0,63][1080,1794]" checkable="false" checked="false" class="android.widget.FrameLayout" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="android:id/content" scrollable="false" selected="false" text="">
+        <node bounds="[0,63][1080,1794]" checkable="false" checked="false" class="android.widget.ScrollView" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="android:id/contentPanel" scrollable="false" selected="false" text="">
+          <node bounds="[0,1181][1080,1328]" checkable="false" checked="false" class="android.widget.LinearLayout" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="" scrollable="false" selected="false" text="">
+            <node bounds="[0,1181][1080,1328]" checkable="false" checked="false" class="android.widget.TextView" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="android:id/title" scrollable="false" selected="false" text="Select a Home app"/>
+          </node>
+          <node bounds="[0,1328][1080,1626]" checkable="false" checked="false" class="android.widget.ListView" clickable="true" content-desc="" enabled="true" focusable="true" focused="true" index="1" long-clickable="true" package="android" password="false" resource-id="android:id/resolver_list" scrollable="false" selected="false" text="">
+            <node bounds="[0,1328][1080,1477]" checkable="false" checked="false" class="android.widget.LinearLayout" clickable="true" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="true" package="android" password="false" resource-id="" scrollable="false" selected="false" text="">
+              <node bounds="[63,1371][126,1434]" checkable="false" checked="false" class="android.widget.ImageView" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="android:id/icon" scrollable="false" selected="false" text=""/>
+              <node bounds="[126,1371][715,1434]" checkable="false" checked="false" class="android.widget.LinearLayout" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="1" long-clickable="false" package="android" password="false" resource-id="" scrollable="false" selected="false" text="">
+                <node bounds="[189,1371][652,1434]" checkable="false" checked="false" class="android.widget.TextView" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="android:id/text1" scrollable="false" selected="false" text="Google Now Launcher"/>
+              </node>
+            </node>
+            <node bounds="[0,1477][1080,1626]" checkable="false" checked="false" class="android.widget.LinearLayout" clickable="true" content-desc="" enabled="true" focusable="false" focused="false" index="1" long-clickable="true" package="android" password="false" resource-id="" scrollable="false" selected="false" text="">
+              <node bounds="[63,1520][126,1583]" checkable="false" checked="false" class="android.widget.ImageView" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="android:id/icon" scrollable="false" selected="false" text=""/>
+              <node bounds="[126,1520][693,1583]" checkable="false" checked="false" class="android.widget.LinearLayout" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="1" long-clickable="false" package="android" password="false" resource-id="" scrollable="false" selected="false" text="">
+                <node bounds="[189,1520][630,1583]" checkable="false" checked="false" class="android.widget.TextView" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="android:id/text1" scrollable="false" selected="false" text=" APUS (Recommend)"/>
+              </node>
+            </node>
+          </node>
+          <node bounds="[0,1626][1080,1794]" checkable="false" checked="false" class="android.widget.LinearLayout" clickable="false" content-desc="" enabled="true" focusable="false" focused="false" index="2" long-clickable="false" package="android" password="false" resource-id="android:id/button_bar" scrollable="false" selected="false" text="">
+            <node bounds="[587,1647][844,1773]" checkable="false" checked="false" class="android.widget.Button" clickable="true" content-desc="" enabled="false" focusable="true" focused="false" index="0" long-clickable="false" package="android" password="false" resource-id="android:id/button_once" scrollable="false" selected="false" text="Just once"/>
+            <node bounds="[844,1647][1048,1773]" checkable="false" checked="false" class="android.widget.Button" clickable="true" content-desc="" enabled="false" focusable="true" focused="false" index="1" long-clickable="false" package="android" password="false" resource-id="android:id/button_always" scrollable="false" selected="false" text="Always"/>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</hierarchy>

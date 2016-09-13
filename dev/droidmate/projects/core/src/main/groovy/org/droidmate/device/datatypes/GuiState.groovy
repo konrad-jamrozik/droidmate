@@ -102,7 +102,7 @@ class GuiState implements Serializable, IGuiState
   {
     return topNodePackageName == androidPackageName &&
       widgets.any {it.text == "Just once"} &&
-      widgets.any {it.text == "Select a home app"}
+      widgets.any {it.text == "Select a Home app"}
   }
 
   @Override

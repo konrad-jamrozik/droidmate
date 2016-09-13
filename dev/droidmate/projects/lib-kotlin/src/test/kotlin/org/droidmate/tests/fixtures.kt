@@ -36,6 +36,7 @@ val windowDump_nexus7_2013_home_empty            : String by lazy { Resource("fi
 val windowDump_nexus7_2013_home_removed_systemui : String by lazy { Resource("fixtures/window_dumps/nexus7_2013_home_empty_removed_systemui.xml").extractedText }
 val windowDump_nexus7_avd_raw            : String by lazy { Resource("fixtures/window_dumps/nexus7_2013_avd_api_23_home_raw.xml").extractedText }
 val windowDump_nexus7_avd_noframe        : String by lazy { Resource("fixtures/window_dumps/nexus7_2013_avd_api_23_home_dm_no_frame.xml").extractedText }
+val windowDump_selectAHomeApp            : String by lazy { Resource("fixtures/window_dumps/select_a_home_app.xml").extractedText }
 // Older fixtures, migrated from :projects:core
 val windowDump_app_stopped_dialogbox     : String by lazy { Resource("fixtures/window_dumps/f_app_stopped_dialogbox_nexus7vert.xml").extractedText }
 val windowDump_app_stopped_OK_disabled   : String by lazy { Resource("fixtures/window_dumps/f_app_stopped_OK_disabled.xml").extractedText }
