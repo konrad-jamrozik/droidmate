@@ -88,6 +88,6 @@ The `DummyAndroidApp` project is added only to enable Android plugin views, like
 
 Ensure that Gradle is using JDK 8 in: `Settings -> Build, Execution, Deployment -> Build Tools -> Gradle -> Gradle JVM`.
 
-* If the `Refresh all gradle projects` fails with `BuildKt cannot be initalized` or similar, or if opening `repo/dev/droidmate` with IntelliJ doesn't properly load the project structure,  open the `dev/droidmate/buildsrc` project in IntelliJ and run the `initalizes` test. Then retry `Refresh all gradle projects`.
+* If the `Refresh all gradle projects` fails with `BuildKt cannot be initalized` or similar, or if opening `repo/dev/droidmate` with IntelliJ doesn't properly load the project structure, most likely the `initalizes` tes of the `dev/droidmate/buildsrc` project fails because you didn't set appropriate environment variables (for Mac OS X, see entry below). Open this project in IntelliJ and run the `initalizes` test. It should fail. Fix the environment variables according to the stdout logs. Then retry `Refresh all gradle projects`.
 
 * On Mac OS X environment variables are not picked up by default by GUI applications. If IntelliJ complains you do not have Java SDK or Android SDK configured, or some environment variable is missing, ensure you ran IntelliJ from command line which has those variables setup. Consider starting searching for help from [this superuser question](http://superuser.com/q/476752/225013).  
