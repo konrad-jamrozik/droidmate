@@ -150,12 +150,6 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
     assert hierarchy.name() == "hierarchy"
 
     String topNodePackage = hierarchy.node[0]?.@package?.text()
-    // KJA bug assert fail after on fixture droidmate clicked "Crash activity"
-    // KJA DEBUG
-    if (topNodePackage.empty)
-    {
-      log.warn("window hierarchy dump: \n"+windowHierarchyDump)
-    }
     assert !topNodePackage.empty
 
 
