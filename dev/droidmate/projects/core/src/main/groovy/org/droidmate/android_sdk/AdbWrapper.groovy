@@ -374,6 +374,8 @@ public class AdbWrapper implements IAdbWrapper
   {
     try
     {
+      // KNOWN BUG KJA timeouts on many apps, forgetting to reboot.
+      // SUSPICION: all of this was caused just by failing assert in Monitor.
       String commandDescription = String
         .format("Executing adb (Android Debug Bridge) to clear logcat output.")
 

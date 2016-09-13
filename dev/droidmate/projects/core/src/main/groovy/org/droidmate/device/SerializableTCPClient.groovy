@@ -67,6 +67,12 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
         // http://docs.oracle.com/javase/7/docs/platform/serialization/spec/input.html
         //
         inputStream = new ObjectInputStream(socket.inputStream)
+        // KNOWN BUG KJA one of this EOFException is thrown on org.droidmate.exploration.device.RobustDevice.getValidGuiSnapshot,
+        // resulting in propagating exception that IS NOT a "DeviceNeedsRebootException". Which is a problem, because then
+        // the exploration continues.
+        // PROBABLY this is exactly this one, as this continues over many apps, and this is first case.
+        // In such case strange that this.tryGetSocket doesn't throw. Hmm.
+        // SUSPICION: all of this was caused just by failing assert in Monitor.
       } catch (EOFException e)
       {
         throw new TcpServerUnreachableException(e)
