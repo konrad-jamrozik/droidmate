@@ -111,7 +111,6 @@ class ApiLogcatMessage implements IApiLogcatMessage, Serializable
     private static final String keyword_mthd       = "mthd:"
     private static final String keyword_retCls     = "retCls:"
     private static final String keyword_params     = "params:"
-    // !!! DUPLICATION WARNING !!! because of 'stacktrace: ': with org.droidmate.lib_android.MonitorJavaTemplate.MonitorTCPServer#removeSocketInitLogFromMonitorTCPServer
     private static final String keyword_stacktrace = "stacktrace:"
 
     private static

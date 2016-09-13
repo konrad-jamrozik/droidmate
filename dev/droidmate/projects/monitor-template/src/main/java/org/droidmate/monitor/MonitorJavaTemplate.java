@@ -205,7 +205,7 @@ public class MonitorJavaTemplate
       {
         Log.v(MonitorConstants.tag_srv, "OnServerRequest(" + input + ")");
 
-        removeSocketInitLogFromMonitorTCPServerAndValidateLogsAreNotFromTCPServer(currentLogs);
+        validateLogsAreNotFromMonitor(currentLogs);
 
         if (MonitorConstants.srvCmd_connCheck.equals(input))
         {
@@ -257,56 +257,22 @@ public class MonitorJavaTemplate
 
     /**
      * <p>
-     * This method removes calls to {@code Socket.<init>} made by the DroidMate monitor from current set of recorded api logs
-     * {@code currentLogs}. In addition, it ensures the logs do not come from messages logged by the MonitorTCPServer or 
+     * This method ensures the logs do not come from messages logged by the MonitorTCPServer or 
      * MonitorJavaTemplate itself. This would be a bug and thus it will cause an assertion failure in this method.
-     *
-     * </p><p>
-     * Regarding the {@code Socket.<init> removal}:
-     *
-     * </p><p>
-     * One of the monitored APIs is {@code Socket.<init>}, and so it is being added to {@code currentLogs} on each invocation.
-     * However, this API is also used every time a TCP socket is established when monitor communicates with the host machine.
-     * Such socket usage does not belong to the app under monitoring so it should be discarded, which is done in this method.
      *
      * </p>
      * @param currentLogs
-     * Currently recorded set of monitored logs, that will have the {@code Socket.<init>} logs caused by monitor removed from it
-     * and that will cause an assertion failure if the logs come from MonitorTCPServer or MonitorJavaTemplate.
+     * Currently recorded set of monitored logs that will be validated, causing AssertionError if validation fails.
      */
-    private void removeSocketInitLogFromMonitorTCPServerAndValidateLogsAreNotFromTCPServer(List<ArrayList<String>> currentLogs)
+    private void validateLogsAreNotFromMonitor(List<ArrayList<String>> currentLogs)
     {
-      ArrayList<ArrayList<String>> logsToRemove = new ArrayList<ArrayList<String>>();
       for (ArrayList<String> log : currentLogs)
       {
         // ".get(2)" gets the payload. For details, see the doc of the param passed to this method.
         String msgPayload = log.get(2);
-
         failOnLogsFromMonitorTCPServerOrMonitorJavaTemplate(msgPayload);
 
-        String[] frames = extractStackTraceFrames(msgPayload);
-
-        if (frames.length >= 2)
-        {
-          String secondLastFrame = frames[frames.length - 2];
-          if (secondLastFrame.startsWith("org.droidmate"))
-          {
-            if (!secondLastFrame.startsWith("org.droidmate.monitor.Monitor")) throw new AssertionError();
-            if (!anyContains(frames, "Socket.<init>")) throw new AssertionError();
-            logsToRemove.add(log);
-          }
-        }
       }
-
-      // Zero logs to remove can happen when the TCP server started to accept socket from client before monitor finished initing.
-      // In all other cases there should be one log.
-      if (logsToRemove.size() > 1) throw new AssertionError(
-        "Expected to remove zero or one logs of Socket.<init>, caused by monitor TCP server. Instead, removed "
-          + logsToRemove.size() + " logs.");
-
-      if (logsToRemove.size() == 1)
-        currentLogs.remove(logsToRemove.get(0));
-
     }
 
     private void failOnLogsFromMonitorTCPServerOrMonitorJavaTemplate(String msgPayload)
@@ -315,30 +281,6 @@ public class MonitorJavaTemplate
         throw new AssertionError(
           "Attempt to log a message whose payload contains " +
             MonitorConstants.tag_srv + " or " + MonitorConstants.tag_init + ". The message payload: " + msgPayload);
-    }
-
-    private String[] extractStackTraceFrames(String msgPayload)
-    {
-
-      // !!! DUPLICATION WARNING !!! with org.droidmate.apis.ApiLogcatMessage.ApiLogcatMessagePayload.keyword_stacktrace
-      int stacktraceIndex = msgPayload.lastIndexOf("stacktrace: ");
-
-      if (stacktraceIndex == -1)
-        throw new AssertionError("The message payload was expected to have a 'stacktrace: ' substring in it");
-
-      String stackTrace = msgPayload.substring(stacktraceIndex);
-
-      return stackTrace.split(Api.stack_trace_frame_delimiter);
-    }
-
-    private boolean anyContains(String[] strings, String s)
-    {
-      for (String string : strings)
-      {
-        if (string.contains(s))
-          return true;
-      }
-      return false;
     }
 
     @Override
