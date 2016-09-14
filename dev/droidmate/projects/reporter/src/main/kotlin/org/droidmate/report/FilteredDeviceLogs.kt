@@ -81,6 +81,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       val secondLastFrame = stackTrace.takeLast(2).first()
       if (secondLastFrame.startsWith("org.droidmate")) {
         check(secondLastFrame.startsWith("org.droidmate.monitor.Monitor"))
+        // KJA check failed, the check is not precise enough.
         check(stackTrace.any { it.contains("Socket.<init>") })
         return true
       }
