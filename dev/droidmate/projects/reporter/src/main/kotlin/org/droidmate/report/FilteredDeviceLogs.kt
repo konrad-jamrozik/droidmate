@@ -219,7 +219,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       /*
         Same story as with openConnection0 (see above).
         
-        Relevant stack trace:
+        The relevant stack trace:
           dalvik.system.VMStack.getThreadStackTrace(Native Method)
           java.lang.Thread.getStackTrace(Thread.java:580)
           org.droidmate.monitor.Monitor.getStackTrace(Monitor.java:502)
@@ -241,7 +241,26 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
           https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r63/core/java/android/content/ContentResolver.java#647
         this this method is not redundant.
        */
-      "redir_android_content_ContentResolver_openInputStream1"
+      "redir_android_content_ContentResolver_openInputStream1",
+
+      /*
+        The redundancy suspicion happens because the ContentProvider.query() abstract method implementation of Spotify app 
+        calls it. It might not be the case with other implementations of this abstract method.
+        
+        The relevant stack trace:
+      --> org.droidmate.monitor.Monitor.redir_android_content_ContentResolver_registerContentObserver4(Monitor.java:2089)
+          android.content.ContentResolver.registerContentObserver(ContentResolver.java:1596)
+          com.spotify.mobile.android.provider.ad.<init>(SourceFile:219)
+          com.spotify.music.internal.provider.SpotifyProvider.query(SourceFile:115)
+          android.content.ContentProvider.query(ContentProvider.java:1017)
+          android.content.ContentProvider$Transport.query(ContentProvider.java:238)
+          android.content.ContentResolver.query(ContentResolver.java:491)
+          java.lang.reflect.Method.invoke(Native Method)
+          de.larma.arthook.OriginalMethod.invoke(OriginalMethod.java:43)
+      --> org.droidmate.monitor.Monitor.redir_android_content_ContentResolver_query6(Monitor.java:2082)
+          android.content.ContentResolver.query(ContentResolver.java:434)        
+       */
+      "redir_android_content_ContentResolver_query6"
     )
     /// !!! DUPLICATION WARNING !!! with org.droidmate.monitor.RedirectionsGenerator.redirMethodNamePrefix and related code.
     private val apisManuallyCheckedForRedundancy: List<String> = apisManuallyConfirmedToBeRedundant + apisManuallyConfirmedToBeNotRedundant
