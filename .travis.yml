@@ -71,5 +71,7 @@ cache:
 script:
 
   # By default, 'android' language uses 'connectedCheck'. Here we replace it with appropriate task.
-  - ./gradlew integrationBuild
+  # KJA debug
+  # - ./gradlew integrationBuild
+  - ./gradlew temp
 

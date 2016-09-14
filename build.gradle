@@ -24,3 +24,11 @@ task droidmateUsageExamplesBuild(type: GradleBuild) {
 task integrationBuild(dependsOn: ["droidmateBuild", "droidmateUsageExamplesBuild"]) {
   group = "build"
 }
+
+// KJA
+task temp(type: GradleBuild) { 
+  group = "build"
+
+  buildFile = file "dev/droidmate/projects/core/build.gradle"
+  tasks = ["testTemp"]
+}
