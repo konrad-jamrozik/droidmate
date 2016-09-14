@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="help" type="Application" factoryName="Application" singleton="true">
+  <configuration default="false" name="help" type="Application" factoryName="Application" folderName="Misc" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="org.droidmate.frontend.DroidmateFrontend" />
     <option name="VM_PARAMETERS" value="-ea" />
