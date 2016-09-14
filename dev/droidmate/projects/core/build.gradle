@@ -74,16 +74,3 @@ apply from: project(":projects").file("maven.gradle")
  should not be in the jar at all, nor in the distribution ('application' plugin / 'installDist' task). See the links above
  on the better setup.
 */
-
-// KJA
-task testTemp(type: Test, dependsOn: testClasses) { Test task ->
-  task.group = "verification"
-
-  // This task is to be run manually, so it should never be up-to-date.
-  task.outputs.upToDateWhen {false}
-
-  task.workingDir rootDir
-
-  task.include("**/UiautomatorWindowDumpTest.class")
-  task.filter.includeTestsMatching("*Recognizes 'Select a Home app' dialog box")
-}
