@@ -61,9 +61,9 @@ data class ApkTabularDataReport(val data: IApkExplorationOutput2, val dir: Path)
   val clickFrequencyTable by lazy { ClickFrequencyTable(data) }
   val apiCountTable       by lazy { ApiCountTable(data) }
   
-  val viewCountPath      : Path by lazy { dir.resolve("${data.fileNamePrefix}$fileNameSuffixViewCount") }
-  val clickFrequencyPath : Path by lazy { dir.resolve("${data.fileNamePrefix}$fileNameSuffixClickFrequency") }
-  val apiCountPath       : Path by lazy { dir.resolve("${data.fileNamePrefix}$fileNameSuffixApiCount") }
+  val viewCountPath      : Path by lazy { dir.resolve("${data.apkFileNameWithUnderscoresForDots}$fileNameSuffixViewCount") }
+  val clickFrequencyPath : Path by lazy { dir.resolve("${data.apkFileNameWithUnderscoresForDots}$fileNameSuffixClickFrequency") }
+  val apiCountPath       : Path by lazy { dir.resolve("${data.apkFileNameWithUnderscoresForDots}$fileNameSuffixApiCount") }
   
   val paths by lazy { setOf(viewCountPath, clickFrequencyPath, apiCountPath) }
 

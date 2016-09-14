@@ -25,6 +25,10 @@ import java.nio.file.Path
 
 class ApkViewsFile(val data: IApkExplorationOutput2, dir: Path) : DataFile(buildFilePath(data, dir)) {
 
+  init {
+    require(dir.isDirectory)
+  }
+  
   override fun writeOut() {
     Files.write(file, apkViewsString.toByteArray())
   }
@@ -46,7 +50,7 @@ class ApkViewsFile(val data: IApkExplorationOutput2, dir: Path) : DataFile(build
     
     private fun buildFilePath(data: IApkExplorationOutput2, dir: Path): Path {
       require(dir.isDirectory)
-      return dir.resolve("${data.fileNamePrefix}$fileNameSuffix")
+      return dir.resolve("${data.apkFileNameWithUnderscoresForDots}$fileNameSuffix")
     }
 
 
