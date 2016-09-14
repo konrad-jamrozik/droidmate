@@ -126,8 +126,7 @@ class UiautomatorWindowDumpTest extends DroidmateGroovyTestCase
   void "Recognizes 'Select a Home app' dialog box"()
   {
     UiautomatorWindowDump gs = newSelectAHomeAppWindowDump()
-    // KJA temp debug
-    // assert gs.guiState.isSelectAHomeAppDialogBox()
+    assert gs.guiState.isSelectAHomeAppDialogBox()
   }
 
 }
