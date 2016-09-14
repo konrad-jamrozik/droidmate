@@ -39,21 +39,19 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
       return apiLogs
         .apply {
           forEach {
-            it.checkIsInternalMonitorLog()
+            it.checkIsNotStackTraceOfInternalMonitorCall()
             it.warnWhenPossiblyRedundant()
           }
         }
         .filterNot {it.warnAndReturnIsRedundant}
     }
 
-    private fun IApi.checkIsInternalMonitorLog() {
-      check(!isStackTraceOfMonitorTcpServerSocketInit(this.stackTraceFrames),
-        { "The Socket.<init> monitor logs were expected to be removed by monitor before being sent to the host machine." })
-    }
-
     /**
      * Checks if given stack trace was obtained from a log to a call to socket &lt;init> made by Monitor TCP server
      * ({@code org.droidmate.uiautomator_daemon.MonitorJavaTemplate.MonitorTCPServer}).
+     *
+     * This is done by checking if in the stack trace there is a frame with "org.droidmate.monitor.Monitor" prefix that
+     * is not a call to method with prefix "redir" and is not a call to method "getStackTrace".
      *
      * Here is an example of a log of monitored API call to such method (with line breaks added for clarity):
      *
@@ -77,21 +75,11 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
      * java.lang.Thread.run(Thread.java:841)
      *
      */
-    fun isStackTraceOfMonitorTcpServerSocketInit(stackTrace: List<String>): Boolean {
-      val secondLastFrame = stackTrace.takeLast(2).first()
-      if (secondLastFrame.startsWith("org.droidmate")) {
-        check(secondLastFrame.startsWith("org.droidmate.monitor.Monitor"))
-        // KJA check failed, the check is not precise enough.
-        check(stackTrace.any { it.contains("Socket.<init>") })
-        return true
-      }
+    private fun IApi.checkIsNotStackTraceOfInternalMonitorCall() {
+      val monitorFrames = this.stackTraceFrames.filter { it.startsWith("org.droidmate.monitor.Monitor") }
+      check (monitorFrames.all { it.contains("Monitor.redir_") || it.contains("Monitor.getStackTrace") })
+    }
 
-      // Assert made just to be extra-sure.
-      check(!(stackTrace.any { it.startsWith("org.droidmate.monitor.Monitor") && it.contains("Socket.<init>") }))
-
-      return false
-    }    
-    
     /**
      * Logs warnings about presence of possibly redundant API calls. 
      * An API call is redundant if it always calls another API call which is also monitored.
