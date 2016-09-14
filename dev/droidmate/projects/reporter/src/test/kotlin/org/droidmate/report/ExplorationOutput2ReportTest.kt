@@ -106,6 +106,7 @@ class ExplorationOutput2ReportTest {
   }
 
   private fun assertOnFiles(report: ExplorationOutput2Report) {
+    // KJA fails. Probably becasue report dir layout/creation change.
     assertThat(report.dir.fileNames, hasItems(
       containsString(ApkTabularDataReport.fileNameSuffixViewCount),
       containsString(ApkTabularDataReport.fileNameSuffixClickFrequency),
