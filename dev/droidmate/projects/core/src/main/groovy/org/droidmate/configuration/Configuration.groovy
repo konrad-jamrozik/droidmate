@@ -324,6 +324,8 @@ public class Configuration implements IConfiguration
 
   public Path droidmateOutputDirPath
 
+  public Path droidmateOutputReportDirPath
+
   public Path reportInputDirPath
 
   public Path reportOutputDirPath

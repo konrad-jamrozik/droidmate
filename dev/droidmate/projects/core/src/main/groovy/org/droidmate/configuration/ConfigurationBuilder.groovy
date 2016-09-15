@@ -226,6 +226,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
     
     cfg.droidmateOutputDirPath = fs.getPath(cfg.droidmateOutputDir)
+    cfg.droidmateOutputReportDirPath = cfg.droidmateOutputDirPath.resolve("report")
     cfg.reportInputDirPath = fs.getPath(cfg.reportInputDir)
     cfg.reportOutputDirPath = fs.getPath(cfg.reportOutputDir)
     cfg.apksDirPath = cfg.useApkFixturesDir ? new ResourcePath(BuildConstants.apk_fixtures).path : fs.getPath(cfg.apksDirName.toString())
@@ -237,7 +238,6 @@ class ConfigurationBuilder implements IConfigurationBuilder
       log.info("Created directory to which DroidMate will output: "+cfg.droidmateOutputDirPath.toAbsolutePath().toString())
 
   }
-
 
   private static void setLogbackRootLoggerLoggingLevel(Configuration config) throws ConfigurationException
   {
