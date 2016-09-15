@@ -24,6 +24,7 @@ import com.konradjamrozik.isDirectory
 import org.codehaus.groovy.runtime.NioGroovyMethods
 import java.io.File
 import java.nio.file.FileSystem
+import java.nio.file.Files
 import java.nio.file.Files.newDirectoryStream
 import java.nio.file.Path
 
@@ -34,6 +35,20 @@ val Path.text: String get() {
 fun Path.deleteDir(): Boolean {
   return NioGroovyMethods.deleteDir(this)
 }
+
+val Path.singleDir: Path
+  get() {
+
+    require(this.isDirectory)
+
+    val files = Files.newDirectoryStream(this).toList()
+    check(files.size == 1)
+
+    val singleDir = files.first()
+    check(singleDir.isDirectory)
+
+    return singleDir
+  }
 
 fun Path.withExtension(extension: String): Path {
   require(!this.isDirectory)

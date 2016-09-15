@@ -106,16 +106,16 @@ class ExplorationOutput2ReportTest {
   }
 
   private fun assertOnFiles(report: ExplorationOutput2Report) {
-    // KJA fails. Probably becasue report dir layout/creation change.
     assertThat(report.dir.fileNames, hasItems(
+      equalTo(ExplorationOutput2Report.fileNameSummary),
+      equalTo(ExplorationOutput2Report.fileNameAggregateStats)
+    ))
+    assertThat(report.apkReportsDir.fileNames, hasItems(
       containsString(ApkTabularDataReport.fileNameSuffixViewCount),
       containsString(ApkTabularDataReport.fileNameSuffixClickFrequency),
       containsString(ApkTabularDataReport.fileNameSuffixApiCount),
-      containsString(ApkViewsFile.fileNameSuffix),
-      equalTo(ExplorationOutput2Report.fileNameSummary),
-      equalTo(ExplorationOutput2Report.fileNameAggregateStats)
-    )
-    )
+      containsString(ApkViewsFile.fileNameSuffix)
+    ))    
   }
 
   private fun manualInspection(report: ExplorationOutput2Report) {

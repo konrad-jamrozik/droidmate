@@ -39,7 +39,7 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     
     dir.deleteDir()
     dir.createDirIfNotExists()
-    appReportsDir.createDirIfNotExists()
+    apkReportsDir.createDirIfNotExists()
     
     if (includeSummary)
       summaryFile.writeOut()
@@ -51,7 +51,7 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     apksViewsFiles.forEach { it.writeOut() }
   }
 
-  val appReportsDir: Path by lazy { dir.resolve("app_reports") }
+  val apkReportsDir: Path by lazy { dir.resolve("app_reports") }
   
   val summaryFile: IDataFile by lazy { Summary(data, dir.resolve(fileNameSummary)) }
 
@@ -59,8 +59,8 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     TableDataFile(AggregateStatsTable(data), dir.resolve(fileNameAggregateStats))
   }
   
-  val apksTabularReports: List<ApkTabularDataReport> by lazy { data.map { ApkTabularDataReport(it, appReportsDir) } }
-  val apksViewsFiles: List<ApkViewsFile> by lazy { data.map { ApkViewsFile(it, appReportsDir) } }
+  val apksTabularReports: List<ApkTabularDataReport> by lazy { data.map { ApkTabularDataReport(it, apkReportsDir) } }
+  val apksViewsFiles: List<ApkViewsFile> by lazy { data.map { ApkViewsFile(it, apkReportsDir) } }
 
   companion object { 
     val fileNameSummary = "summary.txt"
