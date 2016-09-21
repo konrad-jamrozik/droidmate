@@ -30,6 +30,8 @@ import android.content.Context;
 // !!!!!   ./gradlew :projects:monitor-hook:compileJava 
 // !!!!! 
 // !!!!! This will generate MonitorHook.java in the same directory as this class. Edit that file instead.
+// !!!!! You can edit MonitorHook.java, as it will not be regenerated if it already exists. 
+// !!!!! Thus your changes to it will be retained. 
 
 /**
  * <p>Please see {@link MonitorHookExample} for an example implementation. Please see comments marked with !!!!! in this file 
