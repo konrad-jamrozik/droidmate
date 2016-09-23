@@ -22,7 +22,7 @@ allprojects {
   version = "dev"
 }
 
-ext.kotlin_version = '1.0.3'
+ext.kotlin_version = '1.0.4'
 
 buildscript {
 
