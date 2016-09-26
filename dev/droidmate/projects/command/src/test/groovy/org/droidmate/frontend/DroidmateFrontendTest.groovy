@@ -92,7 +92,6 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
   @Test
   public void "Handles exploration and fatal device exceptions"()
   {
-    // KJA fails. Probably becasue report dir layout/creation change.
     def mockedFs = new MockFileSystem([
       "mock_1_noThrow_outputOk",
       "mock_2_throwBeforeLoop_outputNone",
@@ -197,7 +196,6 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
   @Test
   public void "Explores on a device simulator"()
   {
-    // KJA fails. Probably becasue report dir layout/creation change.
     def mockedFs = new MockFileSystem(["mock_app1"])
     def cfg = new ConfigurationForTests().withFileSystem(mockedFs.fs).get()
     def apks = mockedFs.apks
