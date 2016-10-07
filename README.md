@@ -44,7 +44,7 @@ Furthermore:
 
 # How DroidMate works #
 
-DroidMate fully automatically explores behavior of an Android app by interacting with its GUI. DroidMate repeatedly reads the device state, makes a decision and interactis with the GUI, until some termination criterion is satisfied. This process is called an **exploration** of the **Application Under Exploration (AUE)**.
+DroidMate fully automatically explores behavior of an Android app by interacting with its GUI. DroidMate repeatedly reads the device state, makes a decision and interacts with the GUI, until some termination criterion is satisfied. This process is called an **exploration** of the **Application Under Exploration (AUE)**.
 
 DroidMate is fully automatic: after it has been set up and started, the exploration itself does not require human presence.
 
