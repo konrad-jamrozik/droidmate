@@ -44,11 +44,11 @@ Furthermore:
 
 # How DroidMate works #
 
-DroidMate fully automatically explores behavior of an Android app by clicking on its GUI. DroidMate repeatedly reads the device state, makes a decision and clicks on a GUI, until some termination criterion is satisfied. This process is called an **exploration** of the **Application Under Exploration (AUE)**.
+DroidMate fully automatically explores behavior of an Android app by interacting with its GUI. DroidMate repeatedly reads the device state, makes a decision and interactis with the GUI, until some termination criterion is satisfied. This process is called an **exploration** of the **Application Under Exploration (AUE)**.
 
 DroidMate is fully automatic: after it has been set up and started, the exploration itself does not require human presence.
 
-As input, DroidMate reads a directory containing Android apps (.apk files). It outputs a serialized Java object representing the exploration output. It also outputs .txt files having various human-readable information extracted from the serialized exploration output.
+DroidMate can be run from command line or through its Java API. As input, it reads a directory containing Android apps (.apk files). It outputs a serialized Java object representing the exploration output. It also outputs .txt files having various human-readable information extracted from the serialized exploration output.
 
 DroidMate can click and long-click the AUE’s GUI, restart the AUE,  press ‘home’ button and  it can terminate the exploration. Any of this is called an **exploration action**. DroidMate’s **exploration strategy** decides which exploration action to execute based on the XML representation of the currently visible device GUI, i.e. a **GUI snapshot**, and on the set of Android framework methods that have been called after last exploration action, i.e. a set of **API calls**.
 
