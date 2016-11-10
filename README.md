@@ -85,3 +85,10 @@ If DroidMate doesn't recognize a device it defaults to Nexus 7. You can change t
 * select running device. If device is running, `adb devices` will show it;
 * click on `Dump View Hierarchy for UI Automator`;
 * click on the top level `FrameLayout` and look at `package`.
+
+## Contributions ##
+
+Nataniel Borges Jr.:
+ 
+- Added support for multiple Android devices. 
+- Added support for uiautomator 2.0.
