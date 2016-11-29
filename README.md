@@ -88,7 +88,7 @@ If DroidMate doesn't recognize a device it defaults to Nexus 7. You can change t
 
 ## Contributions ##
 
-Nataniel Borges Jr.:
+Nataniel Borges Jr., @natanieljr:
  
 - Added support for multiple Android devices. 
 - Added support for uiautomator 2.0.
