@@ -10,8 +10,12 @@ task stageForDroidmate(dependsOn: "assembleDebug") {
 
   File debugOutputFile
   afterEvaluate {
-    def zipAlign = android.applicationVariants.find {it.name == "debug"}.outputs.zipAlign
-    debugOutputFile = zipAlign.outputFile[0]
+    
+    def debugVariant = android.applicationVariants.find {it.name == "debug"}
+    assert debugVariant.outputs.size() == 1
+    def apkVariant = debugVariant.outputs[0]
+
+    debugOutputFile = apkVariant.outputFile
     inputs.file debugOutputFile
   }
   outputs.dir apkFixturesDroidmateStagingDir
