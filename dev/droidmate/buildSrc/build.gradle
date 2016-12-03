@@ -22,7 +22,7 @@ import org.gradle.api.tasks.testing.logging.TestLoggingContainer
 
 apply plugin: 'kotlin'
 
-ext.utilities_version = 'f7e0d5d163'
+ext.utilities_version = 'c0bd11ebe0'
 
 buildscript {
 

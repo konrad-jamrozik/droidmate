@@ -3,6 +3,11 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="compositeParticipants">
+          <set>
+            <option value="$PROJECT_DIR$/../../../utilities" />
+          </set>
+        </option>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="#JAVA_HOME" />
@@ -24,6 +29,15 @@
             <option value="$PROJECT_DIR$/projects/uiautomator-daemon" />
             <option value="$PROJECT_DIR$/projects/uiautomator-daemon-lib" />
             <option value="$PROJECT_DIR$/projects/uiautomator2-daemon-proxy" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../../../utilities" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/../../../utilities" />
           </set>
         </option>
       </GradleProjectSettings>

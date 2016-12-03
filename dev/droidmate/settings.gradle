@@ -40,3 +40,6 @@ include(
   "projects:command",
   "DummyAndroidApp"
 )
+
+// The path navigates from github/droidmate/dev/droidmate to github/utilities
+includeBuild('../../../utilities')

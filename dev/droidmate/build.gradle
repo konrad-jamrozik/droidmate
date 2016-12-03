@@ -26,7 +26,7 @@ ext.kotlin_version = '1.0.4'
 
 buildscript {
 
-  ext.utilities_version = 'f7e0d5d163'
+  ext.utilities_version = 'c0bd11ebe0'
 
   repositories {
     mavenLocal()
