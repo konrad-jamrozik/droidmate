@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="Copyrighted source files" pattern="((file:*.groovy||file:*.java||file:*.gradle||file:*.kt)&amp;&amp;!file:*/gen//*&amp;&amp;!file:gen//**&amp;&amp;!file:*/generated//*||file[reporter_main]:*/||file[reporter_test]:*/)&amp;&amp;!file[monitor-generator]:temp//*" />
-</component>
