@@ -41,5 +41,13 @@ include(
   "DummyAndroidApp"
 )
 
-// The path navigates from github/droidmate/dev/droidmate to github/utilities
-includeBuild('../../../utilities')
+/* The path navigates from github/droidmate/dev/droidmate to github/utilities
+
+   Konrad Jamrozik's note to self: 
+   Commented out, as it will fail if the path is invalid, thus forcing anyone to also clone my utilities repository.
+   Instead, just configure IntelliJ to do composite build, but remember to actually publish any changes made to utilities and update
+   the version in dev/droidmate/buildSrc/build.gradle and dev/droidmate/build.gradle.
+   
+   Reference: https://docs.gradle.org/3.2.1/userguide/composite_builds.html
+*/
+// includeBuild('../../../utilities')
