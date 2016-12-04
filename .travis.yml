@@ -19,22 +19,19 @@ jdk:
 android:
   components:
 
-    # Build tools compatible with DroidMate API 19.
-    - build-tools-19.1.0
-    
-    # DroidMate currently supports Android API 19 (4.4.2).
-    - android-19
-      
-    # Build tools compatible with DroidMate API 23 (6.0.1).
-    # Tools package is required by Travis-CI in order to locate "build-tools-23.0.3",
+    # Build tools
+    # Tools package is required by Travis-CI in order to locate "build-tools",
     # Official bugtracker issue: https://github.com/travis-ci/travis-ci/issues/5036
     - tools
-    - build-tools-23.0.3
+    - build-tools-25.0.1
     # Packages required by UIAutomator2
     - extra-android-support
     - extra-android-m2repository
 
-    # DroidMate currently supports Android API 23 (6.0.1).
+    # DroidMate supports Android API 19 (4.4.2).
+    - android-19
+    
+    # DroidMate supports Android API 23 (6.0.1).
     - android-23
 
 env:
