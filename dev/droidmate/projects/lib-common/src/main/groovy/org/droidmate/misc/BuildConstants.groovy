@@ -34,7 +34,6 @@ class BuildConstants
 {
   static Map<String, String> properties = loadProperties("buildConstants.properties")
 
-  static String aapt_command_api19 = safeGetProperty(properties, "ANDROID_HOME", "aapt_command_relative_api19")
   static String aapt_command_api23 = safeGetProperty(properties, "ANDROID_HOME", "aapt_command_relative_api23")
   static String adb_command        = safeGetProperty(properties, "ANDROID_HOME", "adb_command_relative")
   static String jarsigner          = safeGetProperty(properties, "JAVA_HOME", "jarsigner_relative_path")

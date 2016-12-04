@@ -23,7 +23,6 @@ import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.LaunchableActivityNameProblemException
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
 import org.droidmate.misc.DroidmateException
 import org.droidmate.misc.ISysCmdExecutor
 import org.droidmate.misc.SysCmdExecutorException
@@ -131,23 +130,14 @@ import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
     assert Files.isRegularFile(apk)
 
     String aaptBadgingDump = aaptDumpBadging(apk)
-    return tryGetApplicationLabelFromBadgingDump(aaptBadgingDump, cfg.androidApi)
+    return tryGetApplicationLabelFromBadgingDump(aaptBadgingDump)
   }
 
-  private static String tryGetApplicationLabelFromBadgingDump(String aaptBadgingDump, String androidApi) throws DroidmateException
+  private static String tryGetApplicationLabelFromBadgingDump(String aaptBadgingDump) throws DroidmateException
   {
     assert aaptBadgingDump?.length() > 0
 
-    String matcherString
-
-    if (androidApi == Configuration.api19)
-      matcherString = /(?:.*)application-label:'(.*)'.*/
-    else if (androidApi == Configuration.api23)
-      matcherString = /.*launchable-activity: name='(?:.*)'  label='(.*)' .*/
-    else
-      throw new UnexpectedIfElseFallthroughError()
-    
-    Matcher matcher = aaptBadgingDump =~ matcherString
+    Matcher matcher = aaptBadgingDump =~ /.*launchable-activity: name='(?:.*)'  label='(.*)' .*/
 
     if (matcher.size() == 0)
       throw new DroidmateException("No application label found in 'aapt dump badging'")
@@ -196,14 +186,7 @@ import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
 
     try
     {
-      String aaptCommand
-      if (cfg.androidApi == Configuration.api19)
-        aaptCommand = cfg.aaptCommandApi19
-      else if (cfg.androidApi == Configuration.api23)
-        aaptCommand = cfg.aaptCommandApi23
-      else 
-        throw new UnexpectedIfElseFallthroughError()
-        
+      String aaptCommand = cfg.aaptCommandApi23
       outputStreams = sysCmdExecutor.execute(
         commandDescription, aaptCommand, "dump badging", instrumentedApk.toAbsolutePath().toString())
 

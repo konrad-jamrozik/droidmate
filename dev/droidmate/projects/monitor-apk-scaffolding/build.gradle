@@ -30,7 +30,7 @@ buildscript {
 
 android {
   compileSdkVersion 23
-  buildToolsVersion "23.0.3"
+  buildToolsVersion "25.0.1"
   defaultConfig {
     applicationId "org.droidmate.monitor"
     minSdkVersion 23
@@ -61,7 +61,7 @@ android {
 // Based on: http://stackoverflow.com/a/34337260/986533
 android.variantFilter { variant ->
   if(variant.buildType.name.equals('debug')) {
-    variant.setIgnore(true);
+    variant.setIgnore(true)
   }
 }
 repositories {

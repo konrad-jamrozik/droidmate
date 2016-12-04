@@ -25,7 +25,6 @@ To configure your local setup, do the following:
   * Tools / Android SDK Tools 25.2.3
   * Tools / Android SDK Platform-tools 25.0.1
   * Tools / Android SDK Build-tools 25.0.1
-  * Tools / Android SDK Build-tools 19.1
   * Android 6.0 (API 23) / Documentation for Android SDK (optional, but recommended)
   * Android 6.0 (API 23) / SDK Platform
   * Android 6.0 (API 23) / Sources for Android SDK (optional, but recommended)

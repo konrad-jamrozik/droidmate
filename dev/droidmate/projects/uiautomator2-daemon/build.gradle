@@ -29,7 +29,7 @@ buildscript {
 
 android {
   compileSdkVersion 23
-  buildToolsVersion "23.0.3"
+  buildToolsVersion "25.0.1"
   defaultConfig {
     applicationId "org.droidmate.uiautomator2daemon.UiAutomator2Daemon"
     minSdkVersion 23

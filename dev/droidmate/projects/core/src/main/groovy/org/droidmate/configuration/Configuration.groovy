@@ -47,29 +47,29 @@ import java.nio.file.Path
 // Solution adapted from: http://stackoverflow.com/a/29042946/986533
 @SuppressWarnings("UnnecessaryQualifiedReference")
 @Parameters(separators = " =")
-public class Configuration implements IConfiguration
+ class Configuration implements IConfiguration
 {
   //region Instance construction logic
 
   /** The raw args (as given to {@code public static void main(String[] args)}) from which this configuration was obtained. */
   private String[] args
 
-  public static Configuration getDefault() throws ConfigurationException
+   static Configuration getDefault() throws ConfigurationException
   {
     return getDefault(FileSystems.getDefault())
   }
 
-  public static Configuration getDefault(FileSystem fs) throws ConfigurationException
+   static Configuration getDefault(FileSystem fs) throws ConfigurationException
   {
     return new ConfigurationBuilder().build(new String[0], fs)
   }
 
-  public String[] getArgs()
+  String[] getArgs()
   {
     return args
   }
 
-  public Configuration(String[] args)
+  Configuration(String[] args)
   {
     this.args = args
   }
@@ -335,7 +335,6 @@ public class Configuration implements IConfiguration
   public Path monitorApkApi19
   public Path monitorApkApi23
 
-  public String aaptCommandApi19 = BuildConstants.aapt_command_api19
   public String aaptCommandApi23 = BuildConstants.aapt_command_api23
 
   public String adbCommand = BuildConstants.adb_command
