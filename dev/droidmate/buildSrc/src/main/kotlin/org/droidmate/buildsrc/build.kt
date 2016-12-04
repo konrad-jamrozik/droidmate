@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 
 // "unused" warning is suppressed because vals in this project are being used in the 'droidmate' project gradle build scripts
-// as well as in the 'droidmate' project itself.
+// as well as in the 'droidmate' project itself. The "unused" warning doesn't properly recognize some of the usages.
 @file:Suppress("unused")
 
 package org.droidmate.buildsrc
@@ -45,12 +45,12 @@ val jarsigner_relative_path = "bin/jarsigner$exeExt"
 val jarsigner = java_home.resolveRegularFile(jarsigner_relative_path)
 
 //region Android SDK components
-private val build_tools_version_api23 = "25.0.1"
+private val build_tools_version = "25.0.1"
 private val android_platform_version_api19 = "19"
 private val android_platform_version_api23 = "23"
-val aapt_command_relative_api23 = "build-tools/$build_tools_version_api23/aapt$exeExt"
+val aapt_command_relative = "build-tools/$build_tools_version/aapt$exeExt"
 val adb_command_relative = "platform-tools/adb$exeExt"
-val aapt_command_api23 = android_sdk_dir.resolveRegularFile(aapt_command_relative_api23)
+val aapt_command = android_sdk_dir.resolveRegularFile(aapt_command_relative)
 val adb_command = android_sdk_dir.resolveRegularFile(adb_command_relative)
 private val android_platform_dir_api19 = android_sdk_dir.resolveDir("platforms/android-$android_platform_version_api19")
 private val android_platform_dir_api23 = android_sdk_dir.resolveDir("platforms/android-$android_platform_version_api23")

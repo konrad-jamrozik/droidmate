@@ -186,9 +186,8 @@ import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
 
     try
     {
-      String aaptCommand = cfg.aaptCommandApi23
       outputStreams = sysCmdExecutor.execute(
-        commandDescription, aaptCommand, "dump badging", instrumentedApk.toAbsolutePath().toString())
+        commandDescription, cfg.aaptCommand, "dump badging", instrumentedApk.toAbsolutePath().toString())
 
     } catch (SysCmdExecutorException e)
     {

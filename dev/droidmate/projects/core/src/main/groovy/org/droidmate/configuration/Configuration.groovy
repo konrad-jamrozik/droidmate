@@ -335,7 +335,7 @@ import java.nio.file.Path
   public Path monitorApkApi19
   public Path monitorApkApi23
 
-  public String aaptCommandApi23 = BuildConstants.aapt_command_api23
+  public String aaptCommand = BuildConstants.aapt_command
 
   public String adbCommand = BuildConstants.adb_command
 
