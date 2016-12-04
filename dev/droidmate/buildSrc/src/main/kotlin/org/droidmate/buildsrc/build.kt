@@ -46,7 +46,7 @@ val jarsigner = java_home.resolveRegularFile(jarsigner_relative_path)
 
 //region Android SDK components
 private val build_tools_version_api19 = "19.1.0"
-private val build_tools_version_api23 = "23.0.3"
+private val build_tools_version_api23 = "25.0.1"
 private val android_platform_version_api19 = "19"
 private val android_platform_version_api23 = "23"
 val aapt_command_relative_api19 = "build-tools/$build_tools_version_api19/aapt$exeExt"

@@ -38,7 +38,7 @@ import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
  * Wrapper for the {@code aapt} tool from Android SDK.
  */
 @Slf4j
-public class AaptWrapper implements IAaptWrapper
+ class AaptWrapper implements IAaptWrapper
 {
 
   private final Configuration   cfg
@@ -99,8 +99,8 @@ public class AaptWrapper implements IAaptWrapper
     String aaptBadgingDump = aaptDumpBadging(apk)
     String packageName = tryGetPackageNameFromBadgingDump(aaptBadgingDump)
 
-    assert packageName?.length() > 0;
-    return packageName;
+    assert packageName?.length() > 0
+    return packageName
   }
 
   @Override
@@ -131,14 +131,23 @@ public class AaptWrapper implements IAaptWrapper
     assert Files.isRegularFile(apk)
 
     String aaptBadgingDump = aaptDumpBadging(apk)
-    return tryGetApplicationLabelFromBadgingDump(aaptBadgingDump)
+    return tryGetApplicationLabelFromBadgingDump(aaptBadgingDump, cfg.androidApi)
   }
 
-  private static String tryGetApplicationLabelFromBadgingDump(String aaptBadgingDump) throws DroidmateException
+  private static String tryGetApplicationLabelFromBadgingDump(String aaptBadgingDump, String androidApi) throws DroidmateException
   {
     assert aaptBadgingDump?.length() > 0
 
-    Matcher matcher = aaptBadgingDump =~ /(?:.*)application-label:'(.*)'.*/
+    String matcherString
+
+    if (androidApi == Configuration.api19)
+      matcherString = /(?:.*)application-label:'(.*)'.*/
+    else if (androidApi == Configuration.api23)
+      matcherString = /.*launchable-activity: name='(?:.*)'  label='(.*)' .*/
+    else
+      throw new UnexpectedIfElseFallthroughError()
+    
+    Matcher matcher = aaptBadgingDump =~ matcherString
 
     if (matcher.size() == 0)
       throw new DroidmateException("No application label found in 'aapt dump badging'")

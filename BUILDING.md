@@ -22,9 +22,10 @@ To configure your local setup, do the following:
 * Install Java Development Kit (JDK) 8. Set `JAVA_HOME` environment variable to point to its location.
 * Install Android SDK. Set `ANDROID_HOME` environment variable to point to its location.
 * Run SDK Manager of Android SDK with admin rights. Select and install the following packages:
-  * Tools / Android SDK Build-tools 23.0.3
-  * Tools / Android SDK Platform-tools 23.1
-  * Tools / Android SDK Platform-tools 19.1
+  * Tools / Android SDK Tools 25.2.3
+  * Tools / Android SDK Platform-tools 25.0.1
+  * Tools / Android SDK Build-tools 25.0.1
+  * Tools / Android SDK Build-tools 19.1
   * Android 6.0 (API 23) / Documentation for Android SDK (optional, but recommended)
   * Android 6.0 (API 23) / SDK Platform
   * Android 6.0 (API 23) / Sources for Android SDK (optional, but recommended)
