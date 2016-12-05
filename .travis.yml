@@ -22,6 +22,7 @@ android:
     # Build tools
     # Tools package is required by Travis-CI in order to locate "build-tools",
     # Official bugtracker issue: https://github.com/travis-ci/travis-ci/issues/5036
+    # More info: https://docs.travis-ci.com/user/languages/android/#Overview
     - tools
     - build-tools-25.0.1
     # Packages required by UIAutomator2
