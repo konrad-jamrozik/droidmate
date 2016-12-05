@@ -19,7 +19,6 @@
 
 package org.droidmate.storage
 
-import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 
 import java.nio.channels.Channels
@@ -34,8 +33,7 @@ import java.time.format.DateTimeFormatter
  * Persistent storage. Allows for serializing to HDD and back.
  */
 @Slf4j
-@TypeChecked
-public class Storage2 implements IStorage2
+ class Storage2 implements IStorage2
 {
 
   private static final DateTimeFormatter serializedFileTimestampPattern = DateTimeFormatter.ofPattern("yyyy MMM dd HHmm")
@@ -53,7 +51,7 @@ public class Storage2 implements IStorage2
   }
 
   @Override
-  void serializeToFile(def obj, Path file)
+  void serializeToFile(obj, Path file)
   {
     ObjectOutputStream serOut = new ObjectOutputStream(
       Channels.newOutputStream(FileChannel.open(file, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW)))
@@ -71,7 +69,7 @@ public class Storage2 implements IStorage2
   }
 
   @Override
-  public Object deserialize(Path file)
+   Object deserialize(Path file)
   {
     ObjectInputStream input =
       new ObjectInputStream(Channels.newInputStream(FileChannel.open(file, StandardOpenOption.READ)))
@@ -81,7 +79,7 @@ public class Storage2 implements IStorage2
   }
 
   @Override
-  void serialize(def obj, String namePart)
+  void serialize(obj, String namePart)
   {
     if (timestamp == null)
       timestamp = LocalDateTime.now().format(serializedFileTimestampPattern)

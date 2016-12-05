@@ -268,7 +268,7 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
-  public Boolean appIsNotRunning(IApk apk) throws DeviceException
+   Boolean appIsNotRunning(IApk apk) throws DeviceException
   {
     return Utils.retryOnFalse({!this.getAppIsRunningRebootingIfNecessary(apk.packageName)},
       checkAppIsRunningRetryAttempts,
@@ -289,13 +289,14 @@ class RobustDevice implements IRobustDevice
     if (app.launchableActivityName != null)
       this.launchMainActivity(app.launchableActivityComponentName)
     else
-      this.clickAppIcon(app.applicationLabel)
+      // KJA the label might be null, should take priority from launchable-activity: name='com.tinder.activities.ActivitySplash_'  label='' icon=''
+    this.clickAppIcon(app.applicationLabel)
   }
 
   @Override
   void clickAppIcon(String iconLabel) throws DeviceException
   {
-    rebootIfNecessary { this.device.clickAppIcon(iconLabel); return true; }
+    rebootIfNecessary { this.device.clickAppIcon(iconLabel); return true }
   }
 
   @Override
@@ -472,7 +473,7 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
-  public void closeConnection() throws DeviceException
+   void closeConnection() throws DeviceException
   {
     rebootIfNecessary {this.device.closeConnection(); return true}
   }

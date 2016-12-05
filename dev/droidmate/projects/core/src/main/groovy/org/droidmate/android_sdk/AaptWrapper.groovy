@@ -19,6 +19,7 @@
 
 package org.droidmate.android_sdk
 
+import com.konradjamrozik.FirstMatch
 import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
 import org.droidmate.configuration.Configuration
@@ -137,17 +138,18 @@ import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
   {
     assert aaptBadgingDump?.length() > 0
 
-    Matcher matcher = aaptBadgingDump =~ /.*launchable-activity: name='(?:.*)'  label='(.*)' .*/
-
-    if (matcher.size() == 0)
-      throw new DroidmateException("No application label found in 'aapt dump badging'")
-    else if (matcher.size() > 1)
-      throw new DroidmateException("More than one application label found in 'aapt dump badging'")
-    else
+    def labelMatch = new FirstMatch(
+      aaptBadgingDump,
+      /application-label-en(?:.*):'(.*)'/,
+      /.*launchable-activity: name='(?:.*)'  label='(.*)' .*/
+    )
+    if (labelMatch.successful)
     {
-      String applicationLabel = getAndValidateFirstMatch(matcher)
-      return applicationLabel
+      assert labelMatch.value?.length() > 0
+      return labelMatch.value
     }
+    else
+      throw new DroidmateException("No application label found in 'aapt dump badging'", labelMatch.exception)
   }
 
   @Override
@@ -171,6 +173,8 @@ import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
 
     }
 
+    // KJA here we can get fatal application label exception if there is no launchable activity and no label which can be clicked.
+    // KJA looks like generic label can be substituted, but no label means no app icon!
     return [getPackageName(apk)] + activity + getApplicationLabel(apk)
   }
 

@@ -20,7 +20,6 @@
 package org.droidmate.apk_inliner
 
 import com.konradjamrozik.Resource
-import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.misc.*
 
@@ -30,7 +29,6 @@ import java.nio.file.StandardCopyOption
 
 import static java.nio.file.Files.*
 
-@TypeChecked
 @Slf4j
 class ApkInliner implements IApkInliner
 {
@@ -89,7 +87,7 @@ class ApkInliner implements IApkInliner
     {
       if (list(inputPath).count() == 0)
       {
-        log.warn("No target apks for inlining found. Searched directory: ${inputPath.toRealPath().toString()}.\nAborting inlining.");
+        log.warn("No target apks for inlining found. Searched directory: ${inputPath.toRealPath().toString()}.\nAborting inlining.")
         return
       }
 
