@@ -31,8 +31,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.regex.Matcher
 
-import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
-
 /**
  * Wrapper for the {@code aapt} tool from Android SDK.
  */
@@ -211,5 +209,13 @@ import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
 
     assert aaptBadgingDump?.length() > 0
     return aaptBadgingDump
+  }
+
+  private static String getAndValidateFirstMatch(Matcher matcher)
+  {
+    String firstMatch = matcher[0][1]
+    assert firstMatch?.length() > 0
+    return firstMatch
+
   }
 }

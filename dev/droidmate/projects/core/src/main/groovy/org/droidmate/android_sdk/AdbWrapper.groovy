@@ -27,6 +27,7 @@ import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.ISysCmdExecutor
 import org.droidmate.misc.SysCmdExecutorException
+import org.droidmate.misc.Utils
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 import java.nio.file.Files
