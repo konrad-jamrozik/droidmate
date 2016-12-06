@@ -19,11 +19,12 @@
 
 package org.droidmate.android_sdk
 
-import com.konradjamrozik.FirstMatch
+import com.konradjamrozik.FirstMatchFirstGroup
 import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
 import org.droidmate.configuration.Configuration
 import org.droidmate.exceptions.LaunchableActivityNameProblemException
+import org.droidmate.exceptions.NotEnoughDataToStartAppException
 import org.droidmate.misc.DroidmateException
 import org.droidmate.misc.ISysCmdExecutor
 import org.droidmate.misc.SysCmdExecutorException
@@ -138,18 +139,18 @@ import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
   {
     assert aaptBadgingDump?.length() > 0
 
-    def labelMatch = new FirstMatch(
-      aaptBadgingDump,
-      /application-label-en(?:.*):'(.*)'/,
-      /.*launchable-activity: name='(?:.*)'  label='(.*)' .*/
-    )
-    if (labelMatch.successful)
+    try
     {
-      assert labelMatch.value?.length() > 0
+      def labelMatch = new FirstMatchFirstGroup(
+        aaptBadgingDump,
+        /application-label-en(?:.*):'(.*)'/,
+        /.*launchable-activity: name='(?:.*)'  label='(.*)' .*/,
+      )
       return labelMatch.value
+    } catch (Exception e)
+    {
+      throw new DroidmateException("No non-empty application label found in 'aapt dump badging'", e)
     }
-    else
-      throw new DroidmateException("No application label found in 'aapt dump badging'", labelMatch.exception)
   }
 
   @Override
@@ -169,13 +170,23 @@ import static org.droidmate.android_sdk.Utils.getAndValidateFirstMatch
         log.trace("While getting metadata for ${apk.toString()}, got an: $e Substituting null for the launchable activity (component) name.")
         activity = [null, null]
       }
-
-
     }
 
-    // KJA here we can get fatal application label exception if there is no launchable activity and no label which can be clicked.
-    // KJA looks like generic label can be substituted, but no label means no app icon!
-    return [getPackageName(apk)] + activity + getApplicationLabel(apk)
+    
+    String applicationLabel
+    try
+    {
+      applicationLabel = getApplicationLabel(apk)
+    } catch (DroidmateException e)
+    {
+      if (activity == [null, null])
+        throw new NotEnoughDataToStartAppException("No launchable activity name is present and no non-empty application label is present, " +
+          "so the app cannot be launched by intent neither by clicking on its app icon (because it won't be there, due to " +
+          "missing label. Thus, the app is unworkable for DroidMate")
+      else
+        applicationLabel = null
+    }
+    return [getPackageName(apk)] + activity + applicationLabel
   }
 
   @Memoized

@@ -21,6 +21,7 @@ package org.droidmate.android_sdk
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
 import org.droidmate.exceptions.LaunchableActivityNameProblemException
+import org.droidmate.exceptions.NotEnoughDataToStartAppException
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -42,7 +43,7 @@ class Apk implements IApk, Serializable
   final String launchableActivityComponentName
   final String applicationLabel
 
-  public static Apk build(IAaptWrapper aapt, Path path)
+   static Apk build(IAaptWrapper aapt, Path path)
   {
     assert aapt != null
     assert path != null
@@ -52,10 +53,10 @@ class Apk implements IApk, Serializable
     try
     {
       (packageName, launchableActivityName, launchableActivityComponentName, applicationLabel) = aapt.getMetadata(path)
-    } catch (LaunchableActivityNameProblemException e)
+    } catch (LaunchableActivityNameProblemException | NotEnoughDataToStartAppException e)
     {
       log.warn("! While getting metadata for ${path.toString()}, got an: $e Returning null apk.")
-      assert e.isFatal
+      assert !(e instanceof LaunchableActivityNameProblemException) || ((e as LaunchableActivityNameProblemException).isFatal)
       return null
     }
 
@@ -79,7 +80,6 @@ class Apk implements IApk, Serializable
     assert fileName.endsWith(".apk")
     assert absolutePath?.size() > 0
     assert packageName?.size() > 0
-    assert applicationLabel?.size() > 0
 
     this.path = path
     this.fileName = fileName
@@ -88,6 +88,8 @@ class Apk implements IApk, Serializable
     this.launchableActivityName = launchableActivityName
     this.launchableActivityComponentName = launchableActivityComponentName
     this.applicationLabel = applicationLabel
+    
+    assert this.launchableActivityName?.length() > 0 || this.applicationLabel?.length() > 0
   }
 
   @Override

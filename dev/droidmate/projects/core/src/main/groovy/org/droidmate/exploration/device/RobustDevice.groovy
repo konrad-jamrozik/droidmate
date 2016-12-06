@@ -289,8 +289,10 @@ class RobustDevice implements IRobustDevice
     if (app.launchableActivityName != null)
       this.launchMainActivity(app.launchableActivityComponentName)
     else
-      // KJA the label might be null, should take priority from launchable-activity: name='com.tinder.activities.ActivitySplash_'  label='' icon=''
-    this.clickAppIcon(app.applicationLabel)
+    {
+      assert app.applicationLabel?.length() > 0
+      this.clickAppIcon(app.applicationLabel)
+    }
   }
 
   @Override
