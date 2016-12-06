@@ -17,18 +17,27 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.exceptions
+package org.droidmate.android_sdk
 
-public class TestDeviceException extends DeviceException implements ITestException
+import org.droidmate.misc.DroidmateException
+
+class LaunchableActivityNameProblemException extends DroidmateException
 {
 
-  private static final long serialVersionUID = 1
+  private static final long    serialVersionUID = 1
 
-  final IExceptionSpec exceptionSpec
+  final                boolean isFatal
 
-  public TestDeviceException(IExceptionSpec exceptionSpec)
+  LaunchableActivityNameProblemException()
   {
-    super("Test-enforced device exception. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex")
-    this.exceptionSpec = exceptionSpec
+    super()
+    this.isFatal = false
   }
+
+  LaunchableActivityNameProblemException(String message, boolean isFatal = false)
+  {
+    super(message)
+    this.isFatal = isFatal
+  }
+
 }

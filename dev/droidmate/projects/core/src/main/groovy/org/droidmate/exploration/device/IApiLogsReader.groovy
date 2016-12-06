@@ -19,9 +19,9 @@
 
 package org.droidmate.exploration.device
 
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.IApiLogcatMessage
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
+import org.droidmate.device.DeviceNeedsRebootException
 
 interface IApiLogsReader
 {

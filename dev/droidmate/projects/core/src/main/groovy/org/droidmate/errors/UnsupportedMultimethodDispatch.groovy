@@ -16,29 +16,15 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.exceptions
+package org.droidmate.errors
 
-class DeviceNeedsRebootException extends TcpServerUnreachableException
+class UnsupportedMultimethodDispatch extends UnexpectedIfElseFallthroughError
 {
-  private static final long serialVersionUID = 1
 
-  DeviceNeedsRebootException()
+  UnsupportedMultimethodDispatch(param)
   {
-    super()
+    super("Unsupported multimethod dispatch for param of class: ${param.class}")
   }
 
-  DeviceNeedsRebootException(Throwable cause)
-  {
-    super(cause)
-  }
 
-  DeviceNeedsRebootException(String message)
-  {
-    super(message)
-  }
-
-  DeviceNeedsRebootException(String message, Throwable cause)
-  {
-    super(message, cause)
-  }
 }

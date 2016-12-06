@@ -18,12 +18,12 @@
 // web: www.droidmate.org
 package org.droidmate.exploration.device
 
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.exceptions.DeviceException
 
-public interface IRobustDevice extends IAndroidDevice, IDeviceMessagesReader
+interface IRobustDevice extends IAndroidDevice, IDeviceMessagesReader
 {
   IDeviceGuiSnapshot ensureHomeScreenIsDisplayed() throws DeviceException
 

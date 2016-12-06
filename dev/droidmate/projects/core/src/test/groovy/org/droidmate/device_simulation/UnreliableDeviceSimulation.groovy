@@ -18,9 +18,8 @@
 // web: www.droidmate.org
 package org.droidmate.device_simulation
 
-import org.droidmate.device.datatypes.Widget
 import org.droidmate.device.datatypes.*
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.misc.ITimeGenerator
 
 class UnreliableDeviceSimulation implements IDeviceSimulation
@@ -57,7 +56,7 @@ class UnreliableDeviceSimulation implements IDeviceSimulation
   }
 
   @Override
-  public boolean getAppIsRunning()
+   boolean getAppIsRunning()
   {
     IDeviceGuiSnapshot gs = this.unreliableGuiSnapshotProvider.getCurrentWithoutChange()
     if (gs.validationResult.valid && gs.guiState.isAppHasStoppedDialogBox())

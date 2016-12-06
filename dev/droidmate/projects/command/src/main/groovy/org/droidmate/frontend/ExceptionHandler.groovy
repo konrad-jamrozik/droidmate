@@ -22,9 +22,9 @@ import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.ApkExplorationException
 import org.droidmate.android_sdk.ExplorationException
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.ThrowablesCollection
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.logging.LogbackConstants
+import org.droidmate.misc.ThrowablesCollection
 
 import static org.droidmate.logging.Markers.exceptions
 

@@ -16,22 +16,18 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
+package org.droidmate.errors
 
-package org.droidmate.exceptions;
-
-
-import org.droidmate.misc.DroidmateException;
-
-public class ConfigurationException extends DroidmateException
+class TestAssertionError extends AssertionError implements ITestException
 {
+  private static final long serialVersionUID = 1
 
-  private static final long serialVersionUID = 1;
+  final IExceptionSpec exceptionSpec
 
-  public ConfigurationException(String message) {
-    super(message);
+  TestAssertionError(IExceptionSpec exceptionSpec)
+  {
+    super("Test-enforced assertion error. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex" as Object)
+    this.exceptionSpec = exceptionSpec
   }
 
-  public ConfigurationException(Throwable cause) {
-    super(cause);
-  }
 }

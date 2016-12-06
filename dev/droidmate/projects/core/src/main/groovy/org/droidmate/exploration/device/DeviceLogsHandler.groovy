@@ -19,9 +19,9 @@
 package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.IApiLogcatMessage
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.ForbiddenOperationError
+import org.droidmate.errors.ForbiddenOperationError
 
 @Slf4j
 class DeviceLogsHandler implements IDeviceLogsHandler

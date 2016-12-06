@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.frontend
 
-import org.droidmate.exceptions.ThrowablesCollection
+import org.droidmate.misc.ThrowablesCollection
 
 class ExceptionHandlerSpy implements IExceptionHandler
 {

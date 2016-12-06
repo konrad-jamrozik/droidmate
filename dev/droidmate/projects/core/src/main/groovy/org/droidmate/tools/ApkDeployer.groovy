@@ -22,10 +22,10 @@ package org.droidmate.tools
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.ApkExplorationException
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IDeployableAndroidDevice
-import org.droidmate.exceptions.DeviceException
 import org.droidmate.misc.Assert
 
 /**
@@ -33,7 +33,7 @@ import org.droidmate.misc.Assert
  */
 @Slf4j
 @TypeChecked
-public class ApkDeployer implements IApkDeployer
+ class ApkDeployer implements IApkDeployer
 {
 
   private final Configuration cfg
@@ -51,7 +51,7 @@ public class ApkDeployer implements IApkDeployer
    * </p>
    */
   @Override
-  public List<ApkExplorationException> withDeployedApk(IDeployableAndroidDevice device, IApk apk, Closure computation)
+   List<ApkExplorationException> withDeployedApk(IDeployableAndroidDevice device, IApk apk, Closure computation)
   {
     log.debug("withDeployedApk(device, $apk.fileName, computation)")
 

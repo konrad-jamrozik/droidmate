@@ -22,7 +22,7 @@ package org.droidmate.exploration.strategy
 import groovy.util.logging.Slf4j
 import org.droidmate.device.datatypes.IGuiState
 import org.droidmate.device.datatypes.Widget
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.ExplorationAction
 
 import static org.droidmate.exploration.actions.ExplorationAction.*

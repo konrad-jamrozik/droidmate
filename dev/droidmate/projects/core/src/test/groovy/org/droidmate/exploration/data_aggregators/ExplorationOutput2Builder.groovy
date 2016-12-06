@@ -20,21 +20,16 @@
 package org.droidmate.exploration.data_aggregators
 
 import org.droidmate.android_sdk.ApkTestHelper
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.Api
+import org.droidmate.apis.ApiLogcatMessageTestHelper
 import org.droidmate.device.datatypes.UiautomatorWindowDumpTestHelper
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceExceptionMissing
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
-import org.droidmate.exploration.actions.ExplorationAction
-import org.droidmate.exploration.actions.ExplorationActionRunResult
-import org.droidmate.exploration.actions.ExplorationActionTestHelper
-import org.droidmate.exploration.actions.RunnableExplorationAction
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
+import org.droidmate.exploration.actions.*
 import org.droidmate.exploration.device.DeviceLogs
 import org.droidmate.exploration.device.IDeviceLogs
 
 import java.time.LocalDateTime
-
-import org.droidmate.apis.ApiLogcatMessageTestHelper
 
 class ExplorationOutput2Builder
 {
@@ -86,7 +81,7 @@ class ExplorationOutput2Builder
     currentlyBuiltApkOut2.add(runnableAction, result)
   }
 
-  public RunnableExplorationAction buildRunnableAction(Map attributes)
+  RunnableExplorationAction buildRunnableAction(Map attributes)
   {
     assert attributes.mss instanceof Integer
     Integer mssSinceExplorationStart = attributes.mss ?: 0
@@ -96,7 +91,7 @@ class ExplorationOutput2Builder
     return runnableAction
   }
 
-  public ExplorationActionRunResult buildActionResult(Map attributes)
+  ExplorationActionRunResult buildActionResult(Map attributes)
   {
     def deviceLogs = buildDeviceLogs(attributes)
     def guiSnapshot = attributes.guiSnapshot ?: UiautomatorWindowDumpTestHelper.newHomeScreenWindowDump() 

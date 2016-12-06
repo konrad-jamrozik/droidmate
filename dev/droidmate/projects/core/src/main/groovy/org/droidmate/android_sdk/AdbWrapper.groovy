@@ -23,9 +23,7 @@ import com.google.common.base.Splitter
 import com.google.common.collect.Iterables
 import groovy.util.logging.Slf4j
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.AdbWrapperException
-import org.droidmate.exceptions.NoAndroidDevicesAvailableException
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.ISysCmdExecutor
 import org.droidmate.misc.SysCmdExecutorException
@@ -45,7 +43,7 @@ import java.nio.file.Paths
  * @author Konrad Jamrozik
  */
 @Slf4j
-public class AdbWrapper implements IAdbWrapper
+ class AdbWrapper implements IAdbWrapper
 {
 
   private final Configuration   cfg
@@ -60,7 +58,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public List<AndroidDeviceDescriptor> getAndroidDevicesDescriptors() throws AdbWrapperException
+   List<AndroidDeviceDescriptor> getAndroidDevicesDescriptors() throws AdbWrapperException
   {
     assert cfg.adbCommand != null
 
@@ -121,7 +119,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void installApk(String deviceSerialNumber, Path apkToInstall)
+   void installApk(String deviceSerialNumber, Path apkToInstall)
     throws AdbWrapperException
   {
     assert cfg.adbCommand != null
@@ -153,7 +151,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void installApk(String deviceSerialNumber, IApk apkToInstall)
+   void installApk(String deviceSerialNumber, IApk apkToInstall)
     throws AdbWrapperException
   {
     Path apkFile = Paths.get(apkToInstall.absolutePath)
@@ -161,7 +159,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean ignoreFailure)
+   void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean ignoreFailure)
     throws AdbWrapperException
   {
     assert deviceSerialNumber != null
@@ -193,7 +191,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void forwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
+   void forwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
   {
     log.trace("forwardPort($deviceSerialNumber, $port)")
     assert deviceSerialNumber != null
@@ -252,7 +250,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void reboot(String deviceSerialNumber) throws AdbWrapperException
+   void reboot(String deviceSerialNumber) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
 
@@ -271,7 +269,7 @@ public class AdbWrapper implements IAdbWrapper
 
 
   @Override
-  public List<String> readMessagesFromLogcat(String deviceSerialNumber, String messageTag) throws AdbWrapperException
+   List<String> readMessagesFromLogcat(String deviceSerialNumber, String messageTag) throws AdbWrapperException
   {
     try
     {
@@ -370,7 +368,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void clearLogcat(String deviceSerialNumber) throws AdbWrapperException
+   void clearLogcat(String deviceSerialNumber) throws AdbWrapperException
   {
     try
     {
@@ -391,7 +389,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public List<String> waitForMessagesOnLogcat(
+   List<String> waitForMessagesOnLogcat(
     String deviceSerialNumber, String messageTag, int minMessagesCount, int waitTimeout, int queryDelay)
     throws AdbWrapperException
   {
@@ -434,7 +432,7 @@ public class AdbWrapper implements IAdbWrapper
 
 
   @Override
-  public void killAdbServer() throws AdbWrapperException
+   void killAdbServer() throws AdbWrapperException
   {
     try
     {
@@ -452,7 +450,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void startAdbServer() throws AdbWrapperException
+   void startAdbServer() throws AdbWrapperException
   {
     Process p
     try
@@ -488,7 +486,7 @@ public class AdbWrapper implements IAdbWrapper
 
 
   @Override
-  public void pushJar(String deviceSerialNumber, Path jarFile, String targetFileName = null) throws AdbWrapperException
+   void pushJar(String deviceSerialNumber, Path jarFile, String targetFileName = null) throws AdbWrapperException
   {
     assert cfg.adbCommand != null
     assert deviceSerialNumber != null
@@ -518,7 +516,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void removeJar(String deviceSerialNumber, Path jarFile) throws AdbWrapperException
+   void removeJar(String deviceSerialNumber, Path jarFile) throws AdbWrapperException
   {
     assert cfg.adbCommand != null
     assert deviceSerialNumber != null
@@ -545,7 +543,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void launchMainActivity(String deviceSerialNumber, String launchableActivityComponentName) throws AdbWrapperException
+   void launchMainActivity(String deviceSerialNumber, String launchableActivityComponentName) throws AdbWrapperException
   {
     try
     {
@@ -588,7 +586,7 @@ public class AdbWrapper implements IAdbWrapper
    * @param apkPackageName
    */
   @Override
-  public boolean clearPackage(String deviceSerialNumber, String apkPackageName) throws AdbWrapperException
+   boolean clearPackage(String deviceSerialNumber, String apkPackageName) throws AdbWrapperException
   {
     try
     {
@@ -617,7 +615,7 @@ public class AdbWrapper implements IAdbWrapper
   }
 
   @Override
-  public void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
+   void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
   {
     if (cfg.androidApi == Configuration.api19)
       startUiautomatorDaemon_api19(deviceSerialNumber, port)

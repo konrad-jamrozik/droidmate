@@ -17,28 +17,14 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.exceptions
+package org.droidmate.errors
 
-class DroidmateError extends Error
+class UnexpectedIfElseFallthroughError extends DroidmateError
 {
-
-  public DroidmateError(String message, Throwable cause)
-  {
-    super(message, cause)
-  }
-
-  DroidmateError(String message)
-  {
-    super(message)
-  }
-
-  public DroidmateError(Throwable cause)
-  {
-    super(cause)
-  }
-
-  DroidmateError()
-  {
+  UnexpectedIfElseFallthroughError() {
     super()
   }
+
+  UnexpectedIfElseFallthroughError(String message) {super(message)}
 }
+

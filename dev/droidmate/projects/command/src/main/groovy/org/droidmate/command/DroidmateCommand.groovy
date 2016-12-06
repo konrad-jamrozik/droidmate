@@ -20,7 +20,7 @@ package org.droidmate.command
 
 import groovy.util.logging.Slf4j
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.ThrowablesCollection
+import org.droidmate.misc.ThrowablesCollection
 
 @Slf4j
 abstract class DroidmateCommand
@@ -28,7 +28,7 @@ abstract class DroidmateCommand
 
   abstract void execute(Configuration cfg) throws ThrowablesCollection
 
-  public static DroidmateCommand build(
+   static DroidmateCommand build(
     boolean report, boolean inline, Configuration cfg)
   {
     assert [report, inline].count {it} <= 1

@@ -16,21 +16,23 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.exceptions
 
-interface IExceptionSpec extends Serializable
+package org.droidmate.android_sdk
+
+import org.droidmate.misc.DroidmateException
+
+class NotEnoughDataToStartAppException extends DroidmateException
 {
-  boolean matches(String methodName, String packageName, int callIndex)
 
-  boolean getThrowsEx()
+  private static final long serialVersionUID = 1
 
-  String getPackageName()
+  NotEnoughDataToStartAppException()
+  {
+    super()
+  }
 
-  String getMethodName()
-
-  int getCallIndex()
-
-  void throwEx() throws TestDeviceException
-
-  Boolean getExceptionalReturnBool()
+  NotEnoughDataToStartAppException(String message)
+  {
+    super(message)
+  }
 }

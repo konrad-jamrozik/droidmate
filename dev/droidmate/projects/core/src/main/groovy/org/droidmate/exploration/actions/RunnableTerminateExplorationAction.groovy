@@ -19,8 +19,8 @@
 package org.droidmate.exploration.actions
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
-import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.device.DeviceLogsHandler
 import org.droidmate.exploration.device.IDeviceLogsHandler
 import org.droidmate.exploration.device.IRobustDevice

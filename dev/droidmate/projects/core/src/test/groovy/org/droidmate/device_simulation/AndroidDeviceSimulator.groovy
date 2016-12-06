@@ -20,14 +20,18 @@
 package org.droidmate.device_simulation
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
-import org.droidmate.misc.Boolean3
-import org.droidmate.misc.DroidmateException
+import org.droidmate.apis.ITimeFormattedLogcatMessage
+import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
-import org.droidmate.exceptions.*
+import org.droidmate.errors.IExceptionSpec
+import org.droidmate.errors.TestDeviceException
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.WidgetExplorationAction
-import org.droidmate.apis.ITimeFormattedLogcatMessage
+import org.droidmate.misc.Boolean3
+import org.droidmate.misc.DroidmateException
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.tests.ApkFixtures
@@ -36,7 +40,7 @@ import java.nio.file.Path
 import java.time.LocalDateTime
 
 @Slf4j
-public class AndroidDeviceSimulator implements IAndroidDevice
+ class AndroidDeviceSimulator implements IAndroidDevice
 {
 
   private final List<IDeviceSimulation> simulations
@@ -69,7 +73,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
 
   }
 
-  public IDeviceSimulation buildDeviceSimulation(ITimeGenerator timeGenerator, String packageName, String spec, boolean unreliable)
+  IDeviceSimulation buildDeviceSimulation(ITimeGenerator timeGenerator, String packageName, String spec, boolean unreliable)
   {
     //noinspection GroovyIfStatementWithIdenticalBranches // WISH intellij BUG
     if (unreliable)
@@ -302,7 +306,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
     return []
   }
 
-  public static AndroidDeviceSimulator build(
+   static AndroidDeviceSimulator build(
     ITimeGenerator timeGenerator = new TimeGenerator(),
     List<String> pkgNames,
     List<IExceptionSpec> exceptionSpecs = [],
@@ -315,7 +319,7 @@ public class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  public String toString()
+   String toString()
   {
     return this.class.simpleName
   }

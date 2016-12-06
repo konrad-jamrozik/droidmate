@@ -16,9 +16,29 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.exceptions
+package org.droidmate.device
 
-interface ITestException
+class DeviceNeedsRebootException extends TcpServerUnreachableException
 {
-  IExceptionSpec getExceptionSpec()
+  private static final long serialVersionUID = 1
+
+  DeviceNeedsRebootException()
+  {
+    super()
+  }
+
+  DeviceNeedsRebootException(Throwable cause)
+  {
+    super(cause)
+  }
+
+  DeviceNeedsRebootException(String message)
+  {
+    super(message)
+  }
+
+  DeviceNeedsRebootException(String message, Throwable cause)
+  {
+    super(message, cause)
+  }
 }

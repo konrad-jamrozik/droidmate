@@ -19,7 +19,7 @@
 package org.droidmate.exploration.device
 
 import org.droidmate.apis.IApiLogcatMessage
-import org.droidmate.exceptions.ForbiddenOperationError
+import org.droidmate.errors.ForbiddenOperationError
 
 class MissingDeviceLogs implements IDeviceLogs, Serializable
 {
@@ -51,7 +51,7 @@ class MissingDeviceLogs implements IDeviceLogs, Serializable
   }
 
   @Override
-  public String toString()
+   String toString()
   {
     return "N/A (lack of ${IDeviceLogs.class.simpleName})"
   }

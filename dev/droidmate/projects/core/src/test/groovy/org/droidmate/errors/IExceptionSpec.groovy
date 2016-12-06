@@ -16,18 +16,21 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.exceptions
+package org.droidmate.errors
 
-public class TestAssertionError extends AssertionError implements ITestException
+interface IExceptionSpec extends Serializable
 {
-  private static final long serialVersionUID = 1
+  boolean matches(String methodName, String packageName, int callIndex)
 
-  final IExceptionSpec exceptionSpec
+  boolean getThrowsEx()
 
-  public TestAssertionError(IExceptionSpec exceptionSpec)
-  {
-    super("Test-enforced assertion error. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex" as Object)
-    this.exceptionSpec = exceptionSpec
-  }
+  String getPackageName()
 
+  String getMethodName()
+
+  int getCallIndex()
+
+  void throwEx() throws TestDeviceException
+
+  Boolean getExceptionalReturnBool()
 }

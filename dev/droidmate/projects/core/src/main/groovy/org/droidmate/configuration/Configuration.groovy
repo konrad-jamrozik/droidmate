@@ -20,7 +20,6 @@ package org.droidmate.configuration
 
 import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
-import org.droidmate.exceptions.ConfigurationException
 import org.droidmate.misc.BuildConstants
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 

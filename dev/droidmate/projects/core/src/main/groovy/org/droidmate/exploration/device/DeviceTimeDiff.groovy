@@ -19,11 +19,11 @@
 package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.apis.TimeFormattedLogcatMessage
+import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IExplorableAndroidDevice
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.misc.MonitorConstants
 
 import java.time.Duration
@@ -44,7 +44,7 @@ import java.time.format.DateTimeFormatter
  * </p>
  */
 @Slf4j
-public class DeviceTimeDiff implements IDeviceTimeDiff
+ class DeviceTimeDiff implements IDeviceTimeDiff
 {
 
   private final IExplorableAndroidDevice device
@@ -57,7 +57,7 @@ public class DeviceTimeDiff implements IDeviceTimeDiff
   }
 
   @Override
-  public LocalDateTime sync(LocalDateTime deviceTime) throws DeviceNeedsRebootException, DeviceException
+   LocalDateTime sync(LocalDateTime deviceTime) throws DeviceNeedsRebootException, DeviceException
   {
     assert deviceTime != null
 

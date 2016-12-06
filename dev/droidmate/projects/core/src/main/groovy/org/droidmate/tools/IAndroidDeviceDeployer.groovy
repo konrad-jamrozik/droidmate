@@ -20,13 +20,13 @@
 package org.droidmate.tools
 
 import org.droidmate.android_sdk.ApkExplorationException
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.ExplorationException
-import org.droidmate.exceptions.DeviceException
 
 /**
  * @see AndroidDeviceDeployer
  */
-public interface IAndroidDeviceDeployer
+interface IAndroidDeviceDeployer
 {
   List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> closure) throws DeviceException
 }

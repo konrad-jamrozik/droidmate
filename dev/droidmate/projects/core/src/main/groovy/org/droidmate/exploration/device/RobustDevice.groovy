@@ -19,13 +19,13 @@
 package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.configuration.Configuration
+import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.misc.Boolean3
 import org.droidmate.misc.Utils
 

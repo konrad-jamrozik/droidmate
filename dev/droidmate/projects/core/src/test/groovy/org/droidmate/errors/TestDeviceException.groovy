@@ -16,20 +16,21 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.exceptions
 
-import org.droidmate.misc.DroidmateException
+package org.droidmate.errors
 
-public class ThrowablesCollection extends DroidmateException
+import org.droidmate.android_sdk.DeviceException
+
+class TestDeviceException extends DeviceException implements ITestException
 {
 
   private static final long serialVersionUID = 1
 
-  final List<Throwable> throwables
+  final IExceptionSpec exceptionSpec
 
-  public ThrowablesCollection(List<Throwable> throwables)
+  TestDeviceException(IExceptionSpec exceptionSpec)
   {
-    super("An aggregating exception holding a collection of ${Throwable.simpleName}s.")
-    this.throwables = throwables
+    super("Test-enforced device exception. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex")
+    this.exceptionSpec = exceptionSpec
   }
 }

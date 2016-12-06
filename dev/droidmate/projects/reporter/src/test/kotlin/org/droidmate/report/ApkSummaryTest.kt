@@ -18,7 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.report
 
-import org.droidmate.exceptions.DeviceExceptionMissing
+import org.droidmate.exploration.actions.DeviceExceptionMissing
 import org.droidmate.tests.fixture_monitoredSer2
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.containsString

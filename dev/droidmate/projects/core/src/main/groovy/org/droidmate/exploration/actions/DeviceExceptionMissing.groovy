@@ -16,23 +16,36 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
+package org.droidmate.exploration.actions
 
-package org.droidmate.exceptions
+import org.droidmate.android_sdk.DeviceException
 
-import org.droidmate.misc.DroidmateException
-
-class NotEnoughDataToStartAppException extends DroidmateException
+class DeviceExceptionMissing extends DeviceException
 {
 
-  private static final long serialVersionUID = 1
-
-  NotEnoughDataToStartAppException()
+  DeviceExceptionMissing()
   {
-    super()
   }
 
-  NotEnoughDataToStartAppException(String message)
+  DeviceExceptionMissing(Throwable cause)
+  {
+    super(cause)
+  }
+
+  DeviceExceptionMissing(String message, Throwable cause)
+  {
+    super(message, cause)
+  }
+
+  DeviceExceptionMissing(String message)
   {
     super(message)
   }
+
+  @Override
+   String toString()
+  {
+    return "N/A (lack of ${DeviceException.class.simpleName})"
+  }
+
 }

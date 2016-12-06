@@ -17,18 +17,30 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.exceptions
+package org.droidmate.android_sdk
 
-@Deprecated
-class UiautomatorWindowDumpValidationException extends DeviceException
+class AdbWrapperException extends DeviceException
 {
-  private static final long serialVersionUID = 1;
+  private static final long serialVersionUID = 1
 
-  public final String windowHierarchyDump
+  AdbWrapperException()
+  {
+    super()
+  }
 
-  UiautomatorWindowDumpValidationException(String windowHierarchyDump, String message)
+  AdbWrapperException(Throwable cause)
+  {
+    super(cause)
+  }
+
+  AdbWrapperException(String message, Throwable cause)
+  {
+    super(message, cause)
+  }
+
+  AdbWrapperException(String message)
   {
     super(message)
-    this.windowHierarchyDump = windowHierarchyDump
   }
+
 }

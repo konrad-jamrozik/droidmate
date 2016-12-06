@@ -20,9 +20,9 @@ package org.droidmate.report
 
 import com.konradjamrozik.Resource
 import com.konradjamrozik.uniqueItemsWithFirstOccurrenceIndex
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.IApiLogcatMessage
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceExceptionMissing
+import org.droidmate.exploration.actions.DeviceExceptionMissing
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.logging.LogbackConstants

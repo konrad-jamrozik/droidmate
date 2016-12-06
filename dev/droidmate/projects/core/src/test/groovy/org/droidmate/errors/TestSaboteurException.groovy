@@ -16,29 +16,23 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.exceptions
 
-public class TcpServerUnreachableException extends DeviceException
+package org.droidmate.errors
+
+import groovy.util.logging.Slf4j
+import org.droidmate.misc.DroidmateException
+
+@Slf4j
+ class TestSaboteurException extends DroidmateException
 {
-  private static final long serialVersionUID = 1L
-
-  public TcpServerUnreachableException()
+  TestSaboteurException()
   {
     super()
   }
 
-  public TcpServerUnreachableException(Throwable cause)
-  {
-    super(cause)
-  }
-
-  public TcpServerUnreachableException(String message, Throwable cause)
-  {
-    super(message, cause)
-  }
-
-  public TcpServerUnreachableException(String message)
+  TestSaboteurException(String message)
   {
     super(message)
   }
+
 }

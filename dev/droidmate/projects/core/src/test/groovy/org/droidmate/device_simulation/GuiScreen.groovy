@@ -19,15 +19,14 @@
 package org.droidmate.device_simulation
 
 import com.google.common.base.MoreObjects
-import org.droidmate.misc.MonitorConstants
-import org.droidmate.device.datatypes.Widget
+import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.apis.TimeFormattedLogcatMessage
 import org.droidmate.device.datatypes.*
 import org.droidmate.device.model.DeviceModel
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
-import org.droidmate.exceptions.UnsupportedMultimethodDispatch
-import org.droidmate.apis.ITimeFormattedLogcatMessage
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.UnsupportedMultimethodDispatch
 import org.droidmate.misc.ITimeGenerator
+import org.droidmate.misc.MonitorConstants
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import org.droidmate.uiautomator_daemon.guimodel.GuiAction
 
@@ -194,7 +193,7 @@ class GuiScreen implements IGuiScreen
   }
 
   @Override
-  public void buildInternals()
+   void buildInternals()
   {
     assert !this.finishedBuilding
     assert this.guiSnapshot == null
@@ -227,7 +226,7 @@ class GuiScreen implements IGuiScreen
 
   }
 
-  public GuiState buildEmptyInternals()
+  GuiState buildEmptyInternals()
   {
     def guiState = GuiStateTestHelper.newGuiStateWithTopLevelNodeOnly(packageName, id)
     // This one widget is necessary, as it is the only xml element from which packageName can be obtained. Without it, following
@@ -272,10 +271,10 @@ class GuiScreen implements IGuiScreen
 
 
   @Override
-  public String toString()
+   String toString()
   {
     return MoreObjects.toStringHelper(this)
       .add("id", id)
-      .toString();
+      .toString()
   }
 }

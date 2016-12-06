@@ -16,23 +16,18 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
+package org.droidmate.misc
 
-package org.droidmate.exceptions
-
-import groovy.util.logging.Slf4j
-import org.droidmate.misc.DroidmateException
-
-@Slf4j
-public class TestSaboteurException extends DroidmateException
+class ThrowablesCollection extends DroidmateException
 {
-  public TestSaboteurException()
-  {
-    super();
-  }
 
-  public TestSaboteurException(String message)
-  {
-    super(message);
-  }
+  private static final long serialVersionUID = 1
 
+  final List<Throwable> throwables
+
+  ThrowablesCollection(List<Throwable> throwables)
+  {
+    super("An aggregating exception holding a collection of ${Throwable.simpleName}s.")
+    this.throwables = throwables
+  }
 }

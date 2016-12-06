@@ -16,31 +16,15 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
+package org.droidmate.errors
 
-package org.droidmate.exceptions
-
-public class AdbWrapperException extends DeviceException
+class ForbiddenOperationError extends DroidmateError
 {
-  private static final long serialVersionUID = 1
 
-  public AdbWrapperException()
+  ForbiddenOperationError()
   {
     super()
   }
 
-  public AdbWrapperException(Throwable cause)
-  {
-    super(cause)
-  }
-
-  public AdbWrapperException(String message, Throwable cause)
-  {
-    super(message, cause)
-  }
-
-  public AdbWrapperException(String message)
-  {
-    super(message)
-  }
-
+  ForbiddenOperationError(String message) {super(message)}
 }

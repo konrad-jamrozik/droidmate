@@ -23,7 +23,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import groovy.util.slurpersupport.GPathResult
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.logging.LogbackConstants
 
 import java.awt.*
@@ -124,9 +124,9 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
     if (this.wellFormedness != WellFormedness.OK)
       return "Package unknown: the snapshot is not well-formed"
 
-    int startIndex = windowHierarchyDump.indexOf("package=\"");
-    int endIndex = windowHierarchyDump.indexOf('"', startIndex + "package=\"".length());
-    return windowHierarchyDump.substring(startIndex + "package=\"".length(), endIndex);
+    int startIndex = windowHierarchyDump.indexOf("package=\"")
+    int endIndex = windowHierarchyDump.indexOf('"', startIndex + "package=\"".length())
+    return windowHierarchyDump.substring(startIndex + "package=\"".length(), endIndex)
   }
 
   //region Getting GUI state
@@ -186,13 +186,13 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
           deviceDisplayBounds : deviceDisplayBounds,
           // @formatter:on
         )
-        return w;
+        return w
       }
       catch (InvalidWidgetBoundsException e)
       {
         log.error("Catching exception: parsing widget bounds failed. $LogbackConstants.err_log_msg\n" +
           "Continuing execution, skipping the widget with invalid bounds.")
-        log.error(exceptions, "parsing widget bounds failed with exception:\n", e);
+        log.error(exceptions, "parsing widget bounds failed with exception:\n", e)
         return null
       }
     }.findAll {it != null}
@@ -300,7 +300,7 @@ class UiautomatorWindowDump implements IDeviceGuiSnapshot, Serializable
 
 
   @Override
-  public String toString()
+   String toString()
   {
     String clazz = UiautomatorWindowDump.simpleName
     if (this.wellFormedness != WellFormedness.OK)

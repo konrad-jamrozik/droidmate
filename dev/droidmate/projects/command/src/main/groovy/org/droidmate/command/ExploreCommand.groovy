@@ -20,15 +20,10 @@ package org.droidmate.command
 
 import groovy.io.FileType
 import groovy.util.logging.Slf4j
-import org.droidmate.android_sdk.Apk
-import org.droidmate.android_sdk.ApkExplorationException
-import org.droidmate.android_sdk.ExplorationException
-import org.droidmate.android_sdk.IApk
+import org.droidmate.android_sdk.*
 import org.droidmate.command.exploration.Exploration
 import org.droidmate.command.exploration.IExploration
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IRobustDevice
@@ -36,6 +31,7 @@ import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.exploration.strategy.IExplorationStrategyProvider
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
+import org.droidmate.misc.ThrowablesCollection
 import org.droidmate.misc.TimeProvider
 import org.droidmate.report.ExplorationOutput2Report
 import org.droidmate.storage.IStorage2
@@ -69,7 +65,7 @@ class ExploreCommand extends DroidmateCommand
     this.storage2 = storage2
   }
 
-  public static ExploreCommand build(Configuration cfg,
+   static ExploreCommand build(Configuration cfg,
                                      IExplorationStrategyProvider strategyProvider = {ExplorationStrategy.build(cfg)},
                                      ITimeProvider timeProvider = new TimeProvider(),
                                      IDeviceTools deviceTools = new DeviceTools(cfg))
@@ -130,7 +126,7 @@ class ExploreCommand extends DroidmateCommand
     path.eachFile {Path p -> assert Files.isDirectory(p)}
   }
 
-  public List<ExplorationException> execute(Configuration cfg, List<Apk> apks)
+  List<ExplorationException> execute(Configuration cfg, List<Apk> apks)
   {
     ExplorationOutput2 out = new ExplorationOutput2()
 

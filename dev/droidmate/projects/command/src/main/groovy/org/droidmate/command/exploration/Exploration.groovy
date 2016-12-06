@@ -21,11 +21,11 @@ package org.droidmate.command.exploration
 
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.actions.IExplorationActionRunResult
 import org.droidmate.exploration.actions.IRunnableExplorationAction
 import org.droidmate.exploration.actions.RunnableExplorationAction
@@ -59,7 +59,7 @@ class Exploration implements IExploration
     this.strategyProvider = strategyProvider
   }
 
-  public static Exploration build(Configuration cfg,
+   static Exploration build(Configuration cfg,
                                   ITimeProvider timeProvider = new TimeProvider(),
                                   IExplorationStrategyProvider strategyProvider = {ExplorationStrategy.build(cfg)})
   {
@@ -95,7 +95,7 @@ class Exploration implements IExploration
     return new Failable<IApkExplorationOutput2, DeviceException>(output, output.exceptionIsPresent ? output.exception : null)
   }
 
-  public IApkExplorationOutput2 explorationLoop(IApk app, IRobustDevice device)
+  IApkExplorationOutput2 explorationLoop(IApk app, IRobustDevice device)
   {
     // Construct initial action and run it on the device to obtain initial result.
     IRunnableExplorationAction action = RunnableExplorationAction.from(

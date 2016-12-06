@@ -21,9 +21,9 @@ package org.droidmate.exploration.device
 
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.device.IExplorableAndroidDevice
-import org.droidmate.exceptions.DeviceException
 import org.droidmate.logging.LogbackConstants
 import org.droidmate.misc.MonitorConstants
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
@@ -94,7 +94,7 @@ class InitMsgsReader implements IInitMsgsReader
     return monitorInitTime
   }
 
-  public void verifyPayloads(List<ITimeFormattedLogcatMessage> messages)
+  void verifyPayloads(List<ITimeFormattedLogcatMessage> messages)
   {
     assert messages.size() in [2,4]
 
@@ -114,7 +114,7 @@ class InitMsgsReader implements IInitMsgsReader
     }
   }
 
-  public void checkMonitorCtorStatus(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
+  void checkMonitorCtorStatus(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
   {
     assert messages.size() in [2,4]
 
@@ -134,7 +134,7 @@ class InitMsgsReader implements IInitMsgsReader
     }
   }
 
-  public void checkCount(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
+  void checkCount(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
   {
     if (!(messages.size() in [2,4]))
     {

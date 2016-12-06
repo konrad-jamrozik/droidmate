@@ -19,16 +19,15 @@
 
 package org.droidmate.device
 
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
 import org.droidmate.misc.Boolean3
 
 import java.time.LocalDateTime
 
-public interface IExplorableAndroidDevice
+interface IExplorableAndroidDevice
 {
   boolean hasPackageInstalled(String packageName) throws DeviceException
 

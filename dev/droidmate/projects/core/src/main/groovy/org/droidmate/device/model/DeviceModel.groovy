@@ -19,7 +19,6 @@
 package org.droidmate.device.model
 
 import groovy.util.logging.Slf4j
-import org.droidmate.exceptions.UnknownDeviceException
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 /**
@@ -29,7 +28,7 @@ import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
  * @author Konrad Jamrozik (refactoring)
  */
 @Slf4j
-public class DeviceModel
+ class DeviceModel
 {
 
   /**
@@ -41,7 +40,7 @@ public class DeviceModel
    * 
    * </p>
    */
-  public static IDeviceModel build(String deviceModel) throws UnknownDeviceException
+   static IDeviceModel build(String deviceModel) throws UnknownDeviceException
   {
     IDeviceModel result
 
@@ -83,7 +82,7 @@ public class DeviceModel
     return result
   }
   
-  public static IDeviceModel buildDefault()
+   static IDeviceModel buildDefault()
   {
     return new Nexus7_API19_Model()
   }

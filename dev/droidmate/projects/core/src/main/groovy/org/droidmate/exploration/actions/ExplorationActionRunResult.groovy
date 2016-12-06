@@ -19,10 +19,9 @@
 package org.droidmate.exploration.actions
 
 import com.google.common.base.MoreObjects
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 import org.droidmate.device.datatypes.MissingGuiSnapshot
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceExceptionMissing
 import org.droidmate.exploration.device.IDeviceLogs
 import org.droidmate.exploration.device.MissingDeviceLogs
 
@@ -57,7 +56,7 @@ class ExplorationActionRunResult implements IExplorationActionRunResult
   }
 
   @Override
-  public String toString()
+   String toString()
   {
     return MoreObjects.toStringHelper(this)
       .add("successful", successful)

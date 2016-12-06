@@ -18,8 +18,8 @@
 // web: www.droidmate.org
 package org.droidmate.device
 
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IAdbWrapper
-import org.droidmate.exceptions.DeviceException
 
 class TcpClients implements ITcpClients
 {

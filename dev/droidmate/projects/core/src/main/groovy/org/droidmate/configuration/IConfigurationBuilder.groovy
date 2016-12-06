@@ -17,16 +17,14 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.configuration;
+package org.droidmate.configuration
 
-import org.droidmate.exceptions.ConfigurationException
-
-import java.nio.file.FileSystem;
+import java.nio.file.FileSystem
 
 /**
  * @see ConfigurationBuilder
  */
-public interface IConfigurationBuilder
+interface IConfigurationBuilder
 {
 
   Configuration build(String[] args) throws ConfigurationException

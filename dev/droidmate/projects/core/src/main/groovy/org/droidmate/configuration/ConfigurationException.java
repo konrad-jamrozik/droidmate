@@ -17,21 +17,21 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.exceptions;
+package org.droidmate.configuration;
 
-public class NoAndroidDevicesAvailableException extends AdbWrapperException
+
+import org.droidmate.misc.DroidmateException;
+
+public class ConfigurationException extends DroidmateException
 {
+
   private static final long serialVersionUID = 1;
 
-  private static String message = "No android devices available, i.e. command \"<android sdk>/platform-tools/adb devices\" returns no devices."
-
-  public NoAndroidDevicesAvailableException()
-  {
-    super(message)
+  public ConfigurationException(String message) {
+    super(message);
   }
 
-  public NoAndroidDevicesAvailableException(Throwable cause)
-  {
-    super(message, cause);
+  public ConfigurationException(Throwable cause) {
+    super(cause);
   }
 }

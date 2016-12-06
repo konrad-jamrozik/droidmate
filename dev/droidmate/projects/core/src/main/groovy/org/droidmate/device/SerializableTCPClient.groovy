@@ -20,19 +20,17 @@
 package org.droidmate.device
 
 import groovy.util.logging.Slf4j
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
-import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.android_sdk.DeviceException
 
 @Slf4j
-public class SerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable> implements ISerializableTCPClient<InputToServerT, OutputFromServerT>
+ class SerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable> implements ISerializableTCPClient<InputToServerT, OutputFromServerT>
 {
 
   private final String serverAddress = "localhost"
   private final int    socketTimeout
 
 
-  public SerializableTCPClient(int socketTimeout)
+  SerializableTCPClient(int socketTimeout)
   {
     this.socketTimeout = socketTimeout
   }
@@ -43,7 +41,7 @@ public class SerializableTCPClient<InputToServerT extends Serializable, OutputFr
    * Next, waits until server returns his answer and returns it.
    */
   @SuppressWarnings("unchecked")
-  public OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
+   OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
   {
 
     OutputFromServerT output

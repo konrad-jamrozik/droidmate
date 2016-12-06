@@ -19,11 +19,9 @@
 
 package org.droidmate.device
 
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
-import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.android_sdk.DeviceException
 
-public interface ISerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable>
+interface ISerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable>
 {
 
   OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException

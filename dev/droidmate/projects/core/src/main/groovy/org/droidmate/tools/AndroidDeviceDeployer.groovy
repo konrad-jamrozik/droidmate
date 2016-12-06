@@ -20,15 +20,11 @@
 package org.droidmate.tools
 
 import groovy.util.logging.Slf4j
-import org.droidmate.android_sdk.AndroidDeviceDescriptor
-import org.droidmate.android_sdk.ApkExplorationException
-import org.droidmate.android_sdk.ExplorationException
-import org.droidmate.android_sdk.IAdbWrapper
+import org.droidmate.android_sdk.*
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.IDeployableAndroidDevice
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
 import org.droidmate.misc.Assert
@@ -39,7 +35,7 @@ import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import java.nio.file.Paths
 
 @Slf4j
-public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
+ class AndroidDeviceDeployer implements IAndroidDeviceDeployer
 {
 
   private final Configuration         cfg
@@ -63,7 +59,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
   private List<String> usedSerialNumbers = [] as List<String>
 
 
-  public AndroidDeviceDeployer(Configuration cfg, IAdbWrapper adbWrapper, IAndroidDeviceFactory deviceFactory)
+  AndroidDeviceDeployer(Configuration cfg, IAdbWrapper adbWrapper, IAndroidDeviceFactory deviceFactory)
   {
     this.cfg = cfg
     this.adbWrapper = adbWrapper
@@ -151,7 +147,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
    * @see #tryTearDown(IDeployableAndroidDevice)
    */
   @Override
-  public List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> computation)
+   List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> computation)
   {
     log.info("Setup device with deviceIndex of $deviceIndex")
     Assert.checkClosureFirstParameterSignature(computation, IRobustDevice)
@@ -246,7 +242,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
       throw new DroidmateException("While obtaining new A(V)D serial number, DroidMate detected that one or more of the " +
         "already used serial numbers do not appear on the list of serial numbers returned by the 'adb devices' command. " +
         "This indicates the device(s) with these number most likely have been disconnected. Thus, DroidMate throws exception. " +
-        "List of the offending serial numbers: $unrecognizedNumbers");
+        "List of the offending serial numbers: $unrecognizedNumbers")
 
     def unusedDescriptors = deviceDescriptors.findAll {AndroidDeviceDescriptor add ->
       !(add.deviceSerialNumber in usedSerialNumbers)
@@ -259,7 +255,7 @@ public class AndroidDeviceDeployer implements IAndroidDeviceDeployer
     if (unusedDescriptors.size() < deviceIndex + 1)
       throw new DroidmateException("Requested device with device no. ${deviceIndex + 1} but the no. of available devices is ${unusedDescriptors.size()}.")
 
-    String serialNumber;
+    String serialNumber
     serialNumber = unusedDescriptors.findAll {AndroidDeviceDescriptor add -> !add.isEmulator}[deviceIndex]?.deviceSerialNumber
     if (serialNumber == null)
       serialNumber = unusedDescriptors.findAll {AndroidDeviceDescriptor add -> add.isEmulator}[deviceIndex]?.deviceSerialNumber

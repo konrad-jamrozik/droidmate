@@ -20,12 +20,11 @@ package org.droidmate.exploration.data_aggregators
 
 import groovy.util.logging.Slf4j
 import org.droidmate.TimeDiffWithTolerance
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceExceptionMissing
-import org.droidmate.exceptions.DroidmateError
+import org.droidmate.errors.DroidmateError
 import org.droidmate.exploration.actions.*
 import org.droidmate.storage.IStorage2
 
@@ -118,9 +117,9 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
       throw new DroidmateError(e)
     }
   }
-  
 
-  public void assertLogsAreSortedByTime()
+
+  void assertLogsAreSortedByTime()
   {
     List<IApiLogcatMessage> apiLogs = this.actRess*.result*.deviceLogs*.apiLogsOrEmpty.flatten() as List<IApiLogcatMessage>
     List<LocalDateTime> apiLogsSortedTimes = apiLogs*.time.collect().sort()

@@ -16,15 +16,29 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.exceptions
 
-class ForbiddenOperationError extends DroidmateError
+package org.droidmate.errors
+
+class DroidmateError extends Error
 {
 
-  public ForbiddenOperationError()
+  DroidmateError(String message, Throwable cause)
+  {
+    super(message, cause)
+  }
+
+  DroidmateError(String message)
+  {
+    super(message)
+  }
+
+  DroidmateError(Throwable cause)
+  {
+    super(cause)
+  }
+
+  DroidmateError()
   {
     super()
   }
-
-  public ForbiddenOperationError(String message) {super(message)}
 }

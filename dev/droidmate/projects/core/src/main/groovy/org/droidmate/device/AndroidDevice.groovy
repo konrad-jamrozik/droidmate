@@ -20,18 +20,17 @@
 package org.droidmate.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IAdbWrapper
 import org.droidmate.android_sdk.IApk
+import org.droidmate.android_sdk.NoAndroidDevicesAvailableException
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.apis.TimeFormattedLogcatMessage
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.datatypes.*
 import org.droidmate.device.model.DeviceModel
 import org.droidmate.device.model.IDeviceModel
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
-import org.droidmate.exceptions.NoAndroidDevicesAvailableException
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.logging.LogbackUtils
 import org.droidmate.misc.Boolean3
 import org.droidmate.misc.MonitorConstants
@@ -63,7 +62,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
  * </p>
  */
 @Slf4j
-public class AndroidDevice implements IAndroidDevice
+ class AndroidDevice implements IAndroidDevice
 {
 
   private final String        serialNumber
@@ -106,7 +105,7 @@ public class AndroidDevice implements IAndroidDevice
 
 
   @Override
-  public IDeviceGuiSnapshot getGuiSnapshot() throws DeviceNeedsRebootException, DeviceException
+   IDeviceGuiSnapshot getGuiSnapshot() throws DeviceNeedsRebootException, DeviceException
   {
     log.debug("getGuiSnapshot()")
 
@@ -197,7 +196,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  public void closeConnection() throws DeviceNeedsRebootException, DeviceException
+   void closeConnection() throws DeviceNeedsRebootException, DeviceException
   {
     this.stopUiaDaemon()
   }
@@ -421,7 +420,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  public Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
+   Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
   {
     return this.anyMonitorIsReachable() && this.appProcessIsRunning(appPackageName)
   }
@@ -433,7 +432,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  public void initModel() throws DeviceException
+   void initModel() throws DeviceException
   {
     DeviceResponse response = this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
     assert response.model != null
@@ -443,7 +442,7 @@ public class AndroidDevice implements IAndroidDevice
   }
 
   @Override
-  public String toString()
+   String toString()
   {
     return "{device $serialNumber}"
   }

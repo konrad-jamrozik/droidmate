@@ -28,7 +28,6 @@ import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder
 import org.apache.commons.lang3.builder.StandardToStringStyle
-import org.droidmate.exceptions.ConfigurationException
 import org.droidmate.misc.BuildConstants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -72,7 +71,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
  * @see Configuration
  */
   @Override
-  public Configuration build(String[] args, FileSystem fs = FileSystems.default) throws ConfigurationException
+   Configuration build(String[] args, FileSystem fs = FileSystems.default) throws ConfigurationException
   {
     // Groovy bug: the @Memoized annotation causes cryptic compilation error if the args type is String[], so it is List instead.
     return memoizedBuildConfiguration(args as List, fs)
@@ -100,7 +99,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
     return config
   }
 
-  public static JCommander populateConfigurationWithArgs(
+   static JCommander populateConfigurationWithArgs(
     String[] args, Configuration config)
   {
     JCommander jCommander

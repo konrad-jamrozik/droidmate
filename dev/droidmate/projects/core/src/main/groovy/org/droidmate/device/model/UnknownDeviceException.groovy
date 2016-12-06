@@ -16,28 +16,37 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
+package org.droidmate.device.model
 
-package org.droidmate.exceptions;
+import org.droidmate.misc.DroidmateException
 
-import org.droidmate.misc.DroidmateException;
-
-public class LaunchableActivityNameProblemException extends DroidmateException
+/**
+ * Exception produced by {@link org.droidmate.device.model.IDeviceModelCreator}
+ * when attempting to create an unknown device.<br/>
+ *
+ * @author Nataniel Borges Jr.
+ */
+class UnknownDeviceException extends DroidmateException
 {
+  private static final long serialVersionUID = 1
 
-  private static final long    serialVersionUID = 1
-
-  final                boolean isFatal
-
-  public LaunchableActivityNameProblemException()
+  UnknownDeviceException()
   {
     super()
-    this.isFatal = false
   }
 
-  public LaunchableActivityNameProblemException(String message, boolean isFatal = false)
+  UnknownDeviceException(Throwable cause)
+  {
+    super(cause)
+  }
+
+  UnknownDeviceException(String message, Throwable cause)
+  {
+    super(message, cause)
+  }
+
+  UnknownDeviceException(String message)
   {
     super(message)
-    this.isFatal = isFatal
   }
-
 }

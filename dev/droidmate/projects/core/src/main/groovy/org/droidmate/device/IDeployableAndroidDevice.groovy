@@ -19,13 +19,12 @@
 
 package org.droidmate.device
 
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
 
 import java.nio.file.Path
 
-public interface IDeployableAndroidDevice
+interface IDeployableAndroidDevice
 {
   void pushJar(Path jar) throws DeviceException
 

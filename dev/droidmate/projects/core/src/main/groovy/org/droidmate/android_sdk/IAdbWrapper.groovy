@@ -19,11 +19,9 @@
 
 package org.droidmate.android_sdk
 
-import org.droidmate.exceptions.AdbWrapperException
-
 import java.nio.file.Path
 
-public interface IAdbWrapper {
+interface IAdbWrapper {
 
   void startAdbServer() throws AdbWrapperException
 

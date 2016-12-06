@@ -44,6 +44,10 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     if (includeSummary)
       summaryFile.writeOut()
     
+    // KJA temp
+    if (data.first().exceptionIsPresent)
+      data.first().exception.printStackTrace()
+    
     aggregateStatsFile.writeOut()
 
     apksTabularReports.forEach { it.writeOut(includePlots) }

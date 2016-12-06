@@ -19,7 +19,7 @@
 
 package org.droidmate.device.datatypes
 
-import org.droidmate.exceptions.ForbiddenOperationError
+import org.droidmate.errors.ForbiddenOperationError
 
 class MissingGuiSnapshot implements IDeviceGuiSnapshot, Serializable
 {
@@ -56,7 +56,7 @@ class MissingGuiSnapshot implements IDeviceGuiSnapshot, Serializable
   }
 
   @Override
-  public String toString()
+   String toString()
   {
     return "N/A (lack of ${IDeviceGuiSnapshot.class.simpleName})"
   }

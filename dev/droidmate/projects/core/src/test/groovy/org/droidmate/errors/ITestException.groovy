@@ -16,37 +16,9 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.exceptions
+package org.droidmate.errors
 
-import org.droidmate.misc.DroidmateException
-
-/**
- * Exception produced by {@link org.droidmate.device.model.IDeviceModelCreator}
- * when attempting to create an unknown device.<br/>
- *
- * @author Nataniel Borges Jr.
- */
-public class UnknownDeviceException extends DroidmateException
+interface ITestException
 {
-  private static final long serialVersionUID = 1
-
-  public UnknownDeviceException()
-  {
-    super()
-  }
-
-  public UnknownDeviceException(Throwable cause)
-  {
-    super(cause)
-  }
-
-  public UnknownDeviceException(String message, Throwable cause)
-  {
-    super(message, cause)
-  }
-
-  public UnknownDeviceException(String message)
-  {
-    super(message)
-  }
+  IExceptionSpec getExceptionSpec()
 }

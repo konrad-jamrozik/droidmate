@@ -18,8 +18,8 @@
 // web: www.droidmate.org
 package org.droidmate.exploration.actions
 
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.exceptions.DeviceException
 import org.droidmate.exploration.device.IDeviceLogs
 
 interface IExplorationActionRunResult extends Serializable

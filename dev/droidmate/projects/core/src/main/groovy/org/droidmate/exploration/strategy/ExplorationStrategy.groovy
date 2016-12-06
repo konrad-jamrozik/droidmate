@@ -26,7 +26,7 @@ import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device.datatypes.IGuiState
 import org.droidmate.device.datatypes.Widget
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.*
 
 import static groovy.transform.TypeCheckingMode.SKIP
@@ -59,7 +59,7 @@ class ExplorationStrategy implements IExplorationStrategy
 
   //SE TEAM Hook 1
   ///Holds all guiStates seen so far ehile exploring
-  private List<IGuiState> guiStatesSeen = new LinkedList<>();
+  private List<IGuiState> guiStatesSeen = new LinkedList<>()
   //--------------
 
   @Deprecated
@@ -344,7 +344,7 @@ class ExplorationStrategy implements IExplorationStrategy
     lastActionWasToReset = currentActionIsToReset
   }
 
-  public static ExplorationStrategy build(Configuration cfg)
+   static ExplorationStrategy build(Configuration cfg)
   {
     IWidgetStrategy widgetStrategy = new WidgetStrategy(cfg.randomSeed, cfg.alwaysClickFirstWidget, cfg.widgetIndexes)
     ITerminationCriterion terminationCriterion = new TerminationCriterion(cfg, cfg.timeLimit, Ticker.systemTicker())

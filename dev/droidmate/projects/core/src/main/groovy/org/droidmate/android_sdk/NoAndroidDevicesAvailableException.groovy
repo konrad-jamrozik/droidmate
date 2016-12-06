@@ -16,15 +16,22 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.exceptions
 
-class UnsupportedMultimethodDispatch extends UnexpectedIfElseFallthroughError
+package org.droidmate.android_sdk
+
+class NoAndroidDevicesAvailableException extends AdbWrapperException
 {
+  private static final long serialVersionUID = 1
 
-  UnsupportedMultimethodDispatch(def param)
+  private static String message = "No android devices available, i.e. command \"<android sdk>/platform-tools/adb devices\" returns no devices."
+
+  NoAndroidDevicesAvailableException()
   {
-    super("Unsupported multimethod dispatch for param of class: ${param.class}")
+    super(message)
   }
 
-
+  NoAndroidDevicesAvailableException(Throwable cause)
+  {
+    super(message, cause)
+  }
 }

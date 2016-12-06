@@ -18,9 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate.device
 
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
-import org.droidmate.exceptions.TcpServerUnreachableException
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.uiautomator_daemon.DeviceCommand
 import org.droidmate.uiautomator_daemon.DeviceResponse
 

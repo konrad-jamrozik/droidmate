@@ -19,10 +19,8 @@
 package org.droidmate.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IAdbWrapper
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
-import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.misc.MonitorConstants
 
 @Slf4j
@@ -43,7 +41,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
+   boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
   {
     boolean out = ports.any {
       this.isServerReachable(it)
@@ -75,7 +73,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public ArrayList<ArrayList<String>> getCurrentTime() throws DeviceNeedsRebootException, DeviceException
+   ArrayList<ArrayList<String>> getCurrentTime() throws DeviceNeedsRebootException, DeviceException
   {
     ArrayList<ArrayList<String>> out = ports.findResult {
       try
@@ -101,7 +99,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-  public ArrayList<ArrayList<String>> getLogs() throws DeviceNeedsRebootException, DeviceException
+   ArrayList<ArrayList<String>> getLogs() throws DeviceNeedsRebootException, DeviceException
   {
     Collection<ArrayList<ArrayList<String>>> out = ports.findResults {
       try

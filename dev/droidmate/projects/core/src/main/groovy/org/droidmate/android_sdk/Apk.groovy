@@ -20,8 +20,6 @@ package org.droidmate.android_sdk
 
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
-import org.droidmate.exceptions.LaunchableActivityNameProblemException
-import org.droidmate.exceptions.NotEnoughDataToStartAppException
 
 import java.nio.file.Files
 import java.nio.file.Path

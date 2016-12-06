@@ -23,8 +23,6 @@ import com.konradjamrozik.FirstMatchFirstGroup
 import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.LaunchableActivityNameProblemException
-import org.droidmate.exceptions.NotEnoughDataToStartAppException
 import org.droidmate.misc.DroidmateException
 import org.droidmate.misc.ISysCmdExecutor
 import org.droidmate.misc.SysCmdExecutorException

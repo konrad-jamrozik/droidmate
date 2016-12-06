@@ -19,7 +19,7 @@
 package org.droidmate.device_simulation
 
 import org.droidmate.device.datatypes.Widget
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.*
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 
@@ -34,7 +34,7 @@ class GuiScreensBuilderFromApkExplorationOutput2 implements IGuiScreensBuilder
   }
 
   @Override
-  public List<IGuiScreen> build()
+   List<IGuiScreen> build()
   {
     return buildGuiScreens(out)
   }

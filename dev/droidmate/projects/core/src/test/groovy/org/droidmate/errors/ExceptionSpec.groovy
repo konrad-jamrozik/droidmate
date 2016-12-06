@@ -16,7 +16,7 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.exceptions
+package org.droidmate.errors
 
 import groovy.transform.Canonical
 

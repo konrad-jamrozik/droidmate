@@ -18,10 +18,8 @@
 // web: www.droidmate.org
 package org.droidmate.device
 
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IAdbWrapper
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
-import org.droidmate.exceptions.TcpServerUnreachableException
 import org.droidmate.uiautomator_daemon.DeviceCommand
 import org.droidmate.uiautomator_daemon.DeviceResponse
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
@@ -90,7 +88,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
   }
 
   @Override
-  public boolean getUiaDaemonThreadIsAlive()
+   boolean getUiaDaemonThreadIsAlive()
   {
     assert this.uiaDaemonThread != null
     return this.uiaDaemonThread.alive
@@ -102,7 +100,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
   }
 
   @Override
-  public void waitForUiaDaemonToClose() throws DeviceException
+   void waitForUiaDaemonToClose() throws DeviceException
   {
     assert (uiaDaemonThread != null)
     try

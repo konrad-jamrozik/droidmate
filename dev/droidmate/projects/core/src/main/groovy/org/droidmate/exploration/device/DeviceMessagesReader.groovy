@@ -18,11 +18,11 @@
 // web: www.droidmate.org
 package org.droidmate.exploration.device
 
+import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.apis.ITimeFormattedLogcatMessage
+import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IExplorableAndroidDevice
-import org.droidmate.exceptions.DeviceException
-import org.droidmate.exceptions.DeviceNeedsRebootException
 
 import java.time.LocalDateTime
 

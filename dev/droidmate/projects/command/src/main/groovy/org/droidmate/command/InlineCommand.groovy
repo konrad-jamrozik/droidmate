@@ -23,8 +23,8 @@ import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
 import org.droidmate.apk_inliner.ApkInliner
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.misc.SysCmdExecutor
+import org.droidmate.misc.ThrowablesCollection
 import org.droidmate.tools.ApksProvider
 
 import java.nio.file.Files

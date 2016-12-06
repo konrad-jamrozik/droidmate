@@ -19,8 +19,6 @@
 
 package org.droidmate.android_sdk
 
-import org.droidmate.exceptions.AdbWrapperException
-
 import java.nio.file.Path
 
 class AdbWrapperStub implements IAdbWrapper

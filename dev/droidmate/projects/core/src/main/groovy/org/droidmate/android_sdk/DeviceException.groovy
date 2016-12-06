@@ -17,14 +17,44 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.exceptions
+package org.droidmate.android_sdk
 
-class UnexpectedIfElseFallthroughError extends DroidmateError
+import org.droidmate.misc.DroidmateException
+
+class DeviceException extends DroidmateException
 {
-  public UnexpectedIfElseFallthroughError() {
+  private static final long serialVersionUID = 1
+
+  final boolean stopFurtherApkExplorations
+
+  DeviceException()
+  {
     super()
+    stopFurtherApkExplorations = false
   }
 
-  public UnexpectedIfElseFallthroughError(String message) {super(message)}
-}
+  DeviceException(Throwable cause)
+  {
+    super(cause)
+    stopFurtherApkExplorations = false
+  }
 
+  DeviceException(String message)
+  {
+    super(message)
+    stopFurtherApkExplorations = false
+  }
+
+  DeviceException(String message, boolean stopFurtherApkExplorations)
+  {
+    super(message)
+    this.stopFurtherApkExplorations = stopFurtherApkExplorations
+  }
+
+  DeviceException(String message, Throwable cause, boolean stopFurtherApkExplorations = false)
+  {
+    super(message, cause)
+    this.stopFurtherApkExplorations = stopFurtherApkExplorations
+  }
+
+}

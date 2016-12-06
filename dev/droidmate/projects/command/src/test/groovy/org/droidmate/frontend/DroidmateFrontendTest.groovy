@@ -27,14 +27,14 @@ import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device_simulation.AndroidDeviceSimulator
 import org.droidmate.device_simulation.DeviceSimulation
 import org.droidmate.device_simulation.IDeviceSimulation
-import org.droidmate.exceptions.ExceptionSpec
-import org.droidmate.exceptions.ITestException
-import org.droidmate.exceptions.ThrowablesCollection
-import org.droidmate.exceptions.UnexpectedIfElseFallthroughError
+import org.droidmate.errors.ExceptionSpec
+import org.droidmate.errors.ITestException
+import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.filesystem.MockFileSystem
 import org.droidmate.misc.BuildConstants
+import org.droidmate.misc.ThrowablesCollection
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.report.OutputDir
 import org.droidmate.storage.Storage2
@@ -55,7 +55,7 @@ import java.nio.file.Path
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4)
-public class DroidmateFrontendTest extends DroidmateGroovyTestCase
+ class DroidmateFrontendTest extends DroidmateGroovyTestCase
 {
   /**
    * <p>
@@ -90,7 +90,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    */
   @Category([RequiresSimulator])
   @Test
-  public void "Handles exploration and fatal device exceptions"()
+   void "Handles exploration and fatal device exceptions"()
   {
     def mockedFs = new MockFileSystem([
       "mock_1_noThrow_outputOk",
@@ -131,7 +131,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
   @Category([RequiresSimulator])
   @Test
-  public void "Handles assertion error during exploration loop"()
+   void "Handles assertion error during exploration loop"()
   {
     def mockedFs = new MockFileSystem([
       "mock_1_throwsAssertInLoop_outputNone",
@@ -194,7 +194,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
    */
   @Category([RequiresSimulator])
   @Test
-  public void "Explores on a device simulator"()
+   void "Explores on a device simulator"()
   {
     def mockedFs = new MockFileSystem(["mock_app1"])
     def cfg = new ConfigurationForTests().withFileSystem(mockedFs.fs).get()
@@ -222,7 +222,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
-  public void "Explores monitored apk on a real device api19"()
+   void "Explores monitored apk on a real device api19"()
   {
     String[] args = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api19_name]",
@@ -236,7 +236,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
-  public void "Explores monitored apk on a real device api23"()
+   void "Explores monitored apk on a real device api23"()
   {
     String[] args = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api23_name]",
@@ -333,7 +333,7 @@ public class DroidmateFrontendTest extends DroidmateGroovyTestCase
     List<Path> serFiles = Files.list(dir).findAll {it.fileName.toString().endsWith(Storage2.ser2FileExt)}
 
     assert serFiles.size() == packageNames.size()
-    packageNames.each {def packageName ->
+    packageNames.each {packageName ->
       assert serFiles.any {it.fileName.toString().contains(packageName)}
     }
   }

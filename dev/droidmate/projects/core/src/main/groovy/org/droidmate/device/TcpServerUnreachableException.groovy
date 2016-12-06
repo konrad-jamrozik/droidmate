@@ -16,45 +16,31 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
+package org.droidmate.device
 
-package org.droidmate.exceptions
+import org.droidmate.android_sdk.DeviceException
 
-import org.droidmate.misc.DroidmateException
-
-public class DeviceException extends DroidmateException
+class TcpServerUnreachableException extends DeviceException
 {
-  private static final long serialVersionUID = 1
+  private static final long serialVersionUID = 1L
 
-  final boolean stopFurtherApkExplorations
-
-  public DeviceException()
+  TcpServerUnreachableException()
   {
     super()
-    stopFurtherApkExplorations = false
   }
 
-  public DeviceException(Throwable cause)
+  TcpServerUnreachableException(Throwable cause)
   {
     super(cause)
-    stopFurtherApkExplorations = false
   }
 
-  public DeviceException(String message)
-  {
-    super(message)
-    stopFurtherApkExplorations = false
-  }
-
-  public DeviceException(String message, boolean stopFurtherApkExplorations)
-  {
-    super(message)
-    this.stopFurtherApkExplorations = stopFurtherApkExplorations
-  }
-
-  public DeviceException(String message, Throwable cause, boolean stopFurtherApkExplorations = false)
+  TcpServerUnreachableException(String message, Throwable cause)
   {
     super(message, cause)
-    this.stopFurtherApkExplorations = stopFurtherApkExplorations
   }
 
+  TcpServerUnreachableException(String message)
+  {
+    super(message)
+  }
 }

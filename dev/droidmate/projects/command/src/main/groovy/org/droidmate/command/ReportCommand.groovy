@@ -19,8 +19,8 @@
 package org.droidmate.command
 
 import org.droidmate.configuration.Configuration
-import org.droidmate.exceptions.ThrowablesCollection
 import org.droidmate.exploration.data_aggregators.ExplorationOutput2
+import org.droidmate.misc.ThrowablesCollection
 import org.droidmate.report.ExplorationOutput2Report
 import org.droidmate.report.OutputDir
 
