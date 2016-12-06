@@ -268,7 +268,7 @@ import java.nio.file.Path
 
   @Parameter(names = [Configuration.pn_socketTimeout], arity = 1)
   // Has to be hefty as "turn_wifi_on" device action can take 20+ seconds.
-  // Also, starting activity might take some times.
+  // Also, starting activity might take some time.
   public int socketTimeout = 3 * 60 * 1000 // ms
 
   @Parameter(names = [Configuration.pn_uiautomatorDaemonServerStartTimeout], description =
