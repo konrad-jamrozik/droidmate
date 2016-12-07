@@ -59,7 +59,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   List<AndroidDeviceDescriptor> getAndroidDevicesDescriptors() throws AdbWrapperException
+  List<AndroidDeviceDescriptor> getAndroidDevicesDescriptors() throws AdbWrapperException
   {
     assert cfg.adbCommand != null
 
@@ -120,7 +120,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   void installApk(String deviceSerialNumber, Path apkToInstall)
+  void installApk(String deviceSerialNumber, Path apkToInstall)
     throws AdbWrapperException
   {
     assert cfg.adbCommand != null
@@ -152,7 +152,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   void installApk(String deviceSerialNumber, IApk apkToInstall)
+  void installApk(String deviceSerialNumber, IApk apkToInstall)
     throws AdbWrapperException
   {
     Path apkFile = Paths.get(apkToInstall.absolutePath)
@@ -192,7 +192,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   void forwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
+  void forwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
   {
     log.trace("forwardPort(deviceSerialNumber:$deviceSerialNumber, port:$port)")
     assert deviceSerialNumber != null
@@ -834,14 +834,12 @@ import java.nio.file.Paths
   @Override
   // adb instructions to take screenshot learned from: 
   // http://blog.shvetsov.com/2013/02/grab-android-screenshot-to-computer-via.html
-  void takeScreenshot(String deviceSerialNumber) throws AdbWrapperException
+  void takeScreenshot(String deviceSerialNumber, String targetPath) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
+    assert !targetPath?.empty
     
-    // KJA parametrize, make droidmateOutputDir/screenshots/app_name_action_name.png"
-    // p.toString().replace(File.separator, "/")
     String devicePath = "sdcard/temp_screenshot.png"
-    String hostPath = "screenshot.png"
     
     String commandDescription = String
       .format(
@@ -863,11 +861,11 @@ import java.nio.file.Paths
     {
       sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
         "-s", deviceSerialNumber,
-        "pull $devicePath $hostPath")
+        "pull $devicePath $targetPath")
 
     } catch (SysCmdExecutorException e)
     {
-      throw new AdbWrapperException("Executing 'adb pull $devicePath $hostPath' failed. Oh my.", e)
+      throw new AdbWrapperException("Executing 'adb pull $devicePath $targetPath' failed. Oh my.", e)
     }
 
     try

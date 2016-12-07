@@ -47,7 +47,7 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
     this.logs = logsHandler.getLogs()
     
     log.debug("1.5.experimental: take a screenshot")
-    device.takeScreenshot()
+    device.takeScreenshot(app.packageName, "terminate")
     
     log.debug("2. Close monitor servers, if any.")
     device.closeMonitorServers()

@@ -226,7 +226,7 @@ import java.time.LocalDateTime
   }
 
   @Override
-  void takeScreenshot() throws DeviceException
+  void takeScreenshot(String appPackageName, String suffix) throws DeviceException
   {
   }
 

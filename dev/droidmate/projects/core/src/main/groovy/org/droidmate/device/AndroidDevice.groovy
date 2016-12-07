@@ -39,7 +39,9 @@ import org.droidmate.uiautomator_daemon.DeviceResponse
 import org.droidmate.uiautomator_daemon.UiautomatorWindowHierarchyDumpDeviceResponse
 
 import java.awt.*
+import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.List
@@ -407,10 +409,19 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-  void takeScreenshot() throws DeviceException
+  void takeScreenshot(String appPackageName, String suffix) throws DeviceException
   {
-    log.debug("takeScreenshot()")
-    adbWrapper.takeScreenshot(serialNumber)
+    log.debug("takeScreenshot($appPackageName, $suffix)")
+    
+    assert !appPackageName?.empty
+    assert !suffix?.empty
+    
+    Path targetFile = Paths.get("${cfg.droidmateOutputDir}/${cfg.screenshotsDir}/${appPackageName}_${suffix}.png")
+    targetFile.mkdirs()
+    assert !Files.exists(targetFile)
+    String targetFileString = targetFile.toString().replace(File.separator, "/")
+    
+    adbWrapper.takeScreenshot(serialNumber, targetFileString)
   }
   
   private static boolean uiaDaemonHandlesCommand(DeviceCommand deviceCommand)

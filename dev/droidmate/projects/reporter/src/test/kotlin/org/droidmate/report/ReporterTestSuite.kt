@@ -31,9 +31,5 @@ import org.junit.runners.Suite
   functionsKtTest::class,
   ApkSummaryTest::class,
   ExplorationOutput2ReportTest::class
-
-  
 )
 class ReporterTestSuite
-{
-}

@@ -53,6 +53,6 @@ interface IExplorableAndroidDevice
 
   void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
   
-  void takeScreenshot() throws DeviceException
+  void takeScreenshot(String appPackageName, String suffix) throws DeviceException
 }
 

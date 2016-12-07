@@ -80,7 +80,7 @@ class ExploreCommand extends DroidmateCommand
   @Override
   void execute(Configuration cfg) throws ThrowablesCollection
   {
-    cleanOutputDir(cfg.droidmateOutputDirPath)
+    cleanOutputDir(cfg)
 
     List<Apk> apks = this.apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames)
     if (!validateApks(apks, cfg.runOnNotInlined)) return
@@ -114,16 +114,22 @@ class ExploreCommand extends DroidmateCommand
     return true
   }
 
-  private void cleanOutputDir(Path path)
+  private void cleanOutputDir(Configuration cfg)
   {
-    if (!Files.isDirectory(path))
+    Path outputDir = cfg.droidmateOutputDirPath
+    
+    if (!Files.isDirectory(outputDir))
       return
+    
+    Path screenshotsDir = outputDir.resolve(cfg.screenshotsDir)
+    if (Files.isDirectory(screenshotsDir))
+      screenshotsDir.deleteDir()
 
-    path.eachFile(FileType.FILES) {Path p ->
+    outputDir.eachFile(FileType.FILES) {Path p ->
       Files.delete(p)
     }
 
-    path.eachFile {Path p -> assert Files.isDirectory(p)}
+    outputDir.eachFile {Path p -> assert Files.isDirectory(p)}
   }
 
   List<ExplorationException> execute(Configuration cfg, List<Apk> apks)
