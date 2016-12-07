@@ -91,7 +91,7 @@ class GuiScreen implements IGuiScreen
   IScreenTransitionResult perform(IAndroidDeviceAction action)
   {
     assert finishedBuilding
-     internalPerform(action)
+    internalPerform(action)
   }
 
   //region internalPerform multimethod

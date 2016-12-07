@@ -21,13 +21,14 @@ package org.droidmate.device.datatypes
 
 import groovy.transform.Immutable
 
+@Deprecated
 @Immutable
 class LaunchMainActivityDeviceAction extends AndroidDeviceAction
 {
    String launchableActivityComponentName
 
   @Override
-  public String toString()
+   String toString()
   {
     return "${this.class.simpleName}{$launchableActivityComponentName}"
   }

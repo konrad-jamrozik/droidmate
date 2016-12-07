@@ -40,7 +40,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
 
-import static org.droidmate.device.datatypes.AndroidDeviceAction.*
+import static org.droidmate.device.datatypes.AndroidDeviceAction.newClickGuiDeviceAction
+import static org.droidmate.device.datatypes.AndroidDeviceAction.newTurnWifiOnDeviceAction
 
 @TypeChecked
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -65,7 +66,7 @@ class DeviceTest extends DroidmateGroovyTestCase
   {
     withApkDeployedOnDevice() {IRobustDevice device, IApk deployedApk ->
 
-      device.perform(newLaunchActivityDeviceAction(deployedApk.launchableActivityComponentName))
+      device.launchMainActivity(deployedApk.launchableActivityComponentName)
       assert device.guiSnapshot.guiState.belongsToApp(deployedApk.packageName)
 
       // Act 1

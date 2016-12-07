@@ -21,13 +21,14 @@ package org.droidmate.device.datatypes
 
 import groovy.transform.Immutable
 
+@Deprecated
 @Immutable
 class AdbClearPackageAction extends AndroidDeviceAction
 {
   String packageName
 
   @Override
-  public String toString()
+   String toString()
   {
     return "${this.class.simpleName}{$packageName}"
   }

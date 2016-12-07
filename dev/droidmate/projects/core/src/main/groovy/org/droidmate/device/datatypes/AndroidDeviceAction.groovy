@@ -25,54 +25,44 @@ import java.awt.*
 
 abstract class AndroidDeviceAction implements IAndroidDeviceAction
 {
-  public static AdbClearPackageAction newClearPackageDeviceAction(String appPackageName)
-  {
-    return new AdbClearPackageAction(appPackageName)
-  }
 
-  public static LaunchMainActivityDeviceAction newLaunchActivityDeviceAction(String appLaunchableActivityComponentName)
-  {
-    return new LaunchMainActivityDeviceAction(appLaunchableActivityComponentName)
-  }
-
-
-  public static ClickGuiAction newClickGuiDeviceAction(Widget clickedWidget, boolean longClick = false)
+  static ClickGuiAction newClickGuiDeviceAction(Widget clickedWidget, boolean longClick = false)
   {
     newClickGuiDeviceAction(clickedWidget.clickPoint, longClick)
   }
 
-  public static ClickGuiAction newClickGuiDeviceAction(Point p, boolean longClick = false)
+   static ClickGuiAction newClickGuiDeviceAction(Point p, boolean longClick = false)
   {
     newClickGuiDeviceAction(p.x as int, p.y as int, longClick)
   }
 
-  public static ClickGuiAction newClickGuiDeviceAction(int clickX, int clickY, boolean longClick = false)
+   static ClickGuiAction newClickGuiDeviceAction(int clickX, int clickY, boolean longClick = false)
   {
     return new ClickGuiAction(new GuiAction(clickX, clickY, longClick))
   }
 
-  public static ClickGuiAction newEnterTextDeviceAction(String resourceId, String textToEnter)
+   static ClickGuiAction newEnterTextDeviceAction(String resourceId, String textToEnter)
   {
     return new ClickGuiAction(GuiAction.createEnterTextGuiAction(resourceId, textToEnter))
   }
 
 
-  public static ClickGuiAction newPressBackDeviceAction()
+   static ClickGuiAction newPressBackDeviceAction()
   {
     return new ClickGuiAction(GuiAction.createPressBackGuiAction())
   }
 
-  public static ClickGuiAction newPressHomeDeviceAction()
+   static ClickGuiAction newPressHomeDeviceAction()
   {
     return new ClickGuiAction(GuiAction.createPressHomeGuiAction())
   }
 
-  public static ClickGuiAction newTurnWifiOnDeviceAction()
+   static ClickGuiAction newTurnWifiOnDeviceAction()
   {
     return new ClickGuiAction(GuiAction.createTurnWifiOnGuiAction())
   }
 
-  public static ClickGuiAction newLaunchAppDeviceAction(String iconLabel)
+   static ClickGuiAction newLaunchAppDeviceAction(String iconLabel)
   {
     return new ClickGuiAction(GuiAction.createLaunchAppGuiAction(iconLabel))
   }

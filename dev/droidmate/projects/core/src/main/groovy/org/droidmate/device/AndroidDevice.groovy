@@ -135,13 +135,11 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
       case ClickGuiAction:
         performGuiClick((action as ClickGuiAction))
         break
-    // Case @Deprecated. Used by old code. Instead, call the method directly.
       case LaunchMainActivityDeviceAction:
-        launchMainActivity((action as LaunchMainActivityDeviceAction).launchableActivityComponentName)
+        assert false : "call .launchMainActivity() directly instead"
         break
-    // Case @Deprecated. Used by old code. Instead, call the method directly.
       case AdbClearPackageAction:
-        clearPackage((action as AdbClearPackageAction).packageName)
+        assert false : "call .clearPackage() directly instead"
         break
       default:
         throw new UnexpectedIfElseFallthroughError()
