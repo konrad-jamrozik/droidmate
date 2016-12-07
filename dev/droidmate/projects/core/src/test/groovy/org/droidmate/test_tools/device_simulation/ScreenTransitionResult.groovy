@@ -16,16 +16,25 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
+package org.droidmate.test_tools.device_simulation
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+import com.google.common.base.MoreObjects
+import groovy.transform.Canonical
+import org.droidmate.apis.ITimeFormattedLogcatMessage
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+@Canonical
+class ScreenTransitionResult implements IScreenTransitionResult
 {
+
+  IGuiScreen                             screen
+  ArrayList<ITimeFormattedLogcatMessage> logs
+
+  @Override
+   String toString()
+  {
+    return MoreObjects.toStringHelper(this)
+      .add("logs", logs*.messagePayload.collect { it.truncate(100) })
+      .add("screen", screen)
+      .toString()
+  }
 }

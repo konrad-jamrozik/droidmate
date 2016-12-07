@@ -16,16 +16,27 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
+package org.droidmate.test_tools.device_simulation
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+import com.google.common.annotations.VisibleForTesting
+import org.droidmate.apis.ITimeFormattedLogcatMessage
+import org.droidmate.device.datatypes.IAndroidDeviceAction
+import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+interface IDeviceSimulation
 {
+  void updateState(IAndroidDeviceAction deviceAction)
+
+  IDeviceGuiSnapshot getCurrentGuiSnapshot()
+
+  List<ITimeFormattedLogcatMessage> getCurrentLogs()
+
+  String getPackageName()
+
+  @VisibleForTesting
+  List<IGuiScreen> getGuiScreens()
+
+  void assertEqual(IDeviceSimulation other)
+
+  boolean getAppIsRunning()
 }

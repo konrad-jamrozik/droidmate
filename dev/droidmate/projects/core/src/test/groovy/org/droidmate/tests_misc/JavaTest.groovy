@@ -36,7 +36,7 @@ import java.nio.file.Path
 @TypeChecked
 @RunWith(JUnit4)
 /**
- * @see org.droidmate.logging.LogbackAppendersTest
+ * @see org.droidmate.tests.logging.LogbackAppendersTest
  */
 class JavaTest
 {
@@ -78,20 +78,20 @@ class JavaTest
 
     println "SERIALIZING"
 
-    Employee empl = new Employee();
-    empl.name = "Reyan Ali";
-    empl.address = "Phokka Kuan, Ambehta Peer";
-    empl.SSN = 11122333;
-    empl.number = 101;
+    Employee empl = new Employee()
+    empl.name = "Reyan Ali"
+    empl.address = "Phokka Kuan, Ambehta Peer"
+    empl.SSN = 11122333
+    empl.number = 101
     try
     {
       ObjectOutputStream out = tmpFile.newObjectOutputStream()
       out.writeObject(empl)
       out.close()
-      System.out.printf("Serialized data is saved in /tmp/employee.ser");
+      System.out.printf("Serialized data is saved in /tmp/employee.ser")
     }catch(IOException e)
     {
-      e.printStackTrace();
+      e.printStackTrace()
     }
 
     println ""
@@ -101,36 +101,36 @@ class JavaTest
     try
     {
       ObjectInputStream inpStr = tmpFile.newObjectInputStream()
-      empl2 = (Employee) inpStr.readObject();
+      empl2 = (Employee) inpStr.readObject()
       inpStr.close()
     }catch(IOException e)
     {
-      e.printStackTrace();
-      return;
+      e.printStackTrace()
+      return
     }catch(ClassNotFoundException c)
     {
-      System.out.println("Employee class not found");
-      c.printStackTrace();
-      return;
+      System.out.println("Employee class not found")
+      c.printStackTrace()
+      return
     }
-    System.out.println("Deserialized Employee...");
-    System.out.println("Name: " + empl2.name);
-    System.out.println("Address: " + empl2.address);
-    System.out.println("SSN: " + empl2.SSN);
-    System.out.println("Number: " + empl2.number);
+    System.out.println("Deserialized Employee...")
+    System.out.println("Name: " + empl2.name)
+    System.out.println("Address: " + empl2.address)
+    System.out.println("SSN: " + empl2.SSN)
+    System.out.println("Number: " + empl2.number)
   }
 
 }
 
-public class Employee implements Serializable
+class Employee implements Serializable
 {
-  public String name;
-  public String address;
-  public transient int SSN;
-  public int number;
-  public void mailCheck()
+  public String name
+  public String address
+  public transient int SSN
+  public int number
+  void mailCheck()
   {
     System.out.println("Mailing a check to " + name
-      + " " + address);
+      + " " + address)
   }
 }

@@ -16,16 +16,21 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+package org.droidmate.test_tools.exceptions
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+import org.droidmate.android_sdk.DeviceException
+
+class TestDeviceException extends DeviceException implements ITestException
 {
+
+  private static final long serialVersionUID = 1
+
+  final IExceptionSpec exceptionSpec
+
+  TestDeviceException(IExceptionSpec exceptionSpec)
+  {
+    super("Test-enforced device exception. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex")
+    this.exceptionSpec = exceptionSpec
+  }
 }

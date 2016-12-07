@@ -16,16 +16,19 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+package org.droidmate.test_tools.exploration.actions
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+import org.droidmate.exploration.actions.ExplorationAction
+import org.droidmate.exploration.actions.WidgetExplorationAction
+import org.droidmate.test_tools.device.datatypes.WidgetTestHelper
+
+class ExplorationActionTestHelper
 {
+
+  static WidgetExplorationAction newWidgetClickExplorationAction(Map args = [:])
+  {
+    return ExplorationAction.newWidgetExplorationAction(WidgetTestHelper.newClickableButton(args))
+  }
 }
+

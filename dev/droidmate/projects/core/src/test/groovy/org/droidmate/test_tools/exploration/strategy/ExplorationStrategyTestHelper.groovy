@@ -16,16 +16,27 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+package org.droidmate.test_tools.exploration.strategy
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+import org.droidmate.configuration.Configuration
+import org.droidmate.exploration.strategy.ExplorationStrategy
+import org.droidmate.exploration.strategy.IExplorationStrategy
+import org.droidmate.test_tools.configuration.ConfigurationForTests
+
+class ExplorationStrategyTestHelper
 {
+
+  static IExplorationStrategy buildStrategy(
+    Integer actionsLimit, Integer resetEveryNthExplorationForward)
+  {
+    Configuration cfg = new ConfigurationForTests().setArgs([
+      Configuration.pn_actionsLimit, "$actionsLimit",
+      Configuration.pn_resetEveryNthExplorationForward, "$resetEveryNthExplorationForward",
+    ]).get()
+
+    IExplorationStrategy strategy = ExplorationStrategy.build(cfg)
+    return strategy
+
+  }
 }

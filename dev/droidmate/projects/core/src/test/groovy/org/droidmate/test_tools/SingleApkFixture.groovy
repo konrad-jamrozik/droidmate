@@ -16,16 +16,34 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
+package org.droidmate.test_tools
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+import org.droidmate.android_sdk.Apk
+import org.droidmate.android_sdk.IAaptWrapper
+import org.droidmate.configuration.Configuration
+import org.droidmate.misc.BuildConstants
+import org.droidmate.tools.ApksProvider
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+class SingleApkFixture
 {
+  @SuppressWarnings("GrFinalVariableAccess")
+  @Delegate
+  final Apk apk
+
+  SingleApkFixture(IAaptWrapper aapt, Configuration cfg)
+  {
+    assert aapt != null
+    assert cfg != null
+    assert cfg.useApkFixturesDir
+    assert cfg.apksNames == [BuildConstants.monitored_inlined_apk_fixture_api19_name]
+
+    ApksProvider apksProvider = new ApksProvider(aapt)
+
+    List<Apk> apks = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames)
+    assert apks.size() == 1
+
+    this.apk = apks.first()
+  }
+
+
 }

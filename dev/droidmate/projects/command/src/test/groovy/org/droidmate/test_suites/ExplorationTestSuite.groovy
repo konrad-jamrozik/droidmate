@@ -20,7 +20,7 @@ package org.droidmate.test_suites
 
 import org.droidmate.command.exploration.ExplorationTest
 import org.droidmate.device.datatypes.UiautomatorWindowDumpFunctionsTest
-import org.droidmate.test_tools.device.datatypes.UiautomatorWindowDumpTest
+import org.droidmate.tests.device.datatypes.UiautomatorWindowDumpTest
 import org.droidmate.tests.exploration.strategy.ExplorationStrategyTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite

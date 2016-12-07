@@ -16,16 +16,23 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+package org.droidmate.test_tools.exceptions
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+import groovy.util.logging.Slf4j
+import org.droidmate.misc.DroidmateException
+
+@Slf4j
+ class TestSaboteurException extends DroidmateException
 {
+  TestSaboteurException()
+  {
+    super()
+  }
+
+  TestSaboteurException(String message)
+  {
+    super(message)
+  }
+
 }

@@ -16,16 +16,14 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
+package org.droidmate.test_tools.device_simulation
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+import org.droidmate.apis.ITimeFormattedLogcatMessage
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+interface IScreenTransitionResult
 {
+
+  IGuiScreen getScreen()
+
+  ArrayList<ITimeFormattedLogcatMessage> getLogs()
 }

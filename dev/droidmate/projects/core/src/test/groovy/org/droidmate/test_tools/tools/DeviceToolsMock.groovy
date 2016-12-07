@@ -16,16 +16,26 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
+package org.droidmate.test_tools.tools
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+import org.droidmate.android_sdk.IAaptWrapper
+import org.droidmate.configuration.Configuration
+import org.droidmate.test_tools.device_simulation.AndroidDeviceSimulator
+import org.droidmate.tools.IDeviceTools
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+class DeviceToolsMock
 {
+  @SuppressWarnings("GrFinalVariableAccess")
+  @Delegate
+  public final IDeviceTools deviceTools
+
+  DeviceToolsMock(Configuration cfg, IAaptWrapper aaptWrapper, AndroidDeviceSimulator simulator)
+  {
+    assert cfg.randomSeed == 0 as Long
+
+    this.deviceTools = DeviceToolsTestHelper.buildForTesting(cfg, aaptWrapper, simulator)
+
+
+  }
+
 }

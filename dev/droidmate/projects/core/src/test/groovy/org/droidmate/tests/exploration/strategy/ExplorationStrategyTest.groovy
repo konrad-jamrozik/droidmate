@@ -26,11 +26,12 @@ import org.droidmate.device.datatypes.Widget
 import org.droidmate.exploration.actions.ExplorationAction
 import org.droidmate.exploration.actions.IExplorationActionRunResult
 import org.droidmate.exploration.actions.WidgetExplorationAction
-import org.droidmate.exploration.data_aggregators.ExplorationOutput2Builder
 import org.droidmate.exploration.strategy.IExplorationStrategy
 import org.droidmate.test_tools.ApkFixtures
 import org.droidmate.test_tools.DroidmateGroovyTestCase
 import org.droidmate.test_tools.device.datatypes.UiautomatorWindowDumpTestHelper
+import org.droidmate.test_tools.exploration.data_aggregators.ExplorationOutput2Builder
+import org.droidmate.test_tools.exploration.strategy.ExplorationStrategyTestHelper
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith

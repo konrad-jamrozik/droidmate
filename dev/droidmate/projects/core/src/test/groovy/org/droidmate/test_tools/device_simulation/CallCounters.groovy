@@ -16,16 +16,30 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
+package org.droidmate.test_tools.device_simulation
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
-
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+class CallCounters implements ICallCounters
 {
+  Map<String, Map<String, Integer>> packageCounters = [:]
+
+  @Override
+  int increment(String packageName, String methodName)
+  {
+    packageCounters.putIfAbsent(packageName, [:])
+    Map<String, Integer> methodCounters = packageCounters[packageName]
+
+
+    methodCounters.putIfAbsent(methodName, 0)
+    methodCounters[methodName] += 1
+  }
+
+  @Override
+  int get(String packageName, String methodName)
+  {
+    assert packageCounters.containsKey(packageName)
+    Map<String, Integer> methodCounters = packageCounters[packageName]
+    assert methodCounters.containsKey(methodName)
+
+    return methodCounters[methodName]
+  }
 }

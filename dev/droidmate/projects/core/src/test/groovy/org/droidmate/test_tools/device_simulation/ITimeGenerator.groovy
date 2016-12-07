@@ -16,16 +16,15 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+package org.droidmate.test_tools.device_simulation
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+import org.droidmate.misc.ITimeProvider
+
+import java.time.LocalDateTime
+
+interface ITimeGenerator extends ITimeProvider
 {
+  LocalDateTime shiftAndGet(Map<String, Integer> timeShift)
 }
+

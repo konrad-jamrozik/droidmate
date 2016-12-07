@@ -16,16 +16,21 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
+package org.droidmate.test_tools.exceptions
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
-
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+interface IExceptionSpec extends Serializable
 {
+  boolean matches(String methodName, String packageName, int callIndex)
+
+  boolean getThrowsEx()
+
+  String getPackageName()
+
+  String getMethodName()
+
+  int getCallIndex()
+
+  void throwEx() throws TestDeviceException
+
+  Boolean getExceptionalReturnBool()
 }

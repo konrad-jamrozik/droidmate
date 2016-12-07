@@ -16,16 +16,18 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
+package org.droidmate.test_tools.exceptions
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
-
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+class TestAssertionError extends AssertionError implements ITestException
 {
+  private static final long serialVersionUID = 1
+
+  final IExceptionSpec exceptionSpec
+
+  TestAssertionError(IExceptionSpec exceptionSpec)
+  {
+    super("Test-enforced assertion error. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex" as Object)
+    this.exceptionSpec = exceptionSpec
+  }
+
 }

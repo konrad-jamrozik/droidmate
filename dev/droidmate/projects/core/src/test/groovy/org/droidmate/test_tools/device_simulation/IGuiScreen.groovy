@@ -16,16 +16,29 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
+package org.droidmate.test_tools.device_simulation
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+import org.droidmate.device.datatypes.IAndroidDeviceAction
+import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+interface IGuiScreen extends Serializable
 {
+
+  IScreenTransitionResult perform(IAndroidDeviceAction action)
+
+  IDeviceGuiSnapshot getGuiSnapshot()
+
+  String getId()
+
+  void addHomeScreenReference(IGuiScreen home)
+
+  void addMainScreenReference(IGuiScreen main)
+
+  void addWidgetTransition(String widgetId, IGuiScreen targetScreen)
+  void addWidgetTransition(String widgetId, IGuiScreen targetScreen, boolean ignoreDuplicates)
+
+  void buildInternals()
+
+  void verify()
 }
+

@@ -16,16 +16,29 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_suites
 
-import org.droidmate.tests.logging.LogbackAppendersTest
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+package org.droidmate.test_tools.device_simulation
 
-@RunWith(Suite)
-@Suite.SuiteClasses([
-  LogbackAppendersTest,
-])
-class TestCodeTestSuite
+import java.time.LocalDateTime
+
+class TimeGenerator implements ITimeGenerator
 {
+  private LocalDateTime time = LocalDateTime.now()
+
+  @Override
+  LocalDateTime getNow()
+  {
+    return shiftAndGet(milliseconds: 10)
+  }
+
+  @Override
+  LocalDateTime shiftAndGet(Map<String, Integer> timeShift)
+  {
+    assert timeShift?.milliseconds != null
+
+    time = time.plusNanos(timeShift.milliseconds * 1000000)
+
+    return time
+  }
 }
+
