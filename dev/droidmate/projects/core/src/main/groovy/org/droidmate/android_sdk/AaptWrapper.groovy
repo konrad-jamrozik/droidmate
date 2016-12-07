@@ -140,7 +140,10 @@ import java.util.regex.Matcher
       def labelMatch = new FirstMatchFirstGroup(
         aaptBadgingDump,
         /application-label-en(?:.*):'(.*)'/,
+        /application-label-de(?:.*):'(.*)'/,
+        /application-label(?:.*):'(.*)'/,
         /.*launchable-activity: name='(?:.*)'  label='(.*)' .*/,
+        
       )
       return labelMatch.value
     } catch (Exception e)
