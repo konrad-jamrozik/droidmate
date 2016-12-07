@@ -406,6 +406,13 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     adbWrapper.installApk(serialNumber, apk)
   }
 
+  @Override
+  void takeScreenshot() throws DeviceException
+  {
+    log.debug("takeScreenshot()")
+    adbWrapper.takeScreenshot(serialNumber)
+  }
+  
   private static boolean uiaDaemonHandlesCommand(DeviceCommand deviceCommand)
   {
     return deviceCommand.command in [
@@ -418,7 +425,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-   Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
+  Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
   {
     return this.anyMonitorIsReachable() && this.appProcessIsRunning(appPackageName)
   }
@@ -430,7 +437,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-   void initModel() throws DeviceException
+  void initModel() throws DeviceException
   {
     log.trace("initModel(): this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))")
     DeviceResponse response = this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))

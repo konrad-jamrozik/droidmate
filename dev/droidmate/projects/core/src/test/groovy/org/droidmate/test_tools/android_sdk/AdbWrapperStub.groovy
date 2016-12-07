@@ -171,4 +171,9 @@ class AdbWrapperStub implements IAdbWrapper
   void pullFile_api23(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String shellPackageName) throws AdbWrapperException
   {
   }
+
+  @Override
+  void takeScreenshot(String deviceSerialNumber) throws AdbWrapperException
+  {
+  }
 }

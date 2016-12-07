@@ -52,5 +52,7 @@ interface IExplorableAndroidDevice
   Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
 
   void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
+  
+  void takeScreenshot() throws DeviceException
 }
 

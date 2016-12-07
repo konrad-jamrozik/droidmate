@@ -74,4 +74,6 @@ interface IAdbWrapper {
   void pullFile_api19(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
 
   void pullFile_api23(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String shellPackageName) throws AdbWrapperException
+  
+  void takeScreenshot(String deviceSerialNumber) throws AdbWrapperException
 }

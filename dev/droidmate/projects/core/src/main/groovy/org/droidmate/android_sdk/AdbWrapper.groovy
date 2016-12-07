@@ -830,6 +830,57 @@ import java.nio.file.Paths
       throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
     }
   }
+  
+  @Override
+  // adb instructions to take screenshot learned from: 
+  // http://blog.shvetsov.com/2013/02/grab-android-screenshot-to-computer-via.html
+  void takeScreenshot(String deviceSerialNumber) throws AdbWrapperException
+  {
+    assert deviceSerialNumber != null
+    
+    // KJA parametrize, make droidmateOutputDir/screenshots/app_name_action_name.png"
+    // p.toString().replace(File.separator, "/")
+    String devicePath = "sdcard/temp_screenshot.png"
+    String hostPath = "screenshot.png"
+    
+    String commandDescription = String
+      .format(
+      "Executing adb to 1. take a screenshot of Android Device with s/n %s. 2. pull it. 3. remove it on the device.",
+      deviceSerialNumber)
+
+    try
+    {
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell screencap -p $devicePath")
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb shell screencap ...' failed. Oh my.", e)
+    }
+
+    try
+    {
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "pull $devicePath $hostPath")
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb pull $devicePath $hostPath' failed. Oh my.", e)
+    }
+
+    try
+    {
+      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
+        "-s", deviceSerialNumber,
+        "shell rm $devicePath")
+
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing 'adb rm sdcard/screen.png' failed. Oh my.", e)
+    }
+  }
 
   @SuppressWarnings("GroovyUnusedDeclaration")
   private debugStdStreams(String[] stdStreams)

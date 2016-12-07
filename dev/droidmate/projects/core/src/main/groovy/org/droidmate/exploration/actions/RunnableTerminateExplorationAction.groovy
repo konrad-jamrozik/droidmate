@@ -46,6 +46,9 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
     logsHandler.readClearAndAssertOnlyBackgroundApiLogsIfAny()
     this.logs = logsHandler.getLogs()
     
+    log.debug("1.5.experimental: take a screenshot")
+    device.takeScreenshot()
+    
     log.debug("2. Close monitor servers, if any.")
     device.closeMonitorServers()
 

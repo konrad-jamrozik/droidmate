@@ -90,6 +90,7 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
     try
     {
       log.trace("${this.class.simpleName}.performDeviceActions(app=${app.fileName}, device)")
+      // KJA somewhere here make screenshots on launch main activity and terminate. But how this relates to storage? So far everything was in memory and saved later.
       this.performDeviceActions(app, device)
       log.trace("${this.class.simpleName}.performDeviceActions(app=${app.fileName}, device) - DONE")
     } catch (DeviceException e)

@@ -226,6 +226,11 @@ import java.time.LocalDateTime
   }
 
   @Override
+  void takeScreenshot() throws DeviceException
+  {
+  }
+
+  @Override
   void pushJar(Path jar, String targetFileName = null) throws DroidmateException
   {
   }
