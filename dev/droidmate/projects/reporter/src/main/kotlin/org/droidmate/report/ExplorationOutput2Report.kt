@@ -46,7 +46,6 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     
     // KJA looks like at some point the tool is constantly reaching TCP socket timeouts. Maybe some global counter, requesting
     // reboot, would be in order.
-    // KJA next: rebuild fixtures in C:\my\local\repos\github\droidmate\dev\droidmate\projects\lib-kotlin\src\test\resources\fixtures\serialized_results
     // KJA temp
 //    if (data.first().exceptionIsPresent)
 //      data.first().exception.printStackTrace()

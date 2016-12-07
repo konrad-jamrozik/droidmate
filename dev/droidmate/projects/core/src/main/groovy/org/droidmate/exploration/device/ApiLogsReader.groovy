@@ -53,8 +53,9 @@ class ApiLogsReader implements IApiLogsReader
 
   /**
    * <p>
-   * The same remarks apply as for {@link org.droidmate.exploration.device.InitMsgsReader#monitorLogger}. Empirical observation
-   * shows up to 5 seconds delay for API logs.
+   * The logs logged with the monitor logger will have different timestamps than the logged monitor logs, even though
+   * {@link IDeviceTimeDiff} is applied. This is because the method that logs is executed a couple of seconds after the monitor
+   * logs were logged on the device. Empirical observation shows up to 5 seconds delay for API logs.
    *
    * </p>
    */

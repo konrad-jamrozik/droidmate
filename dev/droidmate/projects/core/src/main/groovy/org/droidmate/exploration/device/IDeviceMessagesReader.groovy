@@ -20,17 +20,10 @@ package org.droidmate.exploration.device
 
 import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.IApiLogcatMessage
-import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.device.DeviceNeedsRebootException
-
-import java.time.LocalDateTime
 
 interface IDeviceMessagesReader
 {
-  LocalDateTime readMonitorMessages() throws DeviceException
-
-  List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException
-
   List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceNeedsRebootException, DeviceException
 
   void resetTimeSync()

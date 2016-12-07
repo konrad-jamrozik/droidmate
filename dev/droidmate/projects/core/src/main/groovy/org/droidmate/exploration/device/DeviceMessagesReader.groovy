@@ -20,11 +20,8 @@ package org.droidmate.exploration.device
 
 import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.IApiLogcatMessage
-import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IExplorableAndroidDevice
-
-import java.time.LocalDateTime
 
 /**
  * <p>
@@ -39,14 +36,11 @@ import java.time.LocalDateTime
  */
 class DeviceMessagesReader implements IDeviceMessagesReader
 {
-  @Deprecated
-  private final IInitMsgsReader initMsgsReader
   private final IApiLogsReader  apiLogsReader
   private final IDeviceTimeDiff deviceTimeDiff
 
-  DeviceMessagesReader(IExplorableAndroidDevice device, int monitorServerStartTimeout, int monitorServerStartQueryDelay)
+  DeviceMessagesReader(IExplorableAndroidDevice device)
   {
-    this.initMsgsReader = new InitMsgsReader(device, monitorServerStartTimeout, monitorServerStartQueryDelay)
     this.apiLogsReader = new ApiLogsReader(device)
     this.deviceTimeDiff = new DeviceTimeDiff(device)
   }
@@ -56,22 +50,6 @@ class DeviceMessagesReader implements IDeviceMessagesReader
   {
     this.deviceTimeDiff.reset()
 
-  }
-
-  // Used by old exploration code
-  @Deprecated
-  @Override
-  LocalDateTime readMonitorMessages() throws DeviceException
-  {
-    return initMsgsReader.readMonitorMessages(deviceTimeDiff)
-  }
-
-  // Used by old exploration code
-  @Deprecated
-  @Override
-  List<ITimeFormattedLogcatMessage> readInstrumentationMessages() throws DeviceException
-  {
-    return initMsgsReader.readInstrumentationMessages(deviceTimeDiff)
   }
 
   @Override

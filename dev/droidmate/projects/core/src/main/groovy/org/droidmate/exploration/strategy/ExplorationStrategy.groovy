@@ -23,7 +23,6 @@ import com.google.common.base.Ticker
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.droidmate.configuration.Configuration
-import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device.datatypes.IGuiState
 import org.droidmate.device.datatypes.Widget
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
@@ -56,28 +55,7 @@ class ExplorationStrategy implements IExplorationStrategy
   // org.droidmate.exploration.strategy.ExplorationStrategy.explorationCanMoveForwardOn,
   // which also takes WidgetStrategy as input, and then is asked.
   private boolean allWidgetsBlackListed = false
-
-  //SE TEAM Hook 1
-  ///Holds all guiStates seen so far ehile exploring
-  private List<IGuiState> guiStatesSeen = new LinkedList<>()
-  //--------------
-
-  @Deprecated
-  ExplorationStrategy(IWidgetStrategy widgetStrategy, Configuration config, ITerminationCriterion terminationCriterion, IForwardExplorationSpecialCases specialCases)
-  {
-
-    assertConfigurationDenotesNoMoreThanOneWidgetClickingMethod(config)
-
-    this.widgetStrategy = widgetStrategy
-    this.terminationCriterion = terminationCriterion
-    this.specialCases = specialCases
-
-    this.resetEveryNthExplorationForward = config.resetEveryNthExplorationForward
-    assert this.resetEveryNthExplorationForward >= 0
-    this.forwardExplorationResetCounter = resetEveryNthExplorationForward
-
-  }
-
+  
   ExplorationStrategy(
     int resetEveryNthExplorationForward, IWidgetStrategy widgetStrategy, ITerminationCriterion terminationCriterion, IForwardExplorationSpecialCases specialCases)
   {
@@ -89,12 +67,6 @@ class ExplorationStrategy implements IExplorationStrategy
     assert this.resetEveryNthExplorationForward >= 0
     this.forwardExplorationResetCounter = resetEveryNthExplorationForward
 
-  }
-
-  private static void assertConfigurationDenotesNoMoreThanOneWidgetClickingMethod(Configuration cfg)
-  {
-    int settingsCount = ConfigurationBuilder.widgetClickingStrategySettingsCount(cfg)
-    assert settingsCount <= 1
   }
 
   ExplorationAction decide(IExplorationActionRunResult result)

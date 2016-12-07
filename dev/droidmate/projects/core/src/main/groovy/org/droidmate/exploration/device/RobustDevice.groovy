@@ -67,8 +67,6 @@ class RobustDevice implements IRobustDevice
   RobustDevice(IAndroidDevice device, Configuration cfg)
   {
     this(device,
-      cfg.monitorServerStartTimeout,
-      cfg.monitorServerStartQueryDelay,
       cfg.clearPackageRetryAttempts,
       cfg.clearPackageRetryDelay,
       cfg.getValidGuiSnapshotRetryAttempts,
@@ -86,8 +84,6 @@ class RobustDevice implements IRobustDevice
   }
 
   RobustDevice(IAndroidDevice device,
-               int monitorServerStartTimeout,
-               int monitorServerStartQueryDelay,
                int clearPackageRetryAttempts,
                int clearPackageRetryDelay,
                int getValidGuiSnapshotRetryAttempts,
@@ -104,7 +100,7 @@ class RobustDevice implements IRobustDevice
                int waitForCanRebootDelay)
   {
     this.device = device
-    this.messagesReader = new DeviceMessagesReader(device, monitorServerStartTimeout, monitorServerStartQueryDelay)
+    this.messagesReader = new DeviceMessagesReader(device)
 
     this.clearPackageRetryAttempts = clearPackageRetryAttempts
     this.clearPackageRetryDelay = clearPackageRetryDelay
