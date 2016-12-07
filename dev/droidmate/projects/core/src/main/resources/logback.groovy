@@ -253,7 +253,7 @@ root(TRACE, mainAppenders + [
   /* The "monitor" appender accepts INFO messages, among others. The fact it is associated with root logger will make the INFO messages
     be appended to it. */
   // Turned off because the monitor appender was generating huge files (see the "monitor" logger)
-  appender_name_monitor,
+  //appender_name_monitor,
 ])
 
 // N00b reference for additivity: http://logback.qos.ch/manual/architecture.html#additivity

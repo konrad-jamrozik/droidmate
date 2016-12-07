@@ -88,7 +88,7 @@ import static org.droidmate.logging.Markers.runData
 
       log.info("Successfully instantiated ${command.class.simpleName}. Welcome to DroidMate. Lie back, relax and enjoy.")
       log.info("Run start timestamp: " + runStart)
-      log.info("Running in Android $cfg.androidApi compatibility (api19 = 4.4.4, api23 = 6.0).")
+      log.info("Running in Android $cfg.androidApi compatibility  mode (api19 = 4.4.4, api23 = 6.0).")
 
       command.execute(cfg)
 
