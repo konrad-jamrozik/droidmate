@@ -26,8 +26,6 @@ import org.droidmate.apis.MonitoredInlinedApkFixtureApiLogs
 import org.droidmate.configuration.Configuration
 import org.droidmate.device_simulation.AndroidDeviceSimulator
 import org.droidmate.device_simulation.DeviceSimulation
-import org.droidmate.errors.ExceptionSpec
-import org.droidmate.errors.IExceptionSpec
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IRobustDevice
@@ -36,6 +34,8 @@ import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
+import org.droidmate.test_exceptions.ExceptionSpec
+import org.droidmate.test_exceptions.IExceptionSpec
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator

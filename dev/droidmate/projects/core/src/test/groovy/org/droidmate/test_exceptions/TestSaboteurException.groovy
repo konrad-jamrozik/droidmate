@@ -16,18 +16,23 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.errors
 
-class TestAssertionError extends AssertionError implements ITestException
+package org.droidmate.test_exceptions
+
+import groovy.util.logging.Slf4j
+import org.droidmate.misc.DroidmateException
+
+@Slf4j
+ class TestSaboteurException extends DroidmateException
 {
-  private static final long serialVersionUID = 1
-
-  final IExceptionSpec exceptionSpec
-
-  TestAssertionError(IExceptionSpec exceptionSpec)
+  TestSaboteurException()
   {
-    super("Test-enforced assertion error. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex" as Object)
-    this.exceptionSpec = exceptionSpec
+    super()
+  }
+
+  TestSaboteurException(String message)
+  {
+    super(message)
   }
 
 }

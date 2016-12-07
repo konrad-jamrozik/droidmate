@@ -27,8 +27,6 @@ import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.device_simulation.AndroidDeviceSimulator
 import org.droidmate.device_simulation.DeviceSimulation
 import org.droidmate.device_simulation.IDeviceSimulation
-import org.droidmate.errors.ExceptionSpec
-import org.droidmate.errors.ITestException
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.strategy.ExplorationStrategy
@@ -38,6 +36,8 @@ import org.droidmate.misc.ThrowablesCollection
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.report.OutputDir
 import org.droidmate.storage.Storage2
+import org.droidmate.test_exceptions.ExceptionSpec
+import org.droidmate.test_exceptions.ITestException
 import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator

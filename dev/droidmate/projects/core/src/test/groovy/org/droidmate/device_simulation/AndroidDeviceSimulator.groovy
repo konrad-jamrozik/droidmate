@@ -26,14 +26,14 @@ import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
-import org.droidmate.errors.IExceptionSpec
-import org.droidmate.errors.TestDeviceException
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.WidgetExplorationAction
 import org.droidmate.misc.Boolean3
 import org.droidmate.misc.DroidmateException
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
+import org.droidmate.test_exceptions.IExceptionSpec
+import org.droidmate.test_exceptions.TestDeviceException
 import org.droidmate.tests.ApkFixtures
 
 import java.nio.file.Path

@@ -16,23 +16,21 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
+package org.droidmate.test_exceptions
 
-package org.droidmate.errors
-
-import groovy.util.logging.Slf4j
-import org.droidmate.misc.DroidmateException
-
-@Slf4j
- class TestSaboteurException extends DroidmateException
+interface IExceptionSpec extends Serializable
 {
-  TestSaboteurException()
-  {
-    super()
-  }
+  boolean matches(String methodName, String packageName, int callIndex)
 
-  TestSaboteurException(String message)
-  {
-    super(message)
-  }
+  boolean getThrowsEx()
 
+  String getPackageName()
+
+  String getMethodName()
+
+  int getCallIndex()
+
+  void throwEx() throws TestDeviceException
+
+  Boolean getExceptionalReturnBool()
 }

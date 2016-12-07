@@ -16,21 +16,18 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
+package org.droidmate.test_exceptions
 
-package org.droidmate.errors
-
-import org.droidmate.android_sdk.DeviceException
-
-class TestDeviceException extends DeviceException implements ITestException
+class TestAssertionError extends AssertionError implements ITestException
 {
-
   private static final long serialVersionUID = 1
 
   final IExceptionSpec exceptionSpec
 
-  TestDeviceException(IExceptionSpec exceptionSpec)
+  TestAssertionError(IExceptionSpec exceptionSpec)
   {
-    super("Test-enforced device exception. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex")
+    super("Test-enforced assertion error. Package name: $exceptionSpec.packageName Method name: $exceptionSpec.methodName Call index: $exceptionSpec.callIndex" as Object)
     this.exceptionSpec = exceptionSpec
   }
+
 }
