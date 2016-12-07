@@ -17,10 +17,12 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.device.datatypes
+package org.droidmate.test_tools.device.datatypes
 
 import groovy.transform.TypeChecked
-import org.droidmate.tests.DroidmateGroovyTestCase
+import org.droidmate.device.datatypes.UiautomatorWindowDump
+import org.droidmate.device.datatypes.Widget
+import org.droidmate.test_tools.DroidmateGroovyTestCase
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,7 +33,6 @@ import java.awt.*
 import java.util.List
 
 import static groovy.transform.TypeCheckingMode.SKIP
-import static org.droidmate.device.datatypes.UiautomatorWindowDumpTestHelper.*
 
 // WISH add test checking that widget.canBeClicked or not, depending if it intersects with visible device display bounds.
 @TypeChecked(SKIP)
@@ -47,14 +48,14 @@ class UiautomatorWindowDumpTest extends DroidmateGroovyTestCase
   @Test
   void "Has no bug #987"()
   {
-    UiautomatorWindowDump gs = newAppHasStoppedDialogOKDisabledWindowDump()
+    UiautomatorWindowDump gs = UiautomatorWindowDumpTestHelper.newAppHasStoppedDialogOKDisabledWindowDump()
     assert !(gs.validationResult.valid)
   }
 
   @Test
   void "Uiautomator window dump 'empty' fixture is indeed empty"()
   {
-    UiautomatorWindowDump sut = newEmptyActivityWindowDump()
+    UiautomatorWindowDump sut = UiautomatorWindowDumpTestHelper.newEmptyActivityWindowDump()
 
     // Act
     def guiState = sut.guiState
@@ -68,9 +69,9 @@ class UiautomatorWindowDumpTest extends DroidmateGroovyTestCase
     // Arrange
     Widget w1 = WidgetTestHelper.newClickableWidget(text: "fake_control", bounds: [-100, -5, 90, -3])
     Widget w2 = WidgetTestHelper.newClickableWidget(text: "dummy_button", bounds: [15, -50379, 93, -50357])
-    String inputFixture = createDumpSkeleton(dump(w1) + dump(w2))
+    String inputFixture = UiautomatorWindowDumpTestHelper.createDumpSkeleton(UiautomatorWindowDumpTestHelper.dump(w1) + UiautomatorWindowDumpTestHelper.dump(w2))
 
-    final sut = newWindowDump(inputFixture)
+    final sut = UiautomatorWindowDumpTestHelper.newWindowDump(inputFixture)
 
     // Act
     final guiState = sut.getGuiState()
@@ -86,7 +87,7 @@ class UiautomatorWindowDumpTest extends DroidmateGroovyTestCase
   void "Gets GUI state from 'app has stopped' dialog box"()
   {
     // Act
-    final sut = newAppHasStoppedDialogWindowDump()
+    final sut = UiautomatorWindowDumpTestHelper.newAppHasStoppedDialogWindowDump()
 
     final guiState = sut.getGuiState()
 
@@ -104,7 +105,7 @@ class UiautomatorWindowDumpTest extends DroidmateGroovyTestCase
   {
     // Arrange
 
-    final sut = newHomeScreenWindowDump()
+    final sut = UiautomatorWindowDumpTestHelper.newHomeScreenWindowDump()
 
     // Act
 
@@ -125,7 +126,7 @@ class UiautomatorWindowDumpTest extends DroidmateGroovyTestCase
   @Test
   void "Recognizes 'Select a Home app' dialog box"()
   {
-    UiautomatorWindowDump gs = newSelectAHomeAppWindowDump()
+    UiautomatorWindowDump gs = UiautomatorWindowDumpTestHelper.newSelectAHomeAppWindowDump()
     assert gs.guiState.isSelectAHomeAppDialogBox()
   }
 

@@ -36,10 +36,10 @@ import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.test_exceptions.ExceptionSpec
 import org.droidmate.test_exceptions.IExceptionSpec
-import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator
-import org.droidmate.tests.DroidmateGroovyTestCase
+import org.droidmate.test_tools.DroidmateGroovyTestCase
+import org.droidmate.test_tools.configuration.ConfigurationForTests
 import org.droidmate.tools.DeviceTools
 import org.droidmate.tools.IDeviceTools
 import org.droidmate.tools.SingleApkFixture

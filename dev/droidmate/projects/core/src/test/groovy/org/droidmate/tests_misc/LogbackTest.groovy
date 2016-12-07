@@ -31,10 +31,10 @@ import com.google.common.base.Stopwatch
 import groovy.transform.TypeChecked
 import groovy.transform.TypeCheckingMode
 import groovy.util.logging.Slf4j
-import org.droidmate.logging.LogbackConstants
 import org.droidmate.logging.LazyFileAppender
 import org.droidmate.logging.LogbackAppenders
-import org.droidmate.tests.DroidmateGroovyTestCase
+import org.droidmate.logging.LogbackConstants
+import org.droidmate.test_tools.DroidmateGroovyTestCase
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -68,7 +68,7 @@ class LogbackTest extends DroidmateGroovyTestCase
     def entry = "t"
 
     measureTime("plain log", 1000) {logger.debug("The new entry is "+entry+".")}
-    measureTime("fast log", 1000) {logger.debug("The new entry is {}.", entry);}
+    measureTime("fast log", 1000) {logger.debug("The new entry is {}.", entry)}
     measureTime("plain groovy log", 1000) {LoggedClass.useLog("The new entry is "+entry+".")}
     measureTime("fast groovy log", 1000) {LoggedClass.useLog("The new entry is {}.", entry)}
   }
@@ -76,10 +76,10 @@ class LogbackTest extends DroidmateGroovyTestCase
   @Test
   void t3_creatingLoggerAndAppender()
   {
-    Logger foo = createLoggerWithFileAppender("foo", "foo.log", false);
-    Logger bar = createLoggerWithFileAppender("bar", "bar.log", false);
-    foo.info("test");
-    bar.info("bar");
+    Logger foo = createLoggerWithFileAppender("foo", "foo.log", false)
+    Logger bar = createLoggerWithFileAppender("bar", "bar.log", false)
+    foo.info("test")
+    bar.info("bar")
   }
 
   @SuppressWarnings("GroovyAssignabilityCheck")
@@ -98,25 +98,25 @@ class LogbackTest extends DroidmateGroovyTestCase
 
   private static Logger createLoggerWithFileAppender(String loggerName, String fileName, boolean lazyFileAppender) {
 
-    def lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+    def lc = (LoggerContext) LoggerFactory.getILoggerFactory()
     def ple = createAndSetupPatternLayoutEncoder(lc)
     def fileAppender = createAndSetupFileAppender(fileName, ple, lc, lazyFileAppender)
 
-    Logger logger = (Logger) LoggerFactory.getLogger(loggerName);
-    logger.addAppender(fileAppender);
-    logger.setLevel(Level.DEBUG);
-    logger.setAdditive(false); /* set to true if root should log too */
+    Logger logger = (Logger) LoggerFactory.getLogger(loggerName)
+    logger.addAppender(fileAppender)
+    logger.setLevel(Level.DEBUG)
+    logger.setAdditive(false) /* set to true if root should log too */
 
-    return logger;
+    return logger
   }
 
   private static PatternLayoutEncoder createAndSetupPatternLayoutEncoder(LoggerContext lc)
   {
-    PatternLayoutEncoder ple = new PatternLayoutEncoder();
+    PatternLayoutEncoder ple = new PatternLayoutEncoder()
 
-    ple.setPattern("%date %level [%thread] %logger{10} [%file:%line] %msg%n");
-    ple.setContext(lc);
-    ple.start();
+    ple.setPattern("%date %level [%thread] %logger{10} [%file:%line] %msg%n")
+    ple.setContext(lc)
+    ple.start()
     return ple
   }
 
@@ -130,12 +130,12 @@ class LogbackTest extends DroidmateGroovyTestCase
 
 
     fileAppender.setName(fileAppenderName)
-    fileAppender.setFile("${LogbackConstants.LOGS_DIR_PATH}${File.separator}" + fileName);
-    fileAppender.setEncoder(ple);
-    fileAppender.setContext(lc);
+    fileAppender.setFile("${LogbackConstants.LOGS_DIR_PATH}${File.separator}" + fileName)
+    fileAppender.setEncoder(ple)
+    fileAppender.setContext(lc)
     if (lazy)
       fileAppender.setLazy(true)
-    fileAppender.start();
+    fileAppender.start()
 
     return fileAppender
   }
@@ -156,12 +156,12 @@ class LogbackTest extends DroidmateGroovyTestCase
   @Slf4j
   static class LoggedClass
   {
-    public static useLog(String msg)
+    static useLog(String msg)
     {
       log.debug(msg)
     }
 
-    public static useLog(String format, Object args)
+     static useLog(String format, Object args)
     {
       log.debug(format, args)
     }

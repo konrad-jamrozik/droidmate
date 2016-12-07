@@ -16,11 +16,10 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.device.datatypes
+package org.droidmate.test_tools.device.datatypes
 
 import groovy.util.logging.Slf4j
-
-import static org.droidmate.device.datatypes.UiautomatorWindowDumpTestHelper.*
+import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 
 @Slf4j
 class UnreliableDeviceGuiSnapshotProvider implements IUnreliableDeviceGuiSnapshotProvider
@@ -29,10 +28,10 @@ class UnreliableDeviceGuiSnapshotProvider implements IUnreliableDeviceGuiSnapsho
 
   private final IDeviceGuiSnapshot originalGuiSnapshot
 
-  private final IDeviceGuiSnapshot       nullGuiSnapshot                    = newNullWindowDump()
-  private final IDeviceGuiSnapshot       emptyGuiSnapshot                   = newEmptyWindowDump()
-  private final IDeviceGuiSnapshot       appHasStoppedOKDisabledGuiSnapshot = newAppHasStoppedDialogOKDisabledWindowDump()
-  private final IDeviceGuiSnapshot       appHasStoppedGuiSnapshot           = newAppHasStoppedDialogWindowDump()
+  private final IDeviceGuiSnapshot       nullGuiSnapshot                    = UiautomatorWindowDumpTestHelper.newNullWindowDump()
+  private final IDeviceGuiSnapshot       emptyGuiSnapshot                   = UiautomatorWindowDumpTestHelper.newEmptyWindowDump()
+  private final IDeviceGuiSnapshot       appHasStoppedOKDisabledGuiSnapshot = UiautomatorWindowDumpTestHelper.newAppHasStoppedDialogOKDisabledWindowDump()
+  private final IDeviceGuiSnapshot       appHasStoppedGuiSnapshot           = UiautomatorWindowDumpTestHelper.newAppHasStoppedDialogWindowDump()
   private final List<IDeviceGuiSnapshot> guiSnapshotsSequence               =
     [nullGuiSnapshot,
      emptyGuiSnapshot,

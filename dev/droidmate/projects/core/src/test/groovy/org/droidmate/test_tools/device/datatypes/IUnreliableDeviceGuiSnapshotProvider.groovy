@@ -16,25 +16,16 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
+package org.droidmate.test_tools.device.datatypes
 
-package org.droidmate.exploration.strategy
+import org.droidmate.device.datatypes.IDeviceGuiSnapshot
 
-import org.droidmate.configuration.Configuration
-import org.droidmate.test_helpers.configuration.ConfigurationForTests
 
-class ExplorationStrategyTestHelper
+interface IUnreliableDeviceGuiSnapshotProvider
 {
+  IDeviceGuiSnapshot provide()
 
-  static IExplorationStrategy buildStrategy(
-    Integer actionsLimit, Integer resetEveryNthExplorationForward)
-  {
-    Configuration cfg = new ConfigurationForTests().setArgs([
-      Configuration.pn_actionsLimit, "$actionsLimit",
-      Configuration.pn_resetEveryNthExplorationForward, "$resetEveryNthExplorationForward",
-    ]).get()
+  void pressOkOnAppHasStopped()
 
-    IExplorationStrategy strategy = ExplorationStrategy.build(cfg)
-    return strategy
-
-  }
+  IDeviceGuiSnapshot getCurrentWithoutChange()
 }

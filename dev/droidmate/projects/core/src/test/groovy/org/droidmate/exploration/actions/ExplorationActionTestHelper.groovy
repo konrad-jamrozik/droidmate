@@ -19,7 +19,7 @@
 
 package org.droidmate.exploration.actions
 
-import org.droidmate.device.datatypes.WidgetTestHelper
+import org.droidmate.test_tools.device.datatypes.WidgetTestHelper
 
 class ExplorationActionTestHelper
 {

@@ -17,34 +17,35 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.device.datatypes
+package org.droidmate.test_tools.device.datatypes
 
+import org.droidmate.device.datatypes.GuiState
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.device.model.DeviceModel
 
 import static WidgetTestHelper.newTopLevelWidget
-import static org.droidmate.device.datatypes.UiautomatorWindowDumpTestHelper.*
-import static org.droidmate.tests.ApkFixtures.apkFixture_simple_packageName
+import static org.droidmate.test_tools.ApkFixtures.apkFixture_simple_packageName
 
 class GuiStateTestHelper
 {
 
-  public static GuiState newEmptyGuiState(String appPackageName = apkFixture_simple_packageName, String id = null)
+  static GuiState newEmptyGuiState(String appPackageName = apkFixture_simple_packageName, String id = null)
   {
     return new GuiState(appPackageName, id, [] as List<Widget>, DeviceModel.buildDefault().androidLauncherPackageName)
   }
 
-  public static GuiState newGuiStateWithTopLevelNodeOnly(String appPackageName = apkFixture_simple_packageName, String id = null)
+   static GuiState newGuiStateWithTopLevelNodeOnly(String appPackageName = apkFixture_simple_packageName, String id = null)
   {
     return new GuiState(appPackageName, id, [newTopLevelWidget(appPackageName)] as List<Widget>, DeviceModel.buildDefault().androidLauncherPackageName)
   }
 
 
-  public static GuiState newGuiStateWithDisabledWidgets(int widgetCount)
+   static GuiState newGuiStateWithDisabledWidgets(int widgetCount)
   {
     return newGuiStateWithWidgets(widgetCount, apkFixture_simple_packageName, false)
   }
 
-  public static GuiState newGuiStateWithWidgets(
+   static GuiState newGuiStateWithWidgets(
     int widgetCount,
     String packageName = apkFixture_simple_packageName,
     boolean enabled = true,
@@ -68,31 +69,31 @@ class GuiStateTestHelper
     return gs
   }
 
-  public static GuiState newAppHasStoppedGuiState()
+   static GuiState newAppHasStoppedGuiState()
   {
-    return newAppHasStoppedDialogWindowDump().guiState
+    return UiautomatorWindowDumpTestHelper.newAppHasStoppedDialogWindowDump().guiState
   }
 
-  public static GuiState newCompleteActionUsingGuiState()
+   static GuiState newCompleteActionUsingGuiState()
   {
-    return newCompleteActionUsingWindowDump().guiState
+    return UiautomatorWindowDumpTestHelper.newCompleteActionUsingWindowDump().guiState
   }
 
 
-  public static GuiState newHomeScreenGuiState()
+   static GuiState newHomeScreenGuiState()
   {
-    return newHomeScreenWindowDump().guiState
+    return UiautomatorWindowDumpTestHelper.newHomeScreenWindowDump().guiState
 
   }
 
-  public static GuiState newOutOfAppScopeGuiState()
+   static GuiState newOutOfAppScopeGuiState()
   {
-    return newAppOutOfScopeWindowDump().guiState
+    return UiautomatorWindowDumpTestHelper.newAppOutOfScopeWindowDump().guiState
   }
 
   static int nextGuiStateIndex = 0
 
-  public static getNextGuiStateName()
+   static getNextGuiStateName()
   {
     nextGuiStateIndex++
     return "GS$nextGuiStateIndex"

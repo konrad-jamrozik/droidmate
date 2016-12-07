@@ -38,10 +38,10 @@ import org.droidmate.report.OutputDir
 import org.droidmate.storage.Storage2
 import org.droidmate.test_exceptions.ExceptionSpec
 import org.droidmate.test_exceptions.ITestException
-import org.droidmate.test_helpers.configuration.ConfigurationForTests
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresSimulator
-import org.droidmate.tests.DroidmateGroovyTestCase
+import org.droidmate.test_tools.DroidmateGroovyTestCase
+import org.droidmate.test_tools.configuration.ConfigurationForTests
 import org.droidmate.tools.DeviceToolsMock
 import org.junit.FixMethodOrder
 import org.junit.Test

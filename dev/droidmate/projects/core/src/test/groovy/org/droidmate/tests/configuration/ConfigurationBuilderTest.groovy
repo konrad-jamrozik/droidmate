@@ -21,7 +21,7 @@ package org.droidmate.tests.configuration
 
 import groovy.transform.TypeChecked
 import org.droidmate.configuration.ConfigurationBuilder
-import org.droidmate.tests.DroidmateGroovyTestCase
+import org.droidmate.test_tools.DroidmateGroovyTestCase
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith

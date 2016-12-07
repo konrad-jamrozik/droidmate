@@ -21,6 +21,8 @@ package org.droidmate.device_simulation
 import org.droidmate.device.datatypes.*
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.misc.ITimeGenerator
+import org.droidmate.test_tools.device.datatypes.IUnreliableDeviceGuiSnapshotProvider
+import org.droidmate.test_tools.device.datatypes.UnreliableDeviceGuiSnapshotProvider
 
 class UnreliableDeviceSimulation implements IDeviceSimulation
 {

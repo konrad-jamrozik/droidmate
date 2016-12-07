@@ -27,6 +27,9 @@ import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.errors.UnsupportedMultimethodDispatch
 import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.MonitorConstants
+import org.droidmate.test_tools.device.datatypes.GuiStateTestHelper
+import org.droidmate.test_tools.device.datatypes.UiautomatorWindowDumpTestHelper
+import org.droidmate.test_tools.device.datatypes.WidgetTestHelper
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import org.droidmate.uiautomator_daemon.guimodel.GuiAction
 

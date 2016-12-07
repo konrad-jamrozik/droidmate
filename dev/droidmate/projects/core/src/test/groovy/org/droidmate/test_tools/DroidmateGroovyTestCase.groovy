@@ -17,12 +17,12 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.tests
+package org.droidmate.test_tools
 
 import ch.qos.logback.classic.Level
-import org.droidmate.misc.BuildConstants
 import org.droidmate.logging.LogbackAppenders
 import org.droidmate.logging.LogbackUtilsRequiringLogbackLog
+import org.droidmate.misc.BuildConstants
 import org.junit.Before
 
 class DroidmateGroovyTestCase extends GroovyTestCase

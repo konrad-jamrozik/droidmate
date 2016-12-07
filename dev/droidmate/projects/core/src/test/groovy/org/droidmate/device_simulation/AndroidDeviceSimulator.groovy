@@ -34,7 +34,7 @@ import org.droidmate.misc.ITimeGenerator
 import org.droidmate.misc.TimeGenerator
 import org.droidmate.test_exceptions.IExceptionSpec
 import org.droidmate.test_exceptions.TestDeviceException
-import org.droidmate.tests.ApkFixtures
+import org.droidmate.test_tools.ApkFixtures
 
 import java.nio.file.Path
 import java.time.LocalDateTime

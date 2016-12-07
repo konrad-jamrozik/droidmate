@@ -23,11 +23,11 @@ import org.droidmate.android_sdk.ApkTestHelper
 import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.Api
 import org.droidmate.apis.ApiLogcatMessageTestHelper
-import org.droidmate.device.datatypes.UiautomatorWindowDumpTestHelper
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.*
 import org.droidmate.exploration.device.DeviceLogs
 import org.droidmate.exploration.device.IDeviceLogs
+import org.droidmate.test_tools.device.datatypes.UiautomatorWindowDumpTestHelper
 
 import java.time.LocalDateTime
 

@@ -16,11 +16,11 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.test_helpers.configuration
+package org.droidmate.test_tools.configuration
 
-import org.droidmate.misc.BuildConstants
 import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
+import org.droidmate.misc.BuildConstants
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -60,7 +60,7 @@ class ConfigurationForTests
     ]
   }
 
-  public Configuration get()
+  Configuration get()
   {
     new ConfigurationBuilder().build(this.argsList as String[], this.fs)
   }

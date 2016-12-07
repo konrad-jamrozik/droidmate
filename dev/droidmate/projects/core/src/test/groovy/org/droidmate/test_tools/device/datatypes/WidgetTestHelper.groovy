@@ -17,8 +17,9 @@
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
 
-package org.droidmate.device.datatypes
+package org.droidmate.test_tools.device.datatypes
 
+import org.droidmate.device.datatypes.Widget
 import org.droidmate.device.model.DeviceModel
 
 import java.awt.*
@@ -27,7 +28,7 @@ import java.util.List
 class WidgetTestHelper
 {
 
-  public static Widget newGenWidget(Map args, int widgetGenIndex)
+  static Widget newGenWidget(Map args, int widgetGenIndex)
   {
     assert widgetGenIndex >= 1
     Map genArgs = args
@@ -44,7 +45,7 @@ class WidgetTestHelper
   }
 
 
-  public static List<Widget> newWidgets(int widgetCount, String packageName, Map props, String widgetIdPrefix = null)
+   static List<Widget> newWidgets(int widgetCount, String packageName, Map props, String widgetIdPrefix = null)
   {
     assert widgetCount >= 1
 
@@ -126,7 +127,7 @@ class WidgetTestHelper
   static long dummyNameGen         = 0
   static long getBoundsListCallGen = 0
 
-  public static GString getNextWidgetId(int index, String widgetIdPrefix = null)
+   static GString getNextWidgetId(int index, String widgetIdPrefix = null)
   {
     if (widgetIdPrefix == null)
       return "${index}_uniq${dummyNameGen++}"
@@ -156,23 +157,23 @@ class WidgetTestHelper
   ]
 
 
-  public static Widget newClickableButton(Map args = [:])
+   static Widget newClickableButton(Map args = [:])
   {
     newButton(args + [clickable: true, checkable: false, enabled: true])
   }
 
-  public static Widget newButton(Map args)
+   static Widget newButton(Map args)
   {
     return newWidget(args + [className: "android.widget.Button"])
   }
 
 
-  public static newTopLevelWidget(String packageName)
+   static newTopLevelWidget(String packageName)
   {
     newWidget([id: "topLevelFrameLayout", packageName: packageName, class: "android.widget.FrameLayout", bounds: [0, 0, 800, 1205]])
   }
 
-  public static Widget newClickableWidget(Map args = [:], Integer widgetGenIndex = null)
+   static Widget newClickableWidget(Map args = [:], Integer widgetGenIndex = null)
   {
     if (widgetGenIndex == null)
       newWidget(args + [clickable: true, enabled: true])
@@ -184,7 +185,7 @@ class WidgetTestHelper
 
   }
 
-  public static Widget newWidget(Map args)
+   static Widget newWidget(Map args)
   {
     List<Integer> bounds = (args.bounds ?: [10, 20, 101, 202]) as List<Integer>
 

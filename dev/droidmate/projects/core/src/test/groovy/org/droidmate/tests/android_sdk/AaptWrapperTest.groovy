@@ -22,10 +22,10 @@ package org.droidmate.tests.android_sdk
 import groovy.transform.TypeChecked
 import org.droidmate.android_sdk.AaptWrapper
 import org.droidmate.android_sdk.Apk
-import org.droidmate.misc.SysCmdExecutor
 import org.droidmate.configuration.Configuration
-import org.droidmate.tests.ApkFixtures
-import org.droidmate.tests.DroidmateGroovyTestCase
+import org.droidmate.misc.SysCmdExecutor
+import org.droidmate.test_tools.ApkFixtures
+import org.droidmate.test_tools.DroidmateGroovyTestCase
 import org.droidmate.tests.FixturesKt
 import org.junit.FixMethodOrder
 import org.junit.Test
@@ -41,10 +41,10 @@ import static groovy.transform.TypeCheckingMode.SKIP
 @TypeChecked
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4)
-public class AaptWrapperTest extends DroidmateGroovyTestCase
+ class AaptWrapperTest extends DroidmateGroovyTestCase
 {
   @Test
-  public void "Gets launchable activity component name from badging dump"()
+   void "Gets launchable activity component name from badging dump"()
   {
     String aaptBadgingDump = aaptBadgingDump
 
@@ -56,7 +56,7 @@ public class AaptWrapperTest extends DroidmateGroovyTestCase
 
   @TypeChecked(SKIP)
   @Test
-  public void "Gets launchable activity component name"()
+   void "Gets launchable activity component name"()
   {
 
     AaptWrapper sut = new AaptWrapper(Configuration.default, new SysCmdExecutor())
