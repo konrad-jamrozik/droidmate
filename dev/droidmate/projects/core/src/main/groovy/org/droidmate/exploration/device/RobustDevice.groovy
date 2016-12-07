@@ -317,7 +317,7 @@ class RobustDevice implements IRobustDevice
 
     } catch (DeviceException e)
     {
-      log.debug("device.launchMainActivity() threw $e. Returning false (launch failure) without rethrowing.")
+      log.debug("device.launchMainActivity() threw $e. Returning false (launch failure) without rethrowing (discarding exception).")
       return Boolean3.False
     }
   }

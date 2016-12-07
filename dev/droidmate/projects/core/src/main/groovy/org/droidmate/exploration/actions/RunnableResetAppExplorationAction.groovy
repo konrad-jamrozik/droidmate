@@ -32,12 +32,14 @@ import static org.droidmate.device.datatypes.AndroidDeviceAction.newTurnWifiOnDe
 @Slf4j
 class RunnableResetAppExplorationAction extends RunnableExplorationAction
 {
-
   private static final long serialVersionUID = 1
+
+  private final boolean isFirst
 
   RunnableResetAppExplorationAction(ResetAppExplorationAction action, LocalDateTime timestamp)
   {
     super(action, timestamp)
+    this.isFirst = action.isFirst
   }
 
   @Override
@@ -76,9 +78,13 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     log.debug("7. Launch app $app.packageName.")
     device.launchApp(app)
 
+    if (this.isFirst)
+    {
+      log.debug("7.FIRST: Take a screenshot of *first* reset action.")
+      device.takeScreenshot(app.packageName, "firstReset")
+    }
+
     log.debug("8. Get GUI snapshot.")
-    // GUI snapshot has to be obtained before a check is made if app is running. Why? Because obtaining GUI snapshot closes all
-    // ANR dialogs, and if the app crashed with ANR, it will be deemed as running until the ANR is closed.
     this.snapshot = device.guiSnapshot
 
     log.debug("9. Try to read API logs.")

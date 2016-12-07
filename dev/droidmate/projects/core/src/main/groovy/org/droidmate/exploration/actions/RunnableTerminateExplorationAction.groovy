@@ -46,19 +46,19 @@ class RunnableTerminateExplorationAction extends RunnableExplorationAction
     logsHandler.readClearAndAssertOnlyBackgroundApiLogsIfAny()
     this.logs = logsHandler.getLogs()
     
-    log.debug("1.5.experimental: take a screenshot")
+    log.debug("2. Take a screenshot.")
     device.takeScreenshot(app.packageName, "terminate")
     
-    log.debug("2. Close monitor servers, if any.")
+    log.debug("3. Close monitor servers, if any.")
     device.closeMonitorServers()
 
-    log.debug("3. Clear package ${app.packageName}}.")
+    log.debug("4. Clear package ${app.packageName}}.")
     device.clearPackage(app.packageName)
 
-    log.debug("4. Assert app is not running.")
+    log.debug("5. Assert app is not running.")
     assertAppIsNotRunning(device, app)
 
-    log.debug("5. Ensure home screen is displayed.")
+    log.debug("6. Ensure home screen is displayed.")
     this.snapshot = device.ensureHomeScreenIsDisplayed()
 
   }
