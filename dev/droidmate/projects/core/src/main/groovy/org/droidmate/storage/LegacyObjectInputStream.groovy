@@ -18,15 +18,20 @@
 // web: www.droidmate.org
 package org.droidmate.storage
 
-import org.droidmate.exploration.actions.DeviceExceptionMissing
-
 /**
- * An {@code ObjectInputStream} that can account for package name changes of the read/deserialized classes. If this stream reads
- * a class whose fully qualified name is a key in the {@link LegacyObjectInputStream#classNameMapping}, then it will be read to
- * the value of this key. Assumption here is that the package name of the read class has changed since it has been serialized,
- * from:<br/>
- * - a fully qualified name (now obsolete) as given in the mapping key to<br/> 
- * - a class (current) as given in the value of that key.
+ * <p>An {@link ObjectInputStream} that can account for changes in fully qualified names of the read/deserialized classes. 
+ * If this stream reads a class whose fully qualified name is a key in the {@link LegacyObjectInputStream#classNameMapping}, 
+ * then it will be instead read as class whose fully qualified name is given in the value of that key.
+ *
+ * </p><p>
+ * Assumption here is that the name of the read class has changed since it has been serialized.
+ *
+ * </p><p>
+ * The name changed from:<br/>
+ * A fully qualified name (now obsolete), as given in the mapping key<br/>
+ * -to-<br/>
+ * a fully qualified name (current), as given in the value of that key.
+ * </p>
  */
 class LegacyObjectInputStream extends ObjectInputStream
 {
@@ -36,12 +41,12 @@ class LegacyObjectInputStream extends ObjectInputStream
     super(ins)
   }
 
-  public static Map<String, Class> classNameMapping = initClassNameMapping()
+  public static Map<String, String> classNameMapping = initClassNameMapping()
 
-  private static Map<String, Class> initClassNameMapping()
+  private static Map<String, String> initClassNameMapping()
   {
-    Map<String, Class> classNameMapping = [
-      "org.droidmate.exceptions.DeviceExceptionMissing": DeviceExceptionMissing,
+    Map<String, String> classNameMapping = [
+      "org.droidmate.exceptions.DeviceExceptionMissing": "org.droidmate.exploration.actions.DeviceExceptionMissing",
     ]
     return Collections.unmodifiableMap(classNameMapping)
   }
@@ -53,7 +58,7 @@ class LegacyObjectInputStream extends ObjectInputStream
     ObjectStreamClass desc = super.readClassDescriptor()
     if (classNameMapping.containsKey(desc.name))
     {
-      return ObjectStreamClass.lookup(classNameMapping[desc.name])
+      return ObjectStreamClass.lookup(Class.forName(classNameMapping[desc.name]))
     }
     return desc
   }
