@@ -37,7 +37,7 @@ class Api implements IApi, Serializable
   public static final String monitorRedirectionPrefix = "org.droidmate.monitor.Monitor.redir"
 
   // !!! DUPLICATION WARNING !!! org.droidmate.lib_android.MonitorJavaTemplate.stack_trace_frame_delimiter
-  public static final String stack_trace_frame_delimiter = "->";
+  public static final String stack_trace_frame_delimiter = "->"
 
   private static final long serialVersionUID = 1
 
@@ -115,7 +115,7 @@ class Api implements IApi, Serializable
     int uriIndex = paramTypes.findIndexOf {it == "android.net.Uri"}
     String uri = paramValues[uriIndex]
 
-    assert uri.startsWith("content://") || uri.startsWith("android.resource://") || uri.startsWith("file://")
+    assert uri.startsWith("content://") || uri.startsWith("android.resource://") || uri.startsWith("file://") || uri.startsWith("http://")
 
     String[] uriParts = uri.split(/\?/)
     assert uriParts.size() <= 2

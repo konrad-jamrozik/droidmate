@@ -34,7 +34,7 @@ class Summary(val data: List<IApkExplorationOutput2>, file: Path): DataFile(file
     if (data.isEmpty())
       "Exploration output was empty (no apks), so this summary is empty."
     else
-      Resource("apk_exploration_summary_header.txt").extractedText + data.joinToString { it -> ApkSummary.build(it) }
+      Resource("apk_exploration_summary_header.txt").extractedText + data.joinToString(separator="\n") { it -> ApkSummary.build(it) }
   }
 
 }
