@@ -43,18 +43,18 @@ import static org.droidmate.logging.Markers.runData
  * </p>
  */
 @Slf4j
-public class DroidmateFrontend
+ class DroidmateFrontend
 {
   /**
    * @see DroidmateFrontend
    */
-  public static void main(String[] args)
+   static void main(String[] args)
   {
     int exitStatus = main(args, null)
     System.exit(exitStatus)
   }
 
-  public static int main(String[] args, ICommandProvider commandProvider, FileSystem fs = FileSystems.getDefault(), IExceptionHandler exceptionHandler = new ExceptionHandler())
+   static int main(String[] args, ICommandProvider commandProvider, FileSystem fs = FileSystems.getDefault(), IExceptionHandler exceptionHandler = new ExceptionHandler())
   {
     println "DroidMate, an automated execution generator for Android apps."
     println "Copyright (c) 2012 - ${LocalDate.now().year} Konrad Jamrozik"
@@ -88,6 +88,7 @@ public class DroidmateFrontend
 
       log.info("Successfully instantiated ${command.class.simpleName}. Welcome to DroidMate. Lie back, relax and enjoy.")
       log.info("Run start timestamp: " + runStart)
+      log.info("Running in Android $cfg.androidApi compatibility (api19 = 4.4.4, api23 = 6.0).")
 
       command.execute(cfg)
 
