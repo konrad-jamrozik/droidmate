@@ -10,13 +10,13 @@ package org.droidmate_usage_examples;
 
 import com.google.common.collect.Iterables;
 import com.google.common.io.Files;
+import org.droidmate.android_sdk.DeviceException;
 import org.droidmate.android_sdk.IApk;
 import org.droidmate.apis.IApiLogcatMessage;
 import org.droidmate.command.ExploreCommand;
 import org.droidmate.configuration.Configuration;
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot;
 import org.droidmate.device.datatypes.Widget;
-import org.droidmate.exceptions.DeviceException;
 import org.droidmate.exploration.actions.ExplorationAction;
 import org.droidmate.exploration.actions.IExplorationActionRunResult;
 import org.droidmate.exploration.actions.RunnableExplorationActionWithResult;
