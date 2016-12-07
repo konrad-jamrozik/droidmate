@@ -147,7 +147,7 @@ import java.nio.file.Paths
    * @see #tryTearDown(IDeployableAndroidDevice)
    */
   @Override
-   List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> computation)
+  List<ExplorationException> withSetupDevice(int deviceIndex, Closure<List<ApkExplorationException>> computation)
   {
     log.info("Setup device with deviceIndex of $deviceIndex")
     Assert.checkClosureFirstParameterSignature(computation, IRobustDevice)

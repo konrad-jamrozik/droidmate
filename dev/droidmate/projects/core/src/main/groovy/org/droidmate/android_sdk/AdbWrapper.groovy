@@ -194,7 +194,7 @@ import java.nio.file.Paths
   @Override
    void forwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
   {
-    log.trace("forwardPort($deviceSerialNumber, $port)")
+    log.trace("forwardPort(deviceSerialNumber:$deviceSerialNumber, port:$port)")
     assert deviceSerialNumber != null
 
     try

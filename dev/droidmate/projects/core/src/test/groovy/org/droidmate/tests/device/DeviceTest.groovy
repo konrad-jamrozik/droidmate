@@ -109,7 +109,7 @@ class DeviceTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
-  void "Turns wifi on on api23"()
+  void "Sets up API 23 device and turns wifi on."()
   {
     IDeviceTools deviceTools = new DeviceTools(new ConfigurationForTests().setArgs([Configuration.pn_androidApi, Configuration.api23,]).forDevice().get())
     deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->

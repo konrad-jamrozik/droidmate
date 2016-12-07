@@ -243,10 +243,17 @@ loggersWithLazyFileAppenders.each {Map it ->
 
 //region Remaining loggers
 
+/*
+All the appenders attached to the root logger will receive logs from all the loggers. The appenders have to rely on their filters
+(defined above)  to prevent from having all the logs dumped into them.
+*/
 root(TRACE, mainAppenders + [
   appender_name_runData,
   appender_file_osCmd,
-  appender_name_monitor,
+  /* The "monitor" appender accepts INFO messages, among others. The fact it is associated with root logger will make the INFO messages
+    be appended to it. */
+  // Turned off because the monitor appender was generating huge files (see the "monitor" logger)
+  // appender_name_monitor,
 ])
 
 // N00b reference for additivity: http://logback.qos.ch/manual/architecture.html#additivity
@@ -257,7 +264,9 @@ root(TRACE, mainAppenders + [
 //logger("org.droidmate.exploration.output", TRACE, mainAppenders - warnAppenders, /* additivity */ true)
 
 
-// Additivity is set to false to stop the uiad logs from appearing in the master log (they would appear there as the "master_log" appender is attached to the root logger)
-logger(logger_name_monitor, TRACE, [appender_name_monitor] + warnAppenders, /* additivity */ false)
+/* This line makes the special "monitor" logger send messages to the "monitor" appender. */
+// Additivity is set to false to stop the logs from "logger_name_monitor" from appearing in the master log (they would appear there as the "master_log" appender is attached to the root logger)
+// Turned off because the messages from "monitor" logger were huge (all API calls monitored, including their stack traces).
+// logger(logger_name_monitor, TRACE, [appender_name_monitor] + warnAppenders, /* additivity */ false)
 
 //endregion
