@@ -176,4 +176,9 @@ class AdbWrapperStub implements IAdbWrapper
   void takeScreenshot(String deviceSerialNumber, String targetPath) throws AdbWrapperException
   {
   }
+
+  @Override
+  void executeCommand(String deviceSerialNumber, String command) throws AdbWrapperException
+  {
+  }
 }

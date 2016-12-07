@@ -22,8 +22,10 @@ package org.droidmate.tests.device
 import groovy.transform.TypeChecked
 import org.droidmate.android_sdk.Apk
 import org.droidmate.android_sdk.ExplorationException
+import org.droidmate.android_sdk.FirstRealDeviceSerialNumber
 import org.droidmate.android_sdk.IApk
 import org.droidmate.configuration.Configuration
+import org.droidmate.device.IAndroidDevice
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.misc.BuildConstants
 import org.droidmate.test_suite_categories.RequiresDevice
@@ -33,6 +35,7 @@ import org.droidmate.test_tools.configuration.ConfigurationForTests
 import org.droidmate.tools.ApksProvider
 import org.droidmate.tools.DeviceTools
 import org.droidmate.tools.IDeviceTools
+import org.droidmate.uiautomator_daemon.DeviceCommand
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.experimental.categories.Category
@@ -42,6 +45,7 @@ import org.junit.runners.MethodSorters
 
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newClickGuiDeviceAction
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newTurnWifiOnDeviceAction
+import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.DEVICE_COMMAND_GET_DEVICE_MODEL
 
 @TypeChecked
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -58,6 +62,51 @@ class DeviceTest extends DroidmateGroovyTestCase
       device.reboot()
       device.getGuiSnapshot()
     }
+  }
+
+  /**
+   * In the past, before I added some commands for uninstalling uiad and clearing logact, failure could be reproduced like that: 
+   * 1. run the test once to completion. It will retain uiad on device. Check it with:
+   * adb shell
+   * ps | grep uia
+   * // nonempty result
+   * 2. now run the test again. Failure. Interesting info on logcat.
+   * 
+   */
+  @Category([RequiresDevice])
+  @Test
+  void "Starts uiadaemon2 and talks with it through TCP"()
+  {
+    def cfg = new ConfigurationForTests().setArgs([Configuration.pn_androidApi, Configuration.api23,]).forDevice().get()
+    IDeviceTools deviceTools = new DeviceTools(cfg)
+    IAndroidDevice device = deviceTools.deviceFactory.create(new FirstRealDeviceSerialNumber(deviceTools.adb).toString())
+    device.clearLogcat()
+    device.installApk(cfg.uiautomator2DaemonApk)
+    device.installApk(cfg.uiautomator2DaemonTestApk)
+    device.setupConnection()
+    
+    println 'Socket socket = new Socket("localhost", 59800)' 
+    Socket socket = new Socket("localhost", 59800)
+    
+    println 'def inputStream = new ObjectInputStream(socket.inputStream)'
+    def inputStream = new ObjectInputStream(socket.inputStream)
+    
+    println 'def outputStream = new ObjectOutputStream(socket.outputStream)'
+    def outputStream = new ObjectOutputStream(socket.outputStream)
+    
+    println 'outputStream.writeObject(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))'
+    outputStream.writeObject(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
+    
+    println 'outputStream.flush()'
+    outputStream.flush()
+
+    println 'inputStream.readObject()'
+    inputStream.readObject()
+    
+    println 'socket.close()'
+    socket.close()
+    
+    println 'END'
   }
 
   @Category([RequiresDevice])

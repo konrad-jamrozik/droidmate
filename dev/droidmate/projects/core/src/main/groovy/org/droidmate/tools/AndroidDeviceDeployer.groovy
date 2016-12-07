@@ -95,6 +95,11 @@ import java.nio.file.Paths
       device.installApk(this.cfg.uiautomator2DaemonApk)
       device.installApk(this.cfg.uiautomator2DaemonTestApk)
       device.pushJar(this.cfg.monitorApkApi23, BuildConstants.monitor_on_avd_apk_name)
+      
+      // Uninstall packages in case previous DroidMate run had some leftovers in the form of living uia-daemon.
+      device.executeAdbCommand("shell uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test")
+      device.executeAdbCommand("shell uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
+
     } else throw new UnexpectedIfElseFallthroughError()
     
     device.setupConnection()

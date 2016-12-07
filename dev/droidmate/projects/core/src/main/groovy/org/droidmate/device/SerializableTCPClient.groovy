@@ -51,6 +51,8 @@ import org.droidmate.android_sdk.DeviceException
 
       Socket socket = this.tryGetSocket(serverAddress, port)
 
+      log.trace("Got socket: $serverAddress:$port timeout: ${this.socketTimeout}")
+      
       socket.soTimeout = this.socketTimeout
 
       ObjectInputStream inputStream
@@ -64,7 +66,9 @@ import org.droidmate.android_sdk.DeviceException
         // 2. search for: "Note - The ObjectInputStream constructor blocks until" in:
         // http://docs.oracle.com/javase/7/docs/platform/serialization/spec/input.html
         //
+        // KJA on init-model / uiad-restart this hangs.
         inputStream = new ObjectInputStream(socket.inputStream)
+        log.trace("Got input stream")
         // KNOWN BUG one of this EOFException is thrown on org.droidmate.exploration.device.RobustDevice.getValidGuiSnapshot,
         // resulting in propagating exception that IS NOT a "DeviceNeedsRebootException". Which is a problem, because then
         // the exploration continues.
@@ -84,6 +88,7 @@ import org.droidmate.android_sdk.DeviceException
       try
       {
         outputStream = new ObjectOutputStream(socket.outputStream)
+        log.trace("got outputStream")
       } catch (EOFException e)
       {
         throw new TcpServerUnreachableException(e)

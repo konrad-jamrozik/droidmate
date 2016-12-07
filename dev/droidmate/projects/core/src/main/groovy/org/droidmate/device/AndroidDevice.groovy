@@ -345,6 +345,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   private void startUiaDaemon() throws DeviceException
   {
     log.debug("startUiaDaemon()")
+    this.clearLogcat()
     this.tcpClients.startUiaDaemon()
     log.trace("DONE startUiaDaemon()")
   }
@@ -451,15 +452,22 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   void initModel() throws DeviceException
   {
     log.trace("initModel(): this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))")
+    // KJA hangs. Maybe killing uiad with adb shell ps -kill will help?
     DeviceResponse response = this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
     assert response.model != null
 
     this.deviceModel = DeviceModel.build(response.model)
     assert this.deviceModel != null
   }
+  
+  @Override
+  void executeAdbCommand(String command) throws DeviceException
+  {
+    this.adbWrapper.executeCommand(this.serialNumber, command)
+  }
 
   @Override
-   String toString()
+  String toString()
   {
     return "{device $serialNumber}"
   }

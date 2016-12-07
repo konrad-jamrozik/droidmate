@@ -148,6 +148,8 @@ class Exploration implements IExploration
   {
     log.trace("tryWarnDeviceDisplaysHomeScreen(device, $fileName)")
 
+    // KJA exhausts here all attempts "Validation (failed) result: The window xml hierarchy dump is empty (its string length is zero) from "getValidGuiSnapshot". Sleeping for 2000 and retrying."
+    // Finally gives up and gets back stuck here on next app.
     IDeviceGuiSnapshot initialGuiSnapshot = device.guiSnapshot
 
     if (!initialGuiSnapshot.guiState.isHomeScreen())

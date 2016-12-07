@@ -32,22 +32,24 @@ class DeviceTools implements IDeviceTools
 {
 
   IAaptWrapper           aapt
+  IAdbWrapper            adb
   IAndroidDeviceDeployer deviceDeployer
   IApkDeployer           apkDeployer
+  IAndroidDeviceFactory  deviceFactory
 
 
-  public DeviceTools(Configuration cfg = Configuration.default, Map substitutes = [:])
+  DeviceTools(Configuration cfg = Configuration.default, Map substitutes = [:])
   {
     def sysCmdExecutor = new SysCmdExecutor()
 
     aapt = substitutes[IAaptWrapper] as IAaptWrapper ?: new AaptWrapper(cfg, sysCmdExecutor)
 
-    def adbWrapper = substitutes[IAdbWrapper] as IAdbWrapper ?: new AdbWrapper(cfg, sysCmdExecutor)
+    adb = substitutes[IAdbWrapper] as IAdbWrapper ?: new AdbWrapper(cfg, sysCmdExecutor)
 
-    def deviceFactory = substitutes[IAndroidDeviceFactory] as IAndroidDeviceFactory ?:
-      new AndroidDeviceFactory(cfg, adbWrapper)
+    deviceFactory = substitutes[IAndroidDeviceFactory] as IAndroidDeviceFactory ?:
+      new AndroidDeviceFactory(cfg, adb)
 
-    deviceDeployer = new AndroidDeviceDeployer(cfg, adbWrapper, deviceFactory)
+    deviceDeployer = new AndroidDeviceDeployer(cfg, adb, deviceFactory)
 
     apkDeployer = new ApkDeployer(cfg)
   }

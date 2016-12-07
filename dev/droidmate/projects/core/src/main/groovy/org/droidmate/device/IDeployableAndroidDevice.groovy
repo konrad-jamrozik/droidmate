@@ -59,4 +59,6 @@ interface IDeployableAndroidDevice
   void pullLogcatLogFile() throws DeviceException
 
   void initModel() throws DeviceException
+
+  void executeAdbCommand(String command)
 }

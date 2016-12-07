@@ -16,23 +16,21 @@
 //
 // email: jamrozik@st.cs.uni-saarland.de
 // web: www.droidmate.org
-package org.droidmate.tools
+package org.droidmate.android_sdk
 
-import org.droidmate.android_sdk.IAaptWrapper
-import org.droidmate.android_sdk.IAdbWrapper
-
-interface IDeviceTools
+class FirstRealDeviceSerialNumber
 {
+  private final serialNumber
 
-  IAaptWrapper getAapt()
-  
-  IAdbWrapper getAdb()
+  FirstRealDeviceSerialNumber(IAdbWrapper adb)
+  {
+    def realDevices = adb.androidDevicesDescriptors.findAll {!it.isEmulator}
+    assert !realDevices.empty
+    this.serialNumber = realDevices.first().deviceSerialNumber
+  }
 
-  IAndroidDeviceDeployer getDeviceDeployer()
-
-  IApkDeployer getApkDeployer()
-  
-  IAndroidDeviceFactory getDeviceFactory()
-  
-
+  @Override
+  String toString() {
+    return serialNumber
+  }
 }

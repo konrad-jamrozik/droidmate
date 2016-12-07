@@ -38,6 +38,7 @@ public class UiautomatorDaemonConstants
   public static final String DEVICE_GOOGLE_NEXUS_7             = "asus-Nexus 7";
   public static final String DEVICE_GOOGLE_NEXUS_5X            = "LGE-Nexus 5X";
   
+  // KJA fix tag to match tags in UiAuatomator2DaemonTest
   public static final String UIADAEMON_SERVER_START_TAG = "uiautomator-daemon_server_start_tag";
   public static final String UIADAEMON_SERVER_START_MSG = "UiAutomator Daemon server started successfully";
 

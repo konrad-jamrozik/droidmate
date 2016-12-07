@@ -38,7 +38,7 @@ import java.nio.file.Path
 import java.time.LocalDateTime
 
 @Slf4j
- class AndroidDeviceSimulator implements IAndroidDevice
+class AndroidDeviceSimulator implements IAndroidDevice
 {
 
   private final List<IDeviceSimulation> simulations
@@ -331,5 +331,10 @@ import java.time.LocalDateTime
   void initModel() throws DeviceException
   {
     // Do nothing
+  }
+
+  @Override
+  void executeAdbCommand(String command)
+  {
   }
 }

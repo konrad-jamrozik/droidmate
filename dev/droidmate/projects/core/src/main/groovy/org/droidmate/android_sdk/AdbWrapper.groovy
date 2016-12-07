@@ -160,7 +160,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean ignoreFailure)
+  void uninstallApk(String deviceSerialNumber, String apkPackageName, boolean ignoreFailure)
     throws AdbWrapperException
   {
     assert deviceSerialNumber != null
@@ -369,7 +369,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   void clearLogcat(String deviceSerialNumber) throws AdbWrapperException
+  void clearLogcat(String deviceSerialNumber) throws AdbWrapperException
   {
     try
     {
@@ -877,6 +877,20 @@ import java.nio.file.Paths
     } catch (SysCmdExecutorException e)
     {
       throw new AdbWrapperException("Executing 'adb rm sdcard/screen.png' failed. Oh my.", e)
+    }
+  }
+  
+  @Override
+  void executeCommand(String deviceSerialNumber, String command) throws AdbWrapperException 
+  {
+    try
+    {
+      sysCmdExecutor.execute("Custom command", cfg.adbCommand, 
+      "-s", deviceSerialNumber,
+      command)
+    } catch (SysCmdExecutorException e)
+    {
+      throw new AdbWrapperException("Executing custom adb command failed. Oh my.", e)
     }
   }
 
