@@ -264,7 +264,7 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
-   Boolean appIsNotRunning(IApk apk) throws DeviceException
+  Boolean appIsNotRunning(IApk apk) throws DeviceException
   {
     return Utils.retryOnFalse({!this.getAppIsRunningRebootingIfNecessary(apk.packageName)},
       checkAppIsRunningRetryAttempts,
@@ -324,7 +324,7 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
   {
-    IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshot()
+    IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshotRebootingIfNecessary()
     guiSnapshot = closeANRIfNecessary(guiSnapshot)
     return guiSnapshot
   }
@@ -369,6 +369,11 @@ class RobustDevice implements IRobustDevice
     return out
   }
 
+  private IDeviceGuiSnapshot getRetryValidGuiSnapshotRebootingIfNecessary() throws DeviceException
+  {
+      rebootIfNecessary { this.getRetryValidGuiSnapshot() }
+  }
+  
   private IDeviceGuiSnapshot getRetryValidGuiSnapshot() throws DeviceException
   {
     IDeviceGuiSnapshot guiSnapshot = Utils.retryOnException(
