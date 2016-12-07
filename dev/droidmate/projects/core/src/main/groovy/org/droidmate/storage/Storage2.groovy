@@ -33,7 +33,7 @@ import java.time.format.DateTimeFormatter
  * Persistent storage. Allows for serializing to HDD and back.
  */
 @Slf4j
- class Storage2 implements IStorage2
+class Storage2 implements IStorage2
 {
 
   private static final DateTimeFormatter serializedFileTimestampPattern = DateTimeFormatter.ofPattern("yyyy MMM dd HHmm")
@@ -72,7 +72,7 @@ import java.time.format.DateTimeFormatter
    Object deserialize(Path file)
   {
     ObjectInputStream input =
-      new ObjectInputStream(Channels.newInputStream(FileChannel.open(file, StandardOpenOption.READ)))
+      new LegacyObjectInputStream(Channels.newInputStream(FileChannel.open(file, StandardOpenOption.READ)))
     def obj = input.readObject()
     input.close()
     return obj
