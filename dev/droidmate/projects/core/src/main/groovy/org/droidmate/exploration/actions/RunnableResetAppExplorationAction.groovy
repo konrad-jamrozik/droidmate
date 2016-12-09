@@ -80,7 +80,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
 
     if (this.isFirst)
     {
-      log.debug("7.FIRST: Take a screenshot of *first* reset action.")
+      log.debug("7.firstReset: Take a screenshot of first reset action.")
       device.takeScreenshot(app, "firstReset")
     }
 

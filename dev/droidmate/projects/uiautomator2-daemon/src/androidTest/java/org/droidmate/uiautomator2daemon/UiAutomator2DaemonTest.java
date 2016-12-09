@@ -75,7 +75,7 @@ public class UiAutomator2DaemonTest
       Log.e(uiaDaemon_logcatTag, "uiAutomatorDaemonServer.start("+tcpPort+") / FAILURE", t);
     }
     if (serverThread == null) throw new AssertionError();
-    Log.d(uiaDaemon_logcatTag, "uiAutomatorDaemonServer.start("+tcpPort+") / SUCCESS");
+    Log.i(uiaDaemon_logcatTag, "uiAutomatorDaemonServer.start("+tcpPort+") / SUCCESS");
 
     try
     {

@@ -65,13 +65,18 @@ class DeviceTest extends DroidmateGroovyTestCase
   }
 
   /**
-   * In the past, before I added some commands for uninstalling uiad and clearing logact, failure could be reproduced like that: 
-   * 1. run the test once to completion. It will retain uiad on device. Check it with:
-   * adb shell
-   * ps | grep uia
-   * // nonempty result
-   * 2. now run the test again. Failure. Interesting info on logcat.
+   * This test exists for interactive debugging of known, not yet resolved bug. The behavior is as follows.
    * 
+   * - If everything works fine and the uiadaemon server is alive, this test should succeed without any need to reinstall uiad apks
+   * and setup connecton. You can check if the server is allive as follows:
+   * 
+   * adb shell
+   * shell@flo:/ $ ps | grep uia
+   * u0_a1027  31550 205   869064 38120 sys_epoll_ 00000000 S org.droidmate.uiautomator2daemon.UiAutomator2Daemon
+   *
+   * - If the server was somehow corrupted, rerunning this test will hang on the "new ObjectInputStream", even if the installApk
+   * and setupConnection methods are run. However, if the uninstall commands are run, then the test will succeed again without
+   * problems. Not sure which uninstall is the important one, but I guess the one uninstalling.test
    */
   @Category([RequiresDevice])
   @Test
@@ -80,10 +85,12 @@ class DeviceTest extends DroidmateGroovyTestCase
     def cfg = new ConfigurationForTests().setArgs([Configuration.pn_androidApi, Configuration.api23,]).forDevice().get()
     IDeviceTools deviceTools = new DeviceTools(cfg)
     IAndroidDevice device = deviceTools.deviceFactory.create(new FirstRealDeviceSerialNumber(deviceTools.adb).toString())
-    device.clearLogcat()
-    device.installApk(cfg.uiautomator2DaemonApk)
-    device.installApk(cfg.uiautomator2DaemonTestApk)
-    device.setupConnection()
+    
+//    device.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test")
+//    device.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
+//    device.installApk(cfg.uiautomator2DaemonApk)
+//    device.installApk(cfg.uiautomator2DaemonTestApk)
+//    device.setupConnection()
     
     println 'Socket socket = new Socket("localhost", 59800)' 
     Socket socket = new Socket("localhost", 59800)

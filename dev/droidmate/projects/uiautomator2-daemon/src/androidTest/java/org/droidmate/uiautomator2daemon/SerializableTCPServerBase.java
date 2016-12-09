@@ -122,7 +122,7 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
           // KJA cannot go past it on initModel on errorneus setup device
           Socket clientSocket = serverSocket.accept();
 
-          Log.v(tag, "ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());");
+          Log.d(tag, "ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());");
           ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
 
           /*
