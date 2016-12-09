@@ -26,7 +26,7 @@ abstract class ExplorationAction implements Serializable
 {
 
   private static final long serialVersionUID = 1
-  protected Boolean runtimePermission = false;
+  protected Boolean runtimePermission = false
 
   @Override
   String toString()
@@ -38,7 +38,7 @@ abstract class ExplorationAction implements Serializable
 
   Boolean isEndorseRuntimePermission()
   {
-    return runtimePermission;
+    return runtimePermission
   }
 
   abstract String toShortString()
@@ -48,12 +48,13 @@ abstract class ExplorationAction implements Serializable
     return toShortString()
   }
 
-  public static ResetAppExplorationAction newResetAppExplorationAction(boolean isFirst = false)
+   static ResetAppExplorationAction newResetAppExplorationAction(boolean isFirst = false)
   {
     return new ResetAppExplorationAction(isFirst)
   }
 
-  public static TerminateExplorationAction newTerminateExplorationAction(HashMap cfg = [:])
+  // KJA remove cfg
+  static TerminateExplorationAction newTerminateExplorationAction(HashMap cfg = [:])
   {
     assertConfig(cfg)
     return new TerminateExplorationAction(cfg)
@@ -68,43 +69,43 @@ abstract class ExplorationAction implements Serializable
 //    assert cfg.keySet().size() == 1 + keys.size()
   }
 
-  public static WidgetExplorationAction newWidgetExplorationAction(Widget widget, int delay)
+   static WidgetExplorationAction newWidgetExplorationAction(Widget widget, int delay)
   {
     return new WidgetExplorationAction(widget: widget, runtimePermission: false, delay: delay)
   }
 
-  public static WidgetExplorationAction newWidgetExplorationAction(Widget widget, boolean longClick = false)
+   static WidgetExplorationAction newWidgetExplorationAction(Widget widget, boolean longClick = false)
   {
     assert widget != null
 
     return new WidgetExplorationAction(widget: widget, longClick: longClick)
   }
 
-  public static WidgetExplorationAction newIgnoreActionForTerminationWidgetExplorationAction(Widget widget, boolean longClick = false)
+   static WidgetExplorationAction newIgnoreActionForTerminationWidgetExplorationAction(Widget widget, boolean longClick = false)
   {
     assert widget != null
 
     return new WidgetExplorationAction(widget: widget, runtimePermission: true, longClick: longClick)
   }
 
-  public static WidgetExplorationAction newWidgetExplorationAction(HashMap cfg)
+   static WidgetExplorationAction newWidgetExplorationAction(HashMap cfg)
   {
     assertConfig(cfg, ["widget", "longClick"])
     return new WidgetExplorationAction(cfg)
   }
 
-  public static EnterTextExplorationAction newEnterTextExplorationAction(String textToEnter, String resourceId)
+   static EnterTextExplorationAction newEnterTextExplorationAction(String textToEnter, String resourceId)
   {
     return new EnterTextExplorationAction(textToEnter, new Widget(resourceId: resourceId))
   }
 
-  public static EnterTextExplorationAction newEnterTextExplorationAction(String textToEnter, Widget widget)
+   static EnterTextExplorationAction newEnterTextExplorationAction(String textToEnter, Widget widget)
   {
     return new EnterTextExplorationAction(textToEnter, widget)
   }
 
 
-  public static PressBackExplorationAction newPressBackExplorationAction()
+   static PressBackExplorationAction newPressBackExplorationAction()
   {
     return new PressBackExplorationAction()
   }

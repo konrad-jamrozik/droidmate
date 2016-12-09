@@ -200,7 +200,7 @@ class ExplorationStrategy implements IExplorationStrategy
   private boolean terminateExploration(IGuiState guiState, String exploredAppPackageName)
   {
     assert guiState != null
-    assert !(!firstCallToDecideFinished && lastActionWasToReset)
+    assert firstCallToDecideFinished || !lastActionWasToReset
 
     if (terminationCriterion.met())
     {
@@ -258,7 +258,7 @@ class ExplorationStrategy implements IExplorationStrategy
     assert guiState != null
     assert !terminateExploration(guiState, exploredAppPackageName)
     assert !resetExploration(guiState, exploredAppPackageName)
-    /* As  right now we never backtrack and backtracking is the last possibility to do something if exploration cannot move
+    /* As right now we never backtrack and backtracking is the last possibility to do something if exploration cannot move
     forward, thus we have this precondition. If backtracking will have some implementation, then it will handle some cases which
     are right now handled by terminateExploration and resetExploration, and this precondition will no longer hold.
      */
