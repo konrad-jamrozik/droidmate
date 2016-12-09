@@ -77,7 +77,7 @@ class ExplorationStrategy implements IExplorationStrategy
     def guiState = result.guiSnapshot.guiState
     def exploredAppPackageName = result.exploredAppPackageName
 
-    terminationCriterion.initDecideCall(!firstCallToDecideFinished)
+    terminationCriterion.initDecideCall(firstDecisionIsBeingMade())
 
     ExplorationAction outExplAction
 
@@ -197,10 +197,20 @@ class ExplorationStrategy implements IExplorationStrategy
     return false
   }
 
+  /**
+   * Determines if exploration shall be terminated. Obviously, exploration shall be terminated when the terminationCriterion is
+   * met. However, two more cases justify termination:<br/>
+   * - If exploration cannot move forward after reset. Resetting is supposed to unstuck exploration, and so if it doesn't help,
+   * exploration cannot proceed forward at all.<br/>
+   * - A special case of the above, if exploration cannot move at the first time exploration strategy makes a decision. This
+   * is a special case because first time exploration strategy makes a decision is immediately after the initial app launch,
+   * which is technically also a kind of reset.
+   * 
+   */
   private boolean terminateExploration(IGuiState guiState, String exploredAppPackageName)
   {
     assert guiState != null
-    assert firstCallToDecideFinished || !lastActionWasToReset
+    assert lastActionWasToReset.implies(firstCallToDecideFinished)
 
     if (terminationCriterion.met())
     {
@@ -210,9 +220,11 @@ class ExplorationStrategy implements IExplorationStrategy
 
     // WISH if !explorationCanMoveForwardOn(guiState) after launch main activity, try again, but with longer wait delay.
 
-    if (!explorationCanMoveForwardOn(guiState, exploredAppPackageName) && (!firstCallToDecideFinished || lastActionWasToReset))
+    // If the exploration cannot move forward after reset or during initial attempt (just after first launch, 
+    // which is also a reset) then it shall be terminated.
+    if (!explorationCanMoveForwardOn(guiState, exploredAppPackageName) && (lastActionWasToReset || firstDecisionIsBeingMade()))
     {
-      String guiStateMsgPart = !firstCallToDecideFinished ? "Initial GUI state" : "GUI state after reset"
+      String guiStateMsgPart = firstDecisionIsBeingMade() ? "Initial GUI state" : "GUI state after reset"
 
       // This case is observed when e.g. the app shows empty screen at startup.
       if (!guiState.belongsToApp(exploredAppPackageName))
@@ -229,6 +241,11 @@ class ExplorationStrategy implements IExplorationStrategy
       return true
     }
 
+    // At this point we know termination is not necessary, thus following assertions hold:
+    assert explorationCanMoveForwardOn(guiState, exploredAppPackageName) || !lastActionWasToReset || firstCallToDecideFinished
+    assert firstDecisionIsBeingMade().implies(explorationCanMoveForwardOn(guiState, exploredAppPackageName))
+    assert lastActionWasToReset.implies(explorationCanMoveForwardOn(guiState, exploredAppPackageName))
+
     return false
   }
 
@@ -237,8 +254,8 @@ class ExplorationStrategy implements IExplorationStrategy
     assert guiState != null
     assert !terminateExploration(guiState, exploredAppPackageName)
 
-    assert (!firstCallToDecideFinished).implies(explorationCanMoveForwardOn(guiState, exploredAppPackageName))
-
+    // If any of these two asserts would be violated, the exploration would terminate.
+    assert firstDecisionIsBeingMade().implies(explorationCanMoveForwardOn(guiState, exploredAppPackageName))
     assert lastActionWasToReset.implies(explorationCanMoveForwardOn(guiState, exploredAppPackageName))
 
     if (explorationCanMoveForwardOn(guiState, exploredAppPackageName))
@@ -251,6 +268,11 @@ class ExplorationStrategy implements IExplorationStrategy
       assert !explorationCanMoveForwardOn(guiState, exploredAppPackageName)
       return true
     }
+  }
+
+  private boolean firstDecisionIsBeingMade()
+  {
+    return !firstCallToDecideFinished
   }
 
   private boolean backtrack(IGuiState guiState, String exploredAppPackageName)

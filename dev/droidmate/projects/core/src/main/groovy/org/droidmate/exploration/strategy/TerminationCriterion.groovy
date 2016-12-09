@@ -44,7 +44,7 @@ class TerminationCriterion implements ITerminationCriterion
    * Starts at 2, because the first exploration action is issued before a request to log is issued.*/
   private int logRequestIndex = 2
 
-  public TerminationCriterion(Configuration config, int timeLimit, Ticker ticker)
+  TerminationCriterion(Configuration config, int timeLimit, Ticker ticker)
   {
     this.timeLimit = timeLimit
 
@@ -84,11 +84,11 @@ class TerminationCriterion implements ITerminationCriterion
   }
 
   @Override
-  void initDecideCall(boolean firstCall)
+  void initDecideCall(boolean firstCallToDecide)
   {
     if (timeLimited)
     {
-      if (firstCall)
+      if (firstCallToDecide)
         stopwatch.start()
 
       this.currentDecideElapsedSeconds = this.stopwatch.elapsed(TimeUnit.SECONDS)

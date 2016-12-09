@@ -500,6 +500,5 @@ class RobustDevice implements IRobustDevice
   void initModel() throws DeviceException
   {
     this.device.initModel()
-    //rebootIfNecessary {this.device.initModel()}
   }
 }
