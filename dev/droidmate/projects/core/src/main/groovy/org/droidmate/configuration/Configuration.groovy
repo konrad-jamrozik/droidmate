@@ -218,7 +218,7 @@ import java.nio.file.Path
   public boolean extractSummaries = true
 
   @Parameter(names = [Configuration.pn_getValidGuiSnapshotRetryAttempts])
-  public int getValidGuiSnapshotRetryAttempts = 5
+  public int getValidGuiSnapshotRetryAttempts = 10
 
   @Parameter(names = [Configuration.pn_getValidGuiSnapshotRetryDelay])
   public int getValidGuiSnapshotRetryDelay = 2000
