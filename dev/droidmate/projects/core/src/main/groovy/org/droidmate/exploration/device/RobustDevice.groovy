@@ -379,6 +379,8 @@ class RobustDevice implements IRobustDevice
     } catch (AllDeviceAttemptsExhaustedException e)
     {
       log.warn("! Caught $e while trying to get valid GUI snapshot. Stopping, reinstalling & restarting uiautomator-daemon and trying to get the GUI snapshot again.")
+      // KJA this might hang. Introduce "tryStop" instead with a small timeout, ignore failure.
+      // KJA make socket time for serializable tcp client clearer, split for both monitor and uiad.
       this.stopUiaDaemon()
       this.reinstallUiautomatorDaemon()
       this.clearLogcat()

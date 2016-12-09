@@ -65,11 +65,6 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
       serverRunnable.wait();
       if (serverSocket == null) throw new AssertionError();
     }
-    // KJA possible problem this is sent too fast, before this:
-    // 12-07 13:49:27.733 18319-18339/org.droidmate.uiautomator2daemon.UiAutomator2Daemon D/droidmate/server: serverSocket.accept(59800)
-    // and so this happens AFTER serverSocket.accept:
-    // 2016-12-07 13:49:29.659 TRACE org.droidmate.device.AndroidDevice       initModel(): this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
-    // 2016-12-07 13:49:29.671 TRACE o.droidmate.device.SerializableTCPClient Socket socket = new Socket(localhost, 59800)
 
     Log.i(serverStartMessageTag, serverStartMessage);
 
@@ -119,7 +114,6 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
         while (!serverSocket.isClosed())
         {
           Log.d(tag, "serverSocket.accept("+port+")");
-          // KJA cannot go past it on initModel on errorneus setup device
           Socket clientSocket = serverSocket.accept();
 
           Log.d(tag, "ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());");
