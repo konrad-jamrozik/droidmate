@@ -239,7 +239,6 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     return this.tcpClients.uiaDaemonThreadIsAlive
   }
 
-  // KJA maybe unintalling uiad.test package on each app would make things more stable?
   @Override
   void setupConnection() throws DeviceException
   {
