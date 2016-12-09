@@ -53,59 +53,42 @@ abstract class ExplorationAction implements Serializable
     return new ResetAppExplorationAction(isFirst)
   }
 
-  // KJA remove cfg
-  static TerminateExplorationAction newTerminateExplorationAction(HashMap cfg = [:])
+  static TerminateExplorationAction newTerminateExplorationAction()
   {
-    assertConfig(cfg)
-    return new TerminateExplorationAction(cfg)
+    return new TerminateExplorationAction()
   }
-
-  static void assertConfig(HashMap cfg, List<String> keys = [])
-  {
-    // WISH this can be uncommented after the tests for the old code have been deleted
-//    assert cfg.timestampFunc != null
-    keys.each {assert cfg[it] != null}
-    // WISH this can be uncommented after the tests for the old code have been deleted
-//    assert cfg.keySet().size() == 1 + keys.size()
-  }
-
-   static WidgetExplorationAction newWidgetExplorationAction(Widget widget, int delay)
+  
+  static WidgetExplorationAction newWidgetExplorationAction(Widget widget, int delay)
   {
     return new WidgetExplorationAction(widget: widget, runtimePermission: false, delay: delay)
   }
 
-   static WidgetExplorationAction newWidgetExplorationAction(Widget widget, boolean longClick = false)
+  static WidgetExplorationAction newWidgetExplorationAction(Widget widget, boolean longClick = false)
   {
     assert widget != null
 
     return new WidgetExplorationAction(widget: widget, longClick: longClick)
   }
 
-   static WidgetExplorationAction newIgnoreActionForTerminationWidgetExplorationAction(Widget widget, boolean longClick = false)
+  static WidgetExplorationAction newIgnoreActionForTerminationWidgetExplorationAction(Widget widget, boolean longClick = false)
   {
     assert widget != null
 
     return new WidgetExplorationAction(widget: widget, runtimePermission: true, longClick: longClick)
   }
 
-   static WidgetExplorationAction newWidgetExplorationAction(HashMap cfg)
-  {
-    assertConfig(cfg, ["widget", "longClick"])
-    return new WidgetExplorationAction(cfg)
-  }
-
-   static EnterTextExplorationAction newEnterTextExplorationAction(String textToEnter, String resourceId)
+  static EnterTextExplorationAction newEnterTextExplorationAction(String textToEnter, String resourceId)
   {
     return new EnterTextExplorationAction(textToEnter, new Widget(resourceId: resourceId))
   }
 
-   static EnterTextExplorationAction newEnterTextExplorationAction(String textToEnter, Widget widget)
+  static EnterTextExplorationAction newEnterTextExplorationAction(String textToEnter, Widget widget)
   {
     return new EnterTextExplorationAction(textToEnter, widget)
   }
 
 
-   static PressBackExplorationAction newPressBackExplorationAction()
+  static PressBackExplorationAction newPressBackExplorationAction()
   {
     return new PressBackExplorationAction()
   }
