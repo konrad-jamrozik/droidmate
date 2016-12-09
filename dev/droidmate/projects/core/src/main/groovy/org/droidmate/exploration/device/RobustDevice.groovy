@@ -387,7 +387,7 @@ class RobustDevice implements IRobustDevice
       )
     } catch (DeviceException e)
     {
-      throw new DeviceNeedsRebootException("All attempts at getting valid GUI snapshot failed, rebooting the device.", e)
+      throw new DeviceNeedsRebootException("All attempts at getting valid GUI snapshot failed.", e)
     }
 
     assert guiSnapshot.validationResult.valid
@@ -418,11 +418,11 @@ class RobustDevice implements IRobustDevice
       out = operationOnDevice()
     } catch (DeviceNeedsRebootException e)
     {
-      log.debug("! Caught $e. Rebooting and restoring connection.")
+      log.warn("! Caught $e. Rebooting and restoring connection.")
       rebootAndSetupConnection()
-      log.debug("Rebooted and restored connection. Attempting again the operation that caused the reboot.")
+      log.info("Rebooted and restored connection. Attempting again the operation that caused the reboot.")
       out = operationOnDevice()
-      log.debug("The repeated attempt at operation that caused the reboot returned successfully.")
+      log.info("The repeated attempt at operation that caused the reboot returned successfully.")
     }
     assert out != null
     return out
