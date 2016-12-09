@@ -253,7 +253,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-   startUiaDaemon()
+  void startUiaDaemon()
   {
     this.tcpClients.startUiaDaemon()
   }
