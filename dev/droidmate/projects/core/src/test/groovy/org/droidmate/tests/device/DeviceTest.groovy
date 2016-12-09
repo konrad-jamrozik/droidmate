@@ -86,11 +86,12 @@ class DeviceTest extends DroidmateGroovyTestCase
     IDeviceTools deviceTools = new DeviceTools(cfg)
     IAndroidDevice device = deviceTools.deviceFactory.create(new FirstRealDeviceSerialNumber(deviceTools.adb).toString())
     
+    
+    device.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
 //    device.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test")
-//    device.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
-//    device.installApk(cfg.uiautomator2DaemonApk)
+    device.installApk(cfg.uiautomator2DaemonApk)
 //    device.installApk(cfg.uiautomator2DaemonTestApk)
-//    device.setupConnection()
+    device.setupConnection()
     
     println 'Socket socket = new Socket("localhost", 59800)' 
     Socket socket = new Socket("localhost", 59800)

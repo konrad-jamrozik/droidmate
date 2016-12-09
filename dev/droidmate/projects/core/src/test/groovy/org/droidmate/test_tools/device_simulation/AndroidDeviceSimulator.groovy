@@ -277,6 +277,11 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
+  {
+  }
+
+  @Override
   boolean isAvailable()
   {
     return true
@@ -286,6 +291,11 @@ class AndroidDeviceSimulator implements IAndroidDevice
   boolean uiaDaemonClientThreadIsAlive()
   {
     return true
+  }
+
+  @Override
+  void startUiaDaemon()
+  {
   }
 
   @Override
@@ -304,7 +314,7 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  void installUiautomatorDaemon() throws DeviceException
+  void reinstallUiautomatorDaemon() throws DeviceException
   {
   }
 

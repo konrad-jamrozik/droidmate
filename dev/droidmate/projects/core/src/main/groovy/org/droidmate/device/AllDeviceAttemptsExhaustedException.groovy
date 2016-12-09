@@ -20,26 +20,26 @@ package org.droidmate.device
 
 import org.droidmate.android_sdk.DeviceException
 
-class DeviceNeedsRebootException extends DeviceException
+class AllDeviceAttemptsExhaustedException extends DeviceException
 {
   private static final long serialVersionUID = 1
 
-  DeviceNeedsRebootException()
+  AllDeviceAttemptsExhaustedException()
   {
     super()
   }
 
-  DeviceNeedsRebootException(Throwable cause)
+  AllDeviceAttemptsExhaustedException(Throwable cause)
   {
     super(cause)
   }
 
-  DeviceNeedsRebootException(String message)
+  AllDeviceAttemptsExhaustedException(String message)
   {
     super(message)
   }
 
-  DeviceNeedsRebootException(String message, Throwable cause)
+  AllDeviceAttemptsExhaustedException(String message, Throwable cause)
   {
     super(message, cause)
   }

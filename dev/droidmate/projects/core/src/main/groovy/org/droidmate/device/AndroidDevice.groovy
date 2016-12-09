@@ -197,12 +197,13 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-   void closeConnection() throws DeviceNeedsRebootException, DeviceException
+  void closeConnection() throws DeviceNeedsRebootException, DeviceException
   {
     this.stopUiaDaemon()
   }
 
-  private void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
+  @Override
+  void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
   {
     log.trace("stopUiaDaemon()")
     this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
@@ -247,8 +248,14 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     log.trace("setupConnection($serialNumber) / this.tcpClients.forwardPorts()")
     this.tcpClients.forwardPorts()
     log.trace("setupConnection($serialNumber) / this.tcpClients.startUiaDaemon()")
-    this.tcpClients.startUiaDaemon()
+    startUiaDaemon()
     log.trace("setupConnection($serialNumber) / DONE")
+  }
+
+  @Override
+   startUiaDaemon()
+  {
+    this.tcpClients.startUiaDaemon()
   }
 
   @Override
@@ -456,7 +463,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-  void installUiautomatorDaemon() throws DeviceException
+  void reinstallUiautomatorDaemon() throws DeviceException
   {
     if (cfg.androidApi == Configuration.api19)
     {
@@ -465,8 +472,8 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     else if (cfg.androidApi == Configuration.api23)
     {
       // Uninstall packages in case previous DroidMate run had some leftovers in the form of a living uia-daemon.
-      this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test")
       this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
+      this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test")
 
       this.installApk(this.cfg.uiautomator2DaemonApk)
       this.installApk(this.cfg.uiautomator2DaemonTestApk)

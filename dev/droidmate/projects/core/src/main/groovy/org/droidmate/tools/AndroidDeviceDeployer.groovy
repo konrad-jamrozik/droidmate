@@ -82,7 +82,7 @@ import java.nio.file.Paths
     this.adbWrapper.startAdbServer()
 
     device.removeLogcatLogFile()
-    device.installUiautomatorDaemon()
+    device.reinstallUiautomatorDaemon()
     device.pushMonitorJar()
     device.setupConnection()
     device.initModel()

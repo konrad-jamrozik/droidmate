@@ -48,15 +48,19 @@ interface IDeployableAndroidDevice
 
   void reboot() throws DeviceException
 
+  void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
+
   boolean isAvailable() throws DeviceException
 
   boolean uiaDaemonClientThreadIsAlive()
+
+  void startUiaDaemon()
 
   void removeLogcatLogFile() throws DeviceException
 
   void pullLogcatLogFile() throws DeviceException
 
-  void installUiautomatorDaemon() throws DeviceException
+  void reinstallUiautomatorDaemon() throws DeviceException
 
   void pushMonitorJar() throws DeviceException
 

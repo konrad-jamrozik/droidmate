@@ -23,6 +23,7 @@ import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.configuration.Configuration
+import org.droidmate.device.AllDeviceAttemptsExhaustedException
 import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
@@ -324,7 +325,7 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
   {
-    IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshotRebootingIfNecessary()
+    IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshotReinstallingUiadIfNecessary()
     guiSnapshot = closeANRIfNecessary(guiSnapshot)
     return guiSnapshot
   }
@@ -369,9 +370,31 @@ class RobustDevice implements IRobustDevice
     return out
   }
 
-  private IDeviceGuiSnapshot getRetryValidGuiSnapshotRebootingIfNecessary() throws DeviceException
+  private IDeviceGuiSnapshot getRetryValidGuiSnapshotReinstallingUiadIfNecessary() throws DeviceException
   {
-      rebootIfNecessary { this.getRetryValidGuiSnapshot() }
+    IDeviceGuiSnapshot guiSnapshot
+    try
+    {
+      guiSnapshot = this.getRetryValidGuiSnapshot()
+    } catch (AllDeviceAttemptsExhaustedException e)
+    {
+      log.warn("! Caught $e while trying to get valid GUI snapshot. Stopping, reinstalling & restarting uiautomator-daemon and trying to get the GUI snapshot again.")
+      this.stopUiaDaemon()
+      this.reinstallUiautomatorDaemon()
+      this.clearLogcat()
+      this.startUiaDaemon()
+      log.debug("Uiautomator-daemon stopped, reinstalled and restarted, now trying to get the GUI snapshot again.")
+      try
+      {
+        guiSnapshot = this.getRetryValidGuiSnapshot()
+      } catch (DeviceException e2)
+      {
+        log.warn("! Repeated attempt at getting valid GUI snapshot, after restarting uiautomator-daemon, failed with exception. Rethrowing.")
+        throw e2
+      }
+      log.info("Successfully obtained valid GUI snapshot after stopping, reinstalling and restating uiautomator-daemon.")
+    }
+    return guiSnapshot
   }
   
   private IDeviceGuiSnapshot getRetryValidGuiSnapshot() throws DeviceException
@@ -387,7 +410,7 @@ class RobustDevice implements IRobustDevice
       )
     } catch (DeviceException e)
     {
-      throw new DeviceNeedsRebootException("All attempts at getting valid GUI snapshot failed.", e)
+      throw new AllDeviceAttemptsExhaustedException("All attempts at getting valid GUI snapshot failed.", e)
     }
 
     assert guiSnapshot.validationResult.valid
