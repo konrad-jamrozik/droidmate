@@ -81,27 +81,9 @@ import java.nio.file.Paths
   {
     this.adbWrapper.startAdbServer()
 
-    // WISH the known bugs on emulators might have been caused by the fact I was using broken appguard-loader.dex. See if they still happen with the correct loader.
-    // KNOWN BUG on emulator, device offline when trying to remove logcat log file. Possible quickfix: on emulators, add a wait.
     device.removeLogcatLogFile()
-    device.clearLogcat()
-    if (cfg.androidApi == Configuration.api19)
-    {
-      device.pushJar(this.cfg.uiautomatorDaemonJar)
-      device.pushJar(this.cfg.monitorApkApi19, BuildConstants.monitor_on_avd_apk_name)
-    }
-    else if (cfg.androidApi == Configuration.api23)
-    {
-      // Uninstall packages in case previous DroidMate run had some leftovers in the form of living uia-daemon.
-      device.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test")
-      device.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
-
-      device.installApk(this.cfg.uiautomator2DaemonApk)
-      device.installApk(this.cfg.uiautomator2DaemonTestApk)
-      device.pushJar(this.cfg.monitorApkApi23, BuildConstants.monitor_on_avd_apk_name)
-
-    } else throw new UnexpectedIfElseFallthroughError()
-    
+    device.installUiautomatorDaemon()
+    device.pushMonitorJar()
     device.setupConnection()
     device.initModel()
 

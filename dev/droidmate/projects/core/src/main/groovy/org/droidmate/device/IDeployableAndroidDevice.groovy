@@ -52,13 +52,17 @@ interface IDeployableAndroidDevice
 
   boolean uiaDaemonClientThreadIsAlive()
 
-  void setupConnection() throws DeviceException
-
   void removeLogcatLogFile() throws DeviceException
 
   void pullLogcatLogFile() throws DeviceException
 
-  void initModel() throws DeviceException
+  void installUiautomatorDaemon() throws DeviceException
 
+  void pushMonitorJar() throws DeviceException
+
+  void setupConnection() throws DeviceException
+
+  void initModel() throws DeviceException
+  
   void executeAdbCommand(String command)
 }

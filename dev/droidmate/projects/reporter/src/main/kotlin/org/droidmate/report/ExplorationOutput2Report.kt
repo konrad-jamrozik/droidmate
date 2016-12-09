@@ -44,8 +44,6 @@ class ExplorationOutput2Report(rawData: List<IApkExplorationOutput2>, val dir: P
     if (includeSummary)
       summaryFile.writeOut()
     
-    // KJA looks like at some point the tool is constantly reaching TCP socket timeouts. Maybe some global counter, requesting
-    // reboot, would be in order.
     // KJA temp
 //    if (data.first().exceptionIsPresent)
 //      data.first().exception.printStackTrace()

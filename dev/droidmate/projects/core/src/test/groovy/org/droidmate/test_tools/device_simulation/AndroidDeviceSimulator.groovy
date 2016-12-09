@@ -304,6 +304,16 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  void installUiautomatorDaemon() throws DeviceException
+  {
+  }
+
+  @Override
+  void pushMonitorJar() throws DeviceException
+  {
+  }
+
+  @Override
   List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException
   {
     return []

@@ -33,6 +33,7 @@ import org.droidmate.device.model.IDeviceModel
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.logging.LogbackUtils
 import org.droidmate.misc.Boolean3
+import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.MonitorConstants
 import org.droidmate.uiautomator_daemon.DeviceCommand
 import org.droidmate.uiautomator_daemon.DeviceResponse
@@ -212,13 +213,6 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
 
 
   @Override
-  void reboot() throws DeviceException
-  {
-    log.trace("reboot(${this.serialNumber})")
-    this.adbWrapper.reboot(this.serialNumber)
-  }
-
-  @Override
   boolean isAvailable() throws DeviceException
   {
     log.trace("isAvailable(${this.serialNumber})")
@@ -232,6 +226,13 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
+  void reboot() throws DeviceException
+  {
+    log.trace("reboot(${this.serialNumber})")
+    this.adbWrapper.reboot(this.serialNumber)
+  }
+
+  @Override
   boolean uiaDaemonClientThreadIsAlive()
   {
     return this.tcpClients.uiaDaemonThreadIsAlive
@@ -240,10 +241,12 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   void setupConnection() throws DeviceException
   {
+    log.trace("setupConnection($serialNumber) / this.clearLogcat()")
+    this.clearLogcat()
     log.trace("setupConnection($serialNumber) / this.tcpClients.forwardPorts()")
     this.tcpClients.forwardPorts()
-    log.trace("setupConnection($serialNumber) / this.startUiaDaemon()")
-    this.startUiaDaemon()
+    log.trace("setupConnection($serialNumber) / this.tcpClients.startUiaDaemon()")
+    this.tcpClients.startUiaDaemon()
     log.trace("setupConnection($serialNumber) / DONE")
   }
 
@@ -340,14 +343,6 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   {
     log.debug("anyMonitorIsReachable()")
     return this.tcpClients.anyMonitorIsReachable()
-  }
-
-  private void startUiaDaemon() throws DeviceException
-  {
-    log.debug("startUiaDaemon()")
-    this.clearLogcat()
-    this.tcpClients.startUiaDaemon()
-    log.trace("DONE startUiaDaemon()")
   }
 
   @Override
@@ -452,12 +447,46 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   void initModel() throws DeviceException
   {
     log.trace("initModel(): this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))")
-    // KJA hangs. Maybe killing uiad with adb shell ps -kill will help?
     DeviceResponse response = this.issueCommand(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
     assert response.model != null
 
     this.deviceModel = DeviceModel.build(response.model)
     assert this.deviceModel != null
+  }
+
+  @Override
+  void installUiautomatorDaemon() throws DeviceException
+  {
+    if (cfg.androidApi == Configuration.api19)
+    {
+      this.pushJar(this.cfg.uiautomatorDaemonJar)
+    }
+    else if (cfg.androidApi == Configuration.api23)
+    {
+      // Uninstall packages in case previous DroidMate run had some leftovers in the form of a living uia-daemon.
+      this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test")
+      this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
+
+      this.installApk(this.cfg.uiautomator2DaemonApk)
+      this.installApk(this.cfg.uiautomator2DaemonTestApk)
+
+    } else throw new UnexpectedIfElseFallthroughError()
+
+  }
+
+  @Override
+  void pushMonitorJar() throws DeviceException
+  {
+    if (cfg.androidApi == Configuration.api19)
+    {
+      this.pushJar(this.cfg.monitorApkApi19, BuildConstants.monitor_on_avd_apk_name)
+    }
+    else if (cfg.androidApi == Configuration.api23)
+    {
+      this.pushJar(this.cfg.monitorApkApi23, BuildConstants.monitor_on_avd_apk_name)
+
+    } else throw new UnexpectedIfElseFallthroughError()
+
   }
   
   @Override
