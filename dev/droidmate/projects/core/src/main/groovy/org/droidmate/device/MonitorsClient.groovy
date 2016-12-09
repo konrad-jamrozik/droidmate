@@ -86,7 +86,7 @@ class MonitorsClient implements IMonitorsClient
 
       } catch (TcpServerUnreachableException ignored)
       {
-        log.trace("Did not reach monitor TCP server at port $it.")
+        // log.trace("Did not reach monitor TCP server at port $it when sending out ${MonitorConstants.srvCmd_get_time} request.")
         return null
       }
     }
@@ -107,7 +107,7 @@ class MonitorsClient implements IMonitorsClient
         return monitorTcpClient.queryServer(MonitorConstants.srvCmd_get_logs, it)
       } catch (TcpServerUnreachableException ignored)
       {
-        log.trace("Did not reach monitor TCP server at port $it when sending out ${MonitorConstants.srvCmd_get_logs} request.")
+        // log.trace("Did not reach monitor TCP server at port $it when sending out ${MonitorConstants.srvCmd_get_logs} request.")
         return null
       }
     }
@@ -132,7 +132,7 @@ class MonitorsClient implements IMonitorsClient
         monitorTcpClient.queryServer(MonitorConstants.srvCmd_close, it)
       } catch (TcpServerUnreachableException ignored)
       {
-        log.trace("Did not reach monitor TCP server at port $it when sending out ${MonitorConstants.srvCmd_close} request.")
+        // log.trace("Did not reach monitor TCP server at port $it when sending out ${MonitorConstants.srvCmd_close} request.")
       } 
     }
   }

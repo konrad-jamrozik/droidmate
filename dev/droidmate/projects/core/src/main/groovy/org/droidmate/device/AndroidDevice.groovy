@@ -215,7 +215,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   boolean isAvailable() throws DeviceException
   {
-    log.trace("isAvailable(${this.serialNumber})")
+//    log.trace("isAvailable(${this.serialNumber})")
     try
     {
       this.adbWrapper.androidDevicesDescriptors.any {it.deviceSerialNumber == this.serialNumber}
@@ -228,7 +228,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   void reboot() throws DeviceException
   {
-    log.trace("reboot(${this.serialNumber})")
+//    log.trace("reboot(${this.serialNumber})")
     this.adbWrapper.reboot(this.serialNumber)
   }
 
@@ -238,6 +238,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     return this.tcpClients.uiaDaemonThreadIsAlive
   }
 
+  // KJA maybe unintalling uiad.test package on each app would make things more stable?
   @Override
   void setupConnection() throws DeviceException
   {

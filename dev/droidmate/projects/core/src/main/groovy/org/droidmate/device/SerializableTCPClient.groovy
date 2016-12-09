@@ -47,7 +47,7 @@ import org.droidmate.android_sdk.DeviceException
     OutputFromServerT output
     try
     {
-      log.trace("Socket socket = new Socket($serverAddress, $port)")
+      //log.trace("Socket socket = this.tryGetSocket($serverAddress, $port)")
       Socket socket = this.tryGetSocket(serverAddress, port)
 //      log.trace("Got socket: $serverAddress:$port timeout: ${this.socketTimeout}")
       
@@ -64,6 +64,7 @@ import org.droidmate.android_sdk.DeviceException
         // 2. search for: "Note - The ObjectInputStream constructor blocks until" in:
         // http://docs.oracle.com/javase/7/docs/platform/serialization/spec/input.html
         //
+        log.trace("inputStream = new ObjectInputStream(socket<$serverAddress:$port>.inputStream)")
         inputStream = new ObjectInputStream(socket.inputStream)
 //        log.trace("Got input stream")
         // KNOWN BUG one of this EOFException is thrown on org.droidmate.exploration.device.RobustDevice.getValidGuiSnapshot,
