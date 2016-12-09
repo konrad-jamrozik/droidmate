@@ -376,12 +376,19 @@ class RobustDevice implements IRobustDevice
   
   private IDeviceGuiSnapshot getRetryValidGuiSnapshot() throws DeviceException
   {
-    IDeviceGuiSnapshot guiSnapshot = Utils.retryOnException(
-      this.&getValidGuiSnapshot,
-      DeviceException,
-      getValidGuiSnapshotRetryAttempts,
-      getValidGuiSnapshotRetryDelay, "getValidGuiSnapshot"
-    )
+    IDeviceGuiSnapshot guiSnapshot
+    try
+    {
+      guiSnapshot = Utils.retryOnException(
+        this.&getValidGuiSnapshot,
+        DeviceException,
+        getValidGuiSnapshotRetryAttempts,
+        getValidGuiSnapshotRetryDelay, "getValidGuiSnapshot"
+      )
+    } catch (DeviceException e)
+    {
+      throw new DeviceNeedsRebootException("All attempts at getting valid GUI snapshot failed, rebooting the device.", e)
+    }
 
     assert guiSnapshot.validationResult.valid
     return guiSnapshot
@@ -413,7 +420,9 @@ class RobustDevice implements IRobustDevice
     {
       log.debug("! Caught $e. Rebooting and restoring connection.")
       rebootAndSetupConnection()
+      log.debug("Rebooted and restored connection. Attempting again the operation that caused the reboot.")
       out = operationOnDevice()
+      log.debug("The repeated attempt at operation that caused the reboot returned successfully.")
     }
     assert out != null
     return out
