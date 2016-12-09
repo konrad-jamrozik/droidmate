@@ -20,6 +20,7 @@
 package org.droidmate.device
 
 import org.droidmate.android_sdk.DeviceException
+import org.droidmate.android_sdk.IApk
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
@@ -53,6 +54,6 @@ interface IExplorableAndroidDevice
 
   void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
   
-  void takeScreenshot(String appPackageName, String suffix) throws DeviceException
+  void takeScreenshot(IApk app, String suffix) throws DeviceException
 }
 

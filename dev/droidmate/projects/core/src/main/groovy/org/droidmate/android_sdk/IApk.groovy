@@ -19,11 +19,13 @@
 
 package org.droidmate.android_sdk
 
-public interface IApk
+interface IApk
 {
   String getAbsolutePath()
 
   String getFileName()
+
+  String getFileNameWithoutExtension()
 
   String getPackageName()
 

@@ -226,7 +226,7 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  void takeScreenshot(String appPackageName, String suffix) throws DeviceException
+  void takeScreenshot(IApk app, String suffix) throws DeviceException
   {
   }
 

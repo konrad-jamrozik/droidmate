@@ -410,14 +410,14 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-  void takeScreenshot(String appPackageName, String suffix) throws DeviceException
+  void takeScreenshot(IApk app, String suffix) throws DeviceException
   {
-    log.debug("takeScreenshot($appPackageName, $suffix)")
+    log.debug("takeScreenshot($app, $suffix)")
     
-    assert !appPackageName?.empty
+    assert app != null
     assert !suffix?.empty
     
-    Path targetFile = Paths.get("${cfg.droidmateOutputDir}/${cfg.screenshotsDir}/${appPackageName}_${suffix}.png")
+    Path targetFile = Paths.get("${cfg.droidmateOutputDir}/${cfg.screenshotsDir}/${app.fileNameWithoutExtension}_${suffix}.png")
     targetFile.mkdirs()
     assert !Files.exists(targetFile)
     String targetFileString = targetFile.toString().replace(File.separator, "/")

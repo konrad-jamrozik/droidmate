@@ -35,6 +35,7 @@ class Apk implements IApk, Serializable
 
   transient final Path path
   final String fileName
+  final String fileNameWithoutExtension
   final String absolutePath
   final String packageName
   final String launchableActivityName
@@ -81,6 +82,7 @@ class Apk implements IApk, Serializable
 
     this.path = path
     this.fileName = fileName
+    this.fileNameWithoutExtension = fileName.withoutExtension()
     this.absolutePath = absolutePath
     this.packageName = packageName
     this.launchableActivityName = launchableActivityName
@@ -94,6 +96,11 @@ class Apk implements IApk, Serializable
   Boolean getInlined()
   {
     this.fileName.endsWith("-inlined.apk")
+  }
+
+  @Override
+  String toString() {
+    return this.fileName
   }
 }
 
