@@ -332,7 +332,7 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getExplorableGuiSnapshotWithoutClosingANR() throws DeviceException
   {
-    return this.getRetryValidGuiSnapshot()
+    return this.getRetryValidGuiSnapshotReinstallingUiadIfNecessary()
   }
 
   private IDeviceGuiSnapshot closeANRIfNecessary(IDeviceGuiSnapshot guiSnapshot) throws DeviceException
@@ -352,7 +352,7 @@ class RobustDevice implements IRobustDevice
       device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
         (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget)
       )
-      out = this.getRetryValidGuiSnapshot()
+      out = this.getRetryValidGuiSnapshotReinstallingUiadIfNecessary()
 
       if (out.guiState.isAppHasStoppedDialogBox())
       {
