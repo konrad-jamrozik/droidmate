@@ -412,14 +412,14 @@ class RobustDevice implements IRobustDevice
     } catch (DeviceNeedsRebootException e)
     {
       log.debug("! Caught $e. Rebooting and restoring connection.")
-      rebootAndRestoreConnection()
+      rebootAndSetupConnection()
       out = operationOnDevice()
     }
     assert out != null
     return out
   }
 
-  private void rebootAndRestoreConnection() throws DeviceException
+  private void rebootAndSetupConnection() throws DeviceException
   {
     this.reboot()
     this.setupConnection()
