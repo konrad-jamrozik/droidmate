@@ -104,16 +104,17 @@ import java.nio.file.Path
   public static final String pn_launchActivityTimeout                        = "-launchActivityTimeout"
   public static final String pn_monitorServerStartQueryDelay                 = "-monitorServerStartQueryDelay"
   public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
+  public static final String pn_monitorSocketTimeout                         = "-monitorSocketTimeout"
   public static final String pn_randomSeed                                   = "-randomSeed"
   public static final String pn_reportIncludePlots                           = "-reportIncludePlots"
   public static final String pn_reportInputDir                               = "-reportInputDir"
   public static final String pn_reportOutputDir                              = "-reportOutputDir"
   public static final String pn_resetEveryNthExplorationForward              = "-resetEvery"
   public static final String pn_runOnNotInlined                              = "-runOnNotInlined"
-  public static final String pn_socketTimeout                                = "-socketTimeout"
   public static final String pn_timeLimit                                    = "-timeLimit"
   public static final String pn_uiautomatorDaemonServerStartTimeout          = "-uiautomatorDaemonServerStartTimeout"
   public static final String pn_uiautomatorDaemonServerStartQueryDelay       = "-uiautomatorDaemonServerStartQueryDelay"
+  public static final String pn_uiautomatorDaemonSocketTimeout               = "-uiautomatorDaemonSocketTimeout"
   public static final String pn_uiautomatorDaemonTcpPort                     = "-tcpPort"
   public static final String pn_uiautomatorDaemonWaitForGuiToStabilize       = "-waitForGuiToStabilize"
   public static final String pn_uiautomatorDaemonWaitForWindowUpdateTimeout  = "-waitForWindowUpdateTimeout"
@@ -243,6 +244,9 @@ import java.nio.file.Path
   @Parameter(names = [Configuration.pn_monitorServerStartTimeout])
   public int monitorServerStartTimeout = 20000
 
+  @Parameter(names = [Configuration.pn_monitorSocketTimeout], arity = 1)
+  public int monitorSocketTimeout = 1 * 60 * 1000 // ms
+
   @Parameter(names = [Configuration.pn_uninstallApk], arity = 1)
   public boolean uninstallApk = true
 
@@ -268,11 +272,6 @@ import java.nio.file.Path
     "Allow DroidMate to run on non-inlined apks.")
   public Boolean runOnNotInlined = false
 
-  @Parameter(names = [Configuration.pn_socketTimeout], arity = 1)
-  // Has to be hefty as "turn_wifi_on" device action can take 20+ seconds.
-  // Also, starting activity might take some time.
-  public int socketTimeout = 3 * 60 * 1000 // ms
-
   @Parameter(names = [Configuration.pn_uiautomatorDaemonServerStartTimeout], description =
     "How long DroidMate should wait, in milliseconds, for message on logcat confirming that UiAutomatorDaemonServer has started on android (virtual) device.")
   public int uiautomatorDaemonServerStartTimeout = 20000
@@ -280,6 +279,9 @@ import java.nio.file.Path
   @Parameter(names = [Configuration.pn_uiautomatorDaemonServerStartQueryDelay], description =
     "How often DroidMate should query, in milliseconds, for message on logcat confirming that UiDaemonServer has started on android (virtual) device.")
   public int uiautomatorDaemonServerStartQueryDelay = 2000
+
+  @Parameter(names = [Configuration.pn_uiautomatorDaemonSocketTimeout], arity = 1)
+  public int uiautomatorDaemonSocketTimeout = 1 * 30 * 1000 // ms
 
   @Parameter(names = [Configuration.pn_uiautomatorDaemonWaitForGuiToStabilize], arity = 1, description =
     "Should the uiautomator-daemon wait for GUI state to stabilize after each click performed on the android device. Setting this to false will drastically speedup the clicking process, but will probably result in new clicks being sent while the results of previous one are still being processed.")

@@ -86,7 +86,8 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     this.tcpClients = new TcpClients(
       this.adbWrapper,
       this.serialNumber,
-      cfg.socketTimeout,
+      cfg.monitorSocketTimeout,
+      cfg.uiautomatorDaemonSocketTimeout,
       cfg.uiautomatorDaemonTcpPort,
       cfg.uiautomatorDaemonServerStartTimeout,
       cfg.uiautomatorDaemonServerStartQueryDelay)

@@ -369,7 +369,6 @@ class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   boolean uiaDaemonIsRunning()
   {
-    // KJA current work
-    assert false: "Not yet implemented!"
+    this.uiaDaemonIsRunning
   }
 }

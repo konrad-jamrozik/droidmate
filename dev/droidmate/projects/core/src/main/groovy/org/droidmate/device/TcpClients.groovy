@@ -32,7 +32,8 @@ class TcpClients implements ITcpClients
   TcpClients(
     IAdbWrapper adbWrapper,
     String deviceSerialNumber,
-    int socketTimeout,
+    int monitorSocketTimeout,
+    int uiautomatorDaemonSocketTimeout,
     int uiautomatorDaemonTcpPort,
     int uiautomatorDaemonServerStartTimeout,
     int uiautomatorDaemonServerStartQueryDelay)
@@ -41,11 +42,11 @@ class TcpClients implements ITcpClients
       adbWrapper,
       deviceSerialNumber,
       uiautomatorDaemonTcpPort,
-      socketTimeout,
+      uiautomatorDaemonSocketTimeout,
       uiautomatorDaemonServerStartTimeout,
       uiautomatorDaemonServerStartQueryDelay)
 
-    this.monitorsClient = new MonitorsClient(socketTimeout, deviceSerialNumber, adbWrapper)
+    this.monitorsClient = new MonitorsClient(monitorSocketTimeout, deviceSerialNumber, adbWrapper)
   }
 
   @Override
