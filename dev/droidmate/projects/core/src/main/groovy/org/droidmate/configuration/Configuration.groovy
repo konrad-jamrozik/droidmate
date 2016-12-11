@@ -96,14 +96,11 @@ import java.nio.file.Path
   public static final String pn_deployRawApks                                = "-deployRawApks"
   public static final String pn_device                                       = "-device"
   public static final String pn_droidmateOutputDir                           = "-droidmateOutputDirPath"
-  public static final String pn_exploreInteractively                         = "-exploreInteractively"
   public static final String pn_getValidGuiSnapshotRetryAttempts             = "-getValidGuiSnapshotRetryAttempts"
   public static final String pn_getValidGuiSnapshotRetryDelay                = "-getValidGuiSnapshotRetryDelay"
   public static final String pn_inline                                       = "-inline"
   public static final String pn_launchActivityDelay                          = "-launchActivityDelay"
   public static final String pn_launchActivityTimeout                        = "-launchActivityTimeout"
-  public static final String pn_monitorServerStartQueryDelay                 = "-monitorServerStartQueryDelay"
-  public static final String pn_monitorServerStartTimeout                    = "-monitorServerStartTimeout"
   public static final String pn_monitorSocketTimeout                         = "-monitorSocketTimeout"
   public static final String pn_randomSeed                                   = "-randomSeed"
   public static final String pn_reportIncludePlots                           = "-reportIncludePlots"
@@ -209,13 +206,6 @@ import java.nio.file.Path
     "Displays command line parameters description.")
   public boolean displayHelp
 
-  @Parameter(names = [Configuration.pn_exploreInteractively], description =
-    "Determines if the user should be asked for confirmation before the exploration driver conducts next action on the Android device. If yes, the information about the action about to be taken will be also displayed.")
-  public boolean exploreInteractively = false
-
-  @Parameter(names = ["-extractSaturationCharts", "-esc"], arity = 1)
-  public boolean extractSaturationCharts = false
-
   @Parameter(names = ["-extractSummaries"], arity = 1)
   public boolean extractSummaries = true
 
@@ -240,12 +230,6 @@ import java.nio.file.Path
   @Parameter(names = ["-logLevel"], description =
     "Logging level of the entirety of application. Possible values, comma separated: trace, debug, info.")
   String logLevel = "trace"
-
-  @Parameter(names = [Configuration.pn_monitorServerStartQueryDelay])
-  public int monitorServerStartQueryDelay = 2000
-
-  @Parameter(names = [Configuration.pn_monitorServerStartTimeout])
-  public int monitorServerStartTimeout = 20000
 
   @Parameter(names = [Configuration.pn_monitorSocketTimeout], arity = 1)
   public int monitorSocketTimeout = 1 * 60 * 1000 // ms

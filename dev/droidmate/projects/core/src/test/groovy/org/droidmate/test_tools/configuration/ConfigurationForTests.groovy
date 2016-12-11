@@ -36,8 +36,6 @@ class ConfigurationForTests
     Configuration.pn_randomSeed, "0",
     Configuration.pn_uiautomatorDaemonWaitForWindowUpdateTimeout, "50",
     Configuration.pn_launchActivityDelay, "0",
-    Configuration.pn_monitorServerStartTimeout, "0",
-    Configuration.pn_monitorServerStartQueryDelay, "0",
     Configuration.pn_checkAppIsRunningRetryDelay, "0",
     // Commented out, as there are no tests simulating rebooting. However, sometimes I am manually testing real-world rebooting.
     // Such real-world rebooting require the delays to be present, not zeroed.
