@@ -173,9 +173,6 @@ class ExploreCommand extends DroidmateCommand
         {
           log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
-          // Just preventative measures for ensuring healthiness of the device connection.
-          device.reconnectAdb()
-          device.restartUiaDaemon(false)
           
           allApksExplorationExceptions +=
             this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
@@ -187,6 +184,10 @@ class ExploreCommand extends DroidmateCommand
             log.warn("Encountered an exception that stops further apk explorations. Skipping exploring the remaining apks.")
             encounteredApkExplorationsStoppingException = true
           }
+
+          // Just preventative measures for ensuring healthiness of the device connection.
+          device.reconnectAdb()
+          device.restartUiaDaemon(false)
         }
       }
       return allApksExplorationExceptions

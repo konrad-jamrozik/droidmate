@@ -250,8 +250,6 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   void setupConnection() throws DeviceException
   {
-    log.trace("setupConnection($serialNumber) / this.clearLogcat()")
-    this.clearLogcat()
     log.trace("setupConnection($serialNumber) / this.tcpClients.forwardPorts()")
     this.tcpClients.forwardPorts()
     log.trace("setupConnection($serialNumber) / this.restartUiaDaemon()")
@@ -272,6 +270,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   void startUiaDaemon()
   {
     assert !this.uiaDaemonIsRunning()
+    this.clearLogcat()
     this.tcpClients.startUiaDaemon()
   }
 
