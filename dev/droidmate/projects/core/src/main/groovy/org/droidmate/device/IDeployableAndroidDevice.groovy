@@ -54,7 +54,7 @@ interface IDeployableAndroidDevice
 
   boolean uiaDaemonClientThreadIsAlive()
 
-  void restartUiaDaemon()
+  void restartUiaDaemon(boolean uiaDaemonThreadIsNull)
   
   void startUiaDaemon()
 

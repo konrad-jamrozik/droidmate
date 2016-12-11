@@ -173,8 +173,9 @@ class ExploreCommand extends DroidmateCommand
         {
           log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
-          // Just a preventative measure for ensuring healthiness of the connection.
+          // Just preventative measures for ensuring healthiness of the device connection.
           device.reconnectAdb()
+          device.restartUiaDaemon(false)
           
           allApksExplorationExceptions +=
             this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->

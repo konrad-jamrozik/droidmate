@@ -255,15 +255,15 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     log.trace("setupConnection($serialNumber) / this.tcpClients.forwardPorts()")
     this.tcpClients.forwardPorts()
     log.trace("setupConnection($serialNumber) / this.restartUiaDaemon()")
-    restartUiaDaemon()
+    restartUiaDaemon(true)
     log.trace("setupConnection($serialNumber) / DONE")
   }
 
   @Override
-  void restartUiaDaemon()
+  void restartUiaDaemon(boolean uiaDaemonThreadIsNull)
   {
     if (this.uiaDaemonIsRunning())
-      this.stopUiaDaemon(true)
+      this.stopUiaDaemon(uiaDaemonThreadIsNull)
     this.startUiaDaemon()
   }
 
