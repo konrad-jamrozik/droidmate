@@ -296,10 +296,10 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  void restartUiaDaemon()
+  void restartUiaDaemon(boolean uiaDaemonThreadIsNull)
   {
     if (this.uiaDaemonIsRunning())
-      this.stopUiaDaemon(true)
+      this.stopUiaDaemon(uiaDaemonThreadIsNull)
     this.startUiaDaemon()
   }
 
