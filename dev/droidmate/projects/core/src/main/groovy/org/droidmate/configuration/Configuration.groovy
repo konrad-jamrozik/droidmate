@@ -221,9 +221,11 @@ import java.nio.file.Path
 
   @Parameter(names = [Configuration.pn_getValidGuiSnapshotRetryAttempts])
   public int getValidGuiSnapshotRetryAttempts = 5
-
+  
   @Parameter(names = [Configuration.pn_getValidGuiSnapshotRetryDelay])
-  public int getValidGuiSnapshotRetryDelay = 2000
+  // Exploration of com.facebook.orca_v12.0.0.21.14-inlined.apk shows that that 4 attempts with 4000 ms delays (16s in total)
+  // is not enough: all attempts get exhausted and only the repeated set of attempts, after restarting uia-d, succeeds.
+  public int getValidGuiSnapshotRetryDelay = 4000
 
   @Parameter(names = [Configuration.pn_inline], description =
     "If present, instead of normal run, DroidMate will inline all non-inlined apks. Before inlining backup copies of the apks will be created and put into a sub-directory of the directory containing the apks.")
