@@ -105,9 +105,6 @@ import org.droidmate.misc.Assert
   {
     try
     {
-      // Deployment of apk on device will read some information from logcat, so it has to be cleared to ensure the
-      // anticipated commands are not matched against logcat messages from  deployments of previously explored apks.
-      device.clearLogcat()
       tryReinstallApk(device, apk)
 
     } catch (Throwable deployThrowable)
