@@ -296,6 +296,14 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
+  void restartUiaDaemon()
+  {
+    if (this.uiaDaemonIsRunning())
+      this.stopUiaDaemon(true)
+    this.startUiaDaemon()
+  }
+
+  @Override
   void startUiaDaemon()
   {
     this.uiaDaemonIsRunning = true
@@ -370,5 +378,11 @@ class AndroidDeviceSimulator implements IAndroidDevice
   boolean uiaDaemonIsRunning()
   {
     this.uiaDaemonIsRunning
+  }
+
+  @Override
+  boolean isPackageInstalled(String packageName)
+  {
+    return false
   }
 }

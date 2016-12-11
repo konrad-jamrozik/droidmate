@@ -54,6 +54,8 @@ interface IDeployableAndroidDevice
 
   boolean uiaDaemonClientThreadIsAlive()
 
+  void restartUiaDaemon()
+  
   void startUiaDaemon()
 
   void removeLogcatLogFile() throws DeviceException
@@ -73,4 +75,6 @@ interface IDeployableAndroidDevice
   void executeAdbCommand(String command, String successfulOutput) throws DeviceException
 
   boolean uiaDaemonIsRunning()
+
+  boolean isPackageInstalled(String packageName)
 }

@@ -215,7 +215,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     else 
       this.tcpClients.waitForUiaDaemonToClose()
 
-    assert Utils.retryOnFalse( {!this.uiaDaemonIsRunning()}, 3, 300)
+    assert Utils.retryOnFalse( {!this.uiaDaemonIsRunning()}, 5, 1000)
     log.trace("DONE stopUiaDaemon()")
 
   }
@@ -254,10 +254,19 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     this.clearLogcat()
     log.trace("setupConnection($serialNumber) / this.tcpClients.forwardPorts()")
     this.tcpClients.forwardPorts()
-    log.trace("setupConnection($serialNumber) / this.tcpClients.startUiaDaemon()")
-    startUiaDaemon()
+    log.trace("setupConnection($serialNumber) / this.restartUiaDaemon()")
+    restartUiaDaemon()
     log.trace("setupConnection($serialNumber) / DONE")
   }
+
+  @Override
+  void restartUiaDaemon()
+  {
+    if (this.uiaDaemonIsRunning())
+      this.stopUiaDaemon(true)
+    this.startUiaDaemon()
+  }
+
 
   @Override
   void startUiaDaemon()
@@ -530,6 +539,14 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     
     String processList = this.adbWrapper.executeCommand(this.serialNumber, "shell ps $packageName", "USER")
     return processList.contains(packageName)
+  }
+
+  @Override
+  boolean isPackageInstalled(String packageName)
+  {
+    String uiadPackageList = this.adbWrapper.executeCommand(this.serialNumber, "shell pm list packages $packageName", "")
+    uiadPackageList = uiadPackageList.trim().replace("package:","")
+    return uiadPackageList == packageName
   }
 
   @Override

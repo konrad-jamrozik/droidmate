@@ -36,6 +36,7 @@ import org.droidmate.tools.ApksProvider
 import org.droidmate.tools.DeviceTools
 import org.droidmate.tools.IDeviceTools
 import org.droidmate.uiautomator_daemon.DeviceCommand
+import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.experimental.categories.Category
@@ -64,7 +65,7 @@ class DeviceTest extends DroidmateGroovyTestCase
     }
   }
 
-  /**
+  /** // KJA remove comment when cofirmed fixed
    * This test exists for interactive debugging of known, not yet resolved bug. The behavior is as follows.
    * 
    * - If everything works fine and the uiadaemon server is alive, this test should succeed without any need to reinstall uiad apks
@@ -80,24 +81,20 @@ class DeviceTest extends DroidmateGroovyTestCase
    */
   @Category([RequiresDevice])
   @Test
-  void "Starts uiadaemon2 and talks with it through TCP"()
+  void "Restarts uiautomarDaemon2 and communicates with it via TCP"()
   {
     def cfg = new ConfigurationForTests().setArgs([Configuration.pn_androidApi, Configuration.api23,]).forDevice().get()
     IDeviceTools deviceTools = new DeviceTools(cfg)
     IAndroidDevice device = deviceTools.deviceFactory.create(new FirstRealDeviceSerialNumber(deviceTools.adb).toString())
-    
-    
-    if (!device.uiaDaemonIsRunning())
-    {
-      println 'daemon is not running: reinstallUiautomatorDaemon'
-      device.reinstallUiautomatorDaemon()
-    }
+
+    if (device.isPackageInstalled(UiautomatorDaemonConstants.uia2Daemon_packageName)) 
+      println "uia-daemon2 is installed." 
     else
     {
-      println 'daemon is running: stop it'
-      device.stopUiaDaemon(true)
+      println 'uia-daemon2 is not installed: reinstallUiautomatorDaemon'
+      device.reinstallUiautomatorDaemon()
     }
-    
+
     println 'setupConnection'
     device.setupConnection()
 
