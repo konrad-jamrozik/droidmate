@@ -50,6 +50,7 @@ class AndroidDeviceSimulator implements IAndroidDevice
   private final List<IExceptionSpec> exceptionSpecs
 
   private final ICallCounters callCounters = new CallCounters()
+  private       boolean       uiaDaemonIsRunning = false
 
   /**
    * The simulator has only rudimentary support for multiple apps.
@@ -179,6 +180,7 @@ class AndroidDeviceSimulator implements IAndroidDevice
   void closeConnection() throws DeviceException
   {
     findMatchingExceptionSpecAndThrowIfApplies("closeConnection", this.currentlyDeployedPackageName)
+    this.stopUiaDaemon()
   }
 
   @Override
@@ -273,12 +275,12 @@ class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   void reboot() throws DeviceException
   {
-    return
   }
 
   @Override
   void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
   {
+    this.uiaDaemonIsRunning = false
   }
 
   @Override
@@ -290,17 +292,19 @@ class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   boolean uiaDaemonClientThreadIsAlive()
   {
-    return true
+    return this.uiaDaemonIsRunning
   }
 
   @Override
   void startUiaDaemon()
   {
+    this.uiaDaemonIsRunning = true
   }
 
   @Override
   void setupConnection() throws DeviceException
   {
+    this.startUiaDaemon()
   }
 
   @Override
@@ -350,11 +354,17 @@ class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   void initModel() throws DeviceException
   {
-    // Do nothing
   }
 
   @Override
-  void executeAdbCommand(String command)
+  void executeAdbCommand(String command, String successfulOutput) throws DeviceException
   {
+  }
+
+  @Override
+  boolean uiaDaemonIsRunning()
+  {
+    // KJA current work
+    assert false: "Not yet implemented!"
   }
 }

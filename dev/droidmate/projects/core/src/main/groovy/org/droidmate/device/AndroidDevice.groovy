@@ -206,6 +206,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
   {
     log.trace("stopUiaDaemon()")
+    // KJA if (this.checkProcessIsRunning(
     this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
     this.tcpClients.waitForUiaDaemonToClose()
     log.trace("DONE stopUiaDaemon()")
@@ -254,6 +255,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   void startUiaDaemon()
   {
+    // KJA ensure here uia-daemon is not running
     this.tcpClients.startUiaDaemon()
   }
 
@@ -471,8 +473,12 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     else if (cfg.androidApi == Configuration.api23)
     {
       // Uninstall packages in case previous DroidMate run had some leftovers in the form of a living uia-daemon.
-      this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
-      this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test")
+      
+      // KJA seems to make adb unstuck. Do this after each app exploration. Maybe also restart uia-d?
+      this.executeAdbCommand("reconnect", "done")
+      // KJA looks like these commands are useful to unstuck the device even though -r flat is used for apk install. Handle cases when the apps are already uninstalled.
+      this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon", "Success")
+      this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test", "Success")
 
       this.installApk(this.cfg.uiautomator2DaemonApk)
       this.installApk(this.cfg.uiautomator2DaemonTestApk)
@@ -497,9 +503,16 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
   
   @Override
-  void executeAdbCommand(String command) throws DeviceException
+  void executeAdbCommand(String command, String successfulOutput) throws DeviceException
   {
-    this.adbWrapper.executeCommand(this.serialNumber, command)
+    this.adbWrapper.executeCommand(this.serialNumber, command, successfulOutput)
+  }
+
+  @Override
+  boolean uiaDaemonIsRunning()
+  {
+    // KJA current work
+    return false
   }
 
   @Override

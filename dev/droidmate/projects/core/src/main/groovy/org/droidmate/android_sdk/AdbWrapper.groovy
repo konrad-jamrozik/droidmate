@@ -881,17 +881,22 @@ import java.nio.file.Paths
   }
   
   @Override
-  void executeCommand(String deviceSerialNumber, String command) throws AdbWrapperException 
+  void executeCommand(String deviceSerialNumber, String command, String successfulOutput) throws AdbWrapperException
   {
+    String[] stdStreams
     try
     {
-      sysCmdExecutor.execute("Custom command", cfg.adbCommand, 
-      "-s", deviceSerialNumber,
-      command)
+      stdStreams = sysCmdExecutor.execute("Custom command", cfg.adbCommand,
+        "-s", deviceSerialNumber, command)
     } catch (SysCmdExecutorException e)
     {
-      throw new AdbWrapperException("Executing custom adb command failed. Oh my.", e)
+      throw new AdbWrapperException("Executing adb command '$command' failed. Oh my.", e)
     }
+
+    assert stdStreams.size() == 2
+    if (!stdStreams[0].startsWith(successfulOutput))
+      throw new AdbWrapperException("After executing adb command of '$command', expected stdout to have '$successfulOutput'. " +
+        "Instead, stdout had '${stdStreams[0].trim()}' and stderr had '${stdStreams[1].trim()}'.")
   }
 
   @SuppressWarnings("GroovyUnusedDeclaration")

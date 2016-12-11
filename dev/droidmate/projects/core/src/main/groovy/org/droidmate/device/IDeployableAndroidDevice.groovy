@@ -68,5 +68,7 @@ interface IDeployableAndroidDevice
 
   void initModel() throws DeviceException
   
-  void executeAdbCommand(String command)
+  void executeAdbCommand(String command, String successfulOutput) throws DeviceException
+
+  boolean uiaDaemonIsRunning()
 }

@@ -178,7 +178,7 @@ class AdbWrapperStub implements IAdbWrapper
   }
 
   @Override
-  void executeCommand(String deviceSerialNumber, String command) throws AdbWrapperException
+  void executeCommand(String deviceSerialNumber, String command, String successfulOutput) throws AdbWrapperException
   {
   }
 }

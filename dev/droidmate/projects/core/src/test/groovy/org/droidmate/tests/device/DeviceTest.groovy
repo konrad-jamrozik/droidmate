@@ -68,7 +68,7 @@ class DeviceTest extends DroidmateGroovyTestCase
    * This test exists for interactive debugging of known, not yet resolved bug. The behavior is as follows.
    * 
    * - If everything works fine and the uiadaemon server is alive, this test should succeed without any need to reinstall uiad apks
-   * and setup connecton. You can check if the server is allive as follows:
+   * and setup connection. You can check if the server is allive as follows:
    * 
    * adb shell
    * shell@flo:/ $ ps | grep uia
@@ -87,34 +87,51 @@ class DeviceTest extends DroidmateGroovyTestCase
     IAndroidDevice device = deviceTools.deviceFactory.create(new FirstRealDeviceSerialNumber(deviceTools.adb).toString())
     
     
-    device.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon")
-//    device.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test")
-    device.installApk(cfg.uiautomator2DaemonApk)
-//    device.installApk(cfg.uiautomator2DaemonTestApk)
-    device.setupConnection()
+    if (!device.uiaDaemonIsRunning())
+    {
+      println 'daemon is not running: reinstallUiautomatorDaemon'
+      device.reinstallUiautomatorDaemon()
+    }
+    else
+    {
+      println 'daemon is running: stop it'
+      // KJA note: stopping here might have daemon thread equal to null, causing exception
+      device.stopUiaDaemon()
+    }
     
+    println 'setupConnection'
+    device.setupConnection()
+
     println 'Socket socket = new Socket("localhost", 59800)' 
     Socket socket = new Socket("localhost", 59800)
-    
+
     println 'def inputStream = new ObjectInputStream(socket.inputStream)'
     def inputStream = new ObjectInputStream(socket.inputStream)
-    
+
     println 'def outputStream = new ObjectOutputStream(socket.outputStream)'
     def outputStream = new ObjectOutputStream(socket.outputStream)
-    
+
     println 'outputStream.writeObject(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))'
     outputStream.writeObject(new DeviceCommand(DEVICE_COMMAND_GET_DEVICE_MODEL))
-    
+
     println 'outputStream.flush()'
     outputStream.flush()
 
     println 'inputStream.readObject()'
     inputStream.readObject()
-    
+
     println 'socket.close()'
     socket.close()
-    
-    println 'END'
+
+    println 'stop uiad'
+
+    device.stopUiaDaemon()
+
+//    println "stop uiad - second time"
+
+//    device.stopUiaDaemon()
+//    
+//    println "END"
   }
 
   @Category([RequiresDevice])

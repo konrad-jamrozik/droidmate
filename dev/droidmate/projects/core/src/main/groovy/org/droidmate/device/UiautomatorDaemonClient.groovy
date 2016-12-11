@@ -67,7 +67,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
 
     validateUiaDaemonServerStartLogcatMessages()
 
-    assert getUiaDaemonThreadIsAlive()
+    assert uiaDaemonThreadIsAlive
 
   }
 
@@ -106,6 +106,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
     try
     {
       uiaDaemonThread.join()
+      assert !uiaDaemonThreadIsAlive
     } catch (InterruptedException e)
     {
       throw new DeviceException(e)
