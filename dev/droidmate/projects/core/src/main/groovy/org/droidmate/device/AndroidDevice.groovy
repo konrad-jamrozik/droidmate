@@ -261,7 +261,11 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   void restartUiaDaemon(boolean uiaDaemonThreadIsNull)
   {
     if (this.uiaDaemonIsRunning())
+    {
+      log.trace("stopUiaDaemon() during restart")
       this.stopUiaDaemon(uiaDaemonThreadIsNull)
+    }
+    log.trace("startUiaDaemon() during restart")
     this.startUiaDaemon()
   }
 

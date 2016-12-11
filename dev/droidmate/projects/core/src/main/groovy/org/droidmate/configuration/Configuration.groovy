@@ -232,7 +232,7 @@ import java.nio.file.Path
   String logLevel = "trace"
 
   @Parameter(names = [Configuration.pn_monitorSocketTimeout], arity = 1)
-  public int monitorSocketTimeout = 1 * 60 * 1000 // ms
+  public int monitorSocketTimeout = 3 * 60 * 1000 // ms
 
   @Parameter(names = [Configuration.pn_uninstallApk], arity = 1)
   public boolean uninstallApk = true
@@ -268,7 +268,7 @@ import java.nio.file.Path
   public int uiautomatorDaemonServerStartQueryDelay = 2000
 
   @Parameter(names = [Configuration.pn_uiautomatorDaemonSocketTimeout], arity = 1)
-  public int uiautomatorDaemonSocketTimeout = 1 * 30 * 1000 // ms
+  public int uiautomatorDaemonSocketTimeout = 1 * 60 * 1000 // ms
 
   @Parameter(names = [Configuration.pn_uiautomatorDaemonWaitForGuiToStabilize], arity = 1, description =
     "Should the uiautomator-daemon wait for GUI state to stabilize after each click performed on the android device. Setting this to false will drastically speedup the clicking process, but will probably result in new clicks being sent while the results of previous one are still being processed.")
