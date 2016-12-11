@@ -208,7 +208,14 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   void stopUiaDaemon(boolean uiaDaemonThreadIsNull) throws DeviceNeedsRebootException, DeviceException
   {
     log.trace("stopUiaDaemon(uiaDaemonThreadIsNull:$uiaDaemonThreadIsNull)")
-    this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
+    try
+    {
+      this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
+    } catch (DeviceException e)
+    {
+      log.trace("Attempt to stop UiaDaemon through TCP threw an exception: $e. Killing by reinstalling.") 
+      this.reinstallUiautomatorDaemon()
+    }
 
     if (uiaDaemonThreadIsNull) 
       assert this.tcpClients.uiaDaemonThreadIsNull 
@@ -263,6 +270,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     if (this.uiaDaemonIsRunning())
     {
       log.trace("stopUiaDaemon() during restart")
+      // KJA this just fails sometimes, as even though socket is connected, the server's 'accept' is not moving forward.
       this.stopUiaDaemon(uiaDaemonThreadIsNull)
     }
     log.trace("startUiaDaemon() during restart")
@@ -549,8 +557,8 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   boolean isPackageInstalled(String packageName)
   {
     String uiadPackageList = this.adbWrapper.executeCommand(this.serialNumber, "shell pm list packages $packageName", "")
-    uiadPackageList = uiadPackageList.trim().replace("package:","")
-    return uiadPackageList == packageName
+    String[] packages = uiadPackageList.trim().replace("package:","").replace("\r","|").replace("\n","|").split("\\|")
+    return packages.any { it == packageName }
   }
 
   @Override

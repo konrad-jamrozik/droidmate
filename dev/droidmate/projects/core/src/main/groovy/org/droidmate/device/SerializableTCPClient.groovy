@@ -128,6 +128,8 @@ import org.droidmate.android_sdk.DeviceException
     try
     {
       socket = new Socket(serverAddress, port)
+      assert socket.connected
+      
     } catch (ConnectException e)
     {
       throw new DeviceNeedsRebootException(e)
