@@ -304,7 +304,6 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
    * [wue]: {@link android.view.accessibility.AccessibilityEvent#TYPE_WINDOW_CONTENT_CHANGED}<br/>
    * [clck]: {@link android.support.test.uiautomator.UiDevice#click(int, int)}<br/>
    */
-  // KJA decrease the amount of time waiting
   private void waitForGuiToStabilize()
   {
 
@@ -334,7 +333,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       boolean wfwuReachedTimeout;
       boolean wfiReturnedImmediately;
       int iteration = 0;
-      int maxIterations = 10;
+      int maxIterations = 5;
       do
       {
         iteration++;
