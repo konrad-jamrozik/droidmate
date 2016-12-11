@@ -180,7 +180,7 @@ class AndroidDeviceSimulator implements IAndroidDevice
   void closeConnection() throws DeviceException
   {
     findMatchingExceptionSpecAndThrowIfApplies("closeConnection", this.currentlyDeployedPackageName)
-    this.stopUiaDaemon()
+    this.stopUiaDaemon(false)
   }
 
   @Override
@@ -278,7 +278,7 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
+  void stopUiaDaemon(boolean uiaDaemonThreadIsNull) throws DeviceNeedsRebootException, DeviceException
   {
     this.uiaDaemonIsRunning = false
   }
@@ -353,6 +353,11 @@ class AndroidDeviceSimulator implements IAndroidDevice
 
   @Override
   void initModel() throws DeviceException
+  {
+  }
+
+  @Override
+  void reconnectAdb() throws DeviceException
   {
   }
 

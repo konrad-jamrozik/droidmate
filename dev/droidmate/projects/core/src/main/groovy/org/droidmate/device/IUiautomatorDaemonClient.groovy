@@ -32,5 +32,7 @@ interface IUiautomatorDaemonClient
 
   void waitForUiaDaemonToClose() throws DeviceException
 
+  boolean getUiaDaemonThreadIsNull()
+  
   boolean getUiaDaemonThreadIsAlive()
 }

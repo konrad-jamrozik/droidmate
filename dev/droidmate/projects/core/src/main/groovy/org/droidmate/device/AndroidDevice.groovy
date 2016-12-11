@@ -35,6 +35,7 @@ import org.droidmate.logging.LogbackUtils
 import org.droidmate.misc.Boolean3
 import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.MonitorConstants
+import org.droidmate.misc.Utils
 import org.droidmate.uiautomator_daemon.DeviceCommand
 import org.droidmate.uiautomator_daemon.DeviceResponse
 import org.droidmate.uiautomator_daemon.UiautomatorWindowHierarchyDumpDeviceResponse
@@ -199,16 +200,21 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   void closeConnection() throws DeviceNeedsRebootException, DeviceException
   {
-    this.stopUiaDaemon()
+    this.stopUiaDaemon(false)
   }
 
   @Override
-  void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
+  void stopUiaDaemon(boolean uiaDaemonThreadIsNull) throws DeviceNeedsRebootException, DeviceException
   {
-    log.trace("stopUiaDaemon()")
-    // KJA if (this.checkProcessIsRunning(
+    log.trace("stopUiaDaemon(uiaDaemonThreadIsNull:$uiaDaemonThreadIsNull)")
     this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
-    this.tcpClients.waitForUiaDaemonToClose()
+
+    if (uiaDaemonThreadIsNull) 
+      assert this.tcpClients.uiaDaemonThreadIsNull 
+    else 
+      this.tcpClients.waitForUiaDaemonToClose()
+
+    assert Utils.retryOnFalse( {!this.uiaDaemonIsRunning()}, 3, 300)
     log.trace("DONE stopUiaDaemon()")
 
   }
@@ -255,7 +261,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   void startUiaDaemon()
   {
-    // KJA ensure here uia-daemon is not running
+    assert !this.uiaDaemonIsRunning()
     this.tcpClients.startUiaDaemon()
   }
 
@@ -473,12 +479,9 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     else if (cfg.androidApi == Configuration.api23)
     {
       // Uninstall packages in case previous DroidMate run had some leftovers in the form of a living uia-daemon.
-      
-      // KJA seems to make adb unstuck. Do this after each app exploration. Maybe also restart uia-d?
-      this.executeAdbCommand("reconnect", "done")
-      // KJA looks like these commands are useful to unstuck the device even though -r flat is used for apk install. Handle cases when the apps are already uninstalled.
-      this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon", "Success")
-      this.executeAdbCommand("uninstall org.droidmate.uiautomator2daemon.UiAutomator2Daemon.test", "Success")
+      // Commented out as seems to be superfluous with .installApk() as it reinstalls apps.
+//      this.executeAdbCommand("uninstall $uia2Daemon_packageName", "Success")
+//      this.executeAdbCommand("uninstall ${uia2Daemon_packageName}.test", "Success")
 
       this.installApk(this.cfg.uiautomator2DaemonApk)
       this.installApk(this.cfg.uiautomator2DaemonTestApk)
@@ -502,6 +505,12 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
 
   }
   
+  @Override 
+  void reconnectAdb() throws DeviceException
+  {
+    this.executeAdbCommand("reconnect", "done")
+  }
+  
   @Override
   void executeAdbCommand(String command, String successfulOutput) throws DeviceException
   {
@@ -511,8 +520,15 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   boolean uiaDaemonIsRunning()
   {
-    // KJA current work
-    return false
+    String packageName
+    if (cfg.androidApi == Configuration.api19)
+      packageName = uiaDaemon_packageName
+    else if (cfg.androidApi == Configuration.api23)
+      packageName = uia2Daemon_packageName
+    else throw new UnexpectedIfElseFallthroughError()
+    
+    String processList = this.adbWrapper.executeCommand(this.serialNumber, "shell ps $packageName", "USER")
+    return processList.contains(packageName)
   }
 
   @Override

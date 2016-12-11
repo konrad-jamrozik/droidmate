@@ -881,7 +881,7 @@ import java.nio.file.Paths
   }
   
   @Override
-  void executeCommand(String deviceSerialNumber, String command, String successfulOutput) throws AdbWrapperException
+  String executeCommand(String deviceSerialNumber, String command, String successfulOutput) throws AdbWrapperException
   {
     String[] stdStreams
     try
@@ -897,6 +897,8 @@ import java.nio.file.Paths
     if (!stdStreams[0].startsWith(successfulOutput))
       throw new AdbWrapperException("After executing adb command of '$command', expected stdout to have '$successfulOutput'. " +
         "Instead, stdout had '${stdStreams[0].trim()}' and stderr had '${stdStreams[1].trim()}'.")
+    
+    return stdStreams[0]
   }
 
   @SuppressWarnings("GroovyUnusedDeclaration")

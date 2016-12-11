@@ -378,14 +378,17 @@ class RobustDevice implements IRobustDevice
       guiSnapshot = this.getRetryValidGuiSnapshot()
     } catch (AllDeviceAttemptsExhaustedException e)
     {
-      log.warn("! Caught $e while trying to get valid GUI snapshot. Stopping, reinstalling & restarting uiautomator-daemon and trying to get the GUI snapshot again.")
-      // KJA this might hang. Introduce "tryStop" instead with a small timeout, ignore failure.
+      log.warn("! Caught $e while trying to get valid GUI snapshot. Restarting uiautomator-daemon and trying to get the GUI snapshot again.")
       // KJA make socket time for serializable tcp client clearer, split for both monitor and uiad.
-      this.stopUiaDaemon()
-      this.reinstallUiautomatorDaemon()
-      this.clearLogcat()
+
+      this.reconnectAdb()
+      
+      if (this.uiaDaemonIsRunning())
+        this.stopUiaDaemon(false)
+      
       this.startUiaDaemon()
-      log.debug("Uiautomator-daemon stopped, reinstalled and restarted, now trying to get the GUI snapshot again.")
+      
+      log.debug("Uiautomator-daemon restarted, now trying to get the GUI snapshot again.")
       try
       {
         guiSnapshot = this.getRetryValidGuiSnapshot()
@@ -394,7 +397,7 @@ class RobustDevice implements IRobustDevice
         log.warn("! Repeated attempt at getting valid GUI snapshot, after restarting uiautomator-daemon, failed with exception. Rethrowing.")
         throw e2
       }
-      log.info("Successfully obtained valid GUI snapshot after stopping, reinstalling and restating uiautomator-daemon.")
+      log.info("Successfully obtained valid GUI snapshot after restating uiautomator-daemon.")
     }
     return guiSnapshot
   }

@@ -95,8 +95,7 @@ class DeviceTest extends DroidmateGroovyTestCase
     else
     {
       println 'daemon is running: stop it'
-      // KJA note: stopping here might have daemon thread equal to null, causing exception
-      device.stopUiaDaemon()
+      device.stopUiaDaemon(true)
     }
     
     println 'setupConnection'
@@ -123,15 +122,10 @@ class DeviceTest extends DroidmateGroovyTestCase
     println 'socket.close()'
     socket.close()
 
-    println 'stop uiad'
+//    println 'stop uiad'
+//    device.stopUiaDaemon(false)
 
-    device.stopUiaDaemon()
-
-//    println "stop uiad - second time"
-
-//    device.stopUiaDaemon()
-//    
-//    println "END"
+    println "END"
   }
 
   @Category([RequiresDevice])

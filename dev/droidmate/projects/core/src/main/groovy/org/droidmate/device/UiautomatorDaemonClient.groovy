@@ -88,7 +88,14 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
   }
 
   @Override
-   boolean getUiaDaemonThreadIsAlive()
+  boolean getUiaDaemonThreadIsNull()
+  {
+    return this.uiaDaemonThread == null
+  }
+
+
+  @Override
+  boolean getUiaDaemonThreadIsAlive()
   {
     assert this.uiaDaemonThread != null
     return this.uiaDaemonThread.alive
@@ -100,7 +107,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
   }
 
   @Override
-   void waitForUiaDaemonToClose() throws DeviceException
+  void waitForUiaDaemonToClose() throws DeviceException
   {
     assert (uiaDaemonThread != null)
     try

@@ -48,7 +48,7 @@ interface IDeployableAndroidDevice
 
   void reboot() throws DeviceException
 
-  void stopUiaDaemon() throws DeviceNeedsRebootException, DeviceException
+  void stopUiaDaemon(boolean uiaDaemonThreadIsNull) throws DeviceNeedsRebootException, DeviceException
 
   boolean isAvailable() throws DeviceException
 
@@ -67,6 +67,8 @@ interface IDeployableAndroidDevice
   void setupConnection() throws DeviceException
 
   void initModel() throws DeviceException
+  
+  void reconnectAdb() throws DeviceException
   
   void executeAdbCommand(String command, String successfulOutput) throws DeviceException
 
