@@ -121,9 +121,12 @@ class ExploreCommand extends DroidmateCommand
     if (!Files.isDirectory(outputDir))
       return
     
-    Path screenshotsDir = outputDir.resolve(cfg.screenshotsDir)
-    if (Files.isDirectory(screenshotsDir))
-      screenshotsDir.deleteDir()
+    [cfg.screenshotsOutputSubdir, cfg.reportOutputSubdir].each {
+
+      Path dirToDelete = outputDir.resolve(it)
+      if (Files.isDirectory(dirToDelete))
+        dirToDelete.deleteDir()
+    }
 
     outputDir.eachFile(FileType.FILES) {Path p ->
       Files.delete(p)
@@ -170,6 +173,9 @@ class ExploreCommand extends DroidmateCommand
         {
           log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
 
+          // Just a preventative measure for ensuring healthiness of the connection.
+          device.reconnectAdb()
+          
           allApksExplorationExceptions +=
             this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
               tryExploreOnDeviceAndSerialize(deployedApk, device, out)

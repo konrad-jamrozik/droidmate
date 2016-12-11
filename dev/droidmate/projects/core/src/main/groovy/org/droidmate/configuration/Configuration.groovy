@@ -135,7 +135,8 @@ import java.nio.file.Path
   public static final String defaultDroidmateOutputDir              = "output_device1"
   public static final int    defaultResetEveryNthExplorationForward = 0
   
-  public static final String screenshotsDir = "screenshots"
+  public static final String screenshotsOutputSubdir = "screenshots"
+  public static final String reportOutputSubdir      = "report"
   
   public static final String api19 = "api19"
   public static final String api23 = "api23"

@@ -225,7 +225,7 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
     
     cfg.droidmateOutputDirPath = fs.getPath(cfg.droidmateOutputDir)
-    cfg.droidmateOutputReportDirPath = cfg.droidmateOutputDirPath.resolve("report")
+    cfg.droidmateOutputReportDirPath = cfg.droidmateOutputDirPath.resolve(cfg.reportOutputSubdir)
     cfg.reportInputDirPath = fs.getPath(cfg.reportInputDir)
     cfg.reportOutputDirPath = fs.getPath(cfg.reportOutputDir)
     cfg.apksDirPath = cfg.useApkFixturesDir ? new ResourcePath(BuildConstants.apk_fixtures).path : fs.getPath(cfg.apksDirName.toString())

@@ -437,7 +437,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     assert app != null
     assert !suffix?.empty
     
-    Path targetFile = Paths.get("${cfg.droidmateOutputDir}/${cfg.screenshotsDir}/${app.fileNameWithoutExtension}_${suffix}.png")
+    Path targetFile = Paths.get("${cfg.droidmateOutputDir}/${cfg.screenshotsOutputSubdir}/${app.fileNameWithoutExtension}_${suffix}.png")
     targetFile.mkdirs()
     assert !Files.exists(targetFile)
     String targetFileString = targetFile.toString().replace(File.separator, "/")
@@ -518,7 +518,8 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override 
   void reconnectAdb() throws DeviceException
   {
-    this.executeAdbCommand("reconnect", "done")
+    // Turned off, as sometimes (roughly 50% of cases) instead of "done" it prints out "error: no devices/emulators found"
+    // this.executeAdbCommand("reconnect", "done")
   }
   
   @Override
