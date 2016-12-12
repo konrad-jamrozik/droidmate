@@ -32,12 +32,9 @@ class ApksProvider implements IApksProvider
 {
 
   // KJA add reverse mode to check stability of uia-d. It gets worse on 60+ app.
-  // KJA decrease rebooting log level + log "second attempt at action successful"
   // KJA log to separate log file all the "soft exceptions" and reboot attempts
   // KJA rename the Serializable* classes to have better names. DRY them up? Makes sense?
   // KJA check if api 19 still works
-  // KJA restart app exploration after reboot? For 2 mins it is distruptive, but for more time will it also happen so often?
-  // KJA check if restarting uia-d was necessary after all
   // KJA solve the first log < first action problem. Logs from previous run? Logcat clear needed (I removed it recenlty from apk deployer) ? More frequent time sync needed? Time sync has delays, and adb needs to be reconnected?
   
   IAaptWrapper aapt

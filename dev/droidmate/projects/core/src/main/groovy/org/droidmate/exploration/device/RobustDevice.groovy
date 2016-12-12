@@ -304,7 +304,6 @@ class RobustDevice implements IRobustDevice
     rebootIfNecessary("device.clickAppIcon(iconLabel:$iconLabel)", true) { this.device.clickAppIcon(iconLabel) }
   }
 
-  // KJA Check all getGuiSnapshots for possibly returning home
   @Override
   void launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
@@ -315,7 +314,8 @@ class RobustDevice implements IRobustDevice
       launchSucceeded = this.device.launchMainActivity(launchableActivityComponentName)
     } catch (AdbWrapperException e)
     {
-      log.warn("! device.launchMainActivity($launchableActivityComponentName) threw $e. Discarding the exception, reconnecting adb and continuing.")
+      log.warn("! device.launchMainActivity($launchableActivityComponentName) threw $e. Discarding the exception, " +
+        "reconnecting adb and continuing.")
       this.reconnectAdb()
     }
     def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
