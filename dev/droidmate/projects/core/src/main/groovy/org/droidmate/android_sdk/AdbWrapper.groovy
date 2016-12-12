@@ -194,7 +194,7 @@ import java.nio.file.Paths
   @Override
   void forwardPort(String deviceSerialNumber, int port) throws AdbWrapperException
   {
-    log.trace("forwardPort(deviceSerialNumber:$deviceSerialNumber, port:$port)")
+//    log.trace("forwardPort(deviceSerialNumber:$deviceSerialNumber, port:$port)")
     assert deviceSerialNumber != null
 
     try
@@ -373,8 +373,6 @@ import java.nio.file.Paths
   {
     try
     {
-      // KNOWN BUG timeouts on many apps, forgetting to reboot.
-      // SUSPICION: all of this was caused just by failing assert in Monitor.
       String commandDescription = String
         .format("Executing adb (Android Debug Bridge) to clear logcat output.")
 

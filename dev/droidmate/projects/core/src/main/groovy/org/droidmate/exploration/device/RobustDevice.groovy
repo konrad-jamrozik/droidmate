@@ -304,13 +304,18 @@ class RobustDevice implements IRobustDevice
     rebootIfNecessary("device.clickAppIcon(iconLabel:$iconLabel)", true) { this.device.clickAppIcon(iconLabel) }
   }
 
+  // KJA Delete Boolean3. It is ignored anyway.
+  // KJA Check all getGuiSnapshots for possibly returning home
   @Override
   Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
     try
     {
       // WISH when ANR immediately appears, waiting for full SysCmdExecutor.sysCmdExecuteTimeout to pass here is wasteful.
+      // KJA after this timeout for 120 sec, also uia-d timed out. uia-d time out causes reboot, but this doesn't. It should.
+      // KJA do adb reconnect after timed out launch.
       Boolean3 result = this.device.launchMainActivity(launchableActivityComponentName)
+      // KJA BUG!: this call may reboot device, resulting in home screen. In such case launch failed.
       def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
 
       if ((result == Boolean3.True) && guiSnapshot.guiState.appHasStoppedDialogBox)
@@ -331,14 +336,14 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
   {
-    IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshotReinstallingUiadIfNecessary()
+    IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshotRebootingOnAllAttemptsExhausted()
     guiSnapshot = closeANRIfNecessary(guiSnapshot)
     return guiSnapshot
   }
 
   private IDeviceGuiSnapshot getExplorableGuiSnapshotWithoutClosingANR() throws DeviceException
   {
-    return this.getRetryValidGuiSnapshotReinstallingUiadIfNecessary()
+    return this.getRetryValidGuiSnapshotRebootingOnAllAttemptsExhausted()
   }
 
   private IDeviceGuiSnapshot closeANRIfNecessary(IDeviceGuiSnapshot guiSnapshot) throws DeviceException
@@ -358,7 +363,7 @@ class RobustDevice implements IRobustDevice
       device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
         (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget)
       )
-      out = this.getRetryValidGuiSnapshotReinstallingUiadIfNecessary()
+      out = this.getRetryValidGuiSnapshotRebootingOnAllAttemptsExhausted()
 
       if (out.guiState.isAppHasStoppedDialogBox())
       {
@@ -376,42 +381,9 @@ class RobustDevice implements IRobustDevice
     return out
   }
 
-  private IDeviceGuiSnapshot getRetryValidGuiSnapshotReinstallingUiadIfNecessary() throws DeviceException
+  private IDeviceGuiSnapshot getRetryValidGuiSnapshotRebootingOnAllAttemptsExhausted() throws DeviceException
   {
-    return this.getRetryValidGuiSnapshot()
-    //      // KJA temp off is this method now necessary?, deeper down getGuiSnapshotRebootingIfNecessary is called, which will reboot device on TCP unreachable. Is there a case the uia-d has to be restarted because although tcp works, the screen is malformed?
-    // KJA looks like indeed uia-d has tendency to return a set of malformed screen which gets fixed after restarting it. But switch
-    // priorities: first fix by restating, and if this is impossible (because e.g. stopping doesn't work) propagate exception higher
-    // up call chain to "reboot if necessary.
-    // KJA simulate "reboot if necessary" method, but with "restart uiad" if necessary. This will contain the AllAttemptsExhausted logci from getRetryValidGuiSnapshot
-
-//    IDeviceGuiSnapshot guiSnapshot
-//    try
-//    {
-//      guiSnapshot = this.getRetryValidGuiSnapshot()
-//    } catch (AllDeviceAttemptsExhaustedException e)
-//    {
-//      log.warn("! Caught $e while trying to get valid GUI snapshot. Restarting uiautomator-daemon and trying to get the GUI snapshot again.")
-//
-//      this.reconnectAdb()
-//      
-//      if (this.uiaDaemonIsRunning())
-//        this.stopUiaDaemon(false)
-//      
-//      this.startUiaDaemon()
-//      
-//      log.debug("Uiautomator-daemon restarted, now trying to get the GUI snapshot again.")
-//      try
-//      {
-//        guiSnapshot = this.getRetryValidGuiSnapshot()
-//      } catch (DeviceException e2)
-//      {
-//        log.warn("! Repeated attempt at getting valid GUI snapshot, after restarting uiautomator-daemon, failed with exception. Rethrowing.")
-//        throw e2
-//      }
-//      log.info("Successfully obtained valid GUI snapshot after restating uiautomator-daemon.")
-//    }
-//    return guiSnapshot
+    return rebootIfNecessary("device.getRetryValidGuiSnapshot()", true) { this.getRetryValidGuiSnapshot() }
   }
   
   private IDeviceGuiSnapshot getRetryValidGuiSnapshot() throws DeviceException
@@ -423,7 +395,8 @@ class RobustDevice implements IRobustDevice
         this.&getValidGuiSnapshot,
         DeviceException,
         getValidGuiSnapshotRetryAttempts,
-        getValidGuiSnapshotRetryDelay, "getValidGuiSnapshot"
+        getValidGuiSnapshotRetryDelay, 
+        "getValidGuiSnapshot"
       )
     } catch (DeviceException e)
     {
@@ -436,8 +409,7 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getValidGuiSnapshot() throws DeviceException
   {
-    // KJA this rebooting should be called before "getRetryValidGuiSnapshot" in call chaing, not after
-    IDeviceGuiSnapshot snapshot = this.getGuiSnapshotRebootingIfNecessary()
+    IDeviceGuiSnapshot snapshot = this.device.getGuiSnapshot()
     ValidationResult vres = snapshot.validationResult
 
     if (!vres.valid)
@@ -445,20 +417,14 @@ class RobustDevice implements IRobustDevice
 
     return snapshot
   }
-
-  private IDeviceGuiSnapshot getGuiSnapshotRebootingIfNecessary() throws DeviceException
-  {
-    rebootIfNecessary("device.getGuiSnapshot()", true) {this.device.getGuiSnapshot()}
-  }
   
   private <T> T rebootIfNecessary(String description, boolean makeSecondAttempt, Closure<T> operationOnDevice) throws DeviceException
   {
     T out
     try
     {
-
       out = operationOnDevice()
-    } catch (TcpServerUnreachableException e)
+    } catch (TcpServerUnreachableException | AllDeviceAttemptsExhaustedException e)
     {
       log.warn("! Attempt to execute '$description' threw an exception: $e. " +
         (makeSecondAttempt
@@ -475,7 +441,8 @@ class RobustDevice implements IRobustDevice
         try
         {
           out = operationOnDevice()
-        } catch (TcpServerUnreachableException e2)
+          log.info("Second attempt at executing '$description' completed successfully.")
+        } catch (TcpServerUnreachableException | AllDeviceAttemptsExhaustedException e2)
         {
           log.warn("! Second attempt to execute '$description' threw an exception: $e2. " +
             "Giving up and rethrowing.")

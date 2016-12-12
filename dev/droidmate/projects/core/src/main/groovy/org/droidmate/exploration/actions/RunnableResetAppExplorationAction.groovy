@@ -50,7 +50,6 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     assert app != null
     assert device != null
 
-    // KNOWN BUG [clear package]/1 times out (120 sec) even though later on the device works and is available.
     device.clearPackage(app.packageName)
 
     log.debug("2. Clear logcat.")

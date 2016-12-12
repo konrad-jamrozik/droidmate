@@ -210,22 +210,23 @@ import java.nio.file.Path
   public boolean extractSummaries = true
 
   @Parameter(names = [Configuration.pn_getValidGuiSnapshotRetryAttempts])
-  public int getValidGuiSnapshotRetryAttempts = 5
+  public int getValidGuiSnapshotRetryAttempts = 8
   
   @Parameter(names = [Configuration.pn_getValidGuiSnapshotRetryDelay])
   // Exploration of com.facebook.orca_v12.0.0.21.14-inlined.apk shows that that 4 attempts with 4000 ms delays (16s in total)
   // is not enough: all attempts get exhausted and only the repeated set of attempts, after restarting uia-d, succeeds.
-  public int getValidGuiSnapshotRetryDelay = 4000
+  // com.netbiscuits.bild.android_v3.5.6-inlined needs more than 20s.
+  public int getValidGuiSnapshotRetryDelay = 4000 // ms
 
   @Parameter(names = [Configuration.pn_inline], description =
     "If present, instead of normal run, DroidMate will inline all non-inlined apks. Before inlining backup copies of the apks will be created and put into a sub-directory of the directory containing the apks.")
   public Boolean inline = false
 
   @Parameter(names = [Configuration.pn_launchActivityDelay])
-  public int launchActivityDelay = 5000
+  public int launchActivityDelay = 5000 // ms
 
   @Parameter(names = [Configuration.pn_launchActivityTimeout])
-  public int launchActivityTimeout = 1000 * 60 * 2
+  public int launchActivityTimeout = 1 * 60 * 1000 // ms
 
   @Parameter(names = ["-logLevel"], description =
     "Logging level of the entirety of application. Possible values, comma separated: trace, debug, info.")
