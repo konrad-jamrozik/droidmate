@@ -39,7 +39,7 @@ class SingleApkFixture
 
     ApksProvider apksProvider = new ApksProvider(aapt)
 
-    List<Apk> apks = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames)
+    List<Apk> apks = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames, cfg.shuffleApks)
     assert apks.size() == 1
 
     this.apk = apks.first()

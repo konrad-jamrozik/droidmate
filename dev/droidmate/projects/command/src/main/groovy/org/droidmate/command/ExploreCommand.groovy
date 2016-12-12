@@ -82,7 +82,7 @@ class ExploreCommand extends DroidmateCommand
   {
     cleanOutputDir(cfg)
 
-    List<Apk> apks = this.apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames)
+    List<Apk> apks = this.apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames, cfg.shuffleApks)
     if (!validateApks(apks, cfg.runOnNotInlined)) return
 
     List<ExplorationException> explorationExceptions = execute(cfg, apks)

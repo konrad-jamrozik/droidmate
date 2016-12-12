@@ -25,5 +25,5 @@ import java.nio.file.Path
 interface IApksProvider
 {
 
-  List<Apk> getApks(Path apksDir, int apksLimit, List<String> apksNames)
+  List<Apk> getApks(Path apksDir, int apksLimit, List<String> apksNames, boolean shuffle)
 }

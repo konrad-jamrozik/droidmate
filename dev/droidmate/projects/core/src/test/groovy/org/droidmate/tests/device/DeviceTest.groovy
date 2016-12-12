@@ -197,7 +197,7 @@ class DeviceTest extends DroidmateGroovyTestCase
     IDeviceTools deviceTools = new DeviceTools(cfg)
 
     ApksProvider apksProvider = new ApksProvider(deviceTools.aapt)
-    Apk apk = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames).first()
+    Apk apk = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames, cfg.shuffleApks).first()
 
     List<ExplorationException> exceptions =
       deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
