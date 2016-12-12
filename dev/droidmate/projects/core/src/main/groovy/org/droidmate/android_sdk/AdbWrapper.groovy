@@ -251,7 +251,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   void reboot(String deviceSerialNumber) throws AdbWrapperException
+  void reboot(String deviceSerialNumber) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
 
@@ -431,7 +431,7 @@ import java.nio.file.Paths
 
 
   @Override
-   void killAdbServer() throws AdbWrapperException
+  void killAdbServer() throws AdbWrapperException
   {
     try
     {
@@ -449,7 +449,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   void startAdbServer() throws AdbWrapperException
+  void startAdbServer() throws AdbWrapperException
   {
     Process p
     try
@@ -485,7 +485,7 @@ import java.nio.file.Paths
 
 
   @Override
-   void pushJar(String deviceSerialNumber, Path jarFile, String targetFileName = null) throws AdbWrapperException
+  void pushJar(String deviceSerialNumber, Path jarFile, String targetFileName = null) throws AdbWrapperException
   {
     assert cfg.adbCommand != null
     assert deviceSerialNumber != null
@@ -515,7 +515,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   void removeJar(String deviceSerialNumber, Path jarFile) throws AdbWrapperException
+  void removeJar(String deviceSerialNumber, Path jarFile) throws AdbWrapperException
   {
     assert cfg.adbCommand != null
     assert deviceSerialNumber != null
@@ -542,7 +542,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   void launchMainActivity(String deviceSerialNumber, String launchableActivityComponentName) throws AdbWrapperException
+  void launchMainActivity(String deviceSerialNumber, String launchableActivityComponentName) throws AdbWrapperException
   {
     try
     {
@@ -585,7 +585,7 @@ import java.nio.file.Paths
    * @param apkPackageName
    */
   @Override
-   boolean clearPackage(String deviceSerialNumber, String apkPackageName) throws AdbWrapperException
+  boolean clearPackage(String deviceSerialNumber, String apkPackageName) throws AdbWrapperException
   {
     try
     {
@@ -614,7 +614,7 @@ import java.nio.file.Paths
   }
 
   @Override
-   void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
+  void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
   {
     if (cfg.androidApi == Configuration.api19)
       startUiautomatorDaemon_api19(deviceSerialNumber, port)

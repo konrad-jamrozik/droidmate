@@ -44,7 +44,7 @@ import static groovy.transform.TypeCheckingMode.SKIP
  class AaptWrapperTest extends DroidmateGroovyTestCase
 {
   @Test
-   void "Gets launchable activity component name from badging dump"()
+  void "Gets launchable activity component name from badging dump"()
   {
     String aaptBadgingDump = aaptBadgingDump
 
@@ -56,7 +56,7 @@ import static groovy.transform.TypeCheckingMode.SKIP
 
   @TypeChecked(SKIP)
   @Test
-   void "Gets launchable activity component name"()
+  void "Gets launchable activity component name"()
   {
 
     AaptWrapper sut = new AaptWrapper(Configuration.default, new SysCmdExecutor())

@@ -504,7 +504,7 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
-   void closeConnection() throws DeviceException
+  void closeConnection() throws DeviceException
   {
     rebootIfNecessary("closeConnection()", true) {this.device.closeConnection()}
   }

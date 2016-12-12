@@ -195,7 +195,7 @@ class GuiScreen implements IGuiScreen
   }
 
   @Override
-   void buildInternals()
+  void buildInternals()
   {
     assert !this.finishedBuilding
     assert this.guiSnapshot == null

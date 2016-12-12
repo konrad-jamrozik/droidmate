@@ -90,7 +90,7 @@ import java.nio.file.Path
    */
   @Category([RequiresSimulator])
   @Test
-   void "Handles exploration and fatal device exceptions"()
+  void "Handles exploration and fatal device exceptions"()
   {
     def mockedFs = new MockFileSystem([
       "mock_1_noThrow_outputOk",
@@ -131,7 +131,7 @@ import java.nio.file.Path
 
   @Category([RequiresSimulator])
   @Test
-   void "Handles assertion error during exploration loop"()
+  void "Handles assertion error during exploration loop"()
   {
     def mockedFs = new MockFileSystem([
       "mock_1_throwsAssertInLoop_outputNone",
@@ -194,7 +194,7 @@ import java.nio.file.Path
    */
   @Category([RequiresSimulator])
   @Test
-   void "Explores on a device simulator"()
+  void "Explores on a device simulator"()
   {
     def mockedFs = new MockFileSystem(["mock_app1"])
     def cfg = new ConfigurationForTests().withFileSystem(mockedFs.fs).get()
@@ -222,7 +222,7 @@ import java.nio.file.Path
 
   @Category([RequiresDevice])
   @Test
-   void "Explores monitored apk on a real device api19"()
+  void "Explores monitored apk on a real device api19"()
   {
     String[] args = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api19_name]",
@@ -236,7 +236,7 @@ import java.nio.file.Path
 
   @Category([RequiresDevice])
   @Test
-   void "Explores monitored apk on a real device api23"()
+  void "Explores monitored apk on a real device api23"()
   {
     String[] args = new ConfigurationForTests().forDevice().setArgs([
       Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api23_name]",
