@@ -380,6 +380,10 @@ class RobustDevice implements IRobustDevice
   {
     return this.getRetryValidGuiSnapshot()
     //      // KJA temp off is this method now necessary?, deeper down getGuiSnapshotRebootingIfNecessary is called, which will reboot device on TCP unreachable. Is there a case the uia-d has to be restarted because although tcp works, the screen is malformed?
+    // KJA looks like indeed uia-d has tendency to return a set of malformed screen which gets fixed after restarting it. But switch
+    // priorities: first fix by restating, and if this is impossible (because e.g. stopping doesn't work) propagate exception higher
+    // up call chain to "reboot if necessary.
+    // KJA simulate "reboot if necessary" method, but with "restart uiad" if necessary. This will contain the AllAttemptsExhausted logci from getRetryValidGuiSnapshot
 
 //    IDeviceGuiSnapshot guiSnapshot
 //    try
@@ -432,6 +436,7 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getValidGuiSnapshot() throws DeviceException
   {
+    // KJA this rebooting should be called before "getRetryValidGuiSnapshot" in call chaing, not after
     IDeviceGuiSnapshot snapshot = this.getGuiSnapshotRebootingIfNecessary()
     ValidationResult vres = snapshot.validationResult
 
@@ -452,7 +457,6 @@ class RobustDevice implements IRobustDevice
     try
     {
 
-      // KJA review getting explorable gui snapshot
       out = operationOnDevice()
     } catch (TcpServerUnreachableException e)
     {
