@@ -182,4 +182,9 @@ class AdbWrapperStub implements IAdbWrapper
   {
     return ""
   }
+
+  @Override
+  void reconnect(String deviceSerialNumber) throws AdbWrapperException
+  {
+  }
 }

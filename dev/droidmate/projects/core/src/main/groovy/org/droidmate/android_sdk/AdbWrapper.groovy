@@ -575,7 +575,7 @@ import java.nio.file.Paths
 
     } catch (SysCmdExecutorException e)
     {
-      throw new AdbWrapperException("Executing 'adb shell am start <INTENT>' failed. Oh my.", e)
+      throw new AdbWrapperException("Executing 'adb shell am start' of '$launchableActivityComponentName' failed. Oh my.", e)
     }
   }
 
@@ -897,6 +897,14 @@ import java.nio.file.Paths
         "Instead, stdout had '${stdStreams[0].trim()}' and stderr had '${stdStreams[1].trim()}'.")
     
     return stdStreams[0]
+  }
+
+  @Override
+  void reconnect(String deviceSerialNumber) throws AdbWrapperException
+  {
+    // Sometimes (roughly 50% of cases) instead of "done" it prints out "error: no devices/emulators found"
+    this.executeCommand(deviceSerialNumber, "reconnect", "")
+    this.executeCommand(deviceSerialNumber, "wait-for-device", "")
   }
 
   @SuppressWarnings("GroovyUnusedDeclaration")

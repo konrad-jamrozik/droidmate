@@ -27,7 +27,6 @@ import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.actions.WidgetExplorationAction
-import org.droidmate.misc.Boolean3
 import org.droidmate.misc.DroidmateException
 import org.droidmate.test_tools.ApkFixtures
 import org.droidmate.test_tools.exceptions.IExceptionSpec
@@ -209,10 +208,9 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  void launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
     updateSimulatorState(new LaunchMainActivityDeviceAction(launchableActivityComponentName))
-    return Boolean3.True
   }
 
   @Override

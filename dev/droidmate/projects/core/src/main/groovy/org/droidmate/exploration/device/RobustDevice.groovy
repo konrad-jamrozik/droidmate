@@ -19,6 +19,7 @@
 package org.droidmate.exploration.device
 
 import groovy.util.logging.Slf4j
+import org.droidmate.android_sdk.AdbWrapperException
 import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.apis.IApiLogcatMessage
@@ -27,7 +28,6 @@ import org.droidmate.device.AllDeviceAttemptsExhaustedException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.TcpServerUnreachableException
 import org.droidmate.device.datatypes.*
-import org.droidmate.misc.Boolean3
 import org.droidmate.misc.Utils
 
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newPressHomeDeviceAction
@@ -304,34 +304,24 @@ class RobustDevice implements IRobustDevice
     rebootIfNecessary("device.clickAppIcon(iconLabel:$iconLabel)", true) { this.device.clickAppIcon(iconLabel) }
   }
 
-  // KJA Delete Boolean3. It is ignored anyway.
   // KJA Check all getGuiSnapshots for possibly returning home
   @Override
-  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  void launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
+    boolean launchSucceeded = false
     try
     {
       // WISH when ANR immediately appears, waiting for full SysCmdExecutor.sysCmdExecuteTimeout to pass here is wasteful.
-      // KJA after this timeout for 120 sec, also uia-d timed out. uia-d time out causes reboot, but this doesn't. It should.
-      // KJA do adb reconnect after timed out launch.
-      Boolean3 result = this.device.launchMainActivity(launchableActivityComponentName)
-      // KJA BUG!: this call may reboot device, resulting in home screen. In such case launch failed.
-      def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
-
-      if ((result == Boolean3.True) && guiSnapshot.guiState.appHasStoppedDialogBox)
-      {
-        log.debug("device.launchMainActivity() succeeded, but ANR is displayed. Returning 'unknown' " +
-          "(launch might be successful or not).")
-        result = Boolean3.Unknown
-      }
-
-      return result
-
-    } catch (DeviceException e)
+      launchSucceeded = this.device.launchMainActivity(launchableActivityComponentName)
+    } catch (AdbWrapperException e)
     {
-      log.debug("device.launchMainActivity() threw $e. Returning false (launch failure) without rethrowing (discarding exception).")
-      return Boolean3.False
+      log.warn("! device.launchMainActivity($launchableActivityComponentName) threw $e. Discarding the exception, reconnecting adb and continuing.")
+      this.reconnectAdb()
     }
+    def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
+
+    if (launchSucceeded && guiSnapshot.guiState.appHasStoppedDialogBox)
+      log.debug("device.launchMainActivity($launchableActivityComponentName) succeeded, but ANR is displayed.")
   }
 
   private IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException

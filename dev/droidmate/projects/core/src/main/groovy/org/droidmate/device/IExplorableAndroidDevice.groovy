@@ -24,7 +24,6 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.device.datatypes.IAndroidDeviceAction
 import org.droidmate.device.datatypes.IDeviceGuiSnapshot
-import org.droidmate.misc.Boolean3
 
 import java.time.LocalDateTime
 
@@ -48,7 +47,7 @@ interface IExplorableAndroidDevice
 
   Boolean anyMonitorIsReachable() throws DeviceException
 
-  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  void launchMainActivity(String launchableActivityComponentName) throws DeviceException
 
   Boolean appIsRunning(String appPackageName) throws DeviceException
 

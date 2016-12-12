@@ -32,7 +32,6 @@ import org.droidmate.device.model.DeviceModel
 import org.droidmate.device.model.IDeviceModel
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.logging.LogbackUtils
-import org.droidmate.misc.Boolean3
 import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.MonitorConstants
 import org.droidmate.misc.Utils
@@ -380,12 +379,11 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-  Boolean3 launchMainActivity(String launchableActivityComponentName) throws DeviceException
+  void launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
     log.debug("launchMainActivity($launchableActivityComponentName)")
     adbWrapper.launchMainActivity(serialNumber, launchableActivityComponentName)
     sleep(cfg.launchActivityDelay)
-    return Boolean3.True
   }
 
   @Override
@@ -506,9 +504,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override 
   void reconnectAdb() throws DeviceException
   {
-    // Sometimes (roughly 50% of cases) instead of "done" it prints out "error: no devices/emulators found"
-    this.executeAdbCommand("reconnect", "")
-    this.executeAdbCommand("wait-for-device", "")
+    this.adbWrapper.reconnect(this.serialNumber)
   }
   
   @Override
