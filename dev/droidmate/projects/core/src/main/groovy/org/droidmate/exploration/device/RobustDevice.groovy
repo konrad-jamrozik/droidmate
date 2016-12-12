@@ -24,7 +24,6 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.AllDeviceAttemptsExhaustedException
-import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.TcpServerUnreachableException
 import org.droidmate.device.datatypes.*
@@ -450,9 +449,9 @@ class RobustDevice implements IRobustDevice
     try
     {
 
-      // KJA 1 test if it works 2 merge Tcp Server Unreachable and Needs Reboot 3 review getting explorable gui snapshot
+      // KJA review getting explorable gui snapshot
       out = operationOnDevice()
-    } catch (DeviceNeedsRebootException | TcpServerUnreachableException e)
+    } catch (TcpServerUnreachableException e)
     {
       log.warn("! Attempt to execute '$description' threw an exception: $e. " +
         (makeSecondAttempt
@@ -469,7 +468,7 @@ class RobustDevice implements IRobustDevice
         try
         {
           out = operationOnDevice()
-        } catch (DeviceNeedsRebootException | TcpServerUnreachableException e2)
+        } catch (TcpServerUnreachableException e2)
         {
           log.warn("! Second attempt to execute '$description' threw an exception: $e2. " +
             "Giving up and rethrowing.")
@@ -482,7 +481,6 @@ class RobustDevice implements IRobustDevice
     }
     return out
   }
-
 
   @Override
   void reboot() throws DeviceException

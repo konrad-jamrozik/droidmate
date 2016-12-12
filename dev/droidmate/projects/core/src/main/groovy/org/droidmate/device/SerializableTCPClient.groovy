@@ -64,15 +64,9 @@ import org.droidmate.android_sdk.DeviceException
         // 2. search for: "Note - The ObjectInputStream constructor blocks until" in:
         // http://docs.oracle.com/javase/7/docs/platform/serialization/spec/input.html
         //
-        log.trace("inputStream = new ObjectInputStream(socket<$serverAddress:$port>.inputStream)")
+//        log.trace("inputStream = new ObjectInputStream(socket<$serverAddress:$port>.inputStream)")
         inputStream = new ObjectInputStream(socket.inputStream)
 //        log.trace("Got input stream")
-        // KNOWN BUG one of this EOFException is thrown on org.droidmate.exploration.device.RobustDevice.getValidGuiSnapshot,
-        // resulting in propagating exception that IS NOT a "DeviceNeedsRebootException". Which is a problem, because then
-        // the exploration continues.
-        // PROBABLY this is exactly this one, as this continues over many apps, and this is first case.
-        // In such case strange that this.tryGetSocket doesn't throw. Hmm.
-        // SUSPICION: all of this was caused just by failing assert in Monitor.
       } catch (EOFException e)
       {
         throw new TcpServerUnreachableException(e)
@@ -102,10 +96,10 @@ import org.droidmate.android_sdk.DeviceException
         output = (OutputFromServerT) inputStream.readObject()
       } catch (EOFException e)
       {
-        throw new DeviceNeedsRebootException(e)
+        throw new TcpServerUnreachableException(e)
       }
 
-      log.trace("socket.close()")
+//      log.trace("socket.close()")
       socket.close()
 
     }
@@ -122,7 +116,7 @@ import org.droidmate.android_sdk.DeviceException
     return output
   }
 
-  private Socket tryGetSocket(String serverAddress, int port) throws DeviceNeedsRebootException
+  private Socket tryGetSocket(String serverAddress, int port) throws TcpServerUnreachableException
   {
     Socket socket
     try
@@ -132,7 +126,7 @@ import org.droidmate.android_sdk.DeviceException
       
     } catch (ConnectException e)
     {
-      throw new DeviceNeedsRebootException(e)
+      throw new TcpServerUnreachableException(e)
     }
     return socket
   }

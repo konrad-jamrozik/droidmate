@@ -41,7 +41,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-   boolean anyMonitorIsReachable() throws DeviceException
+  boolean anyMonitorIsReachable() throws DeviceException
   {
     boolean out = ports.any {
       this.isServerReachable(it)
@@ -80,19 +80,17 @@ class MonitorsClient implements IMonitorsClient
       {
         return monitorTcpClient.queryServer(MonitorConstants.srvCmd_get_time, it)
 
-      } catch (DeviceNeedsRebootException e)
-      {
-        throw e
-
       } catch (TcpServerUnreachableException ignored)
       {
         // log.trace("Did not reach monitor TCP server at port $it when sending out ${MonitorConstants.srvCmd_get_time} request.")
         return null
       }
     }
-
     if (out == null)
+    {
+      assert !this.anyMonitorIsReachable()
       throw new DeviceException("None of the monitor TCP servers were available.", /* stopFurtherApkExplorations */ true)
+    }
 
     assert out != null
     return out

@@ -356,7 +356,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   Boolean anyMonitorIsReachable() throws DeviceException
   {
-    log.debug("anyMonitorIsReachable()")
+//    log.debug("anyMonitorIsReachable()")
     return this.tcpClients.anyMonitorIsReachable()
   }
 
