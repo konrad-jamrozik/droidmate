@@ -31,7 +31,6 @@ import java.nio.file.Path
 class ApksProvider implements IApksProvider
 {
 
-  // KJA add reverse mode to check stability of uia-d. It gets worse on 60+ app.
   // KJA log to separate log file all the "soft exceptions" and reboot attempts
   // KJA rename the Serializable* classes to have better names. DRY them up? Makes sense?
   // KJA check if api 19 still works
