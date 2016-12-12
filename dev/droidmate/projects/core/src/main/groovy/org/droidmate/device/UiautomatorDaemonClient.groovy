@@ -49,7 +49,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
   }
 
   @Override
-  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
+  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws DeviceException
   {
     this.client.queryServer(deviceCommand, this.port)
   }

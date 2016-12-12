@@ -23,7 +23,6 @@ import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.apis.ITimeFormattedLogcatMessage
-import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.datatypes.*
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
@@ -176,6 +175,7 @@ class AndroidDeviceSimulator implements IAndroidDevice
     logcatMessagesToBeReadNext.clear()
   }
 
+
   @Override
   void closeConnection() throws DeviceException
   {
@@ -216,13 +216,13 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
+  Boolean appIsRunning(String appPackageName) throws DeviceException
   {
     return this.currentSimulation.packageName == appPackageName && this.currentSimulation.appIsRunning
   }
 
   @Override
-  void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
+  void clickAppIcon(String iconLabel) throws DeviceException
   {
     assert false: "Not yet implemented!"
   }
@@ -278,7 +278,7 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  void stopUiaDaemon(boolean uiaDaemonThreadIsNull) throws DeviceNeedsRebootException, DeviceException
+  void stopUiaDaemon(boolean uiaDaemonThreadIsNull) throws DeviceException
   {
     this.uiaDaemonIsRunning = false
   }
@@ -336,7 +336,7 @@ class AndroidDeviceSimulator implements IAndroidDevice
   }
 
   @Override
-  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceException
   {
     return []
   }

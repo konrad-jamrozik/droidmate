@@ -186,8 +186,8 @@ class ExploreCommand extends DroidmateCommand
           }
 
           // Just preventative measures for ensuring healthiness of the device connection.
-          device.reconnectAdb()
-          device.restartUiaDaemon(false)
+//          device.reconnectAdb()
+//          device.restartUiaDaemon(false)
         }
       }
       return allApksExplorationExceptions

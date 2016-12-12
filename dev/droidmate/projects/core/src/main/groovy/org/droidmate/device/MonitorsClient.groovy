@@ -41,7 +41,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-   boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
+   boolean anyMonitorIsReachable() throws DeviceException
   {
     boolean out = ports.any {
       this.isServerReachable(it)
@@ -73,7 +73,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-   ArrayList<ArrayList<String>> getCurrentTime() throws DeviceNeedsRebootException, DeviceException
+   ArrayList<ArrayList<String>> getCurrentTime() throws DeviceException
   {
     ArrayList<ArrayList<String>> out = ports.findResult {
       try
@@ -99,7 +99,7 @@ class MonitorsClient implements IMonitorsClient
   }
 
   @Override
-   ArrayList<ArrayList<String>> getLogs() throws DeviceNeedsRebootException, DeviceException
+   ArrayList<ArrayList<String>> getLogs() throws DeviceException
   {
     Collection<ArrayList<ArrayList<String>>> out = ports.findResults {
       try

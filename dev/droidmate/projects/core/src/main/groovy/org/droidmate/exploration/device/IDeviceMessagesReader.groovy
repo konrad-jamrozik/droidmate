@@ -20,11 +20,10 @@ package org.droidmate.exploration.device
 
 import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.IApiLogcatMessage
-import org.droidmate.device.DeviceNeedsRebootException
 
 interface IDeviceMessagesReader
 {
-  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceNeedsRebootException, DeviceException
+  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceException
 
   void resetTimeSync()
 }

@@ -26,6 +26,7 @@ import org.droidmate.configuration.Configuration
 import org.droidmate.device.AllDeviceAttemptsExhaustedException
 import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IAndroidDevice
+import org.droidmate.device.TcpServerUnreachableException
 import org.droidmate.device.datatypes.*
 import org.droidmate.misc.Boolean3
 import org.droidmate.misc.Utils
@@ -183,6 +184,12 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
+  void setupConnection() throws DeviceException
+  {
+    rebootIfNecessary("device.setupConnection()", true) { this.device.setupConnection() }
+  }
+
+  @Override
   void clearPackage(String apkPackageName) throws DeviceException
   {
     // Clearing package has to happen more than once, because sometimes after cleaning suddenly the ActivityManager restarts
@@ -259,9 +266,9 @@ class RobustDevice implements IRobustDevice
   }
 
   @Override
-  void perform(IAndroidDeviceAction action) throws DeviceNeedsRebootException, DeviceException
+  void perform(IAndroidDeviceAction action) throws DeviceException
   {
-    rebootIfNecessary {this.device.perform(action); return true}
+    rebootIfNecessary("device.perform(action:$action)", false) {this.device.perform(action)}
   }
 
   @Override
@@ -275,7 +282,7 @@ class RobustDevice implements IRobustDevice
 
   private boolean getAppIsRunningRebootingIfNecessary(String packageName) throws DeviceException
   {
-    rebootIfNecessary {this.device.appIsRunning(packageName)}
+    return rebootIfNecessary("device.appIsRunning(packageName:$packageName)", true) {this.device.appIsRunning(packageName)}
   }
 
   @Override
@@ -295,7 +302,7 @@ class RobustDevice implements IRobustDevice
   @Override
   void clickAppIcon(String iconLabel) throws DeviceException
   {
-    rebootIfNecessary { this.device.clickAppIcon(iconLabel); return true }
+    rebootIfNecessary("device.clickAppIcon(iconLabel:$iconLabel)", true) { this.device.clickAppIcon(iconLabel) }
   }
 
   @Override
@@ -434,34 +441,49 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getGuiSnapshotRebootingIfNecessary() throws DeviceException
   {
-    rebootIfNecessary {this.device.getGuiSnapshot()}
+    rebootIfNecessary("device.getGuiSnapshot()", true) {this.device.getGuiSnapshot()}
   }
-
-  private <T> T rebootIfNecessary(Closure<T> operationOnDevice) throws DeviceException
+  
+  private <T> T rebootIfNecessary(String description, boolean makeSecondAttempt, Closure<T> operationOnDevice) throws DeviceException
   {
     T out
     try
     {
+
+      // KJA 1 test if it works 2 merge Tcp Server Unreachable and Needs Reboot 3 review getting explorable gui snapshot
       out = operationOnDevice()
-    } catch (DeviceNeedsRebootException e)
+    } catch (DeviceNeedsRebootException | TcpServerUnreachableException e)
     {
-      log.warn("! Caught $e. Rebooting and restoring connection.")
-      rebootAndSetupConnection()
-      log.info("Rebooted and restored connection. Attempting again the operation that caused the reboot.")
-      out = operationOnDevice()
-      log.info("The repeated attempt at operation that caused the reboot returned successfully.")
+      log.warn("! Attempt to execute '$description' threw an exception: $e. " +
+        (makeSecondAttempt
+        ? "Reconnecting adb, rebooting the device and trying again."
+        : "Reconnecting adb, rebooting the device and continuing."))
+
+      this.reconnectAdb()
+      //this.reinstallUiautomatorDaemon()
+      this.rebootAndSetupConnection()
+
+      if (makeSecondAttempt)
+      {
+        log.info("Reconnected adb and rebooted successfully. Making second and final attempt at executing '$description'")
+        try
+        {
+          out = operationOnDevice()
+        } catch (DeviceNeedsRebootException | TcpServerUnreachableException e2)
+        {
+          log.warn("! Second attempt to execute '$description' threw an exception: $e2. " +
+            "Giving up and rethrowing.")
+          throw e2
+        }
+      } else
+      {
+        out = null
+      }
     }
-    assert out != null
     return out
   }
 
-  private void rebootAndSetupConnection() throws DeviceException
-  {
-    this.reboot()
-    this.setupConnection()
-  }
 
-// WISH use "adb wait-for-device" where appropriate.
   @Override
   void reboot() throws DeviceException
   {
@@ -485,6 +507,7 @@ class RobustDevice implements IRobustDevice
     this.device.reboot()
 
     sleep(this.checkDeviceAvailableAfterRebootFirstDelay)
+    // WISH use "adb wait-for-device"
     boolean rebootResult = Utils.retryOnFalse({
       def out = this.device.available
       if (!out)
@@ -504,17 +527,24 @@ class RobustDevice implements IRobustDevice
 
     assert !this.device.uiaDaemonClientThreadIsAlive()
   }
+  
+  private void rebootAndSetupConnection() throws DeviceException
+  {
+    this.reboot()
+    this.setupConnection()
+  }
+
 
   @Override
   List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceException
   {
-    rebootIfNecessary {this.messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer()}
+    return rebootIfNecessary("messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer()", true) {this.messagesReader.getAndClearCurrentApiLogsFromMonitorTcpServer()}
   }
 
   @Override
    void closeConnection() throws DeviceException
   {
-    rebootIfNecessary {this.device.closeConnection(); return true}
+    rebootIfNecessary("closeConnection()", true) {this.device.closeConnection()}
   }
 
   @Override
@@ -526,6 +556,6 @@ class RobustDevice implements IRobustDevice
   @Override
   void initModel() throws DeviceException
   {
-    this.device.initModel()
+    rebootIfNecessary("initModel()", true) {this.device.initModel()}
   }
 }

@@ -41,7 +41,7 @@ import org.droidmate.android_sdk.DeviceException
    * Next, waits until server returns his answer and returns it.
    */
   @SuppressWarnings("unchecked")
-   OutputFromServerT queryServer(InputToServerT input, int port) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
+   OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
   {
 
     OutputFromServerT output

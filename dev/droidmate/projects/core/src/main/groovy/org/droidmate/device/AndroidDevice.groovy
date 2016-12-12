@@ -110,7 +110,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
 
 
   @Override
-   IDeviceGuiSnapshot getGuiSnapshot() throws DeviceNeedsRebootException, DeviceException
+   IDeviceGuiSnapshot getGuiSnapshot() throws DeviceException
   {
     log.debug("getGuiSnapshot()")
 
@@ -128,7 +128,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-  void perform(IAndroidDeviceAction action) throws DeviceNeedsRebootException, DeviceException
+  void perform(IAndroidDeviceAction action) throws DeviceException
   {
     log.debug("perform($action)")
     //noinspection GroovyInArgumentCheck
@@ -151,24 +151,12 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     }
   }
 
-  DeviceResponse performGuiClick(ClickGuiAction action) throws DeviceNeedsRebootException, DeviceException
+  DeviceResponse performGuiClick(ClickGuiAction action) throws DeviceException
   {
     return issueCommand(new DeviceCommand(DEVICE_COMMAND_PERFORM_ACTION, action.guiAction))
   }
 
-  /**
-   * <p>
-   * Issues given {@code deviceCommand} to the A(V)D, obtains the device answer, checks for errors and return the
-   * device response, unless there were errors along the way. If there were errors, it throws an exception.
-   * </p><p>
-   * The issued command can be potentially handled either by aut-addon or uiautomator-daemon. This method resolves
-   * who should be the recipient and sends the command using {@link TcpClients#uiautomatorClient}.
-   *
-   * </p><p>
-   * <i>This doc was last reviewed on 14 Sep '13.</i>
-   * </p>
-   */
-  private DeviceResponse issueCommand(DeviceCommand deviceCommand) throws DeviceNeedsRebootException, DeviceException
+  private DeviceResponse issueCommand(DeviceCommand deviceCommand) throws DeviceException
   {
     DeviceResponse deviceResponse
 
@@ -177,14 +165,12 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     if (!uiaDaemonHandlesCommand)
       throw new DeviceException(String.format("Unhandled command of %s", deviceCommand.command))
 
+    // KJA socket timeout here on unclean uia-d on testDevice
     deviceResponse = this.tcpClients.sendCommandToUiautomatorDaemon(deviceCommand)
-
+    
     assert deviceResponse != null
-
     throwDeviceResponseThrowableIfAny(deviceResponse)
-
     assert deviceResponse.throwable == null
-
     return deviceResponse
   }
 
@@ -199,23 +185,17 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-  void closeConnection() throws DeviceNeedsRebootException, DeviceException
+  void closeConnection() throws DeviceException
   {
     this.stopUiaDaemon(false)
   }
 
   @Override
-  void stopUiaDaemon(boolean uiaDaemonThreadIsNull) throws DeviceNeedsRebootException, DeviceException
+  void stopUiaDaemon(boolean uiaDaemonThreadIsNull) throws DeviceException
   {
     log.trace("stopUiaDaemon(uiaDaemonThreadIsNull:$uiaDaemonThreadIsNull)")
-    try
-    {
-      this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
-    } catch (DeviceException e)
-    {
-      log.trace("Attempt to stop UiaDaemon through TCP threw an exception: $e. Killing by reinstalling.") 
-      this.reinstallUiautomatorDaemon()
-    }
+
+    this.issueCommand(new DeviceCommand(DEVICE_COMMAND_STOP_UIADAEMON))
 
     if (uiaDaemonThreadIsNull) 
       assert this.tcpClients.uiaDaemonThreadIsNull 
@@ -226,7 +206,6 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     log.trace("DONE stopUiaDaemon()")
 
   }
-
 
   @Override
   boolean isAvailable() throws DeviceException
@@ -329,7 +308,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceNeedsRebootException, DeviceException
+  List<List<String>> readAndClearMonitorTcpMessages() throws DeviceException
   {
     log.debug("readAndClearMonitorTcpMessages()")
 
@@ -346,7 +325,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-  LocalDateTime getCurrentTime() throws DeviceNeedsRebootException, DeviceException
+  LocalDateTime getCurrentTime() throws DeviceException
   {
     List<List<String>> msgs = this.tcpClients.getCurrentTime()
 
@@ -375,7 +354,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-  Boolean anyMonitorIsReachable() throws DeviceNeedsRebootException, DeviceException
+  Boolean anyMonitorIsReachable() throws DeviceException
   {
     log.debug("anyMonitorIsReachable()")
     return this.tcpClients.anyMonitorIsReachable()
@@ -468,13 +447,13 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
 
   @Override
-  Boolean appIsRunning(String appPackageName) throws DeviceNeedsRebootException, DeviceException
+  Boolean appIsRunning(String appPackageName) throws DeviceException
   {
     return this.anyMonitorIsReachable() && this.appProcessIsRunning(appPackageName)
   }
 
   @Override
-  void clickAppIcon(String iconLabel) throws DeviceNeedsRebootException, DeviceException
+  void clickAppIcon(String iconLabel) throws DeviceException
   {
     this.perform(newLaunchAppDeviceAction(iconLabel))
   }
@@ -529,8 +508,9 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override 
   void reconnectAdb() throws DeviceException
   {
-    // Turned off, as sometimes (roughly 50% of cases) instead of "done" it prints out "error: no devices/emulators found"
-    // this.executeAdbCommand("reconnect", "done")
+    // Sometimes (roughly 50% of cases) instead of "done" it prints out "error: no devices/emulators found"
+    this.executeAdbCommand("reconnect", "")
+    this.executeAdbCommand("wait-for-device", "")
   }
   
   @Override

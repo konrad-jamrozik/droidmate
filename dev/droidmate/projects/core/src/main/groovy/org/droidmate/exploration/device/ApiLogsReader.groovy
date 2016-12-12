@@ -25,7 +25,6 @@ import org.droidmate.apis.ApiLogcatMessage
 import org.droidmate.apis.IApiLogcatMessage
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.apis.TimeFormattedLogcatMessage
-import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IExplorableAndroidDevice
 import org.droidmate.logging.LogbackConstants
 import org.droidmate.misc.DroidmateException
@@ -71,7 +70,7 @@ class ApiLogsReader implements IApiLogsReader
   }
 
   @Override
-  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws DeviceNeedsRebootException, DeviceException
+  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
   {
     log.debug("getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)")
     assert deviceTimeDiff != null
@@ -112,14 +111,14 @@ class ApiLogsReader implements IApiLogsReader
     return deviceTimeDiff.syncMessages(messages)
   }
 
-  private List<ITimeFormattedLogcatMessage> getAndClearMessagesFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws DeviceNeedsRebootException, DeviceException
+  private List<ITimeFormattedLogcatMessage> getAndClearMessagesFromMonitorTcpServer(IDeviceTimeDiff deviceTimeDiff) throws DeviceException
   {
     List<List<String>> messages = device.readAndClearMonitorTcpMessages()
 
     return extractLogcatMessagesFromTcpMessages(messages, deviceTimeDiff)
   }
 
-  private List<ITimeFormattedLogcatMessage> extractLogcatMessagesFromTcpMessages(List<List<String>> messages, IDeviceTimeDiff deviceTimeDiff) throws DeviceNeedsRebootException, DeviceException
+  private List<ITimeFormattedLogcatMessage> extractLogcatMessagesFromTcpMessages(List<List<String>> messages, IDeviceTimeDiff deviceTimeDiff) throws DeviceException
   {
     return deviceTimeDiff.syncMessages(messages.collect {List<String> msg ->
 

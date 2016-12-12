@@ -20,7 +20,6 @@ package org.droidmate.exploration.device
 
 import org.droidmate.android_sdk.DeviceException
 import org.droidmate.apis.IApiLogcatMessage
-import org.droidmate.device.DeviceNeedsRebootException
 import org.droidmate.device.IExplorableAndroidDevice
 
 /**
@@ -53,7 +52,7 @@ class DeviceMessagesReader implements IDeviceMessagesReader
   }
 
   @Override
-  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceNeedsRebootException, DeviceException
+  List<IApiLogcatMessage> getAndClearCurrentApiLogsFromMonitorTcpServer() throws DeviceException
   {
     return apiLogsReader.getAndClearCurrentApiLogsFromMonitorTcpServer(deviceTimeDiff)
   }

@@ -24,7 +24,7 @@ import org.droidmate.uiautomator_daemon.DeviceResponse
 
 interface IUiautomatorDaemonClient
 {
-  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws DeviceNeedsRebootException, TcpServerUnreachableException, DeviceException
+  DeviceResponse sendCommandToUiautomatorDaemon(DeviceCommand deviceCommand) throws DeviceException
 
   void forwardPort() throws DeviceException
 

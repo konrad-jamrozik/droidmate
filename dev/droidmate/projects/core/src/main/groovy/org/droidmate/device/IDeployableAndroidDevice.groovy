@@ -44,11 +44,11 @@ interface IDeployableAndroidDevice
 
   void clearLogcat() throws DeviceException
 
-  void closeConnection() throws DeviceNeedsRebootException, DeviceException
+  void closeConnection() throws DeviceException
 
   void reboot() throws DeviceException
 
-  void stopUiaDaemon(boolean uiaDaemonThreadIsNull) throws DeviceNeedsRebootException, DeviceException
+  void stopUiaDaemon(boolean uiaDaemonThreadIsNull) throws DeviceException
 
   boolean isAvailable() throws DeviceException
 
@@ -77,4 +77,5 @@ interface IDeployableAndroidDevice
   boolean uiaDaemonIsRunning()
 
   boolean isPackageInstalled(String packageName)
+
 }
