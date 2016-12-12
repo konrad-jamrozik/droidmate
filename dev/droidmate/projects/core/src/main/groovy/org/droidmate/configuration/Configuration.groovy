@@ -345,10 +345,7 @@ import java.nio.file.Path
   public Path monitorApkApi23
 
   public String aaptCommand = BuildConstants.aapt_command
-
   public String adbCommand = BuildConstants.adb_command
-
-  public List<String> appGuardApisList
 
   /**
    * Jar with uiautomator-daemon location on the file system. The jar is to be deployed on the android (virtual) device

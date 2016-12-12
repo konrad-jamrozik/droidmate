@@ -205,9 +205,6 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
   private static void setupResourcesAndPaths(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
-    cfg.appGuardApisList = new Resource(BuildConstants.monitored_apis_txt).text.readLines().findAll {it.size() > 0 && !it.startsWith("#")}
-      .collect { it.startsWith("!API") ? it["!APIXX ".size()..-1] : it }
-
     cfg.uiautomatorDaemonJar = new Resource("uiautomator-daemon.jar").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
     log.info("Using uiautomator-daemon.jar located at "+cfg.uiautomatorDaemonJar.toAbsolutePath().toString())
 
