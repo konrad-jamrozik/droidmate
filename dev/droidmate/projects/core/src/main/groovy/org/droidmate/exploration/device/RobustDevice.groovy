@@ -385,10 +385,15 @@ class RobustDevice implements IRobustDevice
         this.&getValidGuiSnapshot,
         DeviceException,
         getValidGuiSnapshotRetryAttempts,
-        getValidGuiSnapshotRetryDelay, 
+        getValidGuiSnapshotRetryDelay,
         "getValidGuiSnapshot"
       )
-    } catch (DeviceException e)
+    }
+    catch (TcpServerUnreachableException e)
+    {
+      throw e
+    }
+    catch (DeviceException e)
     {
       throw new AllDeviceAttemptsExhaustedException("All attempts at getting valid GUI snapshot failed.", e)
     }
