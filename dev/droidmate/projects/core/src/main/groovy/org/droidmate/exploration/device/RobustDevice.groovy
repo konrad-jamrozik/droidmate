@@ -378,33 +378,36 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getRetryValidGuiSnapshotReinstallingUiadIfNecessary() throws DeviceException
   {
-    IDeviceGuiSnapshot guiSnapshot
-    try
-    {
-      guiSnapshot = this.getRetryValidGuiSnapshot()
-    } catch (AllDeviceAttemptsExhaustedException e)
-    {
-      log.warn("! Caught $e while trying to get valid GUI snapshot. Restarting uiautomator-daemon and trying to get the GUI snapshot again.")
+    return this.getRetryValidGuiSnapshot()
+    //      // KJA temp off is this method now necessary?, deeper down getGuiSnapshotRebootingIfNecessary is called, which will reboot device on TCP unreachable. Is there a case the uia-d has to be restarted because although tcp works, the screen is malformed?
 
-      this.reconnectAdb()
-      
-      if (this.uiaDaemonIsRunning())
-        this.stopUiaDaemon(false)
-      
-      this.startUiaDaemon()
-      
-      log.debug("Uiautomator-daemon restarted, now trying to get the GUI snapshot again.")
-      try
-      {
-        guiSnapshot = this.getRetryValidGuiSnapshot()
-      } catch (DeviceException e2)
-      {
-        log.warn("! Repeated attempt at getting valid GUI snapshot, after restarting uiautomator-daemon, failed with exception. Rethrowing.")
-        throw e2
-      }
-      log.info("Successfully obtained valid GUI snapshot after restating uiautomator-daemon.")
-    }
-    return guiSnapshot
+//    IDeviceGuiSnapshot guiSnapshot
+//    try
+//    {
+//      guiSnapshot = this.getRetryValidGuiSnapshot()
+//    } catch (AllDeviceAttemptsExhaustedException e)
+//    {
+//      log.warn("! Caught $e while trying to get valid GUI snapshot. Restarting uiautomator-daemon and trying to get the GUI snapshot again.")
+//
+//      this.reconnectAdb()
+//      
+//      if (this.uiaDaemonIsRunning())
+//        this.stopUiaDaemon(false)
+//      
+//      this.startUiaDaemon()
+//      
+//      log.debug("Uiautomator-daemon restarted, now trying to get the GUI snapshot again.")
+//      try
+//      {
+//        guiSnapshot = this.getRetryValidGuiSnapshot()
+//      } catch (DeviceException e2)
+//      {
+//        log.warn("! Repeated attempt at getting valid GUI snapshot, after restarting uiautomator-daemon, failed with exception. Rethrowing.")
+//        throw e2
+//      }
+//      log.info("Successfully obtained valid GUI snapshot after restating uiautomator-daemon.")
+//    }
+//    return guiSnapshot
   }
   
   private IDeviceGuiSnapshot getRetryValidGuiSnapshot() throws DeviceException

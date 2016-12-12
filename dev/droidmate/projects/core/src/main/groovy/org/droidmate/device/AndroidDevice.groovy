@@ -165,7 +165,6 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     if (!uiaDaemonHandlesCommand)
       throw new DeviceException(String.format("Unhandled command of %s", deviceCommand.command))
 
-    // KJA socket timeout here on unclean uia-d on testDevice
     deviceResponse = this.tcpClients.sendCommandToUiautomatorDaemon(deviceCommand)
     
     assert deviceResponse != null
@@ -249,7 +248,6 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     if (this.uiaDaemonIsRunning())
     {
       log.trace("stopUiaDaemon() during restart")
-      // KJA this just fails sometimes, as even though socket is connected, the server's 'accept' is not moving forward.
       this.stopUiaDaemon(uiaDaemonThreadIsNull)
     }
     log.trace("startUiaDaemon() during restart")

@@ -65,7 +65,7 @@ class DeviceTest extends DroidmateGroovyTestCase
     }
   }
 
-  /** // KJA remove comment when cofirmed fixed
+  /**
    * This test exists for interactive debugging of known, not yet resolved bug. The behavior is as follows.
    * 
    * - If everything works fine and the uiadaemon server is alive, this test should succeed without any need to reinstall uiad apks
@@ -78,6 +78,10 @@ class DeviceTest extends DroidmateGroovyTestCase
    * - If the server was somehow corrupted, rerunning this test will hang on the "new ObjectInputStream", even if the installApk
    * and setupConnection methods are run. However, if the uninstall commands are run, then the test will succeed again without
    * problems. Not sure which uninstall is the important one, but I guess the one uninstalling.test
+   * 
+   * Symptom observations: sometimes, even though server on the device says he is waiting to accept a socket, actually getting 
+   * a connected socket to it on client side does nothing. This means the server cannot be even stopped by socket, it has to be 
+   * killed by reinstalling the package.
    */
   @Category([RequiresDevice])
   @Test
