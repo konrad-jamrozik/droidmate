@@ -828,10 +828,11 @@ import java.nio.file.Paths
       throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
     }
   }
-  
-  @Override
+
+
   // adb instructions to take screenshot learned from: 
   // http://blog.shvetsov.com/2013/02/grab-android-screenshot-to-computer-via.html
+  @Override
   void takeScreenshot(String deviceSerialNumber, String targetPath) throws AdbWrapperException
   {
     assert deviceSerialNumber != null

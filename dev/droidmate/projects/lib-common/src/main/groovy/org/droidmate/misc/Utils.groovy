@@ -21,6 +21,7 @@ package org.droidmate.misc
 
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.SystemUtils
+import org.droidmate.logging.Markers
 
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -77,11 +78,11 @@ import java.nio.file.Paths
 
           if (attemptsLeft > 0)
           {
-            log.trace("Discarded $e from \"$targetName\". Sleeping for $delay and retrying.")
+            log.trace(Markers.health, "Discarded $e from \"$targetName\". Sleeping for $delay and retrying.")
             sleep(delay)
           }
           else
-            log.trace("Discarded $e from \"$targetName\". Giving up.")
+            log.trace(Markers.health, "Discarded $e from \"$targetName\". Giving up.")
         } else
           throw e
       }
@@ -98,7 +99,7 @@ import java.nio.file.Paths
     }
   }
 
-   static Boolean retryOnFalse(Closure<Boolean> target, int attempts, int delay) throws Throwable
+  static Boolean retryOnFalse(Closure<Boolean> target, int attempts, int delay) throws Throwable
   {
     assert attempts > 0
     int attemptsLeft = attempts

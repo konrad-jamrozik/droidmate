@@ -28,6 +28,7 @@ import org.droidmate.device.AllDeviceAttemptsExhaustedException
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.device.TcpServerUnreachableException
 import org.droidmate.device.datatypes.*
+import org.droidmate.logging.Markers
 import org.droidmate.misc.Utils
 
 import static org.droidmate.device.datatypes.AndroidDeviceAction.newPressHomeDeviceAction
@@ -314,14 +315,16 @@ class RobustDevice implements IRobustDevice
       launchSucceeded = this.device.launchMainActivity(launchableActivityComponentName)
     } catch (AdbWrapperException e)
     {
-      log.warn("! device.launchMainActivity($launchableActivityComponentName) threw $e. Discarding the exception, " +
-        "reconnecting adb and continuing.")
-      this.reconnectAdb()
+      log.warn(Markers.health, "! device.launchMainActivity($launchableActivityComponentName) threw $e. " +
+        "Discarding the exception, rebooting and continuing.")
+
+      this.rebootAndSetupConnection()
     }
+    
     def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
 
     if (launchSucceeded && guiSnapshot.guiState.appHasStoppedDialogBox)
-      log.debug("device.launchMainActivity($launchableActivityComponentName) succeeded, but ANR is displayed.")
+      log.debug(Markers.health, "device.launchMainActivity($launchableActivityComponentName) succeeded, but ANR is displayed.")
   }
 
   private IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
@@ -421,7 +424,7 @@ class RobustDevice implements IRobustDevice
       out = operationOnDevice()
     } catch (TcpServerUnreachableException | AllDeviceAttemptsExhaustedException e)
     {
-      log.warn("! Attempt to execute '$description' threw an exception: $e. " +
+      log.warn(Markers.health, "! Attempt to execute '$description' threw an exception: $e. " +
         (makeSecondAttempt
         ? "Reconnecting adb, rebooting the device and trying again."
         : "Reconnecting adb, rebooting the device and continuing."))
@@ -439,7 +442,7 @@ class RobustDevice implements IRobustDevice
           log.info("Second attempt at executing '$description' completed successfully.")
         } catch (TcpServerUnreachableException | AllDeviceAttemptsExhaustedException e2)
         {
-          log.warn("! Second attempt to execute '$description' threw an exception: $e2. " +
+          log.warn(Markers.health, "! Second attempt to execute '$description' threw an exception: $e2. " +
             "Giving up and rethrowing.")
           throw e2
         }

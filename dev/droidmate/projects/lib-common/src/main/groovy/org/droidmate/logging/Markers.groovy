@@ -31,7 +31,7 @@ import org.slf4j.MarkerFactory
  *
  * </p>
  */
-public class Markers
+class Markers
 {
 
   /**
@@ -50,7 +50,9 @@ public class Markers
    */
   public static final Marker runData = MarkerFactory.getMarker("MARKER_RUN_DATA")
 
-  public static List<Marker> getAllMarkers()
+  public static final Marker health = MarkerFactory.getMarker("MARKER_HEALTH")
+
+   static List<Marker> getAllMarkers()
   {
     return Markers.fields.collect {it as Marker}
   }

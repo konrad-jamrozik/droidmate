@@ -29,6 +29,7 @@ import org.droidmate.exploration.data_aggregators.IApkExplorationOutput2
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.exploration.strategy.IExplorationStrategyProvider
+import org.droidmate.logging.Markers
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.ThrowablesCollection
@@ -171,8 +172,7 @@ class ExploreCommand extends DroidmateCommand
 
         if (!encounteredApkExplorationsStoppingException)
         {
-          log.info("Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
-
+          log.info(Markers.health, "Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
           
           allApksExplorationExceptions +=
             this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->

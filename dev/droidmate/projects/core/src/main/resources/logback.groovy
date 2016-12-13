@@ -51,6 +51,7 @@ appender(LogbackAppenders.appender_stdout, ConsoleAppender) {
   target = "System.out"
   filter(ThresholdFilter) {level = STDOUT_LOG_LEVEL}
   filter(LevelFilter) {level = ERROR; onMatch = DENY; onMismatch = NEUTRAL}
+  filter(MarkerFilter) {marker = Markers.health; onMismatch = NEUTRAL; onMatch = ACCEPT}
   filter(AllDroidmateMarkersFilter) {onMatch = DENY}
   encoder(PatternLayoutEncoder) {pattern = pat_date_level_logger}
 }
@@ -58,6 +59,7 @@ appender(LogbackAppenders.appender_stdout, ConsoleAppender) {
 appender(LogbackAppenders.appender_stderr, ConsoleAppender) {
   target = "System.err"
   filter(ThresholdFilter) {level = STDERR_LOG_LEVEL}
+  filter(MarkerFilter) {marker = Markers.health; onMismatch = NEUTRAL; onMatch = ACCEPT}
   filter(AllDroidmateMarkersFilter) {onMatch = DENY}
   encoder(PatternLayoutEncoder) {pattern = pat_date_level_logger}
 }
@@ -71,6 +73,7 @@ appender(appender_name_stdStreams, LazyFileAppender) {
   lazy = true
 
   filter(ThresholdFilter) {level = STDOUT_LOG_LEVEL}
+  filter(MarkerFilter) {marker = Markers.health; onMismatch = NEUTRAL; onMatch = ACCEPT}
   filter(AllDroidmateMarkersFilter) {onMatch = DENY}
   filter(EvaluatorFilter) {
     // Reference:
@@ -91,6 +94,7 @@ appender(appender_name_master, LazyFileAppender) {
   lazy = true
 
   filter(ThresholdFilter) {level = TRACE}
+  filter(MarkerFilter) {marker = Markers.health; onMismatch = NEUTRAL; onMatch = ACCEPT}
   filter(AllDroidmateMarkersFilter) {onMatch = DENY}
 
   // Do not log TRACE from SysCmdExecutor, as it is too verbose.
@@ -189,6 +193,18 @@ appender(appender_name_runData, LazyFileAppender) {
   encoder(PatternLayoutEncoder) {pattern = pat_bare}
 }
 
+appender(appender_name_health, LazyFileAppender) {
+  file = getLogFilePath(appender_name_health)
+  append = false
+  lazy = true
+
+  filter(MarkerFilter) {
+    marker = Markers.health
+    onMismatch = DENY; onMatch = NEUTRAL
+  }
+  encoder(PatternLayoutEncoder) {pattern = pat_date_level_logger}
+}
+
 //endregion File appenders based on markers
 
 //region Appender groups
@@ -200,6 +216,7 @@ def warnAppenders = [
 def mainFileAppenders = warnAppenders + [
   appender_name_stdStreams,
   appender_name_master,
+  appender_name_health
 ]
 def mainAppenders = mainFileAppenders + [
   LogbackAppenders.appender_stdout,
@@ -215,10 +232,10 @@ List loggersWithLazyFileAppenders = [
   // We cannot refer here to the classes directly as they would make SLF4J create substitute loggers and thus, issue warning to stderr.
   //@formatter:off
   // Uncomment if a detailed SysCmdExecutor log is needed.
-//  [loggerName: "SysCmdExecutor",                         additivity: false, pattern: pat_date_level],
-  [loggerName: "org.droidmate.android_sdk.AaptWrapper",                       additivity: true,  pattern: pat_date_level],
-  [loggerName: "org.droidmate.exploration.strategy.WidgetStrategy",           additivity: false, pattern: pat_date_level, additionalAppenders: warnAppenders],
-  [loggerName: "org.droidmate.exploration",                                   additivity: true,  pattern: pat_date_level_logger],//, additionalAppenders: warnAppenders],
+//  [loggerName: "SysCmdExecutor",                                              additivity: false, pattern: pat_date_level],
+//  [loggerName: "org.droidmate.android_sdk.AaptWrapper",                       additivity: true,  pattern: pat_date_level],
+//  [loggerName: "org.droidmate.exploration.strategy.WidgetStrategy",           additivity: false, pattern: pat_date_level, additionalAppenders: warnAppenders],
+//  [loggerName: "org.droidmate.exploration",                                   additivity: true,  pattern: pat_date_level_logger],//, additionalAppenders: warnAppenders],
   //[loggerName: "org.droidmate.device",                                      additivity: true,  pattern: pat_date_level_logger]//, additionalAppenders: warnAppenders],
   //@formatter:on
 ]

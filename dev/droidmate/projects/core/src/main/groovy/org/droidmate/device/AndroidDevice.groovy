@@ -20,10 +20,7 @@
 package org.droidmate.device
 
 import groovy.util.logging.Slf4j
-import org.droidmate.android_sdk.DeviceException
-import org.droidmate.android_sdk.IAdbWrapper
-import org.droidmate.android_sdk.IApk
-import org.droidmate.android_sdk.NoAndroidDevicesAvailableException
+import org.droidmate.android_sdk.*
 import org.droidmate.apis.ITimeFormattedLogcatMessage
 import org.droidmate.apis.TimeFormattedLogcatMessage
 import org.droidmate.configuration.Configuration
@@ -32,6 +29,7 @@ import org.droidmate.device.model.DeviceModel
 import org.droidmate.device.model.IDeviceModel
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.logging.LogbackUtils
+import org.droidmate.logging.Markers
 import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.MonitorConstants
 import org.droidmate.misc.Utils
@@ -428,7 +426,14 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     assert !Files.exists(targetFile)
     String targetFileString = targetFile.toString().replace(File.separator, "/")
     
-    adbWrapper.takeScreenshot(serialNumber, targetFileString)
+    try
+    {
+      adbWrapper.takeScreenshot(serialNumber, targetFileString)
+    } catch (AdbWrapperException e)
+    {
+      log.warn(Markers.health, "! Failed to take screenshot for ${app.fileName} with exception: $e. " +
+        "Discarding the exception and continuing without the screenshot")
+    }
   }
   
   private static boolean uiaDaemonHandlesCommand(DeviceCommand deviceCommand)
