@@ -312,7 +312,9 @@ class RobustDevice implements IRobustDevice
     try
     {
       // WISH when ANR immediately appears, waiting for full SysCmdExecutor.sysCmdExecuteTimeout to pass here is wasteful.
-      launchSucceeded = this.device.launchMainActivity(launchableActivityComponentName)
+      this.device.launchMainActivity(launchableActivityComponentName)
+      launchSucceeded = true
+      
     } catch (AdbWrapperException e)
     {
       log.warn(Markers.health, "! device.launchMainActivity($launchableActivityComponentName) threw $e. " +
