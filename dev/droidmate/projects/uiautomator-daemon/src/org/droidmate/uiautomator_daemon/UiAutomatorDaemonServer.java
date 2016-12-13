@@ -26,7 +26,7 @@ import android.util.Log;
 
 import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*;
 
-public class UiAutomatorDaemonServer extends SerializableTCPServerBase<DeviceCommand, DeviceResponse>
+public class UiAutomatorDaemonServer extends UiautomatorDaemonTcpServerBase<DeviceCommand, DeviceResponse>
 {
 
   private IUiAutomatorDaemonDriver uiaDaemonDriver;

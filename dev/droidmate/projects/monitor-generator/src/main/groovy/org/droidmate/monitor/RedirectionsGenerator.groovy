@@ -66,8 +66,8 @@ class RedirectionsGenerator implements IRedirectionsGenerator
   private static final String monitorHookAfterCallPrefix = monitorHookInstanceName + ".hookAfterApiCall("
 
   // !!! DUPLICATION WARNING !!! with org.droidmate.report.FilteredDeviceLogs.Companion.apisManuallyCheckedForRedundancy
-  private static String redirMethodNamePrefix = "redir_";
-  private static String redirMethodDefPrefix = "Lorg/droidmate/monitor/Monitor;->$redirMethodNamePrefix";
+  private static String redirMethodNamePrefix = "redir_"
+  private static String redirMethodDefPrefix = "Lorg/droidmate/monitor/Monitor;->$redirMethodNamePrefix" 
 
   private static Map<Integer, String> ctorRedirNames = [:]
   private final  AndroidAPI           androidApi
@@ -214,7 +214,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         out << ind4 + "{" + nl
 
         /**
-         * MonitorJavaTemplate and MonitorTCPServer have calls to Log.i() and Log.v() in them, whose tag starts with 
+         * MonitorJavaTemplate and MonitorTcpServer have calls to Log.i() and Log.v() in them, whose tag starts with 
          * MonitorConstants.tag_prefix. This conditional ensures
          * such calls are not being monitored, 
          * as they are DroidMate's monitor internal code, not the behavior of the app under exploration.
@@ -258,7 +258,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
             invocation = "OriginalMethod.by(new \$() {}).invoke(${thisVarOrClass}${commaSeparatedParamVars})"
           else
           {
-            commaSeparatedParamVars = commaSeparatedParamVars.substring(2);
+            commaSeparatedParamVars = commaSeparatedParamVars.substring(2)
             invocation = "OriginalMethod.by(new \$() {}).invokeStatic(${commaSeparatedParamVars})"
           }
           if (returnsVoid)

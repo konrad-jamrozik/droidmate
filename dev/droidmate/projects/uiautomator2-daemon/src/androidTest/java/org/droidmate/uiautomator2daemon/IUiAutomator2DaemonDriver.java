@@ -22,8 +22,8 @@ import org.droidmate.uiautomator_daemon.DeviceCommand;
 import org.droidmate.uiautomator_daemon.DeviceResponse;
 import org.droidmate.uiautomator_daemon.UiAutomatorDaemonException;
 
-public interface IUiAutomatorDaemonDriver  {
-
+public interface IUiAutomator2DaemonDriver
+{
   DeviceResponse executeCommand(DeviceCommand deviceCommand) throws UiAutomatorDaemonException;
 
 }

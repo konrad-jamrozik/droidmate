@@ -39,18 +39,18 @@ import java.io.IOException;
 import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*;
 
 // WISH there is code duplication between uiad-1 and uiad-2. When DM no longer needs to work with Android 4, remove uiad-1. 
-class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
+class UiAutomator2DaemonDriver implements IUiAutomator2DaemonDriver
 {
   private final UiDevice device;
 
   /**
-   * Decides if {@link #UiAutomatorDaemonDriver} should wait for the window to go to idle state after each click.
+   * Decides if {@link #UiAutomator2DaemonDriver} should wait for the window to go to idle state after each click.
    */
   private final boolean waitForGuiToStabilize;
   private final int     waitForWindowUpdateTimeout;
   private final Context context;
 
-  UiAutomatorDaemonDriver(boolean waitForGuiToStabilize, int waitForWindowUpdateTimeout)
+  UiAutomator2DaemonDriver(boolean waitForGuiToStabilize, int waitForWindowUpdateTimeout)
   {
     // The instrumentation required to run uiautomator2-daemon is
     // provided by the command: adb shell instrument <PACKAGE>/<RUNNER>
@@ -76,7 +76,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     if (deviceCommand.command.equals(DEVICE_COMMAND_STOP_UIADAEMON))
     {
       // The server will be closed after this response is sent, because the given deviceCommand.command will be interpreted
-      // in the caller, i.e. SerializableTcpServerBase.
+      // in the caller, i.e. Uiautomator2DaemonTcpServerBase.
       return new DeviceResponse();
     }
 
@@ -461,7 +461,7 @@ class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
    * (...)<br/>
    * at com.android.uiautomator.core.AccessibilityNodeInfoDumper.dumpWindowToFile(AccessibilityNodeInfoDumper.java:89) ~[na:na]<br/>
    * at com.android.uiautomator.core.UiDevice.dumpWindowHierarchy(UiDevice.java:768) ~[na:na]<br/>
-   * at org.droidmate.uiautomatordaemon.UiAutomatorDaemonDriver.tryDumpWindowHierarchy(UiAutomatorDaemonDriver.java:420) ~[na:na]<br/>
+   * at org.droidmate.uiautomatordaemon.UiAutomator2DaemonDriver.tryDumpWindowHierarchy(UiAutomator2DaemonDriver.java:420) ~[na:na]<br/>
    * (...)<br/>
    * </code>
    * </p><p>

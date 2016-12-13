@@ -19,7 +19,6 @@
 
 package org.droidmate.uiautomator2daemon;
 
-
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
@@ -29,12 +28,12 @@ import org.droidmate.uiautomator_daemon.UiAutomatorDaemonException;
 
 import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*;
 
-public class UiAutomatorDaemonServer extends SerializableTCPServerBase<DeviceCommand, DeviceResponse>
+public class UiAutomator2DaemonServer extends Uiautomator2DaemonTcpServerBase<DeviceCommand, DeviceResponse>
 {
 
-  private IUiAutomatorDaemonDriver uiaDaemonDriver;
+  private IUiAutomator2DaemonDriver uiaDaemonDriver;
 
-  public UiAutomatorDaemonServer(IUiAutomatorDaemonDriver uiaDaemonDriver)
+  public UiAutomator2DaemonServer(IUiAutomator2DaemonDriver uiaDaemonDriver)
   {
     super(UIADAEMON_SERVER_START_TAG, UIADAEMON_SERVER_START_MSG);
     this.uiaDaemonDriver = uiaDaemonDriver;

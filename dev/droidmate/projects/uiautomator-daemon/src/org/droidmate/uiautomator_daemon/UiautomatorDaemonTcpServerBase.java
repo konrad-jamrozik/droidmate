@@ -31,7 +31,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-public abstract class SerializableTCPServerBase<ServerInputT extends Serializable, ServerOutputT extends Serializable>
+// !!! DUPLICATION WARNING !!! org.droidmate.monitor.MonitorJavaTemplate.TcpServerBase
+public abstract class UiautomatorDaemonTcpServerBase<ServerInputT extends Serializable, ServerOutputT extends Serializable>
 {
 
   private int port;
@@ -42,7 +43,7 @@ public abstract class SerializableTCPServerBase<ServerInputT extends Serializabl
 
   public static final String tag = UiautomatorDaemonConstants.deviceLogcatTagPrefix + "server";
 
-  protected SerializableTCPServerBase(String serverStartMessageTag, String serverStartMessage)
+  protected UiautomatorDaemonTcpServerBase(String serverStartMessageTag, String serverStartMessage)
   {
     this.serverStartMessageTag = serverStartMessageTag;
     this.serverStartMessage = serverStartMessage;

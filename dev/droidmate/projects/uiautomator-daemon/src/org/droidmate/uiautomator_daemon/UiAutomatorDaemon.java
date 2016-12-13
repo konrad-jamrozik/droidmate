@@ -101,7 +101,7 @@ public class UiAutomatorDaemon extends UiAutomatorTestCase
       // - Manual tests with "adb shell ps" show that the executed process will be automatically killed when the uiad process dies.
       Runtime.getRuntime().exec(String.format("logcat -v time -f %s *:D %s:W %s:D %s:D dalvikvm:I ActivityManager:V " +
         "AccessibilityNodeInfoDumper:S View:E ResourceType:E HSAd-HSAdBannerView:I" ,
-        outputFile.getAbsolutePath(), instrumentation_redirectionTag, uiaDaemon_logcatTag, SerializableTCPServerBase.tag));
+        outputFile.getAbsolutePath(), instrumentation_redirectionTag, uiaDaemon_logcatTag, UiautomatorDaemonTcpServerBase.tag));
     } catch (IOException e)
     {
       Log.wtf(uiaDaemon_logcatTag, e);

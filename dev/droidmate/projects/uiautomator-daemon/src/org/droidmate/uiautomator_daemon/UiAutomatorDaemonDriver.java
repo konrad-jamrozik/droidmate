@@ -63,7 +63,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
     if (deviceCommand.command.equals(DEVICE_COMMAND_STOP_UIADAEMON))
     {
       // The server will be closed after this response is sent, because the given deviceCommand.command will be interpreted
-      // in the caller, i.e. SerializableTcpServerBase.
+      // in the caller, i.e. UiautomatorDaemonTcpServerBase.
       return new DeviceResponse();
     }
 

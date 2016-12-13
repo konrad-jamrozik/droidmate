@@ -108,8 +108,8 @@ public class MonitorJavaTemplate
     }
   }
 
-  private static MonitorTCPServer server;
-  private static Context context;
+  private static MonitorTcpServer server;
+  private static Context          context;
 
   /**
    * Called by the inlined Application class when the inlined AUE launches activity, as done by
@@ -121,7 +121,7 @@ public class MonitorJavaTemplate
     context = initContext;
     if (server == null)
     {
-      Log.i(MonitorConstants.tag_srv, "Init: Didn't set context for MonitorTCPServer, as the server is null.");
+      Log.i(MonitorConstants.tag_srv, "Init: Didn't set context for MonitorTcpServer, as the server is null.");
     }
     else
     {
@@ -149,11 +149,11 @@ public class MonitorJavaTemplate
   //region TCP server code
 
   @SuppressWarnings("ConstantConditions")
-  private static MonitorTCPServer startMonitorTCPServer() throws Throwable
+  private static MonitorTcpServer startMonitorTCPServer() throws Throwable
   {
     Log.d(MonitorConstants.tag_srv, "Starting monitor TCP server...");
 
-    MonitorTCPServer tcpServer = new MonitorTCPServer();
+    MonitorTcpServer tcpServer = new MonitorTcpServer();
 
     Thread serverThread = null;
     Integer portUsed = null;
@@ -188,12 +188,12 @@ public class MonitorJavaTemplate
     return tcpServer;
   }
 
-  static class MonitorTCPServer extends SerializableTCPServerBase<String, ArrayList<ArrayList<String>>>
+  static class MonitorTcpServer extends TcpServerBase<String, ArrayList<ArrayList<String>>>
   {
 
     public Context context;
 
-    protected MonitorTCPServer()
+    protected MonitorTcpServer()
     {
       super();
     }
@@ -235,7 +235,7 @@ public class MonitorJavaTemplate
           // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
           
           // In addition to the logic above, this command is handled in 
-          // org.droidmate.monitor.MonitorJavaTemplate.MonitorTCPServer.shouldCloseServerSocket
+          // org.droidmate.monitor.MonitorJavaTemplate.MonitorTcpServer.shouldCloseServerSocket
           
           return new ArrayList<ArrayList<String>>();
 
@@ -257,7 +257,7 @@ public class MonitorJavaTemplate
 
     /**
      * <p>
-     * This method ensures the logs do not come from messages logged by the MonitorTCPServer or 
+     * This method ensures the logs do not come from messages logged by the MonitorTcpServer or 
      * MonitorJavaTemplate itself. This would be a bug and thus it will cause an assertion failure in this method.
      *
      * </p>
@@ -290,16 +290,16 @@ public class MonitorJavaTemplate
     }
   }
 
-  // !!! DUPLICATION WARNING !!! with org.droidmate.uiautomator_daemon.SerializableTCPServerBase
-  static abstract class SerializableTCPServerBase<ServerInputT extends Serializable, ServerOutputT extends Serializable>
+  // !!! DUPLICATION WARNING !!! with org.droidmate.uiautomator_daemon.UiautomatorDaemonTcpServerBase
+  static abstract class TcpServerBase<ServerInputT extends Serializable, ServerOutputT extends Serializable>
   {
     private int port;
     private ServerSocket    serverSocket          = null;
     private SocketException serverSocketException = null;
 
-    private final static String thisClassName = SerializableTCPServerBase.class.getSimpleName();
+    private final static String thisClassName = TcpServerBase.class.getSimpleName();
 
-    protected SerializableTCPServerBase()
+    protected TcpServerBase()
     {
       super();
     }

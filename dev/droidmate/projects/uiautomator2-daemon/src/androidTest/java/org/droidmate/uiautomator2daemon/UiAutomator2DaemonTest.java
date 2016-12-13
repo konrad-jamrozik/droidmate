@@ -62,20 +62,20 @@ public class UiAutomator2DaemonTest
 
     saveLogcatToFile();
 
-    IUiAutomatorDaemonDriver uiAutomatorDaemonDriver = new UiAutomatorDaemonDriver(waitForGuiToStabilize, waitForWindowUpdateTimeout);
-    UiAutomatorDaemonServer uiAutomatorDaemonServer = new UiAutomatorDaemonServer(uiAutomatorDaemonDriver);
+    IUiAutomator2DaemonDriver uiAutomatorDaemonDriver = new UiAutomator2DaemonDriver(waitForGuiToStabilize, waitForWindowUpdateTimeout);
+    UiAutomator2DaemonServer uiAutomator2DaemonServer = new UiAutomator2DaemonServer(uiAutomatorDaemonDriver);
 
-    Log.d(uiaDaemon_logcatTag, "uiAutomatorDaemonServer.start("+tcpPort+")");
+    Log.d(uiaDaemon_logcatTag, "uiAutomator2DaemonServer.start("+tcpPort+")");
     Thread serverThread = null;
     try
     {
-      serverThread = uiAutomatorDaemonServer.start(tcpPort);
+      serverThread = uiAutomator2DaemonServer.start(tcpPort);
     } catch (Throwable t)
     {
-      Log.e(uiaDaemon_logcatTag, "uiAutomatorDaemonServer.start("+tcpPort+") / FAILURE", t);
+      Log.e(uiaDaemon_logcatTag, "uiAutomator2DaemonServer.start("+tcpPort+") / FAILURE", t);
     }
     if (serverThread == null) throw new AssertionError();
-    Log.i(uiaDaemon_logcatTag, "uiAutomatorDaemonServer.start("+tcpPort+") / SUCCESS");
+    Log.i(uiaDaemon_logcatTag, "uiAutomator2DaemonServer.start("+tcpPort+") / SUCCESS");
 
     try
     {
@@ -85,7 +85,7 @@ public class UiAutomator2DaemonTest
     {
       Log.wtf(uiaDaemon_logcatTag, e);
     }
-    if (!uiAutomatorDaemonServer.isClosed()) throw new AssertionError();
+    if (!uiAutomator2DaemonServer.isClosed()) throw new AssertionError();
 
     Log.i(uiaDaemon_logcatTag, "init: Shutting down UiAutomatorDaemon.");
   }
@@ -107,7 +107,7 @@ public class UiAutomator2DaemonTest
       // - For explanation of the exec string, see org.droidmate.android_sdk.AdbWrapper.readMessagesFromLogcat()
       // - Manual tests with "adb shell ps" show that the executed process will be automatically killed when the uiad process dies.
       Runtime.getRuntime().exec(String.format("logcat -v time -f %s *:D %s:W %s:D %s:D dalvikvm:I ActivityManager:V AccessibilityNodeInfoDumper:S View:E ResourceType:E HSAd-HSAdBannerView:I" ,
-        outputFile.getAbsolutePath(), instrumentation_redirectionTag, uiaDaemon_logcatTag, SerializableTCPServerBase.tag));
+        outputFile.getAbsolutePath(), instrumentation_redirectionTag, uiaDaemon_logcatTag, Uiautomator2DaemonTcpServerBase.tag));
     } catch (IOException e)
     {
       Log.wtf(uiaDaemon_logcatTag, e);
