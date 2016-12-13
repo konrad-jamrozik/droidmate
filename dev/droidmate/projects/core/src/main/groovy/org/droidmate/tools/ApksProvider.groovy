@@ -30,9 +30,6 @@ import java.nio.file.Path
 @Slf4j
 class ApksProvider implements IApksProvider
 {
-  // KJA check if api 19 still works
-  // KJA solve the first log < first action problem. Logs from previous run? Logcat clear needed (I removed it recenlty from apk deployer) ? More frequent time sync needed? Time sync has delays, and adb needs to be reconnected?
-  
   IAaptWrapper aapt
 
   ApksProvider(IAaptWrapper aapt)

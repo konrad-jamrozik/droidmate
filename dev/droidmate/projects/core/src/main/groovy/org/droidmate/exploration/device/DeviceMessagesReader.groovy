@@ -48,7 +48,6 @@ class DeviceMessagesReader implements IDeviceMessagesReader
   void resetTimeSync()
   {
     this.deviceTimeDiff.reset()
-
   }
 
   @Override

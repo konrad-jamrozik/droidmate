@@ -56,7 +56,7 @@ import java.time.format.DateTimeFormatter
   }
 
   @Override
-   LocalDateTime sync(LocalDateTime deviceTime) throws DeviceException
+  LocalDateTime sync(LocalDateTime deviceTime) throws DeviceException
   {
     assert deviceTime != null
 
