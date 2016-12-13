@@ -27,7 +27,7 @@ import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 class UiautomatorDaemonClient implements IUiautomatorDaemonClient
 {
 
-  private final ISerializableTCPClient<DeviceCommand, DeviceResponse> client
+  private final ITcpClientBase<DeviceCommand, DeviceResponse> client
 
   private final IAdbWrapper adbWrapper
   private final String      deviceSerialNumber
@@ -45,7 +45,7 @@ class UiautomatorDaemonClient implements IUiautomatorDaemonClient
     this.serverStartTimeout = serverStartTimeout
     this.serverStartQueryDelay = serverStartQueryDelay
 
-    this.client = new SerializableTCPClient<DeviceCommand, DeviceResponse>(socketTimeout)
+    this.client = new TcpClientBase<DeviceCommand, DeviceResponse>(socketTimeout)
   }
 
   @Override

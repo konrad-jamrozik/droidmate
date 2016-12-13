@@ -23,14 +23,15 @@ import groovy.util.logging.Slf4j
 import org.droidmate.android_sdk.DeviceException
 
 @Slf4j
- class SerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable> implements ISerializableTCPClient<InputToServerT, OutputFromServerT>
+ class TcpClientBase<InputToServerT extends Serializable, OutputFromServerT extends Serializable> 
+  implements ITcpClientBase<InputToServerT, OutputFromServerT>
 {
 
   private final String serverAddress = "localhost"
   private final int    socketTimeout
 
 
-  SerializableTCPClient(int socketTimeout)
+  TcpClientBase(int socketTimeout)
   {
     this.socketTimeout = socketTimeout
   }
@@ -109,7 +110,7 @@ import org.droidmate.android_sdk.DeviceException
     }
     catch (Throwable t)
     {
-      throw new DeviceException("SerializableTCPClient has thrown a ${t.class.simpleName} while querying server. " +
+      throw new DeviceException("TcpClientBase has thrown a ${t.class.simpleName} while querying server. " +
         "Requesting to stop further apk explorations.", t, true)
     }
 

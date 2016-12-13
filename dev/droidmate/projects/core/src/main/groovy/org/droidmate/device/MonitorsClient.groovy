@@ -27,7 +27,7 @@ import org.droidmate.misc.MonitorConstants
 class MonitorsClient implements IMonitorsClient
 {
 
-  private final ISerializableTCPClient<String, ArrayList<ArrayList<String>>> monitorTcpClient
+  private final ITcpClientBase<String, ArrayList<ArrayList<String>>> monitorTcpClient
 
   private final String deviceSerialNumber
 
@@ -35,7 +35,7 @@ class MonitorsClient implements IMonitorsClient
 
   MonitorsClient(int socketTimeout, String deviceSerialNumber, IAdbWrapper adbWrapper)
   {
-    this.monitorTcpClient = new SerializableTCPClient<>(socketTimeout)
+    this.monitorTcpClient = new TcpClientBase<>(socketTimeout)
     this.deviceSerialNumber = deviceSerialNumber
     this.adbWrapper = adbWrapper
   }

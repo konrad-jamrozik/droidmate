@@ -21,7 +21,7 @@ package org.droidmate.device
 
 import org.droidmate.android_sdk.DeviceException
 
-interface ISerializableTCPClient<InputToServerT extends Serializable, OutputFromServerT extends Serializable>
+interface ITcpClientBase<InputToServerT extends Serializable, OutputFromServerT extends Serializable>
 {
 
   OutputFromServerT queryServer(InputToServerT input, int port) throws TcpServerUnreachableException, DeviceException
