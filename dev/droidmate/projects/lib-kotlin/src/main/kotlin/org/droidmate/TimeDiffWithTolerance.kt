@@ -18,6 +18,7 @@
 // web: www.droidmate.org
 package org.droidmate
 
+import org.droidmate.logging.Markers
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.Duration
@@ -32,7 +33,8 @@ class TimeDiffWithTolerance(private val tolerance: Duration) {
     if (endBeforeStart > tolerance) {
 
       val (startNamePadded, endNamePadded) = Pad(startName, endName)
-      log.warn("The expected end time '$endName' is before the expected start time '$startName' by more than the tolerance.\n" +
+      log.warn(Markers.health, 
+        "The expected end time '$endName' is before the expected start time '$startName' by more than the tolerance.\n" +
         "$startNamePadded : $start\n" +
         "$endNamePadded : $end\n" +
         "Tolerance  : ${tolerance.toMillis()} ms\n" +

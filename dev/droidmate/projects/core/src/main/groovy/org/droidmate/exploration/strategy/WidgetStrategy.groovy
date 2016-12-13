@@ -27,6 +27,7 @@ import org.droidmate.device.datatypes.RuntimePermissionDialogBoxGuiState
 import org.droidmate.device.datatypes.Widget
 import org.droidmate.exploration.actions.ExplorationAction
 import org.droidmate.exploration.actions.WidgetExplorationAction
+import org.droidmate.logging.Markers
 
 import static org.droidmate.exploration.actions.ExplorationAction.newIgnoreActionForTerminationWidgetExplorationAction
 import static org.droidmate.exploration.actions.ExplorationAction.newWidgetExplorationAction
@@ -94,7 +95,7 @@ class WidgetStrategy implements IWidgetStrategy
   {
     alreadyUpdatedAfterLastDecide = false
 
-    ExplorationAction action;
+    ExplorationAction action
 
     if (repeatLastAction)
     {
@@ -220,7 +221,8 @@ class WidgetStrategy implements IWidgetStrategy
     {
 
       if (!(chosenWidgetInfo.actedUponCount <= 1).implies(chosenWidgetInfo.longClickedCount == 0))
-        log.warn("Expectation violated: (chosenWidgetInfo.actedUponCount <= 1).implies(chosenWidgetInfo.longClickedCount == 0).\n" +
+        log.warn(Markers.health, 
+          "Expectation violated: (chosenWidgetInfo.actedUponCount <= 1).implies(chosenWidgetInfo.longClickedCount == 0).\n" +
           "Actual actedUponCount:  ${chosenWidgetInfo.actedUponCount}.\n" +
           "Actual longClickedCount: ${chosenWidgetInfo.longClickedCount}")
 
@@ -266,7 +268,7 @@ class WidgetStrategy implements IWidgetStrategy
 
 
     @Override
-    public String toString()
+     String toString()
     {
       return "WC:[seenCount=$seenCount, package=$packageName\n" +
         this.join("\n") + "]"
@@ -304,7 +306,7 @@ class WidgetStrategy implements IWidgetStrategy
     }
 
     @Override
-    public String toString()
+     String toString()
     {
       return "WI: bl? ${blackListed ? 1 : 0} act#: $actedUponCount lcc#: $longClickedCount ${widget.toShortString()}"
     }

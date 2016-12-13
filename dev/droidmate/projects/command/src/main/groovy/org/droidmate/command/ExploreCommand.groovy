@@ -108,7 +108,7 @@ class ExploreCommand extends DroidmateCommand
         log.warn("At least one input apk is not inlined. DroidMate will not be able to monitor any calls to Android SDK methods done by such apps.")
         log.warn("If you want to inline apks, run DroidMate with $Configuration.pn_inline")
         log.warn("If you want to run DroidMate on non-inlined apks, run it with $Configuration.pn_runOnNotInlined")
-        log.warn("DroidMate will now abort.")
+        log.warn("DroidMate will now abort due to the not-inlined apk.")
         return false
       }
     }

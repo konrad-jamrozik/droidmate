@@ -36,6 +36,7 @@ import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.strategy.ExplorationStrategy
 import org.droidmate.exploration.strategy.IExplorationStrategy
 import org.droidmate.exploration.strategy.IExplorationStrategyProvider
+import org.droidmate.logging.Markers
 import org.droidmate.misc.Failable
 import org.droidmate.misc.ITimeProvider
 import org.droidmate.misc.TimeProvider
@@ -89,7 +90,7 @@ class Exploration implements IExploration
     output.verify()
 
     if (output.exceptionIsPresent)
-      log.warn("! Encountered ${output.exception.class.simpleName} during the exploration of ${app.packageName} " +
+      log.warn(Markers.health, "! Encountered ${output.exception.class.simpleName} during the exploration of ${app.packageName} " +
         "after already obtaining some exploration output.")
 
     return new Failable<IApkExplorationOutput2, DeviceException>(output, output.exceptionIsPresent ? output.exception : null)
@@ -151,7 +152,8 @@ class Exploration implements IExploration
     IDeviceGuiSnapshot initialGuiSnapshot = device.guiSnapshot
 
     if (!initialGuiSnapshot.guiState.isHomeScreen())
-      log.warn("An exploration process for $fileName is about to start but the device doesn't display home screen. " +
+      log.warn(Markers.health, 
+        "An exploration process for $fileName is about to start but the device doesn't display home screen. " +
         "Instead, its GUI state is: $initialGuiSnapshot.guiState. " +
         "Continuing the exploration nevertheless, hoping that the first \"reset app\" " +
         "exploration action will force the device into the home screen.")

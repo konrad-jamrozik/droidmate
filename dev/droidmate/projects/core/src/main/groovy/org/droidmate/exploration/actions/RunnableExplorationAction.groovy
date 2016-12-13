@@ -29,6 +29,7 @@ import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.device.IDeviceLogs
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.MissingDeviceLogs
+import org.droidmate.logging.Markers
 
 import java.time.LocalDateTime
 
@@ -96,7 +97,7 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
     {
       successful = false
       this.exception = e
-      log.warn("! Caught ${e.class.simpleName} while performing device actions of ${this.class.simpleName}. " +
+      log.warn(Markers.health, "! Caught ${e.class.simpleName} while performing device actions of ${this.class.simpleName}. " +
         "Returning failed ${ExplorationActionRunResult.class.simpleName} with the exception assigned to a field.")
     }
 

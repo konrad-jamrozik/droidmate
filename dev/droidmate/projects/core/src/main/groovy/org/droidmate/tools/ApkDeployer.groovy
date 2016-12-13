@@ -26,6 +26,7 @@ import org.droidmate.android_sdk.DeviceException
 import org.droidmate.android_sdk.IApk
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IDeployableAndroidDevice
+import org.droidmate.logging.Markers
 import org.droidmate.misc.Assert
 
 /**
@@ -73,7 +74,8 @@ import org.droidmate.misc.Assert
     }
     catch (Throwable computationThrowable)
     {
-      log.warn("! Caught ${computationThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->computation(). " +
+      log.warn(Markers.health, 
+        "! Caught ${computationThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->computation(). " +
         "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to the collected exceptions list.\n" +
         "The ${computationThrowable.class.simpleName}: $computationThrowable")
 
@@ -88,7 +90,8 @@ import org.droidmate.misc.Assert
       }
       catch (Throwable undeployApkThrowable)
       {
-        log.warn("! Caught ${undeployApkThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->tryUndeployApk(). " +
+        log.warn(Markers.health, 
+          "! Caught ${undeployApkThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->tryUndeployApk(). " +
           "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to the collected exceptions list.\n" +
           "The ${undeployApkThrowable.class.simpleName}: $undeployApkThrowable")
 
@@ -109,7 +112,8 @@ import org.droidmate.misc.Assert
 
     } catch (Throwable deployThrowable)
     {
-      log.warn("! Caught ${deployThrowable.class.simpleName} in deployApk($device, $apk.fileName). " +
+      log.warn(Markers.health, 
+        "! Caught ${deployThrowable.class.simpleName} in deployApk($device, $apk.fileName). " +
         "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
       return new ApkExplorationException(apk, deployThrowable)
     }

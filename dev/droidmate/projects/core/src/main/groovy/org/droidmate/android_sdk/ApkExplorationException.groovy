@@ -19,6 +19,7 @@
 package org.droidmate.android_sdk
 
 import groovy.util.logging.Slf4j
+import org.droidmate.logging.Markers
 
 @Slf4j
  class ApkExplorationException extends ExplorationException
@@ -40,7 +41,8 @@ import groovy.util.logging.Slf4j
 
     if (this.shouldStopFurtherApkExplorations())
     {
-      log.warn("An ${this.class.simpleName} demanding stopping further apk explorations was just constructed!")
+      log.warn(Markers.health, 
+        "An ${this.class.simpleName} demanding stopping further apk explorations was just constructed!")
     }
   }
 

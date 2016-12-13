@@ -19,6 +19,7 @@
 package org.droidmate.device.model
 
 import groovy.util.logging.Slf4j
+import org.droidmate.logging.Markers
 import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
 
 /**
@@ -76,7 +77,8 @@ import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
         break
       default:
         result = buildDefault()
-        log.warn("Unrecognized device model of $deviceModel. Using the default ${result.class.simpleName}.")
+        log.warn(Markers.health, 
+          "Unrecognized device model of $deviceModel. Using the default ${result.class.simpleName}.")
     }
 
     return result

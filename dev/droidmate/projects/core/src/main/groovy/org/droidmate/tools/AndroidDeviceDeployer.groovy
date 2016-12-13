@@ -27,6 +27,7 @@ import org.droidmate.device.IDeployableAndroidDevice
 import org.droidmate.errors.UnexpectedIfElseFallthroughError
 import org.droidmate.exploration.device.IRobustDevice
 import org.droidmate.exploration.device.RobustDevice
+import org.droidmate.logging.Markers
 import org.droidmate.misc.Assert
 import org.droidmate.misc.BuildConstants
 import org.droidmate.misc.DroidmateException
@@ -174,7 +175,8 @@ import java.nio.file.Paths
 
       } catch (Throwable tearDownThrowable)
       {
-        log.warn("! Caught ${tearDownThrowable.class.simpleName} in withSetupDevice($deviceIndex)->tryTearDown($device). " +
+        log.warn(Markers.health, 
+          "! Caught ${tearDownThrowable.class.simpleName} in withSetupDevice($deviceIndex)->tryTearDown($device). " +
           "Adding as a cause to an ${ExplorationException.class.simpleName}. " +
           "Then adding to the collected exceptions list.\n" +
           "The ${tearDownThrowable.class.simpleName}: $tearDownThrowable")
@@ -202,7 +204,8 @@ import java.nio.file.Paths
 
     } catch (Throwable setupDeviceThrowable)
     {
-      log.warn("! Caught ${setupDeviceThrowable.class.simpleName} in setupDevice(deviceIndex: $deviceIndex). " +
+      log.warn(Markers.health, 
+        "! Caught ${setupDeviceThrowable.class.simpleName} in setupDevice(deviceIndex: $deviceIndex). " +
         "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
 
       return [null, null, setupDeviceThrowable]

@@ -27,6 +27,7 @@ import org.droidmate.configuration.Configuration
 import org.droidmate.configuration.ConfigurationBuilder
 import org.droidmate.logging.LogbackConstants
 import org.droidmate.logging.LogbackUtilsRequiringLogbackLog
+import org.droidmate.logging.Markers
 import org.droidmate.misc.DroidmateException
 
 import java.nio.file.FileSystem
@@ -123,7 +124,8 @@ import static org.droidmate.logging.Markers.runData
     String timestampFormat = "yyyy MMM dd HH:mm:ss"
 
     if (encounteredExceptionsDuringTheRun)
-      log.warn("DroidMate run finished, but some exceptions have been thrown and handled during the run. See previous logs for details.")
+      log.warn(Markers.health, 
+        "DroidMate run finished, but some exceptions have been thrown and handled during the run. See previous logs for details.")
     else
       log.info("DroidMate run finished successfully.")
 
