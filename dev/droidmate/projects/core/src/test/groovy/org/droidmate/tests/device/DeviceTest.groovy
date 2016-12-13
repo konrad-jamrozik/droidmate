@@ -27,6 +27,7 @@ import org.droidmate.android_sdk.IApk
 import org.droidmate.configuration.Configuration
 import org.droidmate.device.IAndroidDevice
 import org.droidmate.exploration.device.IRobustDevice
+import org.droidmate.exploration.device.RobustDevice
 import org.droidmate.misc.BuildConstants
 import org.droidmate.test_suite_categories.RequiresDevice
 import org.droidmate.test_suite_categories.RequiresDeviceSlow
@@ -85,11 +86,12 @@ class DeviceTest extends DroidmateGroovyTestCase
    */
   @Category([RequiresDevice])
   @Test
-  void "Restarts uiautomarDaemon2 and communicates with it via TCP"()
+  void "Restarts uiautomatorDaemon2 and communicates with it via TCP"()
   {
     def cfg = new ConfigurationForTests().setArgs([Configuration.pn_androidApi, Configuration.api23,]).forDevice().get()
     IDeviceTools deviceTools = new DeviceTools(cfg)
-    IAndroidDevice device = deviceTools.deviceFactory.create(new FirstRealDeviceSerialNumber(deviceTools.adb).toString())
+    IAndroidDevice device = new RobustDevice(
+      deviceTools.deviceFactory.create(new FirstRealDeviceSerialNumber(deviceTools.adb).toString()), cfg)
 
     if (device.isPackageInstalled(UiautomatorDaemonConstants.uia2Daemon_packageName)) 
       println "uia-daemon2 is installed." 
