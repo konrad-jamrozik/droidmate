@@ -166,7 +166,8 @@ import java.util.regex.Matcher
         throw e
       } else
       {
-        log.trace("While getting metadata for ${apk.toString()}, got an: $e Substituting null for the launchable activity (component) name.")
+        log.trace("While getting metadata for ${apk.toString()}, got an: $e " +
+          "Substituting null for the launchable activity (component) name.")
         activity = [null, null]
       }
     }

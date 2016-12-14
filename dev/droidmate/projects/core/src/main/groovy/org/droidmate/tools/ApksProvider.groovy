@@ -27,6 +27,13 @@ import org.droidmate.logging.Markers
 import java.nio.file.Files
 import java.nio.file.Path
 
+// KJA handle:
+// pkg: /data/local/tmp/com.google.android.keep_v2.3.02-inlined.apk
+// Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE]
+
+// KJA handle 2016-12-14 03:54:38.726 ERROR org.droidmate.frontend.ExceptionHandler  An ApkExplorationException was thrown during DroidMate run, pertaining to com.apusapps.launcher_v1.4.0-inlined.apk: org.droidmate.android_sdk.ApkExplorationException: org.droidmate.android_sdk.DeviceException: Failed to ensure home screen is displayed. Pressing 'home' button didn't help. Instead, ended with GUI state of: GuiState <pkg=android Widgets count = 18>.
+// Full window hierarchy dump:
+
 @Slf4j
 class ApksProvider implements IApksProvider
 {

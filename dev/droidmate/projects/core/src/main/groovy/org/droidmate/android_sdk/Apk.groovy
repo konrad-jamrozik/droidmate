@@ -20,6 +20,7 @@ package org.droidmate.android_sdk
 
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
+import org.droidmate.logging.Markers
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -54,7 +55,7 @@ class Apk implements IApk, Serializable
       (packageName, launchableActivityName, launchableActivityComponentName, applicationLabel) = aapt.getMetadata(path)
     } catch (LaunchableActivityNameProblemException | NotEnoughDataToStartAppException e)
     {
-      log.warn("! While getting metadata for ${path.toString()}, got an: $e Returning null apk.")
+      log.warn(Markers.health, "! While getting metadata for ${path.toString()}, got an: $e Returning null apk.")
       assert !(e instanceof LaunchableActivityNameProblemException) || ((e as LaunchableActivityNameProblemException).isFatal)
       return null
     }
