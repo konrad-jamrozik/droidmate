@@ -840,61 +840,28 @@ import java.nio.file.Paths
     
     String devicePath = "sdcard/temp_screenshot.png"
     
-    String commandDescription = String
-      .format(
-      "Executing adb to 1. take a screenshot of Android Device with s/n %s. 2. pull it. 3. remove it on the device.",
-      deviceSerialNumber)
-
-    try
-    {
-      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "shell screencap -p $devicePath")
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException("Executing 'adb shell screencap ...' failed. Oh my.", e)
-    }
-
-    try
-    {
-      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "pull $devicePath $targetPath")
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException("Executing 'adb pull $devicePath $targetPath' failed. Oh my.", e)
-    }
-
-    try
-    {
-      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "shell rm $devicePath")
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException("Executing 'adb rm sdcard/screen.png' failed. Oh my.", e)
-    }
+    this.executeCommand(deviceSerialNumber, "", "Take screenshot step 1: take screenshot.", "shell screencap -p", devicePath)
+    this.executeCommand(deviceSerialNumber, "", "Take screenshot step 2: pull screenshot.", "pull", devicePath, targetPath)
+    this.executeCommand(deviceSerialNumber, "", "Take screenshot step 3: remove screenshot on device.", "shell rm", devicePath)
   }
   
   @Override
-  String executeCommand(String deviceSerialNumber, String command, String successfulOutput) throws AdbWrapperException
+  String executeCommand(String deviceSerialNumber, String successfulOutput, String commandDescription, String... cmdLineParams) 
+    throws AdbWrapperException
   {
+    String[] allCmdLineParams = ([cfg.adbCommand, "-s", deviceSerialNumber] as String[]) + cmdLineParams
     String[] stdStreams
     try
     {
-      stdStreams = sysCmdExecutor.execute("Custom command", cfg.adbCommand,
-        "-s", deviceSerialNumber, command)
+      stdStreams = sysCmdExecutor.execute(commandDescription, allCmdLineParams)
     } catch (SysCmdExecutorException e)
     {
-      throw new AdbWrapperException("Executing adb command '$command' failed. Oh my.", e)
+      throw new AdbWrapperException("Executing adb command '$cmdLineParams' failed", e)
     }
 
     assert stdStreams.size() == 2
     if (!stdStreams[0].startsWith(successfulOutput))
-      throw new AdbWrapperException("After executing adb command of '$command', expected stdout to have '$successfulOutput'. " +
+      throw new AdbWrapperException("After executing adb command of '$cmdLineParams', expected stdout to have '$successfulOutput'. " +
         "Instead, stdout had '${stdStreams[0].trim()}' and stderr had '${stdStreams[1].trim()}'.")
     
     return stdStreams[0]
@@ -904,8 +871,8 @@ import java.nio.file.Paths
   void reconnect(String deviceSerialNumber) throws AdbWrapperException
   {
     // Sometimes (roughly 50% of cases) instead of "done" it prints out "error: no devices/emulators found"
-    this.executeCommand(deviceSerialNumber, "reconnect", "")
-    this.executeCommand(deviceSerialNumber, "wait-for-device", "")
+    this.executeCommand(deviceSerialNumber, "", "reconnect", "reconnect")
+    this.executeCommand(deviceSerialNumber, "", "wait-for-device", "wait-for-device")
   }
 
   @SuppressWarnings("GroovyUnusedDeclaration")

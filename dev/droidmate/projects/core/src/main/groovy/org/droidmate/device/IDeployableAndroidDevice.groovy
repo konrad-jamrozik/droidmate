@@ -72,7 +72,7 @@ interface IDeployableAndroidDevice
   
   void reconnectAdb() throws DeviceException
   
-  void executeAdbCommand(String command, String successfulOutput) throws DeviceException
+  void executeAdbCommand(String command, String successfulOutput, String commandDescription) throws DeviceException
 
   boolean uiaDaemonIsRunning()
 

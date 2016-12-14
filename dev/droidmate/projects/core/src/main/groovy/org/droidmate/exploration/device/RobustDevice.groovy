@@ -317,7 +317,7 @@ class RobustDevice implements IRobustDevice
       
     } catch (AdbWrapperException e)
     {
-      log.warn(Markers.health, "! device.launchMainActivity($launchableActivityComponentName) threw $e. " +
+      log.warn(Markers.health, "! device.launchMainActivity($launchableActivityComponentName) threw $e " +
         "Discarding the exception, rebooting and continuing.")
 
       this.rebootAndSetupConnection()

@@ -28,7 +28,7 @@ import org.droidmate.logging.Markers
 import java.util.concurrent.TimeUnit
 
 @Slf4j
-public class SysCmdExecutor implements ISysCmdExecutor
+ class SysCmdExecutor implements ISysCmdExecutor
 {
   /** Timeout for executing system commands, in milliseconds. Zero or negative value means no timeout. */
   // App that often requires more than one minute for "adb start": net.zedge.android_v4.10.2-inlined.apk
@@ -51,28 +51,28 @@ public class SysCmdExecutor implements ISysCmdExecutor
    *
    */
   @Override
-  public String[] execute(String commandDescription, String... cmdLineParams) throws SysCmdExecutorException
+   String[] execute(String commandDescription, String... cmdLineParams) throws SysCmdExecutorException
   {
     return executeWithTimeout(commandDescription, sysCmdExecuteTimeout, cmdLineParams)
   }
 
   @Override
-  public String[] executeWithoutTimeout(String commandDescription, String... cmdLineParams)
+   String[] executeWithoutTimeout(String commandDescription, String... cmdLineParams)
     throws SysCmdExecutorException
   {
-    return executeWithTimeout(commandDescription, -1, cmdLineParams);
+    return executeWithTimeout(commandDescription, -1, cmdLineParams)
   }
 
 
   @Override
-  public String[] executeWithTimeout(String commandDescription, int timeout, String... cmdLineParams)
+   String[] executeWithTimeout(String commandDescription, int timeout, String... cmdLineParams)
     throws SysCmdExecutorException
   {
-    assert cmdLineParams.length >= 1: "At least one command line parameters has to be given, denoting the executable.";
+    assert cmdLineParams.length >= 1: "At least one command line parameters has to be given, denoting the executable."
 
     // If the command string to be executed is a file path to an executable (as opposed to plain command e.g. "java"),
     // then it should be quoted so spaces in it are handled properly.
-    cmdLineParams[0] = Utils.quoteIfIsPathToExecutable(cmdLineParams[0]);
+    cmdLineParams[0] = Utils.quoteIfIsPathToExecutable(cmdLineParams[0])
 
     // If a parameter is an absolute path it might contain spaces in it and if yes, the parameter has to be quoted
     // to be properly interpreted.
@@ -164,7 +164,7 @@ public class SysCmdExecutor implements ISysCmdExecutor
     if (mills >= (timeout - TIMEOUT_REACHED_ZONE) && mills <= (timeout + TIMEOUT_REACHED_ZONE))
     {
       String returnedString = seconds + " seconds. The execution time was +- ${TIMEOUT_REACHED_ZONE} " +
-        "milliseconds of the execution timeout.";
+        "milliseconds of the execution timeout."
 
       if (exitValue != 0)
         returnedString += " Reaching the timeout might be the cause of the process returning non-zero value." +

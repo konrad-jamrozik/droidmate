@@ -77,7 +77,7 @@ interface IAdbWrapper {
   
   void takeScreenshot(String deviceSerialNumber, String targetPath) throws AdbWrapperException
 
-  String executeCommand(String deviceSerialNumber, String command, String successfulOutput) throws AdbWrapperException
+  String executeCommand(String deviceSerialNumber, String successfulOutput, String commandDescription, String... cmdLineParams) throws AdbWrapperException
 
   void reconnect(String deviceSerialNumber) throws AdbWrapperException
 }

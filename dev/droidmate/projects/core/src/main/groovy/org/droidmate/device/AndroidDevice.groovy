@@ -431,7 +431,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
       adbWrapper.takeScreenshot(serialNumber, targetFileString)
     } catch (AdbWrapperException e)
     {
-      log.warn(Markers.health, "! Failed to take screenshot for ${app.fileName} with exception: $e. " +
+      log.warn(Markers.health, "! Failed to take screenshot for ${app.fileName} with exception: $e " +
         "Discarding the exception and continuing without the screenshot.")
     }
   }
@@ -513,9 +513,9 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   }
   
   @Override
-  void executeAdbCommand(String command, String successfulOutput) throws DeviceException
+  void executeAdbCommand(String command, String successfulOutput, String commandDescription) throws DeviceException
   {
-    this.adbWrapper.executeCommand(this.serialNumber, command, successfulOutput)
+    this.adbWrapper.executeCommand(this.serialNumber, successfulOutput, commandDescription, command)
   }
 
   @Override
@@ -528,14 +528,16 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
       packageName = uia2Daemon_packageName
     else throw new UnexpectedIfElseFallthroughError()
     
-    String processList = this.adbWrapper.executeCommand(this.serialNumber, "shell ps $packageName", "USER")
+    String processList = this.adbWrapper.executeCommand(this.serialNumber, "USER", "Check if process $packageName is running.", "shell ps $packageName"
+    )
     return processList.contains(packageName)
   }
 
   @Override
   boolean isPackageInstalled(String packageName)
   {
-    String uiadPackageList = this.adbWrapper.executeCommand(this.serialNumber, "shell pm list packages $packageName", "")
+    String uiadPackageList = this.adbWrapper.executeCommand(this.serialNumber, "", "Check if package $packageName is installed.", "shell pm list packages $packageName"
+    )
     String[] packages = uiadPackageList.trim().replace("package:","").replace("\r","|").replace("\n","|").split("\\|")
     return packages.any { it == packageName }
   }
