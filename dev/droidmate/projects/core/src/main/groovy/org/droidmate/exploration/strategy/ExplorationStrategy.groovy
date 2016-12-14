@@ -339,7 +339,7 @@ class ExplorationStrategy implements IExplorationStrategy
     lastActionWasToReset = currentActionIsToReset
   }
 
-   static ExplorationStrategy build(Configuration cfg)
+  static ExplorationStrategy build(Configuration cfg)
   {
     IWidgetStrategy widgetStrategy = new WidgetStrategy(cfg.randomSeed, cfg.alwaysClickFirstWidget, cfg.widgetIndexes)
     ITerminationCriterion terminationCriterion = new TerminationCriterion(cfg, cfg.timeLimit, Ticker.systemTicker())

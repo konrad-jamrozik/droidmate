@@ -49,6 +49,9 @@ class UiAutomator2DaemonDriver implements IUiAutomator2DaemonDriver
   private final boolean waitForGuiToStabilize;
   private final int     waitForWindowUpdateTimeout;
   private final Context context;
+  
+  // Has to be at least 5 to wait through main activity loading screen of de.mcdonalds.mcdonaldsinfoapp_v1.4.0.1-inlined.apk
+  private static final int waitForGuiToStabilizeMaxIterations = 5;
 
   UiAutomator2DaemonDriver(boolean waitForGuiToStabilize, int waitForWindowUpdateTimeout)
   {
@@ -333,7 +336,6 @@ class UiAutomator2DaemonDriver implements IUiAutomator2DaemonDriver
       boolean wfwuReachedTimeout;
       boolean wfiReturnedImmediately;
       int iteration = 0;
-      int maxIterations = 2;
       do
       {
         iteration++;
@@ -341,9 +343,9 @@ class UiAutomator2DaemonDriver implements IUiAutomator2DaemonDriver
         wfiReturnedImmediately = waitForIdle(iteration);
       } while
         (!guiStabilized(wfwuReachedTimeout, wfiReturnedImmediately)
-        && !guiStabilizationAttemptsExhausted(iteration, maxIterations));
+        && !guiStabilizationAttemptsExhausted(iteration, waitForGuiToStabilizeMaxIterations));
 
-      if (guiStabilizationAttemptsExhausted(iteration, maxIterations))
+      if (guiStabilizationAttemptsExhausted(iteration, waitForGuiToStabilizeMaxIterations))
         Log.w(uiaDaemon_logcatTag, "GUI failed to stabilize. Continuing nonetheless.");
       else
         Log.d(uiaDaemon_logcatTag, "GUI stabilized after " + iteration + " iterations / " + (System.currentTimeMillis() - initialWaitForIdleStartTime) + "ms");

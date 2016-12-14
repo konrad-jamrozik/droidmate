@@ -369,7 +369,7 @@ public class UiAutomatorDaemonDriver implements IUiAutomatorDaemonDriver
       boolean wfwuReachedTimeout;
       boolean wfiReturnedImmediately;
       int iteration = 0;
-      int maxIterations = 10;
+      int maxIterations = 5;
       do
       {
         iteration++;

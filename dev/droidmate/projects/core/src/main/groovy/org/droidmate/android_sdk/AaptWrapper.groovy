@@ -171,7 +171,6 @@ import java.util.regex.Matcher
         activity = [null, null]
       }
     }
-
     
     String applicationLabel
     try

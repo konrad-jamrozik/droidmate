@@ -216,6 +216,12 @@ class AndroidDeviceSimulator implements IAndroidDevice
   @Override
   Boolean appIsRunning(String appPackageName) throws DeviceException
   {
+    this.appProcessIsRunning(appPackageName)
+  }
+
+  @Override
+  boolean appProcessIsRunning(String appPackageName) throws DeviceException
+  {
     return this.currentSimulation.packageName == appPackageName && this.currentSimulation.appIsRunning
   }
 

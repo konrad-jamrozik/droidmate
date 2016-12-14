@@ -335,7 +335,8 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
 
   }
 
-  private Boolean appProcessIsRunning(String appPackageName) throws DeviceException
+  @Override
+   boolean appProcessIsRunning(String appPackageName) throws DeviceException
   {
     log.debug("appProcessIsRunning($appPackageName)")
     String ps = this.adbWrapper.ps(this.serialNumber)

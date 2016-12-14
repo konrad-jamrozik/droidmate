@@ -42,6 +42,8 @@ interface IDeployableAndroidDevice
 
   void clearPackage(String apkPackageName) throws DeviceException
 
+  boolean appProcessIsRunning(String appPackageName) throws DeviceException
+
   void clearLogcat() throws DeviceException
 
   void closeConnection() throws DeviceException

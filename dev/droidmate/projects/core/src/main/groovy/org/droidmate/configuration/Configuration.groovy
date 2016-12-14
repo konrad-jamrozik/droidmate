@@ -272,19 +272,15 @@ import java.nio.file.Path
   @Parameter(names = [Configuration.pn_uiautomatorDaemonSocketTimeout], arity = 1)
   // Currently, this has to be at least higher than
   // "maxIterations" in org.droidmate.uiautomator2daemon.UiAutomatorDaemonDriver.waitForGuiToStabilize
-  // times (
-  // uiautomatorDaemonWaitForWindowUpdateTimeout 
-  // +
-  // 10s (default waitForIdle for each iteration)
-  // )
-  // So if:
-  // waitForWindowUpdate = 1200ms
-  // maxIterations = 5
+  // times (uiautomatorDaemonWaitForWindowUpdateTimeout + 10s (default waitForIdle for each iteration))
+  
+  // So if (assuming API 23 / uiautomator2Daemon):
+  // org.droidmate.configuration.Configuration.uiautomatorDaemonWaitForWindowUpdateTimeout = 1200ms
+  // org.droidmate.uiautomator2daemon.UiAutomator2DaemonDriver.waitForGuiToStabilizeMaxIterations = 5
   // then minimum time should be: 5*(1'200ms + 10'000ms) = 56'000 ms
   // Plus add ~20 second to make things safe, as in practice even 60 ms caused java.net.SocketTimeoutException: Read timed out,
   // which I confirmed by seeing that logcat uiad logs took more than 61 seconds to process a GUI that fails to stabilize. 
-  // Now I decreased max iterations to 3, so 60 seconds should be enough (60s > 33.6s)
-  public int uiautomatorDaemonSocketTimeout = 1 * 60 * 1000 // ms
+  public int uiautomatorDaemonSocketTimeout = 1 * 90 * 1000 // ms
 
   @Parameter(names = [Configuration.pn_uiautomatorDaemonWaitForGuiToStabilize], arity = 1, description =
     "Should the uiautomator-daemon wait for GUI state to stabilize after each click performed on the android device. Setting this to false will drastically speedup the clicking process, but will probably result in new clicks being sent while the results of previous one are still being processed.")

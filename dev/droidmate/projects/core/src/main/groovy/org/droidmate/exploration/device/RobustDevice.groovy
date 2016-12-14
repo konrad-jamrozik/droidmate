@@ -320,7 +320,7 @@ class RobustDevice implements IRobustDevice
       log.warn(Markers.appHealth, "! device.launchMainActivity($launchableActivityComponentName) threw $e " +
         "Discarding the exception, rebooting and continuing.")
 
-      this.rebootAndSetupConnection()
+      this.rebootAndRestoreConnection()
     }
     
     def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
@@ -430,7 +430,7 @@ class RobustDevice implements IRobustDevice
 
       this.reconnectAdb()
       //this.reinstallUiautomatorDaemon()
-      this.rebootAndSetupConnection()
+      this.rebootAndRestoreConnection()
 
       if (makeSecondAttempt)
       {
@@ -497,7 +497,8 @@ class RobustDevice implements IRobustDevice
     assert !this.device.uiaDaemonClientThreadIsAlive()
   }
   
-  private void rebootAndSetupConnection() throws DeviceException
+  @Override
+  void rebootAndRestoreConnection() throws DeviceException
   {
     this.reboot()
     this.setupConnection()

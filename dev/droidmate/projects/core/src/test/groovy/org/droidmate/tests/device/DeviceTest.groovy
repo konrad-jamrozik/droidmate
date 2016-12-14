@@ -61,7 +61,7 @@ class DeviceTest extends DroidmateGroovyTestCase
     withApkDeployedOnDevice() {IRobustDevice device, IApk deployedApk ->
 
       device.getGuiSnapshot()
-      device.reboot()
+      device.rebootAndRestoreConnection()
       device.getGuiSnapshot()
     }
   }
@@ -88,7 +88,7 @@ class DeviceTest extends DroidmateGroovyTestCase
   @Test
   void "Restarts uiautomatorDaemon2 and communicates with it via TCP"()
   {
-    def cfg = new ConfigurationForTests().setArgs([Configuration.pn_androidApi, Configuration.api23,]).forDevice().get()
+    def cfg = configurationApi23
     IDeviceTools deviceTools = new DeviceTools(cfg)
     IAndroidDevice device = new RobustDevice(
       deviceTools.deviceFactory.create(new FirstRealDeviceSerialNumber(deviceTools.adb).toString()), cfg)
@@ -133,6 +133,20 @@ class DeviceTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
+  void "Print widgets of current GUI screen"()
+  {
+    withSetupDevice(configurationApi23) {Configuration cfg, IDeviceTools deviceTools, IRobustDevice device ->
+      println "widgets: "
+      device.guiSnapshot.guiState.widgets.each {println it}
+
+      println "actionable widgets: "
+      device.guiSnapshot.guiState.actionableWidgets.each {println it}
+    }
+    // KJA investigate why de.mcdonalds app after reset has no actionable widgets.
+  }
+
+  @Category([RequiresDevice])
+  @Test
   void "Launches app, then checks, clicks, stops and checks it again"()
   {
     withApkDeployedOnDevice() {IRobustDevice device, IApk deployedApk ->
@@ -155,7 +169,7 @@ class DeviceTest extends DroidmateGroovyTestCase
       assert device.guiSnapshot.guiState.isHomeScreen()
 
       // Act 5
-      assert !device.appIsRunning(deployedApk.packageName)
+      assert !device.appProcessIsRunning(deployedApk.packageName)
 
       // Act 6
       assert !device.anyMonitorIsReachable()
@@ -181,35 +195,55 @@ class DeviceTest extends DroidmateGroovyTestCase
 
   @Category([RequiresDevice])
   @Test
-  void "Sets up API 23 device and turns wifi on"()
+  void "Sets up API23 compatible device and turns wifi on"()
   {
-    IDeviceTools deviceTools = new DeviceTools(new ConfigurationForTests().setArgs([Configuration.pn_androidApi, Configuration.api23,]).forDevice().get())
+    
+    IDeviceTools deviceTools = new DeviceTools(configurationApi23)
     deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
       device.perform(newTurnWifiOnDeviceAction())
       return []
     }
   }
 
+  private static Configuration getConfigurationApi23()
+  {
+    new ConfigurationForTests()
+      .setArgs([Configuration.pn_androidApi, Configuration.api23])
+      .forDevice()
+      .get()
+  }
+
+
   private void withApkDeployedOnDevice(Closure computation)
   {
-    Configuration cfg = new ConfigurationForTests().forDevice().setArgs([
-      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api19_name]" as String]
-    ).get()
-
-    IDeviceTools deviceTools = new DeviceTools(cfg)
-
-    ApksProvider apksProvider = new ApksProvider(deviceTools.aapt)
-    Apk apk = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames, cfg.shuffleApks).first()
-
     List<ExplorationException> exceptions =
-      deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device ->
+      withSetupDevice(configurationApi23monitoredInlinedApk) {Configuration cfg, IDeviceTools deviceTools, IRobustDevice device ->
+        ApksProvider apksProvider = new ApksProvider(deviceTools.aapt)
+        Apk apk = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames, cfg.shuffleApks).first()
         deviceTools.apkDeployer.withDeployedApk(device, apk, computation.curry(device))
       }
 
-    exceptions.every {
-      it.printStackTrace()
-    }
+    exceptions.every { it.printStackTrace() }
 
     assert exceptions.empty
+  }
+
+
+  private static Configuration getConfigurationApi23monitoredInlinedApk()
+  {
+    new ConfigurationForTests()
+      .setArgs([
+      Configuration.pn_androidApi, Configuration.api23,
+      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api23_name]" as String,
+    ])
+      .forDevice()
+      .get()
+  }
+
+  private void withSetupDevice(Configuration cfg, Closure computation)
+  {
+    IDeviceTools deviceTools = new DeviceTools(cfg)
+    deviceTools.deviceDeployer.withSetupDevice(0) {IRobustDevice device -> computation(cfg, deviceTools, device)}
+
   }
 }

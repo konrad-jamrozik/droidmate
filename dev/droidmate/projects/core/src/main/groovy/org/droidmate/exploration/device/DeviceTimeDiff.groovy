@@ -76,9 +76,9 @@ import java.time.format.DateTimeFormatter
     def formatter = DateTimeFormatter.ofPattern(
       MonitorConstants.monitor_time_formatter_pattern, MonitorConstants.monitor_time_formatter_locale)
     String msg = "computeDiff(device) result: " +
-      "Current time:${now.format(formatter)} " +
-      "Device time:${deviceTime.format(formatter)} " +
-      "Resulting diff:${diff.toString()}"
+      "Current time: ${now.format(formatter)} " +
+      "Device time: ${deviceTime.format(formatter)} " +
+      "Resulting diff: ${diff.toString()}"
 
     log.trace(msg)
 
