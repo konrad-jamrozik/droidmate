@@ -125,11 +125,11 @@ class GuiState implements Serializable, IGuiState
     StringWriter sw = new StringWriter()
     sw.withWriter {wr ->
       
-      wr.write("widgets (${widgets.size()}):")
-      widgets.each {wr.write(it.toString())}
+      wr.println("widgets (${widgets.size()}):")
+      widgets.each {wr.println(it.toString())}
 
-      wr.write("actionable widgets (${actionableWidgets.size()}):")
-      actionableWidgets.each {wr.write(it.toString())}
+      wr.println("actionable widgets (${actionableWidgets.size()}):")
+      actionableWidgets.each {wr.println(it.toString())}
     }
     return sw.toString()
   }
