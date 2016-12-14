@@ -21,7 +21,7 @@ package org.droidmate.tests.device
 
 import groovy.transform.TypeChecked
 import org.droidmate.android_sdk.Apk
-import org.droidmate.android_sdk.ExplorationException
+import org.droidmate.android_sdk.ApkExplorationException
 import org.droidmate.android_sdk.FirstRealDeviceSerialNumber
 import org.droidmate.android_sdk.IApk
 import org.droidmate.configuration.Configuration
@@ -136,12 +136,15 @@ class DeviceTest extends DroidmateGroovyTestCase
   void "Print widgets of current GUI screen"()
   {
     withSetupDevice(configurationApi23) {Configuration cfg, IDeviceTools deviceTools, IRobustDevice device ->
-      println "widgets: "
-      device.guiSnapshot.guiState.widgets.each {println it}
+      
+      def gs = device.guiSnapshot.guiState
+      println "widgets (#${gs.widgets.size()}):"
+      gs.widgets.each {println it}
 
-      println "actionable widgets: "
-      device.guiSnapshot.guiState.actionableWidgets.each {println it}
+      println "actionable widgets (#${gs.actionableWidgets.size()}):"
+      gs.actionableWidgets.each {println it}
     }
+    
     // KJA investigate why de.mcdonalds app after reset has no actionable widgets.
   }
 
@@ -216,11 +219,11 @@ class DeviceTest extends DroidmateGroovyTestCase
 
   private void withApkDeployedOnDevice(Closure computation)
   {
-    List<ExplorationException> exceptions =
+    List<ApkExplorationException> exceptions = []
       withSetupDevice(configurationApi23monitoredInlinedApk) {Configuration cfg, IDeviceTools deviceTools, IRobustDevice device ->
         ApksProvider apksProvider = new ApksProvider(deviceTools.aapt)
         Apk apk = apksProvider.getApks(cfg.apksDirPath, cfg.apksLimit, cfg.apksNames, cfg.shuffleApks).first()
-        deviceTools.apkDeployer.withDeployedApk(device, apk, computation.curry(device))
+        exceptions = deviceTools.apkDeployer.withDeployedApk(device, apk, computation.curry(device))
       }
 
     exceptions.every { it.printStackTrace() }
