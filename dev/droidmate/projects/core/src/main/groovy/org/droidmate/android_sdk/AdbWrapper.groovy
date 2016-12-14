@@ -43,8 +43,9 @@ import java.nio.file.Paths
  *
  * @author Konrad Jamrozik
  */
+// WISH for commands using sysCmdExecutor.execute, use instead this.executeCommand
 @Slf4j
- class AdbWrapper implements IAdbWrapper
+class AdbWrapper implements IAdbWrapper
 {
 
   private final Configuration   cfg
@@ -711,24 +712,11 @@ import java.nio.file.Paths
     assert Files.notExists(Paths.get(destinationFilePath))
 
     String pulledFilePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api19 + pulledFileName
-    String commandDescription = String
-      .format(
-      "Executing adb to pull file %s from Android Device with s/n %s.",
-      pulledFilePath, deviceSerialNumber)
-
-    try
-    {
-      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "pull", pulledFilePath, destinationFilePath)
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException("Executing 'adb pull ...' failed. Oh my.", e)
-    }
+    this.executeCommand(deviceSerialNumber, "", "Pull file (API19 compatibility)",
+      "pull", pulledFilePath, destinationFilePath)
   }
 
-  @Override
+  
   /**
    * Pull file from the device.
    *
@@ -739,6 +727,7 @@ import java.nio.file.Paths
    * More information:
    *   http://stackoverflow.com/questions/18471780/android-adb-retrieve-database-using-run-as
    */
+  @Override
   void pullFile_api23(String deviceSerialNumber, String pulledFileName, String destinationFilePath, String shellPackageName) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
@@ -749,28 +738,13 @@ import java.nio.file.Paths
     assert Files.notExists(Paths.get(destinationFilePath))
 
     String pulledFilePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api23 + pulledFileName
-    String commandDescription = String
-      .format(
-      "Executing adb to pull file %s from Android Device with s/n %s.",
-      pulledFilePath, deviceSerialNumber)
 
-    try
-    {
-      String[] stdStreams = sysCmdExecutor.execute(
-        commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "exec-out",
-        "run-as", shellPackageName,
-        "cat", pulledFilePath)
+    String stdout = this.executeCommand(deviceSerialNumber, "", "Pull file (API23 compatibility)", 
+    "exec-out run-as", shellPackageName, "cat", pulledFilePath)
 
-      FileWriter writer = new FileWriter(destinationFilePath)
-      writer.write(stdStreams[0])
-      writer.close()
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException("Executing 'adb pull ...' failed. Oh my.", e)
-    }
+    FileWriter writer = new FileWriter(destinationFilePath)
+    writer.write(stdout)
+    writer.close()
   }
 
   void removeFile_api19(String deviceSerialNumber, String fileName) throws AdbWrapperException
@@ -780,29 +754,15 @@ import java.nio.file.Paths
     assert fileName.size() > 0
 
     String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api19 + fileName
-    String commandDescription = String
-      .format(
-      "Executing adb to delete file %s from Android Device with s/n %s.",
-      filePath, deviceSerialNumber)
-
-    try
-    {
-      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "shell rm", filePath)
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
-    }
+    this.executeCommand(deviceSerialNumber, "", "Delete file (API19 compatibility).", "shell rm", filePath)
   }
 
-  @Override
   /**
    * Remove a file from the device
    *
    * See explanation about the shellPackageName parameter in {@link org.droidmate.android_sdk.AdbWrapper#pullFile_api23}
    */
+  @Override
   void removeFile_api23(String deviceSerialNumber, String fileName, String shellPackageName) throws AdbWrapperException
   {
     assert deviceSerialNumber != null
@@ -811,22 +771,8 @@ import java.nio.file.Paths
     assert !shellPackageName?.empty
 
     String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api23 + fileName
-    String commandDescription = String
-      .format(
-      "Executing adb to delete file %s from Android Device with s/n %s.",
-      filePath, deviceSerialNumber)
-
-    try
-    {
-      sysCmdExecutor.execute(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "shell run-as", shellPackageName,
-        "rm", filePath)
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException("Executing 'adb shell rm ...' failed. Oh my.", e)
-    }
+    this.executeCommand(deviceSerialNumber, "", "Delete file (API23 compatibility).", 
+      "shell run-as", shellPackageName, "rm", filePath)
   }
 
 
@@ -844,7 +790,15 @@ import java.nio.file.Paths
     this.executeCommand(deviceSerialNumber, "", "Take screenshot step 2: pull screenshot.", "pull", devicePath, targetPath)
     this.executeCommand(deviceSerialNumber, "", "Take screenshot step 3: remove screenshot on device.", "shell rm", devicePath)
   }
-  
+
+  @Override
+  void reconnect(String deviceSerialNumber) throws AdbWrapperException
+  {
+    // Sometimes (roughly 50% of cases) instead of "done" it prints out "error: no devices/emulators found"
+    this.executeCommand(deviceSerialNumber, "", "reconnect", "reconnect")
+    this.executeCommand(deviceSerialNumber, "", "wait-for-device", "wait-for-device")
+  }
+
   @Override
   String executeCommand(String deviceSerialNumber, String successfulOutput, String commandDescription, String... cmdLineParams) 
     throws AdbWrapperException
@@ -856,23 +810,16 @@ import java.nio.file.Paths
       stdStreams = sysCmdExecutor.execute(commandDescription, allCmdLineParams)
     } catch (SysCmdExecutorException e)
     {
-      throw new AdbWrapperException("Executing adb command '$cmdLineParams' failed", e)
+      throw new AdbWrapperException("Executing adb command '${allCmdLineParams.join(" ")}' failed", e)
     }
 
     assert stdStreams.size() == 2
     if (!stdStreams[0].startsWith(successfulOutput))
-      throw new AdbWrapperException("After executing adb command of '$cmdLineParams', expected stdout to have '$successfulOutput'. " +
+      throw new AdbWrapperException("After executing adb command of '${allCmdLineParams.join(" ")}', " +
+        "expected stdout to have '$successfulOutput'. " +
         "Instead, stdout had '${stdStreams[0].trim()}' and stderr had '${stdStreams[1].trim()}'.")
     
     return stdStreams[0]
-  }
-
-  @Override
-  void reconnect(String deviceSerialNumber) throws AdbWrapperException
-  {
-    // Sometimes (roughly 50% of cases) instead of "done" it prints out "error: no devices/emulators found"
-    this.executeCommand(deviceSerialNumber, "", "reconnect", "reconnect")
-    this.executeCommand(deviceSerialNumber, "", "wait-for-device", "wait-for-device")
   }
 
   @SuppressWarnings("GroovyUnusedDeclaration")
