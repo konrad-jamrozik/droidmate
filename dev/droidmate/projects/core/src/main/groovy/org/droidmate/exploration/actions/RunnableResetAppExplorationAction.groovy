@@ -74,9 +74,6 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
       device.clearPackage(app.packageName)
     }
 
-    log.debug("6.1. Reset time sync.")
-      device.resetTimeSync()
-      
     log.debug("7. Launch app $app.packageName.")
     device.launchApp(app)
 
@@ -89,6 +86,9 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     log.debug("8. Get GUI snapshot.")
     this.snapshot = device.guiSnapshot
 
+    log.debug("8.1. Reset time sync.")
+    device.resetTimeSync()
+    
     log.debug("9. Try to read API logs.")
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     logsHandler.readAndClearApiLogs()

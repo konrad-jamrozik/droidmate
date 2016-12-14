@@ -331,14 +331,14 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
   {
-    IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshotRebootingOnAllAttemptsExhausted()
+    IDeviceGuiSnapshot guiSnapshot = this.getRetryValidGuiSnapshotRebootingIfNecessary()
     guiSnapshot = closeANRIfNecessary(guiSnapshot)
     return guiSnapshot
   }
 
   private IDeviceGuiSnapshot getExplorableGuiSnapshotWithoutClosingANR() throws DeviceException
   {
-    return this.getRetryValidGuiSnapshotRebootingOnAllAttemptsExhausted()
+    return this.getRetryValidGuiSnapshotRebootingIfNecessary()
   }
 
   private IDeviceGuiSnapshot closeANRIfNecessary(IDeviceGuiSnapshot guiSnapshot) throws DeviceException
@@ -358,7 +358,7 @@ class RobustDevice implements IRobustDevice
       device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
         (guiSnapshot.guiState as AppHasStoppedDialogBoxGuiState).OKWidget)
       )
-      out = this.getRetryValidGuiSnapshotRebootingOnAllAttemptsExhausted()
+      out = this.getRetryValidGuiSnapshotRebootingIfNecessary()
 
       if (out.guiState.isAppHasStoppedDialogBox())
       {
@@ -376,7 +376,7 @@ class RobustDevice implements IRobustDevice
     return out
   }
 
-  private IDeviceGuiSnapshot getRetryValidGuiSnapshotRebootingOnAllAttemptsExhausted() throws DeviceException
+  private IDeviceGuiSnapshot getRetryValidGuiSnapshotRebootingIfNecessary() throws DeviceException
   {
     return rebootIfNecessary("device.getRetryValidGuiSnapshot()", true) { this.getRetryValidGuiSnapshot() }
   }
@@ -405,6 +405,7 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getValidGuiSnapshot() throws DeviceException
   {
+    // the rebootIfNecessary will reboot on TcpServerUnreachable
     IDeviceGuiSnapshot snapshot = rebootIfNecessary("device.getGuiSnapshot()", true) {this.device.getGuiSnapshot() }
     ValidationResult vres = snapshot.validationResult
 
@@ -500,6 +501,7 @@ class RobustDevice implements IRobustDevice
   {
     this.reboot()
     this.setupConnection()
+    this.resetTimeSync()
   }
 
 

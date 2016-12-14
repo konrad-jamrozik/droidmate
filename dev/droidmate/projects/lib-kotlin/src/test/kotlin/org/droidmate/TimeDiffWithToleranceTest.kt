@@ -31,8 +31,8 @@ class TimeDiffWithToleranceTest {
     val diff = TimeDiffWithTolerance(Duration.ofMillis(3000))
 
     // Act
-    val result1 = diff.warnIfBeyond(LocalDateTime.now(), LocalDateTime.now().minusSeconds(4), "First element", "2nd item")
-    val result2 = diff.warnIfBeyond(LocalDateTime.now(), LocalDateTime.now().minusSeconds(2), "Item1", "Thing2")
+    val result1 = diff.warnIfBeyond(LocalDateTime.now(), LocalDateTime.now().minusSeconds(4), "First element", "2nd item", "apkFileName")
+    val result2 = diff.warnIfBeyond(LocalDateTime.now(), LocalDateTime.now().minusSeconds(2), "Item1", "Thing2", "apkFileName")
 
     assertThat(result1, equalTo(true))
     assertThat(result2, equalTo(false))

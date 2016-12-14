@@ -28,13 +28,13 @@ class TimeDiffWithTolerance(private val tolerance: Duration) {
 
   private val log: Logger = LoggerFactory.getLogger(TimeDiffWithTolerance::class.java)
 
-  fun warnIfBeyond(start: LocalDateTime, end: LocalDateTime, startName: String, endName: String): Boolean {
+  fun warnIfBeyond(start: LocalDateTime, end: LocalDateTime, startName: String, endName: String, apkFileName: String): Boolean {
     val endBeforeStart = Duration.between(end, start)
     if (endBeforeStart > tolerance) {
 
       val (startNamePadded, endNamePadded) = Pad(startName, endName)
       log.warn(Markers.health, 
-        "The expected end time '$endName' is before the expected start time '$startName' by more than the tolerance.\n" +
+        "For $apkFileName, the expected start time '$startName' is after the expected end time '$endName' by more than the tolerance.\n" +
         "$startNamePadded : $start\n" +
         "$endNamePadded : $end\n" +
         "Tolerance  : ${tolerance.toMillis()} ms\n" +

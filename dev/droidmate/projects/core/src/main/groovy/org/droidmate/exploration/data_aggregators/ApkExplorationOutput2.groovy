@@ -163,45 +163,45 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
      * </p>
      */
     def diff = new TimeDiffWithTolerance(Duration.ofSeconds(3))
-    warnIfExplorationStartTimeIsNotBeforeEndTime(diff)
-    warnIfExplorationStartTimeIsNotBeforeFirstLogTime(diff)
-    warnIfLastLogTimeIsNotBeforeExplorationEndTime(diff)
-    warnIfLogsAreNotAfterAction(diff)
+    warnIfExplorationStartTimeIsNotBeforeEndTime(diff, apk.fileName)
+    warnIfExplorationStartTimeIsNotBeforeFirstLogTime(diff, apk.fileName)
+    warnIfLastLogTimeIsNotBeforeExplorationEndTime(diff, apk.fileName)
+    warnIfLogsAreNotAfterAction(diff, apk.fileName)
   }
 
-  private boolean warnIfExplorationStartTimeIsNotBeforeEndTime(TimeDiffWithTolerance diff)
+  private boolean warnIfExplorationStartTimeIsNotBeforeEndTime(TimeDiffWithTolerance diff, String apkFileName)
   {
-    return diff.warnIfBeyond(this.explorationStartTime, this.explorationEndTime, "exploration start time", "exploration end time")
+    return diff.warnIfBeyond(this.explorationStartTime, this.explorationEndTime, "exploration start time", "exploration end time", apkFileName)
   }
 
-  private void warnIfExplorationStartTimeIsNotBeforeFirstLogTime(TimeDiffWithTolerance diff)
+  private void warnIfExplorationStartTimeIsNotBeforeFirstLogTime(TimeDiffWithTolerance diff, String apkFileName)
   {
     if (!this.apiLogs.empty)
     {
       def firstLog = this.apiLogs.find {!it.empty}?.first()
       if (firstLog != null)
-        diff.warnIfBeyond(this.explorationStartTime, firstLog.time, "exploration start time", "first API log")
+        diff.warnIfBeyond(this.explorationStartTime, firstLog.time, "exploration start time", "first API log", apkFileName)
     }
   }
 
-  private void warnIfLastLogTimeIsNotBeforeExplorationEndTime(TimeDiffWithTolerance diff)
+  private void warnIfLastLogTimeIsNotBeforeExplorationEndTime(TimeDiffWithTolerance diff, String apkFileName)
   {
     if (!this.apiLogs.empty)
     {
       def lastLog = this.apiLogs.find {!it.empty}?.last()
       if (lastLog != null)
-        diff.warnIfBeyond(lastLog.time, this.explorationEndTime, "last API log", "exploration end time")
+        diff.warnIfBeyond(lastLog.time, this.explorationEndTime, "last API log", "exploration end time", apkFileName)
     }
   }
 
-  private void warnIfLogsAreNotAfterAction(TimeDiffWithTolerance diff)
+  private void warnIfLogsAreNotAfterAction(TimeDiffWithTolerance diff, String apkFileName)
   {
     this.actRess.each {
       if (!it.result.deviceLogs.apiLogsOrEmpty.empty)
       {
         def actionTime = it.action.timestamp
         def firstLogTime = it.result.deviceLogs.apiLogsOrEmpty.first().time
-        diff.warnIfBeyond(actionTime, firstLogTime, "action time", "first log time for action")
+        diff.warnIfBeyond(actionTime, firstLogTime, "action time", "first log time for action", apkFileName)
       }
     }
   }
