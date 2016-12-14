@@ -50,7 +50,7 @@ class Markers
    */
   public static final Marker runData = MarkerFactory.getMarker("MARKER_RUN_DATA")
 
-  public static final Marker health = MarkerFactory.getMarker("MARKER_HEALTH")
+  public static final Marker appHealth = MarkerFactory.getMarker("MARKER_HEALTH")
 
    static List<Marker> getAllMarkers()
   {

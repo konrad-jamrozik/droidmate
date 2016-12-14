@@ -60,7 +60,7 @@ class LogbackConstants
 
   public static final String appender_name_runData = "run_data.txt"
 
-  public static final String appender_name_health = "health.txt"
+  public static final String appender_name_health = "app_health.txt"
 
   // WISH More exception hierarchy in the file: which exceptions came together, for which apk. E.g. Apk XYZ, Expl. Act. 150, EX1 attempt failed EX2 attempt failed E3 complete failure.
   public static final String appender_name_exceptions = "exceptions.txt"

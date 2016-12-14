@@ -77,7 +77,7 @@ import org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants
         break
       default:
         result = buildDefault()
-        log.warn(Markers.health, 
+        log.warn(Markers.appHealth, 
           "Unrecognized device model of $deviceModel. Using the default ${result.class.simpleName}.")
     }
 

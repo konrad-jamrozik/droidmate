@@ -90,7 +90,7 @@ class Exploration implements IExploration
     output.verify()
 
     if (output.exceptionIsPresent)
-      log.warn(Markers.health, "! Encountered ${output.exception.class.simpleName} during the exploration of ${app.packageName} " +
+      log.warn(Markers.appHealth, "! Encountered ${output.exception.class.simpleName} during the exploration of ${app.packageName} " +
         "after already obtaining some exploration output.")
 
     return new Failable<IApkExplorationOutput2, DeviceException>(output, output.exceptionIsPresent ? output.exception : null)
@@ -152,7 +152,7 @@ class Exploration implements IExploration
     IDeviceGuiSnapshot initialGuiSnapshot = device.guiSnapshot
 
     if (!initialGuiSnapshot.guiState.isHomeScreen())
-      log.warn(Markers.health, 
+      log.warn(Markers.appHealth, 
         "An exploration process for $fileName is about to start but the device doesn't display home screen. " +
         "Instead, its GUI state is: $initialGuiSnapshot.guiState. " +
         "Continuing the exploration nevertheless, hoping that the first \"reset app\" " +

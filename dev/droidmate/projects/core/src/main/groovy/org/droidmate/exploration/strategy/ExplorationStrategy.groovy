@@ -229,12 +229,12 @@ class ExplorationStrategy implements IExplorationStrategy
 
       // This case is observed when e.g. the app shows empty screen at startup.
       if (!guiState.belongsToApp(exploredAppPackageName))
-        log.info(Markers.health, "Terminating exploration: $guiStateMsgPart doesn't belong to the app. The GUI state: $guiState")
+        log.info(Markers.appHealth, "Terminating exploration: $guiStateMsgPart doesn't belong to the app. The GUI state: $guiState")
 
       // This case is observed when e.g. the app has nonstandard GUI, e.g. game native interface.
       // Also when all widgets have been blacklisted because they e.g. crash the app.
       else if (!hasActionableWidgets(guiState))
-        log.info(Markers.health, "Terminating exploration: $guiStateMsgPart doesn't contain actionable widgets. The GUI state: $guiState")
+        log.info(Markers.appHealth, "Terminating exploration: $guiStateMsgPart doesn't contain actionable widgets. The GUI state: $guiState")
 
       else
         throw new UnexpectedIfElseFallthroughError()

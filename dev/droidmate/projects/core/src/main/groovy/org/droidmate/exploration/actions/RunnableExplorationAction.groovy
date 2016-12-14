@@ -97,7 +97,7 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
     {
       successful = false
       this.exception = e
-      log.warn(Markers.health, "! Caught ${e.class.simpleName} while performing device actions of ${this.class.simpleName}. " +
+      log.warn(Markers.appHealth, "! Caught ${e.class.simpleName} while performing device actions of ${this.class.simpleName}. " +
         "Returning failed ${ExplorationActionRunResult.class.simpleName} with the exception assigned to a field.")
     }
 

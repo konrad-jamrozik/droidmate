@@ -317,7 +317,7 @@ class RobustDevice implements IRobustDevice
       
     } catch (AdbWrapperException e)
     {
-      log.warn(Markers.health, "! device.launchMainActivity($launchableActivityComponentName) threw $e " +
+      log.warn(Markers.appHealth, "! device.launchMainActivity($launchableActivityComponentName) threw $e " +
         "Discarding the exception, rebooting and continuing.")
 
       this.rebootAndSetupConnection()
@@ -326,7 +326,7 @@ class RobustDevice implements IRobustDevice
     def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
 
     if (launchSucceeded && guiSnapshot.guiState.appHasStoppedDialogBox)
-      log.debug(Markers.health, "device.launchMainActivity($launchableActivityComponentName) succeeded, but ANR is displayed.")
+      log.debug(Markers.appHealth, "device.launchMainActivity($launchableActivityComponentName) succeeded, but ANR is displayed.")
   }
 
   private IDeviceGuiSnapshot getExplorableGuiSnapshot() throws DeviceException
@@ -423,7 +423,7 @@ class RobustDevice implements IRobustDevice
       out = operationOnDevice()
     } catch (TcpServerUnreachableException | AllDeviceAttemptsExhaustedException e)
     {
-      log.warn(Markers.health, "! Attempt to execute '$description' threw an exception: $e. " +
+      log.warn(Markers.appHealth, "! Attempt to execute '$description' threw an exception: $e. " +
         (makeSecondAttempt
         ? "Reconnecting adb, rebooting the device and trying again."
         : "Reconnecting adb, rebooting the device and continuing."))
@@ -441,7 +441,7 @@ class RobustDevice implements IRobustDevice
           log.info("Second attempt at executing '$description' completed successfully.")
         } catch (TcpServerUnreachableException | AllDeviceAttemptsExhaustedException e2)
         {
-          log.warn(Markers.health, "! Second attempt to execute '$description' threw an exception: $e2. " +
+          log.warn(Markers.appHealth, "! Second attempt to execute '$description' threw an exception: $e2. " +
             "Giving up and rethrowing.")
           throw e2
         }

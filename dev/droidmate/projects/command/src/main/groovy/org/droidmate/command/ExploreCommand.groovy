@@ -172,7 +172,7 @@ class ExploreCommand extends DroidmateCommand
 
         if (!encounteredApkExplorationsStoppingException)
         {
-          log.info(Markers.health, "Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
+          log.info(Markers.appHealth, "Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
           
           allApksExplorationExceptions +=
             this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->

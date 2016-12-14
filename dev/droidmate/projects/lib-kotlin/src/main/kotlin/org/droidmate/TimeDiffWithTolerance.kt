@@ -33,7 +33,7 @@ class TimeDiffWithTolerance(private val tolerance: Duration) {
     if (endBeforeStart > tolerance) {
 
       val (startNamePadded, endNamePadded) = Pad(startName, endName)
-      log.warn(Markers.health, 
+      log.warn(Markers.appHealth, 
         "For $apkFileName, the expected start time '$startName' is after the expected end time '$endName' by more than the tolerance.\n" +
         "$startNamePadded : $start\n" +
         "$endNamePadded : $end\n" +

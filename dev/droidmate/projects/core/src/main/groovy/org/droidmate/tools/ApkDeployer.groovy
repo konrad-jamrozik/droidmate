@@ -74,7 +74,7 @@ import org.droidmate.misc.Assert
     }
     catch (Throwable computationThrowable)
     {
-      log.warn(Markers.health, 
+      log.warn(Markers.appHealth, 
         "! Caught ${computationThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->computation(). " +
         "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to the collected exceptions list.\n" +
         "The ${computationThrowable.class.simpleName}: $computationThrowable")
@@ -90,7 +90,7 @@ import org.droidmate.misc.Assert
       }
       catch (Throwable undeployApkThrowable)
       {
-        log.warn(Markers.health, 
+        log.warn(Markers.appHealth, 
           "! Caught ${undeployApkThrowable.class.simpleName} in withDeployedApk($device, $apk.fileName)->tryUndeployApk(). " +
           "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to the collected exceptions list.\n" +
           "The ${undeployApkThrowable.class.simpleName}: $undeployApkThrowable")
@@ -112,7 +112,7 @@ import org.droidmate.misc.Assert
 
     } catch (Throwable deployThrowable)
     {
-      log.warn(Markers.health, 
+      log.warn(Markers.appHealth, 
         "! Caught ${deployThrowable.class.simpleName} in deployApk($device, $apk.fileName). " +
         "Adding as a cause to an ${ApkExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
       return new ApkExplorationException(apk, deployThrowable)

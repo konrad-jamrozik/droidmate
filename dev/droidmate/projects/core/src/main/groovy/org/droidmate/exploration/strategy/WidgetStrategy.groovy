@@ -221,7 +221,7 @@ class WidgetStrategy implements IWidgetStrategy
     {
 
       if (!(chosenWidgetInfo.actedUponCount <= 1).implies(chosenWidgetInfo.longClickedCount == 0))
-        log.warn(Markers.health, 
+        log.warn(Markers.appHealth, 
           "Expectation violated: (chosenWidgetInfo.actedUponCount <= 1).implies(chosenWidgetInfo.longClickedCount == 0).\n" +
           "Actual actedUponCount:  ${chosenWidgetInfo.actedUponCount}.\n" +
           "Actual longClickedCount: ${chosenWidgetInfo.longClickedCount}")

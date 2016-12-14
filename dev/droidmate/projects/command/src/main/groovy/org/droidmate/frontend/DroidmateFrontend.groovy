@@ -124,7 +124,7 @@ import static org.droidmate.logging.Markers.runData
     String timestampFormat = "yyyy MMM dd HH:mm:ss"
 
     if (encounteredExceptionsDuringTheRun)
-      log.warn(Markers.health, 
+      log.warn(Markers.appHealth, 
         "DroidMate run finished, but some exceptions have been thrown and handled during the run. See previous logs for details.")
     else
       log.info("DroidMate run finished successfully.")

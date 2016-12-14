@@ -41,7 +41,7 @@ import org.droidmate.logging.Markers
 
     if (this.shouldStopFurtherApkExplorations())
     {
-      log.warn(Markers.health, 
+      log.warn(Markers.appHealth, 
         "An ${this.class.simpleName} demanding stopping further apk explorations was just constructed!")
     }
   }

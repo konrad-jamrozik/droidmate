@@ -431,7 +431,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
       adbWrapper.takeScreenshot(serialNumber, targetFileString)
     } catch (AdbWrapperException e)
     {
-      log.warn(Markers.health, "! Failed to take screenshot for ${app.fileName} with exception: $e " +
+      log.warn(Markers.appHealth, "! Failed to take screenshot for ${app.fileName} with exception: $e " +
         "Discarding the exception and continuing without the screenshot.")
     }
   }

@@ -51,7 +51,7 @@ appender(LogbackAppenders.appender_stdout, ConsoleAppender) {
   target = "System.out"
   filter(ThresholdFilter) {level = STDOUT_LOG_LEVEL}
   filter(LevelFilter) {level = ERROR; onMatch = DENY; onMismatch = NEUTRAL}
-  filter(MarkerFilter) {marker = Markers.health; onMismatch = NEUTRAL; onMatch = ACCEPT}
+  filter(MarkerFilter) {marker = Markers.appHealth; onMismatch = NEUTRAL; onMatch = ACCEPT}
   filter(AllDroidmateMarkersFilter) {onMatch = DENY}
   encoder(PatternLayoutEncoder) {pattern = pat_date_level_logger}
 }
@@ -59,7 +59,7 @@ appender(LogbackAppenders.appender_stdout, ConsoleAppender) {
 appender(LogbackAppenders.appender_stderr, ConsoleAppender) {
   target = "System.err"
   filter(ThresholdFilter) {level = STDERR_LOG_LEVEL}
-  filter(MarkerFilter) {marker = Markers.health; onMismatch = NEUTRAL; onMatch = ACCEPT}
+  filter(MarkerFilter) {marker = Markers.appHealth; onMismatch = NEUTRAL; onMatch = ACCEPT}
   filter(AllDroidmateMarkersFilter) {onMatch = DENY}
   encoder(PatternLayoutEncoder) {pattern = pat_date_level_logger}
 }
@@ -73,7 +73,7 @@ appender(appender_name_stdStreams, LazyFileAppender) {
   lazy = true
 
   filter(ThresholdFilter) {level = STDOUT_LOG_LEVEL}
-  filter(MarkerFilter) {marker = Markers.health; onMismatch = NEUTRAL; onMatch = ACCEPT}
+  filter(MarkerFilter) {marker = Markers.appHealth; onMismatch = NEUTRAL; onMatch = ACCEPT}
   filter(AllDroidmateMarkersFilter) {onMatch = DENY}
   filter(EvaluatorFilter) {
     // Reference:
@@ -94,7 +94,7 @@ appender(appender_name_master, LazyFileAppender) {
   lazy = true
 
   filter(ThresholdFilter) {level = TRACE}
-  filter(MarkerFilter) {marker = Markers.health; onMismatch = NEUTRAL; onMatch = ACCEPT}
+  filter(MarkerFilter) {marker = Markers.appHealth; onMismatch = NEUTRAL; onMatch = ACCEPT}
   filter(AllDroidmateMarkersFilter) {onMatch = DENY}
 
   // Do not log TRACE from SysCmdExecutor, as it is too verbose.
@@ -199,7 +199,7 @@ appender(appender_name_health, LazyFileAppender) {
   lazy = true
 
   filter(MarkerFilter) {
-    marker = Markers.health
+    marker = Markers.appHealth
     onMismatch = DENY; onMatch = NEUTRAL
   }
   encoder(PatternLayoutEncoder) {pattern = pat_date_level_logger}

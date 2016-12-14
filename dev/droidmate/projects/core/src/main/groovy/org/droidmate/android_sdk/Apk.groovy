@@ -55,7 +55,7 @@ class Apk implements IApk, Serializable
       (packageName, launchableActivityName, launchableActivityComponentName, applicationLabel) = aapt.getMetadata(path)
     } catch (LaunchableActivityNameProblemException | NotEnoughDataToStartAppException e)
     {
-      log.warn(Markers.health, "! While getting metadata for ${path.toString()}, got an: $e Returning null apk.")
+      log.warn(Markers.appHealth, "! While getting metadata for ${path.toString()}, got an: $e Returning null apk.")
       assert !(e instanceof LaunchableActivityNameProblemException) || ((e as LaunchableActivityNameProblemException).isFatal)
       return null
     }

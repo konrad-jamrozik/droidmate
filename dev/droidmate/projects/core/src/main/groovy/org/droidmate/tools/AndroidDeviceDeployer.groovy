@@ -175,7 +175,7 @@ import java.nio.file.Paths
 
       } catch (Throwable tearDownThrowable)
       {
-        log.warn(Markers.health, 
+        log.warn(Markers.appHealth, 
           "! Caught ${tearDownThrowable.class.simpleName} in withSetupDevice($deviceIndex)->tryTearDown($device). " +
           "Adding as a cause to an ${ExplorationException.class.simpleName}. " +
           "Then adding to the collected exceptions list.\n" +
@@ -204,7 +204,7 @@ import java.nio.file.Paths
 
     } catch (Throwable setupDeviceThrowable)
     {
-      log.warn(Markers.health, 
+      log.warn(Markers.appHealth, 
         "! Caught ${setupDeviceThrowable.class.simpleName} in setupDevice(deviceIndex: $deviceIndex). " +
         "Adding as a cause to an ${ExplorationException.class.simpleName}. Then adding to the collected exceptions list.")
 
