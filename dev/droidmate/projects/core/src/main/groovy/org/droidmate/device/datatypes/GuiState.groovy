@@ -92,7 +92,7 @@ class GuiState implements Serializable, IGuiState
   @Override
   boolean isCompleteActionUsingDialogBox()
   {
-    return !isSelectAHomeAppDialogBox() &&
+    return !isSelectAHomeAppDialogBox() && !isUseLauncherAsHomeDialogBox() &&
       topNodePackageName == androidPackageName &&
       widgets.any {it.text == "Just once"}
   }
@@ -104,6 +104,16 @@ class GuiState implements Serializable, IGuiState
       widgets.any {it.text == "Just once"} &&
       widgets.any {it.text == "Select a Home app"}
   }
+
+  @Override
+  boolean isUseLauncherAsHomeDialogBox()
+  {
+    return topNodePackageName == androidPackageName &&
+      widgets.any {it.text == "Use Launcher as Home" } &&
+      widgets.any {it.text == "Just once"} &&
+      widgets.any {it.text == "Always"}
+  }
+
 
   @Override
   boolean isRequestRuntimePermissionDialogBox()

@@ -227,6 +227,9 @@ class RobustDevice implements IRobustDevice
         if (guiSnapshot.guiState.isSelectAHomeAppDialogBox())
         {
           guiSnapshot = closeSelectAHomeAppDialogBox(guiSnapshot)
+        } else if (guiSnapshot.guiState.isUseLauncherAsHomeDialogBox()) 
+        {
+          guiSnapshot = closeUseLauncherAsHomeDialogBox(guiSnapshot)
         } else
         {
           device.perform(newPressHomeDeviceAction())
@@ -264,6 +267,18 @@ class RobustDevice implements IRobustDevice
     assert !guiSnapshot.guiState.isSelectAHomeAppDialogBox()
     return guiSnapshot
   }
+
+  private IDeviceGuiSnapshot closeUseLauncherAsHomeDialogBox(IDeviceGuiSnapshot guiSnapshot)
+  {
+    device.perform(AndroidDeviceAction.newClickGuiDeviceAction(
+      guiSnapshot.guiState.widgets.findSingle({it.text == "Just once"}))
+    )
+
+    guiSnapshot = this.guiSnapshot
+    assert !guiSnapshot.guiState.isUseLauncherAsHomeDialogBox()
+    return guiSnapshot
+  }
+
 
   @Override
   void perform(IAndroidDeviceAction action) throws DeviceException
