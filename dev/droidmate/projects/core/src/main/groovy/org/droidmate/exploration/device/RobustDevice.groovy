@@ -394,10 +394,6 @@ class RobustDevice implements IRobustDevice
         "getValidGuiSnapshot"
       )
     }
-    catch (TcpServerUnreachableException e)
-    {
-      throw e
-    }
     catch (DeviceException e)
     {
       throw new AllDeviceAttemptsExhaustedException("All attempts at getting valid GUI snapshot failed.", e)
@@ -409,7 +405,7 @@ class RobustDevice implements IRobustDevice
 
   private IDeviceGuiSnapshot getValidGuiSnapshot() throws DeviceException
   {
-    IDeviceGuiSnapshot snapshot = this.device.getGuiSnapshot()
+    IDeviceGuiSnapshot snapshot = rebootIfNecessary("device.getGuiSnapshot()", true) {this.device.getGuiSnapshot() }
     ValidationResult vres = snapshot.validationResult
 
     if (!vres.valid)
