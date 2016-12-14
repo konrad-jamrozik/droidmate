@@ -53,13 +53,13 @@ class GuiState implements Serializable, IGuiState
   }
 
   @Override
-  public List<Widget> getActionableWidgets()
+   List<Widget> getActionableWidgets()
   {
     widgets.findAll {it.canBeActedUpon()}
   }
 
   @Override
-  public String toString()
+   String toString()
   {
     use(TextUtilsCategory) {
       if (this.isHomeScreen())
@@ -117,5 +117,20 @@ class GuiState implements Serializable, IGuiState
   boolean belongsToApp(String appPackageName)
   {
     return this.topNodePackageName == appPackageName
+  }
+
+  @Override
+  String debugWidgets()
+  {
+    StringWriter sw = new StringWriter()
+    sw.withWriter {wr ->
+      
+      wr.write("widgets (${widgets.size()}):")
+      widgets.each {wr.write(it.toString())}
+
+      wr.write("actionable widgets (${actionableWidgets.size()}):")
+      actionableWidgets.each {wr.write(it.toString())}
+    }
+    return sw.toString()
   }
 }

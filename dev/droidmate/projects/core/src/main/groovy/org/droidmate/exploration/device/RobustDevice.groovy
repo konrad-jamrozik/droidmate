@@ -396,7 +396,7 @@ class RobustDevice implements IRobustDevice
     }
     catch (DeviceException e)
     {
-      throw new AllDeviceAttemptsExhaustedException("All attempts at getting valid GUI snapshot failed.", e)
+      throw new AllDeviceAttemptsExhaustedException("All attempts at getting valid GUI snapshot failed", e)
     }
 
     assert guiSnapshot.validationResult.valid

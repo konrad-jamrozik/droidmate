@@ -41,4 +41,5 @@ interface IGuiState extends Serializable
 
   boolean belongsToApp(String appPackageName)
 
+  String debugWidgets()
 }
