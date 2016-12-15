@@ -304,7 +304,7 @@ public class MonitorJavaTemplate
 
     public Thread tryStart(int port) throws Exception
     {
-      Log.v(MonitorConstants.tag_srv, String.format("tryStart(): entering port:%d", port));
+      Log.v(MonitorConstants.tag_srv, String.format("tryStart(port:%d): entering", port));
       this.serverSocket = null;
       this.serverSocketException = null;
       this.port = port;
@@ -378,8 +378,9 @@ public class MonitorJavaTemplate
           {
             try
             {
-              Log.v(MonitorConstants.tag_run, "serverSocket = new ServerSocket("+port+")");
+              Log.v(MonitorConstants.tag_run, String.format("serverSocket = new ServerSocket(%d)", port));
               serverSocket = new ServerSocket(port);
+              Log.v(MonitorConstants.tag_run, String.format("serverSocket = new ServerSocket(%d): SUCCESS", port));
             } catch (SocketException e)
             {
               serverSocketException = e;
@@ -389,8 +390,8 @@ public class MonitorJavaTemplate
 
           if (serverSocketException != null)
           {
-            Log.e(MonitorConstants.tag_run, "! serverSocket = new ServerSocket("+port+"): FAILURE " +
-              "aborting further thread execution..");
+            Log.d(MonitorConstants.tag_run, "serverSocket = new ServerSocket("+port+"): FAILURE " +
+              "aborting further thread execution.");
             return;
           }
           
@@ -407,9 +408,9 @@ public class MonitorJavaTemplate
           // 12-14 23:28:49.534 11742-11742/? D/Monitor_server: Failed to start TCP server because 'bind failed: EADDRINUSE (Address already in use)'. Returning null Thread.
           while (!serverSocket.isClosed())
           {
-            Log.v(MonitorConstants.tag_run, String.format("clientSocket = serverSocket.accept() port:%s", port));
+            Log.v(MonitorConstants.tag_run, String.format("clientSocket = serverSocket.accept() / port:%d", port));
             Socket clientSocket = serverSocket.accept();
-            Log.v(MonitorConstants.tag_run, String.format("clientSocket = serverSocket.accept(): SUCCESS port:%s", port));
+            Log.v(MonitorConstants.tag_run, String.format("clientSocket = serverSocket.accept(): SUCCESS / port:%d", port));
 
             ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
 
@@ -442,21 +443,21 @@ public class MonitorJavaTemplate
             }
 
             ServerOutputT serverOutput;
-            Log.d(MonitorConstants.tag_run, String.format("OnServerRequest(%s) port:%s", serverInput, port));
+            Log.d(MonitorConstants.tag_run, String.format("OnServerRequest(%s) / port:%d", serverInput, port));
             serverOutput = OnServerRequest(serverInput);
             output.writeObject(serverOutput);
             clientSocket.close();
 
             if (shouldCloseServerSocket(serverInput))
             {
-              Log.v(MonitorConstants.tag_run, "shouldCloseServerSocket(): true port: "+port);
+              Log.v(MonitorConstants.tag_run, String.format("shouldCloseServerSocket(): true / port:%d", port));
               closeServerSocket();
             }
           }
           
           if (!serverSocket.isClosed()) throw new AssertionError();
 
-          Log.v(MonitorConstants.tag_run, "serverSocket.isClosed() port: "+port);
+          Log.v(MonitorConstants.tag_run, String.format("serverSocket.isClosed() / port:%d", port));
 
         } catch (SocketTimeoutException e)
         {
