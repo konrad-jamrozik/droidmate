@@ -130,7 +130,6 @@ import org.droidmate.misc.Assert
         // This method is called in org.droidmate.exploration.actions.RunnableTerminateExplorationAction.performDeviceActions 
         // but exploration might throw exception before that call is made, so here we make another attempt at doing it. 
         device.closeMonitorServers()
-        // KNOWN BUG [clear package]/2 times out (120 sec) even though device.available returned true!
         device.clearPackage(apk.packageName)
         device.uninstallApk(apk.packageName, /* ignoreFailure = */ false)
       }
