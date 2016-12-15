@@ -56,9 +56,9 @@ public class UiAutomator2DaemonTest
     if (extras.containsKey(uiaDaemonParam_tcpPort))
       tcpPort = Integer.valueOf( (String) extras.get(uiaDaemonParam_tcpPort));
 
-    Log.w(uiaDaemon_logcatTag, uiaDaemonParam_waitForGuiToStabilize + "=" + waitForGuiToStabilize);
-    Log.w(uiaDaemon_logcatTag, uiaDaemonParam_waitForWindowUpdateTimeout + "=" + waitForWindowUpdateTimeout);
-    Log.w(uiaDaemon_logcatTag, uiaDaemonParam_tcpPort + "=" + tcpPort);
+    Log.v(uiaDaemon_logcatTag, uiaDaemonParam_waitForGuiToStabilize + "=" + waitForGuiToStabilize);
+    Log.v(uiaDaemon_logcatTag, uiaDaemonParam_waitForWindowUpdateTimeout + "=" + waitForWindowUpdateTimeout);
+    Log.v(uiaDaemon_logcatTag, uiaDaemonParam_tcpPort + "=" + tcpPort);
 
     saveLogcatToFile();
 
