@@ -31,12 +31,13 @@ public class MonitorConstants
   
   public static final  String tag_prefix = "droidmate/monit/";
   public static final  String tag_srv    = tag_prefix + "server";
+  public static final  String tag_run    = tag_prefix + "srv_run";
   // mjt == MonitorJavaTemplate
   public static final  String tag_mjt    = tag_prefix + "mjt";
 
   
   public static final  String loglevel                = "i";
-  public static final  String msg_ctor_start          = "ctor(): entering.";
+  public static final  String msg_ctor_start          = "ctor(): entering";
   public static final  String msg_ctor_success        = "ctor(): startMonitorTCPServer(): SUCCESS port: ";
   public static final  String msg_ctor_failure        = "! ctor(): startMonitorTCPServer(): FAILURE";
   
@@ -47,7 +48,7 @@ public class MonitorConstants
    * {@code Monitor initialized for package org.droidmate.fixtures.apks.monitored}
    * </p>
    */
-  public static final String msgPrefix_init_success         = "init(): leaving. SUCCESS for package ";
+  public static final String msgPrefix_init_success         = "init(): SUCCESS for package ";
   public static final String srvCmd_connCheck               = "connCheck";
   public static final String srvCmd_get_logs                = "getLogs";
   public static final String srvCmd_get_time                = "getTime";
