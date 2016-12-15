@@ -220,7 +220,6 @@ import java.nio.file.Path
 
   }
 
-  // KJA check if api 19 still works
   @Category([RequiresDevice])
   @Test
   void "Explores monitored apk on a real device api19"()

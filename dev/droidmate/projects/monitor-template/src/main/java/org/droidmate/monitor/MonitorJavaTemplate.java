@@ -97,7 +97,6 @@ public class MonitorJavaTemplate
   // public Monitor()
   // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
   {
-    // KJA fix for API 19
     Log.v(MonitorConstants.tag_mjt, MonitorConstants.msg_ctor_start);
     try
     {
