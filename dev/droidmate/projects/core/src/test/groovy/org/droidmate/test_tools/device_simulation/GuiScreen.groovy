@@ -259,13 +259,13 @@ class GuiScreen implements IGuiScreen
       TimeFormattedLogcatMessage.from(
         this.timeGenerator.shiftAndGet(milliseconds: 1500), // Milliseconds amount based on empirical evidence.
         MonitorConstants.loglevel.toUpperCase(),
-        MonitorConstants.tag_init,
+        MonitorConstants.tag_mjt,
         "4224", // arbitrary process ID
         MonitorConstants.msg_ctor_success),
       TimeFormattedLogcatMessage.from(
         this.timeGenerator.shiftAndGet(milliseconds: 1810), // Milliseconds amount based on empirical evidence.
         MonitorConstants.loglevel.toUpperCase(),
-        MonitorConstants.tag_init,
+        MonitorConstants.tag_mjt,
         "4224", // arbitrary process ID
         MonitorConstants.msgPrefix_init_success + this.packageName)
     ]

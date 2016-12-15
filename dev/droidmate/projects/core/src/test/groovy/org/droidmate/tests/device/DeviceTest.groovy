@@ -144,8 +144,6 @@ class DeviceTest extends DroidmateGroovyTestCase
       println "actionable widgets (#${gs.actionableWidgets.size()}):"
       gs.actionableWidgets.each {println it}
     }
-    
-    // KJA investigate why de.mcdonalds app after reset has no actionable widgets.
   }
 
   @Category([RequiresDevice])

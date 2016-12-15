@@ -97,15 +97,19 @@ public class MonitorJavaTemplate
   // public Monitor()
   // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
   {
+    // KJA current work: make logs more clear
+    // KJA fix for API 19
+    Log.v(MonitorConstants.tag_mjt, MonitorConstants.msg_ctor_start);
     try
     {
       server = startMonitorTCPServer();
-      Log.i(MonitorConstants.tag_init, MonitorConstants.msg_ctor_success);
+      Log.i(MonitorConstants.tag_mjt, MonitorConstants.msg_ctor_success + server.port);
 
     } catch (Throwable e)
     {
-      Log.i(MonitorConstants.tag_init, MonitorConstants.msg_ctor_failure);
+      Log.e(MonitorConstants.tag_mjt, MonitorConstants.msg_ctor_failure, e);
     }
+    Log.v(MonitorConstants.tag_mjt, "ctor(): leaving.");
   }
 
   private static MonitorTcpServer server;
@@ -118,10 +122,11 @@ public class MonitorJavaTemplate
   @SuppressWarnings("unused")
   public void init(android.content.Context initContext)
   {
+    Log.v(MonitorConstants.tag_mjt, "init(): entering.");
     context = initContext;
     if (server == null)
     {
-      Log.i(MonitorConstants.tag_srv, "Init: Didn't set context for MonitorTcpServer, as the server is null.");
+      Log.w(MonitorConstants.tag_srv, "init(): didn't set context for MonitorTcpServer, as the server is null.");
     }
     else
     {
@@ -142,7 +147,7 @@ public class MonitorJavaTemplate
     // monitorHook.init(context);
     // org.droidmate.monitor.MonitorSrcTemplate:KEEP_LINES
 
-    Log.i(MonitorConstants.tag_init, MonitorConstants.msgPrefix_init_success + context.getPackageName());
+    Log.d(MonitorConstants.tag_mjt, MonitorConstants.msgPrefix_init_success + context.getPackageName());
   }
   //endregion
 
@@ -277,10 +282,10 @@ public class MonitorJavaTemplate
 
     private void failOnLogsFromMonitorTCPServerOrMonitorJavaTemplate(String msgPayload)
     {
-      if (msgPayload.contains(MonitorConstants.tag_srv) || msgPayload.contains(MonitorConstants.tag_init))
+      if (msgPayload.contains(MonitorConstants.tag_srv) || msgPayload.contains(MonitorConstants.tag_mjt))
         throw new AssertionError(
           "Attempt to log a message whose payload contains " +
-            MonitorConstants.tag_srv + " or " + MonitorConstants.tag_init + ". The message payload: " + msgPayload);
+            MonitorConstants.tag_srv + " or " + MonitorConstants.tag_mjt + ". The message payload: " + msgPayload);
     }
 
     @Override
@@ -290,10 +295,12 @@ public class MonitorJavaTemplate
     }
   }
 
+  // KJA possible problem with null: the fact this class is static
+  // KJA add temp log when server socket is assigned (null or not null)
   // !!! DUPLICATION WARNING !!! with org.droidmate.uiautomator_daemon.UiautomatorDaemonTcpServerBase
   static abstract class TcpServerBase<ServerInputT extends Serializable, ServerOutputT extends Serializable>
   {
-    private int port;
+    public int port;
     private ServerSocket    serverSocket          = null;
     private SocketException serverSocketException = null;
 
@@ -395,7 +402,14 @@ public class MonitorJavaTemplate
             return;
           }
 
+          // KJA fix. For full logs, see debug_logs
           // KNOWN BUG undiagnosed. Got here a null pointer on com.audible.application_v1.7.0.apk when running using default settings. It happened on every run.
+          // Also on com.vervigroup.deadline2do_v1.105-inlined.apk
+          // Seeing previously in logs:
+          // 12-14 23:28:49.524 11742-11742/? D/Monitor_server: Starting monitor TCP server...
+          // 12-14 23:28:49.527 11742-11760/? V/Monitor_server: MonitorServerRunnable.run() using 59701
+          // 12-14 23:28:49.528 11742-11760/? D/Monitor_server: Creating server socket bound to port 59701...
+          // 12-14 23:28:49.534 11742-11742/? D/Monitor_server: Failed to start TCP server because 'bind failed: EADDRINUSE (Address already in use)'. Returning null Thread.
           while (!serverSocket.isClosed())
           {
             Log.v(MonitorConstants.tag_srv, String.format("Accepting socket from client on port %s...", port));
