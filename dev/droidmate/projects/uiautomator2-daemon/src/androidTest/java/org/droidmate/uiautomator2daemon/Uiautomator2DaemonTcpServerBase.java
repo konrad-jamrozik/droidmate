@@ -39,7 +39,7 @@ public abstract class Uiautomator2DaemonTcpServerBase<ServerInputT extends Seria
   private String serverStartMessageTag;
   private String serverStartMessage;
 
-  public static final String tag = UiautomatorDaemonConstants.deviceLogcatTagPrefix + "server";
+  public static final String tag = UiautomatorDaemonConstants.uiaDaemon_logcatTag + "/server";
 
   protected Uiautomator2DaemonTcpServerBase(String serverStartMessageTag, String serverStartMessage)
   {
