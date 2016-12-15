@@ -284,8 +284,6 @@ public class MonitorJavaTemplate
     }
   }
 
-  // KJA possible problem with null: the fact this class is static
-  // KJA add temp log when server socket is assigned (null or not null)
   // !!! DUPLICATION WARNING !!! with org.droidmate.uiautomator_daemon.UiautomatorDaemonTcpServerBase
   static abstract class TcpServerBase<ServerInputT extends Serializable, ServerOutputT extends Serializable>
   {
@@ -311,6 +309,7 @@ public class MonitorJavaTemplate
 
       MonitorServerRunnable monitorServerRunnable = new MonitorServerRunnable();
       Thread serverThread = new Thread(monitorServerRunnable);
+      // For explanation why this synchronization is necessary, see MonitorServerRunnable.run() method synchronized {} block.
       synchronized (monitorServerRunnable)
       {
         if (!(serverSocket == null && serverSocketException == null)) throw new AssertionError();
@@ -372,8 +371,10 @@ public class MonitorJavaTemplate
         try
         {
 
-          // Synchronize to ensure the parent thread (the one which started this one) will continue only after the
-          // serverSocket is initialized.
+          // Synchronize to ensure the parent thread (the one which started this one) will continue only after one of these two
+          // is true:
+          // - serverSocket was successfully initialized 
+          // - exception was thrown and assigned to a field and  this thread exitted
           synchronized (this)
           {
             try
@@ -385,27 +386,22 @@ public class MonitorJavaTemplate
             {
               serverSocketException = e;
             }
-            this.notify();
+
+            if (serverSocketException != null)
+            {
+              Log.d(MonitorConstants.tag_run, "serverSocket = new ServerSocket("+port+"): FAILURE " +
+                "aborting further thread execution.");
+              this.notify();
+              return;
+            } else
+            {
+              this.notify();
+            }
           }
 
-          if (serverSocketException != null)
-          {
-            Log.d(MonitorConstants.tag_run, "serverSocket = new ServerSocket("+port+"): FAILURE " +
-              "aborting further thread execution.");
-            return;
-          }
-          
           if (serverSocket == null) throw new AssertionError();
           if (serverSocketException != null) throw new AssertionError();
 
-          // KJA fix. For full logs, see debug_logs
-          // KNOWN BUG undiagnosed. Got here a null pointer on com.audible.application_v1.7.0.apk when running using default settings. It happened on every run.
-          // Also on com.vervigroup.deadline2do_v1.105-inlined.apk
-          // Seeing previously in logs:
-          // 12-14 23:28:49.524 11742-11742/? D/Monitor_server: Starting monitor TCP server...
-          // 12-14 23:28:49.527 11742-11760/? V/Monitor_server: MonitorServerRunnable.run() using 59701
-          // 12-14 23:28:49.528 11742-11760/? D/Monitor_server: Creating server socket bound to port 59701...
-          // 12-14 23:28:49.534 11742-11742/? D/Monitor_server: Failed to start TCP server because 'bind failed: EADDRINUSE (Address already in use)'. Returning null Thread.
           while (!serverSocket.isClosed())
           {
             Log.v(MonitorConstants.tag_run, String.format("clientSocket = serverSocket.accept() / port:%d", port));
