@@ -154,7 +154,7 @@ import org.droidmate.misc.Assert
     device.uninstallApk(apk.packageName, /* ignoreFailure  = */ true)
     
     if (!device.available)
-      throw new DeviceException("No device is available just before installing $apk", true)
+      throw new DeviceException("No device is available just before installing $apk", /* stopFurtherApkExplorations */ true)
     device.installApk(apk)
   }
 
