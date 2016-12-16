@@ -127,6 +127,7 @@ import org.droidmate.android_sdk.DeviceException
       
     } catch (ConnectException e)
     {
+      // KJA add "DeviceUnreachableException" to avoid getGuiSnapshot() needlesly trying multiple attempts.
       throw new TcpServerUnreachableException(e)
     }
     return socket

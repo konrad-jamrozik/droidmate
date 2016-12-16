@@ -152,6 +152,9 @@ import org.droidmate.misc.Assert
      certificates not matching (or something like that))
     */
     device.uninstallApk(apk.packageName, /* ignoreFailure  = */ true)
+    
+    if (!device.available)
+      throw new DeviceException("No device is available just before installing $apk", true)
     device.installApk(apk)
   }
 
