@@ -90,6 +90,9 @@ import java.time.format.DateTimeFormatter
   List<ITimeFormattedLogcatMessage> syncMessages(List<ITimeFormattedLogcatMessage> messages) throws DeviceException
   {
     return messages.collect {
+      
+//      log.trace("syncing: curr diff: ${this.diff} log dev. time: $it.time tag: $it.tag pid: $it.pidString, payload first 200 chars: ${it.messagePayload.take(200)}")
+      
       TimeFormattedLogcatMessage.from(
         this.sync(it.time),
         it.level, it.tag, it.pidString, it.messagePayload)
@@ -100,6 +103,6 @@ import java.time.format.DateTimeFormatter
   @Override
   void reset()
   {
-    diff = null
+     diff = null
   }
 }

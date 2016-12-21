@@ -54,6 +54,8 @@ abstract class RunnableExplorationAction implements IRunnableExplorationAction
 
   static RunnableExplorationAction from(ExplorationAction action, LocalDateTime timestamp)
   {
+//    log.trace("Building exploration action ${action.class} with timestamp: $timestamp")
+    
     switch (action.class)
     {
       case ResetAppExplorationAction:
