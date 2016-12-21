@@ -57,7 +57,7 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     // possible some API logs will be read from it, wreaking all kinds of havoc, e.g. having timestamp < than the current
     // exploration start time.
     device.clearLogcat()
-
+    
     log.debug("3. Ensure home screen is displayed.")
     device.ensureHomeScreenIsDisplayed()
 
@@ -86,9 +86,6 @@ class RunnableResetAppExplorationAction extends RunnableExplorationAction
     log.debug("8. Get GUI snapshot.")
     this.snapshot = device.guiSnapshot
 
-    log.debug("8.1. Reset time sync.")
-    device.resetTimeSync()
-    
     log.debug("9. Try to read API logs.")
     IDeviceLogsHandler logsHandler = new DeviceLogsHandler(device)
     logsHandler.readAndClearApiLogs()
