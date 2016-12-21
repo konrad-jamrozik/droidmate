@@ -167,7 +167,7 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
     // - the time diff on the device was different when the logcat messages were output, than the time diff measured by DroidMate.
     // This should not be of concern as manual inspection shows that the device time diff changes only a little bit over time,
     // far less than to justify sudden 10 second difference.
-    def diff = new TimeDiffWithTolerance(Duration.ofSeconds(3))
+    def diff = new TimeDiffWithTolerance(Duration.ofSeconds(5))
     warnIfExplorationStartTimeIsNotBeforeEndTime(diff, apk.fileName)
     warnIfExplorationStartTimeIsNotBeforeFirstLogTime(diff, apk.fileName)
     warnIfLastLogTimeIsNotBeforeExplorationEndTime(diff, apk.fileName)
