@@ -442,7 +442,8 @@ class RobustDevice implements IRobustDevice
         ? "Reconnecting adb, rebooting the device and trying again."
         : "Reconnecting adb, rebooting the device and continuing."))
 
-      this.reconnectAdb()
+      this.reconnectAdbDiscardingException("Call to reconnectAdb() just before call to rebootAndRestoreConnection() " +
+        "failed with: %s. Discarding the exception and continuing wih rebooting.")
       //this.reinstallUiautomatorDaemon()
       this.rebootAndRestoreConnection()
 
@@ -465,6 +466,17 @@ class RobustDevice implements IRobustDevice
       }
     }
     return out
+  }
+  
+  void reconnectAdbDiscardingException(String exceptionMsg) throws DeviceException
+  {
+    try
+    {
+      device.reconnectAdb()
+    } catch (DeviceException reconnectException)
+    {
+      log.debug(String.format(exceptionMsg, reconnectException))
+    }
   }
 
   @Override
