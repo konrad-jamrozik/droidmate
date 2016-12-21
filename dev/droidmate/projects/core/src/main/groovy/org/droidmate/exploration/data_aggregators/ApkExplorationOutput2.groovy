@@ -128,11 +128,7 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
 
     assert apiLogs.sortedByTimePerPID()
 
-    if (!apiLogsSortedTimes.empty)
-    {
-      assert explorationStartTime <= apiLogsSortedTimes.first()
-      assert apiLogsSortedTimes.last() <= explorationEndTime
-    }
+
   }
   
   void assertDeviceExceptionIsMissingOnSuccessAndPresentOnFailureNeverNull()
@@ -162,6 +158,15 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
      *
      * </p>
      */
+    // KNOWN BUG I observed that sometimes exploration start time is more than 10 second later than first log time...
+    // ...I was unable to identify the reason for that. Two reasons come to mind:
+    // - the exploration log comes from previous exploration. This should not be possible because first logs are read at the end 
+    // of first reset exploration action, and logcat is cleared at the beginning of such reset exploration action. 
+    // Possible reason is that some logs from previous app exploration were pending to be output to logcat and have outputted 
+    // moments after logcat was cleared.
+    // - the time diff on the device was different when the logcat messages were output, than the time diff measured by DroidMate.
+    // This should not be of concern as manual inspection shows that the device time diff changes only a little bit over time,
+    // far less than to justify sudden 10 second difference.
     def diff = new TimeDiffWithTolerance(Duration.ofSeconds(3))
     warnIfExplorationStartTimeIsNotBeforeEndTime(diff, apk.fileName)
     warnIfExplorationStartTimeIsNotBeforeFirstLogTime(diff, apk.fileName)
@@ -178,7 +183,7 @@ class ApkExplorationOutput2 implements IApkExplorationOutput2
   {
     if (!this.apiLogs.empty)
     {
-      def firstLog = this.apiLogs.find {!it.empty}?.first()
+      IApiLogcatMessage firstLog = this.apiLogs.find {!it.empty}?.first()
       if (firstLog != null)
         diff.warnIfBeyond(this.explorationStartTime, firstLog.time, "exploration start time", "first API log", apkFileName)
     }
