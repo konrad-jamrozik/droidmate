@@ -463,7 +463,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   {
     log.debug("perform(newLaunchAppDeviceAction(iconLabel:$iconLabel))")
     this.perform(newLaunchAppDeviceAction(iconLabel))
-    log.info("Sleeping after clicking $iconLabel for ${cfg.launchActivityDelay} ms")
+    log.info("Sleeping after clicking app icon labeled '$iconLabel' for ${cfg.launchActivityDelay} ms")
     sleep(cfg.launchActivityDelay)
   }
 
