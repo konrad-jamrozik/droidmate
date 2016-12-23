@@ -169,7 +169,7 @@ import java.nio.file.Path
   public int checkAppIsRunningRetryAttempts = 4
 
   @Parameter(names = [Configuration.pn_checkAppIsRunningRetryDelay])
-  public int checkAppIsRunningRetryDelay = 5000
+  public int checkAppIsRunningRetryDelay = 5 * 1000 // ms
 
   @Parameter(names = [Configuration.pn_checkDeviceAvailableAfterRebootAttempts])
   public int checkDeviceAvailableAfterRebootAttempts = 12
@@ -217,14 +217,15 @@ import java.nio.file.Path
   // Exploration of com.facebook.orca_v12.0.0.21.14-inlined.apk shows that that 4 attempts with 4000 ms delays (16s in total)
   // is not enough: all attempts get exhausted and only the repeated set of attempts, after restarting uia-d, succeeds.
   // com.netbiscuits.bild.android_v3.5.6-inlined needs more than 20s.
-  public int getValidGuiSnapshotRetryDelay = 4000 // ms
+  public int getValidGuiSnapshotRetryDelay = 4 * 1000 // ms
 
   @Parameter(names = [Configuration.pn_inline], description =
     "If present, instead of normal run, DroidMate will inline all non-inlined apks. Before inlining backup copies of the apks will be created and put into a sub-directory of the directory containing the apks.")
   public Boolean inline = false
 
   @Parameter(names = [Configuration.pn_launchActivityDelay])
-  public int launchActivityDelay = 5000 // ms
+  // Empirically checked that for com.skype.raider_v5.0.0.51733-inlined.apk 5000 ms is sometimes not enough.
+  public int launchActivityDelay = 5 * 1000 // ms
 
   @Parameter(names = [Configuration.pn_launchActivityTimeout])
   public int launchActivityTimeout = 1 * 60 * 1000 // ms
@@ -318,7 +319,7 @@ import java.nio.file.Path
   public int stopAppRetryAttempts = 4
 
   @Parameter(names = [Configuration.pn_stopAppSuccessCheckDelay])
-  public int stopAppSuccessCheckDelay = 5000
+  public int stopAppSuccessCheckDelay = 5 * 1000 // ms
 
   @Parameter(names = [Configuration.pn_waitForCanRebootDelay])
   public int waitForCanRebootDelay = 30 * 1000
