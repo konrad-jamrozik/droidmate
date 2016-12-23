@@ -382,7 +382,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   {
     log.debug("launchMainActivity($launchableActivityComponentName)")
     adbWrapper.launchMainActivity(serialNumber, launchableActivityComponentName)
-    log.debug("sleep(cfg.launchActivityDelay:${cfg.launchActivityDelay})")
+    log.info("Sleeping after launching $launchableActivityComponentName for ${cfg.launchActivityDelay} ms")
     sleep(cfg.launchActivityDelay)
   }
 
@@ -460,7 +460,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   {
     log.debug("perform(newLaunchAppDeviceAction(iconLabel:$iconLabel))")
     this.perform(newLaunchAppDeviceAction(iconLabel))
-    log.debug("sleep(cfg.launchActivityDelay:${cfg.launchActivityDelay})")
+    log.info("Sleeping after clicking $iconLabel for ${cfg.launchActivityDelay} ms")
     sleep(cfg.launchActivityDelay)
   }
 
