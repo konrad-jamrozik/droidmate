@@ -370,6 +370,9 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
     adbWrapper.installApk(serialNumber, apk)
   }
 
+  // KJA got on logcat:
+  // 12-23 03:55:33.531 589-1267/? I/PackageManager: Package doesn't exist in get block uninstall com.skype.raider
+  // 12-23 03:55:33.532 589-614/? W/PackageManager: Package named 'com.skype.raider' doesn't exist.
   @Override
   void uninstallApk(String apkPackageName, boolean ignoreFailure) throws DeviceException
   {
