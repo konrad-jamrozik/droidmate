@@ -322,6 +322,9 @@ class RobustDevice implements IRobustDevice
   @Override
   void launchMainActivity(String launchableActivityComponentName) throws DeviceException
   {
+    // KJA recognition if launch succeeded and checking if ANR is displayed should be also implemented for 
+    // this.clickAppIcon(), which is called by caller of this method.
+    
     boolean launchSucceeded = false
     try
     {
@@ -339,6 +342,10 @@ class RobustDevice implements IRobustDevice
     
     def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
 
+    // KJA this case happened once com.spotify.music_v1.4.0.631-inlined.apk, but I was unable to repeat it even wit the same
+    // random seed. If this will happen more often, consider giving app second chance on restarting even after it crashes:
+    // do not try to relaunch here; instead do it in exploration strategy. This way API logs from the failed launch will be 
+    // separated.
     if (launchSucceeded && guiSnapshot.guiState.appHasStoppedDialogBox)
       log.debug(Markers.appHealth, "device.launchMainActivity($launchableActivityComponentName) succeeded, but ANR is displayed.")
   }

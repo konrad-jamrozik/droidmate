@@ -106,6 +106,8 @@ public class UiAutomator2DaemonTest
     {
       // - For explanation of the exec string, see org.droidmate.android_sdk.AdbWrapper.readMessagesFromLogcat()
       // - Manual tests with "adb shell ps" show that the executed process will be automatically killed when the uiad process dies.
+      // WISH maybe editing this logcat filter string would make it output more interesting data, like logs from monitors... 
+      // ...not sure if can cross process boundary.
       Runtime.getRuntime().exec(String.format("logcat -v time -f %s *:D %s:W %s:D %s:D dalvikvm:I ActivityManager:V AccessibilityNodeInfoDumper:S View:E ResourceType:E HSAd-HSAdBannerView:I" ,
         outputFile.getAbsolutePath(), instrumentation_redirectionTag, uiaDaemon_logcatTag, Uiautomator2DaemonTcpServerBase.tag));
     } catch (IOException e)
