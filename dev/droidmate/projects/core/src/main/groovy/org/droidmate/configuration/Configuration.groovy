@@ -225,7 +225,7 @@ import java.nio.file.Path
 
   @Parameter(names = [Configuration.pn_launchActivityDelay])
   // Empirically checked that for com.skype.raider_v5.0.0.51733-inlined.apk 5000 ms is sometimes not enough.
-  public int launchActivityDelay = 5 * 1000 // ms
+  public int launchActivityDelay = 10 * 1000 // ms
 
   @Parameter(names = [Configuration.pn_launchActivityTimeout])
   public int launchActivityTimeout = 1 * 60 * 1000 // ms
