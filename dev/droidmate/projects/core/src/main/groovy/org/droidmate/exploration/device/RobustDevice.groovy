@@ -340,10 +340,14 @@ class RobustDevice implements IRobustDevice
       this.rebootAndRestoreConnection()
     }
     
+    // KJA if launch succeeded, but uia-daemon broke, this command will reboot device, returning home screen, 
+    // making exploration strategy terminate due to "home screen after reset". This happened on 
+    // net.zedge.android_v4.10.2-inlined.apk
+    // KJA think where else the bug above can also cause problems. I.e. getting home screen due to uia-d reset.
     def guiSnapshot = this.getExplorableGuiSnapshotWithoutClosingANR()
 
-    // KJA this case happened once com.spotify.music_v1.4.0.631-inlined.apk, but I was unable to repeat it even wit the same
-    // random seed. If this will happen more often, consider giving app second chance on restarting even after it crashes:
+    // KJA this case happened once com.spotify.music_v1.4.0.631-inlined.apk, but I forgot to write down random seed. 
+    // If this will happen more often, consider giving app second chance on restarting even after it crashes:
     // do not try to relaunch here; instead do it in exploration strategy. This way API logs from the failed launch will be 
     // separated.
     if (launchSucceeded && guiSnapshot.guiState.appHasStoppedDialogBox)
