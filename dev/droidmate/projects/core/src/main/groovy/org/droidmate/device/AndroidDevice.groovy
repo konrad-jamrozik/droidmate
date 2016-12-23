@@ -382,6 +382,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   {
     log.debug("launchMainActivity($launchableActivityComponentName)")
     adbWrapper.launchMainActivity(serialNumber, launchableActivityComponentName)
+    log.debug("sleep(cfg.launchActivityDelay:${cfg.launchActivityDelay})")
     sleep(cfg.launchActivityDelay)
   }
 
@@ -457,7 +458,10 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   void clickAppIcon(String iconLabel) throws DeviceException
   {
+    log.debug("perform(newLaunchAppDeviceAction(iconLabel:$iconLabel))")
     this.perform(newLaunchAppDeviceAction(iconLabel))
+    log.debug("sleep(cfg.launchActivityDelay:${cfg.launchActivityDelay})")
+    sleep(cfg.launchActivityDelay)
   }
 
   @Override
