@@ -119,8 +119,8 @@ fun Map<Long, Int>.padPartitions(
   lastPartition: Long
 ): Map<Long, Int> {
 
-  require(lastPartition % partitionSize == 0L, { "lastPartition: $lastPartition partitionSize: $partitionSize" })
-  require(this.all { it.key % partitionSize == 0L })
+  require(lastPartition.rem(partitionSize) == 0L, { "lastPartition: $lastPartition partitionSize: $partitionSize" })
+  require(this.all { it.key.rem(partitionSize) == 0L })
 
   return if (this.isEmpty())
     (0..lastPartition step partitionSize).associate { Pair(it, -1) }

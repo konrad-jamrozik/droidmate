@@ -22,16 +22,12 @@
 */
 
 buildscript {
-
   repositories {
     mavenCentral()
   }
-  dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-  }
 }
 
-apply plugin: "kotlin"
+apply plugin: "org.jetbrains.kotlin.jvm"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -42,11 +38,12 @@ dependWithTest(project, ":projects:core", "groovy")
 
 dependencies {
 
-  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
   testCompile 'org.hamcrest:hamcrest-library:1.3'
 
-  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
   compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+  testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
   
   compile 'com.google.jimfs:jimfs:1.0'
   compile 'org.zeroturnaround:zt-exec:1.9'
