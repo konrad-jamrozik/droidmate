@@ -30,7 +30,7 @@ dependencies {
 
   compile project(":projects:lib-common")
 
-  compile 'org.codehaus.groovy:groovy-all:2.4.6'
+  compile 'org.codehaus.groovy:groovy-all:2.4.10'
 
   testCompile 'junit:junit:4.12'
 
