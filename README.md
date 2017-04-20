@@ -10,6 +10,7 @@ Contact: jamrozik@st.cs.uni-saarland.de
 * www.droidmate.org  
 * [DroidMate publication](http://www.boxmate.org/files/DroidMate_MOBILESoft_2016.pdf)  
 * ["Mining Sandboxes" publication](http://www.boxmate.org/files/boxmate-preprint.pdf)  
+* [GitHub repository with "Mining Sandbox" publication data](https://github.com/konrad-jamrozik/mining-sandboxes-icse2016)
 * ["Guarantees from Testing" talk by Andreas Zeller](https://www.youtube.com/watch?v=eJyIKt7xuw4)
 
 Date of last full review of this document: 13 Jun 2016
