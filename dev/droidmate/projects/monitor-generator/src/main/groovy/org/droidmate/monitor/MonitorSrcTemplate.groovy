@@ -45,7 +45,6 @@ class MonitorSrcTemplate
         remove = true
         uncomment = false
       } else if (line.contains("// org.droidmate.monitor.MonitorSrcTemplate:UNCOMMENT_LINES") ||
-        (androidApi == AndroidAPI.API_19 && line.contains("// org.droidmate.monitor.MonitorSrcTemplate:API_19_UNCOMMENT_LINES")) ||
         (androidApi == AndroidAPI.API_23 && line.contains("// org.droidmate.monitor.MonitorSrcTemplate:API_23_UNCOMMENT_LINES"))
       )
       {

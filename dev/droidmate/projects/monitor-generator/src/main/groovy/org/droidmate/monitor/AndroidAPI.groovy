@@ -20,6 +20,6 @@ package org.droidmate.monitor
 
 enum AndroidAPI {
 
-  API_19, API_23
+  API_23
 
 }

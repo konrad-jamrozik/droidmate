@@ -136,7 +136,6 @@ import java.nio.file.Path
   public static final String screenshotsOutputSubdir = "screenshots"
   public static final String reportOutputSubdir      = "report"
   
-  public static final String api19 = "api19"
   public static final String api23 = "api23"
 
   //region Cmd line parameters
@@ -150,7 +149,7 @@ import java.nio.file.Path
   public boolean alwaysClickFirstWidget = false
 
   @Parameter(names = [Configuration.pn_androidApi, "-api", "-apiLevel"],
-    description = "Has to be set to the Android API version corresponding to the (virtual) devices on which DroidMate will run. Currently supported values: api19, api23")
+    description = "Has to be set to the Android API version corresponding to the (virtual) devices on which DroidMate will run. Currently supported values: api23")
   public String androidApi = api23
   
   @Parameter(names = [Configuration.pn_apksLimit, "-limit"],
@@ -338,17 +337,10 @@ import java.nio.file.Path
 
   public Path apksDirPath
 
-  public Path monitorApkApi19
   public Path monitorApkApi23
 
   public String aaptCommand = BuildConstants.aapt_command
   public String adbCommand = BuildConstants.adb_command
-
-  /**
-   * Jar with uiautomator-daemon location on the file system. The jar is to be deployed on the android (virtual) device
-   * to enable GUI actions execution.
-   */
-  public Path uiautomatorDaemonJar
 
   /**
    * Apk with uiautomator-daemon. This is a dummy package required only by instrumentation command (instrumentation target property)

@@ -82,7 +82,7 @@ import java.nio.file.Paths
   {
     this.adbWrapper.startAdbServer()
 
-    device.removeLogcatLogFile()
+    // Nataniel: Had to invert order, otherwise it crashes on the first time it's executed because the UiAutomator2Daemon was never installed on the device
     device.reinstallUiautomatorDaemon()
     device.pushMonitorJar()
     device.setupConnection()
@@ -110,10 +110,7 @@ import java.nio.file.Paths
       log.trace("Tearing down.")
       device.pullLogcatLogFile()
       device.closeConnection()
-      if (cfg.androidApi == Configuration.api19)
-      {
-        device.removeJar(cfg.uiautomatorDaemonJar)
-      } else if (cfg.androidApi == Configuration.api23)
+      if (cfg.androidApi == Configuration.api23)
       {
         // WISH why failure is ignored here? Ask Borges
         device.uninstallApk(UiautomatorDaemonConstants.uia2Daemon_testPackageName, /* ignoreFailure = */ true)

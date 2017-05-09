@@ -95,9 +95,7 @@ task writeBuildConstantsProperties() { Task it ->
     map["AVD_dir_for_temp_files"] = BuildKt.AVD_dir_for_temp_files
     map["jarsigner_relative_path"] = BuildKt.jarsigner_relative_path
     map["apk_fixtures"] = BuildKt.apk_fixtures
-    map["monitored_inlined_apk_fixture_api19_name"] = BuildKt.monitored_inlined_apk_fixture_api19_name
     map["monitored_inlined_apk_fixture_api23_name"] = BuildKt.monitored_inlined_apk_fixture_api23_name
-    map["monitor_generator_output_relative_path_api19"] = BuildKt.monitor_generator_output_relative_path_api19
     map["monitor_generator_output_relative_path_api23"] = BuildKt.monitor_generator_output_relative_path_api23
     map["test_temp_dir_name"] = BuildKt.test_temp_dir_name
     map["monitored_apis_txt"] = BuildKt.monitored_apis_txt
@@ -106,7 +104,6 @@ task writeBuildConstantsProperties() { Task it ->
     map["aapt_command_relative"] = BuildKt.aapt_command_relative
     map["adb_command_relative"] = BuildKt.adb_command_relative
     map["monitor_on_avd_apk_name"] = BuildKt.monitor_on_avd_apk_name
-    map["monitor_api19_apk_name"] = BuildKt.monitor_api19_apk_name
     map["monitor_api23_apk_name"] = BuildKt.monitor_api23_apk_name
     map["locale"] = BuildKt.locale.toString()
 

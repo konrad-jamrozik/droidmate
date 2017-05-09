@@ -6,4 +6,4 @@
 // This file is part of the "DroidMate" project.
 //
 // www.droidmate.org
-include ':GuiApkFixture', ':InstrumentedApkFixtureArtHook', ':MonitoredApkFixture_api19', ':MonitoredApkFixture_api23'
+include ':GuiApkFixture', ':InstrumentedApkFixtureArtHook', ':MonitoredApkFixture_api23'

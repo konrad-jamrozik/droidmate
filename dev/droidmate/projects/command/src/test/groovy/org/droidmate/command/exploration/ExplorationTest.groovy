@@ -86,8 +86,9 @@ import org.junit.runners.MethodSorters
   @Test
   void "Collects monitored API calls logs during device exploration"()
   {
+    // TODO: REVIEW
     Configuration cfg = new ConfigurationForTests().forDevice().setArgs([
-      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api19_name]",
+      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api23_name]",
       Configuration.pn_widgetIndexes, "[0]",
     ]).get()
 

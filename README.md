@@ -13,7 +13,7 @@ Contact: jamrozik@st.cs.uni-saarland.de
 * [GitHub repository with "Mining Sandbox" publication data](https://github.com/konrad-jamrozik/mining-sandboxes-icse2016)
 * ["Guarantees from Testing" talk by Andreas Zeller](https://www.youtube.com/watch?v=eJyIKt7xuw4)
 
-Date of last full review of this document: 13 Jun 2016
+Date of last full review of this document: 10 May 2017
 
 # Introduction #
 
@@ -65,7 +65,8 @@ Primary development of DroidMate is done on Windows 10. Ubuntu is used in the CI
  
 ### Android devices and emulators compatibility ###
 
-DroidMate works on Android 6.0 (API 23), on physical devices. It also works on Android 4.4.2 (API 19), both physical devices and emulators. 
+DroidMate works on Android 6.0 (API 23), on physical devices. ~~It also works on Android 4.4.2 (API 19), both physical devices and emulators.~~**From May 10th onward support for Android 4.4.2 (API 19) was removed because the libraries required for compatibility are no longer shipped with Android SDK.**
+ 
 
 DroidMate works on API 23 emulators, but with limitations. It works fully on the slow, ARM-based emulators. In the fast x86 emulators, DroidMate cannot work with _inlined_ (see `repo/RUNNING.md`) apks and thus, cannot monitor calls to Android framework. This is due to the fact ArtHook, the library used in DroidMate for monitoring when running on API 23, is compatible only with ARM architecture, not x86.
 
@@ -75,10 +76,10 @@ API 23:
 * Nexus 7 2013
 * Nexus 5X
 
-API 19:
-* Nexus 7 2012
-* Nexus 10
-* Samsung Galaxy S3
+~~API 19~~:
+* ~~Nexus 7 2012~~
+* ~~Nexus 10~~
+* ~~Samsung Galaxy S3~~
 
 If DroidMate doesn't recognize a device it defaults to Nexus 7. You can change the default by editing [DeviceModel](https://github.com/konrad-jamrozik/droidmate/blob/master/dev/droidmate/projects/core/src/main/groovy/org/droidmate/device/model/DeviceModel.groovy#L76-L79). In your device model you just have to ensure the package name of the home screen is correct. You can check the package name by doing the following:
 
@@ -92,5 +93,6 @@ If DroidMate doesn't recognize a device it defaults to Nexus 7. You can change t
 Nataniel Borges Jr., @natanieljr:
  
 - Added support for multiple Android devices. 
-- Added support for uiautomator 2.0.
+- Added support for UI Automator 2.0.
 - Added support for handling runtime permission request dialog boxes present on Android 6 and higher.
+- Removed compatibility to Android 4.4

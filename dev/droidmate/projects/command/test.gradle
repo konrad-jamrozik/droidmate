@@ -41,11 +41,6 @@ def configureTestTask = { Test task ->
   task.include("**/DroidmateFrontendTest.class")
 }
 
-task testDevice_api19(type: Test, dependsOn: testClasses) { Test task ->
-  configureTestTask(task)
-  task.filter.includeTestsMatching("*Explores monitored apk on a real device api19")
-}
-
 task testDevice_api23(type: Test, dependsOn: testClasses) { Test task ->
   configureTestTask(task)
   task.filter.includeTestsMatching("*Explores monitored apk on a real device api23")

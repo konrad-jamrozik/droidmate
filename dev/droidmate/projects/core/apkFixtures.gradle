@@ -34,7 +34,7 @@ assert apkFixturesDir.directory
 
 task pullApkFixtures(type: Copy, dependsOn: "buildApkFixtures") {
 
-  from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: [BuildKt.monitored_apk_fixture_api19_name, BuildKt.monitored_apk_fixture_api23_name])
+  from fileTree(dir: apkFixturesDroidmateStagingDir, include: "*.apk", exclude: [BuildKt.monitored_apk_fixture_api23_name])
   into apkFixturesDir
 }
 
@@ -58,12 +58,6 @@ def inlineMonitoredApkFixture = { JavaExec je, String apkName, String inlinedApk
   je.outputs.file new File(apkFixturesDir as File, inlinedApkName)
 }
 
-task inlineMonitoredApkFixture_api19(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
-  inlineMonitoredApkFixture(je, 
-    BuildKt.monitored_apk_fixture_api19_name, 
-    BuildKt.monitored_inlined_apk_fixture_api19_name
-  )
-}
 task inlineMonitoredApkFixture_api23(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
   inlineMonitoredApkFixture(je, 
     BuildKt.monitored_apk_fixture_api23_name,

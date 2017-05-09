@@ -156,8 +156,6 @@ class ConfigurationBuilder implements IConfigurationBuilder
   }
 
   static void normalizeAndroidApi(Configuration config) {
-    if (config.androidApi == "19")
-      config.androidApi = Configuration.api19
     if (config.androidApi == "23")
       config.androidApi = Configuration.api23
   }
@@ -205,17 +203,11 @@ class ConfigurationBuilder implements IConfigurationBuilder
 
   private static void setupResourcesAndPaths(Configuration cfg, FileSystem fs) throws ConfigurationException
   {
-    cfg.uiautomatorDaemonJar = new Resource("uiautomator-daemon.jar").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
-    log.info("Using uiautomator-daemon.jar located at "+cfg.uiautomatorDaemonJar.toAbsolutePath().toString())
-
     cfg.uiautomator2DaemonApk = new Resource("uiautomator2-daemon.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
     log.info("Using uiautomator2-daemon.apk located at " + cfg.uiautomator2DaemonApk.toAbsolutePath().toString())
 
     cfg.uiautomator2DaemonTestApk = new Resource("uiautomator2-daemon-test.apk").extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
     log.info("Using uiautomator2-daemon-test.apk located at " + cfg.uiautomator2DaemonTestApk.toAbsolutePath().toString())
-
-    cfg.monitorApkApi19 = new Resource(BuildConstants.monitor_api19_apk_name).extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
-    log.info("Using $BuildConstants.monitor_api19_apk_name located at "+cfg.monitorApkApi19.toAbsolutePath().toString())
 
     cfg.monitorApkApi23 = new Resource(BuildConstants.monitor_api23_apk_name).extractTo(fs.getPath(BuildConstants.dir_name_temp_extracted_resources))
     log.info("Using $BuildConstants.monitor_api23_apk_name located at "+cfg.monitorApkApi23.toAbsolutePath().toString())

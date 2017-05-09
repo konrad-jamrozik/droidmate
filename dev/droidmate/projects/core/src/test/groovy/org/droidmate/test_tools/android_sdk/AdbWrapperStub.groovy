@@ -152,18 +152,7 @@ class AdbWrapperStub implements IAdbWrapper
   }
 
   @Override
-  void removeFile_api19(String deviceSerialNumber, String fileName) throws AdbWrapperException
-  {
-  }
-
-  
-  @Override
   void removeFile_api23(String deviceSerialNumber, String fileName, String shellPackageName) throws AdbWrapperException
-  {
-  }
-
-  @Override
-  void pullFile_api19(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
   {
   }
   

@@ -3,11 +3,6 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="compositeParticipants">
-          <set>
-            <option value="$PROJECT_DIR$/../../../utilities" />
-          </set>
-        </option>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="#JAVA_HOME" />
@@ -26,11 +21,11 @@
             <option value="$PROJECT_DIR$/projects/monitor-hook" />
             <option value="$PROJECT_DIR$/projects/monitor-template" />
             <option value="$PROJECT_DIR$/projects/reporter" />
-            <option value="$PROJECT_DIR$/projects/uiautomator-daemon" />
             <option value="$PROJECT_DIR$/projects/uiautomator-daemon-lib" />
             <option value="$PROJECT_DIR$/projects/uiautomator2-daemon-proxy" />
           </set>
         </option>
+        <option name="useAutoImport" value="true" />
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
@@ -40,6 +35,7 @@
             <option value="$PROJECT_DIR$/../../../utilities" />
           </set>
         </option>
+        <option name="useAutoImport" value="true" />
       </GradleProjectSettings>
     </option>
   </component>

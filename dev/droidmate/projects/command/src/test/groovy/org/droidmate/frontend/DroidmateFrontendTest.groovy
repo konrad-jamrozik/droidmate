@@ -222,20 +222,6 @@ import java.nio.file.Path
 
   @Category([RequiresDevice])
   @Test
-  void "Explores monitored apk on a real device api19"()
-  {
-    String[] args = new ConfigurationForTests().forDevice().setArgs([
-      Configuration.pn_apksNames, "[$BuildConstants.monitored_inlined_apk_fixture_api19_name]",
-      Configuration.pn_widgetIndexes, "[0, 1]",
-      Configuration.pn_androidApi, Configuration.api19,
-    ]).get().args
-
-    exploreOnRealDevice(args, Configuration.api19)
-  }
-
-
-  @Category([RequiresDevice])
-  @Test
   void "Explores monitored apk on a real device api23"()
   {
     String[] args = new ConfigurationForTests().forDevice().setArgs([
@@ -245,6 +231,67 @@ import java.nio.file.Path
     ]).get().args
 
     exploreOnRealDevice(args, Configuration.api23)
+
+    assert true
+  }
+
+  @Category([RequiresDevice])
+  @Test
+  public void "Unpack .SER files"()
+  {
+    // Parameters
+    //def dirStr = 'output_device1'
+    def dirStr = 'C:/Users/natan_000/Desktop/Saarland/repositories/automatic-permission-tightening/data/exploration/1-api-blocked'
+    def outputStr = 'raw_data'
+    def fs = FileSystems.default
+
+    // Setup output dir
+    def outputDir = fs.getPath(dirStr, outputStr)
+    outputDir.createDirIfNotExists()
+
+    // Initialize storage
+    def droidmateOutputDirPath = fs.getPath(dirStr)
+    def storage2 = new Storage2(droidmateOutputDirPath)
+
+    // Process files
+    droidmateOutputDirPath.eachFileRecurse (FileType.FILES) {file ->
+      System.out.println(file + "")
+      //if (((String)(file + "")).contains('de.wortundbildverlag.mobil.apotheke.ser2'))
+      if (((String)(file + "")).contains('.ser2'))
+      {
+        outputDir = fs.getPath((String)file.getParent(), outputStr)
+        outputDir.createDirIfNotExists()
+
+        // Get data
+        IApkExplorationOutput2 obj = storage2.deserialize(file)
+        String packageName = obj.apk.packageName
+
+        // Create new output dir
+        //def newDir = fs.getPath(dirStr, outputStr, packageName)
+        //newDir.deleteDir()
+        //newDir.createDirIfNotExists()
+
+        // For each action
+        //for (int i = 15; i < obj.actRess.size(); ++i)
+        for (int i = 0; i < obj.actRess.size(); ++i)
+        {
+          def newActionFile = fs.getPath((String)file.getParent(), outputStr, "action" + i + ".txt")
+          def action = obj.actRess[i].action.toString()
+          Files.write(newActionFile, action.getBytes())
+
+          def newResultFile = fs.getPath((String)file.getParent(), outputStr, "windowHierarchyDump" + i + ".xml")
+          String result
+          if (obj.actRess[i].result.successful)
+            result = obj.actRess[i].result.guiSnapshot.windowHierarchyDump
+          else
+            result = ""
+
+          Files.write(newResultFile, result.getBytes());
+        }
+      }
+    }
+
+    assert true
   }
 
   /**
@@ -276,21 +323,7 @@ import java.nio.file.Path
     IApkExplorationOutput2 apkOut = outputDir.explorationOutput2.findSingle()
 
     List<List<IApiLogcatMessage>> apiLogs = apkOut?.apiLogs
-    if (api == Configuration.api19)
-    {
-      assert apiLogs.size() == 4
-
-      def resetAppApiLogs = apiLogs[0]
-      def clickApiLogs = apiLogs[1]
-      def launchActivity2Logs = apiLogs[2]
-      def terminateAppApiLogs = apiLogs[3]
-
-      assert resetAppApiLogs*.methodName == []
-      assert clickApiLogs*.methodName == ["<init>", "openConnection"]
-      assert launchActivity2Logs*.methodName == []
-      assert terminateAppApiLogs.empty
-    }
-    else if (api == Configuration.api23)
+    if (api == Configuration.api23)
     {
       // Api logs' structure (Android 6):
       //  [0] Reset

@@ -7,7 +7,7 @@
 
   www.droidmate.org
 
-  Date of last full review: 10 May 2016
+  Date of last full review: 10 May 2017
 
 # API usage examples
 
@@ -35,9 +35,6 @@ DroidMate will read command line arguments from the first line of
 `repo/dev/droidmate/args.txt`
 
 Most likely, the input apks will be taken from `repo/dev/droidmate/apks` (as determined by the first line of `args.txt`)
-
-**!!! Please note: DroidMate by default runs with Android 4.4.2 compatibility mode. To run it instead with Android 6 
-compatibility mode, add to the `args.txt` the following: `-apiLevel=23`** 
 
 # DroidMate input
 

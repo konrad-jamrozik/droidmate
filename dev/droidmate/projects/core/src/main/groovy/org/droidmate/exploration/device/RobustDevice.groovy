@@ -159,7 +159,7 @@ class RobustDevice implements IRobustDevice
       } catch (DeviceException e)
       {
         boolean appIsInstalled
-        try 
+        try
         {
           appIsInstalled = device.hasPackageInstalled(apkPackageName)
         } catch (DeviceException e2)

@@ -43,7 +43,8 @@ dependencies {
 
   testCompile 'junit:junit:4.12'
 
-  compileOnly files(BuildKt.android_jar_api19.toString())
+  // TODO REVIEW
+  compileOnly files(BuildKt.android_jar_api23.toString())
 
   compile project(":projects:lib-common")
 }

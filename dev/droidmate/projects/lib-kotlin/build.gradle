@@ -22,12 +22,17 @@
 
 
 buildscript {
+    ext.kotlin_version = '1.1.2-3'
 
-  repositories {
+    repositories {
     mavenCentral()
   }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
 }
-apply plugin: "org.jetbrains.kotlin.jvm" 
+apply plugin: "org.jetbrains.kotlin.jvm"
+apply plugin: 'kotlin'
 
 dependencies {
 
@@ -67,3 +72,6 @@ dependencies {
 configureTest(project, ['**/LibKotlinTestSuite.class'])
 
 apply from: project(":projects").file("maven.gradle")
+repositories {
+    mavenCentral()
+}

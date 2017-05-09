@@ -264,25 +264,18 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   void removeLogcatLogFile() throws DeviceException
   {
     log.debug("removeLogcatLogFile()")
-    if (cfg.androidApi == Configuration.api19)
-      this.adbWrapper.removeFile_api19(this.serialNumber, logcatLogFileName)
-    else if (cfg.androidApi == Configuration.api23)
+    if (cfg.androidApi == Configuration.api23)
       this.adbWrapper.removeFile_api23(this.serialNumber, logcatLogFileName, uia2Daemon_packageName)
     else throw new UnexpectedIfElseFallthroughError()
-
-
   }
 
   @Override
   void pullLogcatLogFile() throws DeviceException
   {
     log.debug("pullLogcatLogFile()")
-    if (cfg.androidApi == Configuration.api19)
-      this.adbWrapper.pullFile_api19(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"))
-    else if (cfg.androidApi == Configuration.api23)
+    if (cfg.androidApi == Configuration.api23)
       this.adbWrapper.pullFile_api23(this.serialNumber, logcatLogFileName, LogbackUtils.getLogFilePath("logcat.txt"), uia2Daemon_packageName)
     else throw new UnexpectedIfElseFallthroughError()
-
   }
 
   @Override
@@ -481,11 +474,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   void reinstallUiautomatorDaemon() throws DeviceException
   {
-    if (cfg.androidApi == Configuration.api19)
-    {
-      this.pushJar(this.cfg.uiautomatorDaemonJar)
-    }
-    else if (cfg.androidApi == Configuration.api23)
+    if (cfg.androidApi == Configuration.api23)
     {
       // Uninstall packages in case previous DroidMate run had some leftovers in the form of a living uia-daemon.
       // Commented out as seems to be superfluous with .installApk() as it reinstalls apps.
@@ -502,11 +491,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   @Override
   void pushMonitorJar() throws DeviceException
   {
-    if (cfg.androidApi == Configuration.api19)
-    {
-      this.pushJar(this.cfg.monitorApkApi19, BuildConstants.monitor_on_avd_apk_name)
-    }
-    else if (cfg.androidApi == Configuration.api23)
+    if (cfg.androidApi == Configuration.api23)
     {
       this.pushJar(this.cfg.monitorApkApi23, BuildConstants.monitor_on_avd_apk_name)
 
@@ -530,9 +515,7 @@ import static org.droidmate.uiautomator_daemon.UiautomatorDaemonConstants.*
   boolean uiaDaemonIsRunning()
   {
     String packageName
-    if (cfg.androidApi == Configuration.api19)
-      packageName = uiaDaemon_packageName
-    else if (cfg.androidApi == Configuration.api23)
+    if (cfg.androidApi == Configuration.api23)
       packageName = uia2Daemon_packageName
     else throw new UnexpectedIfElseFallthroughError()
     

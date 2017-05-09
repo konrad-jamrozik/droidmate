@@ -617,9 +617,7 @@ class AdbWrapper implements IAdbWrapper
   @Override
   void startUiautomatorDaemon(String deviceSerialNumber, int port) throws AdbWrapperException
   {
-    if (cfg.androidApi == Configuration.api19)
-      startUiautomatorDaemon_api19(deviceSerialNumber, port)
-    else if (cfg.androidApi == Configuration.api23)
+    if (cfg.androidApi == Configuration.api23)
       startUiautomatorDaemon_api23(deviceSerialNumber, port)
     else throw new UnexpectedIfElseFallthroughError()
   }
@@ -658,40 +656,6 @@ class AdbWrapper implements IAdbWrapper
     validateInstrumentation(stdStreams, failureString)
   }
 
-  private void startUiautomatorDaemon_api19(String deviceSerialNumber, int port) throws AdbWrapperException
-  {
-
-    String commandDescription = String
-      .format(
-      "Executing adb to start UiAutomatorDaemon.init() method on Android Device with " +
-        "s/n %s.",
-      deviceSerialNumber)
-
-    String uiaDaemonCmdLine = String.format("-c %s -e %s %s -e %s %s -e %s %s",
-      UiautomatorDaemonConstants.uiaDaemon_initMethodName,
-      UiautomatorDaemonConstants.uiaDaemonParam_waitForGuiToStabilize, cfg.uiautomatorDaemonWaitForGuiToStabilize,
-      UiautomatorDaemonConstants.uiaDaemonParam_waitForWindowUpdateTimeout, cfg.uiautomatorDaemonWaitForWindowUpdateTimeout,
-      UiautomatorDaemonConstants.uiaDaemonParam_tcpPort, port)
-
-    def failureString = "Executing 'adb -s $deviceSerialNumber shell uiautomator runtest ${cfg.uiautomatorDaemonJar.fileName.toString()} $uiaDaemonCmdLine' failed. Oh my."
-    String[] stdStreams
-    try
-    {
-      stdStreams = this.sysCmdExecutor.executeWithoutTimeout(commandDescription, cfg.adbCommand,
-        "-s", deviceSerialNumber,
-        "shell uiautomator runtest",
-        cfg.uiautomatorDaemonJar.fileName.toString(),
-        uiaDaemonCmdLine)
-
-    } catch (SysCmdExecutorException e)
-    {
-      throw new AdbWrapperException(failureString, e)
-    }
-
-    validateInstrumentation(stdStreams, failureString)
-  }
-
-
   private void validateInstrumentation(String[] stdStreams, GString failureString)
   {
     if (stdStreams[0].contains("INSTRUMENTATION_FAILED"))
@@ -702,21 +666,6 @@ class AdbWrapper implements IAdbWrapper
     }
   }
 
-  @Override
-  void pullFile_api19(String deviceSerialNumber, String pulledFileName, String destinationFilePath) throws AdbWrapperException
-  {
-    assert deviceSerialNumber != null
-    assert pulledFileName?.size() > 0
-    assert destinationFilePath?.size() > 0
-
-    assert Files.notExists(Paths.get(destinationFilePath))
-
-    String pulledFilePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api19 + pulledFileName
-    this.executeCommand(deviceSerialNumber, "", "Pull file (API19 compatibility)",
-      "pull", pulledFilePath, destinationFilePath)
-  }
-
-  
   /**
    * Pull file from the device.
    *
@@ -747,16 +696,6 @@ class AdbWrapper implements IAdbWrapper
     writer.close()
   }
 
-  void removeFile_api19(String deviceSerialNumber, String fileName) throws AdbWrapperException
-  {
-    assert deviceSerialNumber != null
-    assert fileName != null
-    assert fileName.size() > 0
-
-    String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api19 + fileName
-    this.executeCommand(deviceSerialNumber, "", "Delete file (API19 compatibility).", "shell rm", filePath)
-  }
-
   /**
    * Remove a file from the device
    *
@@ -770,9 +709,17 @@ class AdbWrapper implements IAdbWrapper
     assert fileName.size() > 0
     assert !shellPackageName?.empty
 
-    String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api23 + fileName
-    this.executeCommand(deviceSerialNumber, "", "Delete file (API23 compatibility).", 
-      "shell run-as", shellPackageName, "rm", filePath)
+    try {
+      String filePath = UiautomatorDaemonConstants.deviceLogcatLogDir_api23 + fileName
+      this.executeCommand(deviceSerialNumber, "", "Delete file (API23 compatibility).",
+              "shell run-as", shellPackageName, "rm", filePath)
+    }
+    catch(Exception e)
+    {
+      // Logcat file does not exist on new devices, therefore it crashes on the first attempt
+      if (!fileName.contains("droidmate_logcat"))
+        throw e;
+    }
   }
 
 

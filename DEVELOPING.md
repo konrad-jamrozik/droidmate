@@ -8,7 +8,7 @@
 
   www.droidmate.org
 
-  Date of last full review: 10 May 2016
+  Date of last full review: 10 May 2017
 
 # Working with DroidMate code base
 
@@ -41,7 +41,7 @@ When developing DroidMate one wants to have access to the sources and documentat
 When building for the first time, Gradle downloads from maven repos the dependencies to local cache, 
 together with docs and sources, readily accessible from IDE.
 
-To get access to Android SDK sources form IDE, download `Sources for Android SDK` for `Android 4.4.2` using Android SDK Manager.
+To get access to Android SDK sources form IDE, download `Sources for Android SDK` for `Android 6.0` using Android SDK Manager.
 
 If you still do not have access to some sources and docs, manually add them in IntelliJ `Project sturcture -> Platform settings`
 
@@ -77,7 +77,7 @@ Use `clean` to reset everything, `build install` to build everything and install
 ### JUnit run configs
 
 `FastRegressionTestSuite` is the main test suite of DroidMate, run by the `:projects:command:test` Gradle task.  
-`Explores monitored apk on a real device api19` is being run by `:projects:command:testDevice` Gradle task.
+`Explores monitored apk on a real device api23` is being run by `:projects:command:testDevice` Gradle task.
 
 The root of all test suites is `org.droidmate.test_suites.AllTestSuites`.
 
@@ -108,7 +108,7 @@ Lines starting with `#` and empty lines are discarded.
 After you make your changes, do a build (see `repo/BUILDING.md`).
 
 To test if DroidMate successfully monitored your modified API list, observe the logcat output
-while the explored application is started. In case of Android 4.2.2, you will see 100+ messages
+while the explored application is started. You will see 100+ messages
 tagged `Instrumentation`. If there were any failures, the messages will say so.
 
 ## Providing your own hooks to the monitored APIs

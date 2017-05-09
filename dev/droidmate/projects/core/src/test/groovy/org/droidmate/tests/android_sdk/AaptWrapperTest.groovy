@@ -62,7 +62,7 @@ import static groovy.transform.TypeCheckingMode.SKIP
     AaptWrapper sut = new AaptWrapper(Configuration.default, new SysCmdExecutor())
     sut.metaClass.aaptDumpBadging = {Path _ -> aaptBadgingDump}
 
-    Apk ignoredApk = ApkFixtures.build().monitoredInlined_api19
+    Apk ignoredApk = ApkFixtures.build().monitoredInlined_api23
 
     // Act
     String launchableActivityName = sut.getLaunchableActivityComponentName(Paths.get(ignoredApk.absolutePath))

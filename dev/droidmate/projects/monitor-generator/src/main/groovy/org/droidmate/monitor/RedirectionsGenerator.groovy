@@ -92,21 +92,6 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         String objectClassAsMethodName = getObjectClassAsMethodName(objectClass)
         ctorRedirNames[id] = "${id}_${objectClassAsMethodName}_ctor${paramClasses.size()}"
 
-        if (androidApi == AndroidAPI.API_19)
-        {
-          String fromId = $/"${ams.objectClassJni}-><init>(${ams.paramsJni})V"/$
-          /* We use Object here instead of the proper name because sometimes the class is hidden from public Android API
-             and so the generated file couldn't be compiled. The instrumentation still works with Object, though.
-          */
-          String objectClassJni = "Ljava/lang/Object;" // ams.objectClassJni
-          String toId = $/"$redirMethodDefPrefix${ctorRedirNames[id]}($objectClassJni${ams.paramsJni})V"/$
-
-          calls << ind6 + "ctorHandles.add(Instrumentation.redirectMethod(" + nl
-          calls << ind6 + ind4 + "Signature.fromIdentifier($fromId, classLoaders)," + nl
-          calls << ind6 + ind4 + "Signature.fromIdentifier($toId, classLoaders)));" + nl
-          calls << ind6 + nl
-        }
-
         // --- The generation of redirected method (target of the .redirectMethod call) ---
         
         // Items for method signature.
@@ -138,11 +123,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
 
-        if (androidApi == AndroidAPI.API_19)
-        {
-          out << ind4 + ind4 + "Instrumentation.callVoidMethod(ctorHandles.get($id), _this$commaSeparatedParamVars);" + nl
-          out << ind4 + ind4 + "${monitorHookAfterCallPrefix}\"$apiLogcatMessagePayload\", null);" + nl
-        } else if (androidApi == AndroidAPI.API_23)
+        if (androidApi == AndroidAPI.API_23)
         {
           out << ind4 + ind4 + "OriginalMethod.by(new \$() {}).invoke(_this$commaSeparatedParamVars);" + nl
           out << ind4 + ind4 + "${monitorHookAfterCallPrefix}\"$apiLogcatMessagePayload\", null);" + nl
@@ -202,10 +183,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         String thisVarOrClass = isStatic ? "${objectClassWithDots}.class" : "_this"
         String commaSeparatedParamVars = buildCommaSeparatedParamVarNames(ams, paramVarNames)
 
-        if (androidApi == AndroidAPI.API_19)
-        {
-          out << ind4 + "@Redirect(\"$objectClass->$methodName\") " + nl
-        } else if (androidApi == AndroidAPI.API_23)
+        if (androidApi == AndroidAPI.API_23)
         {
           out << ind4 + "@Hook(\"$objectClass->$methodName\") " + nl
         } else throw new IllegalStateException()
@@ -236,22 +214,7 @@ class RedirectionsGenerator implements IRedirectionsGenerator
         out << ind4 + ind4 + "Log.${MonitorConstants.loglevel}(\"${MonitorConstants.tag_api}\", \"$apiLogcatMessagePayload\"); " + nl
         out << ind4 + ind4 + "addCurrentLogs(\"$apiLogcatMessagePayload\");" + nl
         
-        if (androidApi == AndroidAPI.API_19)
-        {
-          String instrCallStatic = isStatic ? "Static" : ""
-          String instrCallType = returnClass in instrCallMethodTypeMap.keySet() ? instrCallMethodTypeMap[returnClass] : "Object"
-          out << ind4 + ind4 + "class \$ {} " + nl
-          if (returnsVoid)
-          {
-            out << ind4 + ind4 + "Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
-            out << ind4 + ind4 + "${monitorHookAfterCallPrefix}\"$apiLogcatMessagePayload\", null);" + nl
-          } else
-          {
-            out << ind4 + ind4 + "Object returnVal = Instrumentation.call${instrCallStatic}${instrCallType}Method(\$.class, ${thisVarOrClass}${commaSeparatedParamVars});" + nl
-            out << ind4 + ind4 + "${returnStatement}${monitorHookAfterCallPrefix}\"$apiLogcatMessagePayload\", ${castType}returnVal);" + nl
-          }
-        }
-        else if (androidApi == AndroidAPI.API_23)
+        if (androidApi == AndroidAPI.API_23)
         {
           String invocation
           if (!isStatic)

@@ -28,14 +28,10 @@ To configure your local setup, do the following:
   * Android 6.0 (API 23) / Documentation for Android SDK (optional, but recommended)
   * Android 6.0 (API 23) / SDK Platform
   * Android 6.0 (API 23) / Sources for Android SDK (optional, but recommended)
-  * Android 4.4.2 (API 19) / SDK Platform
-  * Android 4.4.2 (API 19) / Google APIs Intel x86 Atom System Image (if you want to use emulator)
-  * Android 4.4.2 (API 19) / Sources for Android SDK (optional, but recommended)
   * Extras / Android Support Repository
   * Extras / Google Play services
   * Extras / Google USB Driver (if your OS requires it)
   * Extras / Intel x86 Emulator Accelerator (HAXM Installer) (if you want to use emulator on Windows)
-* Install Apache Ant (newest version should work) and add its `bin` directory to the `PATH` environment variable.
 * Install gnuplot 4.4.3 or newer, e.g. [from sourceforge](https://sourceforge.net/projects/gnuplot/files/gnuplot). Add `gnuplot/bin` directory to the `PATH` environment variable.
   * On Mac OS X you will have to install gnuplot together with `pdf` terminal. Using homebrew you can do this by doing 
   `brew install gnuplot --with-pdflib-lite`.
@@ -70,8 +66,8 @@ To do a clean build (a full rebuild): `gradlew clean build`
 After your build passes, you should setup an Android device and run tests requiring it.
 
 * Setup an Android device, as described in the [official doc](http://developer.android.com/training/basics/firstapp/running-app.html#RealDevice). To see which Android devices DroidMate supports, consult the device compatibility section given in `README.md`.
-* If using Android 4.4.4 (API 19) and a physical device (as opposed to emulator), ensure the "settings" app is on the main home screen on the device. You can drag & drop it from the apps list. If you omit this step, DroidMate will not be able to ensure WiFi is enabled before each app restart during exploration. DroidMate will work, but will issue a warning to logcat.
-* Configure the device: (on Android 4.4.4 the menus might have different names)
+* If using a physical device (as opposed to emulator), ensure the "settings" app is on the main home screen on the device. You can drag & drop it from the apps list. If you omit this step, DroidMate will not be able to ensure WiFi is enabled before each app restart during exploration. DroidMate will work, but will issue a warning to logcat.
+* Configure the device:
   * In "Security", set "Screen Lock" to "None" .
   * In "Display", set "Sleep" to max ("After 30 minutes of inactivity").
   * Enable developer options and set "Stay awake" to true.
@@ -85,9 +81,7 @@ To run DroidMate regression tests requiring a device:
 * Ensure the device displays home screen (by just looking at it).
 * Run:  
 `cd repo/dev/droidmate`  
-`gradlew testDevice_api19` // If you are using device with Android 4.4.2  
-`gradlew testDevice_api23` // If you are using device with Android 6.0.0 
-
+`gradlew testDevice_api23` 
 ## Deploying to local maven repository ##
 
 `cd repo/dev/droidmate`  

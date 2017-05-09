@@ -41,19 +41,14 @@ class MonitorGeneratorResources implements IConfiguration
 
   MonitorGeneratorResources(String[] args)
   {
-    if (args.contains("api19"))
-      this.androidApi = AndroidAPI.API_19
-    else if (args.contains("api23"))
+    if (args.contains("api23"))
       this.androidApi = AndroidAPI.API_23
     else
       throw new IllegalStateException()
 
     Path monitorSrcOut
 
-    if (this.androidApi == AndroidAPI.API_19)
-    {
-      monitorSrcOut = Paths.get(BuildConstants.monitor_generator_output_relative_path_api19)
-    } else if (this.androidApi == AndroidAPI.API_23)
+    if (this.androidApi == AndroidAPI.API_23)
     {
       monitorSrcOut = Paths.get(BuildConstants.monitor_generator_output_relative_path_api23)
     } else

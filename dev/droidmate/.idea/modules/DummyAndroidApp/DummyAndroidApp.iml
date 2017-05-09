@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":DummyAndroidApp" external.linked.project.path="$DM_REPO$/dev/droidmate/DummyAndroidApp" external.root.project.path="$DM_REPO$/dev/droidmate" external.system.id="GRADLE" external.system.module.group="org.droidmate" external.system.module.version="dev" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":DummyAndroidApp" external.linked.project.path="$DM_REPO$/DummyAndroidApp" external.root.project.path="$DM_REPO$" external.system.id="GRADLE" external.system.module.group="org.droidmate" external.system.module.version="dev" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="2" platform="JVM 1.6" useProjectSettings="false">
+        <compilerSettings />
+        <compilerArguments>
+          <option name="jvmTarget" value="1.6" />
+          <option name="languageVersion" value="1.1" />
+          <option name="apiVersion" value="1.1" />
+          <option name="pluginClasspaths">
+            <array />
+          </option>
+          <option name="coroutinesWarn" value="true" />
+          <option name="pluginOptions">
+            <array />
+          </option>
+        </compilerArguments>
+      </configuration>
+    </facet>
     <facet type="android" name="Android">
       <configuration>
         <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/../../../DummyAndroidApp/gen" />
@@ -10,54 +27,15 @@
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../../../DummyAndroidApp/assets" />
         <option name="LIBS_FOLDER_RELATIVE_PATH" value="/../../../DummyAndroidApp/libs" />
         <option name="PROGUARD_LOGS_FOLDER_RELATIVE_PATH" value="/../../../DummyAndroidApp/proguard_logs" />
-        <proGuardCfgFiles />
-      </configuration>
-    </facet>
-    <facet type="kotlin-language" name="Kotlin">
-      <configuration version="1">
-        <option name="compilerInfo">
-          <KotlinCompilerInfo>
-            <option name="compilerSettings">
-              <CompilerSettings />
-            </option>
-            <option name="k2jsCompilerArguments">
-              <K2JSCompilerArguments />
-            </option>
-            <option name="k2jvmCompilerArguments">
-              <K2JVMCompilerArguments />
-            </option>
-            <option name="_commonCompilerArguments">
-              <DummyImpl>
-                <option name="languageVersion" value="1.1" />
-                <option name="apiVersion" value="1.1" />
-                <option name="pluginClasspaths">
-                  <array />
-                </option>
-                <option name="coroutinesWarn" value="true" />
-                <option name="pluginOptions">
-                  <array />
-                </option>
-              </DummyImpl>
-            </option>
-          </KotlinCompilerInfo>
-        </option>
-        <option name="useProjectSettings" value="false" />
-        <option name="versionInfo">
-          <KotlinVersionInfo>
-            <option name="apiLevel" value="1.1" />
-            <option name="languageLevel" value="1.1" />
-            <option name="targetPlatformName" value="JVM 1.8" />
-          </KotlinVersionInfo>
-        </option>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$DM_REPO$/dev/droidmate/DummyAndroidApp">
-      <sourceFolder url="file://$DM_REPO$/dev/droidmate/DummyAndroidApp/gen" isTestSource="false" generated="true" />
-      <excludeFolder url="file://$DM_REPO$/dev/droidmate/DummyAndroidApp/.gradle" />
-      <excludeFolder url="file://$DM_REPO$/dev/droidmate/DummyAndroidApp/build" />
+    <content url="file://$DM_REPO$/DummyAndroidApp">
+      <sourceFolder url="file://$DM_REPO$/DummyAndroidApp/gen" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$DM_REPO$/DummyAndroidApp/.gradle" />
+      <excludeFolder url="file://$DM_REPO$/DummyAndroidApp/build" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

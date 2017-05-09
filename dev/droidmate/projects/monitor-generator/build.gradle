@@ -76,7 +76,6 @@ def generateMonitor = { JavaExec je, List<String> args, File generatedMonitor ->
 }
 
 def generatedMonitor = {int apiLevel -> new File(runTask.workingDir, BuildKt.generated_monitor(apiLevel))}
-task generateMonitor_api19(type: JavaExec) {generateMonitor(it as JavaExec, ["api19"], generatedMonitor(19)) }
 task generateMonitor_api23(type: JavaExec) {generateMonitor(it as JavaExec, ["api23"], generatedMonitor(23)) }
 
 //endregion
@@ -137,27 +136,22 @@ def buildMonitorApk = { GradleBuild task, int apiLevel ->
   task.doLast { copyFileWithRename(apkScaffoldingOutputApk(apiLevel), monitorApk(apiLevel)) }
 }
 
-task buildMonitorApk_api19(type: GradleBuild) {buildMonitorApk(it as GradleBuild, 19) }
 task buildMonitorApk_api23(type: GradleBuild) {buildMonitorApk(it as GradleBuild, 23) }
 
 clean.configure {
-  
-  delete generatedMonitor(19)
-  delete generatedMonitor(23)
-  assert generatedMonitor(19).parent ==  generatedMonitor(23).parent
-  delete generatedMonitor(19).parent
 
-  delete monitorJava(19)
+  delete generatedMonitor(23)
+  delete generatedMonitor(23).parent
+
   delete monitorJava(23)
 
   delete libsBuilt
   delete apkScaffoldingOutput
 
-  delete monitorApk(19)
   delete monitorApk(23)
 }
 
-build.dependsOn "buildMonitorApk_api19", "buildMonitorApk_api23"
+build.dependsOn "buildMonitorApk_api23"
 
 // Tests not included because the test shouldn't be run as part of a test suite.
 configureTest(project, [''])

@@ -30,7 +30,6 @@ include(
   "projects:lib-kotlin",
   "projects:apk-inliner",
   "projects:uiautomator-daemon-lib",
-  "projects:uiautomator-daemon",
   "projects:uiautomator2-daemon-proxy",
   "projects:monitor-template",
   "projects:monitor-hook",
