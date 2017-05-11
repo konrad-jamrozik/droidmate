@@ -44,18 +44,18 @@ import static org.droidmate.logging.Markers.runData
  * </p>
  */
 @Slf4j
- class DroidmateFrontend
+class DroidmateFrontend
 {
   /**
    * @see DroidmateFrontend
    */
-   static void main(String[] args)
+  static void main(String[] args)
   {
     int exitStatus = main(args, null)
     System.exit(exitStatus)
   }
 
-   static int main(String[] args, ICommandProvider commandProvider, FileSystem fs = FileSystems.getDefault(), IExceptionHandler exceptionHandler = new ExceptionHandler())
+  static int main(String[] args, ICommandProvider commandProvider, FileSystem fs = FileSystems.getDefault(), IExceptionHandler exceptionHandler = new ExceptionHandler())
   {
     println "DroidMate, an automated execution generator for Android apps."
     println "Copyright (c) 2012 - ${LocalDate.now().year} Konrad Jamrozik"
