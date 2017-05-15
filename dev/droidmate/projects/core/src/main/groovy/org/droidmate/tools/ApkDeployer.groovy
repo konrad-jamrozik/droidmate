@@ -34,7 +34,7 @@ import org.droidmate.misc.Assert
  */
 @Slf4j
 @TypeChecked
- class ApkDeployer implements IApkDeployer
+class ApkDeployer implements IApkDeployer
 {
 
   private final Configuration cfg
@@ -157,5 +157,4 @@ import org.droidmate.misc.Assert
       throw new DeviceException("No device is available just before installing $apk", /* stopFurtherApkExplorations */ true)
     device.installApk(apk)
   }
-
 }

@@ -69,7 +69,7 @@ class Storage2 implements IStorage2
   }
 
   @Override
-   Object deserialize(Path file)
+  Object deserialize(Path file)
   {
     ObjectInputStream input =
       new LegacyObjectInputStream(Channels.newInputStream(FileChannel.open(file, StandardOpenOption.READ)))

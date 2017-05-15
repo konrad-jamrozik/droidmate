@@ -46,17 +46,17 @@ import java.nio.file.Path
 class ExploreCommand extends DroidmateCommand
 {
 
-  private final IApksProvider                       apksProvider
-  private final IAndroidDeviceDeployer              deviceDeployer
-  private final IApkDeployer                        apkDeployer
-  private final IExploration                        exploration
-  private final IStorage2                           storage2
+  private final IApksProvider          apksProvider
+  private final IAndroidDeviceDeployer deviceDeployer
+  private final IApkDeployer           apkDeployer
+  private final IExploration           exploration
+  private final IStorage2              storage2
 
   ExploreCommand(
-    IApksProvider apksProvider, 
-    IAndroidDeviceDeployer deviceDeployer, 
-    IApkDeployer apkDeployer, 
-    IExploration exploration, 
+    IApksProvider apksProvider,
+    IAndroidDeviceDeployer deviceDeployer,
+    IApkDeployer apkDeployer,
+    IExploration exploration,
     IStorage2 storage2)
   {
     this.apksProvider = apksProvider
@@ -66,10 +66,10 @@ class ExploreCommand extends DroidmateCommand
     this.storage2 = storage2
   }
 
-   static ExploreCommand build(Configuration cfg,
-                                     IExplorationStrategyProvider strategyProvider = {ExplorationStrategy.build(cfg)},
-                                     ITimeProvider timeProvider = new TimeProvider(),
-                                     IDeviceTools deviceTools = new DeviceTools(cfg))
+  static ExploreCommand build(Configuration cfg,
+                              IExplorationStrategyProvider strategyProvider = {ExplorationStrategy.build(cfg)},
+                              ITimeProvider timeProvider = new TimeProvider(),
+                              IDeviceTools deviceTools = new DeviceTools(cfg))
   {
     IApksProvider apksProvider = new ApksProvider(deviceTools.aapt)
 
@@ -118,10 +118,10 @@ class ExploreCommand extends DroidmateCommand
   private void cleanOutputDir(Configuration cfg)
   {
     Path outputDir = cfg.droidmateOutputDirPath
-    
+
     if (!Files.isDirectory(outputDir))
       return
-    
+
     [cfg.screenshotsOutputSubdir, cfg.reportOutputSubdir].each {
 
       Path dirToDelete = outputDir.resolve(it)
@@ -156,7 +156,7 @@ class ExploreCommand extends DroidmateCommand
     }
 
     new ExplorationOutput2Report(out, cfg.droidmateOutputReportDirPath).writeOut(cfg.reportIncludePlots, cfg.extractSummaries)
-    
+
     return explorationExceptions
   }
 
@@ -173,7 +173,7 @@ class ExploreCommand extends DroidmateCommand
         if (!encounteredApkExplorationsStoppingException)
         {
           log.info(Markers.appHealth, "Processing ${i + 1} out of ${apks.size()} apks: ${apk.fileName}")
-          
+
           allApksExplorationExceptions +=
             this.apkDeployer.withDeployedApk(device, apk) {IApk deployedApk ->
               tryExploreOnDeviceAndSerialize(deployedApk, device, out)
