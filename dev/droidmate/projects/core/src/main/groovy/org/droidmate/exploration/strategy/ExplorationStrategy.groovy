@@ -77,7 +77,7 @@ class ExplorationStrategy implements IExplorationStrategy
 
     def guiState = result.guiSnapshot.guiState
     def exploredAppPackageName = result.exploredAppPackageName
-
+  
     terminationCriterion.initDecideCall(firstDecisionIsBeingMade())
 
     ExplorationAction outExplAction

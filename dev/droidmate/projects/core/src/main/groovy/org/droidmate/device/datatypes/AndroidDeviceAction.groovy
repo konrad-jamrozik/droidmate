@@ -31,41 +31,39 @@ abstract class AndroidDeviceAction implements IAndroidDeviceAction
     newClickGuiDeviceAction(clickedWidget.clickPoint, longClick)
   }
 
-   static ClickGuiAction newClickGuiDeviceAction(Point p, boolean longClick = false)
+  static ClickGuiAction newClickGuiDeviceAction(Point p, boolean longClick = false)
   {
     newClickGuiDeviceAction(p.x as int, p.y as int, longClick)
   }
 
-   static ClickGuiAction newClickGuiDeviceAction(int clickX, int clickY, boolean longClick = false)
+  static ClickGuiAction newClickGuiDeviceAction(int clickX, int clickY, boolean longClick = false)
   {
     return new ClickGuiAction(new GuiAction(clickX, clickY, longClick))
   }
 
-   static ClickGuiAction newEnterTextDeviceAction(String resourceId, String textToEnter)
+  static ClickGuiAction newEnterTextDeviceAction(String resourceId, String textToEnter)
   {
     return new ClickGuiAction(GuiAction.createEnterTextGuiAction(resourceId, textToEnter))
   }
 
 
-   static ClickGuiAction newPressBackDeviceAction()
+  static ClickGuiAction newPressBackDeviceAction()
   {
     return new ClickGuiAction(GuiAction.createPressBackGuiAction())
   }
 
-   static ClickGuiAction newPressHomeDeviceAction()
+  static ClickGuiAction newPressHomeDeviceAction()
   {
     return new ClickGuiAction(GuiAction.createPressHomeGuiAction())
   }
 
-   static ClickGuiAction newTurnWifiOnDeviceAction()
+  static ClickGuiAction newTurnWifiOnDeviceAction()
   {
     return new ClickGuiAction(GuiAction.createTurnWifiOnGuiAction())
   }
 
-   static ClickGuiAction newLaunchAppDeviceAction(String iconLabel)
+  static ClickGuiAction newLaunchAppDeviceAction(String iconLabel)
   {
     return new ClickGuiAction(GuiAction.createLaunchAppGuiAction(iconLabel))
   }
-
-
 }
