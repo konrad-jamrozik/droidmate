@@ -40,5 +40,4 @@ class ApkPath
   {
     return this.path.fileName.toString()
   }
-
 }

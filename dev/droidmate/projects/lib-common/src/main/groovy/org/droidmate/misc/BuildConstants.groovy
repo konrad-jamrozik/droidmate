@@ -43,7 +43,7 @@ class BuildConstants
   static String apk_inliner_param_output_dir                    = safeGetProperty(properties, "apk_inliner_param_output_dir")
   static String apk_inliner_param_input_default                 = safeGetProperty(properties, "apk_inliner_param_input_default")
   static String apk_inliner_param_output_dir_default            = safeGetProperty(properties, "apk_inliner_param_output_dir_default")
-  static String monitored_apis_txt                               = safeGetProperty(properties, "monitored_apis_txt")
+  static String monitored_apis_txt                              = safeGetProperty(properties, "monitored_apis_txt")
   static String AVD_dir_for_temp_files                          = safeGetProperty(properties, "AVD_dir_for_temp_files")
   static String dir_name_temp_extracted_resources               = safeGetProperty(properties, "dir_name_temp_extracted_resources") 
   static String monitor_generator_res_name_monitor_template     = safeGetProperty(properties, "monitor_generator_res_name_monitor_template")

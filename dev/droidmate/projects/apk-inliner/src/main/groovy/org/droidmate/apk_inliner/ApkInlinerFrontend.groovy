@@ -33,7 +33,6 @@ import static org.droidmate.apk_inliner.PathValueConverter.pathIn
 @Slf4j
 public class ApkInlinerFrontend
 {
-
   public static void main(String[] args)
   {
     try
@@ -74,5 +73,4 @@ public class ApkInlinerFrontend
     log.error("Exception was thrown and propagated to the frontend.", e)
     System.exit(1)
   }
-
 }
