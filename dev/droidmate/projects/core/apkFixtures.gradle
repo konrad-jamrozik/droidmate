@@ -64,14 +64,13 @@ task inlineMonitoredApkFixture_api19(type: JavaExec, dependsOn: "buildApkFixture
     BuildKt.monitored_inlined_apk_fixture_api19_name
   )
 }
+
 task inlineMonitoredApkFixture_api23(type: JavaExec, dependsOn: "buildApkFixtures") {JavaExec je ->
   inlineMonitoredApkFixture(je, 
     BuildKt.monitored_apk_fixture_api23_name,
     BuildKt.monitored_inlined_apk_fixture_api23_name
   )
 }
-
-
 
 task buildApkFixtures(type: GradleBuild) {
   buildFile = apkFixturesProjectDir.path + "/build.gradle"
