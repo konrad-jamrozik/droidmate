@@ -161,6 +161,7 @@ class FilteredDeviceLogs private constructor(logs: IDeviceLogs) : IDeviceLogs by
     // This list is to be updated as the warnings are observed, while comparing to the legacy lists 
     // (present in this file).
     private val apisManuallyConfirmedToBeRedundant: List<String> = listOf(
+      // Android 4 source: https://android.googlesource.com/platform/frameworks/base/+/android-4.4.4_r2.0.1/core/java/android/os/PowerManager.java#734
       // Android 6 source: https://android.googlesource.com/platform/frameworks/base/+/android-6.0.1_r46/core/java/android/os/PowerManager.java#1127
       "redir_android_os_PowerManager_WakeLock_release0"
     )

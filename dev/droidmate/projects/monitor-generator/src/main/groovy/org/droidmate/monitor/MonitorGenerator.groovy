@@ -45,8 +45,6 @@ class MonitorGenerator implements IMonitorGenerator
 
     return monitorSrcTemplate.injectGeneratedCode(genCtorCalls, genCtorTargets, genMethodTargets)
   }
-
-
 }
 
 
