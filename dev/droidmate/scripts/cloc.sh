@@ -8,12 +8,12 @@ function deb()
   find $dev_root $aptle $skip $test $java_groovy_kotlin -print
 }
 
-dev_root="../.."
+dev_root="/c/my/local/repos/github/droidmate/dev/"
 
 # aptle: avoid "path too long" error.
 aptle="-iregex .*classes.* -prune -o" 
 skip='( ! -iregex .*nu\/xom.* ! -iregex .*\/\(build\|gen\)\/.* )'
-# TODO: account for droidmate_usage_examples (a project beside apk_fixtures_src and droidmate)
+# Note: this includes droidmate_usage_examples
 test='-iregex .*\/\(test\|androidTest\|apk_fixtures_src\)\/.*'
 java_groovy_kotlin="-iregex .*\w\.\(java\|groovy\|kt\)"
 gradle="-iregex .*\w\.gradle"
@@ -48,7 +48,7 @@ echo
 }
 
 # Enables calling bash functions from command line.
-# Example usage: <this script name> cloc
+# Example usage: ./<this script name> cloc
 # Reference: http://stackoverflow.com/a/16159057/986533
 $@
 
