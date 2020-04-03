@@ -30,7 +30,7 @@
 # https://hg.st.cs.uni-saarland.de/projects/droidmate-private/repository/revisions/master/entry/resources/from_Philipp/appguard_apis_list_origin.txt
 #
 # The manual adaptations of this list were made to make it compatible with 
-# API19 / Android 4.4.4-r2.0.1 [1] and API2 / Android 6.0.1_r63 [2]
+# API19 / Android 4.4.4-r2.0.1 [1] and API23 / Android 6.0.1_r63 [2]
 # [1] https://android.googlesource.com/platform/frameworks/base.git/+/android-4.4.4_r2.0.1
 # [2] https://android.googlesource.com/platform/frameworks/base.git/+/android-6.0.1_r63
 #
