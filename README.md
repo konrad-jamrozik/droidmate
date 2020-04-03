@@ -1,3 +1,6 @@
+# :exclamation: DEPRECATION NOTICE :exclamation: 
+This repository is no longer maintained as of December 2016. For current development on DroidMate, please visit [uds-se/DroidMate-2](https://github.com/uds-se/droidmate) repository.
+
 # DroidMate ![GNU GPL v3](https://www.gnu.org/graphics/gplv3-88x31.png)[![Build Status](https://travis-ci.org/konrad-jamrozik/droidmate.svg?branch=master)](https://travis-ci.org/konrad-jamrozik/droidmate)
 
 DroidMate, an automated execution generator for Android apps.  
